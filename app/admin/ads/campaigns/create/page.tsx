@@ -4,10 +4,10 @@ import React, { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
 
-// ══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // ADGRID — CAMPAIGN CREATION WIZARD
-// 3-step flow: Details → Targeting → Creatives
-// ══════════════════════════════════════════════════════════════
+// 3-step flow: Details â†’ Targeting â†’ Creatives
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const T = {
     bg: '#060b12',
@@ -83,7 +83,7 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
                 return (
                     <React.Fragment key={step}>
                         <div style={{width: 32,height: 32,borderRadius: '50%',display: 'flex',alignItems: 'center',justifyContent: 'center',background: completed ? T.green : active ? T.gold : T.bgCard,border: `2px solid ${completed ? T.green : active ? T.gold : T.border}`,color: completed || active ? '#0a0f16' : T.textSecondary,fontSize: 13,fontWeight: 900,transition: 'all 0.2s'}}>
-                            {completed ? '✓' : step}
+                            {completed ? 'âœ“' : step}
                         </div>
                         {i < total - 1 && (
                             <div style={{flex: 1,height: 2,borderRadius: 1,background: completed ? T.green : T.border,transition: 'background 0.2s'}} />
@@ -220,7 +220,7 @@ export default function CampaignCreatePage() {
 
                 {/* Back link */}
                 <a href="/admin/ads" style={{display: 'inline-flex',alignItems: 'center',gap: 6,fontSize: 12,color: T.textSecondary,textDecoration: 'none',marginBottom: 20,fontWeight: 600}}>
-                    ← Back to Dashboard
+                    â† Back to Dashboard
                 </a>
 
                 <h1 style={{margin: '0 0 6px',fontSize: 26,fontWeight: 800,color: T.textPrimary,fontFamily: "var(--font-display, 'Space Grotesk', system-ui)"}}>
@@ -232,7 +232,7 @@ export default function CampaignCreatePage() {
 
                 <StepIndicator current={step} total={3} />
 
-                {/* ── STEP 1: Campaign Details ── */}
+                {/* â”€â”€ STEP 1: Campaign Details â”€â”€ */}
                 {step === 1 && (
                     <div style={{background: T.bgCard,border: `1px solid ${T.border}`,borderRadius: 16,padding: 24}}>
                         <h2 style={{margin: '0 0 20px',fontSize: 18,fontWeight: 800,color: T.textPrimary }}>
@@ -291,7 +291,7 @@ export default function CampaignCreatePage() {
                     </div>
                 )}
 
-                {/* ── STEP 2: Targeting ── */}
+                {/* â”€â”€ STEP 2: Targeting â”€â”€ */}
                 {step === 2 && (
                     <div style={{background: T.bgCard,border: `1px solid ${T.border}`,borderRadius: 16,padding: 24}}>
                         <h2 style={{margin: '0 0 6px',fontSize: 18,fontWeight: 800,color: T.textPrimary }}>
@@ -340,7 +340,7 @@ export default function CampaignCreatePage() {
                     </div>
                 )}
 
-                {/* ── STEP 3: Creative ── */}
+                {/* â”€â”€ STEP 3: Creative â”€â”€ */}
                 {step === 3 && (
                     <div style={{background: T.bgCard,border: `1px solid ${T.border}`,borderRadius: 16,padding: 24}}>
                         <h2 style={{margin: '0 0 20px',fontSize: 18,fontWeight: 800,color: T.textPrimary }}>
@@ -452,7 +452,7 @@ export default function CampaignCreatePage() {
                 <div style={{display: 'flex',justifyContent: 'space-between',marginTop: 20,gap: 12 }}>
                     {step > 1 ? (
                         <button aria-label="Interactive Button" onClick={() => setStep((step - 1) as Step)} style={{padding: '11px 24px',borderRadius: 10,background: T.bgCard,border: `1px solid ${T.border}`,color: T.textBody,fontSize: 13,fontWeight: 700,cursor: 'pointer'}}>
-                            ← Back
+                            â† Back
                         </button>
                     ) : <div />}
 
@@ -462,7 +462,7 @@ export default function CampaignCreatePage() {
                             disabled={!canAdvance}
                             style={{padding: '11px 24px',borderRadius: 10,background: canAdvance ? `linear-gradient(135deg, ${T.gold}, #d97706)` : T.bgCard,color: canAdvance ? '#0a0f16' : T.textSecondary,fontSize: 13,fontWeight: 900,border: 'none',cursor: canAdvance ? 'pointer' : 'not-allowed',textTransform: 'uppercase',letterSpacing: '0.05em',opacity: canAdvance ? 1 : 0.5}}
                         >
-                            Continue →
+                            Continue â†’
                         </button>
                     ) : (
                         <button aria-label="Interactive Button"
@@ -470,7 +470,7 @@ export default function CampaignCreatePage() {
                             disabled={!canAdvance || submitting}
                             style={{padding: '11px 24px',borderRadius: 10,background: `linear-gradient(135deg, ${T.green}, #059669)`,color: '#fff',fontSize: 13,fontWeight: 900,border: 'none',cursor: submitting ? 'wait' : 'pointer',textTransform: 'uppercase',letterSpacing: '0.05em',boxShadow: `0 3px 16px rgba(39,209,127,0.28)`,opacity: submitting ? 0.7 : 1}}
                         >
-                            {submitting ? 'Creating…' : '🚀 Create Campaign'}
+                            {submitting ? 'Creating...' : 'ðŸš€ Create Campaign'}
                         </button>
                     )}
                 </div>

@@ -29,7 +29,7 @@ const STEPS = [
       'Select voice: \'Adam\' (authoritative) or \'Rachel\' (clear)',
       'Paste your script into the text box',
       'Click Generate, then Download MP3',
-      'OPTIONAL (→ $22/month): Go to Voice Lab → Clone a Voice',
+      'OPTIONAL (â†’ $22/month): Go to Voice Lab â†’ Clone a Voice',
       'Record yourself speaking for 60 seconds',
       'Upload recording — ElevenLabs clones your voice',
       'All future videos sound like you. No recording booth needed.',
@@ -90,7 +90,7 @@ const STEPS = [
       'Description: 300+ words. Put haulcommand.com link in first 3 lines.',
       'Tags: Add 10-15 tags from the script topic',
       'Thumbnail: Create in Canva (free). Dark background + bold gold text.',
-      'Thumbnail text example: “47 MIN FILL TIME” or “AV TRUCKS NEED ESCORTS”',
+      'Thumbnail text example: "47 MIN FILL TIME" or "AV TRUCKS NEED ESCORTS"',
       'Set End Screen: link to haulcommand.com and suggest related video',
       'Add Cards: link to haulcommand.com/directory or relevant page',
     ],
@@ -109,7 +109,7 @@ const COST_SUMMARY = [
 
 export default function VideoGuidePage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white p-4 md:p-8">
+    <div className=" bg-[#0a0a0a] text-white p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
           <h1 className="text-2xl font-bold mb-2">YouTube Video Production Guide</h1>
@@ -124,7 +124,7 @@ export default function VideoGuidePage() {
           {STEPS.map((s) => (
             <div key={s.step} className="p-6 bg-white/5 border border-white/10 rounded-2xl">
               <div className="flex items-start gap-4">
-                <div className="w-8 h-8 bg-amber-500 text-black font-bold rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="w-8 h-8 bg-amber-500 text-white font-bold rounded-lg flex items-center justify-center flex-shrink-0">
                   {s.step}
                 </div>
                 <div className="flex-1">
@@ -136,7 +136,7 @@ export default function VideoGuidePage() {
                   <ul className="space-y-1.5">
                     {s.instructions.map((inst, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
-                        <span className="text-amber-500 mt-0.5">→</span>
+                        <span className="text-amber-500 mt-0.5">â†’</span>
                         {inst}
                       </li>
                     ))}

@@ -7,7 +7,7 @@ import {
     ChevronDown, ExternalLink, Info
 } from 'lucide-react';
 
-// ── Types ──
+// â”€â”€ Types â”€â”€
 
 interface CorridorRow {
     corridor: string;
@@ -37,13 +37,13 @@ interface RateIndexResponse {
     corridors: CorridorRow[];
 }
 
-// ── Constants ──
+// â”€â”€ Constants â”€â”€
 
 const DEMAND_COLORS: Record<string, { bg: string; text: string; label: string }> = {
     dominant: { bg: 'bg-emerald-500/15', text: 'text-emerald-400', label: 'High Demand' },
     strong: { bg: 'bg-blue-500/15', text: 'text-blue-400', label: 'Strong' },
     emerging: { bg: 'bg-amber-500/15', text: 'text-amber-400', label: 'Emerging' },
-    cold: { bg: 'bg-slate-500/15', text: 'text-slate-400', label: 'Low Volume' },
+    cold: { bg: 'bg-[#0A0A0A]0/15', text: 'text-slate-400', label: 'Low Volume' },
     baseline: { bg: 'bg-purple-500/15', text: 'text-purple-400', label: 'Baseline' },
 };
 
@@ -53,7 +53,7 @@ const TREND_ICONS: Record<string, React.ReactNode> = {
     stable: <Minus className="w-4 h-4 text-slate-400" />,
 };
 
-// ── Component ──
+// â”€â”€ Component â”€â”€
 
 export default function RateIndexPageClient() {
     const [data, setData] = useState<RateIndexResponse | null>(null);
@@ -112,8 +112,8 @@ export default function RateIndexPageClient() {
     };
 
     return (
-        <div className="min-h-screen bg-[#0a0a0f] text-white">
-            {/* ── Hero Section ── */}
+        <div className=" bg-[#0a0a0f] text-white">
+            {/* â”€â”€ Hero Section â”€â”€ */}
             <div className="relative overflow-hidden border-b border-white/5">
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-transparent to-blue-500/5" />
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-amber-500/3 blur-[200px] rounded-full" />
@@ -161,7 +161,7 @@ export default function RateIndexPageClient() {
                 </div>
             </div>
 
-            {/* ── Filters Bar ── */}
+            {/* â”€â”€ Filters Bar â”€â”€ */}
             <div className="sticky top-0 z-30 bg-[#0a0a0f]/95 backdrop-blur-xl border-b border-white/5">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                     <div className="flex flex-col sm:flex-row gap-3">
@@ -217,7 +217,7 @@ export default function RateIndexPageClient() {
                 </div>
             </div>
 
-            {/* ── Rate Table ── */}
+            {/* â”€â”€ Rate Table â”€â”€ */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {loading ? (
                     <div className="space-y-3">
@@ -259,7 +259,7 @@ export default function RateIndexPageClient() {
                                         </div>
                                         <div className="min-w-0">
                                             <div className="font-bold text-white truncate text-sm lg:text-base">
-                                                {row.origin} → {row.destination}
+                                                {row.origin} â†’ {row.destination}
                                             </div>
                                             <div className="text-xs text-slate-500 truncate">
                                                 {row.corridor}
@@ -353,7 +353,7 @@ export default function RateIndexPageClient() {
                                                 </div>
                                                 <button aria-label="Interactive Button"
                                                     onClick={(e) => { e.stopPropagation(); setShowProModal(true); }}
-                                                    className="absolute inset-0 flex items-center justify-center bg-slate-900/60 rounded-xl
+                                                    className="absolute inset-0 flex items-center justify-center /60 rounded-xl
                                                         backdrop-blur-sm"
                                                 >
                                                     <div className="text-center">
@@ -376,7 +376,7 @@ export default function RateIndexPageClient() {
                                                 </div>
                                                 <button aria-label="Interactive Button"
                                                     onClick={(e) => { e.stopPropagation(); setShowProModal(true); }}
-                                                    className="absolute inset-0 flex items-center justify-center bg-slate-900/60 rounded-xl
+                                                    className="absolute inset-0 flex items-center justify-center /60 rounded-xl
                                                         backdrop-blur-sm"
                                                 >
                                                     <div className="text-center">
@@ -408,7 +408,7 @@ export default function RateIndexPageClient() {
                             <a
                                 href="/pricing"
                                 className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-500
-                                    text-black font-black rounded-xl hover:shadow-lg hover:shadow-amber-500/25
+                                    text-white font-black rounded-xl hover:shadow-lg hover:shadow-amber-500/25
                                     transition-all duration-200 text-sm"
                             >
                                 Start Free Trial <ArrowUpRight className="w-4 h-4" />
@@ -433,14 +433,14 @@ export default function RateIndexPageClient() {
                 </div>
             </div>
 
-            {/* ── Pro Modal ── */}
+            {/* â”€â”€ Pro Modal â”€â”€ */}
             {showProModal && (
                 <div
                     className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
                     onClick={() => setShowProModal(false)}
                 >
                     <div
-                        className="bg-slate-900 border border-white/10 rounded-3xl p-8 max-w-md w-full shadow-2xl"
+                        className=" border border-white/10 rounded-3xl p-8 max-w-md w-full shadow-2xl"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="w-12 h-12 bg-amber-500/10 rounded-2xl flex items-center justify-center mb-6">
@@ -475,7 +475,7 @@ export default function RateIndexPageClient() {
                             </button>
                             <a
                                 href="/pricing"
-                                className="flex-1 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-black
+                                className="flex-1 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white
                                     font-black rounded-xl text-center text-sm hover:shadow-lg hover:shadow-amber-500/25
                                     transition-all"
                             >

@@ -67,12 +67,12 @@ export default async function AdFraudDashboardPage() {
                 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20';
 
     return (
-        <div className="min-h-screen bg-slate-900 text-white p-6 md:p-8">
+        <div className="  text-white p-6 md:p-8">
             <div className="max-w-6xl mx-auto space-y-8">
 
                 {/* Header */}
                 <div>
-                    <h1 className="text-2xl font-black text-white">🛡️ Fraud Shield</h1>
+                    <h1 className="text-2xl font-black text-white">ðŸ›¡ï¸ Fraud Shield</h1>
                     <p className="text-sm text-slate-500 mt-1">Real-time fraud detection, session scoring, and billing protection</p>
                 </div>
 
@@ -126,7 +126,7 @@ export default async function AdFraudDashboardPage() {
                             <tbody className="divide-y divide-slate-800">
                                 {(riskySessions || []).map((s: FraudSession) => (
                                     <tr key={s.session_id} className="hover:bg-slate-800/30">
-                                        <td className="px-6 py-3 font-mono text-xs text-slate-400">{s.session_id.slice(0, 12)}…</td>
+                                        <td className="px-6 py-3 font-mono text-xs text-slate-400">{s.session_id.slice(0, 12)}...</td>
                                         <td className="px-6 py-3">
                                             <span className={`px-2 py-0.5 text-xs font-bold rounded-full border ${riskColor(s.risk_score)}`}>
                                                 {(s.risk_score * 100).toFixed(0)}%
@@ -157,7 +157,7 @@ export default async function AdFraudDashboardPage() {
                                 {(!riskySessions || riskySessions.length === 0) && (
                                     <tr>
                                         <td colSpan={8} className="px-6 py-12 text-center text-slate-600">
-                                            No high-risk sessions detected in the last 24 hours. ✅
+                                            No high-risk sessions detected in the last 24 hours. âœ…
                                         </td>
                                     </tr>
                                 )}
@@ -180,7 +180,7 @@ export default async function AdFraudDashboardPage() {
                             { label: 'Dwell Required', weight: '800ms', color: 'text-slate-400' },
                             { label: 'Token TTL', weight: '10min', color: 'text-slate-400' },
                         ].map(item => (
-                            <div key={item.label} className="p-3 bg-slate-900/50 border border-slate-700 rounded-lg">
+                            <div key={item.label} className="p-3 /50 border border-slate-700 rounded-lg">
                                 <p className="text-[10px] text-slate-500 uppercase font-bold">{item.label}</p>
                                 <p className={`text-lg font-black ${item.color} mt-1`}>{item.weight}</p>
                             </div>

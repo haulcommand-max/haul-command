@@ -1,0 +1,1187 @@
+edge_functions:
+- name: ad-decision-engine
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - ad_pacing (upsert)
+    - advertiser_trust_scores (upsert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: ad-impression-confirm
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: admin-set-setting
+  trigger: manual
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: assign-seeds
+  trigger: manual
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: audit-email-inventory
+  trigger: manual
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - Send Email
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: auto-recruit
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: availability-ping
+  trigger: pg_cron
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Dashboard
+- name: availability-toggle
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - escort_availability_windows (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: availability-truth-tick
+  trigger: pg_cron
+  inputs:
+    - Unknown
+  writes:
+    - hc_cron_audit (insert)
+    - hc_edge_execution_log (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Dashboard
+- name: b2b-permit-order
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - permit_orders (insert)
+  side_effects:
+    - External API Call
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: bill-sponsors-daily
+  trigger: pg_cron
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Dashboard
+- name: broker-score-recompute
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - broker_trust_scores (upsert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: check-regulations
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: claim-welcome-sequence
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - email_jobs (insert)
+    - claim_events (insert)
+    - email_sequences (insert)
+  side_effects:
+    - Send Email
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: compliance-match-preview
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: compliance-reminders-run
+  trigger: pg_cron
+  inputs:
+    - JSON Payload
+  writes:
+    - notification_events (insert)
+    - compliance_reminders (update)
+    - event_log (insert)
+    - compliance_reminders (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Dashboard
+- name: compliance-snapshot-generate
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - documents (insert)
+    - jobs (update)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: compute-trust-score
+  trigger: frontend
+  inputs:
+    - URL Params
+    - JSON Payload
+  writes:
+    - quality_score_snapshots (upsert)
+    - advertiser_accounts (update)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: corridor-metrics-ingest
+  trigger: queue
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: corridor-stress-refresh
+  trigger: pg_cron
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Dashboard
+- name: coverage-cells-precompute
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: cron-refresh-load-intel
+  trigger: pg_cron
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Dashboard
+- name: deadhead-estimate
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: deeplink-redirect
+  trigger: frontend
+  inputs:
+    - URL Params
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: directory-claim-submit
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - driver_claims (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: dispute-auto-resolve
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: docs-init-upload
+  trigger: manual
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: driver-presence-update
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - driver_presence (upsert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: email-claim-nudges
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - email_jobs (insert)
+    - directory_claim_state (update)
+  side_effects:
+    - Send Email
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: email-digest-builder
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - email_jobs (insert)
+  side_effects:
+    - Send Email
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: email-send
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - email_events (insert)
+  side_effects:
+    - Send Email
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: email-worker
+  trigger: queue
+  inputs:
+    - Unknown
+  writes:
+    - email_suppression (upsert)
+    - email_events (insert)
+    - email_jobs (update)
+  side_effects:
+    - Send Email
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: emergency-vendors
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: enrich-chambers-geo
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - chambers (update)
+  side_effects:
+    - External API Call
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: escort-activation
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - activation_nudges (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: eval-load-intelligence
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: evaluate-load
+  trigger: queue
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: fraud-score-recompute
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: geo-aggregator
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - market_hex_agg (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: geo-content-gap-filler
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - mm_event_log (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: geocode-worker
+  trigger: queue
+  inputs:
+    - Unknown
+  writes:
+    - loads (update)
+    - geocode_queue (update)
+  side_effects:
+    - External API Call
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: get-featured-providers
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: get-providers-near-me
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: gps-breadcrumb-ingest
+  trigger: queue
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: hazard-score-rollup
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: hc_ad_inventory_generator
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - ad_inventory (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: hc_leads_worker
+  trigger: queue
+  inputs:
+    - JSON Payload
+  writes:
+    - leads (update)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: hc_osm_enrichment
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - surfaces (update)
+  side_effects:
+    - External API Call
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: hc_quality_scoring_worker
+  trigger: queue
+  inputs:
+    - JSON Payload
+  writes:
+    - operator_quality (upsert)
+  side_effects:
+    - Send Email
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: hc_route_iq_compute
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - route_iq_cache (upsert)
+  side_effects:
+    - External API Call
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: hc_webhook_stripe
+  trigger: webhook
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - Stripe API
+    - External API Call
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: here-geocode
+  trigger: frontend
+  inputs:
+    - URL Params
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - External API Call
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: here-polyline
+  trigger: frontend
+  inputs:
+    - URL Params
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - External API Call
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: highpole-calibration-pdf
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - event_log (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: ingest-chambers
+  trigger: queue
+  inputs:
+    - JSON Payload
+  writes:
+    - chambers_raw (insert)
+    - ingestion_jobs (update)
+  side_effects:
+    - Send Email
+    - External API Call
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: installs-track
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - referral_events (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: insurance-ocr-parse
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - event_log (insert)
+    - compliance_reminders (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: invoice-generate-pdf
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - event_log (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: jobs-create-from-offer
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: kyc-step-up-trigger
+  trigger: db trigger
+  inputs:
+    - JSON Payload
+  writes:
+    - notification_events (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: leaderboard-snapshot-hourly
+  trigger: pg_cron
+  inputs:
+    - JSON Payload
+  writes:
+    - leaderboard_snapshots (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Dashboard
+- name: liquidity-health
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: liquidity-map-data
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: map-prefetch
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: market-intelligence
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: match-generate
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - match_offers (insert)
+    - push_notification_log (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: miles-compute
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - routing_audit_log (insert)
+    - loads (update)
+  side_effects:
+    - External API Call
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: monitor-dead-zones
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: morning-pulse-dispatch
+  trigger: queue
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - External API Call
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: navixy-bridge-formula-calculator
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: navixy-evidence-vault
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - evidence_packets (insert)
+  side_effects:
+    - Send Email
+    - External API Call
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: navixy-high-pole-alert
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - External API Call
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: navixy-route-hazard-profiler
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: navixy-schematic-generator
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: notification-dispatch
+  trigger: queue
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - External API Call
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: notify-orchestrator
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - email_jobs (insert)
+  side_effects:
+    - Send Email
+    - External API Call
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: offer-accept
+  trigger: frontend
+  inputs:
+    - URL Params
+    - JSON Payload
+  writes:
+    - match_offers (update)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: offer-decline
+  trigger: frontend
+  inputs:
+    - URL Params
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: offer-viewed
+  trigger: frontend
+  inputs:
+    - URL Params
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: panic-fill-escalation
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - panic_fill_log (upsert)
+  side_effects:
+    - External API Call
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: payments-capture
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - Stripe API
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: payments-preauth
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - Stripe API
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: polyline-worker
+  trigger: queue
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - External API Call
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: premium-auction-tick
+  trigger: pg_cron
+  inputs:
+    - Unknown
+  writes:
+    - premium_page_audit_log (insert)
+    - page_auction_cycles (update)
+    - page_notifications_outbox (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Dashboard
+- name: presence-heartbeat
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: presence-timeout-offline
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: pricing-quote
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - pricing_market_stats (update)
+    - pricing_bandit_arms (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: rank-system-worker
+  trigger: queue
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: rate-index-recompute
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: reciprocity-check
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: recompute-ad-models
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - ad_pacing_state (upsert)
+    - ad_models_surface_stats (upsert)
+    - advertiser_trust_scores (upsert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: record-qualified-event
+  trigger: db trigger
+  inputs:
+    - JSON Payload
+  writes:
+    - qualified_events (insert)
+    - sponsor_metrics (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: recruiter-mission-run
+  trigger: pg_cron
+  inputs:
+    - JSON Payload
+  writes:
+    - recruit_missions (update)
+    - recruit_outreach_events (insert)
+  side_effects:
+    - Send Email
+  downstream_consumers:
+    - Dashboard
+- name: referrals-redeem
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - referral_events (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: refresh-chamber-sites
+  trigger: pg_cron
+  inputs:
+    - Unknown
+  writes:
+    - chambers (update)
+  side_effects:
+    - Send Email
+    - External API Call
+  downstream_consumers:
+    - Dashboard
+- name: retention-event-ingest
+  trigger: queue
+  inputs:
+    - JSON Payload
+  writes:
+    - event_log (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: reviews-log
+  trigger: db trigger
+  inputs:
+    - JSON Payload
+  writes:
+    - review_events (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: rtb-ad-serve
+  trigger: frontend
+  inputs:
+    - JSON Payload
+  writes:
+    - impression_log (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: score-recompute
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: search-indexer
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - search_jobs (update)
+  side_effects:
+    - Send Email
+    - External API Call
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: seed-claim-sequence
+  trigger: manual
+  inputs:
+    - Unknown
+  writes:
+    - email_jobs (insert)
+    - email_sequences (insert)
+  side_effects:
+    - Send Email
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: stripe-webhook
+  trigger: webhook
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - Stripe API
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: swarm-cron-executor
+  trigger: pg_cron
+  inputs:
+    - JSON Payload
+  writes:
+    - coverage_gap_alerts (insert)
+    - swarm_activity_log (insert)
+    - agent_queue (insert)
+    - market_states (update)
+    - swarm_scoreboard (insert)
+  side_effects:
+    - None
+  downstream_consumers:
+    - Dashboard
+- name: trust-event-ingest
+  trigger: queue
+  inputs:
+    - URL Params
+    - JSON Payload
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App
+- name: trust-score-recompute
+  trigger: frontend
+  inputs:
+    - Unknown
+  writes:
+    - None
+  side_effects:
+    - None
+  downstream_consumers:
+    - Frontend UI
+    - Mobile App

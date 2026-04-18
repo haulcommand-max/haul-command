@@ -5,6 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Activity, Users, MapPin, Search, AlertCircle, RefreshCw, Layers, Shield, Zap, Moon, Globe, MessageSquare } from 'lucide-react';
 import { createClient as createClientComponentClient } from '@/lib/supabase/client';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
+
+const HeavyHaulMap = dynamic(() => import('@/components/map/HeavyHaulMap'), { ssr: false });
 
 interface Operator {
   id: string;
@@ -75,7 +78,7 @@ export default function DispatchDashboard({ stats }: Props) {
   const hasLiveData = stats.total_available > 0;
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white font-sans overflow-hidden">
+    <div className=" bg-[#050505] text-white font-sans overflow-hidden">
       
       {/* Background Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20 pointer-events-none" />
@@ -170,18 +173,25 @@ export default function DispatchDashboard({ stats }: Props) {
         {/* Center/Right: Map & HUD */}
         <div className="xl:col-span-3 bg-black flex flex-col rounded-3xl border border-white/10 overflow-hidden relative shadow-2xl">
           
-          {/* Map Background */}
-          <div className="absolute inset-0 bg-[url('https://maps.wikimedia.org/osm-intl/9/127/198.png')] bg-cover bg-center opacity-40 mix-blend-screen filter brightness-[0.2] contrast-[1.5] grayscale" />
+          <div className="absolute inset-0 z-0 opacity-80 mix-blend-screen overflow-hidden">
+            <HeavyHaulMap 
+              mode="dispatch" 
+              showPermitRoute={false} 
+              showHud={false} 
+              initialZoom={3} 
+            />
+          </div>
 
           {/* H3 Density Hexagons */}
-          <div className="absolute inset-0 w-full h-full opacity-30 select-none pointer-events-none">
+          <div className="absolute inset-0 w-full h-full opacity-10 select-none pointer-events-none z-0">
             <svg width="100%" height="100%">
               <pattern id="hexagons" width="50" height="43.4" patternUnits="userSpaceOnUse" patternTransform="scale(2)">
-                <path d="M25 0 L50 14.4 L50 43.3 L25 57.7 L0 43.3 L0 14.4 Z" fill="none" stroke="rgba(59,130,246,0.3)" strokeWidth="0.5" />
+                <path d="M25 0 L50 14.4 L50 43.3 L25 57.7 L0 43.3 L0 14.4 Z" fill="none" stroke="rgba(59,130,246,0.5)" strokeWidth="0.5" />
               </pattern>
               <rect width="100%" height="100%" fill="url(#hexagons)" />
             </svg>
           </div>
+
 
           {/* Live Supply HUD — wired to v_dispatch_ready_supply_internal */}
           <div className="absolute top-6 left-6 right-6 flex justify-between items-start pointer-events-none">
@@ -250,7 +260,7 @@ export default function DispatchDashboard({ stats }: Props) {
                               <span className="relative rounded-full h-2.5 w-2.5 bg-emerald-500" />
                             </span>
                             <div className="bg-white/5 border border-white/10 rounded w-8 h-8 flex items-center justify-center text-sm">
-                               {op.vehicle_type === 'pilot_car' ? '🚕' : '🚛'}
+                               {op.vehicle_type === 'pilot_car' ? 'ðŸš•' : 'ðŸš›'}
                             </div>
                          </div>
                          <div>
@@ -309,7 +319,7 @@ export default function DispatchDashboard({ stats }: Props) {
                   The dispatch_supply table needs operator records. Once operators set availability status to &quot;available&quot;, they&apos;ll populate v_dispatch_ready_supply_internal.
                 </p>
                 <div className="text-xs text-gray-600 font-mono">
-                  Tables ready: dispatch_supply → v_dispatch_ready_supply_internal ✓
+                  Tables ready: dispatch_supply â†’ v_dispatch_ready_supply_internal âœ“
                 </div>
               </div>
             </div>

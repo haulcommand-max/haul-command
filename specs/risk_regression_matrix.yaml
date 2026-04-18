@@ -1,0 +1,24 @@
+risk_vectors:
+  payments:
+    - scenario: "Sudden spike in high-value Stripe conversions from single IP subnet"
+      gate: "trigger KYC re-verification; hold funds in Escrow"
+      tests:
+        - "Verify Escrow hold logic is triggered via webhook simulation"
+        - "Ensure operator is marked 'review_pending' in DB"
+    - scenario: "Chargeback received from operator after load cancellation"
+      gate: "Auto-suspend directory listing; ping dispute API"
+      tests:
+        - "Check if operator disappears from map when chargeback is recorded"
+        - "Verify email sent to operator requesting evidence"
+  disputes:
+    - scenario: "Broker reports operator no-show via SMS parser"
+      gate: "Requires human review (Opus/Sonnet does not auto-resolve final outcome)"
+      tests:
+        - "Verify ticket is queued in admin dashboard"
+        - "Ensure trust score is NOT deducted pre-review"
+  kyc:
+    - scenario: "Operator uploads ID from unsupported jurisdiction"
+      gate: "Prevent account creation; log drop-off for product team"
+      tests:
+        - "Upload test image of unsupported passport to LiveKit/Plaid"
+        - "Verify 400 Bad Request with localized explanation"

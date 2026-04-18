@@ -1,0 +1,4 @@
+# GEMINI-05: Reciprocity Rule Framework
+framework:
+  - query: "Does completion of US Night Ops satisfy CA requirements?"
+    result: "Pending Verification. Requires manual cross-reference."

@@ -108,7 +108,7 @@ export default function ContactPage() {
                             <p style={{ margin: 0, fontSize: 13, color: '#6b7280', lineHeight: 1.5 }}>{item.a}</p>
                             {item.link && (
                                 <Link href={item.link} style={{ display: 'inline-block', marginTop: 8, fontSize: 12, color: '#F1A91B', textDecoration: 'none', fontWeight: 700 }}>
-                                    Go → 
+                                    Go â†’ 
                                 </Link>
                             )}
                         </div>

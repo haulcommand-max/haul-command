@@ -1,0 +1,37 @@
+jsonld_variants:
+  course_schema:
+    - type: "Course"
+      name: "Advanced High Pole Operation"
+      description: "Learn how to safely operate a high pole for overheight escorting."
+      provider:
+        type: "Organization"
+        name: "Haul Command"
+        sameAs: "https://haulcommand.com"
+      hasCourseInstance:
+        type: "CourseInstance"
+        courseMode: "online"
+
+  video_object_schema:
+    - type: "VideoObject"
+      name: "Texas Oversize Permit Walkthrough"
+      description: "A step-by-step guide to applying for a Texas OS/OW permit."
+      thumbnailUrl: "https://haulcommand.com/assets/video_thumb_tx.jpg"
+      uploadDate: "2024-01-10T08:00:00+08:00"
+      contentUrl: "https://haulcommand.com/videos/tx-permit-walkthrough.mp4"
+
+  faq_page_schema:
+    - type: "FAQPage"
+      mainEntity:
+        - type: "Question"
+          name: "Do I need a pilot car for a 12ft wide load in Florida?"
+          acceptedAnswer:
+            type: "Answer"
+            text: "It depends on the route. Generally, Florida requires a pilot car for loads over 12 feet wide on certain two-lane highways."
+
+  corridor_report_schema:
+    - type: "Dataset"
+      name: "Houston to Midland Freight Rates"
+      description: "Real-time average pilot car rates and supply index for the Houston - Midland corridor."
+      spatialCoverage:
+        type: "Place"
+        name: "Texas"

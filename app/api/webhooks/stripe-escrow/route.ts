@@ -82,8 +82,8 @@ export async function POST(req: Request) {
 
                 // Validate the payment intent ID exists in our ledger
                 const { data: ledgerEntry, error: lookupErr } = await supabase
-                    .from('hc_escrow_ledgers')
-                    .select('id, status')
+                    .from('hc_escrow')
+                    .select('id, status, booking_id')
                     .eq('stripe_payment_intent_id', paymentIntent.id)
                     .maybeSingle();
 
@@ -100,20 +100,22 @@ export async function POST(req: Request) {
 
                 // Mark escrow as secured
                 const { error: escrowErr } = await supabase
-                    .from('hc_escrow_ledgers')
+                    .from('hc_escrow')
                     .update({
                         status: 'funds_secured',
-                        secured_at: new Date().toISOString(),
+                        held_at: new Date().toISOString(),
                     })
                     .eq('stripe_payment_intent_id', paymentIntent.id);
 
                 if (escrowErr) throw escrowErr;
 
-                // Shift load status to PENDING_DELIVERY
-                await supabase
-                    .from('hc_loads_active')
-                    .update({ network_status: 'PENDING_DELIVERY' })
-                    .eq('escrow_intent_id', paymentIntent.id);
+                // Shift load status to OPEN (Guardrail 4: Load Goes Live)
+                if (ledgerEntry.booking_id) {
+                    await supabase
+                        .from('hc_loads')
+                        .update({ load_status: 'open' })
+                        .eq('id', ledgerEntry.booking_id);
+                }
 
                 console.log(`[Escrow Webhook] Secured escrow for PI: ${paymentIntent.id}`);
                 break;
@@ -132,7 +134,7 @@ export async function POST(req: Request) {
 
                 // Validate the PI exists before updating
                 const { data: refundLedger } = await supabase
-                    .from('hc_escrow_ledgers')
+                    .from('hc_escrow')
                     .select('id')
                     .eq('stripe_payment_intent_id', refundPI)
                     .maybeSingle();
@@ -143,7 +145,7 @@ export async function POST(req: Request) {
                 }
 
                 await supabase
-                    .from('hc_escrow_ledgers')
+                    .from('hc_escrow')
                     .update({ status: 'refunded_network_recovery' })
                     .eq('stripe_payment_intent_id', refundPI);
 

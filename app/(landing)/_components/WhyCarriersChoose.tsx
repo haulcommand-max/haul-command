@@ -8,12 +8,12 @@ import {
   ArrowRight, CreditCard, Route, Users, CheckCircle,
 } from "lucide-react";
 
-/* ═══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    WHY CARRIERS CHOOSE HAUL COMMAND
-   ─ Direct ODS-killer section. Their pitch: "easy, safe, 
+   â”€ Direct ODS-killer section. Their pitch: "easy, safe, 
      insured, nationwide." Ours adds software, intelligence,
      global scale, and self-serve tooling.
-   ═══════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -27,8 +27,8 @@ const stagger = { visible: { transition: { staggerChildren: 0.06 } } };
 const CARRIER_BENEFITS = [
   {
     icon: Globe,
-    title: "120-Country Coverage",
-    desc: "Not just North America. Find verified escorts in any country where heavy haul runs.",
+    title: "North American Coverage",
+    desc: "Find verified escorts across all 50 US states and expanding into Canada. Coverage growing every week.",
     accent: "#3b82f6",
   },
   {
@@ -157,7 +157,7 @@ export function WhyCarriersChoose() {
             <Link
               aria-label="Get started as a carrier"
               href="/onboarding/start?role=carrier"
-              className="inline-flex items-center gap-2 text-xs font-bold text-black px-5 py-2.5 rounded-xl transition-all flex-shrink-0 press-scale"
+              className="inline-flex items-center gap-2 text-xs font-bold text-white px-5 py-2.5 rounded-xl transition-all flex-shrink-0 press-scale"
               style={{
                 background: "linear-gradient(135deg, #C6923A 0%, #E0B05C 50%, #C6923A 100%)",
                 boxShadow: '0 4px 16px rgba(198,146,58,0.25)',

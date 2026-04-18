@@ -40,3 +40,68 @@ export const STRIPE_PRICE_IDS = {
 } as const;
 
 export type StripePriceKey = keyof typeof STRIPE_PRICE_IDS;
+
+/**
+ * ─────────────────────────────────────────────────
+ * OPUS-02 IDEMPOTENT STRIPE WRAPPERS
+ * ─────────────────────────────────────────────────
+ * Rule: All Stripe API calls MUST go through these wrappers — no direct SDK usage.
+ */
+
+function getTimestampBucket() {
+  return Math.floor(Date.now() / 1000 / 300); // 5-minute dedup window
+}
+
+export async function createIdempotentPaymentIntent(params: {
+  escrowId: string;
+  amount: number;
+  currency?: string;
+  customerId: string;
+  action?: string;
+  metadata?: Record<string, string>;
+  captureMethod?: 'automatic' | 'manual';
+}) {
+  const stripe = getStripe();
+  const bucket = getTimestampBucket();
+  const actionStr = params.action || 'preauth';
+  const idempotencyKey = `hc_${params.escrowId}_${actionStr}_${bucket}`;
+
+  return stripe.paymentIntents.create({
+    amount: params.amount,
+    currency: params.currency || 'usd',
+    customer: params.customerId,
+    capture_method: params.captureMethod || 'manual', // Default to manual for pre-auth
+    metadata: {
+      escrow_id: params.escrowId,
+      ...params.metadata,
+    },
+  }, {
+    idempotencyKey,
+  });
+}
+
+export async function createIdempotentTransfer(params: {
+  escrowId: string;
+  amount: number;
+  currency?: string;
+  destinationAccountId: string;
+  action?: string;
+  metadata?: Record<string, string>;
+}) {
+  const stripe = getStripe();
+  const bucket = getTimestampBucket();
+  const actionStr = params.action || 'payout';
+  const idempotencyKey = `hc_${params.escrowId}_${actionStr}_${bucket}`;
+
+  return stripe.transfers.create({
+    amount: params.amount,
+    currency: params.currency || 'usd',
+    destination: params.destinationAccountId,
+    metadata: {
+      escrow_id: params.escrowId,
+      ...params.metadata,
+    },
+  }, {
+    idempotencyKey,
+  });
+}

@@ -12,7 +12,7 @@ const fadeUp = {
 const categories = [
     {
         title: 'Insurance Partners',
-        emoji: '🛡️',
+        emoji: 'ðŸ›¡ï¸',
         description: 'Commercial auto insurance designed for pilot car and escort vehicle operators.',
         items: [
             { name: 'Progressive Commercial', desc: 'Specialized oversize load escort policies', badge: 'Popular' },
@@ -24,7 +24,7 @@ const categories = [
     },
     {
         title: 'Training & Certification',
-        emoji: '📚',
+        emoji: 'ðŸ“š',
         description: 'Get certified. Boost your leaderboard rank. Required in states like Florida (FAC 14-26).',
         items: [
             { name: 'Pilot Car Certification Course', desc: 'NPTCA-recognized, online, self-paced', badge: '$149' },
@@ -36,7 +36,7 @@ const categories = [
     },
     {
         title: 'Equipment & Gear',
-        emoji: '🚗',
+        emoji: 'ðŸš—',
         description: 'DOT-compliant signage, lights, flags, and height poles. All verified for escort use.',
         items: [
             { name: 'OVERSIZE LOAD Sign Kit', desc: 'Reflective, DOT-compliant, magnetic mount', badge: '$89' },
@@ -48,7 +48,7 @@ const categories = [
     },
     {
         title: 'Fuel & Maintenance',
-        emoji: '⛽',
+        emoji: 'â›½',
         description: 'Fuel card programs and maintenance networks for escort vehicle operators.',
         items: [
             { name: 'WEX Fleet Card', desc: '5¢/gal savings at 95% of US stations', badge: 'Top Choice' },
@@ -114,7 +114,7 @@ export default function MarketplacePage() {
                                     background: `${cat.color}10`, color: cat.color, fontSize: 12, fontWeight: 700,
                                     cursor: 'pointer', transition: 'all 0.2s', textTransform: 'uppercase', letterSpacing: 0.5,
                                 }}>
-                                    {cat.cta} →
+                                    {cat.cta} â†’
                                 </button>
                             </div>
                         </motion.div>

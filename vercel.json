@@ -1,6 +1,10 @@
 {
   "crons": [
     {
+      "path": "/api/notifications/drain-jobs",
+      "schedule": "*/2 * * * *"
+    },
+    {
       "path": "/api/cron/claim-sniper",
       "schedule": "0 7 * * *"
     },
@@ -55,6 +59,14 @@
     {
       "path": "/api/cron/fmcsa-ingest",
       "schedule": "0 3 * * 0"
+    },
+    {
+      "path": "/api/cron/workflows",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/cron/workflows?workflow=no_show_recovery",
+      "schedule": "0 */4 * * *"
     }
   ],
   "functions": {

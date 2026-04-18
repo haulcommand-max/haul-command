@@ -1,0 +1,46 @@
+# WAVE-1 SONNET REVIEW REPORT
+# GEM-R06: Continuous Sonnet Code Review
+# Reviewer: Gemini 3.1 Pro High (QA Copilot role)
+# Wave: WAVE-1 Money Path Hardening
+# Status: PASS with notes
+
+files_reviewed:
+  - supabase/migrations/0043_wave1_money_path_hardening.sql
+  - supabase/migrations/0044_wave1_deprecate_duplicate_functions.sql
+  - supabase/functions/kyc-step-up-trigger/index.ts
+  - app/api/loads/create/route.ts
+  - app/api/webhooks/stripe/route.ts
+
+findings:
+  critical: []
+  high: []
+  medium:
+    - file: "app/api/loads/create/route.ts"
+      line: 92
+      issue: "SUPABASE_SERVICE_ROLE_KEY exposed in edge function forward call from Next.js server. Ensure this environment variable is NEVER accessible client-side. Verify it is only in server-side env, not NEXT_PUBLIC_."
+      verdict: "ACCEPTABLE — server-side only route. Not a NEXT_PUBLIC_ variable."
+    - file: "supabase/functions/kyc-step-up-trigger/index.ts"
+      issue: "lifetime_volume_usd column is referenced but may not exist in all profiles rows. Should add COALESCE or column creation guard."
+      verdict: "LOW RISK — Uses null coalescing operator (?? 0). Safe."
+  low:
+    - file: "supabase/migrations/0043_wave1_money_path_hardening.sql"
+      issue: "Drop/recreate of 'jobs_public_select' policy may briefly block reads if applied during peak hours. Recommend maintenance window or conditional apply."
+      verdict: "ACCEPTABLE for staging. Flag for production deploy timing."
+    - file: "app/api/webhooks/stripe/route.ts"
+      issue: "payout_failed_user_id is checked from edge function response but the existing hc_webhook_stripe edge function does not currently return this field. Will silently skip FCM push."
+      action_required: "SONNET must ensure hc_webhook_stripe returns payout_failed_user_id in its response JSON on payout.failed events."
+      priority: "MEDIUM — pre-WAVE-1 merge"
+
+idempotency_check:
+  result: "PASS"
+  notes: "payments-preauth checks stripe_payment_intent_id before creating. hc_webhook_stripe checks sponsorship_orders.status before processing. escrow idempotency_key unique index confirmed."
+
+rls_check:
+  result: "PASS"
+  notes: "Gemini GEM-R03 findings resolved. hc_escrows now restricts to broker_id/operator_id. jobs INSERT enforces kyc_tier >= 2. jobs SELECT restricts to OPEN status for anonymous."
+
+trust_score_propagation_check:
+  result: "DEFERRED to WAVE-2"
+  notes: "trust.updated event not yet wired to Typesense. Expected in WAVE-2 S2-03."
+
+approval: "APPROVED for merge with one pre-merge fix: hc_webhook_stripe must return payout_failed_user_id"

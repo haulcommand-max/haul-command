@@ -1,12 +1,12 @@
 {
-  "mode": "interactive",
-  "granularity": "standard",
+  "mode": "yolo",
+  "granularity": "fine",
   "workflow": {
     "research": true,
     "plan_check": true,
     "verifier": true,
     "discuss_mode": "assumptions",
-    "use_worktrees": false,
+    "use_worktrees": true,
     "auto_advance": true
   },
   "models": {

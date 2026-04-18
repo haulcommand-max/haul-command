@@ -39,6 +39,14 @@
     {
       "path": "/api/cron/surge-engine",
       "schedule": "*/30 * * * *"
+    },
+    {
+      "path": "/api/cron/training-badge-expiry",
+      "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/cron/training-gap-scan",
+      "schedule": "0 6 * * 1"
     }
   ]
 }

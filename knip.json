@@ -1,0 +1,14 @@
+{
+  "entry": [
+    "app/**/*.tsx",
+    "app/**/*.ts"
+  ],
+  "project": [
+    "app/**/*.tsx",
+    "app/**/*.ts",
+    "components/**/*.tsx",
+    "components/**/*.ts",
+    "lib/**/*.ts",
+    "utils/**/*.ts"
+  ]
+}

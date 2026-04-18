@@ -3,12 +3,12 @@ import { MobileAppNav } from "@/components/mobile/MobileAppNav";
 import { FastWinContainer } from "@/components/engagement/FastWinReinforcement";
 import { A2HSPrompt } from "@/components/pwa/A2HSPrompt";
 
-// ══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // /app Mobile Shell Layout — Haul Command v4
 // Canonical entrypoint for the PWA + mobile app experience.
 // No sidebar. Full-height. Unified MobileAppNav always visible.
 // Safe area insets for notched phones.
-// ══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export default function AppShellLayout({
     children,
@@ -18,7 +18,7 @@ export default function AppShellLayout({
     return (
         <div
             className={[
-                "min-h-screen bg-hc-bg flex flex-col",
+                " bg-hc-bg flex flex-col",
                 // Safe area padding for notched devices
                 "pt-[env(safe-area-inset-top)]",
             ].join(" ")}

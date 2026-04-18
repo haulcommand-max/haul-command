@@ -44,7 +44,7 @@ const BROKER_SCHEMA = { '@context': 'https://schema.org', '@graph': [
     { '@type': 'FAQPage', mainEntity: [
         { '@type': 'Question', name: 'How do I find a verified pilot car operator for my load?', acceptedAnswer: { '@type': 'Answer', text: 'Use the Haul Command directory to search for verified pilot car operators by state. You can also post your load on the load board and receive quotes from certified escorts in your area.' } },
         { '@type': 'Question', name: 'How do I post an escort need on Haul Command?', acceptedAnswer: { '@type': 'Answer', text: 'Go to the load board and post your escort requirement — include route, load dimensions, timing, and state requirements. Verified operators will be notified and can respond with availability.' } },
-        { '@type': 'Question', name: 'Are pilot car operators on Haul Command verified?', acceptedAnswer: { '@type': 'Answer', text: 'Verified operators have submitted certifications, insurance documentation, and passed the Haul Command compliance checklist. They receive 3× more contact requests from brokers.' } },
+        { '@type': 'Question', name: 'Are pilot car operators on Haul Command verified?', acceptedAnswer: { '@type': 'Answer', text: 'Verified operators have submitted certifications, insurance documentation, and passed the Haul Command compliance checklist. They receive 3x more contact requests from brokers.' } },
     ]},
 ] };
 
@@ -80,8 +80,8 @@ export default async function BrokerLandingPage() {
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(BROKER_SCHEMA) }} />
             <ProofStrip variant="bar" />
-            <main className="min-h-screen bg-slate-900 text-slate-50">
-            {/* ── HERO ─────────────────────────────────────────────── */}
+            <main className="  text-slate-50">
+            {/* -------------------------------------------------- HERO -------------------------------------------------- */}
             <section className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-b border-slate-700/50 py-24 px-4 overflow-hidden">
                 {/* Background glow */}
                 <div className="absolute inset-0 bg-amber-500/5 pointer-events-none" />
@@ -105,7 +105,7 @@ export default async function BrokerLandingPage() {
                         <Link aria-label="Navigation Link"
                             href="/map"
                             id="broker-cta-live-coverage"
-                            className="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-8 py-4 rounded-xl text-lg transition-colors shadow-lg shadow-amber-500/20"
+                            className="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-white font-bold px-8 py-4 rounded-xl text-lg transition-colors shadow-lg shadow-amber-500/20"
                         >
                             Check Live Coverage →
                         </Link>
@@ -120,7 +120,7 @@ export default async function BrokerLandingPage() {
                 </div>
             </section>
 
-            {/* ── TRUST STACK ──────────────────────────────────────── */}
+            {/* -------------------------------------------------- TRUST STACK -------------------------------------------------- */}
             <section className="border-b border-slate-700/50 py-8 px-4">
                 <div className="max-w-3xl mx-auto grid grid-cols-3 gap-6 text-center">
                     {trustStack.map((s) => (
@@ -133,7 +133,7 @@ export default async function BrokerLandingPage() {
                 </div>
             </section>
 
-            {/* ── NATIVE AD ──────────────────────────────────────── */}
+            {/* -------------------------------------------------- NATIVE AD -------------------------------------------------- */}
             <section className="py-6 px-4">
                 <div className="max-w-3xl mx-auto">
                     <NativeAdCard
@@ -144,7 +144,7 @@ export default async function BrokerLandingPage() {
                 </div>
             </section>
 
-            {/* ── BROKER HOOKS ─────────────────────────────────────── */}
+            {/* -------------------------------------------------- BROKER HOOKS -------------------------------------------------- */}
             <section className="py-20 px-4">
                 <div className="max-w-3xl mx-auto">
                     <div className="text-center mb-12">
@@ -170,7 +170,7 @@ export default async function BrokerLandingPage() {
                 </div>
             </section>
 
-            {/* ── HOW IT WORKS ─────────────────────────────────────── */}
+            {/* -------------------------------------------------- HOW IT WORKS -------------------------------------------------- */}
             <section className="bg-slate-800/40 border-y border-slate-700/50 py-20 px-4">
                 <div className="max-w-3xl mx-auto text-center">
                     <h2 className="text-3xl font-extrabold text-white mb-12">
@@ -206,24 +206,24 @@ export default async function BrokerLandingPage() {
                 </div>
             </section>
 
-            {/* ── FINAL CTA ────────────────────────────────────────── */}
+            {/* -------------------------------------------------- FINAL CTA -------------------------------------------------- */}
             <section className="py-20 px-4 text-center">
                 <div className="max-w-xl mx-auto">
                     <h2 className="text-3xl font-extrabold text-white mb-4">Ready to stop cold-calling for escorts?</h2>
                     <p className="text-slate-400 mb-8">Free to start. Find your first verified escort today.</p>
-                    <Link aria-label="Navigation Link" href="/map" id="broker-cta-bottom" className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-8 py-4 rounded-xl text-lg transition-colors">Check Live Coverage →</Link>
+                    <Link aria-label="Navigation Link" href="/map" id="broker-cta-bottom" className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-white font-bold px-8 py-4 rounded-xl text-lg transition-colors">Check Live Coverage →</Link>
                 </div>
             </section>
 
             {/* Internal link mesh */}
             <section className="border-t border-slate-700/50 py-8 px-4">
                 <div className="max-w-3xl mx-auto flex flex-wrap gap-3 justify-center">
-                    <Link href="/glossary/pilot-car" className="text-xs px-4 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-amber-400 transition-all">📖 What Is a Pilot Car?</Link>
-                    <Link href="/tools/escort-calculator" className="text-xs px-4 py-2 rounded-lg border border-amber-500/25 text-amber-400 hover:bg-amber-500/10 transition-all">🧮 Escort Calculator</Link>
-                    <Link href="/escort-requirements" className="text-xs px-4 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-amber-400 transition-all">⚖️ State Escort Rules</Link>
-                    <Link href="/directory" className="text-xs px-4 py-2 rounded-lg border border-green-500/25 text-green-400 hover:bg-green-500/10 transition-all">🔍 Browse Directory</Link>
-                    <Link href="/available-now" className="text-xs px-4 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-amber-400 transition-all">🟢 Available Right Now</Link>
-                    <Link href="/pricing" className="text-xs px-4 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-amber-400 transition-all">💲 Broker Plans</Link>
+                    <Link href="/glossary/pilot-car" className="text-xs px-4 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-amber-400 transition-all">What Is a Pilot Car?</Link>
+                    <Link href="/tools/escort-calculator" className="text-xs px-4 py-2 rounded-lg border border-amber-500/25 text-amber-400 hover:bg-amber-500/10 transition-all">Escort Calculator</Link>
+                    <Link href="/escort-requirements" className="text-xs px-4 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-amber-400 transition-all">State Escort Rules</Link>
+                    <Link href="/directory" className="text-xs px-4 py-2 rounded-lg border border-green-500/25 text-green-400 hover:bg-green-500/10 transition-all">Browse Directory</Link>
+                    <Link href="/available-now" className="text-xs px-4 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-amber-400 transition-all">Available Right Now</Link>
+                    <Link href="/pricing" className="text-xs px-4 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-amber-400 transition-all">Broker Plans</Link>
                 </div>
             </section>
 

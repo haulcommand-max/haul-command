@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function CommunityLandingPage() {
   return (
-    <div className="min-h-screen bg-hc-bg text-hc-text font-display flex flex-col items-center justify-center p-6 relative overflow-hidden">
+    <div className=" bg-hc-bg text-hc-text font-display flex flex-col items-center justify-center p-6 relative overflow-hidden">
       {/* Background Grid & Gradient */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(39,209,127,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(39,209,127,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
@@ -47,13 +47,13 @@ export default function CommunityLandingPage() {
 
           <div className="bg-hc-success/10 backdrop-blur-md border border-hc-success/30 rounded-2xl p-8 hover:border-hc-success/50 transition-colors relative overflow-hidden">
              <div className="absolute top-0 right-0 p-8 opacity-10">
-                <span className="font-serif text-8xl text-hc-success">“</span>
+                <span className="font-serif text-8xl text-hc-success">"</span>
              </div>
             <h3 className="text-2xl font-black text-hc-success mb-2 uppercase">Connect With Group</h3>
             <p className="text-sm text-hc-subtle mb-6 leading-relaxed">
               Are you part of the official Heavy Haul Facebook community? Sync your account to inherit your group trust score and immediately bypass the manual verification queue.
             </p>
-            <Link aria-label="Navigation Link" href="/api/auth/facebook" className="inline-flex px-6 py-3 bg-hc-success hover:bg-emerald-500 text-black font-bold text-xs rounded-xl uppercase tracking-widest transition-all w-full justify-center">
+            <Link aria-label="Navigation Link" href="/api/auth/facebook" className="inline-flex px-6 py-3 bg-hc-success hover:bg-emerald-500 text-white font-bold text-xs rounded-xl uppercase tracking-widest transition-all w-full justify-center">
               Connect Facebook
             </Link>
           </div>
@@ -62,15 +62,15 @@ export default function CommunityLandingPage() {
         <div className="pt-12 border-t border-hc-border/50 max-w-3xl mx-auto">
             <div className="grid grid-cols-3 gap-6 text-center">
                 <div>
-                    <div className="text-3xl font-black text-white mb-1">12K+</div>
+                    <div className="text-3xl font-black text-white mb-1">Growing</div>
                     <div className="text-[10px] font-bold text-hc-muted uppercase tracking-wider">Directory Listings</div>
                 </div>
                 <div>
-                    <div className="text-3xl font-black text-white mb-1">2,400+</div>
+                    <div className="text-3xl font-black text-white mb-1">Growing</div>
                     <div className="text-[10px] font-bold text-hc-muted uppercase tracking-wider">Claimed Profiles</div>
                 </div>
                 <div>
-                    <div className="text-3xl font-black text-hc-success mb-1">98%</div>
+                    <div className="text-3xl font-black text-hc-success mb-1">—</div>
                     <div className="text-[10px] font-bold text-hc-muted uppercase tracking-wider">Verification Rate</div>
                 </div>
             </div>

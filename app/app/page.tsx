@@ -5,11 +5,11 @@ import { createClient } from "@/utils/supabase/client";
 import { TodayCommandCenter, type CommandData } from "@/components/intelligence/TodayCommandCenter";
 import Link from "next/link";
 
-// ══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // /app — Today Panel (Mobile App Home)
 // Canonical mobile shell entrypoint. Loads instantly with
 // skeleton, then hydrates with live session + momentum data.
-// ══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const supabase = createClient();
 
@@ -238,7 +238,7 @@ export default function AppHomePage() {
         loadDashboard();
     }, []);
 
-    // ── Unauthenticated state ───────────────────────────────────
+    // â”€â”€ Unauthenticated state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if (authChecked && !commandData) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[80vh] px-6 text-center">
@@ -261,7 +261,7 @@ export default function AppHomePage() {
                     href="/directory"
                     className="mt-4 text-xs text-hc-muted hover:text-hc-text transition-colors uppercase tracking-widest font-semibold"
                 >
-                    Browse Directory →
+                    Browse Directory â†’
                 </Link>
             </div>
         );

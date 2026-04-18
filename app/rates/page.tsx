@@ -57,14 +57,14 @@ export const RATES_JSONLD = `{
 
 export default async function RatesPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className=" bg-[#0a0a0a] text-white">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: RATES_JSONLD }} />
       <section className="py-16 px-4 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
           Pilot Car & Escort Vehicle Rates \u2014 2026
         </h1>
         <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-          Current day rates across 120 countries. Data sourced from Haul Command\u2019s global heavy haul intelligence network.
+          Current day rates across active markets. Data sourced from Haul Command\u2019s global heavy haul intelligence network.
         </p>
       </section>
 
@@ -72,7 +72,7 @@ export default async function RatesPage() {
         <PaywallGateBanner
           surfaceName="Rates Intelligence"
           tier="Pro"
-          description="Unlock full corridor rate intelligence and per-mile benchmarks across 120 countries."
+          description="Unlock full corridor rate intelligence and per-mile benchmarks across active markets."
         />
       </section>
 
@@ -109,7 +109,7 @@ export default async function RatesPage() {
           <p className="text-gray-400 mb-4">Rates vary by corridor, load type, and season.</p>
           <Link aria-label="Navigation Link"
             href="/loads"
-            className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-xl transition-colors"
+            className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-white font-semibold rounded-xl transition-colors"
           >
             See Current Loads & Rates
           </Link>

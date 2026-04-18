@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function WindEnergyPartnerPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className=" bg-[#0a0a0a] text-white">
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-sm rounded-full mb-6">
@@ -22,7 +22,7 @@ export default function WindEnergyPartnerPage() {
             Modern wind turbine blades exceed 260 feet and require 4-5 escort vehicles,
             multi-state coordination, and operators experienced in the unique demands of renewable energy transport.
           </p>
-          <a href="#inquiry" className="inline-block px-8 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl transition-colors">
+          <a href="#inquiry" className="inline-block px-8 py-4 bg-amber-500 hover:bg-amber-400 text-white font-bold rounded-xl transition-colors">
             Find Wind Energy Escorts
           </a>
         </div>

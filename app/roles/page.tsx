@@ -77,52 +77,52 @@ const gold = '#D4A844';
 const ROLES = [
     {
         href: '/roles/pilot-car-operator',
-        icon: '🚗',
+        icon: 'ðŸš—',
         title: 'Pilot Car Operators',
         subtitle: 'Escort Vehicle Operators (EVOs)',
         badges: ['Find Jobs', 'Claim Listing', 'Get Verified'],
         desc: 'The certified escort professionals who escort oversize loads safely through every state and jurisdiction. Find jobs, get verified, and dominate your corridors.',
-        primaryCta: { label: '📋 Browse Escort Jobs', href: '/loads' },
-        secondaryCta: { label: '✓ Claim Free Listing', href: '/claim' },
+        primaryCta: { label: 'ðŸ“‹ Browse Escort Jobs', href: '/loads' },
+        secondaryCta: { label: 'âœ“ Claim Free Listing', href: '/claim' },
         color: gold,
         intent: 'I want to find pilot car jobs or grow my escort business',
         stats: [{ val: '14,000+', label: 'Operators' }, { val: '120', label: 'Countries' }],
     },
     {
         href: '/broker',
-        icon: '📋',
+        icon: 'ðŸ“‹',
         title: 'Heavy Haul Brokers',
         subtitle: 'Load Coordinators & Freight Brokers',
         badges: ['Find Escorts', 'Post Loads', 'Track Coverage'],
         desc: 'Brokers who arrange oversize load movements, coordinate escorts, and keep every permitted load compliant. Find verified escorts fast, without the guesswork.',
-        primaryCta: { label: '🗺️ Check Live Coverage', href: '/map' },
-        secondaryCta: { label: '📦 Post an Escort Need', href: '/loads/new' },
+        primaryCta: { label: 'ðŸ—ºï¸ Check Live Coverage', href: '/map' },
+        secondaryCta: { label: 'ðŸ“¦ Post an Escort Need', href: '/loads/new' },
         color: '#3B82F6',
         intent: 'I need to find verified escorts and cover my loads',
         stats: [{ val: '<15min', label: 'Avg Response' }, { val: '24/7', label: 'Coverage' }],
     },
     {
         href: '/roles/heavy-haul-carrier',
-        icon: '🚛',
+        icon: 'ðŸš›',
         title: 'Heavy Haul Carriers',
         subtitle: 'Flatbed, Lowboy & Oversize Operators',
         badges: ['Find Escorts', 'Post Loads', 'List Operation'],
         desc: 'The carriers running the loads — flatbeds, lowboys, RGNs, and modular trailers. Find escorts for your move, post loads, or list your carrier company.',
-        primaryCta: { label: '🔍 Find Carriers', href: '/directory' },
-        secondaryCta: { label: '📦 Post a Load', href: '/loads' },
+        primaryCta: { label: 'ðŸ” Find Carriers', href: '/directory' },
+        secondaryCta: { label: 'ðŸ“¦ Post a Load', href: '/loads' },
         color: '#8B5CF6',
         intent: 'I need escorts for my load or want to list my carrier operation',
         stats: [{ val: '50', label: 'US States' }, { val: '46+', label: 'Categories' }],
     },
     {
         href: '/roles/dispatcher',
-        icon: '📡',
+        icon: 'ðŸ“¡',
         title: 'Dispatchers',
         subtitle: 'Load Dispatch & Operations Coordinators',
         badges: ['Dispatch Tools', 'Escort Coordinator', 'Load Board'],
         desc: 'The operational hub of every heavy haul move. Manage loads, coordinate pilot car escorts, track permits, and run compliant moves on time.',
-        primaryCta: { label: '📡 Open Load Board', href: '/loads' },
-        secondaryCta: { label: '🔍 Find Escort Now', href: '/directory' },
+        primaryCta: { label: 'ðŸ“¡ Open Load Board', href: '/loads' },
+        secondaryCta: { label: 'ðŸ” Find Escort Now', href: '/directory' },
         color: '#22C55E',
         intent: 'I dispatch heavy haul loads and need to coordinate escorts',
         stats: [{ val: '35', label: 'Corridors' }, { val: '180+', label: 'City Markets' }],
@@ -141,7 +141,7 @@ export default function RolesHubPage() {
                 {/* Breadcrumb */}
                 <nav aria-label="Breadcrumb" style={{ maxWidth: 1100, margin: '0 auto', padding: '20px 20px 0', fontSize: 11, color: '#6b7280', display: 'flex', gap: 6, alignItems: 'center', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                     <Link href="/" style={{ color: '#6b7280', textDecoration: 'none' }}>Home</Link>
-                    <span>›</span>
+                    <span>"º</span>
                     <span style={{ color: gold }}>Roles</span>
                 </nav>
 
@@ -204,7 +204,7 @@ export default function RolesHubPage() {
                                 </div>
                                 {/* Full Hub Link */}
                                 <Link href={role.href} style={{ display: 'block', padding: '10px 18px', textAlign: 'center', fontSize: 12, fontWeight: 700, color: role.color, textDecoration: 'none', background: `${role.color}06`, borderTop: `1px solid ${role.color}18` }}>
-                                    Full {role.title} Hub →
+                                    Full {role.title} Hub â†’
                                 </Link>
                             </div>
                         ))}
@@ -232,24 +232,24 @@ export default function RolesHubPage() {
 
                 {/* Internal link mesh */}
                 <section style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px 2rem', display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                    <Link href="/glossary/pilot-car" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>📖 What Is a Pilot Car?</Link>
-                    <Link href="/glossary/oversize-load" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>📖 Oversize Load Definition</Link>
-                    <Link href="/tools/escort-calculator" style={{ padding: '8px 14px', background: 'rgba(212,168,68,0.08)', border: '1px solid rgba(212,168,68,0.2)', borderRadius: 9, fontSize: 12, fontWeight: 700, color: gold, textDecoration: 'none' }}>🧮 Escort Calculator</Link>
-                    <Link href="/escort-requirements" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>⚖️ State Escort Rules</Link>
-                    <Link href="/directory" style={{ padding: '8px 14px', background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.15)', borderRadius: 9, fontSize: 12, fontWeight: 700, color: '#22C55E', textDecoration: 'none' }}>🔍 Browse Directory</Link>
-                    <Link href="/pricing" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>💲 All Plans</Link>
+                    <Link href="/glossary/pilot-car" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>ðŸ“– What Is a Pilot Car?</Link>
+                    <Link href="/glossary/oversize-load" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>ðŸ“– Oversize Load Definition</Link>
+                    <Link href="/tools/escort-calculator" style={{ padding: '8px 14px', background: 'rgba(212,168,68,0.08)', border: '1px solid rgba(212,168,68,0.2)', borderRadius: 9, fontSize: 12, fontWeight: 700, color: gold, textDecoration: 'none' }}>ðŸ§® Escort Calculator</Link>
+                    <Link href="/escort-requirements" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>âš–ï¸ State Escort Rules</Link>
+                    <Link href="/directory" style={{ padding: '8px 14px', background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.15)', borderRadius: 9, fontSize: 12, fontWeight: 700, color: '#22C55E', textDecoration: 'none' }}>ðŸ” Browse Directory</Link>
+                    <Link href="/pricing" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>ðŸ’² All Plans</Link>
                 </section>
 
                 {/* No Dead End */}
                 <NoDeadEndBlock
                     heading="Not Sure Where to Start?"
                     moves={[
-                        { href: '/loads', icon: '📋', title: 'Browse Escort Jobs', desc: 'Find loads needing coverage now', primary: true, color: gold },
-                        { href: '/directory', icon: '🔍', title: 'Find Operators', desc: 'Browse verified by state', primary: true, color: '#22C55E' },
-                        { href: '/claim', icon: '✓', title: 'Claim Free Listing', desc: 'Get listed in 2 minutes' },
-                        { href: '/available-now', icon: '🟢', title: 'Available Right Now', desc: 'Live operator availability' },
-                        { href: '/corridors', icon: '🛣️', title: 'Corridor Intelligence', desc: 'Route complexity data' },
-                        { href: '/pricing', icon: '💎', title: 'Pro Plans', desc: 'Priority placement from $29/mo' },
+                        { href: '/loads', icon: 'ðŸ“‹', title: 'Browse Escort Jobs', desc: 'Find loads needing coverage now', primary: true, color: gold },
+                        { href: '/directory', icon: 'ðŸ”', title: 'Find Operators', desc: 'Browse verified by state', primary: true, color: '#22C55E' },
+                        { href: '/claim', icon: 'âœ“', title: 'Claim Free Listing', desc: 'Get listed in 2 minutes' },
+                        { href: '/available-now', icon: 'ðŸŸ¢', title: 'Available Right Now', desc: 'Live operator availability' },
+                        { href: '/corridors', icon: 'ðŸ›£ï¸', title: 'Corridor Intelligence', desc: 'Route complexity data' },
+                        { href: '/pricing', icon: 'ðŸ’Ž', title: 'Pro Plans', desc: 'Priority placement from $29/mo' },
                     ]}
                 />
 

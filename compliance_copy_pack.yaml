@@ -1,0 +1,19 @@
+compliance_copy:
+  unsourced_regulation_disclaimers:
+    - type: "strict"
+      text: "The information provided is based on historical data and has not been verified by the state DOT within the last 30 days. Always consult official state resources before dispatch."
+    - type: "mild"
+      text: "Regulation summaries are for planning purposes. Verification against official permit conditions is required prior to movement."
+    - type: "user_contributed"
+      text: "This requirement was submitted by the operator community. Proceed with caution and verify."
+
+  quebec_canada_bilingual_prep:
+    - context: "Permit Requirement"
+      en: "A minimum of two escort vehicles are required for loads exceeding 3.75m in width."
+      fr: "Un minimum de deux véhicules d'escorte est requis pour les charges dépassant 3,75 m de largeur."
+    - context: "Signage Standard"
+      en: "Vehicle must display 'D' signs front and rear."
+      fr: "Le véhicule doit afficher des panneaux 'D' à l'avant et à l'arrière."
+    - context: "Curfew"
+      en: "Night movement is prohibited on provincial highways."
+      fr: "Le mouvement de nuit est interdit sur les routes provinciales."

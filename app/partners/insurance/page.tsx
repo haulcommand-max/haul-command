@@ -14,7 +14,7 @@ export default function HeavyHaulInsurancePage() {
   const [submitted, setSubmitted] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-50">
+    <div className="  text-slate-50">
       {/* Hero */}
       <div className="relative border-b border-indigo-900/50 bg-gradient-to-b from-indigo-950/40 to-slate-950 pt-24 pb-20">
         <div className="absolute inset-0 bg-[url('https://maps.wikimedia.org/osm-intl/9/127/198.png')] bg-cover bg-center opacity-5 mix-blend-screen grayscale pointer-events-none" />
@@ -45,21 +45,21 @@ export default function HeavyHaulInsurancePage() {
       <div className="container max-w-5xl mx-auto px-4 py-16">
         {/* Value Props */}
         <div className="grid md:grid-cols-3 gap-8 mb-20">
-          <div className="bg-slate-900 border border-slate-800 p-8 rounded-2xl">
+          <div className=" border border-slate-800 p-8 rounded-2xl">
              <div className="bg-emerald-500/10 w-12 h-12 flex items-center justify-center rounded-xl mb-6">
                 <Percent className="text-emerald-400 h-6 w-6" />
              </div>
              <h3 className="text-xl font-bold text-white mb-3">Trust Score Discounts</h3>
              <p className="text-slate-400">Our underwriting partners factor in your FMCSA SAFER safety metrics, your Haul Command Trust Score, and ELD history to provide a massive discount on commercial liability insurance.</p>
           </div>
-          <div className="bg-slate-900 border border-slate-800 p-8 rounded-2xl">
+          <div className=" border border-slate-800 p-8 rounded-2xl">
              <div className="bg-indigo-500/10 w-12 h-12 flex items-center justify-center rounded-xl mb-6">
                 <Activity className="text-indigo-400 h-6 w-6" />
              </div>
              <h3 className="text-xl font-bold text-white mb-3">Instant Automated COIs</h3>
              <p className="text-slate-400">Generate and attach Certificates of Insurance directly inside the Haul Command dispatch dashboard. No more emailing agents on weekends to lock in the load.</p>
           </div>
-          <div className="bg-slate-900 border border-slate-800 p-8 rounded-2xl">
+          <div className=" border border-slate-800 p-8 rounded-2xl">
              <div className="bg-amber-500/10 w-12 h-12 flex items-center justify-center rounded-xl mb-6">
                 <Shield className="text-amber-400 h-6 w-6" />
              </div>
@@ -89,10 +89,10 @@ export default function HeavyHaulInsurancePage() {
                  {submitted ? <div className="text-emerald-400 font-bold bg-emerald-500/10 p-4 rounded-xl border border-emerald-500/20 text-center">Received. Our underwriters will reach out shortly.</div> : (
                    <>
                      <div className="flex flex-col sm:flex-row gap-2">
-                       <Input value={usdot} onChange={(e: any) => setUsdot(e.target.value)} required className="bg-slate-950 border-slate-800 text-white h-12 rounded-xl text-lg flex-1" placeholder="Enter USDOT Number" />
-                       <Input type="email" value={email} onChange={(e: any) => setEmail(e.target.value)} required className="bg-slate-950 border-slate-800 text-white h-12 rounded-xl text-lg flex-1" placeholder="Email Address" />
+                       <Input value={usdot} onChange={(e: any) => setUsdot(e.target.value)} required className=" border-slate-800 text-white h-12 rounded-xl text-lg flex-1" placeholder="Enter USDOT Number" />
+                       <Input type="email" value={email} onChange={(e: any) => setEmail(e.target.value)} required className=" border-slate-800 text-white h-12 rounded-xl text-lg flex-1" placeholder="Email Address" />
                      </div>
-                     <Button disabled={loading} type="submit" className="bg-white text-indigo-950 hover:bg-slate-200 h-12 px-6 rounded-xl font-bold w-full sm:w-auto self-start">
+                     <Button disabled={loading} type="submit" className="bg-[#121212] text-white hover:bg-[#252525] h-12 px-6 rounded-xl font-bold w-full sm:w-auto self-start">
                         {loading ? 'Checking...' : <>Check Eligibility <ArrowRight className="h-4 w-4 ml-2" /></>}
                      </Button>
                    </>
@@ -101,7 +101,7 @@ export default function HeavyHaulInsurancePage() {
            </div>
            
            {/* Mockup Example */}
-           <div className="w-full md:w-80 bg-slate-950 border border-slate-800 rounded-xl p-6 shadow-2xl relative">
+           <div className="w-full md:w-80  border border-slate-800 rounded-xl p-6 shadow-2xl relative">
               <div className="absolute -top-3 -right-3 bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">Saving $3,450/mo</div>
               <div className="flex justify-between items-center border-b border-slate-800 pb-4 mb-4">
                  <div>

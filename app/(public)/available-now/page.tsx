@@ -1,18 +1,22 @@
 import type { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
-import { Radio, MapPin, ArrowRight, Navigation, Clock, Shield, ChevronRight } from 'lucide-react';
+import { Radio, MapPin, ArrowRight, Navigation, Clock, Shield, ChevronRight, Zap, Globe, TrendingUp, Award } from 'lucide-react';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 import { ProofStrip } from '@/components/ui/ProofStrip';
+import { LiveActivityFeed } from '@/components/feed/LiveActivityFeed';
+import { FreshnessBadge } from '@/components/ui/FreshnessBadge';
+import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { stateFullName } from '@/lib/geo/state-names';
 
-// ══════════════════════════════════════════════════════════════
+// ===============================================================
 // /available-now — LIVE ESCORT AVAILABILITY FEED
 // The competitor-killing surface.
 // Shows all currently-available escorts nationwide, filterable by state.
 // Replaces "post in a Facebook group and hope someone sees it."
-// ══════════════════════════════════════════════════════════════
+// ===============================================================
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 10;
 
 export const metadata: Metadata = {
   title: 'Pilot Cars Available Now — Live Escort Availability | Haul Command',
@@ -72,18 +76,6 @@ const US_STATES = [
   'NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT',
   'VA','WA','WV','WI','WY',
 ];
-
-const STATE_NAMES: Record<string, string> = {
-  AL:'Alabama',AK:'Alaska',AZ:'Arizona',AR:'Arkansas',CA:'California',CO:'Colorado',
-  CT:'Connecticut',DE:'Delaware',FL:'Florida',GA:'Georgia',HI:'Hawaii',ID:'Idaho',
-  IL:'Illinois',IN:'Indiana',IA:'Iowa',KS:'Kansas',KY:'Kentucky',LA:'Louisiana',
-  ME:'Maine',MD:'Maryland',MA:'Massachusetts',MI:'Michigan',MN:'Minnesota',MS:'Mississippi',
-  MO:'Missouri',MT:'Montana',NE:'Nebraska',NV:'Nevada',NH:'New Hampshire',NJ:'New Jersey',
-  NM:'New Mexico',NY:'New York',NC:'North Carolina',ND:'North Dakota',OH:'Ohio',OK:'Oklahoma',
-  OR:'Oregon',PA:'Pennsylvania',RI:'Rhode Island',SC:'South Carolina',SD:'South Dakota',
-  TN:'Tennessee',TX:'Texas',UT:'Utah',VT:'Vermont',VA:'Virginia',WA:'Washington',
-  WV:'West Virginia',WI:'Wisconsin',WY:'Wyoming',
-};
 
 interface AvailableBroadcast {
   id: string;
@@ -176,7 +168,7 @@ export default async function AvailableNowPage() {
 
       <div style={{ minHeight: '100vh', background: '#060b12', color: '#e5e7eb', fontFamily: "'Inter', system-ui" }}>
 
-        {/* ── Hero ── */}
+        {/* Hero */}
         <div style={{ position: 'relative', borderBottom: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 50% at 50% -10%, rgba(34,197,94,0.08), transparent 70%)', pointerEvents: 'none' }} />
           <div style={{ maxWidth: 1100, margin: '0 auto', padding: '3.5rem 1.5rem 3rem' }}>
@@ -234,21 +226,45 @@ export default async function AvailableNowPage() {
           </div>
         </div>
 
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2.5rem 1.5rem' }}>
+        {/* ── TOP SPONSOR ── */}
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '16px 1.5rem 0' }}>
+          <AdGridSlot zone="available_now_top" />
+        </div>
 
-          {/* ── Operator Cards ── */}
+        {/* ── CATEGORY ACTION BAR ── */}
+        <section style={{ maxWidth: 1280, margin: '0 auto', padding: '16px 1.5rem 0' }}>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {[
+              { label: 'Post Urgent Load', href: '/loads/post', icon: '📋', accent: true },
+              { label: 'Claim Your Profile', href: '/claim', icon: '✓' },
+              { label: 'Escort Requirements', href: '/escort-requirements', icon: '⚖️' },
+              { label: 'Rate Benchmarks', href: '/tools/rate-advisor', icon: '💰' },
+              { label: 'Find by State', href: '/market', icon: '🗺️' },
+              { label: 'Sponsor This Page', href: '/advertise', icon: '📣', sponsor: true },
+            ].map(item => (
+              <a key={item.label} href={item.href} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 20, background: (item as any).accent ? 'linear-gradient(135deg, #22c55e, #16a34a)' : (item as any).sponsor ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.05)', border: (item as any).sponsor ? '1px dashed rgba(198,146,58,0.3)' : (item as any).accent ? 'none' : '1px solid rgba(255,255,255,0.08)', color: (item as any).accent ? '#000' : (item as any).sponsor ? '#C6923A' : '#d1d5db', fontSize: 11, fontWeight: 700, textDecoration: 'none' }}>
+                <span>{item.icon}</span> {item.label}
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '2.5rem 1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) 270px', gap: 32, alignItems: 'start' }}>
+          <div>
+          {/* Operator Cards */}
           {totalAvailable > 0 ? (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 16, marginBottom: 48 }}>
               {broadcasts.map((b) => {
                 const sc = getStatusConfig(b.status);
                 const trustPct = Math.min(Math.round(b.trust_score * 100), 100);
                 const trustColor = trustPct >= 80 ? '#10b981' : trustPct >= 50 ? '#f59e0b' : '#ef4444';
-                const location = [b.city, b.state_code].filter(Boolean).join(', ');
+                const location = [b.city, stateFullName(b.state_code)].filter(Boolean).join(', ');
 
                 return (
                   <div key={b.id} style={{
                     background: 'rgba(255,255,255,0.025)',
-                    border: `1px solid rgba(255,255,255,0.07)`,
+                    border: '1px solid rgba(255,255,255,0.07)',
                     borderRadius: 16,
                     padding: '20px',
                     transition: 'all 0.18s',
@@ -256,8 +272,11 @@ export default async function AvailableNowPage() {
                     {/* Header */}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 14 }}>
                       <div>
-                        <div style={{ fontSize: 15, fontWeight: 800, color: '#f9fafb', marginBottom: 4 }}>
-                          {b.operator_name || 'Operator'}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                          <div style={{ fontSize: 15, fontWeight: 800, color: '#f9fafb' }}>
+                            {b.operator_name || 'Operator'}
+                          </div>
+                          <FreshnessBadge lastSeenAt={b.created_at} />
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: '#64748b' }}>
                           <MapPin style={{ width: 12, height: 12 }} />
@@ -285,12 +304,12 @@ export default async function AvailableNowPage() {
                     {b.service_types.length > 0 && (
                       <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 12 }}>
                         {b.service_types.map((s: string) => (
-                          <span key={s} style={{
+                          <span key={s || 'unknown'} style={{
                             padding: '3px 8px', borderRadius: 6,
                             background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
                             fontSize: 10, fontWeight: 700, color: '#94a3b8', textTransform: 'capitalize',
                           }}>
-                            {s.replace(/_/g, ' ')}
+                            {(s || '').replace(/_/g, ' ')}
                           </span>
                         ))}
                       </div>
@@ -320,7 +339,7 @@ export default async function AvailableNowPage() {
                         color: '#10b981', fontSize: 12, fontWeight: 800, textDecoration: 'none',
                         boxShadow: '0 2px 10px rgba(16,185,129,0.1)'
                       }}>
-                        ✉ Request Direct
+                        Request Direct
                       </Link>
                       
                       {b.operator_slug ? (
@@ -380,7 +399,7 @@ export default async function AvailableNowPage() {
             </div>
           )}
 
-          {/* ── State Grid — "Find by State" ── */}
+          {/* State Grid — "Find by State" */}
           <section style={{ marginBottom: 48 }}>
             <h2 style={{ fontSize: 18, fontWeight: 800, color: '#f9fafb', marginBottom: 16 }}>
               Available by State
@@ -389,7 +408,7 @@ export default async function AvailableNowPage() {
               {US_STATES.map(st => {
                 const count = stateGroups[st]?.length || 0;
                 return (
-                  <Link key={st} href={`/directory/us/${st.toLowerCase()}`} style={{
+                  <Link key={st} href={`/directory/us/${stateFullName(st).toLowerCase().replace(/\s+/g, '-')}`} style={{
                     display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                     padding: '12px 8px', borderRadius: 12,
                     background: count > 0 ? 'rgba(34,197,94,0.04)' : 'rgba(255,255,255,0.015)',
@@ -406,7 +425,7 @@ export default async function AvailableNowPage() {
             </div>
           </section>
 
-          {/* ── Operator CTA ── */}
+          {/* Operator CTA */}
           <section style={{
             background: 'linear-gradient(135deg, rgba(198,146,58,0.08), rgba(198,146,58,0.03))',
             border: '1px solid rgba(198,146,58,0.2)',
@@ -441,32 +460,107 @@ export default async function AvailableNowPage() {
             </div>
           </section>
 
-          {/* ── Internal link mesh — tool + glossary + regulation (linking rules compliance) ── */}
-          <section style={{ marginBottom: 32, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            <Link href="/glossary/pilot-car" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>📖 What Is a Pilot Car?</Link>
-            <Link href="/glossary/oversize-load" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>📖 What Is an Oversize Load?</Link>
-            <Link href="/tools/escort-calculator" style={{ padding: '8px 14px', background: 'rgba(212,168,68,0.07)', border: '1px solid rgba(212,168,68,0.18)', borderRadius: 9, fontSize: 12, fontWeight: 700, color: '#D4A844', textDecoration: 'none' }}>🧮 Escort Calculator</Link>
-            <Link href="/escort-requirements" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>⚖️ State Escort Rules</Link>
-            <Link href="/pricing" style={{ padding: '8px 14px', background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.15)', borderRadius: 9, fontSize: 12, fontWeight: 700, color: '#22C55E', textDecoration: 'none' }}>💲 Operator Pricing</Link>
+
+          {/* Ad Sponsor Zone */}
+          <section style={{ marginBottom: 32 }}>
+            <h2 style={{ fontSize: 20, fontWeight: 900, color: '#f9fafb', marginBottom: 20 }}>Sponsors</h2>
+            <AdGridSlot zone="available_now_sponsor" />
           </section>
 
-          {/* ── No-Dead-End block ── */}
+          {/* Live Activity Feed */}
+          <section style={{ marginBottom: 32 }}>
+            <h2 style={{ fontSize: 20, fontWeight: 900, color: '#f9fafb', marginBottom: 20 }}>Live Network Updates</h2>
+            <LiveActivityFeed maxItems={6} />
+          </section>
+
+          {/* Internal link mesh */}
+          <section style={{ marginBottom: 32, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            <Link href="/glossary/pilot-car" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>What Is a Pilot Car?</Link>
+            <Link href="/glossary/oversize-load" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>What Is an Oversize Load?</Link>
+            <Link href="/tools/escort-calculator" style={{ padding: '8px 14px', background: 'rgba(212,168,68,0.07)', border: '1px solid rgba(212,168,68,0.18)', borderRadius: 9, fontSize: 12, fontWeight: 700, color: '#D4A844', textDecoration: 'none' }}>Escort Calculator</Link>
+            <Link href="/escort-requirements" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>State Escort Rules</Link>
+            <Link href="/pricing" style={{ padding: '8px 14px', background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.15)', borderRadius: 9, fontSize: 12, fontWeight: 700, color: '#22C55E', textDecoration: 'none' }}>Operator Pricing</Link>
+          </section>
+
+          {/* No-Dead-End block */}
           <NoDeadEndBlock
             heading="Need an Escort Operator Right Now?"
             moves={[
               { href: '/directory', icon: '🔍', title: 'Browse Full Directory', desc: 'All verified operators', primary: true, color: '#D4A844' },
               { href: '/claim', icon: '✓', title: 'Set Your Availability', desc: 'Operators — get found now', primary: true, color: '#22C55E' },
               { href: '/loads', icon: '📋', title: 'Load Board', desc: 'Post an urgent load' },
-              { href: '/corridors/tx/vs/la', icon: '🗺️', title: 'TX→LA Corridor', desc: 'Busiest heavy haul route' },
+              { href: '/corridors', icon: '🗺️', title: 'Corridors', desc: 'Route intelligence' },
               { href: '/escort-requirements', icon: '⚖️', title: 'Escort Requirements', desc: 'State rules & permits' },
               { href: '/pricing', icon: '💲', title: 'Claim Free Listing', desc: 'Free forever for operators' },
             ]}
           />
 
+          </div>
+
+          {/* ── RIGHT SIDEBAR ── */}
+          <aside style={{ display: 'flex', flexDirection: 'column', gap: 14, position: 'sticky', top: 80 }}>
+
+            {/* Post a Load — primary broker CTA */}
+            <div style={{ background: 'linear-gradient(135deg, rgba(34,197,94,0.1), rgba(34,197,94,0.03))', border: '1px solid rgba(34,197,94,0.22)', borderRadius: 16, padding: 18 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <Zap style={{ width: 14, height: 14, color: '#22c55e' }} />
+                <span style={{ fontSize: 11, fontWeight: 800, color: '#22c55e', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Post Urgent Load</span>
+              </div>
+              <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>Match with available escorts right now. No phone tag, no groups.</p>
+              <a href="/loads/post" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '10px 0', borderRadius: 10, width: '100%', background: 'linear-gradient(135deg, #22c55e, #16a34a)', color: '#000', fontSize: 12, fontWeight: 900, textDecoration: 'none' }}>
+                Post Load Now
+              </a>
+            </div>
+
+            {/* Claim Listing */}
+            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 18 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <Shield style={{ width: 14, height: 14, color: '#C6923A' }} />
+                <span style={{ fontSize: 11, fontWeight: 800, color: '#C6923A', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Escort Operators</span>
+              </div>
+              <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>Claim your listing and broadcast availability here. Free forever.</p>
+              <a href="/claim" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px 0', borderRadius: 10, width: '100%', background: 'rgba(198,146,58,0.08)', border: '1px solid rgba(198,146,58,0.22)', color: '#C6923A', fontSize: 12, fontWeight: 800, textDecoration: 'none' }}>
+                Claim Listing — Free
+              </a>
+            </div>
+
+            {/* Escort Requirements */}
+            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 18 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <Globe style={{ width: 14, height: 14, color: '#60a5fa' }} />
+                <span style={{ fontSize: 11, fontWeight: 800, color: '#60a5fa', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Escort Rules</span>
+              </div>
+              <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>Know what your load requires before dispatching. State-by-state rules.</p>
+              <a href="/escort-requirements" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px 0', borderRadius: 10, width: '100%', background: 'rgba(96,165,250,0.08)', border: '1px solid rgba(96,165,250,0.2)', color: '#60a5fa', fontSize: 12, fontWeight: 800, textDecoration: 'none' }}>
+                View Requirements →
+              </a>
+            </div>
+
+            {/* Rate Benchmark */}
+            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 18 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <TrendingUp style={{ width: 14, height: 14, color: '#34d399' }} />
+                <span style={{ fontSize: 11, fontWeight: 800, color: '#34d399', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Rate Benchmarks</span>
+              </div>
+              <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>Real-time escort cost benchmarks by state and corridor.</p>
+              <a href="/tools/rate-advisor" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px 0', borderRadius: 10, width: '100%', background: 'rgba(52,211,153,0.07)', border: '1px solid rgba(52,211,153,0.18)', color: '#34d399', fontSize: 12, fontWeight: 800, textDecoration: 'none' }}>
+                View Rates →
+              </a>
+            </div>
+
+            {/* Sponsor */}
+            <div style={{ background: 'rgba(198,146,58,0.04)', border: '1px dashed rgba(198,146,58,0.18)', borderRadius: 16, padding: 16, textAlign: 'center' as const }}>
+              <p style={{ fontSize: 10, fontWeight: 700, color: '#64748b', textTransform: 'uppercase' as const, letterSpacing: '0.08em', margin: '0 0 5px' }}>Sponsor This Page</p>
+              <p style={{ fontSize: 11, color: '#475569', margin: '0 0 10px', lineHeight: 1.4 }}>Reach brokers and carriers actively searching for escorts.</p>
+              <a href="/advertise" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '7px 14px', borderRadius: 8, background: 'rgba(198,146,58,0.1)', border: '1px solid rgba(198,146,58,0.22)', color: '#C6923A', fontSize: 11, fontWeight: 800, textDecoration: 'none' }}>
+                View Packages →
+              </a>
+            </div>
+
+          </aside>
+          </div>
         </div>
       </div>
-
-      <style>{`@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }`}</style>
     </>
   );
 }

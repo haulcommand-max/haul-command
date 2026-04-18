@@ -6,20 +6,20 @@ const TIERS = [
     {
         id: 'spotlight', name: 'Spotlight', price: '$9.99', period: '/week',
         multiplier: '1.5×', color: '#06b6d4', grad: 'linear-gradient(135deg,#06b6d4,#3b82f6)',
-        icon: '●', features: ['Highlighted in search', '1.5× ranking boost', 'Spotlight badge', '7-day duration'],
+        icon: 'â—', features: ['Highlighted in search', '1.5× ranking boost', 'Spotlight badge', '7-day duration'],
         best: 'Testing the waters',
     },
     {
         id: 'featured', name: 'Featured', price: '$29', period: '/month',
         multiplier: '2×', color: '#f59e0b', grad: 'linear-gradient(135deg,#f59e0b,#ef4444)',
-        icon: '★', popular: true,
+        icon: 'â˜…', popular: true,
         features: ['Top placement', '2× ranking boost', 'Featured badge', 'Priority in shortlists', '30-day duration'],
         best: 'Serious operators',
     },
     {
         id: 'premium', name: 'Premium', price: '$79', period: '/month',
         multiplier: '3×', color: '#8b5cf6', grad: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
-        icon: '⚡',
+        icon: 'âš¡',
         features: ['Guaranteed top-3', '3× ranking boost', 'Premium badge everywhere', 'Priority dispatch', 'Corridor features', 'Performance report', '30-day duration'],
         best: 'Dominate your territory',
     },
@@ -84,7 +84,7 @@ export default function BoostPage() {
                                     <span style={{ marginLeft: 12, padding: '4px 10px', borderRadius: 6, background: `${t.color}20`, color: t.color, fontSize: 13, fontWeight: 700 }}>{t.multiplier} boost</span>
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
-                                    {t.features.map((f, i) => <div key={i} style={{ display: 'flex', gap: 10 }}><span style={{ color: t.color }}>✓</span><span style={{ fontSize: 14, color: '#bbb' }}>{f}</span></div>)}
+                                    {t.features.map((f, i) => <div key={i} style={{ display: 'flex', gap: 10 }}><span style={{ color: t.color }}>âœ“</span><span style={{ fontSize: 14, color: '#bbb' }}>{f}</span></div>)}
                                 </div>
                                 <button aria-label="Interactive Button" onClick={(e) => { e.stopPropagation(); buy(t.id); }} disabled={loading} style={{
                                     width: '100%', padding: '14px 20px', borderRadius: 12, border: 'none',

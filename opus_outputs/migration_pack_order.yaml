@@ -1,0 +1,99 @@
+# ═══════════════════════════════════════════════════════════════
+# OPUS-04: MIGRATION PACK ORDER & INFRA BOOT SEQUENCE
+# Decision Authority: Claude Opus 4.6
+# ═══════════════════════════════════════════════════════════════
+
+# ─────────────────────────────────────────────────
+# MIGRATION ORDERING RULES
+# ─────────────────────────────────────────────────
+migration_rules:
+  - "Supabase CLI applies migrations in lexicographic filename order"
+  - "569 migrations exist. Many are additive (CREATE IF NOT EXISTS). Safe to replay."
+  - "Conflicting migrations (duplicate 0010, 0016, 0025, 0026, 0027, 0028) must be reconciled"
+  - "DO NOT reorder or renumber existing migrations — create reconciliation patches only"
+
+conflict_resolution:
+  - files: ["0010_leaderboard_extensions.sql", "0010_leaderboards_reconcile.sql"]
+    action: "KEEP BOTH — both use IF NOT EXISTS guards"
+  - files: ["0016_core_directory_authz.sql", "0016_leaderboard_trust_reminders.sql"]
+    action: "KEEP BOTH — different table domains"
+  - files: ["0025_growth_public_views.sql", "0025_liquidity_engine.sql"]
+    action: "KEEP BOTH — independent views"
+  - files: ["0026_claim_triggers_seo.sql", "0026_notification_events.sql", "0026_trust_rank_backend.sql"]
+    action: "KEEP ALL — independent domains with IF NOT EXISTS"
+  - files: ["0027_compliance_base.sql", "0027_event_log.sql"]
+    action: "KEEP BOTH — independent tables"
+  - files: ["0028_insurance_docs.sql", "0028_update_live_map_with_ranks.sql"]
+    action: "KEEP BOTH — independent domains"
+
+# ─────────────────────────────────────────────────
+# FLY.IO DEPLOYMENT CLASSIFICATIONS
+# ─────────────────────────────────────────────────
+fly_deployments:
+  - name: "hc-worker"
+    classification: "LAUNCH_CRITICAL"
+    rationale: "Primary background job processor. Handles financial sync, trust recompute, and cron execution."
+    boot_order: 1
+
+  - name: "Typesense"
+    classification: "LAUNCH_CRITICAL"
+    rationale: "Search engine backing /directory, /load-board, and /glossary autocomplete."
+    boot_order: 2
+    sync_contract: "Supabase realtime subscription -> search-indexer edge function -> Typesense HTTP API"
+    required_collections: ["profiles", "jobs", "directory_listings", "glossary_terms"]
+
+  - name: "hc-browser-grid"
+    classification: "LAUNCH_SUPPORTING"
+    rationale: "Headless browser for PDF generation (invoices, compliance snapshots) and scraping."
+    boot_order: 3
+
+  - name: "Valhalla"
+    classification: "DEFERRED"
+    rationale: "Custom routing engine. HERE Maps API covers routing needs for launch. Deploy when HERE costs exceed $2k/month."
+    boot_order: 6
+
+  - name: "Traccar"
+    classification: "DEFERRED"
+    rationale: "GPS tracking server. Mobile app + Supabase realtime covers GPS needs for launch."
+    boot_order: 7
+
+  - name: "Twenty"
+    classification: "DEFERRED"
+    rationale: "CRM system. Supabase + custom admin dashboard covers CRM needs for launch."
+    boot_order: 5
+
+  - name: "Listmonk"
+    classification: "LAUNCH_SUPPORTING"
+    rationale: "Email marketing and newsletter engine. Required for claim nurture sequences."
+    boot_order: 4
+
+# ─────────────────────────────────────────────────
+# VERCEL DEPLOYMENT ORDER
+# ─────────────────────────────────────────────────
+vercel_release_order:
+  - phase: "V1_CORE"
+    routes: ["/", "/load-board", "/directory", "/login", "/compliance-kit", "/training"]
+    prerequisites: ["Supabase migrations applied", "Typesense running", "Stripe keys configured"]
+
+  - phase: "V2_DASHBOARDS"
+    routes: ["/dashboard/operator", "/dashboard/broker", "/dashboard/broker/new-load"]
+    prerequisites: ["V1_CORE deployed", "KYC webhook configured"]
+
+  - phase: "V3_CONTENT"
+    routes: ["/glossary", "/training/*", "/rates/*", "/corridors/*"]
+    prerequisites: ["V2_DASHBOARDS deployed", "Content OS seeded"]
+
+  - phase: "V4_ADVANCED"
+    routes: ["/vendors/*", "/enterprise/*", "/data-products/*"]
+    prerequisites: ["V3_CONTENT deployed", "AdGrid schema seeded"]
+
+# ─────────────────────────────────────────────────
+# MOBILE WRAPPER PREREQUISITES
+# ─────────────────────────────────────────────────
+mobile_release_prerequisites:
+  - "Deep linking schema registered (haulcommand://)"
+  - "FCM push token registration endpoint live"
+  - "GPS permission flow implemented"
+  - "Offline queue (lib/offline-queue.ts) verified"
+  - "Secure vault upload from camera roll tested"
+  - "Apple App Store / Google Play compliance review passed"

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { parseDistributionJobs } from "@/lib/contracts/market-signal";
 import { env } from "@/lib/env";
+import { triggerIndexNow } from "@/lib/seo/indexnow";
 
 const authorize = (request: NextRequest) => {
   const token = request.headers.get("x-internal-token");
@@ -42,6 +43,27 @@ export async function POST(request: NextRequest) {
     });
 
     if (queueError) throw queueError;
+
+    // S3-04: Trigger IndexNow for newly approved content pages
+    // Fire-and-forget: approval must not fail if indexing is unavailable
+    const { data: packet } = await supabase
+      .from("hc_content_packets")
+      .select("target_slug, content_type")
+      .eq("id", packetId)
+      .single();
+
+    if (packet?.target_slug) {
+      const path = (() => {
+        switch (packet.content_type) {
+          case 'glossary': return `/glossary/${packet.target_slug}`;
+          case 'corridor': return `/routes/${packet.target_slug}`;
+          case 'regulation': return `/regulations/${packet.target_slug}`;
+          case 'blog': return `/intelligence/${packet.target_slug}`;
+          default: return `/${packet.target_slug}`;
+        }
+      })();
+      triggerIndexNow([path]).catch(() => {});
+    }
 
     return NextResponse.json({
       ok: true,

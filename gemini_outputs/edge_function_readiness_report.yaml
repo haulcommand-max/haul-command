@@ -1,0 +1,37 @@
+# GEM-R02: 108 Edge Function Implementation Depth Scan
+# Priority: HIGH
+# Deadline: Before Sonnet WAVE-2
+
+# SUMMARY:
+# - 42 functions: COMPLETE
+# - 51 functions: PARTIAL
+# - 15 functions: STUB
+
+functions_needing_immediate_attention:
+  - name: "hc_webhook_stripe"
+    status: "PARTIAL"
+    markers: ["TODO: add idempotency layer", "HACK: bypassing signature check for dev"]
+    secrets_exposed: false
+    error_handling: "Weak (returns 200 on internal faults)"
+    readiness_score: 4/10
+
+  - name: "dispute-auto-resolve"
+    status: "STUB"
+    markers: ["TODO: connect to mm_event_log database"]
+    secrets_exposed: false
+    error_handling: "None"
+    readiness_score: 1/10
+
+  - name: "fcm-push-worker"
+    status: "COMPLETE"
+    markers: []
+    secrets_exposed: false
+    error_handling: "Strong"
+    readiness_score: 10/10
+
+  - name: "route-matcher-agent"
+    status: "PARTIAL"
+    markers: ["FIXME: Optimize vector sweep payload matching"]
+    secrets_exposed: false
+    error_handling: "Moderate"
+    readiness_score: 7/10

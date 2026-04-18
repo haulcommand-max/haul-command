@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Pilot Car Training by Country — 120 Countries | Haul Command',
-  description: 'Find pilot car and escort operator training for your country. State-aware, globally-ready certification pathways in 120 countries including USA, Canada, Australia, UK, UAE, and more.',
+  title: 'Pilot Car Training by Country — 50+ Countries | Haul Command',
+  description: 'Find pilot car and escort operator training for your country. State-aware, globally-ready certification pathways in 50+ countries including USA, Canada, Australia, UK, UAE, and more.',
   alternates: { canonical: 'https://www.haulcommand.com/training/countries' },
 };
 
@@ -52,9 +52,9 @@ export default function CountriesIndexPage() {
         <nav aria-label="Breadcrumb" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '12px 0' }}>
           <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px', display: 'flex', gap: 6, fontSize: 11, color: '#6b7280', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
             <Link href="/" style={{ color: '#6b7280', textDecoration: 'none' }}>Home</Link>
-            <span>›</span>
+            <span>"º</span>
             <Link href="/training" style={{ color: '#6b7280', textDecoration: 'none' }}>Training</Link>
-            <span>›</span>
+            <span>"º</span>
             <span style={{ color: gold }}>All Countries</span>
           </div>
         </nav>
@@ -65,11 +65,11 @@ export default function CountriesIndexPage() {
               Pilot Car Training by Country
             </h1>
             <p style={{ margin: '0 0 24px', fontSize: 15, color: '#9ca3af', lineHeight: 1.7, maxWidth: 620 }}>
-              Haul Command Training is available in 120 countries. Each country page includes localized requirements,
+              Haul Command Training is available in 50+ countries. Each country page includes localized requirements,
               terminology, compliance notes, and relevant resources for operators in that market.
             </p>
             <Link href="/training/the-escort-driver-regulatory" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 24px', borderRadius: 12, background: `linear-gradient(135deg, ${gold}, #E4B872)`, color: '#000', fontSize: 14, fontWeight: 900, textDecoration: 'none' }}>
-              🎓 Start Training — Free
+              ðŸŽ“ Start Training — Free
             </Link>
           </div>
         </section>

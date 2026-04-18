@@ -1,0 +1,5 @@
+supabase\migrations\0017_rpc_atomic_jobs_create.sql:-- The user provided script has a create table if not exists, I will include it to be safe and match input.
+supabase\migrations\20260220_hc_core.sql:    CREATE TABLE public.loads (
+supabase\migrations\20260220_hc_core.sql:    CREATE TABLE public.offers (
+supabase\migrations\20260324_hc_certified_training_portal.sql:-- Additive only: uses CREATE TABLE IF NOT EXISTS, DO $$ for alters
+supabase\migrations\20260324_missing_tables_radar_vapi_social.sql:-- Anti-downgrade: 100% additive — all CREATE TABLE IF NOT EXISTS

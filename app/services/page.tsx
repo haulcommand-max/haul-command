@@ -7,19 +7,19 @@ import {
   FileCheck, ShieldCheck, ShoppingCart,
 } from 'lucide-react';
 
-/* ═══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    SERVICES INDEX — Complete service stack
-   ─ Absorbs every ODS service offering, then adds 6 more
+   â”€ Absorbs every ODS service offering, then adds 6 more
      that ODS doesn't have. Each service page is a 
      self-serve product surface with SEO + lead-gen + schema.
-   ═══════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 const SERVICES = [
   {
     slug: 'pilot-car',
     title: 'Pilot Car Services',
-    description: 'Certified pilot car operators for oversize and overweight loads across 120 countries.',
-    longDescription: 'Professional lead and follow escort services across every major corridor in all 120 countries we serve. Verified operators with $1M+ insurance on file.',
+    description: 'Certified pilot car operators for oversize and overweight loads across 50+ countries.',
+    longDescription: 'Professional lead and follow escort services across every major corridor in all 50+ countries we serve. Verified operators with $1M+ insurance on file.',
     features: ['Lead vehicle escort', 'Follow vehicle escort', 'Route surveying', 'Height pole operation', 'Communication relay'],
     icon: Truck,
     accent: '#F59E0B',
@@ -73,7 +73,7 @@ const SERVICES = [
     slug: 'fleet-backup',
     title: 'Fleet Backup & Rescue',
     description: '24/7 emergency escort dispatch. No-shows, cancellations, breakdowns — resolved in under 15 minutes.',
-    longDescription: 'Our rescue dispatch layer activates in under 15 minutes when escorts no-show, cancel, or break down. 6,900+ operator network, 120 countries.',
+    longDescription: 'Our rescue dispatch layer activates in under 15 minutes when escorts no-show, cancel, or break down. 6,900+ operator network, 50+ countries.',
     features: ['< 15 min response SLA', '24/7/365 availability', 'Surge dispatch', 'Asset-based fleet backup', 'Mid-route replacement'],
     icon: Siren,
     accent: '#ef4444',
@@ -145,14 +145,14 @@ const SERVICES = [
 
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className=" bg-[#0a0a0a] text-white">
       <section className="py-16 sm:py-24 px-4 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(198,146,58,0.08),transparent)] pointer-events-none" />
         <div className="relative z-10">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4 leading-tight">
             Professional Escort Services —{' '}
             <span className="bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
-              120 Countries
+              50+ Countries
             </span>
           </h1>
           <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto mb-2">
@@ -229,7 +229,7 @@ export default function ServicesPage() {
         <div className="flex justify-center gap-4 flex-wrap">
           <Link
             href="/quote"
-            className="px-8 py-3 rounded-xl text-sm font-bold text-black transition-all"
+            className="px-8 py-3 rounded-xl text-sm font-bold text-white transition-all"
             style={{ background: 'linear-gradient(135deg, #C6923A, #E0B05C)' }}
           >
             Get a Quote
@@ -254,7 +254,7 @@ export default function ServicesPage() {
           "@context": "https://schema.org",
           "@type": "ItemList",
           "name": "Heavy Haul Escort Services",
-          "description": "Professional escort services across 120 countries",
+          "description": "Professional escort services across 50+ countries",
           "numberOfItems": SERVICES.length,
           "itemListElement": SERVICES.map((s, i) => ({
             "@type": "ListItem",

@@ -38,7 +38,7 @@ export function StateTopOperators({ stateCode, stateName }: { stateCode: string,
                     </p>
                 </div>
                 <Link href={`/directory/us/${stateCode.toLowerCase()}`} className="text-xs font-bold text-amber-500 hover:text-amber-400 underline decoration-amber-500/30 underline-offset-4">
-                    View All {stateName} Operators →
+                    View All {stateName} Operators â†’
                 </Link>
             </div>
 
@@ -77,7 +77,7 @@ export function StateTopOperators({ stateCode, stateName }: { stateCode: string,
 
                         <div className="flex items-center justify-between mt-auto">
                             <div className="flex items-center gap-1">
-                                <span className="text-amber-400 text-xs">{'★'.repeat(Math.round(op.rating))}</span>
+                                <span className="text-amber-400 text-xs">{'â˜…'.repeat(Math.round(op.rating))}</span>
                                 <span className="text-xs text-gray-500 font-medium">({op.reviews})</span>
                             </div>
                             

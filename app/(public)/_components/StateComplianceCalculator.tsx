@@ -141,8 +141,8 @@ export function StateComplianceCalculator({ regionCode, regionName }: { regionCo
                 }}
             >
                 <Link href={`/directory/${regionCode === 'US' ? 'us' : 'us/' + regionCode.toLowerCase()}`} className="flex items-center gap-2 py-3 px-6 w-full justify-center">
-                    <span className="text-black font-black uppercase tracking-widest text-sm">Find Available Escorts in this Market</span>
-                    <ArrowRight className="w-4 h-4 text-black group-hover:translate-x-1 transition-transform" />
+                    <span className="text-white font-black uppercase tracking-widest text-sm">Find Available Escorts in this Market</span>
+                    <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-1 transition-transform" />
                 </Link>
             </div>
         </div>

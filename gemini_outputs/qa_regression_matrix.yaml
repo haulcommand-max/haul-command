@@ -1,0 +1,8 @@
+# GEMINI-03: QA Regression Pack
+acceptance_tests:
+  - route: "/load-board/[loadId]"
+    scenario: "Broker locks escrow without KYC clearance"
+    expected: "Gateway throws 403 Trust Validation Error"
+  - route: "/compliance-kit"
+    scenario: "Operator inputs 17-state route"
+    expected: "Route IQ renders curfew blocks and quotes accurate multi-state markup"

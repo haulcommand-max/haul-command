@@ -1,0 +1,5 @@
+# GEMINI-06: Competitor Feature Absorption
+features:
+  - target: "Legacy Load Boards"
+    weakness: "Static PDF negotiations and fake load padding."
+    absorption_tactic: "Haul Command Escrow locking solves the ghost load problem instantly via financial friction."

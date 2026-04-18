@@ -19,7 +19,7 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
     const [activeTab, setActiveTab] = useState<"ops" | "swarm">("ops");
 
     return (
-        <div className="min-h-screen bg-[#000] text-[#C0C0C0] font-[family-name:var(--font-space-grotesk)]">
+        <div className=" bg-[#000] text-[#C0C0C0] font-[family-name:var(--font-space-grotesk)]">
             {/* Grid Background */}
             <div className="fixed inset-0 pointer-events-none z-0">
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(241,169,27,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(241,169,27,0.015)_1px,transparent_1px)] bg-[size:60px_60px]" />
@@ -29,7 +29,7 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
             <header className="sticky top-0 z-50 bg-[#000]/90 backdrop-blur-xl border-b border-[#1a1a1a]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-[#F1A91B] rounded-xl flex items-center justify-center font-black text-black text-sm shadow-[0_0_20px_rgba(241,169,27,0.3)]">
+                        <div className="w-10 h-10 bg-[#F1A91B] rounded-xl flex items-center justify-center font-black text-white text-sm shadow-[0_0_20px_rgba(241,169,27,0.3)]">
                             HC
                         </div>
                         <div>
@@ -44,7 +44,7 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
                                 onClick={() => setActiveTab("ops")}
                                 className={`px-4 py-1.5 text-[10px] uppercase font-bold tracking-[0.15em] transition-colors ${
                                     activeTab === "ops"
-                                        ? "bg-[#F1A91B] text-black"
+                                        ? "bg-[#F1A91B] text-white"
                                         : "text-[#666] hover:text-[#999]"
                                 }`}
                             >
@@ -54,11 +54,11 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
                                 onClick={() => setActiveTab("swarm")}
                                 className={`px-4 py-1.5 text-[10px] uppercase font-bold tracking-[0.15em] transition-colors ${
                                     activeTab === "swarm"
-                                        ? "bg-[#F1A91B] text-black"
+                                        ? "bg-[#F1A91B] text-white"
                                         : "text-[#666] hover:text-[#999]"
                                 }`}
                             >
-                                🐝 Swarm
+                                ðŸ Swarm
                             </button>
                         </div>
                         <div className="flex items-center gap-2 bg-emerald-500/8 border border-emerald-500/15 px-3 py-1.5 rounded-full">
@@ -74,7 +74,7 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
 
             <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {activeTab === "ops" ? (
-                    /* ── Operations Tab ── */
+                    /* â”€â”€ Operations Tab â”€â”€ */
                     <div className="space-y-6">
                         {/* MarketPulse — KPI widget */}
                         <MarketPulse
@@ -103,7 +103,7 @@ export default function CommandDashboardPage({ userId, userRole = 'escort' }: Da
                         </div>
                     </div>
                 ) : (
-                    /* ── Swarm Tab — live agent visibility ── */
+                    /* â”€â”€ Swarm Tab — live agent visibility â”€â”€ */
                     <div className="space-y-6">
                         <SwarmScoreboard />
                         <SwarmActivityFeed limit={50} />

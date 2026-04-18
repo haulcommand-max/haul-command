@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { sendPushToUser } from '@/lib/notifications/push-service'
-
+import { upsertEntity, logActivity } from '@/lib/twenty/client'
 export async function POST(req: NextRequest) {
   try {
     const { hcid, company_name, phone, user_id } = Object.fromEntries(await req.formData())
@@ -43,6 +43,44 @@ export async function POST(req: NextRequest) {
       dedupKey: `claim_submitted:${String(hcid ?? user_id)}`,
       dedupWindowHrs: 48,
     }).catch(()=>{})
+
+    // PHASE 6: TWENTY CRM INTEGRATION - Track Full Lifecycle
+    try {
+      const crmEntity = await upsertEntity({
+        type: 'claim',
+        name: `Claim: ${company_name}`,
+        phone: String(phone),
+        status: 'pending_verification',
+        assignedTo: 'queue_verification',
+        metadata: { hcid: hcid || 'new_operator', user_id }
+      })
+      
+      if (crmEntity?.id) {
+        await logActivity({
+          entityId: crmEntity.id,
+          entityType: 'claim',
+          activityType: 'status_change',
+          title: 'Claim Submitted via Web UI',
+          timestamp: new Date().toISOString()
+        })
+      }
+    } catch (crmErr) {
+      console.warn('[Twenty] CRM mapping failed, continuing flow:', crmErr)
+    }
+
+    // PHASE 5: LIVEKIT INTEGRATION - Trigger AI Verification Call
+    // Fires an asynchronous webhook to the LiveKit outbound route
+    fetch(new URL('/api/livekit/outbound', req.url).toString(), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        targetPhone: String(phone),
+        entityId: operatorId ?? user_id,
+        programType: 'profile_claim',
+        countryCode: 'US' // Assume US for initial verification
+      })
+    }).catch(err => console.warn('[LiveKit] Outbound webhook trigger failed:', err))
+
 
     return NextResponse.redirect(new URL('/claim/submitted', req.url))
   } catch (err: any) {

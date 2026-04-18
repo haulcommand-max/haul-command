@@ -22,6 +22,7 @@ import {
 import InviteCard from "@/components/growth/InviteCard";
 import { MilestoneCelebration, BenchmarkCard } from "@/components/psychology/GrowthHooks";
 
+
 interface DashboardData {
     entity_id: string;
     company_name: string;
@@ -63,10 +64,46 @@ export default function OperatorDashboard() {
 
     const supabase = createClient();
 
-    // ── Load dashboard data ──
-    const loadDashboard = useCallback(async (eid: string) => {
-        const { data } = await supabase.rpc("hc_operator_dashboard", { p_entity_id: eid });
-        if (data) setDash(data as unknown as DashboardData);
+    // â”€â”€ Load dashboard data â”€â”€
+    const loadDashboard = useCallback(async (userId: string) => {
+        // Fallback to standard querying since RPC might not exist
+        const { data: profile } = await supabase
+            .from("escort_profiles")
+            .select("*")
+            .eq("user_id", userId)
+            .single();
+
+        const { data: availability } = await supabase
+            .from("hc_available_now")
+            .select("available_until")
+            .eq("user_id", userId)
+            .single();
+
+        const isOnline = availability && availability.available_until !== null && new Date(availability.available_until) > new Date();
+
+        if (profile) {
+            setDash({
+                entity_id: profile.id,
+                company_name: profile.business_name || profile.display_name || "Operator",
+                city: profile.city || "Unknown",
+                region_code: profile.region_code || "",
+                country_code: profile.country_code || "US",
+                availability: isOnline ? "available" : "unavailable",
+                profile_completion: profile.business_name && profile.city ? 100 : 50,
+                claim_status: profile.claimed_status || "unclaimed",
+                trust_score: profile.trust_score || 80,
+                rating_avg: 0,
+                rating_count: 0,
+                jobs_completed: 0,
+                escort_verified: true,
+                has_high_pole: false,
+                last_seen_at: new Date().toISOString(),
+                offers_pending: 0,
+                bookings_active: 0,
+                bookings_completed: 0,
+                unread_notifications: 0
+            });
+        }
     }, [supabase]);
 
     const loadNotifications = useCallback(async (userId: string) => {
@@ -86,33 +123,49 @@ export default function OperatorDashboard() {
                 setLoading(false);
                 return;
             }
-            // Try to find entity_id from escort_profiles
-            const { data: ep } = await supabase
-                .from("escort_profiles")
-                .select("display_name, user_id")
-                .eq("user_id", user.id)
-                .single();
-
-            const eid = ep?.display_name || user.id;
-            setEntityId(eid);
-            await loadDashboard(eid);
+            // Use User ID instead of entity_id for direct lookups
+            setEntityId(user.id);
+            await loadDashboard(user.id);
             await loadNotifications(user.id);
             setLoading(false);
         };
         init();
     }, [supabase, loadDashboard, loadNotifications]);
 
-    // ── Toggle availability ──
+    // â”€â”€ Toggle availability â”€â”€
     const toggleAvailability = async () => {
         if (!dash || toggling) return;
         setToggling(true);
-        const newStatus = dash.availability === "available" ? "unavailable" : "available";
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
-            await supabase.rpc("hc_toggle_availability", {
-                p_user_id: user.id,
-                p_status: newStatus,
-            });
+            const isCurrentlyOnline = dash.availability === "available";
+            
+            if (isCurrentlyOnline) {
+                // Take offline
+                await supabase.from("hc_available_now").delete().eq("user_id", user.id);
+            } else {
+                // Go online
+                const { data: profile } = await supabase.from("escort_profiles").select("*").eq("user_id", user.id).single();
+                if (profile) {
+                    const expiry = new Date();
+                    expiry.setHours(expiry.getHours() + 12); // Online for 12 hours
+                    
+                    await supabase.from("hc_available_now").upsert({
+                        user_id: user.id,
+                        slug: profile.slug || user.id,
+                        business_name: profile.business_name,
+                        display_name: profile.display_name,
+                        country_code: profile.country_code || 'US',
+                        city: profile.city || '',
+                        lat: profile.lat || null,
+                        lng: profile.lng || null,
+                        trust_score: profile.trust_score || 80,
+                        is_verified: true,
+                        available_since: new Date().toISOString(),
+                        available_until: expiry.toISOString()
+                    });
+                }
+            }
             if (entityId) await loadDashboard(entityId);
         }
         setToggling(false);
@@ -122,7 +175,7 @@ export default function OperatorDashboard() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+            <div className=" bg-transparent flex items-center justify-center">
                 <div className="w-8 h-8 border-2 border-[#F1A91B]/30 border-t-[#F1A91B] rounded-full animate-spin" />
             </div>
         );
@@ -130,11 +183,11 @@ export default function OperatorDashboard() {
 
     if (!dash) {
         return (
-            <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center gap-4 px-4">
+            <div className=" bg-transparent flex flex-col items-center justify-center gap-4 px-4">
                 <Shield className="w-12 h-12 text-[#F1A91B]" />
                 <h2 className="text-xl font-black text-white text-center">Operator Dashboard</h2>
                 <p className="text-white/40 text-sm text-center">Sign in and claim your listing to access the dashboard.</p>
-                <a href="/login" className="mt-4 px-6 py-3 bg-[#F1A91B] text-black font-bold rounded-xl text-sm">
+                <a href="/login" className="mt-4 px-6 py-3 bg-[#F1A91B] text-white font-bold rounded-xl text-sm">
                     Sign In
                 </a>
             </div>
@@ -142,36 +195,11 @@ export default function OperatorDashboard() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-950 text-white pb-24">
+        <div className=" bg-transparent text-white pb-24">
             {/* Header */}
-            <header className="sticky top-0 z-50 bg-gray-950/90 backdrop-blur-xl border-b border-white/6">
-                <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-[#F1A91B] rounded-xl flex items-center justify-center font-black text-black text-sm shadow-[0_0_20px_rgba(241,169,27,0.3)]">
-                            HC
-                        </div>
-                        <div>
-                            <h1 className="text-sm font-black text-white">{dash.company_name || "Operator"}</h1>
-                            <p className="text-[10px] text-white/30">
-                                {dash.city}{dash.region_code ? `, ${dash.region_code}` : ""}
-                            </p>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                        <div className="relative">
-                            <Bell className="w-5 h-5 text-white/40" />
-                            {(dash.unread_notifications > 0) && (
-                                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[9px] font-bold flex items-center justify-center">
-                                    {dash.unread_notifications}
-                                </span>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </header>
 
             <main className="max-w-4xl mx-auto px-4 py-6 space-y-6">
-                {/* ── MODULE 1: Availability Toggle ── */}
+                {/* â”€â”€ MODULE 1: Availability Toggle â”€â”€ */}
                 <motion.div
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -217,7 +245,7 @@ export default function OperatorDashboard() {
                             }}
                         >
                             <motion.div
-                                className="absolute top-1 w-6 h-6 rounded-full bg-white shadow-lg"
+                                className="absolute top-1 w-6 h-6 rounded-full bg-[#121212] shadow-lg"
                                 animate={{ x: isOnline ? 34 : 4 }}
                                 transition={{ type: "spring", stiffness: 500, damping: 30 }}
                             />
@@ -225,11 +253,11 @@ export default function OperatorDashboard() {
                     </div>
                 </motion.div>
 
-                {/* ── MODULE 2: Stats Grid ── */}
+                {/* â”€â”€ MODULE 2: Stats Grid â”€â”€ */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     {[
                         { label: "Trust Score", value: dash.trust_score, icon: Shield, color: "#F1A91B" },
-                        { label: "Rating", value: dash.rating_avg > 0 ? `${dash.rating_avg.toFixed(1)}★` : "—", icon: Star, color: "#FBBF24" },
+                        { label: "Rating", value: dash.rating_avg > 0 ? `${dash.rating_avg.toFixed(1)}â˜…` : "—", icon: Star, color: "#FBBF24" },
                         { label: "Jobs Done", value: dash.jobs_completed, icon: Award, color: "#10B981" },
                         { label: "Offers", value: dash.offers_pending, icon: Activity, color: "#8B5CF6" },
                     ].map((stat, i) => (
@@ -251,7 +279,7 @@ export default function OperatorDashboard() {
                     ))}
                 </div>
 
-                {/* ── MODULE 3: Profile Completion ── */}
+                {/* â”€â”€ MODULE 3: Profile Completion â”€â”€ */}
                 <motion.div
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -290,37 +318,37 @@ export default function OperatorDashboard() {
                     <div className="flex gap-2 mt-3 flex-wrap">
                         {dash.escort_verified && (
                             <span className="px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                                ✓ Verified
+                                âœ“ Verified
                             </span>
                         )}
                         {dash.has_high_pole && (
                             <span className="px-2 py-1 rounded-lg text-[10px] font-bold bg-[#F1A91B]/10 text-[#F1A91B] border border-[#F1A91B]/20">
-                                ⚡ High Pole
+                                âš¡ High Pole
                             </span>
                         )}
                         {dash.claim_status === "claimed" && (
                             <span className="px-2 py-1 rounded-lg text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                                ✓ Claimed
+                                âœ“ Claimed
                             </span>
                         )}
                     </div>
                 </motion.div>
 
-                {/* ── MODULE 3.5: Invite & Growth ── */}
+                {/* â”€â”€ MODULE 3.5: Invite & Growth â”€â”€ */}
                 <InviteCard />
 
                 {/* Milestone celebration — triggers once per session */}
                 {dash.jobs_completed > 0 && !sessionStorage?.getItem('hc_milestone_dismiss') && (
                     <MilestoneCelebration
                         type={dash.jobs_completed >= 100 ? '100_jobs' : dash.jobs_completed >= 50 ? '50_jobs' : dash.jobs_completed >= 10 ? '10_jobs' : 'first_job'}
-                        title={dash.jobs_completed >= 100 ? 'Century Club 🏆' : dash.jobs_completed >= 50 ? 'Elite Hauler' : dash.jobs_completed >= 10 ? 'First Fleet' : 'First Run Complete'}
+                        title={dash.jobs_completed >= 100 ? 'Century Club ðŸ†' : dash.jobs_completed >= 50 ? 'Elite Hauler' : dash.jobs_completed >= 10 ? 'First Fleet' : 'First Run Complete'}
                         description={`You've completed ${dash.jobs_completed} job${dash.jobs_completed > 1 ? 's' : ''} on Haul Command. Keep going to climb the leaderboard.`}
-                        emoji={dash.jobs_completed >= 100 ? '👑' : dash.jobs_completed >= 50 ? '🔥' : dash.jobs_completed >= 10 ? '⚡' : '🎉'}
+                        emoji={dash.jobs_completed >= 100 ? 'ðŸ‘‘' : dash.jobs_completed >= 50 ? 'ðŸ”¥' : dash.jobs_completed >= 10 ? 'âš¡' : 'ðŸŽ‰'}
                         onDismiss={() => { try { sessionStorage.setItem('hc_milestone_dismiss', '1'); } catch { } }}
                     />
                 )}
 
-                {/* ── MODULE 4: Incoming Offers / Notifications ── */}
+                {/* â”€â”€ MODULE 4: Incoming Offers / Notifications â”€â”€ */}
                 <motion.div
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -373,8 +401,8 @@ export default function OperatorDashboard() {
                     )}
                 </motion.div>
 
-                {/* ── Quick Actions ── */}
-                <div className="grid grid-cols-2 gap-3">
+                {/* â”€â”€ Quick Actions â”€â”€ */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     <a
                         href="/loads"
                         className="rounded-xl p-4 flex items-center gap-3 transition-all hover:-translate-y-0.5"
@@ -403,14 +431,24 @@ export default function OperatorDashboard() {
                             <div className="text-[10px] text-white/30">Chat with brokers</div>
                         </div>
                     </a>
+                    <a
+                        href="/operator/backhaul"
+                        className="col-span-2 md:col-span-1 border border-[#10B981]/20 bg-[#10B981]/5 hover:bg-[#10B981]/10 rounded-xl p-4 flex items-center gap-3 transition-all hover:-translate-y-0.5"
+                    >
+                        <MapPin className="w-5 h-5 text-[#10B981]" />
+                        <div>
+                            <div className="text-sm font-bold text-white">Post Backhaul</div>
+                            <div className="text-[10px] text-[#10B981]/60">Broadcast empty run</div>
+                        </div>
+                    </a>
                 </div>
 
-                {/* ── MODULE 6: Benchmark Comparison ── */}
+                {/* â”€â”€ MODULE 6: Benchmark Comparison â”€â”€ */}
                 <BenchmarkCard
                     metrics={[
                         { label: 'Trust Score', yours: dash.trust_score, avg: 65, top10: 95, unit: '' },
                         { label: 'Jobs Completed', yours: dash.jobs_completed, avg: 12, top10: 85, unit: '' },
-                        { label: 'Rating', yours: Math.round(dash.rating_avg * 10) / 10, avg: 3.8, top10: 4.9, unit: '★' },
+                        { label: 'Rating', yours: Math.round(dash.rating_avg * 10) / 10, avg: 3.8, top10: 4.9, unit: 'â˜…' },
                     ]}
                 />
 

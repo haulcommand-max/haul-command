@@ -1,5 +1,5 @@
 /// <reference types="npm:@supabase/functions-js/edge-runtime.d.ts" />
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "npm:@supabase/supabase-js@2";
 
 // =========================================================
 // emergency-vendors — rank nearby vendors for Emergency Nearby

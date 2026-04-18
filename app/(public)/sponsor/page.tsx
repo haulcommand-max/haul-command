@@ -181,7 +181,7 @@ export default function SponsorPage() {
                             letterSpacing: '0.08em',
                         }}
                     >
-                        ⚡ Limited territory inventory
+                        âš¡ Limited territory inventory
                     </div>
                     <h1
                         style={{

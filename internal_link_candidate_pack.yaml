@@ -1,0 +1,38 @@
+internal_link_candidates:
+  glossary_terms:
+    - term: "Pilot Car"
+      target_url: "/glossary/pilot-car"
+      anchor_variants:
+        - "pilot car"
+        - "escort vehicle"
+        - "certified pilot"
+      context_triggers: ["route survey", "high pole", "oversize load"]
+    - term: "High Pole"
+      target_url: "/glossary/high-pole"
+      anchor_variants:
+        - "high pole"
+        - "height pole"
+        - "clearance measurement"
+      context_triggers: ["vertical clearance", "bridge height", "overheight"]
+    - term: "Deadhead"
+      target_url: "/glossary/deadhead"
+      anchor_variants:
+        - "deadhead"
+        - "empty miles"
+      context_triggers: ["return trip", "driving without load"]
+
+  corridor_expansion:
+    - origin: "Houston, TX"
+      destination: "Midland, TX"
+      target_url: "/corridors/houston-to-midland"
+      support_blocks:
+        - "Top rated escort services along I-10 West."
+        - "Permit requirements for crossing TX-290."
+        - "Average daily rates for Houston to Midland loads."
+    - origin: "Los Angeles, CA"
+      destination: "Phoenix, AZ"
+      target_url: "/corridors/la-to-phoenix"
+      support_blocks:
+        - "Navigating I-10 weigh stations."
+        - "Arizona vs California DOT requirements."
+        - "Recommended overnight truck stops."

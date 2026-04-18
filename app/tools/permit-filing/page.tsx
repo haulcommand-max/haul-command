@@ -78,7 +78,7 @@ export default function PermitFilingPage() {
       <div style={{background: 'linear-gradient(135deg, #07090f, #0d1422)',borderBottom: '1px solid #1a1a22',padding: '48px 24px 40px' }}>
         <div style={{maxWidth: 800,margin: '0 auto',textAlign: 'center' }}>
           <div style={{display: 'inline-block',padding: '5px 14px',borderRadius: 16,background: 'rgba(245,166,35,0.1)',border: '1px solid rgba(245,166,35,0.25)',color: '#F5A623',fontSize: 11,fontWeight: 700,marginBottom: 20,letterSpacing: '0.1em' }}>
-            📋 NEW — AUTOMATED PERMIT FILING
+            ðŸ“‹ NEW — AUTOMATED PERMIT FILING
           </div>
           <h1 style={{fontSize: 'clamp(26px, 4vw, 40px)',fontWeight: 900,margin: '0 0 16px',lineHeight: 1.1 }}>
             File Your Oversize Permits in Minutes
@@ -112,7 +112,7 @@ export default function PermitFilingPage() {
               {selectedStates.length > 0 && (
                 <div style={{marginTop: 12,fontSize: 13,color: '#6a6a7a' }}>
                   Selected: <strong style={{color: '#F5A623' }}>{selectedStates.join(', ')}</strong>
-                  {selectedStates.length >= 3 && <span style={{color: '#22c55e',marginLeft: 8 }}>✓ Multi-state discount applied</span>}
+                  {selectedStates.length >= 3 && <span style={{color: '#22c55e',marginLeft: 8 }}>âœ“ Multi-state discount applied</span>}
                 </div>
               )}
             </div>
@@ -171,7 +171,7 @@ export default function PermitFilingPage() {
             <button aria-label="Interactive Button" data-tool-interact onClick={getQuote} disabled={!selectedStates.length || loading} style={{width: '100%',padding: 16,background: selectedStates.length
                 ? 'linear-gradient(135deg, #F5A623, #e08820)'
                 : '#1a1a22',color: selectedStates.length ? '#000' : '#5a5a6a',border: 'none',borderRadius: 12,fontSize: 16,fontWeight: 800,cursor: selectedStates.length ? 'pointer' : 'not-allowed'}}>
-              {loading ? 'Calculating...' : `Get Quote for ${selectedStates.length} State${selectedStates.length !== 1 ? 's' : ''} →`}
+              {loading ? 'Calculating...' : `Get Quote for ${selectedStates.length} State${selectedStates.length !== 1 ? 's' : ''} â†’`}
             </button>
           </>
         )}
@@ -202,16 +202,16 @@ export default function PermitFilingPage() {
             </div>
 
             <div style={{background: 'rgba(34,197,94,0.08)',border: '1px solid rgba(34,197,94,0.2)',borderRadius: 10,padding: 14,marginBottom: 24,fontSize: 13 }}>
-              ✓ Estimated filing time: <strong style={{color: '#22c55e' }}>{quote.estimated_processing_days} business day{quote.estimated_processing_days !== 1 ? 's' : ''}</strong> ·
+              âœ“ Estimated filing time: <strong style={{color: '#22c55e' }}>{quote.estimated_processing_days} business day{quote.estimated_processing_days !== 1 ? 's' : ''}</strong> ·
               Permit delivered to your email · Stored in your dashboard
             </div>
 
             <div style={{display: 'flex',gap: 12 }}>
               <button aria-label="Interactive Button" data-tool-interact onClick={() => setStep('configure')} style={{padding: '12px 20px',borderRadius: 10,background: '#0c0c10',border: '1px solid #2a2a3a',color: '#8a8aa0',fontSize: 14,cursor: 'pointer'}}>
-                ← Edit
+                â† Edit
               </button>
               <button aria-label="Interactive Button" data-tool-interact onClick={checkout} disabled={loading} style={{flex: 1,padding: 14,background: 'linear-gradient(135deg, #F5A623, #e08820)',color: '#000',border: 'none',borderRadius: 10,fontSize: 15,fontWeight: 800,cursor: 'pointer'}}>
-                {loading ? 'Redirecting to checkout...' : 'Pay & File Permits →'}
+                {loading ? 'Redirecting to checkout...' : 'Pay & File Permits â†’'}
               </button>
             </div>
           </div>

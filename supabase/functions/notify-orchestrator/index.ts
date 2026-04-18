@@ -42,15 +42,46 @@ serve(async (req) => {
                 data: { url: record.payload?.action_url || "/dashboard" },
             };
 
+            const fcmServerKey = Deno.env.get("FCM_SERVER_KEY");
+
             for (const endpoint of endpoints) {
-                if (endpoint.provider === "fcm") {
+                if (endpoint.provider === "fcm" && fcmServerKey) {
                     console.log(`[push] FCM → ${endpoint.endpoint.slice(0, 20)}...`);
-                    // await sendFCMMessage(endpoint.endpoint, pushContent);
-                    results.push++;
+                    try {
+                        const fcmResp = await fetch("https://fcm.googleapis.com/fcm/send", {
+                            method: "POST",
+                            headers: {
+                                "Authorization": `key=${fcmServerKey}`,
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                to: endpoint.endpoint,
+                                notification: {
+                                    title: pushContent.title,
+                                    body: pushContent.body,
+                                },
+                                data: pushContent.data,
+                            }),
+                        });
+                        if (fcmResp.ok) {
+                            results.push++;
+                            console.log(`[push] FCM delivered to ${endpoint.endpoint.slice(0, 20)}...`);
+                        } else {
+                            const errText = await fcmResp.text();
+                            console.error(`[push] FCM error (${fcmResp.status}): ${errText}`);
+                            // If token is invalid, mark the endpoint as stale
+                            if (fcmResp.status === 404 || errText.includes("NotRegistered")) {
+                                await supabase.from("push_endpoints")
+                                    .update({ active: false, stale_reason: "NotRegistered" })
+                                    .eq("id", endpoint.id);
+                            }
+                        }
+                    } catch (fcmErr) {
+                        console.error(`[push] FCM exception for ${endpoint.endpoint.slice(0, 20)}:`, fcmErr);
+                    }
                 } else if (endpoint.provider === "webpush") {
-                    console.log(`[push] WebPush → ${endpoint.endpoint.slice(0, 20)}...`);
-                    // await sendWebPush(endpoint, pushContent);
-                    results.push++;
+                    // WebPush requires VAPID keys — defer to dedicated web-push handler
+                    console.log(`[push] WebPush deferred → ${endpoint.endpoint.slice(0, 20)}...`);
                 }
             }
         }

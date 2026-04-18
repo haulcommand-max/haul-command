@@ -1,190 +1,75 @@
-/**
- * components/seo/QuickAnswerBlock.tsx
- * Machine-readable "Quick Answer" block for AI search visibility.
- *
- * Renders:
- *  - Visible summary block for users
- *  - schema.org DefinedTerm or speakable JSON-LD
- *  - Answer Engine / LLM optimized structured text
- *
- * Usage:
- *   <QuickAnswerBlock
- *     question="What is a pilot car?"
- *     answer="A pilot car, also called an escort vehicle, leads or follows an oversize load..."
- *     source="Haul Command Glossary"
- *     confidence="verified_current"
- *     lastUpdated="2026-04"
- *     nextStep={{ label: 'Find pilot cars near you', href: '/directory' }}
- *   />
- */
-
+import React from 'react';
+import { ShieldCheck, Clock, CheckCircle2, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-type ConfidenceState =
-  | 'verified_current'
-  | 'verified_but_review_due'
-  | 'partially_verified'
-  | 'seeded_needs_review'
-  | 'historical_reference_only';
-
-const CONFIDENCE_LABELS: Record<ConfidenceState, { label: string; color: string }> = {
-  verified_current: { label: 'Verified', color: 'text-green-400' },
-  verified_but_review_due: { label: 'Verified · Review Due', color: 'text-amber-400' },
-  partially_verified: { label: 'Partially Verified', color: 'text-amber-400' },
-  seeded_needs_review: { label: 'Draft · Needs Review', color: 'text-gray-400' },
-  historical_reference_only: { label: 'Historical Reference', color: 'text-gray-500' },
-};
-
-interface NextStep {
-  label: string;
-  href: string;
+export interface QuickAnswerProps {
+    directAnswer: string;
+    expandedExplanation: string;
+    freshnessDate: string;
+    confidenceScore: number; // 0-100
+    sourcePathLabel: string;
+    sourcePathHref: string;
+    nextStepCtaLabel: string;
+    nextStepCtaHref: string;
 }
 
-interface QuickAnswerProps {
-  question: string;
-  answer: string;
-  /** Optional short answer (1–2 sentences) for AI snippet extraction */
-  shortAnswer?: string;
-  source?: string;
-  confidence?: ConfidenceState;
-  lastUpdated?: string;
-  nextStep?: NextStep;
-  /** For glossary DefinedTerm schema */
-  termKey?: string;
-  /** Additional FAQs to include in JSON-LD */
-  relatedFaqs?: { question: string; answer: string }[];
-  className?: string;
-}
-
-export default function QuickAnswerBlock({
-  question,
-  answer,
-  shortAnswer,
-  source,
-  confidence = 'seeded_needs_review',
-  lastUpdated,
-  nextStep,
-  termKey,
-  relatedFaqs,
-  className,
+export function QuickAnswerBlock({
+    directAnswer,
+    expandedExplanation,
+    freshnessDate,
+    confidenceScore,
+    sourcePathLabel,
+    sourcePathHref,
+    nextStepCtaLabel,
+    nextStepCtaHref
 }: QuickAnswerProps) {
-  const confidenceInfo = CONFIDENCE_LABELS[confidence];
+    return (
+        <div className="w-full bg-white/[0.02] border border-white/[0.08] rounded-2xl p-5 sm:p-8 relative overflow-hidden">
+            {/* Background Glow */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#C6923A]/10 rounded-full blur-[80px] -z-10 pointer-events-none" />
 
-  // Build JSON-LD (speakable + FAQ)
-  const faqJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: question,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: shortAnswer ?? answer,
-        },
-      },
-      ...(relatedFaqs ?? []).map(({ question: q, answer: a }) => ({
-        '@type': 'Question',
-        name: q,
-        acceptedAnswer: { '@type': 'Answer', text: a },
-      })),
-    ],
-  };
+            <div className="flex flex-col gap-6">
+                {/* Header / Trust Metrics */}
+                <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#00FF66]/10 text-[#00FF66] text-[11px] font-bold uppercase tracking-wider">
+                        <ShieldCheck className="w-3.5 h-3.5" />
+                        Confidence: {confidenceScore}%
+                    </div>
+                    <div className="flex items-center gap-1.5 text-white/50 text-[11px] font-medium uppercase tracking-wider">
+                        <Clock className="w-3.5 h-3.5" />
+                        Verified: {freshnessDate}
+                    </div>
+                </div>
 
-  // DefinedTerm for glossary pages
-  const definedTermJsonLd = termKey
-    ? {
-        '@context': 'https://schema.org',
-        '@type': 'DefinedTerm',
-        name: question,
-        description: shortAnswer ?? answer,
-        url: `https://haulcommand.com/glossary/${termKey}`,
-        inDefinedTermSet: {
-          '@type': 'DefinedTermSet',
-          name: 'Haul Command Heavy Haul Glossary',
-          url: 'https://haulcommand.com/glossary',
-        },
-      }
-    : null;
+                {/* Direct Answer */}
+                <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-white leading-tight mb-3">
+                        {directAnswer}
+                    </h2>
+                    <p className="text-sm sm:text-base text-[#8fa3b8] leading-relaxed">
+                        {expandedExplanation}
+                    </p>
+                </div>
 
-  return (
-    <>
-      {/* Structured data injection */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-      {definedTermJsonLd && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(definedTermJsonLd) }}
-        />
-      )}
+                {/* Footer Links & CTAs */}
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 border-t border-white/[0.06]">
+                    <Link 
+                        href={sourcePathHref}
+                        className="flex items-center gap-2 text-xs font-semibold text-[#5A6577] hover:text-white transition-colors"
+                    >
+                        <CheckCircle2 className="w-4 h-4 text-[#C6923A]" />
+                        Source: {sourcePathLabel}
+                    </Link>
 
-      {/* Visual quick answer block */}
-      <div
-        className={`rounded-xl border border-amber-500/20 bg-amber-500/5 p-5 ${className ?? ''}`}
-        data-qa-block="true"
-        itemScope
-        itemType="https://schema.org/FAQPage"
-      >
-        {/* Header strip */}
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-amber-400 text-xs font-semibold uppercase tracking-widest">
-            Quick Answer
-          </span>
-          {confidence && (
-            <span className={`text-xs ${confidenceInfo.color} ml-auto`}>
-              {confidenceInfo.label}
-            </span>
-          )}
+                    <Link 
+                        href={nextStepCtaHref}
+                        className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#C6923A] text-black font-bold text-sm tracking-wide hover:bg-[#C6923A]/90 transition-all hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-[#C6923A]/20"
+                    >
+                        {nextStepCtaLabel}
+                        <ArrowRight className="w-4 h-4" />
+                    </Link>
+                </div>
+            </div>
         </div>
-
-        {/* Question */}
-        <p
-          className="text-sm font-semibold text-white mb-2"
-          itemProp="mainEntity"
-          itemScope
-          itemType="https://schema.org/Question"
-        >
-          <span itemProp="name">{question}</span>
-        </p>
-
-        {/* Answer */}
-        <div
-          itemProp="acceptedAnswer"
-          itemScope
-          itemType="https://schema.org/Answer"
-        >
-          {shortAnswer && (
-            <p className="text-base text-white font-medium mb-1" itemProp="text">
-              {shortAnswer}
-            </p>
-          )}
-          <p className="text-sm text-gray-300 leading-relaxed">
-            {answer}
-          </p>
-        </div>
-
-        {/* Meta: source + freshness */}
-        <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-xs text-gray-500">
-          {source && <span>Source: {source}</span>}
-          {lastUpdated && <span>Updated: {lastUpdated}</span>}
-        </div>
-
-        {/* Next step CTA */}
-        {nextStep && (
-          <div className="mt-4 pt-3 border-t border-amber-500/10">
-            <Link
-              href={nextStep.href}
-              className="inline-flex items-center gap-1.5 text-sm text-amber-400 hover:text-amber-300 font-medium transition-colors"
-            >
-              {nextStep.label}
-              <span aria-hidden>→</span>
-            </Link>
-          </div>
-        )}
-      </div>
-    </>
-  );
+    );
 }

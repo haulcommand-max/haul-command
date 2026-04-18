@@ -12,15 +12,14 @@ interface ProofStripProps {
 }
 
 export function ProofStrip({
-    operatorCount = 14247,
+    operatorCount,
     countryCount = 120,
     style,
     variant = 'bar',
 }: ProofStripProps) {
     const items = [
-        { emoji: '🟢', stat: `${operatorCount.toLocaleString()}`, label: 'verified operators', color: '#22C55E' },
+        ...(operatorCount ? [{ emoji: '🟢', stat: `${operatorCount.toLocaleString()}`, label: 'verified operators', color: '#22C55E' }] : []),
         { emoji: '🌍', stat: `${countryCount}`, label: 'countries active', color: '#3B82F6' },
-        { emoji: '⭐', stat: '4.8/5', label: 'avg operator rating', color: '#D4A844' },
         { emoji: '🔒', stat: 'Escrow', label: 'protected payments', color: '#8B5CF6' },
     ];
 

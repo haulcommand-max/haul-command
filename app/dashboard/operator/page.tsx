@@ -11,7 +11,7 @@ export default async function OperatorDashboardPage() {
 
   const userId = user.id;
 
-  // ── Operator profile ──────────────────────────────────────────────────────
+  // â”€â”€ Operator profile â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const { data: operatorProfile } = await supabase
     .from("hc_global_operators")
     .select(`
@@ -25,7 +25,7 @@ export default async function OperatorDashboardPage() {
 
   const hasLinkedProfile = !!operatorProfile;
 
-  // ── Trust profile — period stats (Report Card) ────────────────────────────
+  // â”€â”€ Trust profile — period stats (Report Card) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   // Columns added by migration 029 (20260405_029_leaderboard_periods...)
   const { data: trustProfile } = await supabase
     .from("hc_trust_profiles")
@@ -45,7 +45,7 @@ export default async function OperatorDashboardPage() {
     .eq("user_id", userId)
     .maybeSingle();
 
-  // ── Dispatch Assignments ──────────────────────────────────────────────────
+  // â”€â”€ Dispatch Assignments â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const { data: assignments } = await supabase
     .from("dispatch_assignments")
     .select(`
@@ -58,7 +58,7 @@ export default async function OperatorDashboardPage() {
     .order("accepted_at", { ascending: false })
     .limit(10);
 
-  // ── Recent earnings (30d) ─────────────────────────────────────────────────
+  // â”€â”€ Recent earnings (30d) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
@@ -75,7 +75,7 @@ export default async function OperatorDashboardPage() {
     ?.filter(e => e.status === "pending")
     .reduce((s, e) => s + (e.amount || 0), 0) ?? 0;
 
-  // ── Open loads for bid board ──────────────────────────────────────────────
+  // â”€â”€ Open loads for bid board â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const { data: openLoads } = await supabase
     .from("loads")
     .select("id, origin_city, origin_state, destination_city, destination_state, equipment_type, status, created_at")
@@ -84,7 +84,7 @@ export default async function OperatorDashboardPage() {
     .limit(20);
 
   return (
-    <div className="min-h-screen bg-hc-bg text-hc-text pt-24 pb-12">
+    <div className=" bg-hc-bg text-hc-text pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <OperatorDashboardClient
           userId={userId}

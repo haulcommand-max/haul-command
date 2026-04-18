@@ -3,10 +3,11 @@ import Link from 'next/link';
 import { DATA_PRODUCT_CATALOG } from '@/lib/monetization/data-product-engine';
 import BuyButton from '@/components/data/BuyButton';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { FreshnessBadge } from '@/components/ui/FreshnessBadge';
 
 export const metadata: Metadata = {
     title: 'Haul Command Data Marketplace | Heavy Haul Intelligence & Market Reports',
-    description: 'Access corridor demand snapshots, rate benchmarks, operator density maps, and market intelligence reports. Powered by real platform data across 120 countries. Self-serve purchase from $9.',
+    description: 'Access corridor demand snapshots, rate benchmarks, operator density maps, and market intelligence reports. Powered by real platform data across 50+ countries. Self-serve purchase from $9.',
     alternates: {
         canonical: 'https://www.haulcommand.com/data',
     },
@@ -29,7 +30,7 @@ const faqSchema = {
             name: 'What data does Haul Command sell?',
             acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'Haul Command sells corridor demand snapshots, rate benchmark reports, operator density maps, market intelligence reports, competitor tracking, export CSVs, and enterprise API access. All data is sourced from real platform activity across 120 countries.',
+                text: 'Haul Command sells corridor demand snapshots, rate benchmark reports, operator density maps, market intelligence reports, competitor tracking, export CSVs, and enterprise API access. All data is sourced from real platform activity across 50+ countries.',
             },
         },
         {
@@ -53,15 +54,15 @@ const faqSchema = {
 
 // Product type icons and colors
 const PRODUCT_UI: Record<string, { icon: string; color: string; badge?: string }> = {
-    corridor_snapshot:      { icon: '🛣️', color: 'from-blue-500/10',    badge: 'Real-time' },
-    market_report:          { icon: '📊', color: 'from-purple-500/10',  badge: 'Daily refresh' },
-    rate_benchmark:         { icon: '💰', color: 'from-green-500/10',   badge: 'Best value' },
-    competitor_tracking:    { icon: '🔍', color: 'from-orange-500/10',  badge: 'Subscription' },
-    claim_gap_report:       { icon: '📍', color: 'from-cyan-500/10',    badge: '$9 one-time' },
-    csv_export:             { icon: '📥', color: 'from-gray-500/10',    badge: 'Metered' },
-    api_access:             { icon: '🔌', color: 'from-pink-500/10',    badge: 'Enterprise' },
-    alert_subscription:     { icon: '🔔', color: 'from-yellow-500/10', badge: 'Included Pro' },
-    enterprise_feed:        { icon: '🏢', color: 'from-red-500/10',     badge: 'Enterprise' },
+    corridor_snapshot:      { icon: 'ðŸ›£ï¸', color: 'from-blue-500/10',    badge: 'Real-time' },
+    market_report:          { icon: 'ðŸ“Š', color: 'from-purple-500/10',  badge: 'Daily refresh' },
+    rate_benchmark:         { icon: 'ðŸ’°', color: 'from-green-500/10',   badge: 'Best value' },
+    competitor_tracking:    { icon: 'ðŸ”', color: 'from-orange-500/10',  badge: 'Subscription' },
+    claim_gap_report:       { icon: 'ðŸ“', color: 'from-cyan-500/10',    badge: '$9 one-time' },
+    csv_export:             { icon: 'ðŸ“¥', color: 'from-gray-500/10',    badge: 'Metered' },
+    api_access:             { icon: 'ðŸ”Œ', color: 'from-pink-500/10',    badge: 'Enterprise' },
+    alert_subscription:     { icon: 'ðŸ””', color: 'from-yellow-500/10', badge: 'Included Pro' },
+    enterprise_feed:        { icon: 'ðŸ¢', color: 'from-red-500/10',     badge: 'Enterprise' },
 };
 
 function formatPrice(product: typeof DATA_PRODUCT_CATALOG[number]): string {
@@ -82,16 +83,19 @@ export default function DataMarketplacePage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
-            <div className="min-h-screen bg-[#0B0B0C] text-white">
+            <div className=" bg-[#0B0B0C] text-white">
 
-                {/* ── Hero ── */}
+                {/* â”€â”€ Hero â”€â”€ */}
                 <section className="relative overflow-hidden border-b border-white/5">
                     <div className="absolute inset-0 opacity-20 pointer-events-none"
                         style={{ backgroundImage: 'radial-gradient(ellipse at 30% 0%, #3b82f680 0%, transparent 70%)' }} />
                     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 relative z-10">
                         <div className="max-w-2xl">
-                            <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-400 mb-6">
-                                Intelligence Marketplace
+                            <div className="flex items-center gap-2 mb-6">
+                                <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-400">
+                                    Intelligence Marketplace
+                                </div>
+                                <FreshnessBadge lastSeenAt={new Date().toISOString()} />
                             </div>
                             <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white mb-4 leading-[1.1]">
                                 Heavy Haul Market{' '}
@@ -100,27 +104,27 @@ export default function DataMarketplacePage() {
                                 </span>
                             </h1>
                             <p className="text-lg text-gray-300 mb-6 leading-relaxed">
-                                Corridor demand data, rate benchmarks, operator density maps, and market intelligence across 120 countries.
+                                Corridor demand data, rate benchmarks, operator density maps, and market intelligence across 50+ countries.
                                 Powered by real platform activity — not surveys, not estimates.
                             </p>
                             <div className="flex flex-wrap gap-4 text-sm text-gray-400">
-                                <span className="flex items-center gap-1.5"><span className="text-blue-400">●</span> Real platform data</span>
-                                <span className="flex items-center gap-1.5"><span className="text-blue-400">●</span> 120 countries</span>
-                                <span className="flex items-center gap-1.5"><span className="text-blue-400">●</span> Updated daily</span>
-                                <span className="flex items-center gap-1.5"><span className="text-blue-400">●</span> Self-serve from $9</span>
+                                <span className="flex items-center gap-1.5"><span className="text-blue-400">â—</span> Real platform data</span>
+                                <span className="flex items-center gap-1.5"><span className="text-blue-400">â—</span> 50+ countries</span>
+                                <span className="flex items-center gap-1.5"><span className="text-blue-400">â—</span> Updated daily</span>
+                                <span className="flex items-center gap-1.5"><span className="text-blue-400">â—</span> Self-serve from $9</span>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* ── Self-Serve Products ── */}
+                {/* â”€â”€ Self-Serve Products â”€â”€ */}
                 <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                     <h2 className="text-2xl font-bold text-white mb-2">Self-Serve Data Products</h2>
                     <p className="text-gray-400 mb-8 text-sm">Purchase instantly. No sales call required for these products.</p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                         {selfServeProducts.map(product => {
-                            const ui = PRODUCT_UI[product.type] ?? { icon: '📦', color: 'from-gray-500/10' };
+                            const ui = PRODUCT_UI[product.type] ?? { icon: 'ðŸ“¦', color: 'from-gray-500/10' };
                             return (
                                 <div key={product.id}
                                     className={`relative bg-gradient-to-br ${ui.color} to-[#121214] border border-white/10 rounded-2xl p-6 flex flex-col gap-4 hover:border-white/20 transition-all group`}>
@@ -163,12 +167,12 @@ export default function DataMarketplacePage() {
                     </div>
                 </section>
 
-                {/* ── Data Product Sponsor Slot ── */}
+                {/* â”€â”€ Data Product Sponsor Slot â”€â”€ */}
                 <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                     <AdGridSlot zone="data_product_sponsor" />
                 </section>
 
-                {/* ── Enterprise Products ── */}
+                {/* â”€â”€ Enterprise Products â”€â”€ */}
                 <section className="border-t border-white/5 bg-[#0f1115]">
                     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                         <h2 className="text-2xl font-bold text-white mb-2">Enterprise Intelligence Feeds</h2>
@@ -176,7 +180,7 @@ export default function DataMarketplacePage() {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             {enterpriseProducts.map(product => {
-                                const ui = PRODUCT_UI[product.type] ?? { icon: '🏢', color: 'from-gray-500/10' };
+                                const ui = PRODUCT_UI[product.type] ?? { icon: 'ðŸ¢', color: 'from-gray-500/10' };
                                 return (
                                     <div key={product.id}
                                         className="border border-white/10 rounded-2xl p-6 bg-[#121214] hover:border-white/20 transition-all">
@@ -205,7 +209,7 @@ export default function DataMarketplacePage() {
                     </div>
                 </section>
 
-                {/* ── Developer API CTA ── */}
+                {/* â”€â”€ Developer API CTA â”€â”€ */}
                 <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                     <div className="bg-gradient-to-br from-blue-900/20 to-purple-900/10 border border-blue-500/20 rounded-2xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
                         <div>
@@ -219,20 +223,20 @@ export default function DataMarketplacePage() {
                             </Link>
                             <Link href="/developers/pricing"
                                 className="text-center text-sm text-gray-400 hover:text-white transition-colors">
-                                View API pricing →
+                                View API pricing â†’
                             </Link>
                         </div>
                     </div>
                 </section>
 
-                {/* ── FAQ ── */}
+                {/* â”€â”€ FAQ â”€â”€ */}
                 <section className="border-t border-white/5 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                     <h2 className="text-2xl font-bold text-white text-center mb-8">Data Marketplace FAQ</h2>
                     <div className="space-y-5">
                         {[
                             {
                                 q: 'What data does Haul Command sell?',
-                                a: 'Corridor demand snapshots, rate benchmark reports, operator density maps, market intelligence reports, competitor tracking, export CSVs, and enterprise API access. All sourced from real platform activity across 120 countries.',
+                                a: 'Corridor demand snapshots, rate benchmark reports, operator density maps, market intelligence reports, competitor tracking, export CSVs, and enterprise API access. All sourced from real platform activity across 50+ countries.',
                             },
                             {
                                 q: 'How accurate is Haul Command market data?',
@@ -255,7 +259,7 @@ export default function DataMarketplacePage() {
                     </div>
                 </section>
 
-                {/* ── Cross-links ── */}
+                {/* â”€â”€ Cross-links â”€â”€ */}
                 <div className="border-t border-white/5 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     <div className="flex flex-wrap gap-4 text-sm text-gray-500 justify-center">
                         <Link href="/developers" className="hover:text-white transition-colors">Developer API</Link>

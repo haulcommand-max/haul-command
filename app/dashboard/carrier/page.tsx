@@ -13,7 +13,7 @@ export default async function CarrierDashboardPage() {
   if (!user) redirect("/login?next=/dashboard/carrier");
 
   return (
-    <div className="min-h-screen bg-hc-bg text-hc-text pt-24 pb-12">
+    <div className=" bg-hc-bg text-hc-text pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="mb-8 border-b border-white/5 pb-6 flex justify-between items-end">
@@ -31,7 +31,7 @@ export default async function CarrierDashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
             <div className="bg-hc-surface border border-white/5 rounded-xl p-6 flex flex-col items-center justify-center h-64 text-center">
-              <div className="text-4xl opacity-20 mb-3">🚚</div>
+              <div className="text-4xl opacity-20 mb-3">ðŸšš</div>
               <h3 className="text-lg font-medium text-white mb-1">No Active Loads</h3>
               <p className="text-sm text-slate-400">Post an oversize load to immediately notify available operators along the route.</p>
             </div>

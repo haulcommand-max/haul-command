@@ -213,7 +213,7 @@ export default function ClaimStatusBanner({ claimState, profileCompletion, opera
               transition: 'all 0.15s ease',
             }}
           >
-            {config.nextLabel} →
+            {config.nextLabel} â†’
           </Link>
         </div>
       </div>

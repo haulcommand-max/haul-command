@@ -1,0 +1,19 @@
+# GEMINI-04: Schema.org JSON-LD Variants
+Course: |
+  {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "Heavy Haul Night Operations",
+    "description": "Elite protocol for multi-axle night transport.",
+    "provider": { "@type": "Organization", "name": "Haul Command" }
+  }
+FAQPage: |
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [{
+      "@type": "Question",
+      "name": "What is an escrow holdback?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Funds locked until Delivery BOL is verified." }
+    }]
+  }

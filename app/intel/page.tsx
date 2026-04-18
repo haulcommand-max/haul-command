@@ -49,7 +49,7 @@ export default function IntelPage() {
             <PaywallGateBanner
               surfaceName="Intelligence Feed"
               tier="Pro"
-              description="Get the full intelligence feed: AV corridor signals, regulatory alerts, and market data across 120 countries."
+              description="Get the full intelligence feed: AV corridor signals, regulatory alerts, and market data across active markets."
             />
           </div>
 

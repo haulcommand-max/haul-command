@@ -16,10 +16,10 @@ export default function RemoveListingPage() {
     const [error, setError] = useState<string | null>(null);
 
     const options: { value: RequestType; label: string; desc: string; icon: string }[] = [
-        { value: "remove", label: "Remove Listing", desc: "Completely remove this listing from the directory.", icon: "🗑️" },
-        { value: "correct", label: "Correct Information", desc: "Fix inaccurate information on an existing listing.", icon: "✏️" },
-        { value: "claim", label: "Claim Listing", desc: "This is my business — I want to manage it.", icon: "🏴" },
-        { value: "hide_contact", label: "Hide Contact Info", desc: "Keep listing but remove phone, email, and address.", icon: "🔒" },
+        { value: "remove", label: "Remove Listing", desc: "Completely remove this listing from the directory.", icon: "ðŸ—‘ï¸" },
+        { value: "correct", label: "Correct Information", desc: "Fix inaccurate information on an existing listing.", icon: "âœï¸" },
+        { value: "claim", label: "Claim Listing", desc: "This is my business — I want to manage it.", icon: "ðŸ´" },
+        { value: "hide_contact", label: "Hide Contact Info", desc: "Keep listing but remove phone, email, and address.", icon: "ðŸ”’" },
     ];
 
     async function handleSubmit(e: React.FormEvent) {

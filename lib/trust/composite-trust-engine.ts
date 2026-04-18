@@ -465,6 +465,7 @@ export async function submitRating(
         sameIpReviews: number;
         sameDeviceReviews: number;
         targetRecentReviewCount: number;
+        hasPhotos?: boolean;
     },
 ): Promise<{ accepted: boolean; integrity?: ReviewIntegrityCheck; reason?: string }> {
     const supabase = getSupabaseAdmin();
@@ -479,7 +480,7 @@ export async function submitRating(
                 reviewerReviewCount: contextSignals.reviewerReviewCount,
                 reviewerDevice: contextSignals.reviewerDevice,
                 textLength: (scores.review_text || '').length,
-                hasPhotos: false, // TODO: wire photos when available
+                hasPhotos: contextSignals.hasPhotos || false,
                 submittedAt: new Date().toISOString(),
                 targetId: ratedUserId,
             },
@@ -518,7 +519,7 @@ export async function submitRating(
     // Apply weight reduction for suspect reviews
     const baseWeight = verifiedJob ? 1.5 : 1.0;
     const isSuspect = contextSignals ? checkReviewIntegrity(
-        { userId: raterUserId, reviewerAge: contextSignals.reviewerAge, reviewerReviewCount: contextSignals.reviewerReviewCount, reviewerDevice: contextSignals.reviewerDevice, textLength: (scores.review_text || '').length, hasPhotos: false, submittedAt: new Date().toISOString(), targetId: ratedUserId },
+        { userId: raterUserId, reviewerAge: contextSignals.reviewerAge, reviewerReviewCount: contextSignals.reviewerReviewCount, reviewerDevice: contextSignals.reviewerDevice, textLength: (scores.review_text || '').length, hasPhotos: contextSignals.hasPhotos || false, submittedAt: new Date().toISOString(), targetId: ratedUserId },
         { reviewsInLastHour: contextSignals.reviewsInLastHour, sameIpReviews: contextSignals.sameIpReviews, sameDeviceReviews: contextSignals.sameDeviceReviews, targetRecentReviewCount: contextSignals.targetRecentReviewCount, avgRatingDeviation: Math.abs(scores.overall - 3.5) }
     ).verdict === 'suspect' : false;
     const finalWeight = isSuspect ? baseWeight * 0.3 : baseWeight;

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { AdGridClassifiedsFeed } from '@/components/ads/AdGridClassifiedsFeed';
+import { AdGridSponsorSlot } from '@/app/_components/directory/AdGridSponsorSlot';
 import SocialProofBanner from '@/components/social/SocialProofBanner';
 import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import RelatedLinks from '@/components/seo/RelatedLinks';
@@ -56,7 +57,7 @@ export default function EscortCalculator() {
   if (serviceType === 'pevo' && miles < 150) { rateMin = Math.max(rateMin, 350); rateMax = Math.max(rateMax, 500); }
 
   return (
-    <div className="min-h-screen bg-[#07090f] text-white font-sans pt-8 pb-32">
+    <div className=" bg-[#07090f] text-white font-sans pt-8 pb-32">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify({
@@ -173,7 +174,7 @@ export default function EscortCalculator() {
               </div>
 
               <div className="mt-10 max-w-lg mx-auto text-center">
-                <Link aria-label="Navigation Link" href={`/directory/us`} className="inline-block w-full text-center bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black py-4 rounded-xl font-black text-sm tracking-widest uppercase shadow-xl shadow-amber-500/20 transition-all">
+                <Link aria-label="Navigation Link" href={`/directory/us`} className="inline-block w-full text-center bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white py-4 rounded-xl font-black text-sm tracking-widest uppercase shadow-xl shadow-amber-500/20 transition-all">
                   Find {serviceType === 'bucket' ? 'Bucket Trucks' : 'Pilot Cars'} in {region}
                 </Link>
                 <div className="text-[10px] text-gray-500 mt-4 leading-relaxed">
@@ -183,6 +184,10 @@ export default function EscortCalculator() {
               </div>
             </div>
           </div>
+        </div>
+        
+        <div className="mt-8">
+          <AdGridSponsorSlot regionName={region} type="pilot_car_broker_or_agency" countryCode="US" />
         </div>
         
         {/* Support Grids */}
@@ -204,8 +209,8 @@ export default function EscortCalculator() {
             <h3 className="text-lg font-bold mb-4 text-white">Police Escorts & Premiums</h3>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between"><span className="text-gray-400">State Police</span><span className="font-bold text-white">$31/hr + $0.044/mi</span></div>
-              <div className="flex justify-between"><span className="text-gray-400">Local/Municipal</span><span className="font-bold text-white">$50–$100/hr</span></div>
-              <div className="flex justify-between mt-4 pt-4 border-t border-white/5"><span className="text-gray-400">Urban Coordination</span><span className="font-bold text-amber-500">+$100–$300</span></div>
+              <div className="flex justify-between"><span className="text-gray-400">Local/Municipal</span><span className="font-bold text-white">$50-$100/hr</span></div>
+              <div className="flex justify-between mt-4 pt-4 border-t border-white/5"><span className="text-gray-400">Urban Coordination</span><span className="font-bold text-amber-500">+$100-$300</span></div>
               <div className="flex justify-between"><span className="text-gray-400">Weekend/Seasonal</span><span className="font-bold text-amber-500">+10-25%</span></div>
             </div>
           </div>
@@ -227,7 +232,7 @@ export default function EscortCalculator() {
         {/* AI Search Answer Block */}
         <StaticAnswerBlock
           question="How much does a pilot car cost per mile in 2026?"
-          answer="In 2026, pilot car (escort vehicle) costs range from $1.65 to $2.25 per mile for standard lead/chase escorts, depending on region. Southeast rates: $1.65–$1.85/mi. Midwest: $1.75–$1.95/mi. West Coast: $2.00–$2.25/mi. Night moves add $0.25–$0.50/mi. Short hauls under 150 miles typically have a minimum of $350–$500."
+          answer="In 2026, pilot car (escort vehicle) costs range from $1.65 to $2.25 per mile for standard lead/chase escorts, depending on region. Southeast rates: $1.65-$1.85/mi. Midwest: $1.75-$1.95/mi. West Coast: $2.00-$2.25/mi. Night moves add $0.25-$0.50/mi. Short hauls under 150 miles typically have a minimum of $350-$500."
           confidence="verified_current"
           source="2026 Haul Command Rate Guide"
           ctaLabel="Get an Instant Quote"

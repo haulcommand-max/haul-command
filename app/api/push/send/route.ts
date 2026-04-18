@@ -1,121 +1,145 @@
-// POST /api/push/send — Send targeted web push notifications
-// Supports: user_id, role, and geo targeting — no external service needed.
+// =====================================================================
+// Haul Command — Push Notification Send API (Command Layer Wired)
+// POST /api/push/send
 //
-// VAPID setup (run ONCE, then add to .env.local):
-//   npx web-push generate-vapid-keys
-//   NEXT_PUBLIC_VAPID_PUBLIC_KEY=<publicKey>
-//   VAPID_PRIVATE_KEY=<privateKey>
-//   VAPID_EMAIL=mailto:ops@haulcommand.com
-//   npm install web-push
+// Server-side push send endpoint. Used by edge functions, cron jobs,
+// and the Command Layer to deliver push notifications via Firebase Admin.
+// Every send is logged to push_log and tracked through the Command Layer.
+// =====================================================================
 
-export const dynamic = 'force-dynamic';
+import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseAdmin } from '@/lib/enterprise/supabase/admin';
+import { sendPush, sendPushBatch, type PushPayload } from '@/lib/firebase-admin';
+import { withHeartbeat } from '@/lib/command-heartbeat';
 
-interface PushPayload {
-    title: string;
-    body: string;
-    icon?: string;
-    url?: string;
-    tag?: string;
-    requireInteraction?: boolean;
-    data?: Record<string, unknown>;
-}
-
-interface SendRequest {
-    payload: PushPayload;
-    user_id?: string;
-    role?: string;
-    geo?: string;
-    limit?: number;
-    agent?: string;
-}
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 export async function POST(req: NextRequest) {
-    const isInternal = req.headers.get('x-internal-agent') === 'haul-command-swarm'
-        || req.headers.get('authorization') === `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`;
+  try {
+    const body = await req.json();
+    const { user_ids, notification_type, title, body: msgBody, data, image_url, click_action } = body;
 
-    if (!isInternal) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!user_ids?.length || !notification_type || !title) {
+      return NextResponse.json(
+        { error: 'user_ids, notification_type, and title required' },
+        { status: 400 }
+      );
     }
 
-    const body: SendRequest = await req.json();
-    const { payload, user_id, role, geo, limit = 100, agent = 'manual' } = body;
+    // Wrap with Command Layer heartbeat
+    const result = await withHeartbeat(
+      'fcm-push-worker',
+      undefined,
+      async () => {
+        // Fetch active push tokens for the target users
+        const { data: tokens, error: tErr } = await supabase
+          .from('push_tokens')
+          .select('id, user_id, token, platform')
+          .in('user_id', user_ids)
+          .eq('is_active', true);
 
-    if (!payload?.title || !payload?.body) {
-        return NextResponse.json({ error: 'payload.title and payload.body required' }, { status: 400 });
-    }
-
-    const admin = getSupabaseAdmin();
-    let query = admin
-        .from('web_push_subscriptions')
-        .select('endpoint, p256dh, auth, user_id, role, geo')
-        .eq('active', true)
-        .limit(limit);
-
-    if (user_id) query = query.eq('user_id', user_id);
-    else if (role) query = query.eq('role', role);
-    else if (geo) query = query.eq('geo', geo);
-
-    const { data: subscribers } = await query;
-    if (!subscribers?.length) {
-        return NextResponse.json({ ok: true, sent: 0, message: 'No active subscribers for target' });
-    }
-
-    let sent = 0;
-    try {
-        const webpush = await import('web-push').catch(() => null);
-        if (webpush && process.env.VAPID_PRIVATE_KEY && process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) {
-            webpush.setVapidDetails(
-                process.env.VAPID_EMAIL ?? 'mailto:ops@haulcommand.com',
-                process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
-                process.env.VAPID_PRIVATE_KEY,
-            );
-            const results = await Promise.allSettled(
-                subscribers.map(sub =>
-                    webpush.sendNotification(
-                        { endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } },
-                        JSON.stringify({ title: payload.title, body: payload.body, icon: payload.icon ?? '/icons/icon-192.png', url: payload.url ?? '/', tag: payload.tag ?? `hc-${Date.now()}` }),
-                    ).catch((err: { statusCode?: number }) => {
-                        if (err?.statusCode === 410) {
-                        (async () => { try { await admin.from('web_push_subscriptions').update({ active: false }).eq('endpoint', sub.endpoint); } catch {} })()
-                        }
-                        throw err;
-                    }),
-                ),
-            );
-            sent = results.filter(r => r.status === 'fulfilled').length;
-        } else {
-            console.warn('[push/send] VAPID keys not configured — run: npx web-push generate-vapid-keys');
+        if (tErr) throw tErr;
+        if (!tokens?.length) {
+          return { entities_processed: 0, result: { sent: 0, reason: 'no_active_tokens' } };
         }
-    } catch (err) {
-        console.error('[push/send]', err);
-    }
 
-    ;(async () => { try { await admin.from('swarm_activity_log').insert({
-        agent_name: agent,
-        trigger_reason: 'push_send',
-        action_taken: `Push: "${payload.title}" → ${sent}/${subscribers.length} delivered`,
-        surfaces_touched: ['web_push'],
-        revenue_impact: sent * 2,
-        country: geo ?? 'US',
-        status: 'completed',
-    }); } catch {} })()
+        const payload: PushPayload = {
+          title,
+          body: msgBody || '',
+          data: {
+            ...data,
+            type: notification_type,
+            timestamp: new Date().toISOString(),
+          },
+          imageUrl: image_url,
+          clickAction: click_action,
+        };
 
-    return NextResponse.json({ ok: true, sent, attempted: subscribers.length });
+        let successCount = 0;
+        let failureCount = 0;
+        const invalidTokens: string[] = [];
+
+        if (tokens.length === 1) {
+          // Single token send
+          const result = await sendPush(tokens[0].token, payload);
+          if (result.success) {
+            successCount = 1;
+            // Log to push_log
+            await supabase.from('push_log').insert({
+              user_id: tokens[0].user_id,
+              notification_type,
+              title,
+              body: msgBody,
+              data: payload.data,
+              fcm_message_id: result.messageId,
+              status: 'sent',
+            });
+          } else {
+            failureCount = 1;
+            if (result.error === 'invalid_token') {
+              invalidTokens.push(tokens[0].token);
+            }
+            await supabase.from('push_log').insert({
+              user_id: tokens[0].user_id,
+              notification_type,
+              title,
+              body: msgBody,
+              data: payload.data,
+              status: result.error === 'invalid_token' ? 'invalid_token' : 'failed',
+              error_message: result.error,
+            });
+          }
+        } else {
+          // Batch send
+          const tokenStrings = tokens.map(t => t.token);
+          const batchResult = await sendPushBatch(tokenStrings, payload);
+          successCount = batchResult.successCount;
+          failureCount = batchResult.failureCount;
+          invalidTokens.push(...batchResult.invalidTokens);
+
+          // Bulk log
+          const logEntries = tokens.map(t => ({
+            user_id: t.user_id,
+            notification_type,
+            title,
+            body: msgBody,
+            data: payload.data,
+            status: batchResult.invalidTokens.includes(t.token) ? 'invalid_token' : 'sent',
+          }));
+          await supabase.from('push_log').insert(logEntries);
+        }
+
+        // Deactivate invalid tokens
+        if (invalidTokens.length > 0) {
+          await supabase
+            .from('push_tokens')
+            .update({ is_active: false })
+            .in('token', invalidTokens);
+        }
+
+        return {
+          entities_processed: tokens.length,
+          result: {
+            sent: successCount,
+            failed: failureCount,
+            invalid_tokens_cleaned: invalidTokens.length,
+            notification_type,
+          },
+        };
+      },
+      { provider: 'firebase', model: 'fcm-v1' }
+    );
+
+    return NextResponse.json({
+      success: true,
+      command_layer: 'heartbeat_tracked',
+      ...(result as any)?.result,
+    });
+  } catch (err: any) {
+    console.error('[push/send] Error:', err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
 }
-
-// GET ?vapid=1 — returns public VAPID key for browser subscription
-export async function GET(req: NextRequest) {
-    if (req.nextUrl.searchParams.get('vapid')) {
-        const key = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
-        if (!key) return NextResponse.json({
-            error: 'VAPID not configured',
-            setup: ['npx web-push generate-vapid-keys', 'Add keys to .env.local', 'npm install web-push'],
-        }, { status: 503 });
-        return NextResponse.json({ publicKey: key });
-    }
-    return NextResponse.json({ error: 'Use ?vapid=1' }, { status: 405 });
-}
-
-

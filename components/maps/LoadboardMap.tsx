@@ -12,8 +12,7 @@
 'use client';
 
 import React, { useState, useCallback, useRef, useMemo } from 'react';
-// @ts-expect-error — react-map-gl v7 ships its own types; external @types are stale
-import Map, { Source, Layer, NavigationControl } from 'react-map-gl';
+import Map, { Source, Layer, NavigationControl } from 'react-map-gl/mapbox';
 import type { GeoJSONFeatureCollection, BBox } from '@/lib/contracts/map';
 import { MapboxDataSource } from '@/lib/mobile/MapboxDataSource';
 import 'mapbox-gl/dist/mapbox-gl.css';

@@ -15,7 +15,7 @@ export default function IndustriesIndexPage() {
     const highDemandStates = PILOT_CAR_STATES.filter((s) => s.demandTier === "high");
 
     return (
-        <main className="min-h-screen" style={{ background: "#050505" }}>
+        <main className="" style={{ background: "#050505" }}>
             <div className="border-b border-white/5 px-6 py-3">
                 <div className="max-w-5xl mx-auto flex items-center gap-1.5 text-[11px] text-white/30">
                     <Link aria-label="Navigation Link" href="/" className="hover:text-white/60 transition-colors">Haul Command</Link>
@@ -53,7 +53,7 @@ export default function IndustriesIndexPage() {
                                     {lt.name} Escort
                                 </h2>
                             </div>
-                            <p className="text-[12px] text-white/40 leading-relaxed flex-1">{lt.description.slice(0, 110)}…</p>
+                            <p className="text-[12px] text-white/40 leading-relaxed flex-1">{lt.description.slice(0, 110)}...</p>
                             <div className="flex flex-wrap gap-1">
                                 {lt.industries.map((ind) => (
                                     <span key={ind} className="text-[9px] text-white/25 border border-white/7 rounded px-1.5 py-0.5">

@@ -29,8 +29,9 @@ function run(cmd, label) {
 console.log(`\n${GOLD}━━━ Haul Command Pre-Push Gate ━━━${RESET}`);
 
 const checks = [
-    // TypeScript — catch type errors before they reach Vercel
-    () => run('npx tsc --noEmit --skipLibCheck', 'TypeScript check'),
+    // TypeScript — skip in pre-push (codebase too large for in-hook tsc; OOMs at 8GB)
+    // TS is checked by Vercel build on every deploy. Run manually: npx tsc --noEmit --skipLibCheck
+    // () => run('node --max-old-space-size=8192 ./node_modules/.bin/tsc --noEmit --skipLibCheck', 'TypeScript check'),
     // Route collision — look for duplicate catch-all patterns
     () => checkRouteCollisions(),
 ];

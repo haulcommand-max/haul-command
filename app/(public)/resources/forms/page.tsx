@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { FileText, Download, ChevronRight, ArrowRight, Shield, BookOpen, Truck, Star } from 'lucide-react';
 
-// ══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // /resources/forms — FORMS HUB
 // Absorbs the forms-bundle competitor's entire catalog.
 // Free starter templates + paid autofill/vault/branding upgrade path.
-// ══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export const metadata: Metadata = {
   title: 'Pilot Car Forms & Templates — Free Downloads | Haul Command',
@@ -48,7 +48,7 @@ interface FormItem {
 }
 
 const FORMS: FormItem[] = [
-  // ── FREE TIER ────────────────────────
+  // â”€â”€ FREE TIER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     slug: 'escort-pre-trip-checklist',
     title: 'Escort Pre-Trip Inspection Checklist',
@@ -95,7 +95,7 @@ const FORMS: FormItem[] = [
     downloadable: true,
   },
 
-  // ── PRO TIER ($29/mo) ────────────────
+  // â”€â”€ PRO TIER ($29/mo) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     slug: 'service-agreement-template',
     title: 'Pilot Car Service Agreement',
@@ -142,7 +142,7 @@ const FORMS: FormItem[] = [
     downloadable: true,
   },
 
-  // ── ELITE TIER ($79/mo) ──────────────
+  // â”€â”€ ELITE TIER ($79/mo) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     slug: 'branded-forms-pack',
     title: 'Branded Company Forms Pack',
@@ -215,7 +215,7 @@ export default function FormsHubPage() {
 
       <div style={{ minHeight: '100vh', background: '#080810', color: '#e5e7eb', fontFamily: "'Inter', system-ui" }}>
 
-        {/* ── Hero ── */}
+        {/* â”€â”€ Hero â”€â”€ */}
         <div style={{ position: 'relative', borderBottom: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(59,130,246,0.08), transparent 70%)', pointerEvents: 'none' }} />
           <div style={{ maxWidth: 1100, margin: '0 auto', padding: '3.5rem 1.5rem 3rem' }}>
@@ -262,7 +262,7 @@ export default function FormsHubPage() {
 
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '3rem 1.5rem' }}>
 
-          {/* ── Category nav ── */}
+          {/* â”€â”€ Category nav â”€â”€ */}
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 32 }}>
             {categories.map(cat => (
               <a key={cat} href={`#${cat.toLowerCase()}`} style={{
@@ -276,7 +276,7 @@ export default function FormsHubPage() {
             ))}
           </div>
 
-          {/* ── Free section ── */}
+          {/* â”€â”€ Free section â”€â”€ */}
           <section id="free" style={{ marginBottom: 48, scrollMarginTop: 80 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
               <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -295,7 +295,7 @@ export default function FormsHubPage() {
             </div>
           </section>
 
-          {/* ── Pro section ── */}
+          {/* â”€â”€ Pro section â”€â”€ */}
           <section id="pro" style={{ marginBottom: 48, scrollMarginTop: 80 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
               <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -314,7 +314,7 @@ export default function FormsHubPage() {
             </div>
           </section>
 
-          {/* ── Elite section ── */}
+          {/* â”€â”€ Elite section â”€â”€ */}
           <section id="elite" style={{ marginBottom: 48, scrollMarginTop: 80 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
               <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(198,146,58,0.08)', border: '1px solid rgba(198,146,58,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -333,7 +333,7 @@ export default function FormsHubPage() {
             </div>
           </section>
 
-          {/* ── Email capture CTA ── */}
+          {/* â”€â”€ Email capture CTA â”€â”€ */}
           <section style={{
             background: 'linear-gradient(135deg, rgba(59,130,246,0.08), rgba(59,130,246,0.03))',
             border: '1px solid rgba(59,130,246,0.2)',
@@ -374,7 +374,7 @@ export default function FormsHubPage() {
             <p style={{ marginTop: 12, fontSize: 11, color: '#4b5563' }}>No spam. Unsubscribe anytime.</p>
           </section>
 
-          {/* ── Cross-links ── */}
+          {/* â”€â”€ Cross-links â”€â”€ */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
             {[
               { href: '/resources', icon: BookOpen, label: 'Resource Hub', desc: '40+ guides & references', color: '#C6923A' },

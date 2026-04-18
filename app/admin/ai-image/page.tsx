@@ -5,7 +5,7 @@ import { HcGeneratePackShortcuts } from "@/components/admin/HcGeneratePackShortc
 import Link from "next/link";
 
 export const metadata = {
-  title: "AI Image Engine – HAUL COMMAND Admin",
+  title: "AI Image Engine - HAUL COMMAND Admin",
 };
 
 export default function AiImagePage() {
@@ -20,7 +20,7 @@ export default function AiImagePage() {
             AI IMAGE ENGINE
           </h1>
           <p style={{ fontSize: "12px", color: "#5a6f82", marginTop: "4px" }}>
-            Generate • Edit • Template • Pack • Review
+            Generate "¢ Edit "¢ Template "¢ Pack "¢ Review
           </p>
         </div>
         <div style={{ display: "flex", gap: "8px" }}>
@@ -37,7 +37,7 @@ export default function AiImagePage() {
               textDecoration: "none",
             }}
           >
-            📂 Asset Library →
+            ðŸ"‚ Asset Library →
           </Link>
           <Link aria-label="Navigation Link"
             href="/admin/ai-review"
@@ -52,7 +52,7 @@ export default function AiImagePage() {
               textDecoration: "none",
             }}
           >
-            🔬 Variant Review →
+            ðŸ"¬ Variant Review →
           </Link>
         </div>
       </div>
@@ -81,7 +81,7 @@ export default function AiImagePage() {
         textAlign: "center",
       }}>
         <div style={{ fontSize: "13px", color: "#5a6f82" }}>
-          💡 <strong>Pack Generation</strong> and <strong>Variant Generation</strong> are available on entity admin pages.
+          ðŸ’¡ <strong>Pack Generation</strong> and <strong>Variant Generation</strong> are available on entity admin pages.
         </div>
         <div style={{ fontSize: "11px", color: "#3d4f5f", marginTop: "6px" }}>
           Navigate to a directory listing, broker profile, or other entity to generate image packs and run A/B variant tests.

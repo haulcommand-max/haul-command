@@ -1,0 +1,26 @@
+# GEMINI-03: Regression and acceptance-test pack generation
+# Focus: Route acceptance, API contracts, Push Notifications
+
+qa_regression_matrix:
+  routes:
+    - path: "/corridors/[slug]"
+      tests:
+        - "Verify intent matrix renders without searchVolumeEstimate=high nodes"
+        - "Verify 404 response if slug is not matched in h3_corridor_intelligence"
+        - "Verify JSON-LD QuickAnswerBlock parses successfully in Google Rich Results Test"
+    - path: "/directory/[country]"
+      tests:
+        - "Verify subRegions dynamically map to correct state folders"
+        - "Verify CompetitorAbsorptionCard fallback triggers when URL params empty"
+  
+  api_contracts:
+    - endpoint: "/api/developers/sandbox-key"
+      tests:
+        - "Assert 401 when no session provided"
+        - "Assert 429 when rate limit of 5 requests/min exceeded"
+  
+  push_notifications:
+    - scenario: "Compliance Reminder Run"
+      tests:
+        - "Assert FCM payload format matches mobile target expectations"
+        - "Verify fallback gracefully degrades to email if no FCM token exists"

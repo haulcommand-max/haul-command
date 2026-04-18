@@ -23,7 +23,7 @@ export function RouteSurveyDashboard({ routeId }: { routeId: string }) {
       <ul className="space-y-2">
         {hazards.map((h, i) => (
           <li key={i} className="flex justify-between p-3 bg-hc-gray-800 rounded text-sm">
-            <span className="font-bold text-red-400">⚠ {h.type}</span>
+            <span className="font-bold text-red-400">âš  {h.type}</span>
             <span className="text-hc-gray-300">{h.height || h.desc}</span>
           </li>
         ))}
@@ -91,7 +91,7 @@ export function DispatchRequestWizard() {
              <label className="text-xs text-hc-gray-400 uppercase">Routing Destination</label>
              <input type="text" placeholder="Denver, CO" className="w-full bg-hc-gray-900 p-3 rounded mt-1 outline-none focus:ring-1 focus:ring-hc-yellow-400" />
           </div>
-          <button onClick={() => setStep(2)} className="w-full bg-hc-yellow-400 text-black py-3 rounded font-bold uppercase transition-transform hover:scale-[1.02]">Next: Load Info</button>
+          <button onClick={() => setStep(2)} className="w-full bg-hc-yellow-400 text-white py-3 rounded font-bold uppercase transition-transform hover:scale-[1.02]">Next: Load Info</button>
         </div>
       )}
 
@@ -112,19 +112,19 @@ export function DispatchRequestWizard() {
           </div>
           <div className="flex gap-4">
             <button onClick={() => setStep(1)} className="w-1/3 bg-hc-gray-700 py-3 rounded font-bold">Back</button>
-            <button onClick={() => setStep(3)} className="w-2/3 bg-white text-black py-3 rounded font-bold uppercase">Next: Finalize</button>
+            <button onClick={() => setStep(3)} className="w-2/3 bg-[#121212] text-white py-3 rounded font-bold uppercase">Next: Finalize</button>
           </div>
         </div>
       )}
 
       {step === 3 && (
         <div className="space-y-4 text-center animate-in fade-in">
-          <div className="text-5xl mb-4">✅</div>
+          <div className="text-5xl mb-4">âœ…</div>
           <h3 className="text-xl font-bold">Dispatch Ready for Broadcast</h3>
           <p className="text-hc-gray-400 text-sm">Targeting verified operators with active High-Pole capabilities in the TX/CO corridor.</p>
           <div className="flex gap-4 mt-6">
             <button onClick={() => setStep(2)} className="w-1/3 bg-hc-gray-700 py-3 rounded font-bold">Back</button>
-            <button className="w-2/3 bg-hc-yellow-400 text-black py-3 shadow-xl rounded font-bold uppercase hover:bg-yellow-500">Broadacst Request</button>
+            <button className="w-2/3 bg-hc-yellow-400 text-white py-3 shadow-xl rounded font-bold uppercase hover:bg-yellow-500">Broadacst Request</button>
           </div>
         </div>
       )}

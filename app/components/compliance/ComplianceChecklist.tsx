@@ -28,7 +28,7 @@ export default function ComplianceChecklist() {
   return (
     <div className="bg-black border border-hc-gray-700 rounded-lg p-6 max-w-md w-full text-white mx-auto shadow-2xl">
       <h2 className="text-xl font-bold mb-1 flex items-center gap-2">
-        <span className="text-hc-yellow-400">⚠</span> Pre-Trip Safety Protocol
+        <span className="text-hc-yellow-400">âš </span> Pre-Trip Safety Protocol
       </h2>
       <p className="text-xs text-hc-gray-400 mb-6">Must be completed before route initiation.</p>
 
@@ -53,7 +53,7 @@ export default function ComplianceChecklist() {
 
       <button 
         disabled={!isComplete}
-        className={`w-full mt-6 py-4 rounded font-extrabold uppercase tracking-widest transition-all ${isComplete ? 'bg-hc-yellow-400 text-black hover:bg-yellow-500 shadow-lg shadow-yellow-900/50' : 'bg-hc-gray-800 text-hc-gray-600 cursor-not-allowed'}`}
+        className={`w-full mt-6 py-4 rounded font-extrabold uppercase tracking-widest transition-all ${isComplete ? 'bg-hc-yellow-400 text-white hover:bg-yellow-500 shadow-lg shadow-yellow-900/50' : 'bg-hc-gray-800 text-hc-gray-600 cursor-not-allowed'}`}
       >
         {isComplete ? 'Initiate Dispatch' : 'Complete Checks'}
       </button>

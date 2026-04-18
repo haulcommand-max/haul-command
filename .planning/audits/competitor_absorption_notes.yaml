@@ -1,0 +1,10 @@
+# GEMINI-06: Competitor Absorption Notes
+
+competitor_absorption_notes:
+  features:
+    - name: "/available-now"
+      competitor_flaw: "Legacy boards rely on operators updating their status via forms, resulting in stale data (ghost cars)."
+      absorption_strategy: "Use Haul Command telematics hook or background Geolocation to keep pulses 100% active. Auto-expire pulses after 4 hours to guarantee trust."
+    - name: "Vendor Density"
+      competitor_flaw: "Other networks charge for list access safely hidden behind paywalls."
+      absorption_strategy: "Expose vendor density openly visually (MarketClusterGrid), charge only for verified contact routing (Escrow / Dispatch)."

@@ -43,7 +43,7 @@ export default function AdminCorridorsPage() {
                 body: JSON.stringify({ corridor_slug: slug }),
             });
             const data = await res.json();
-            setNudgeResult(prev => ({ ...prev, [slug]: res.ok ? `✓ ${data.notified ?? 0} escorts notified` : `✗ ${data.error ?? "error"}` }));
+            setNudgeResult(prev => ({ ...prev, [slug]: res.ok ? `âœ“ ${data.notified ?? 0} escorts notified` : `âœ— ${data.error ?? "error"}` }));
         } finally {
             setNudging(null);
         }
@@ -53,7 +53,7 @@ export default function AdminCorridorsPage() {
     const atRisk = rows.filter(r => r.band === "at_risk");
 
     return (
-        <div className="min-h-screen bg-slate-950 text-slate-200 p-6">
+        <div className="  text-slate-200 p-6">
             <div className="max-w-5xl mx-auto">
 
                 {/* Header */}
@@ -98,7 +98,7 @@ export default function AdminCorridorsPage() {
                 </div>
 
                 {/* Corridor table */}
-                <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+                <div className=" border border-slate-800 rounded-2xl overflow-hidden">
                     <div className="p-4 border-b border-slate-800 flex items-center justify-between">
                         <h2 className="font-bold text-white">All Corridors</h2>
                         <span className="text-xs text-slate-500">{rows.length} monitored</span>
@@ -167,7 +167,7 @@ export default function AdminCorridorsPage() {
                                                 <button aria-label="Interactive Button"
                                                     onClick={() => handleNudge(row.corridor_slug)}
                                                     disabled={nudging === row.corridor_slug}
-                                                    className="flex items-center gap-1.5 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-900 text-xs font-bold px-3 py-1.5 rounded-lg transition-colors"
+                                                    className="flex items-center gap-1.5 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors"
                                                 >
                                                     <Bell className="w-3 h-3" />
                                                     {nudging === row.corridor_slug ? "Sending..." : "Nudge Escorts"}

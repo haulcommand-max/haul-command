@@ -66,7 +66,7 @@ function OfferCard({ offer, onAccept, onDecline, accepting }: {
                             </span>
                         )}
                     </div>
-                    <div style={{ fontSize: 12, color: '#64748b', fontFamily: 'monospace' }}>{offer.load_id.slice(0, 12)}…</div>
+                    <div style={{ fontSize: 12, color: '#64748b', fontFamily: 'monospace' }}>{offer.load_id.slice(0, 12)}...</div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
                     <div style={{ fontSize: 28, fontWeight: 900, color: '#22c55e', letterSpacing: -1 }}>
@@ -82,19 +82,19 @@ function OfferCard({ offer, onAccept, onDecline, accepting }: {
             {offer.loads && (
                 <div style={{ background: '#080d18', borderRadius: 8, padding: '10px 14px', marginBottom: 14, fontSize: 12, color: '#94a3b8' }}>
                     <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                        <span style={{ color: '#22c55e' }}>📍</span>
+                        <span style={{ color: '#22c55e' }}>ðŸ“</span>
                         <span>{offer.loads.origin_lat?.toFixed(3)}, {offer.loads.origin_lng?.toFixed(3)}</span>
-                        <span style={{ color: '#475569' }}>→</span>
+                        <span style={{ color: '#475569' }}>â†’</span>
                         <span>{offer.loads.dest_lat?.toFixed(3)}, {offer.loads.dest_lng?.toFixed(3)}</span>
                     </div>
                     {offer.loads.pickup_start && (
                         <div style={{ marginTop: 6, color: '#475569' }}>
-                            🕒 {new Date(offer.loads.pickup_start).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                            ðŸ•’ {new Date(offer.loads.pickup_start).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                         </div>
                     )}
                     {offer.loads.load_height && (
                         <div style={{ marginTop: 4, color: '#475569' }}>
-                            📐 {offer.loads.load_height}ft H × {offer.loads.load_width}ft W
+                            ðŸ“ {offer.loads.load_height}ft H × {offer.loads.load_width}ft W
                         </div>
                     )}
                 </div>
@@ -135,7 +135,7 @@ function OfferCard({ offer, onAccept, onDecline, accepting }: {
                             background: 'linear-gradient(135deg, #22c55e, #16a34a)', color: '#fff', fontWeight: 700, fontSize: 14,
                             opacity: accepting === offer.id ? 0.7 : 1
                         }}>
-                        {accepting === offer.id ? '⏳ Reserving...' : '✅ Accept & Reserve'}
+                        {accepting === offer.id ? 'â³ Reserving...' : 'âœ… Accept & Reserve'}
                     </button>
                 </div>
             )}
@@ -145,7 +145,7 @@ function OfferCard({ offer, onAccept, onDecline, accepting }: {
                     padding: '11px 0', borderRadius: 8, background: '#052e16',
                     color: '#22c55e', textAlign: 'center', fontWeight: 700, fontSize: 14
                 }}>
-                    ✅ Reserved — waiting for broker confirmation
+                    âœ… Reserved — waiting for broker confirmation
                 </div>
             )}
 
@@ -245,7 +245,7 @@ export default function DriverOfferInboxPage() {
                                 color: availability === s ? '#fff' : '#64748b',
                                 transition: 'all 0.2s'
                             }}>
-                            {s === 'available' ? '🟢 Available' : s === 'near_ready' ? '🟡 Near-Ready' : '⚫ Off'}
+                            {s === 'available' ? 'ðŸŸ¢ Available' : s === 'near_ready' ? 'ðŸŸ¡ Near-Ready' : 'âš« Off'}
                         </button>
                     ))}
                 </div>
@@ -256,7 +256,7 @@ export default function DriverOfferInboxPage() {
                 {acceptedOffers.length > 0 && (
                     <div style={{ marginBottom: 24 }}>
                         <div style={{ fontSize: 12, fontWeight: 700, color: '#22c55e', marginBottom: 10, textTransform: 'uppercase', letterSpacing: 0.8 }}>
-                            ✅ Soft Reserved — Awaiting Broker Confirmation
+                            âœ… Soft Reserved — Awaiting Broker Confirmation
                         </div>
                         {acceptedOffers.map(o => (
                             <OfferCard key={o.id} offer={o} onAccept={handleAccept} onDecline={handleDecline} accepting={accepting} />
@@ -268,7 +268,7 @@ export default function DriverOfferInboxPage() {
                 {activeOffers.length > 0 ? (
                     <>
                         <div style={{ fontSize: 12, fontWeight: 700, color: '#f97316', marginBottom: 10, textTransform: 'uppercase', letterSpacing: 0.8 }}>
-                            ⚡ Active Offers
+                            âš¡ Active Offers
                         </div>
                         {activeOffers.map(o => (
                             <OfferCard key={o.id} offer={o} onAccept={handleAccept} onDecline={handleDecline} accepting={accepting} />
@@ -276,7 +276,7 @@ export default function DriverOfferInboxPage() {
                     </>
                 ) : acceptedOffers.length === 0 ? (
                     <div style={{ textAlign: 'center', padding: '60px 20px' }}>
-                        <div style={{ fontSize: 48, marginBottom: 16 }}>📭</div>
+                        <div style={{ fontSize: 48, marginBottom: 16 }}>ðŸ“­</div>
                         <div style={{ fontSize: 18, fontWeight: 700, color: '#334155', marginBottom: 8 }}>No active offers</div>
                         <div style={{ fontSize: 14, color: '#475569' }}>
                             {availability === 'unavailable'
@@ -294,10 +294,10 @@ export default function DriverOfferInboxPage() {
                         justifyContent: 'space-between', alignItems: 'center'
                     }}>
                     <div>
-                        <div style={{ fontSize: 14, fontWeight: 600, color: '#e2e8f0' }}>📄 Compliance Wallet</div>
+                        <div style={{ fontSize: 14, fontWeight: 600, color: '#e2e8f0' }}>ðŸ“„ Compliance Wallet</div>
                         <div style={{ fontSize: 12, color: '#475569', marginTop: 2 }}>Manage documents, certs &amp; renewals</div>
                     </div>
-                    <div style={{ fontSize: 18, color: '#475569' }}>›</div>
+                    <div style={{ fontSize: 18, color: '#475569' }}>"º</div>
                 </a>
             </div>
         </div>

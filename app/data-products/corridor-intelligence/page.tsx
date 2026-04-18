@@ -96,12 +96,12 @@ export default async function CorridorIntelligencePage() {
   const totalCorridors = count ?? 309;
 
   return (
-    <main className="min-h-screen bg-[#0a0d14] text-white">
+    <main className=" bg-[#0a0d14] text-white">
       {/* Hero */}
       <section className="border-b border-white/8 bg-gradient-to-b from-[#0f1420] to-[#0a0d14] px-4 py-20 text-center">
         <div className="mx-auto max-w-3xl">
           <span className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-amber-400">
-            📊 Data Products OS
+            ðŸ“Š Data Products OS
           </span>
           <h1 className="mt-5 text-4xl font-black tracking-tight sm:text-5xl">
             Corridor Intelligence
@@ -112,12 +112,12 @@ export default async function CorridorIntelligencePage() {
           <p className="mt-4 text-lg text-white/60">
             The only data product covering escort rates, permit requirements, demand
             signals, and credential maps across {totalCorridors.toLocaleString()}+
-            heavy haul corridors in 120 countries.
+            heavy haul corridors in 50+ countries.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
               href="#pricing"
-              className="rounded-xl bg-amber-500 px-6 py-3 text-sm font-bold text-black hover:bg-amber-400 transition-colors"
+              className="rounded-xl bg-amber-500 px-6 py-3 text-sm font-bold text-white hover:bg-amber-400 transition-colors"
             >
               View Pricing
             </Link>
@@ -162,7 +162,7 @@ export default async function CorridorIntelligencePage() {
             <p className="mb-4 text-sm font-semibold text-white/70">Unlock full rate benchmarks for this corridor</p>
             <Link
               href="/checkout?product=corridor-starter"
-              className="rounded-xl bg-amber-500 px-8 py-3 text-sm font-bold text-black hover:bg-amber-400 transition-colors"
+              className="rounded-xl bg-amber-500 px-8 py-3 text-sm font-bold text-white hover:bg-amber-400 transition-colors"
             >
               Unlock for $49 / mo
             </Link>
@@ -192,7 +192,7 @@ export default async function CorridorIntelligencePage() {
             ))}
           </div>
           <p className="mt-4 text-center text-sm text-white/40">
-            + {(totalCorridors - SAMPLE_CORRIDORS.length).toLocaleString()} more corridors across 120 countries
+            + {(totalCorridors - SAMPLE_CORRIDORS.length).toLocaleString()} more corridors across 50+ countries
           </p>
         </div>
       </section>
@@ -213,7 +213,7 @@ export default async function CorridorIntelligencePage() {
                 }`}
               >
                 {t.highlight && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-amber-500 px-4 py-0.5 text-xs font-bold text-black">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-amber-500 px-4 py-0.5 text-xs font-bold text-white">
                     Most Popular
                   </span>
                 )}
@@ -226,7 +226,7 @@ export default async function CorridorIntelligencePage() {
                 <ul className="mt-5 flex-1 space-y-2">
                   {t.features.map(f => (
                     <li key={f} className="flex items-start gap-2 text-sm text-white/70">
-                      <span className="mt-0.5 text-amber-400">✓</span>
+                      <span className="mt-0.5 text-amber-400">âœ“</span>
                       {f}
                     </li>
                   ))}
@@ -235,7 +235,7 @@ export default async function CorridorIntelligencePage() {
                   href={t.href}
                   className={`mt-6 rounded-xl py-3 text-center text-sm font-bold transition-colors ${
                     t.highlight
-                      ? 'bg-amber-500 text-black hover:bg-amber-400'
+                      ? 'bg-amber-500 text-white hover:bg-amber-400'
                       : 'border border-white/15 text-white hover:border-white/30'
                   }`}
                 >
@@ -252,12 +252,12 @@ export default async function CorridorIntelligencePage() {
         <h2 className="mb-8 text-2xl font-black text-white">What's inside every corridor report</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[
-            { icon: '💰', label: 'Rate Benchmarks', desc: 'Min, median, 95th pct escort and operator rates per corridor' },
-            { icon: '📋', label: 'Permit Maps', desc: 'Which permits are required, who issues them, processing time' },
-            { icon: '🪪', label: 'Credential Requirements', desc: 'Required and preferred credentials per corridor and country' },
-            { icon: '📈', label: 'Demand Signals', desc: 'Search volume and commercial value estimates by corridor' },
-            { icon: '🌐', label: 'Cross-Border Logic', desc: 'Dual-permit requirements and customs documents for border corridors' },
-            { icon: '🔄', label: 'Freshness State', desc: 'Confidence scores and data freshness rating per requirement' },
+            { icon: 'ðŸ’°', label: 'Rate Benchmarks', desc: 'Min, median, 95th pct escort and operator rates per corridor' },
+            { icon: 'ðŸ“‹', label: 'Permit Maps', desc: 'Which permits are required, who issues them, processing time' },
+            { icon: 'ðŸªª', label: 'Credential Requirements', desc: 'Required and preferred credentials per corridor and country' },
+            { icon: 'ðŸ“ˆ', label: 'Demand Signals', desc: 'Search volume and commercial value estimates by corridor' },
+            { icon: 'ðŸŒ', label: 'Cross-Border Logic', desc: 'Dual-permit requirements and customs documents for border corridors' },
+            { icon: 'ðŸ”„', label: 'Freshness State', desc: 'Confidence scores and data freshness rating per requirement' },
           ].map(card => (
             <div key={card.label} className="rounded-xl border border-white/8 bg-white/4 p-5">
               <span className="text-2xl">{card.icon}</span>

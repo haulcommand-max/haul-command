@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function RateGuidePage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0b] text-white">
+    <div className=" bg-[#0a0a0b] text-white">
       {/* HEADER ENTRY */}
       <section className="py-16 pt-24 px-4 bg-gradient-to-b from-[#1a1306] to-[#0a0a0b] border-b border-white/[0.05]">
         <div className="max-w-5xl mx-auto text-center">

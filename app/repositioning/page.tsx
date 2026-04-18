@@ -37,11 +37,11 @@ function timeAgo(iso: string) {
 }
 
 const SERVICE_LABEL: Record<string, string> = {
-  pilot_car: '🚕 Pilot Car',
-  escort_truck: '🚚 Escort Truck',
-  height_pole: '⚠️ Height Pole',
-  wide_load: '↔️ Wide Load',
-  oversize: '📏 Oversize',
+  pilot_car: 'ðŸš• Pilot Car',
+  escort_truck: 'ðŸšš Escort Truck',
+  height_pole: '⚠️ï¸ Height Pole',
+  wide_load: 'â†"ï¸ Wide Load',
+  oversize: 'ðŸ" Oversize',
 }
 
 export default function RepositioningPage() {
@@ -148,14 +148,14 @@ export default function RepositioningPage() {
   })
 
   return (
-    <div className="min-h-screen bg-[#07090d] text-[#f0f2f5]" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+    <div className=" bg-[#07090d] text-[#f0f2f5]" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
 
       {/* Schema */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'WebPage',
         name: 'Repositioning & Backhaul Board | Haul Command',
-        description: 'Find and broadcast repositioning / backhaul capacity for heavy haul escorts. Real-time operator reposition feed across 120 countries.',
+        description: 'Find and broadcast repositioning / backhaul capacity for heavy haul escorts. Real-time operator reposition feed across 50+ countries.',
         url: 'https://www.haulcommand.com/repositioning',
       })}} />
 
@@ -180,7 +180,7 @@ export default function RepositioningPage() {
           <div className="flex flex-wrap gap-3 items-center">
             <button
               onClick={() => setShowForm(true)}
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-black text-sm font-black shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] transition-all"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-black shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] transition-all"
             >
               <Radio className="w-4 h-4" />
               Broadcast My Position
@@ -271,7 +271,7 @@ export default function RepositioningPage() {
             <div className="flex gap-3 mt-5">
               <button
                 onClick={broadcast}
-                className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-black text-sm font-black"
+                className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-black"
               >
                 Go Live
               </button>
@@ -294,7 +294,7 @@ export default function RepositioningPage() {
           <input
             value={filter}
             onChange={e => setFilter(e.target.value)}
-            placeholder="Filter by location, service, operator…"
+            placeholder="Filter by location, service, operator..."
             className="flex-1 bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-2.5 text-sm focus:border-amber-500/50 focus:outline-none"
           />
           <div className="text-xs text-[#566880] shrink-0">{filtered.length} broadcasting</div>
@@ -308,7 +308,7 @@ export default function RepositioningPage() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-16 rounded-2xl border border-[#1e3048] bg-[#0f1a24]">
-            <div className="text-4xl mb-3">📡</div>
+            <div className="text-4xl mb-3">ðŸ"¡</div>
             <p className="font-bold text-white mb-1">No repositioning broadcasts right now</p>
             <p className="text-sm text-[#566880] mb-4">Be the first — broadcast your position and get found by brokers looking for capacity.</p>
             <button
@@ -380,11 +380,11 @@ export default function RepositioningPage() {
           <p className="text-xs text-[#3a5068] mb-3">Related resources</p>
           <div className="flex flex-wrap gap-2">
             {[
-              { href: '/available-now', label: '🟢 Available Now' },
-              { href: '/load-board', label: '📋 Load Board' },
-              { href: '/directory', label: '🔍 Operator Directory' },
-              { href: '/tools/route-planner', label: '🗺️ Route Planner' },
-              { href: '/corridors', label: '🛣️ Corridor Intelligence' },
+              { href: '/available-now', label: 'ðŸŸ¢ Available Now' },
+              { href: '/load-board', label: 'ðŸ"‹ Load Board' },
+              { href: '/directory', label: 'ðŸ" Operator Directory' },
+              { href: '/tools/route-planner', label: 'ðŸ—ºï¸ Route Planner' },
+              { href: '/corridors', label: 'ðŸ›£ï¸ Corridor Intelligence' },
             ].map(l => (
               <Link key={l.href} href={l.href} className="text-xs px-3 py-1.5 rounded-lg border border-[#1e3048] text-[#566880] hover:text-amber-400 hover:border-amber-500/25 transition-all">
                 {l.label}

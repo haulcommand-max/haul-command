@@ -142,7 +142,7 @@ export default async function BadgePage() {
                         href="/app/profile"
                         style={{ display: 'inline-block', padding: '10px 28px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}
                     >
-                        Go to Profile Settings →
+                        Go to Profile Settings â†’
                     </a>
                 </section>
 

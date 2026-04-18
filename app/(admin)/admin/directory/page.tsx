@@ -87,7 +87,7 @@ export default function DirectoryPage() {
                     <div className="text-center py-20 text-[#444]">Loading directory...</div>
                 ) : providers.length === 0 ? (
                     <div className="text-center py-20">
-                        <div className="text-4xl mb-4">📂</div>
+                        <div className="text-4xl mb-4">ðŸ“‚</div>
                         <h3 className="text-lg font-bold text-[#888] mb-2">Directory Empty</h3>
                         <p className="text-sm text-[#444]">No operators in the directory yet. Run the seed script or import operators to populate.</p>
                     </div>
@@ -116,7 +116,7 @@ export default function DirectoryPage() {
                         <button aria-label="Interactive Button"
                             disabled={processing}
                             onClick={() => handleToggleVerify(selectedProvider)}
-                            className="flex-1 bg-[#ffb400] text-black py-3 rounded text-xs font-black uppercase hover:bg-yellow-500 transition-all disabled:opacity-50"
+                            className="flex-1 bg-[#ffb400] text-white py-3 rounded text-xs font-black uppercase hover:bg-yellow-500 transition-all disabled:opacity-50"
                         >
                             {processing ? '...' : (selectedProvider?.verified ? 'Unverify' : 'Verify Now')}
                         </button>
@@ -163,7 +163,7 @@ function ProviderCard({ provider, onClick }: any) {
             onClick={onClick}
         >
             {provider.sponsor && (
-                <div className="absolute top-0 right-0 px-2 py-0.5 bg-[#ffb400] text-black text-[8px] font-black uppercase">
+                <div className="absolute top-0 right-0 px-2 py-0.5 bg-[#ffb400] text-white text-[8px] font-black uppercase">
                     Sponsor
                 </div>
             )}
@@ -175,7 +175,7 @@ function ProviderCard({ provider, onClick }: any) {
             </div>
             <div className="flex items-center gap-4 text-[10px] font-bold text-[#444]">
                 <div className="flex items-center gap-1">
-                    <span className="text-[#ffb400]">★</span> {provider.rating}
+                    <span className="text-[#ffb400]">â˜…</span> {provider.rating}
                 </div>
                 <div>{provider.jobs} Jobs</div>
                 <div className="text-[#ffb400]">{provider.region}</div>

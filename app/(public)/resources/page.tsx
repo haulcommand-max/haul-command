@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     },
 };
 
-// ── Schema ────────────────────────────────────────────────────────────────────
+// â”€â”€ Schema â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const COLLECTION_SCHEMA = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -79,7 +79,7 @@ const FAQ_SCHEMA = {
     ],
 };
 
-// ── Resource Data ──────────────────────────────────────────────────────────────
+// â”€â”€ Resource Data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const RESOURCE_CLUSTERS = [
     {
@@ -212,7 +212,7 @@ export default function ResourceHubPage() {
 
             <div style={{ minHeight: '100vh', background: '#080810', color: '#e5e7eb', fontFamily: "'Inter', system-ui" }}>
 
-                {/* ── Hero ────────────────────────────────────────────────── */}
+                {/* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                 <div style={{ position: 'relative', borderBottom: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden' }}>
                     <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(198,146,58,0.1), transparent 70%)', pointerEvents: 'none' }} />
                     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '3.5rem 1.5rem 3rem' }}>
@@ -260,7 +260,7 @@ export default function ResourceHubPage() {
                     </div>
                 </div>
 
-                {/* ── Quick Jump Navigation ────────────────────────────────── */}
+                {/* â”€â”€ Quick Jump Navigation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                 <div style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', background: 'rgba(255,255,255,0.01)' }}>
                     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 1.5rem' }}>
                         <div style={{ display: 'flex', gap: 0, overflowX: 'auto' }}>
@@ -278,7 +278,7 @@ export default function ResourceHubPage() {
                 </div>
 
                 <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem 1.5rem 3rem' }}>
-                    {/* ── Document Filter Bar (New) ─────────────────────────── */}
+                    {/* â”€â”€ Document Filter Bar (New) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: '2rem', padding: '1rem', background: '#111', borderRadius: 12, border: '1px solid rgba(255,255,255,0.05)' }}>
                         <select style={{ flex: 1, minWidth: 140, background: '#000', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', padding: '8px 12px', borderRadius: 8, fontSize: 13 }}>
                             <option value="">Any Country (120)</option>
@@ -305,7 +305,7 @@ export default function ResourceHubPage() {
                         </button>
                     </div>
 
-                    {/* ── Resource Clusters ─────────────────────────────────── */}
+                    {/* â”€â”€ Resource Clusters â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                     {RESOURCE_CLUSTERS.map(cluster => {
                         const ClusterIcon = cluster.icon;
                         return (
@@ -358,7 +358,7 @@ export default function ResourceHubPage() {
                         );
                     })}
 
-                    {/* ── FAQ Section ───────────────────────────────────────── */}
+                    {/* â”€â”€ FAQ Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                     <section style={{ marginBottom: '4rem' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: '1.5rem' }}>
                             <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(198,146,58,0.08)', border: '1px solid rgba(198,146,58,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -386,12 +386,12 @@ export default function ResourceHubPage() {
 
                         <div style={{ marginTop: 16, textAlign: 'center' }}>
                             <Link href="/glossary" style={{ fontSize: 13, color: '#C6923A', fontWeight: 700, textDecoration: 'none' }}>
-                                Browse the full industry glossary (3,000+ terms) →
+                                Browse the full industry glossary (3,000+ terms) â†’
                             </Link>
                         </div>
                     </section>
 
-                    {/* ── Lead Gen / Gated Downloads CTA ───────────────────── */}
+                    {/* â”€â”€ Lead Gen / Gated Downloads CTA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                     <section style={{ background: 'linear-gradient(135deg, rgba(198,146,58,0.08) 0%, rgba(198,146,58,0.03) 100%)', border: '1px solid rgba(198,146,58,0.2)', borderRadius: 20, padding: '2.5rem', marginBottom: '4rem', textAlign: 'center' }}>
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 12px', background: 'rgba(198,146,58,0.1)', borderRadius: 20, marginBottom: 16 }}>
                             <Download style={{ width: 12, height: 12, color: '#C6923A' }} />
@@ -429,7 +429,7 @@ export default function ResourceHubPage() {
                         </p>
                     </section>
 
-                    {/* ── Cross-Links Section ───────────────────────────────── */}
+                    {/* â”€â”€ Cross-Links Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                     <section style={{ marginBottom: '3rem' }}>
                         <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#f9fafb', marginBottom: '1.25rem' }}>Explore Haul Command</h2>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
@@ -457,7 +457,7 @@ export default function ResourceHubPage() {
                         </div>
                     </section>
 
-                    {/* ── Bottom CTA ───────────────────────────────────────── */}
+                    {/* â”€â”€ Bottom CTA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                     <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20, padding: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20, flexWrap: 'wrap' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                             <AlertTriangle style={{ width: 20, height: 20, color: '#C6923A', flexShrink: 0 }} />

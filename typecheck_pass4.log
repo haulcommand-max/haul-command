@@ -1,0 +1,14 @@
+
+> haul-command-bots@1.0.0 typecheck
+> tsc --noEmit
+
+app/admin/trust/page.tsx(28,24): error TS1127: Invalid character.
+app/admin/trust/page.tsx(28,32): error TS1005: ',' expected.
+app/admin/trust/page.tsx(28,42): error TS1005: ',' expected.
+app/admin/trust/page.tsx(28,46): error TS1005: ',' expected.
+app/admin/trust/page.tsx(28,48): error TS1002: Unterminated string literal.
+app/admin/trust/page.tsx(29,13): error TS1005: ':' expected.
+app/admin/trust/page.tsx(29,17): error TS1005: ',' expected.
+app/admin/trust/page.tsx(29,104): error TS1005: ':' expected.
+app/emergency/nearby/page.tsx(192,57): error TS1127: Invalid character.
+app/emergency/nearby/page.tsx(192,75): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?

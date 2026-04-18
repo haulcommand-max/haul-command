@@ -1,0 +1,83 @@
+ledger:
+  launch_critical:
+    - file: fly/hc-worker/worker.mjs
+      line: 44
+      message: Wire to Firebase Admin SDK
+    - file: fly/hc-worker/worker.mjs
+      line: 51
+      message: Call hc_match_candidates() and create offers
+    - file: app/api/developers/sandbox-key/route.ts
+      line: 61
+      message: Trigger Supabase Edge Function or Resend to deliver key by email
+    - file: lib/workflows/operatorBriefing.ts
+      line: 70
+      message: wire to actual credential check
+    - file: supabase/functions/compliance-reminders-run/index.ts
+      line: 61
+      message: wire to FCM via notification_events
+
+  money_critical:
+    - file: app/api/reports/corridor-intelligence/route.ts
+      line: 81
+      message: Store lead in Supabase enterprise_leads table
+    - file: lib/workflows/compoundedWorkflows.ts
+      line: 64
+      message: join to dom_scorecards
+    - file: lib/funnel/control-loop.ts
+      line: 234
+      message: Get from finance config
+    - file: lib/funnel/control-loop.ts
+      line: 252
+      message: compute activation_cost_trend from historical data
+    - file: lib/funnel/control-loop.ts
+      line: 256
+      message: compute cls_momentum from snapshot trend
+    - file: scripts/data-jobs/corridor_liquidity_refresh.mjs
+      line: 36
+      message: Compute real metrics from loads/escorts tables
+
+  seo_critical:
+    - file: lib/link-graph.ts
+      line: 34
+      message: Implement Supabase RPC call "get_nearest_corridors(lat, lon, 5)"
+    - file: lib/link-graph.ts
+      line: 37
+      message: Implement Supabase RPC call "get_nearest_operators(lat, lon, 5)"
+    - file: lib/link-graph.ts
+      line: 40
+      message: Implement Supabase RPC call "get_nearest_surfaces(lat, lon, 3)"
+    - file: lib/link-graph.ts
+      line: 43
+      message: Implement Supabase RPC call "get_nearest_cities(lat, lon, 3)"
+    - file: lib/link-graph.ts
+      line: 72
+      message: Implement "get_operators_for_corridor(corridorId)"
+    - file: lib/link-graph.ts
+      line: 75
+      message: Implement "get_connecting_corridors(corridorId)"
+    - file: scripts/data-jobs/seo_regenerator.mjs
+      line: 45
+      message: Re-enqueue stale pages
+    - file: fly/hc-worker/worker.mjs
+      line: 93
+      message: Wire to crawl engine
+
+  deferred:
+    - file: lib/trust/composite-trust-engine.ts
+      line: 482
+      message: wire photos when available
+    - file: lib/predictive/execution-engine.ts
+      line: 96
+      message: localize per entity timezone
+    - file: fly/hc-worker/worker.mjs
+      line: 99
+      message: Wire to enrichment engine
+    - file: fly/hc-worker/worker.mjs
+      line: 105
+      message: Sync subscriber lists to Listmonk
+    - file: scripts/data-jobs/escort_supply_scan.mjs
+      line: 42
+      message: Compute shortage zones, density metrics
+    - file: scripts/data-jobs/port_ingest.mjs
+      line: 45
+      message: Pull external data sources

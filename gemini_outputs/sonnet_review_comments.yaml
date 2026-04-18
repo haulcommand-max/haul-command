@@ -1,0 +1,6 @@
+# GEMINI-07: Code Review Copilot for Sonnet Drops
+reviews:
+  - module: "app/load-board/[loadId]/page.tsx"
+    comment: "CHECK REQUIRED: Sonnet omitted check for Operator's `compliance_level_percent` == 100 before transmitting bid. Add Server Action validation rule."
+  - module: "lib/adgrid-injector.ts"
+    comment: "SAFETY CHECK: Ensure `adgrid_cpc_rate` parsing does not vulnerable to NaN manipulation during query."

@@ -17,58 +17,58 @@ export const metadata: Metadata = {
 
 const COUNTRIES = [
   {
-    code: 'us', flag: '🇺🇸', name: 'United States', maturity: 'mature',
+    code: 'us', flag: 'ðŸ‡ºðŸ‡¸', name: 'United States', maturity: 'mature',
     escort: true,
     headline: 'Texas SB 2807 eff. Sept 1, 2025',
     summary: 'TxDMV authorization required for all commercial AV ops by May 28, 2026. Oversize AV loads still require human escorts. Aurora, Kodiak, Waabi, Waymo all active.',
     laws: ['Texas SB 2807 (2025)', 'FMCSA federal AV rules', 'NHTSA voluntary guidance'],
     av_companies: ['Aurora Innovation', 'Kodiak Robotics', 'Waabi', 'Waymo', 'Torc Robotics', 'Gatik', 'Plus.ai', 'Bot Auto', 'Einride'],
-    key_corridors: ['I-45 Dallas–Houston (Aurora)', 'US-287 Permian Basin (Kodiak)', 'I-10 Houston–El Paso', 'I-81 Virginia (Torc)'],
+    key_corridors: ['I-45 Dallas"“Houston (Aurora)', 'US-287 Permian Basin (Kodiak)', 'I-10 Houston"“El Paso', 'I-81 Virginia (Torc)'],
   },
   {
-    code: 'gb', flag: '🇬🇧', name: 'United Kingdom', maturity: 'advanced',
+    code: 'gb', flag: 'ðŸ‡¬ðŸ‡§', name: 'United Kingdom', maturity: 'advanced',
     escort: true,
     headline: 'Automated Vehicles Act 2024 — world\'s first',
     summary: 'World\'s first comprehensive AV legal framework passed April 2024. STGO escort vehicle requirements maintained for oversize freight. Wayve, Einride, Nissan active.',
     laws: ['Automated Vehicles Act 2024', 'STGO Categories 1/2/3', 'DVSA regulations'],
     av_companies: ['Wayve', 'Oxbotica', 'Einride', 'Nissan (Wayve partnership)'],
-    key_corridors: ['M1 London–Leeds', 'M6 logistics corridor', 'ZENZIC CAM Corridor'],
+    key_corridors: ['M1 London"“Leeds', 'M6 logistics corridor', 'ZENZIC CAM Corridor'],
   },
   {
-    code: 'de', flag: '🇩🇪', name: 'Germany', maturity: 'advanced',
+    code: 'de', flag: 'ðŸ‡©ðŸ‡ª', name: 'Germany', maturity: 'advanced',
     escort: true,
     headline: 'World\'s first national Level 4 AV law (2021)',
     summary: 'German Level 4 AV law (AFGBV) 2021. A9 autobahn designated AV test corridor. Schwertransport Begleitpflicht (escort requirement) applies to AV overwidth freight.',
     laws: ['AFGBV Level 4 Law (2021)', 'StVG §1e autonomous driving', 'Kraftfahrt-Bundesamt (KBA) authorization'],
     av_companies: ['Mercedes-Benz (Level 3 Drive Pilot)', 'VW', 'BMW', 'Torc/Daimler', 'Einride', 'Momenta'],
-    key_corridors: ['A9 Digital Motorway (Munich–Berlin)', 'A3 Frankfurt–Cologne', 'Hamburg port approaches'],
+    key_corridors: ['A9 Digital Motorway (Munich"“Berlin)', 'A3 Frankfurt"“Cologne', 'Hamburg port approaches'],
   },
   {
-    code: 'au', flag: '🇦🇺', name: 'Australia', maturity: 'mature',
+    code: 'au', flag: 'ðŸ‡¦ðŸ‡º', name: 'Australia', maturity: 'mature',
     escort: true,
     headline: 'The Pilbara: world capital of autonomous mining trucks',
     summary: 'NTC autonomous vehicle guidelines + state RMS authority. Rio Tinto, BHP, Fortescue operate the most advanced autonomous heavy haul fleet globally. Escort required for equipment transport to mine sites.',
     laws: ['NTC Automated Vehicle Safety Law', 'State RMS regulations', 'Pilbara mine site protocols'],
     av_companies: ['Rio Tinto AutoHaul', 'BHP', 'Fortescue', 'Caterpillar', 'Komatsu', 'Volvo AV Solutions', 'May Mobility'],
-    key_corridors: ['Pilbara haul roads WA (Port Hedland–mines)', 'Hunter Valley coal routes NSW', 'Bowen Basin QLD'],
+    key_corridors: ['Pilbara haul roads WA (Port Hedland"“mines)', 'Hunter Valley coal routes NSW', 'Bowen Basin QLD'],
   },
   {
-    code: 'ae', flag: '🇦🇪', name: 'UAE', maturity: 'framework',
+    code: 'ae', flag: 'ðŸ‡¦ðŸ‡ª', name: 'UAE', maturity: 'framework',
     escort: false,
     headline: 'Dubai 2030: 25% autonomous trips',
     summary: 'Dubai Autonomous Transportation Strategy 2030. WeRide operating 50+ commercial robotaxis since Dec 2024. RTA escort framework for AV freight still evolving.',
     laws: ['UAE Roads and Transport Authority (RTA) framework', 'Dubai 2030 Autonomous Strategy'],
     av_companies: ['WeRide', 'Pony.ai', 'EasyMile', 'Waymo (discussions)'],
-    key_corridors: ['Dubai Marina–Downtown (WeRide)', 'Abu Dhabi city routes', 'Dubai–Abu Dhabi highway (testing)'],
+    key_corridors: ['Dubai Marina"“Downtown (WeRide)', 'Abu Dhabi city routes', 'Dubai"“Abu Dhabi highway (testing)'],
   },
   {
-    code: 'ca', flag: '🇨🇦', name: 'Canada', maturity: 'mature',
+    code: 'ca', flag: 'ðŸ‡¨ðŸ‡¦', name: 'Canada', maturity: 'mature',
     escort: true,
     headline: 'Alberta oil sands + Ontario B2B routes',
     summary: 'Federal + provincial framework. Gatik operating commercially in Ontario. Alberta Oil Sands autonomous mining trucks expanding. Escort maintained for oversize autonomous freight.',
     laws: ['Canada Motor Vehicle Safety Act', 'Provincial transport acts', 'Alberta Transportation regulations'],
     av_companies: ['Gatik', 'Waabi', 'Aurora (border crossings)'],
-    key_corridors: ['QEW Toronto–Hamilton (Gatik)', 'Alberta oil sands haul roads', 'Trans-Canada segments'],
+    key_corridors: ['QEW Toronto"“Hamilton (Gatik)', 'Alberta oil sands haul roads', 'Trans-Canada segments'],
   },
 ];
 
@@ -95,7 +95,7 @@ export default function AVRegulationsPage() {
           background: 'rgba(0,204,255,0.1)', border: '1px solid rgba(0,204,255,0.25)',
           color: '#00ccff', fontSize: 12, fontWeight: 700, letterSpacing: '0.1em', marginBottom: 24,
         }}>
-          🌐 120 countries · UPDATED MARCH 2026
+          ðŸŒ 120 countries · UPDATED MARCH 2026
         </div>
         <h1 style={{
           fontSize: 'clamp(26px, 4vw, 48px)', fontWeight: 900, margin: '0 0 16px',
@@ -130,12 +130,12 @@ export default function AVRegulationsPage() {
           </h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 16 }}>
             {[
-              { icon: '📡', title: 'No CB Radio (Channel 19)', body: 'AVs do not respond. All communication goes through the AV company ops center.' },
-              { icon: '🔭', title: 'LiDAR/Radar Blind Zones', body: 'Sensor arcs at front, rear, and sides. Stay out of specific zones listed in company protocols.' },
-              { icon: '🛑', title: 'Emergency Stops', body: 'AV may stop with no warning. Minimum following distance of 200ft (Aurora standard).' },
-              { icon: '🔄', title: 'Merge Behavior', body: 'AVs merge earlier and wider than humans. Your lane positioning adapts accordingly.' },
-              { icon: '⚠️', title: 'Breakdown Protocol', body: 'No driver to deploy triangles. Your role expands during AV system fault events.' },
-              { icon: '📞', title: 'Emergency Contact', body: 'Each AV company has a 24/7 operations center — not 911. You need the number.' },
+              { icon: 'ðŸ“¡', title: 'No CB Radio (Channel 19)', body: 'AVs do not respond. All communication goes through the AV company ops center.' },
+              { icon: 'ðŸ”­', title: 'LiDAR/Radar Blind Zones', body: 'Sensor arcs at front, rear, and sides. Stay out of specific zones listed in company protocols.' },
+              { icon: 'ðŸ›‘', title: 'Emergency Stops', body: 'AV may stop with no warning. Minimum following distance of 200ft (Aurora standard).' },
+              { icon: 'ðŸ”„', title: 'Merge Behavior', body: 'AVs merge earlier and wider than humans. Your lane positioning adapts accordingly.' },
+              { icon: 'âš ï¸', title: 'Breakdown Protocol', body: 'No driver to deploy triangles. Your role expands during AV system fault events.' },
+              { icon: 'ðŸ“ž', title: 'Emergency Contact', body: 'Each AV company has a 24/7 operations center — not 911. You need the number.' },
             ].map(item => (
               <div key={item.title} style={{
                 background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)',
@@ -155,7 +155,7 @@ export default function AVRegulationsPage() {
       <div style={{ maxWidth: 920, margin: '0 auto', padding: '64px 24px' }}>
         <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 8 }}>Country-by-Country AV Regulations</h2>
         <p style={{ color: '#8fa3c0', marginBottom: 40, fontSize: 15 }}>
-          Click any country for escort-specific AV guidance. All 120 countries →{' '}
+          Click any country for escort-specific AV guidance. All 120 countries â†’{' '}
           <Link aria-label="Navigation Link" href="/regulations" style={{ color: '#00ccff' }}>full regulation database</Link>
         </p>
 
@@ -191,7 +191,7 @@ export default function AVRegulationsPage() {
                       color: c.escort ? '#00ff88' : '#ef4444',
                       fontSize: 11, fontWeight: 700,
                     }}>
-                      {c.escort ? '✓ ESCORT REQUIRED' : '~ ESCORT OPTIONAL'}
+                      {c.escort ? 'âœ“ ESCORT REQUIRED' : '~ ESCORT OPTIONAL'}
                     </span>
                   </div>
                 </div>
@@ -223,7 +223,7 @@ export default function AVRegulationsPage() {
                     <div style={{ fontSize: 12, fontWeight: 700, color: '#8fa3c0', letterSpacing: '0.08em', marginBottom: 10 }}>KEY AV CORRIDORS</div>
                     {c.key_corridors.map((cor, i) => (
                       <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 6, fontSize: 13, color: '#b0bcd0' }}>
-                        <span style={{ color: '#f5c842' }}>→</span> {cor}
+                        <span style={{ color: '#f5c842' }}>â†’</span> {cor}
                       </div>
                     ))}
                     <div style={{ marginTop: 16 }}>
@@ -235,7 +235,7 @@ export default function AVRegulationsPage() {
                           color: '#00ccff', fontSize: 13, fontWeight: 600, textDecoration: 'none',
                         }}
                       >
-                        Full {c.name} AV guide →
+                        Full {c.name} AV guide â†’
                       </Link>
                     </div>
                   </div>
@@ -252,9 +252,9 @@ export default function AVRegulationsPage() {
           </h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
             {[
-              '🇯🇵 Japan', '🇸🇬 Singapore', '🇸🇪 Sweden', '🇳🇴 Norway',
-              '🇿🇦 South Africa', '🇧🇷 Brazil', '🇰🇷 South Korea', '🇮🇳 India',
-              '🇮🇩 Indonesia', '🇸🇦 Saudi Arabia', '🇶🇦 Qatar', '🇳🇱 Netherlands',
+              'ðŸ‡¯ðŸ‡µ Japan', 'ðŸ‡¸ðŸ‡¬ Singapore', 'ðŸ‡¸ðŸ‡ª Sweden', 'ðŸ‡³ðŸ‡´ Norway',
+              'ðŸ‡¿ðŸ‡¦ South Africa', 'ðŸ‡§ðŸ‡· Brazil', 'ðŸ‡°ðŸ‡· South Korea', 'ðŸ‡®ðŸ‡³ India',
+              'ðŸ‡®ðŸ‡© Indonesia', 'ðŸ‡¸ðŸ‡¦ Saudi Arabia', 'ðŸ‡¶ðŸ‡¦ Qatar', 'ðŸ‡³ðŸ‡± Netherlands',
             ].map(c => (
               <span key={c} style={{
                 padding: '7px 14px', borderRadius: 20,
@@ -283,7 +283,7 @@ export default function AVRegulationsPage() {
               color: '#07090f', border: 'none', borderRadius: 12,
               padding: '14px 32px', fontSize: 16, fontWeight: 800, cursor: 'pointer',
             }}>
-              Get AV-Ready Certified →
+              Get AV-Ready Certified â†’
             </button>
           </Link>
         </div>

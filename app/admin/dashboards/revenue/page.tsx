@@ -60,7 +60,7 @@ export default function RevenueDashboard() {
     }, []);
 
     const totalRevenue = rows.reduce((s, r) => s + r[period], 0);
-    const trendIcon = (t: string) => t === 'up' ? '↑' : t === 'down' ? '↓' : '→';
+    const trendIcon = (t: string) => t === 'up' ? 'â†‘' : t === 'down' ? 'â†“' : 'â†’';
     const trendColor = (t: string) => t === 'up' ? '#22C55E' : t === 'down' ? '#EF4444' : '#888';
 
     return (
@@ -68,7 +68,7 @@ export default function RevenueDashboard() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
                 <div>
                     <h1 style={{ fontSize: 24, fontWeight: 900, color: '#fff', margin: 0 }}>Revenue Dashboard</h1>
-                    <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>All monetization surfaces • Real-time</p>
+                    <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>All monetization surfaces "¢ Real-time</p>
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
                     {(['today', 'week', 'month'] as const).map(p => (

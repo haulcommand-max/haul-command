@@ -109,7 +109,7 @@ export default async function DominationControlTower() {
             {/* Top bar */}
             <div style={{ background: 'rgba(241,169,27,0.05)', borderBottom: '1px solid rgba(241,169,27,0.15)', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                    <div style={{ fontSize: 10, fontWeight: 800, color: '#F1A91B', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 2 }}>🌎 North America Domination Engine</div>
+                    <div style={{ fontSize: 10, fontWeight: 800, color: '#F1A91B', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 2 }}>ðŸŒŽ North America Domination Engine</div>
                     <h1 style={{ margin: 0, fontSize: 20, fontWeight: 900, color: '#f9fafb' }}>Control Tower</h1>
                 </div>
                 <div style={{ display: 'flex', gap: 16, fontSize: 11 }}>
@@ -152,10 +152,10 @@ export default async function DominationControlTower() {
                     {/* TOP OPPORTUNITY MAP */}
                     <div style={{ background: 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '1.25rem', gridColumn: '1/2' }}>
                         <div style={{ fontSize: 10, fontWeight: 800, color: '#F1A91B', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12 }}>
-                            🎯 National Opportunity Map — Top 15
+                            ðŸŽ¯ National Opportunity Map — Top 15
                         </div>
                         {data.topOpps.length === 0
-                            ? <div style={{ color: '#4b5563', fontSize: 12 }}>Domination scores computing…</div>
+                            ? <div style={{ color: '#4b5563', fontSize: 12 }}>Domination scores computing...</div>
                             : data.topOpps.map((m: any, i: number) => (
                                 <div key={m.geo_key ?? i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8, padding: '6px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                                     <div style={{ width: 22, fontSize: 10, fontWeight: 800, color: '#4b5563', textAlign: 'right', flexShrink: 0 }}>#{i + 1}</div>
@@ -180,7 +180,7 @@ export default async function DominationControlTower() {
                     {/* METRO BREAKTHROUGH TRACKER */}
                     <div style={{ background: 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '1.25rem' }}>
                         <div style={{ fontSize: 10, fontWeight: 800, color: '#a78bfa', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12 }}>
-                            🏙️ Mega City Assault Engine
+                            ðŸ™ï¸ Mega City Assault Engine
                         </div>
                         {data.metros.map((m: any) => (
                             <div key={m.metro_slug} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10, padding: '8px', borderRadius: 10, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}>
@@ -202,7 +202,7 @@ export default async function DominationControlTower() {
                     {/* RURAL LIQUIDITY WEDGE */}
                     <div style={{ background: 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '1.25rem' }}>
                         <div style={{ fontSize: 10, fontWeight: 800, color: '#f87171', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12 }}>
-                            🏚️ Rural Thin Markets — Liquidity Wedge
+                            ðŸšï¸ Rural Thin Markets — Liquidity Wedge
                         </div>
                         {data.ruralThin.length === 0
                             ? <div style={{ color: '#4b5563', fontSize: 12 }}>No rural_thin markets detected yet.</div>
@@ -221,10 +221,10 @@ export default async function DominationControlTower() {
                     {/* ACTIVE ALERTS */}
                     <div style={{ background: 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: '1.25rem' }}>
                         <div style={{ fontSize: 10, fontWeight: 800, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12 }}>
-                            🚨 Domination Alerts
+                            ðŸš¨ Domination Alerts
                         </div>
                         {data.alerts.length === 0
-                            ? <div style={{ padding: '12px', background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.15)', borderRadius: 10, fontSize: 11, color: '#10b981', textAlign: 'center' }}>✓ No active alerts</div>
+                            ? <div style={{ padding: '12px', background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.15)', borderRadius: 10, fontSize: 11, color: '#10b981', textAlign: 'center' }}>âœ“ No active alerts</div>
                             : data.alerts.map((a: any, i: number) => (
                                 <div key={i} style={{ marginBottom: 8, padding: '8px 10px', borderRadius: 8, background: `${SEVERITY_COLOR[a.severity] ?? '#374151'}10`, borderLeft: `2px solid ${SEVERITY_COLOR[a.severity] ?? '#374151'}` }}>
                                     <div style={{ fontSize: 11, fontWeight: 700, color: SEVERITY_COLOR[a.severity] ?? '#9ca3af' }}>{a.city}, {a.state}</div>
@@ -237,8 +237,8 @@ export default async function DominationControlTower() {
                         <div style={{ marginTop: 16, padding: '10px', background: 'rgba(255,255,255,0.02)', borderRadius: 10 }}>
                             <div style={{ fontSize: 9, fontWeight: 800, color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>SEO Link Gravity Flow</div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 10, flexWrap: 'wrap' }}>
-                                {['FCC/Rural', '→', 'Corridor', '→', 'Metro', '→', 'State', '→', 'National'].map((s, i) => (
-                                    <span key={i} style={{ color: s === '→' ? '#374151' : '#6b7280', fontWeight: s === '→' ? 400 : 700 }}>{s}</span>
+                                {['FCC/Rural', 'â†’', 'Corridor', 'â†’', 'Metro', 'â†’', 'State', 'â†’', 'National'].map((s, i) => (
+                                    <span key={i} style={{ color: s === 'â†’' ? '#374151' : '#6b7280', fontWeight: s === 'â†’' ? 400 : 700 }}>{s}</span>
                                 ))}
                             </div>
                         </div>
@@ -248,7 +248,7 @@ export default async function DominationControlTower() {
                 {/* Autonomous Engine Status */}
                 <div style={{ marginTop: 20, padding: '1rem 1.5rem', background: 'rgba(16,185,129,0.03)', border: '1px solid rgba(16,185,129,0.1)', borderRadius: 14 }}>
                     <div style={{ fontSize: 10, fontWeight: 800, color: '#10b981', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 8 }}>
-                        ⚡ Bo Jackson Autonomy — Cron Engine
+                        âš¡ Bo Jackson Autonomy — Cron Engine
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 8 }}>
                         {[
@@ -263,7 +263,7 @@ export default async function DominationControlTower() {
                         ].map(j => (
                             <div key={j.name} style={{ fontSize: 10, padding: '4px 8px', borderRadius: 6, background: j.status === 'active' ? 'rgba(16,185,129,0.08)' : 'rgba(241,169,27,0.05)', borderLeft: `2px solid ${j.status === 'active' ? '#10b981' : '#F1A91B'}` }}>
                                 <div style={{ fontWeight: 700, color: j.status === 'active' ? '#10b981' : '#F1A91B', marginBottom: 1 }}>{j.name}</div>
-                                <div style={{ color: '#4b5563' }}>{j.cadence} · {j.status === 'key_needed' ? 'needs service key' : '✓ live'}</div>
+                                <div style={{ color: '#4b5563' }}>{j.cadence} · {j.status === 'key_needed' ? 'needs service key' : 'âœ“ live'}</div>
                             </div>
                         ))}
                     </div>

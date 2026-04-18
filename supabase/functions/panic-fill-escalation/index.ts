@@ -132,19 +132,51 @@ Deno.serve(async (req: Request) => {
             }
         }
 
-        // TRIGGER VAPI VOICE DISPATCHER FOR STAGE 4
+
+        // ── FIRE REAL PUSH FOR STAGE 2 AND 3 ──
+        // Previously these only logged action strings; now they dispatch to operators.
+        const stage23 = escalations.filter(e => e.stage === 2 || e.stage === 3);
+        for (const esc of stage23) {
+            // Find available operators in the same state as the load
+            const { data: nearbyOps } = await supabase
+                .from("operator_profiles")
+                .select("user_id, display_name, home_base_state, trust_score")
+                .eq("home_base_state", (activeLoads.find(l => l.id === esc.load_id) as any)?.origin_state ?? "TX")
+                .order("trust_score", { ascending: false })
+                .limit(esc.stage === 3 ? 10 : 5); // Wider net for Stage 3
+
+            for (const op of nearbyOps || []) {
+                const stageLabel = esc.stage === 2 ? "Priority Load Near You" : "🔴 Urgent — Last Operators Needed";
+                const stageBody = esc.stage === 2
+                    ? "A load in your corridor is filling slowly. Tap to claim before it escalates."
+                    : "This load is at last-chance status. Claim immediately to prevent auto-outreach.";
+
+                await supabase.functions.invoke("fcm-push-worker", {
+                    body: {
+                        table: "operator_profiles",
+                        record: { user_id: op.user_id, profile_id: op.user_id },
+                        pushTitle: stageLabel,
+                        pushBody: stageBody,
+                        deepLink: `/load-board?load=${esc.load_id}&utm_source=panic_fill_s${esc.stage}`,
+                    },
+                }).catch(() => { /* non-fatal */ });
+            }
+        }
+
+        // ── TRIGGER VAPI VOICE DISPATCHER FOR STAGE 4 ──
         // Smashing redundant flags into an actual autonomous voice execution
         const vapiKey = Deno.env.get("VAPI_API_KEY");
         const assistantId = Deno.env.get("VAPI_DISPATCHER_ASSISTANT_ID"); // e.g., the load dispatcher assistant
         
         for (const esc of escalations) {
             if (esc.stage === 4 && esc.actions.includes("vapi_autonomous_outreach") && vapiKey && assistantId) {
-                // Find top available drivers for this dead load to trigger VAPI outbound calls
-                const { data: topDrivers } = await supabase.from('entities')
-                    .select('id, name, primary_phone')
-                    .eq('type', 'operator')
-                    // .eq('region', region) -> simplified for edge handler
-                    .limit(2);
+                // Find available operators in the same state as the dead load (CORRECTED FILTER)
+                const originState = (activeLoads.find(l => l.id === esc.load_id) as any)?.origin_state;
+                let driverQuery = supabase.from('operator_profiles')
+                    .select('user_id, display_name, primary_phone')
+                    .eq('type', 'operator');
+                if (originState) driverQuery = driverQuery.eq('home_base_state', originState);
+                const { data: topDrivers } = await driverQuery.order('trust_score', { ascending: false }).limit(2);
                 
                 for (const driver of topDrivers || []) {
                     if (!driver.primary_phone) continue;

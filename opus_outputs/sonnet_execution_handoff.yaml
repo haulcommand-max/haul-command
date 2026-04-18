@@ -1,0 +1,199 @@
+# ═══════════════════════════════════════════════════════════════
+# OPUS-05: SONNET EXECUTION HANDOFF PACK
+# Decision Authority: Claude Opus 4.6
+# Target: Claude Sonnet 4.6
+# Rule: Sonnet executes. Opus decides. No deviation.
+# ═══════════════════════════════════════════════════════════════
+
+commit_format: "feat|fix|refactor({cluster}): {what} [WAVE-{N}]"
+
+# ─────────────────────────────────────────────────
+# WAVE 1: MONEY PATH HARDENING (LAUNCH BLOCKER)
+# ─────────────────────────────────────────────────
+wave_1:
+  name: "Money Path Hardening"
+  priority: "LAUNCH_BLOCKER"
+  dependencies: ["Stripe keys in env", "hc_escrows table exists"]
+  do_not_touch: ["dispute-auto-resolve until GPS Proof Engine is live"]
+  tasks:
+    - id: "S1-01"
+      action: "Implement idempotency_key generation in lib/stripe.ts"
+      acceptance: "Every PaymentIntent.create call includes idempotency_key"
+      commit: "feat(payments): enforce stripe idempotency keys [WAVE-1]"
+    - id: "S1-02"
+      action: "Add pre-auth hard-stop to POST /api/loads/create"
+      acceptance: "Load with status DRAFT never appears on board. Only OPEN loads visible."
+      commit: "feat(marketplace): block load visibility until escrow pre-auth [WAVE-1]"
+    - id: "S1-03"
+      action: "Wire hc_webhook_stripe to check gateway_reference_id before processing"
+      acceptance: "Duplicate webhook payloads return 200 without side effects"
+      commit: "fix(payments): deduplicate stripe webhook processing [WAVE-1]"
+    - id: "S1-04"
+      action: "Implement payout failure push path"
+      acceptance: "Stripe transfer.failed triggers FCM push with deep link to /settings/payout-methods"
+      commit: "feat(payments): wire payout failure push notifications [WAVE-1]"
+    - id: "S1-05"
+      action: "Add kyc_tier column and enforce at API level"
+      acceptance: "Users below required tier get 403 on payment mutations"
+      commit: "feat(auth): implement progressive kyc tier enforcement [WAVE-1]"
+
+# ─────────────────────────────────────────────────
+# WAVE 2: TRUST & PRESENCE SPINE (LAUNCH BLOCKER)
+# ─────────────────────────────────────────────────
+wave_2:
+  name: "Trust & Presence Spine"
+  priority: "LAUNCH_BLOCKER"
+  dependencies: ["WAVE-1 merged"]
+  do_not_touch: ["Do not modify trust scoring weights — Opus owns the formula"]
+  tasks:
+    - id: "S2-01"
+      action: "Merge presence cluster into presence-and-availability-core orchestrator"
+      acceptance: "Single edge function handles ping, toggle, timeout, and truth-tick"
+      commit: "refactor(presence): merge 6 functions into orchestrator [WAVE-2]"
+    - id: "S2-02"
+      action: "Merge trust cluster into trust-and-ranking-core orchestrator"
+      acceptance: "Single edge function handles trust ingest, score compute, rank, and fraud"
+      commit: "refactor(trust): merge 8 functions into orchestrator [WAVE-2]"
+    - id: "S2-03"
+      action: "Wire trust.updated event to search-indexer for Typesense sync"
+      acceptance: "Trust score change propagates to Typesense within 30s"
+      commit: "feat(search): sync trust scores to typesense [WAVE-2]"
+    - id: "S2-04"
+      action: "Implement GPS Proof Engine flow in gps-breadcrumb-ingest"
+      acceptance: "Geofence match within 500m writes job_milestones.gps_verified = true"
+      commit: "feat(proof): implement gps geofence verification [WAVE-2]"
+
+# ─────────────────────────────────────────────────
+# WAVE 3: SEARCH & DISCOVERY (LAUNCH CRITICAL)
+# ─────────────────────────────────────────────────
+wave_3:
+  name: "Search & Discovery"
+  priority: "LAUNCH_CRITICAL"
+  dependencies: ["WAVE-2 merged", "Typesense running on Fly"]
+  tasks:
+    - id: "S3-01"
+      action: "Merge discovery cluster into discovery-search-core"
+      acceptance: "Single orchestrator handles indexing, featured, near-me, and gap-filling"
+      commit: "refactor(search): merge 5 discovery functions [WAVE-3]"
+    - id: "S3-02"
+      action: "Implement Typesense sync contract from Supabase"
+      acceptance: "profiles, jobs, directory_listings, glossary_terms collections synced"
+      commit: "feat(search): implement typesense sync pipeline [WAVE-3]"
+    - id: "S3-03"
+      action: "Wire SmartAutoLinker with safe regex boundaries"
+      acceptance: "No regex catastrophic backtracking on inputs > 10KB"
+      commit: "fix(seo): bound smartautolinker regex patterns [WAVE-3]"
+    - id: "S3-04"
+      action: "Implement IndexNow trigger on content publish"
+      acceptance: "New glossary/corridor pages ping IndexNow within 5 min of publish"
+      commit: "feat(seo): wire indexnow on content publish [WAVE-3]"
+
+# ─────────────────────────────────────────────────
+# WAVE 4: MARKETPLACE ACTIONS (LAUNCH CRITICAL)
+# ─────────────────────────────────────────────────
+wave_4:
+  name: "Marketplace Actions"
+  priority: "LAUNCH_CRITICAL"
+  dependencies: ["WAVE-1 merged"]
+  tasks:
+    - id: "S4-01"
+      action: "Merge offer-accept, offer-decline, offer-viewed into risk-payment-core"
+      acceptance: "Offer acceptance triggers pre-auth capture"
+      commit: "refactor(marketplace): merge offer actions into payment core [WAVE-4]"
+    - id: "S4-02"
+      action: "Wire escort-activation to presence-and-availability-core"
+      acceptance: "Escort activation checks operator availability before dispatching"
+      commit: "feat(marketplace): wire escort activation to presence [WAVE-4]"
+    - id: "S4-03"
+      action: "Wire jobs-create-from-offer to risk-payment-core"
+      acceptance: "Job creation from offer triggers escrow creation"
+      commit: "feat(marketplace): wire job creation to escrow [WAVE-4]"
+    - id: "S4-04"
+      action: "Implement compliance_level_percent validation on bid submission"
+      acceptance: "Operators below 100% compliance cannot submit bids"
+      commit: "feat(marketplace): enforce compliance threshold on bids [WAVE-4]"
+
+# ─────────────────────────────────────────────────
+# WAVE 5: CLAIM & GROWTH ENGINE (DAY-ONE THIN)
+# ─────────────────────────────────────────────────
+wave_5:
+  name: "Claim & Growth Engine"
+  priority: "DAY_ONE_THIN"
+  dependencies: ["WAVE-2 merged"]
+  tasks:
+    - id: "S5-01"
+      action: "Merge claim cluster into claim-growth-core orchestrator"
+      acceptance: "Single orchestrator handles claim submit, welcome, nudge, recruit"
+      commit: "refactor(growth): merge 8 claim functions into orchestrator [WAVE-5]"
+    - id: "S5-02"
+      action: "Wire notify-orchestrator as the cross-cutting notification bus"
+      acceptance: "All clusters emit events that notify-orchestrator routes to FCM/email/in-app"
+      commit: "feat(notifications): wire cross-cutting notification bus [WAVE-5]"
+
+# ─────────────────────────────────────────────────
+# WAVE 6: ADGRID & MONETIZATION (DAY-ONE THIN)
+# ─────────────────────────────────────────────────
+wave_6:
+  name: "AdGrid & Monetization"
+  priority: "DAY_ONE_THIN"
+  dependencies: ["WAVE-3 merged"]
+  tasks:
+    - id: "S6-01"
+      action: "Merge ad yield cluster into adgrid-yield-core"
+      acceptance: "Single orchestrator handles decision, impression, billing, auction, RTB"
+      commit: "refactor(ads): merge 7 ad functions into orchestrator [WAVE-6]"
+    - id: "S6-02"
+      action: "Wire adgrid-injector to training diagnostic failures"
+      acceptance: "Diagnostic failure triggers targeted vendor ad with correct category"
+      commit: "feat(ads): wire diagnostic-targeted ad injection [WAVE-6]"
+
+# ─────────────────────────────────────────────────
+# WAVE 7: ROUTE INTELLIGENCE (DAY-ONE SUPPORTING)
+# ─────────────────────────────────────────────────
+wave_7:
+  name: "Route Intelligence"
+  priority: "DAY_ONE_SUPPORTING"
+  dependencies: ["WAVE-2 merged"]
+  tasks:
+    - id: "S7-01"
+      action: "Merge route cluster into route-intelligence-core"
+      acceptance: "Single orchestrator handles geocoding, polylines, corridors, dead zones"
+      commit: "refactor(routes): merge 13 route functions into orchestrator [WAVE-7]"
+
+# ─────────────────────────────────────────────────
+# WAVE 8: COMMS CONSOLIDATION (DAY-ONE SUPPORTING)
+# ─────────────────────────────────────────────────
+wave_8:
+  name: "Comms Consolidation"
+  priority: "DAY_ONE_SUPPORTING"
+  dependencies: ["WAVE-5 merged"]
+  tasks:
+    - id: "S8-01"
+      action: "Merge comms cluster into comms-core"
+      acceptance: "Single orchestrator handles email send, digest, morning pulse"
+      commit: "refactor(comms): merge email functions into orchestrator [WAVE-8]"
+    - id: "S8-02"
+      action: "Wire LiveKit completion path into mm_event_log"
+      acceptance: "Room start/end events logged with duration and billing capture"
+      commit: "feat(voice): wire livekit lifecycle to billing [WAVE-8]"
+
+# ─────────────────────────────────────────────────
+# WAVE 9: SEO PUBLIC SURFACES (POST-LAUNCH)
+# ─────────────────────────────────────────────────
+wave_9:
+  name: "SEO Public Surfaces"
+  priority: "POST_LAUNCH"
+  dependencies: ["WAVE-3 merged"]
+  tasks:
+    - id: "S9-01"
+      action: "Implement /rates/corridor-[A]-to-[B] page family"
+      acceptance: "Dynamic corridor pages render with real rate data from corridor_benchmarks"
+      commit: "feat(seo): implement corridor rate page family [WAVE-9]"
+    - id: "S9-02"
+      action: "Implement Tier-A human review gate for auto-generated content"
+      acceptance: "Content with confidence < 0.85 flagged for human review before publish"
+      commit: "feat(content): implement human review gate [WAVE-9]"
+    - id: "S9-03"
+      action: "Implement Quebec bilingual rendering for Canadian pages"
+      acceptance: "fr-CA locale renders French copy on /training/CA/* and /glossary/*"
+      commit: "feat(i18n): implement quebec bilingual rendering [WAVE-9]"

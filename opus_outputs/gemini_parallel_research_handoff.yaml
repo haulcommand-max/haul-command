@@ -1,0 +1,102 @@
+# ═══════════════════════════════════════════════════════════════
+# OPUS: GEMINI PARALLEL RESEARCH HANDOFF
+# Target: Gemini 3.1 Pro High
+# ═══════════════════════════════════════════════════════════════
+
+research_packs:
+
+  # ─────────────────────────────────────────────────
+  # PACK 1: MIGRATION DEDUP AUDIT
+  # ─────────────────────────────────────────────────
+  - id: "GEM-R01"
+    name: "569-migration deduplication and conflict scan"
+    priority: "HIGH"
+    tasks:
+      - "Scan all 569 migration files for CREATE TABLE statements"
+      - "Identify tables defined in multiple migrations"
+      - "Identify ALTER TABLE conflicts (column added in one, dropped in another)"
+      - "Flag any migration that drops data without IF EXISTS guards"
+      - "Produce a clean table-to-migration ownership matrix"
+    output: "migration_dedup_report.yaml"
+    deadline: "Before Sonnet WAVE-1"
+
+  # ─────────────────────────────────────────────────
+  # PACK 2: EDGE FUNCTION CODE REVIEW
+  # ─────────────────────────────────────────────────
+  - id: "GEM-R02"
+    name: "108 edge function implementation depth scan"
+    priority: "HIGH"
+    tasks:
+      - "For each of 108 edge functions, read index.ts and classify as: STUB / PARTIAL / COMPLETE"
+      - "Flag functions with TODO/FIXME/HACK markers"
+      - "Flag functions with hardcoded secrets or env vars"
+      - "Flag functions missing error handling"
+      - "Produce implementation readiness score per function"
+    output: "edge_function_readiness_report.yaml"
+    deadline: "Before Sonnet WAVE-2"
+
+  # ─────────────────────────────────────────────────
+  # PACK 3: RLS POLICY AUDIT
+  # ─────────────────────────────────────────────────
+  - id: "GEM-R03"
+    name: "Row Level Security comprehensive audit"
+    priority: "CRITICAL"
+    tasks:
+      - "Extract all RLS-related migrations (grep for CREATE POLICY, ENABLE ROW LEVEL SECURITY)"
+      - "Map every table to its RLS status (enabled/disabled)"
+      - "Flag tables with financial data that lack RLS"
+      - "Flag overly permissive policies (e.g., true for SELECT)"
+      - "Cross-reference with hc_escrows, hc_payouts, profiles"
+    output: "rls_audit_report.yaml"
+    deadline: "Before Sonnet WAVE-1 (LAUNCH BLOCKER)"
+
+  # ─────────────────────────────────────────────────
+  # PACK 4: 120-COUNTRY JURISDICTION RESEARCH
+  # ─────────────────────────────────────────────────
+  - id: "GEM-R04"
+    name: "Global jurisdiction seed pack expansion"
+    priority: "MEDIUM"
+    tasks:
+      - "Extend training_jurisdiction_seed_pack.yaml from 3 to 30 countries"
+      - "Focus on: US, CA, AU, UK, DE, FR, MX, BR, IN, ZA, AE, SA, JP (top 13 first)"
+      - "For each: identify regulatory authority, permit types, and weight limits"
+      - "Flag countries where crypto payments are legally restricted"
+    output: "jurisdiction_30_country_pack.yaml"
+    deadline: "Before Sonnet WAVE-9"
+
+  # ─────────────────────────────────────────────────
+  # PACK 5: CORRIDOR RATE DATA VALIDATION
+  # ─────────────────────────────────────────────────
+  - id: "GEM-R05"
+    name: "Corridor rate page data truth check"
+    priority: "MEDIUM"
+    tasks:
+      - "Cross-reference corridor seed migrations (20260404_001 through 20260404_013) against each other"
+      - "Flag corridors with implausible rate_per_mile values"
+      - "Flag corridors missing distance_miles or demand_score"
+      - "Validate that all corridor slugs are URL-safe"
+    output: "corridor_data_validation.yaml"
+    deadline: "Before Sonnet WAVE-9"
+
+  # ─────────────────────────────────────────────────
+  # PACK 6: SONNET CODE REVIEW (ONGOING)
+  # ─────────────────────────────────────────────────
+  - id: "GEM-R06"
+    name: "Continuous Sonnet wave review"
+    priority: "ONGOING"
+    tasks:
+      - "After each Sonnet wave merge, review changed files for:"
+      - "  - Missing error boundaries"
+      - "  - Server actions without auth checks"
+      - "  - Supabase queries without .single() on expected-one results"
+      - "  - Any use of 'as any' type assertions in payment code"
+      - "  - Console.log statements that should be structured logging"
+    output: "sonnet_review_wave_{N}.yaml"
+    deadline: "Within 2 hours of each wave merge"
+
+review_checklist_for_gemini:
+  - "Does the Sonnet implementation match the Opus event contract exactly?"
+  - "Are idempotency keys generated correctly per the guardrails spec?"
+  - "Does the trust score update flow match the event_contracts.yaml schema?"
+  - "Are all push notifications using the canonical fcm-push-worker edge function?"
+  - "Are all Stripe calls going through lib/stripe.ts wrapper?"

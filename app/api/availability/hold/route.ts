@@ -14,7 +14,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createClient } from '@/utils/supabase/server';
-import { trySendNotification } from '@/lib/notifications/fcm';
+import { sendRoutedNotification } from '@/lib/notifications/channelRouter';
 import { holdRequestTemplate } from '@/lib/notifications/templates';
 
 export const runtime = 'nodejs';
@@ -56,36 +56,22 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    // FCM push notification to operator (instant delivery)
-    const brokerProfile = await admin.from('profiles').select('display_name').eq('id', user.id).single();
-    const fcmHold = holdRequestTemplate({
-        brokerName: brokerProfile.data?.display_name || 'A broker',
-        origin: origin || '?',
-        destination: destination || '?',
-        dateNeeded: date_needed || 'TBD',
-        holdId: hold.id,
-    });
-    trySendNotification({ userId: operator_id, ...fcmHold }).then(()=>{});
-
-    // Queue push notification to operator (fallback)
-    try {
-        await admin.from('notification_queue').insert({
-            user_id: operator_id,
-            type: 'hold_request',
-            title: '🔒 Hold Request',
-            body: `A broker wants to book you: ${origin || '?'} → ${destination || '?'} on ${date_needed || 'TBD'}`,
-            data: {
-                hold_id: hold.id,
-                broker_id: user.id,
-                origin,
-                destination,
-                position,
-                expires_at: expiresAt,
-            },
-            channel: 'push',
-            created_at: new Date().toISOString(),
-        });
-    } catch { /* non-blocking */ }
+    // Trigger Smart Channel Router (SMS/Push/Email depending on urgency & availability)
+    await sendRoutedNotification(operator_id, {
+        type: 'dispatch_urgent',
+        urgency: 'critical',
+        title: '🔒 Urgent Hold Request',
+        body: `A broker wants to book you: ${origin || '?'} → ${destination || '?'} on ${date_needed || 'TBD'}`,
+        url: `/dashboard/operator/holds/${hold.id}`,
+        data: {
+            hold_id: hold.id,
+            broker_id: user.id,
+            origin,
+            destination,
+            position,
+            expires_at: expiresAt,
+        }
+    }).catch(() => { /* best effort */ });
 
     return NextResponse.json({
         ok: true,

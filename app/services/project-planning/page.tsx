@@ -7,7 +7,7 @@ import {
 
 export const metadata: Metadata = {
   title: 'Project Planning for Heavy Haul & Oversize Loads | Haul Command',
-  description: 'End-to-end project planning for complex heavy haul moves. Multi-escort coordination, permit sequencing, route engineering, and staging logistics across 120 countries.',
+  description: 'End-to-end project planning for complex heavy haul moves. Multi-escort coordination, permit sequencing, route engineering, and staging logistics across 50+ countries.',
   keywords: ['heavy haul project planning', 'oversize load planning', 'transport project management', 'escort coordination', 'heavy haul logistics'],
   openGraph: {
     title: 'Project Planning for Heavy Haul & Oversize Loads | Haul Command',
@@ -46,13 +46,13 @@ const FEATURES = [
   {
     icon: Globe,
     title: "Cross-Border Logistics",
-    desc: "U.S.–Canada, EU cross-border, or any international move — we handle customs escort requirements, documentation, and local compliance.",
+    desc: "U.S.-Canada, EU cross-border, or any international move — we handle customs escort requirements, documentation, and local compliance.",
   },
 ];
 
 export default function ProjectPlanningPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className=" bg-[#0a0a0a] text-white">
       <section className="py-16 sm:py-24 px-4 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(59,130,246,0.08),transparent)] pointer-events-none" />
         <div className="relative z-10 max-w-3xl mx-auto">
@@ -75,7 +75,7 @@ export default function ProjectPlanningPage() {
           <div className="flex flex-wrap justify-center gap-3">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-black transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all"
               style={{ background: 'linear-gradient(135deg, #3b82f6, #2563eb)' }}
             >
               Request a Plan <ArrowRight className="w-4 h-4" />
@@ -108,11 +108,11 @@ export default function ProjectPlanningPage() {
       <section className="max-w-4xl mx-auto px-4 py-16 text-center">
         <h2 className="text-2xl font-bold mb-4">Let Us Plan Your Next Move</h2>
         <p className="text-gray-400 mb-6 max-w-xl mx-auto">
-          Our project planning team has coordinated 40,000+ specialized loads. Tell us what you're moving.
+          Our project planning team has coordinated 40,000+ specialized loads. Tell us what you&apos;re moving.
         </p>
         <Link
           href="/contact"
-          className="inline-flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold text-black transition-all"
+          className="inline-flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold text-white transition-all"
           style={{ background: 'linear-gradient(135deg, #3b82f6, #2563eb)' }}
         >
           Get a Custom Plan <ArrowRight className="w-4 h-4" />

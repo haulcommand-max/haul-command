@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { sendRoutedNotification } from '@/lib/notifications/channelRouter';
 
 
 export async function POST(req: Request) {
@@ -33,6 +34,14 @@ export async function POST(req: Request) {
         .from("claim_requests")
         .update({ status: "approved" })
         .eq("id", claimRequestId);
+
+    await sendRoutedNotification(userId, {
+        type: 'claim_approval',
+        urgency: 'high',
+        title: 'Profile Claim Approved',
+        body: 'Your identity has been verified and you now have full access to your business profile.',
+        url: `/dashboard/operator/profile`,
+    }).catch(() => { /* best-effort */ });
 
     return NextResponse.json({ ok: true, profileId: claim.profile_id });
 }

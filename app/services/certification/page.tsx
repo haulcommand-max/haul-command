@@ -7,7 +7,7 @@ import {
 
 export const metadata: Metadata = {
   title: 'CEVO, CSE & Pilot Car Certification Programs | Haul Command',
-  description: 'Get certified as a professional pilot car operator. CEVO, CSE, state-specific certifications, and Haul Command verified badges. Training programs across 120 countries.',
+  description: 'Get certified as a professional pilot car operator. CEVO, CSE, state-specific certifications, and Haul Command verified badges. Training programs across 50+ countries.',
   keywords: ['CEVO certification', 'CSE certification', 'pilot car certification', 'escort vehicle training', 'pilot car training program', 'CEVO pilot car'],
   openGraph: {
     title: 'CEVO, CSE & Pilot Car Certification Programs | Haul Command',
@@ -54,7 +54,7 @@ const PROGRAMS = [
 
 export default function CertificationPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className=" bg-[#0a0a0a] text-white">
       <section className="py-16 sm:py-24 px-4 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(198,146,58,0.08),transparent)] pointer-events-none" />
         <div className="relative z-10 max-w-3xl mx-auto">
@@ -76,7 +76,7 @@ export default function CertificationPage() {
           </p>
           <Link
             href="/training"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-black transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all"
             style={{ background: 'linear-gradient(135deg, #C6923A, #E0B05C)' }}
           >
             Browse Programs <ArrowRight className="w-4 h-4" />
@@ -120,7 +120,7 @@ export default function CertificationPage() {
         </p>
         <Link
           href="/training"
-          className="inline-flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold text-black transition-all"
+          className="inline-flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold text-white transition-all"
           style={{ background: 'linear-gradient(135deg, #C6923A, #E0B05C)' }}
         >
           Start Certification <ArrowRight className="w-4 h-4" />

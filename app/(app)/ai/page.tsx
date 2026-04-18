@@ -3,18 +3,18 @@
 import { useState, useRef, useEffect } from 'react';
 
 const AGENTS = [
-    { id: 'support_bot', name: '24/7 Support', icon: '💬', desc: 'Platform help', color: '#10B981' },
-    { id: 'dispatch_brain', name: 'Dispatch Brain', icon: '🧠', desc: 'Parse load details', color: '#F59E0B' },
-    { id: 'regulation_rag', name: 'Regulations', icon: '📜', desc: 'State/province rules', color: '#6366F1' },
-    { id: 'route_survey', name: 'Route Survey', icon: '🛣️', desc: 'Generate surveys', color: '#EC4899' },
-    { id: 'load_enhancer', name: 'Load Enhancer', icon: '📦', desc: 'Upgrade descriptions', color: '#8B5CF6' },
-    { id: 'contract_gen', name: 'Contracts', icon: '📝', desc: 'Generate agreements', color: '#14B8A6' },
-    { id: 'invoice_gen', name: 'Invoices', icon: '🧾', desc: 'Create invoices', color: '#F97316' },
-    { id: 'onboarding_copilot', name: 'Profile Coach', icon: '🎯', desc: 'Optimize your profile', color: '#06B6D4' },
-    { id: 'review_analyzer', name: 'Review Intel', icon: '⭐', desc: 'Analyze reviews', color: '#EAB308' },
-    { id: 'ad_copy_gen', name: 'Ad Studio', icon: '🎨', desc: 'Generate ad copy', color: '#D946EF' },
-    { id: 'content_factory', name: 'SEO Factory', icon: '🏭', desc: 'Generate page content', color: '#0EA5E9' },
-    { id: 'anomaly_detector', name: 'Anomaly Scanner', icon: '📈', desc: 'Metrics analysis', color: '#EF4444' },
+    { id: 'support_bot', name: '24/7 Support', icon: 'ðŸ’¬', desc: 'Platform help', color: '#10B981' },
+    { id: 'dispatch_brain', name: 'Dispatch Brain', icon: 'ðŸ§ ', desc: 'Parse load details', color: '#F59E0B' },
+    { id: 'regulation_rag', name: 'Regulations', icon: 'ðŸ“œ', desc: 'State/province rules', color: '#6366F1' },
+    { id: 'route_survey', name: 'Route Survey', icon: 'ðŸ›£ï¸', desc: 'Generate surveys', color: '#EC4899' },
+    { id: 'load_enhancer', name: 'Load Enhancer', icon: 'ðŸ“¦', desc: 'Upgrade descriptions', color: '#8B5CF6' },
+    { id: 'contract_gen', name: 'Contracts', icon: 'ðŸ“', desc: 'Generate agreements', color: '#14B8A6' },
+    { id: 'invoice_gen', name: 'Invoices', icon: 'ðŸ§¾', desc: 'Create invoices', color: '#F97316' },
+    { id: 'onboarding_copilot', name: 'Profile Coach', icon: 'ðŸŽ¯', desc: 'Optimize your profile', color: '#06B6D4' },
+    { id: 'review_analyzer', name: 'Review Intel', icon: 'â­', desc: 'Analyze reviews', color: '#EAB308' },
+    { id: 'ad_copy_gen', name: 'Ad Studio', icon: 'ðŸŽ¨', desc: 'Generate ad copy', color: '#D946EF' },
+    { id: 'content_factory', name: 'SEO Factory', icon: 'ðŸ­', desc: 'Generate page content', color: '#0EA5E9' },
+    { id: 'anomaly_detector', name: 'Anomaly Scanner', icon: 'ðŸ“ˆ', desc: 'Metrics analysis', color: '#EF4444' },
 ];
 
 interface Message {
@@ -95,7 +95,7 @@ export default function AICommandCenter() {
                 <div style={{ padding: '20px 16px 12px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                     <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.2em', color: '#F59E0B', marginBottom: 4 }}>HAUL COMMAND</div>
                     <div style={{ fontSize: 16, fontWeight: 700, color: '#F9FAFB' }}>AI Command Center</div>
-                    <div style={{ fontSize: 12, color: '#6B7280', marginTop: 2 }}>12 agents • GPT-4o</div>
+                    <div style={{ fontSize: 12, color: '#6B7280', marginTop: 2 }}>12 agents "¢ GPT-4o</div>
                 </div>
                 <div style={{ flex: 1, overflowY: 'auto', padding: '8px' }}>
                     {AGENTS.map(agent => (
@@ -128,11 +128,11 @@ export default function AICommandCenter() {
                     padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.06)',
                     display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(11,17,32,0.8)', backdropFilter: 'blur(8px)',
                 }}>
-                    <button aria-label="Interactive Button" onClick={() => setSidebarOpen(!sidebarOpen)} style={{ background: 'none', border: 'none', color: '#9CA3AF', cursor: 'pointer', fontSize: 18 }}>☰</button>
+                    <button aria-label="Interactive Button" onClick={() => setSidebarOpen(!sidebarOpen)} style={{ background: 'none', border: 'none', color: '#9CA3AF', cursor: 'pointer', fontSize: 18 }}>â˜°</button>
                     <span style={{ fontSize: 24 }}>{activeAgent.icon}</span>
                     <div>
                         <div style={{ fontSize: 15, fontWeight: 700, color: '#F9FAFB' }}>{activeAgent.name}</div>
-                        <div style={{ fontSize: 12, color: '#6B7280' }}>{activeAgent.desc} • Powered by GPT-4o</div>
+                        <div style={{ fontSize: 12, color: '#6B7280' }}>{activeAgent.desc} "¢ Powered by GPT-4o</div>
                     </div>
                     <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6 }}>
                         <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10B981', display: 'inline-block' }} />
@@ -221,7 +221,7 @@ export default function AICommandCenter() {
                                 transition: 'all 0.15s', whiteSpace: 'nowrap',
                             }}
                         >
-                            Send ⚡
+                            Send âš¡
                         </button>
                     </div>
                 </div>

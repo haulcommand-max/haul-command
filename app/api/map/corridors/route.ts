@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 
-// Static corridor geometry (line segments) â€” extend with real GeoJSON from DB later
+// Static corridor geometry (line segments) — extend with real GeoJSON from DB later
 const CORRIDOR_LINES: Record<string, number[][]> = {
     "I-75": [
         [-84.39, 33.75], [-83.72, 32.08], [-83.43, 30.83],
@@ -53,7 +53,7 @@ export async function GET() {
         geometry: { type: "LineString", coordinates: coords },
         properties: {
             name,
-            // heat 0â€“1 based on recent load activity; fallback to 0.3 for visual baseline
+            // heat 0"“1 based on recent load activity; fallback to 0.3 for visual baseline
             heat: densityMap[name] ?? 0.3,
         },
     }));

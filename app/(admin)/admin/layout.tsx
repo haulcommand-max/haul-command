@@ -14,21 +14,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </div>
 
                 <nav className="flex-1 overflow-y-auto p-4 space-y-1">
-                    <AdminNavLink href="/admin" label="Dashboard" icon="📊" />
-                    <AdminNavLink href="/admin/moderation" label="Moderation Inbox" icon="📥" />
-                    <AdminNavLink href="/admin/directory" label="Directory" icon="📇" />
-                    <AdminNavLink href="/admin/loads" label="Load Board" icon="📦" />
-                    <AdminNavLink href="/admin/leaderboard" label="Leaderboard" icon="🏆" />
-                    <AdminNavLink href="/admin/corridors" label="Corridors" icon="🛣️" />
-                    <AdminNavLink href="/admin/heat" label="Heat Engine" icon="🔥" />
-                    <AdminNavLink href="/admin/billing" label="Sponsors & Billing" icon="💰" />
-                    <AdminNavLink href="/admin/ads" label="AdGrid Revenue" icon="📈" />
+                    <AdminNavLink href="/admin" label="Dashboard" icon="ðŸ“Š" />
+                    <AdminNavLink href="/admin/moderation" label="Moderation Inbox" icon="ðŸ“¥" />
+                    <AdminNavLink href="/admin/directory" label="Directory" icon="ðŸ“‡" />
+                    <AdminNavLink href="/admin/loads" label="Load Board" icon="ðŸ“¦" />
+                    <AdminNavLink href="/admin/leaderboard" label="Leaderboard" icon="ðŸ†" />
+                    <AdminNavLink href="/admin/corridors" label="Corridors" icon="ðŸ›£ï¸" />
+                    <AdminNavLink href="/admin/heat" label="Heat Engine" icon="ðŸ”¥" />
+                    <AdminNavLink href="/admin/billing" label="Sponsors & Billing" icon="ðŸ’°" />
+                    <AdminNavLink href="/admin/ads" label="AdGrid Revenue" icon="ðŸ“ˆ" />
                     <div className="my-4 border-t border-[#1a1a1a] opacity-20" />
-                    <AdminNavLink href="/admin/settings" label="Settings" icon="⚙️" />
-                    <AdminNavLink href="/admin/audit" label="Audit Log" icon="📜" />
+                    <AdminNavLink href="/admin/settings" label="Settings" icon="âš™ï¸" />
+                    <AdminNavLink href="/admin/audit" label="Audit Log" icon="ðŸ“œ" />
                     <div className="my-4 border-t border-[#1a1a1a] opacity-20" />
-                    <AdminNavLink href="/tools/compliance-copilot" label="Compliance Copilot" icon="⚖️" />
-                    <AdminNavLink href="/api/outreach/operators" label="Operator Outreach" icon="📧" />
+                    <AdminNavLink href="/tools/compliance-copilot" label="Compliance Copilot" icon="âš–ï¸" />
+                    <AdminNavLink href="/api/outreach/operators" label="Operator Outreach" icon="ðŸ“§" />
                 </nav>
 
                 <div className="p-4 border-t border-[#1a1a1a]">

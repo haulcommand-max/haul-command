@@ -1,0 +1,13 @@
+# GEMINI-06: Scrape Target Inventory
+
+scrape_target_inventory:
+  targets:
+    - category: "Hotels & Truck Stops"
+      intent: "Locate oversize-friendly parking"
+      target_url_class: "https://www.loves.com/locations, https://www.pilotflyingj.com/locations"
+    - category: "Pilot Cars / Escorts"
+      intent: "Absorb fragmented mom-and-pop directories"
+      target_url_class: "legacy state DOT PDF rosters, WCS Permits escort lists, OSOW Haven"
+    - category: "Chambers of Commerce"
+      intent: "Enrich local economic zones for large routing projects"
+      target_url_class: "US Chamber directory API"

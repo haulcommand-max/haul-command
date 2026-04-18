@@ -46,7 +46,7 @@ export default function AdminAbusePage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-950 text-white">
+        <div className=" bg-transparent text-white">
             <header className="px-5 pt-8 pb-4 border-b border-gray-800">
                 <h1 className="text-2xl font-black">Abuse Flags</h1>
                 <p className="text-gray-400 text-sm">Open: {flags.length}</p>
@@ -83,7 +83,7 @@ export default function AdminAbusePage() {
                                         <p className="text-sm text-gray-300 truncate">{flag.notes ?? "No notes"}</p>
                                         <p className="text-xs text-gray-600 mt-1">
                                             {new Date(flag.created_at).toLocaleString()}
-                                            {flag.entity_id && <> · entity: {flag.entity_id.slice(0, 8)}…</>}
+                                            {flag.entity_id && <> · entity: {flag.entity_id.slice(0, 8)}...</>}
                                         </p>
                                     </div>
                                     <button aria-label="Interactive Button"
@@ -91,7 +91,7 @@ export default function AdminAbusePage() {
                                         disabled={resolving === flag.id}
                                         className="shrink-0 text-xs px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg transition-colors disabled:opacity-60"
                                     >
-                                        {resolving === flag.id ? "…" : "Resolve"}
+                                        {resolving === flag.id ? "..." : "Resolve"}
                                     </button>
                                 </div>
                             </div>

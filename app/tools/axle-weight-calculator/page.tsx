@@ -46,7 +46,7 @@ export default function AxleWeightCalculatorPage() {
     <>
       <JsonLd data={schema}/>
       <JsonLd data={faq}/>
-      <div className="min-h-screen bg-[#07090d] text-[#f0f2f5]">
+      <div className=" bg-[#07090d] text-[#f0f2f5]">
         <div className="border-b border-[#131c28] bg-gradient-to-r from-[#0a1929] to-[#07090d]">
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
             <p className="text-[11px] tracking-[0.2em] text-[#22c55e] font-semibold mb-3">FREE TOOL · NO LOGIN REQUIRED</p>
@@ -120,7 +120,7 @@ export default function AxleWeightCalculatorPage() {
               {[
                 {q:'What is the federal bridge formula?', a:'The federal bridge formula limits the weight any set of axles can carry based on the spacing between them. W = 500 × (LN ÷ (N−1) + 12N + 36). Where W = max weight (lbs), L = distance between outer axles (ft), N = number of axles. It protects bridges from overloading.'},
                 {q:'What is the maximum legal weight for a 5-axle semi?', a:'The federal cap is 80,000 lbs gross. Single axle: 20,000 lbs. Tandem axle: 34,000 lbs. Many states match federal limits. Michigan and Washington allow higher weights on specific routes with permits.'},
-                {q:'What happens if I exceed axle weight limits?', a:'Overweight loads require permits in every state you travel through. Without a permit, you risk fines of $100–$5,000+ per violation, load rejection at weigh stations, and potential bridge damage liability.'},
+                {q:'What happens if I exceed axle weight limits?', a:'Overweight loads require permits in every state you travel through. Without a permit, you risk fines of $100"“$5,000+ per violation, load rejection at weigh stations, and potential bridge damage liability.'},
                 {q:'Do pilot cars have their own weight requirements?', a:'Pilot cars and escort vehicles must comply with standard highway vehicle weight limits. They are not exempt from axle weight regulations and must have valid registration.'},
               ].map((item,i)=>(
                 <details key={i} className="border border-[#131c28] rounded-xl p-4">

@@ -79,19 +79,19 @@ export default function AdminPlacementsNewPage() {
         router.push("/admin/vendors/placements");
     }
 
-    const inp = "w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400";
+    const inp = "w-full border border-white/20 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400";
 
     return (
         <div className="max-w-2xl mx-auto px-4 py-10 space-y-6">
             <div>
-                <h1 className="text-2xl font-bold text-gray-900">Create Placement</h1>
+                <h1 className="text-2xl font-bold text-white">Create Placement</h1>
                 <p className="mt-1 text-sm text-gray-500">Admin-created placements (deals, promos, manual overrides).</p>
             </div>
 
-            <form onSubmit={handleCreate} className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm space-y-5">
+            <form onSubmit={handleCreate} className="rounded-xl border border-white/10 bg-[#121212] p-6 shadow-sm space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="sm:col-span-2">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Vendor *</label>
+                        <label className="block text-sm font-medium text-neutral-300 mb-1">Vendor *</label>
                         <select required value={form.vendor_id} onChange={e => set("vendor_id", e.target.value)} className={inp}>
                             <option value="">— select vendor —</option>
                             {vendors.map(v => (
@@ -103,44 +103,44 @@ export default function AdminPlacementsNewPage() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Type *</label>
+                        <label className="block text-sm font-medium text-neutral-300 mb-1">Type *</label>
                         <select required value={form.placement_type} onChange={e => set("placement_type", e.target.value)} className={inp}>
                             {PLACEMENT_TYPES.map(t => <option key={t} value={t}>{t.replace(/_/g, " ")}</option>)}
                         </select>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Region (State/Province)</label>
+                        <label className="block text-sm font-medium text-neutral-300 mb-1">Region (State/Province)</label>
                         <input value={form.region1} onChange={e => set("region1", e.target.value)}
-                            placeholder="FL, GA, ON…" className={inp} />
+                            placeholder="FL, GA, ON..." className={inp} />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Corridor (optional)</label>
+                        <label className="block text-sm font-medium text-neutral-300 mb-1">Corridor (optional)</label>
                         <input value={form.corridor_name} onChange={e => set("corridor_name", e.target.value)}
-                            placeholder="I-75, I-95, 401…" className={inp} />
+                            placeholder="I-75, I-95, 401..." className={inp} />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Bid ($/mo)</label>
+                        <label className="block text-sm font-medium text-neutral-300 mb-1">Bid ($/mo)</label>
                         <input type="number" min={0} value={form.bid_monthly}
                             onChange={e => set("bid_monthly", Number(e.target.value))} className={inp} />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Start date *</label>
+                        <label className="block text-sm font-medium text-neutral-300 mb-1">Start date *</label>
                         <input type="date" required value={form.start} onChange={e => set("start", e.target.value)} className={inp} />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">End date *</label>
+                        <label className="block text-sm font-medium text-neutral-300 mb-1">End date *</label>
                         <input type="date" required value={form.end} onChange={e => set("end", e.target.value)} className={inp} />
                     </div>
 
                     <div className="flex items-center gap-2 mt-1">
                         <input type="checkbox" id="exclusive" checked={form.is_exclusive}
-                            onChange={e => set("is_exclusive", e.target.checked)} className="h-4 w-4 rounded border-gray-300" />
-                        <label htmlFor="exclusive" className="text-sm text-gray-700 cursor-pointer">Exclusive</label>
+                            onChange={e => set("is_exclusive", e.target.checked)} className="h-4 w-4 rounded border-white/20" />
+                        <label htmlFor="exclusive" className="text-sm text-neutral-300 cursor-pointer">Exclusive</label>
                     </div>
                 </div>
 
@@ -149,10 +149,10 @@ export default function AdminPlacementsNewPage() {
                 <div className="flex gap-3 pt-2">
                     <button aria-label="Interactive Button" type="submit" disabled={working}
                         className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-colors">
-                        {working ? "Creating…" : "Create Placement"}
+                        {working ? "Creating..." : "Create Placement"}
                     </button>
                     <button aria-label="Interactive Button" type="button" onClick={() => router.back()}
-                        className="px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                        className="px-4 py-2.5 border border-white/20 rounded-lg text-sm text-neutral-300 hover:bg-[#1A1A1A] transition-colors">
                         Cancel
                     </button>
                 </div>

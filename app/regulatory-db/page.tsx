@@ -50,7 +50,7 @@ interface RegulationSource {
     training_value_score: number | null;
 }
 
-const COUNTRY_LABELS: Record<string, string> = { US: '🇺🇸 United States', CA: '🍁 Canada' };
+const COUNTRY_LABELS: Record<string, string> = { US: 'ðŸ‡ºðŸ‡¸ United States', CA: 'ðŸ Canada' };
 
 const STATE_NAMES_FULL: Record<string, string> = {
     AL: 'Alabama', AK: 'Alaska', AZ: 'Arizona', AR: 'Arkansas', CA: 'California',
@@ -104,7 +104,7 @@ export default async function RegulatoryDbPage({
         }
     }
 
-    // Group by country → region
+    // Group by country â†’ region
     const grouped: Record<string, StateReg[]> = {};
     for (const reg of (regs ?? []) as StateReg[]) {
         const c = reg.country ?? 'US';
@@ -119,7 +119,7 @@ export default async function RegulatoryDbPage({
             {/* Header */}
             <div style={{ marginBottom: 40 }}>
                 <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.12em', color: '#d97706', textTransform: 'uppercase', marginBottom: 10 }}>
-                    ⚖️ Regulatory Database
+                    âš–ï¸ Regulatory Database
                 </div>
                 <h1 style={{ fontSize: 'clamp(24px,4vw,40px)', fontWeight: 900, margin: '0 0 12px' }}>
                     Pilot Car Requirements by State & Province
@@ -150,8 +150,8 @@ export default async function RegulatoryDbPage({
                     />
                     <select name="country" defaultValue={country ?? ''} style={selectStyle}>
                         <option value="">All Countries</option>
-                        <option value="US">🇺🇸 United States</option>
-                        <option value="CA">🍁 Canada</option>
+                        <option value="US">ðŸ‡ºðŸ‡¸ United States</option>
+                        <option value="CA">ðŸ Canada</option>
                     </select>
                     <button type="submit" style={btnStyle}>Search</button>
                     {(query || country) && (
@@ -165,7 +165,7 @@ export default async function RegulatoryDbPage({
             {/* Results */}
             {!hasResults ? (
                 <div style={{ padding: '40px 24px', textAlign: 'center', color: 'var(--hc-muted, #888)' }}>
-                    <div style={{ fontSize: 32, marginBottom: 12 }}>📭</div>
+                    <div style={{ fontSize: 32, marginBottom: 12 }}>ðŸ“­</div>
                     {query
                         ? `No states found matching "${query}". Try a different search term.`
                         : 'No state regulations loaded yet. Check back soon.'}
@@ -210,10 +210,10 @@ export default async function RegulatoryDbPage({
                                         </div>
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, fontSize: 11, color: 'var(--hc-muted, #aaa)' }}>
                                             {reg.single_escort_width_ft && (
-                                                <div><span style={{ color: '#f59e0b', fontWeight: 700 }}>{reg.single_escort_width_ft}′+</span> 1 escort</div>
+                                                <div><span style={{ color: '#f59e0b', fontWeight: 700 }}>{reg.single_escort_width_ft}"²+</span> 1 escort</div>
                                             )}
                                             {reg.double_escort_width_ft && (
-                                                <div><span style={{ color: '#ef4444', fontWeight: 700 }}>{reg.double_escort_width_ft}′+</span> 2 escorts</div>
+                                                <div><span style={{ color: '#ef4444', fontWeight: 700 }}>{reg.double_escort_width_ft}"²+</span> 2 escorts</div>
                                             )}
                                             <div>Night: <span style={{ color: reg.night_moves_allowed ? '#10b981' : '#ef4444', fontWeight: 700 }}>{reg.night_moves_allowed == null ? '?' : reg.night_moves_allowed ? 'OK' : 'No'}</span></div>
                                             <div>Cert: <span style={{ color: reg.certification_required ? '#f59e0b' : '#10b981', fontWeight: 700 }}>{reg.certification_required == null ? '?' : reg.certification_required ? 'Required' : 'No'}</span></div>
@@ -237,12 +237,12 @@ export default async function RegulatoryDbPage({
                                         <div style={{ display: 'flex', gap: 8, marginTop: 12, alignItems: 'center' }}>
                                             <Link aria-label="Navigation Link" href={ruleLinkUrl}
                                                 style={{ fontSize: 11, color: '#d97706', fontWeight: 700, textDecoration: 'none', background: 'rgba(217,119,6,0.1)', padding: '4px 8px', borderRadius: 4 }}>
-                                                Full Guide →
+                                                Full Guide â†’
                                             </Link>
                                             {finalSourceUrl && !matchedSource && (
                                                 <a href={finalSourceUrl} target="_blank" rel="noopener noreferrer"
                                                     style={{ fontSize: 10, color: '#6b7280', textDecoration: 'none' }}>
-                                                    DOT Source ↗
+                                                    DOT Source â†—
                                                 </a>
                                             )}
                                         </div>
@@ -309,4 +309,3 @@ const categoryBadge: React.CSSProperties = {
     color: '#d97706', border: '1px solid rgba(217,119,6,0.25)',
     borderRadius: 6, fontSize: 10, fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase' as const,
 };
-

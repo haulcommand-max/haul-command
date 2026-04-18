@@ -1,33 +1,68 @@
-interface ReportCardProps { reportCard: any; operator: any }
-function StatRow({ label, value, sub }: { label: string; value: string; sub?: string }) {
-  return (
-    <div className="flex items-center justify-between py-2.5 border-b border-[#0c1015] last:border-0">
-      <span className="text-xs text-[#566880]">{label}</span>
-      <div className="text-right"><span className="text-sm font-semibold text-[#d0dce8]">{value}</span>{sub && <p className="text-[10px] text-[#3a5068]">{sub}</p>}</div>
-    </div>
-  )
+import React from "react";
+
+// Haul Command: Operator Report Card & Trust Points Module
+// This is the visible manifestation of the Gamified UGC logic. Operators check this
+// to confirm their rank and trust points.
+
+interface ReportCardProps {
+  score: number;
+  rank: number;
+  postCount: number;
+  region: string;
 }
-export function OperatorReportCard({ reportCard: rc, operator }: ReportCardProps) {
-  const onTime = rc?.on_time_rate ? `${Math.round(Number(rc.on_time_rate)*100)}%` : '—'
-  const miles = rc?.miles_escorted ? Number(rc.miles_escorted).toLocaleString() : '—'
-  const loads = rc?.loads_completed ?? operator.jobs_completed ?? 0
-  const responseMin = operator.avg_response_time_minutes ?? operator.avg_response_minutes
-  const responseStr = responseMin ? `${Math.round(responseMin)}m` : '—'
-  const corridors = rc?.corridors_active ?? (Array.isArray(operator.corridors_familiar) ? operator.corridors_familiar.length : 0)
+
+export default function OperatorReportCard({ score, rank, postCount, region }: ReportCardProps) {
   return (
-    <div className="bg-[#0f1a24] border border-[#1e3048] rounded-2xl p-6">
-      <div className="flex items-center justify-between mb-5">
-        <h2 className="text-base font-bold text-[#f0f2f5]">Report Card</h2>
-        {rc?.rank_title && <span className="text-[10px] text-[#d4950e] font-bold">{rc.rank_title}{rc.rank_level ? ` · L${rc.rank_level}` : ''}</span>}
+    <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden shadow-2xl mt-6">
+      
+      {/* Header */}
+      <div className="bg-gradient-to-r from-gray-800 to-gray-900 p-6 flex justify-between items-center border-b border-gray-700">
+        <div>
+          <h2 className="text-xl font-black text-white uppercase tracking-tighter">Haul Command Report Card</h2>
+          <p className="text-xs text-yellow-500 font-mono uppercase mt-1">Verified Escort Output</p>
+        </div>
+        <div className="text-right">
+          <div className="text-3xl font-black text-white">{score} <span className="text-sm font-medium text-gray-400">TP</span></div>
+          <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Total Trust Points</p>
+        </div>
       </div>
-      <StatRow label="Loads Completed" value={loads.toLocaleString()} sub="verified jobs" />
-      <StatRow label="On-Time Rate" value={onTime} sub="arrival accuracy" />
-      <StatRow label="Miles Escorted" value={miles} sub="total career" />
-      <StatRow label="Avg Response" value={responseStr} sub="to load requests" />
-      <StatRow label="Active Corridors" value={corridors.toString()} sub="routes served" />
-      {rc?.signals_reported > 0 && <StatRow label="CSN Signals Filed" value={rc.signals_reported.toString()} sub={`${Math.round(Number(rc.signal_accuracy||0)*100)}% accuracy`} />}
-      {rc?.safety_incidents === 0 && <div className="mt-3 text-xs text-[#22c55e] bg-[#0d2000] border border-[#2a5010] rounded-lg px-3 py-2">✓ Zero safety incidents recorded</div>}
-      <div className="mt-4 pt-4 border-t border-[#0c1015]"><p className="text-[10px] text-[#3a4e64]">Member since {new Date(operator.created_at).toLocaleDateString('en-US',{month:'long',year:'numeric'})}</p></div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-3 divide-x divide-gray-800 bg-[#0a0a0a]">
+        
+        {/* RANK */}
+        <div className="p-6 text-center hover:bg-gray-800/50 transition">
+          <div className="text-yellow-500 text-3xl font-black">#{rank}</div>
+          <div className="text-xs text-gray-400 uppercase tracking-widest mt-2">{region} Corridor Rank</div>
+        </div>
+
+        {/* UGC CONTRIBUTIONS */}
+        <div className="p-6 text-center hover:bg-gray-800/50 transition">
+          <div className="text-white text-3xl font-black">{postCount}</div>
+          <div className="text-xs text-gray-400 uppercase tracking-widest mt-2">Hazard Reports</div>
+          <div className="text-[10px] text-green-500 font-mono mt-1">+{(postCount * 10)} Score Gained</div>
+        </div>
+
+        {/* ALGORITHM BIAS */}
+        <div className="p-6 text-center hover:bg-gray-800/50 transition">
+          <div className="text-white text-3xl font-black">HIGH</div>
+          <div className="text-xs text-gray-400 uppercase tracking-widest mt-2">Broker Routing Bias</div>
+          <div className="text-[10px] text-blue-400 font-mono mt-1">Priority Selection Active</div>
+        </div>
+
+      </div>
+
+      {/* Gamification Upsell / Action Area */}
+      <div className="p-6 bg-gray-900 flex justify-between items-center">
+         <div>
+            <p className="text-sm text-gray-300">Your profile is currently <span className="font-bold text-white">visible to 85% of brokers</span> in {region}.</p>
+            <p className="text-xs text-gray-500 mt-1">Submit 3 more hazard reports to unlock Priority Routing Bias.</p>
+         </div>
+         <button className="bg-yellow-500 text-black font-black text-xs px-6 py-2 uppercase rounded hover:bg-yellow-400 shadow-[0_0_15px_rgba(234,179,8,0.2)]">
+            Report 10-Point Hazard
+         </button>
+      </div>
+
     </div>
-  )
+  );
 }

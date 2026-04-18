@@ -54,10 +54,10 @@ export default function AIChatPage() {
                 background: 'rgba(5,5,8,0.92)', backdropFilter: 'blur(16px)',
                 position: 'sticky', top: 0, zIndex: 10,
             }}>
-                <span style={{ fontSize: 22 }}>💬</span>
+                <span style={{ fontSize: 22 }}>ðŸ’¬</span>
                 <div>
                     <div style={{ fontSize: 15, fontWeight: 700, color: '#f9fafb' }}>AI Gateway</div>
-                    <div style={{ fontSize: 11, color: '#6b7280' }}>Powered by GPT-4o • Secure server-side proxy</div>
+                    <div style={{ fontSize: 11, color: '#6b7280' }}>Powered by GPT-4o "¢ Secure server-side proxy</div>
                 </div>
                 <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6 }}>
                     <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#22c55e', display: 'block' }} />
@@ -69,7 +69,7 @@ export default function AIChatPage() {
             <div style={{ flex: 1, overflowY: 'auto', padding: '20px', display: 'flex', flexDirection: 'column', gap: 16 }}>
                 {messages.length === 0 && (
                     <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 12, opacity: 0.4 }}>
-                        <span style={{ fontSize: 48 }}>💬</span>
+                        <span style={{ fontSize: 48 }}>ðŸ’¬</span>
                         <div style={{ fontSize: 18, fontWeight: 600 }}>Ask Haul Command</div>
                         <div style={{ fontSize: 13, color: '#6b7280', textAlign: 'center', maxWidth: 320 }}>
                             Platform support, dispatch questions, permit regulations — ask anything.
@@ -130,7 +130,7 @@ export default function AIChatPage() {
                     opacity: (!input.trim() || loading) ? 0.4 : 1,
                     transition: 'all 0.15s', whiteSpace: 'nowrap',
                 }}>
-                    Send ⚡
+                    Send âš¡
                 </button>
             </form>
 

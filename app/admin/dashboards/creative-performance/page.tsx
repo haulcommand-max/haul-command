@@ -54,7 +54,7 @@ export default function CreativePerformanceDashboard() {
     return (
         <div style={{ padding: 24, maxWidth: 1200, margin: '0 auto' }}>
             <h1 style={{ fontSize: 24, fontWeight: 900, color: '#fff', marginBottom: 4 }}>Creative Performance</h1>
-            <p style={{ fontSize: 12, color: '#888', marginBottom: 24 }}>Gemini Ad Factory output • A/B test results • Winner detection</p>
+            <p style={{ fontSize: 12, color: '#888', marginBottom: 24 }}>Gemini Ad Factory output "¢ A/B test results "¢ Winner detection</p>
 
             {/* Stats */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10, marginBottom: 24 }}>
@@ -98,7 +98,7 @@ export default function CreativePerformanceDashboard() {
                     padding: 40, textAlign: 'center', borderRadius: 16,
                     border: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)',
                 }}>
-                    <div style={{ fontSize: 48, marginBottom: 12 }}>🎨</div>
+                    <div style={{ fontSize: 48, marginBottom: 12 }}>ðŸŽ¨</div>
                     <div style={{ fontSize: 15, fontWeight: 700, color: '#fff' }}>No creatives generated yet</div>
                     <div style={{ fontSize: 12, color: '#888', marginTop: 4 }}>
                         Use the Gemini Ad Factory to generate creatives: POST /api/adgrid/generate

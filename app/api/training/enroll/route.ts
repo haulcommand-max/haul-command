@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { getStripe } from '@/lib/stripe';
+import { sendRoutedNotification } from '@/lib/notifications/channelRouter';
 
 // Certification tier → Stripe price ID env var mapping
 const CERT_PRICE_IDS: Record<string, string> = {
@@ -68,19 +69,27 @@ export async function POST(req: NextRequest) {
         certification_tier,
         status: 'in_progress',
       });
+
+      // Notify via channel router
+      await sendRoutedNotification(user.id, {
+        type: 'training_enrollment',
+        urgency: 'normal',
+        title: 'Training Enrolled',
+        body: `You are now enrolled in the ${certification_tier.replace('_', ' ')} certification program.`,
+        url: '/training',
+      }).catch(() => { /* best-effort */ });
+
       return NextResponse.json({ enrolled: true });
     }
 
     // Requires payment — create Stripe checkout session
     const priceId = CERT_PRICE_IDS[certification_tier];
     if (!priceId) {
-      // Fallback: enroll without payment (dev mode / missing env)
-      await supabase.from('user_certifications').insert({
-        user_id: user.id,
-        certification_tier,
-        status: 'in_progress',
-      });
-      return NextResponse.json({ enrolled: true, note: 'Payment bypassed — price ID not configured' });
+      console.error(`[TRAINING_CHECKOUT_BLOCKED] Empty Stripe price ID for tier "${certification_tier}". Set STRIPE_PRICE_${certification_tier.toUpperCase()} in environment.`);
+      return NextResponse.json(
+        { error: `Training checkout temporarily unavailable for ${certification_tier}. Payment configuration pending.` },
+        { status: 503 }
+      );
     }
 
     const stripe = getStripe();

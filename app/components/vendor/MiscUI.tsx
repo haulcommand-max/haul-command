@@ -34,7 +34,7 @@ export function InsuranceDiscountBanner({ trustScore }: { trustScore: number }) 
         <h3 className="text-xl font-bold text-white mb-1">Unlock 20% Off Liability Insurance</h3>
         <p className="text-sm text-blue-200">Your Trust Score of {trustScore} qualifies you for Tier-1 broker premiums with our partners.</p>
       </div>
-      <button className="bg-white text-black font-bold py-2 px-6 rounded hover:bg-gray-200">Claim Reward</button>
+      <button className="bg-[#121212] text-white font-bold py-2 px-6 rounded hover:bg-gray-200">Claim Reward</button>
     </div>
   );
 }
@@ -66,10 +66,10 @@ export function LanguageSwitcher() {
       onChange={(e) => setLang(e.target.value)}
       className="bg-hc-gray-900 text-hc-gray-300 text-sm border border-hc-gray-700 rounded px-2 py-1 focus:outline-none"
     >
-      <option value="US">🇺🇸 EN-US (Pilot Car)</option>
-      <option value="FR">🇫🇷 FR-FR (Voiture Pilote)</option>
-      <option value="DE">🇩🇪 DE-DE (Begleitfahrzeug)</option>
-      <option value="AU">🇦🇺 EN-AU (Pilot Vehicle)</option>
+      <option value="US">ðŸ‡ºðŸ‡¸ EN-US (Pilot Car)</option>
+      <option value="FR">ðŸ‡«ðŸ‡· FR-FR (Voiture Pilote)</option>
+      <option value="DE">ðŸ‡©ðŸ‡ª DE-DE (Begleitfahrzeug)</option>
+      <option value="AU">ðŸ‡¦ðŸ‡º EN-AU (Pilot Vehicle)</option>
     </select>
   );
 }

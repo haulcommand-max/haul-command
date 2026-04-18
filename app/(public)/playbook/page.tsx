@@ -29,13 +29,13 @@ function buildChecklist(data: PlaybookData): ChecklistItem[] {
 
 function getPlaybookMode(mode: string): { title: string; desc: string; color: string; steps: string[] } {
     const playbooks: Record<string, { title: string; desc: string; color: string; steps: string[] }> = {
-        waitlist: { title: 'Waitlist → Seeding', color: '#6B7280', desc: 'Get first operators and loads into this market.',
+        waitlist: { title: 'Waitlist â†’ Seeding', color: '#6B7280', desc: 'Get first operators and loads into this market.',
             steps: ['Seed 5+ operator profiles', 'Post first load or attract first broker', 'Identify founder operators', 'Set up corridor connections'] },
-        demand_capture: { title: 'Demand Capture → Live', color: '#8B5CF6', desc: 'Loads flowing but supply is thin. Priority: verified supply.',
+        demand_capture: { title: 'Demand Capture â†’ Live', color: '#8B5CF6', desc: 'Loads flowing but supply is thin. Priority: verified supply.',
             steps: ['Recruit 3+ verified operators', 'Enable rescue actions for aging posts', 'Deploy claim pressure on profiles', 'Activate corridor heartbeat'] },
-        seeding: { title: 'Seeding → Live', color: '#F59E0B', desc: 'Operators claiming, activity building. Priority: real matches.',
+        seeding: { title: 'Seeding â†’ Live', color: '#F59E0B', desc: 'Operators claiming, activity building. Priority: real matches.',
             steps: ['Hit 5 verified operators', 'Get first real load fill', 'Activate infrastructure support', 'Deploy outcome proof blocks'] },
-        live: { title: 'Live → Consolidating', color: '#22C55E', desc: 'Market is active. Priority: dominance signals and fill rate.',
+        live: { title: 'Live â†’ Consolidating', color: '#22C55E', desc: 'Market is active. Priority: dominance signals and fill rate.',
             steps: ['Maintain 80%+ post visibility', 'Grow claim penetration above 40%', 'Show outcome proof on all surfaces', 'Enable sponsor slots'] },
     };
     return playbooks[mode] || playbooks.waitlist;
@@ -134,14 +134,14 @@ export default function MarketPlaybookPage() {
                             {checklist.map((item, i) => (
                                 <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'center', padding: '10px 20px', borderBottom: i < checklist.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none' }}>
                                     <span style={{ fontSize: 14, color: item.met ? '#22C55E' : '#EF4444', fontWeight: 900 }}>
-                                        {item.met ? '✓' : '✗'}
+                                        {item.met ? 'âœ“' : 'âœ—'}
                                     </span>
                                     <div style={{ flex: 1 }}>
                                         <div style={{ fontSize: 12, fontWeight: 700, color: item.met ? '#bbb' : '#fff' }}>{item.label}</div>
                                         <div style={{ fontSize: 10, color: '#888' }}>{item.current} / {item.target}</div>
                                     </div>
                                     {!item.met && item.action && (
-                                        <Link aria-label="Navigation Link" href={item.action} style={{ fontSize: 10, fontWeight: 700, color: '#F1A91B', textDecoration: 'none' }}>Fix →</Link>
+                                        <Link aria-label="Navigation Link" href={item.action} style={{ fontSize: 10, fontWeight: 700, color: '#F1A91B', textDecoration: 'none' }}>Fix â†’</Link>
                                     )}
                                 </div>
                             ))}

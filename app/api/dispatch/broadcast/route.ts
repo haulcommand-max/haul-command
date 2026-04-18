@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { sendRoutedNotification } from '@/lib/notifications/channelRouter';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { findDispatchCandidates } from '@/lib/data/dispatch-matcher';
 import { routeIntakeEvent } from '@/lib/data/intake-router';
@@ -84,6 +85,19 @@ export async function POST(req: Request) {
 
     try {
       await supabaseAdmin.from('hc_notification_events').insert(eventLogs);
+      
+      // Send priority push/sms through Smart Channel Router
+      await Promise.all(candidates.map(op => 
+        sendRoutedNotification(op.entity_id, {
+          type: 'dispatch_urgent',
+          urgency: urgentOnly ? 'critical' : 'high',
+          title: `🚨 Load Available: ${countryCode}`,
+          body: `New load matching your profile in ${countryCode}. Distance: ${op.distance_miles.toFixed(1)}mi`,
+          url: `/jobs/${loadId}`
+        }).catch(err => {
+          console.warn('[dispatch/broadcast] sendRoutedNotification error for', op.entity_id, err);
+        })
+      ));
     } catch (e) {
       console.warn('[dispatch/broadcast] Notification logging failed:', e);
     }

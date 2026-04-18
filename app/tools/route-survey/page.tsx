@@ -96,9 +96,9 @@ export default function RouteSurveyApp() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-950 text-slate-200 font-sans">
+        <div className="  text-slate-200 font-sans">
             {/* Top Bar */}
-            <div className="bg-slate-900 border-b border-slate-800 p-4 sticky top-0 z-50 flex items-center justify-between">
+            <div className=" border-b border-slate-800 p-4 sticky top-0 z-50 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <Link aria-label="Navigation Link" href="/dashboard" className="p-2 bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors">
                         <ArrowLeft className="w-5 h-5 text-white" />
@@ -119,7 +119,7 @@ export default function RouteSurveyApp() {
 
             <div className="p-4 max-w-lg mx-auto">
                 {!isSurveying && !surveyId && (
-                    <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl mt-4">
+                    <div className=" border border-slate-800 rounded-3xl p-6 shadow-2xl mt-4">
                         <div className="w-16 h-16 bg-amber-500/10 rounded-2xl flex items-center justify-center mb-6">
                             <ShieldCheck className="w-8 h-8 text-amber-500" />
                         </div>
@@ -135,7 +135,7 @@ export default function RouteSurveyApp() {
                                 placeholder="e.g. I-45 North to Dallas"
                                 value={surveyName}
                                 onChange={e => setSurveyName(e.target.value)}
-                                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500/50 transition-colors"
+                                className="w-full  border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500/50 transition-colors"
                             />
                         </div>
 
@@ -152,7 +152,7 @@ export default function RouteSurveyApp() {
                 {isSurveying && (
                     <div className="space-y-4 pb-24 mt-2">
                         {/* HUD Dashboard */}
-                        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+                        <div className=" border border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
                             <div className="flex justify-between items-center mb-6 relative z-10">
                                 <div>
                                     <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Route</div>
@@ -164,7 +164,7 @@ export default function RouteSurveyApp() {
                                 </div>
                             </div>
 
-                            <div className="bg-slate-950 rounded-2xl p-4 flex items-center justify-between border border-white/5 relative z-10">
+                            <div className=" rounded-2xl p-4 flex items-center justify-between border border-white/5 relative z-10">
                                 <div className="flex items-center gap-3">
                                     <MapPin className="w-5 h-5 text-slate-400" />
                                     <div>
@@ -182,40 +182,40 @@ export default function RouteSurveyApp() {
                         <div className="grid grid-cols-2 gap-4">
                             <button aria-label="Interactive Button" data-tool-interact
                                 onClick={() => markObstacle('bridge', 204)} // Assume 17' standard height pole hit for demo
-                                className="bg-slate-900 hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 transition-colors aspect-square touch-manipulation"
+                                className=" hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 transition-colors aspect-square touch-manipulation"
                             >
                                 <div className="w-16 h-16 bg-blue-500/10 rounded-full flex items-center justify-center">
-                                    <span className="text-3xl">🌉</span>
+                                    <span className="text-3xl">ðŸŒ‰</span>
                                 </div>
                                 <span className="font-bold text-white uppercase tracking-wider text-sm">Bridge Hit</span>
                             </button>
 
                             <button aria-label="Interactive Button" data-tool-interact
                                 onClick={() => markObstacle('lines', 240)}
-                                className="bg-slate-900 hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 transition-colors aspect-square touch-manipulation"
+                                className=" hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 transition-colors aspect-square touch-manipulation"
                             >
                                 <div className="w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center">
-                                    <span className="text-3xl">⚡️</span>
+                                    <span className="text-3xl">âš¡ï¸</span>
                                 </div>
                                 <span className="font-bold text-white uppercase tracking-wider text-sm">Low Wires</span>
                             </button>
 
                             <button aria-label="Interactive Button" data-tool-interact
                                 onClick={() => markObstacle('turn')}
-                                className="bg-slate-900 hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 transition-colors aspect-square touch-manipulation"
+                                className=" hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 transition-colors aspect-square touch-manipulation"
                             >
                                 <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center">
-                                    <span className="text-3xl">↪️</span>
+                                    <span className="text-3xl">â†ªï¸</span>
                                 </div>
                                 <span className="font-bold text-white uppercase tracking-wider text-sm">Tight Turn</span>
                             </button>
 
                             <button aria-label="Interactive Button" data-tool-interact
                                 onClick={() => markObstacle('other')}
-                                className="bg-slate-900 hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 transition-colors aspect-square touch-manipulation"
+                                className=" hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 transition-colors aspect-square touch-manipulation"
                             >
                                 <div className="w-16 h-16 bg-purple-500/10 rounded-full flex items-center justify-center">
-                                    <span className="text-3xl">⚠️</span>
+                                    <span className="text-3xl">âš ï¸</span>
                                 </div>
                                 <span className="font-bold text-white uppercase tracking-wider text-sm">Other Pin</span>
                             </button>
@@ -226,7 +226,7 @@ export default function RouteSurveyApp() {
 
             {/* Bottom Sticky Action Bar */}
             {isSurveying && (
-                <div className="fixed bottom-0 left-0 right-0 p-4 border-t border-slate-800 bg-slate-950/80 backdrop-blur-xl z-50">
+                <div className="fixed bottom-0 left-0 right-0 p-4 border-t border-slate-800 /80 backdrop-blur-xl z-50">
                     <div className="max-w-lg mx-auto flex gap-4">
                         <button aria-label="Interactive Button" data-tool-interact className="h-14 w-14 bg-slate-800 rounded-2xl flex items-center justify-center shrink-0">
                             <Camera className="w-6 h-6 text-white" />

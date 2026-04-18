@@ -7,9 +7,9 @@ export const metadata = {
 
 export default function ExamplesPage() {
     return (
-        <main className="min-h-screen bg-gray-950 text-gray-100">
+        <main className=" bg-transparent text-gray-100">
             <div className="mx-auto max-w-3xl py-20 px-6">
-                <Link aria-label="Navigation Link" href="/developers" className="text-sm text-blue-400 hover:text-blue-300 mb-6 inline-block">← Back to Developers</Link>
+                <Link aria-label="Navigation Link" href="/developers" className="text-sm text-blue-400 hover:text-blue-300 mb-6 inline-block">â† Back to Developers</Link>
                 <h1 className="text-4xl font-bold text-white mb-6">Code Examples</h1>
                 <p className="text-lg text-gray-400 mb-12">Ready-to-use integration patterns in TypeScript, Python, and cURL.</p>
 
@@ -125,7 +125,7 @@ print(f"Recommended lead time: {pred.recommended_lead_time_hours}h")`}</Pre>
                     {/* cURL */}
                     <div>
                         <h2 className="text-2xl font-semibold text-white mb-4 flex items-center gap-3">
-                            <span className="rounded bg-gray-500/10 px-2 py-0.5 text-xs font-mono text-gray-400">cURL</span>
+                            <span className="rounded bg-[#1A1A1A]0/10 px-2 py-0.5 text-xs font-mono text-gray-400">cURL</span>
                             Common Operations
                         </h2>
                         <div className="space-y-6">

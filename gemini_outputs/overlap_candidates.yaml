@@ -1,0 +1,5 @@
+# GEMINI-02: Overlap Candidates for Edge Functions
+overlap_alerts:
+  - functions: ["route-matcher-agent", "fcm-push-worker"]
+    reason: "Both handle push logic. Matcher should purely emit to event bus, and FCM worker should strictly consume from event bus to decouple logic."
+    recommendation: "MERGE match logic payload structure into the global OS_EVENTS bus."

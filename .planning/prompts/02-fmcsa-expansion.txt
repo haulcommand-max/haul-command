@@ -1,0 +1,65 @@
+You are building a U.S. heavy-haul directory for Haul Command.
+
+Your task is to identify FORMAL heavy-haul brokers, carriers, escort coordinators, and permit-adjacent companies using FMCSA-first research plus public company websites.
+
+Geographic scope:
+[INSERT STATES OR "United States"]
+
+Priority sources:
+1. FMCSA Licensing & Insurance
+2. FMCSA SAFER / Company Snapshot
+3. Official company websites
+4. Public company contact pages
+
+Target entity types:
+- heavy_haul_broker
+- heavy_haul_carrier
+- escort_dispatch
+- permit_service
+- route_survey_provider
+- escort_company
+
+Search cues:
+- heavy haul
+- oversize
+- overdimensional
+- oversized load
+- specialized transport
+- superload
+- permit service
+- route survey
+- escort coordination
+- pilot car
+
+For each entity, collect:
+- entity_name
+- normalized_name
+- entity_type
+- city
+- state
+- website
+- phone
+- email
+- contact_name
+- FMCSA_source_url
+- website_source_url
+- USDOT_number
+- MC_number
+- authority_status
+- services_offered
+- evidence_snippet
+- confidence_score
+- needs_manual_review
+
+Rules:
+- Do not invent MC or USDOT numbers
+- If FMCSA confirms the company but the website does not mention heavy haul, say so
+- If the website mentions pilot car arrangement, permit services, route surveys, escorts, superloads, or overdimensional logistics, tag those explicitly
+- Merge duplicate records from DBA/legal names
+- Keep all source URLs
+- If a company looks relevant but evidence is weak, set needs_manual_review = true
+
+Output:
+1. JSON array
+2. a deduplicated summary by state
+3. a list of companies that appear broker-like but are not clearly classifiable from the evidence

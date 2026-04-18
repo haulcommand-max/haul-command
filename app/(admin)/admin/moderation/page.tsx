@@ -83,7 +83,7 @@ export default function ModerationPage() {
                     <div className="text-center py-20 text-[#444]">Loading moderation queue...</div>
                 ) : items.length === 0 ? (
                     <div className="text-center py-20">
-                        <div className="text-4xl mb-4">✅</div>
+                        <div className="text-4xl mb-4">âœ…</div>
                         <h3 className="text-lg font-bold text-[#888] mb-2">Moderation Queue Clear</h3>
                         <p className="text-sm text-[#444]">No pending items. New claims, reports, and verifications will appear here automatically.</p>
                     </div>
@@ -154,7 +154,7 @@ export default function ModerationPage() {
                         <button aria-label="Interactive Button"
                             disabled={processing}
                             onClick={() => handleAction('VERIFY', selectedItem)}
-                            className="flex-1 bg-[#22c55e] text-black py-3 rounded text-xs font-black uppercase hover:bg-green-400 transition-all disabled:opacity-50"
+                            className="flex-1 bg-[#22c55e] text-white py-3 rounded text-xs font-black uppercase hover:bg-green-400 transition-all disabled:opacity-50"
                         >
                             {processing ? 'Processing...' : 'Verify Item'}
                         </button>

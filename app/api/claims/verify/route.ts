@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { sendRoutedNotification } from '@/lib/notifications/channelRouter';
 
 // POST /api/claims/verify
 // Verify a claim via claim_token
@@ -43,15 +44,14 @@ export async function POST(req: NextRequest) {
       })
       .eq('id', claim.listing_id);
 
-    // Notify user
+    // Notify user via Smart Channel Router
     if (claim.user_id) {
-      await supabase.from('notifications').insert({
-        user_id: claim.user_id,
-        type: 'system',
+      await sendRoutedNotification(claim.user_id, {
+        type: 'claim_approval',
+        urgency: 'normal',
         title: '\u2713 Listing Verified!',
         body: 'Your listing is now verified. You\u2019ll receive priority placement and load offers.',
-        data: { listing_id: claim.listing_id },
-        action_url: `/directory/${claim.listing_id}`,
+        url: `/directory/${claim.listing_id}`
       });
     }
 

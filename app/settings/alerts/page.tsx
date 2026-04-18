@@ -49,14 +49,14 @@ export default function AlertsSettingsPage() {
 
     if (!s) {
         return (
-            <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+            <div className=" bg-transparent flex items-center justify-center">
                 <div className="w-6 h-6 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gray-950 text-white">
+        <div className=" bg-transparent text-white">
             <header className="px-5 pt-8 pb-4 border-b border-gray-800">
                 <h1 className="text-2xl font-black">Alert Settings</h1>
                 <p className="text-gray-400 text-sm mt-1">Control when and how you get notified.</p>
@@ -75,7 +75,7 @@ export default function AlertsSettingsPage() {
                         aria-checked={s.enabled}
                         role="switch"
                     >
-                        <span className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform ${s.enabled ? "translate-x-6" : ""}`} />
+                        <span className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-[#121212] shadow transition-transform ${s.enabled ? "translate-x-6" : ""}`} />
                     </button>
                 </div>
 
@@ -114,7 +114,7 @@ export default function AlertsSettingsPage() {
                                             className={`relative w-10 h-5 rounded-full transition-colors ${s.alert_types.includes(type) ? "bg-orange-500" : "bg-gray-700"}`}
                                             role="switch" aria-checked={s.alert_types.includes(type)}
                                         >
-                                            <span className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${s.alert_types.includes(type) ? "translate-x-5" : ""}`} />
+                                            <span className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-[#121212] shadow transition-transform ${s.alert_types.includes(type) ? "translate-x-5" : ""}`} />
                                         </button>
                                     </label>
                                 ))}
@@ -133,7 +133,7 @@ export default function AlertsSettingsPage() {
                                     className={`relative w-10 h-5 rounded-full transition-colors ${s.quiet_hours_enabled ? "bg-orange-500" : "bg-gray-700"}`}
                                     role="switch" aria-checked={s.quiet_hours_enabled}
                                 >
-                                    <span className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${s.quiet_hours_enabled ? "translate-x-5" : ""}`} />
+                                    <span className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-[#121212] shadow transition-transform ${s.quiet_hours_enabled ? "translate-x-5" : ""}`} />
                                 </button>
                             </label>
                             {s.quiet_hours_enabled && (
@@ -185,7 +185,7 @@ export default function AlertsSettingsPage() {
                     disabled={saving}
                     className={`w-full py-3.5 rounded-xl font-bold text-white transition-all ${saved ? "bg-green-600" : "bg-orange-500 hover:bg-orange-400"} disabled:opacity-60`}
                 >
-                    {saving ? "Saving…" : saved ? "✓ Saved" : "Save Settings"}
+                    {saving ? "Saving..." : saved ? "✓ Saved" : "Save Settings"}
                 </button>
             </div>
         </div>

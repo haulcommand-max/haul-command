@@ -29,7 +29,7 @@ const FAQ_SCHEMA = {
       name: 'What is a pilot car or escort vehicle?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'A pilot car (also called escort vehicle or flag car) is a vehicle that accompanies oversize loads on public roads to warn traffic and ensure safe passage. Requirements vary by country and state — typically loads wider than 3.0–4.0 meters require at least one escort.',
+        text: 'A pilot car (also called escort vehicle or flag car) is a vehicle that accompanies oversize loads on public roads to warn traffic and ensure safe passage. Requirements vary by country and state — typically loads wider than 3.0"“4.0 meters require at least one escort.',
       },
     },
     {

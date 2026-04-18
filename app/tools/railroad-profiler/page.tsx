@@ -10,7 +10,7 @@ export default function RailroadProfilerPending() {
     return (
         <div data-tool-interact="true" style={{ minHeight: '100vh', background: '#0a0a0f', color: '#e5e7eb', fontFamily: "'Inter', system-ui", padding: '4rem 1rem' }}>
             <div style={{ maxWidth: 640, margin: '0 auto', textAlign: 'center' }}>
-                <div style={{ fontSize: 64, marginBottom: 24 }}>🚆</div>
+                <div style={{ fontSize: 64, marginBottom: 24 }}>ðŸš†</div>
                 <h1 style={{ fontSize: 36, fontWeight: 900, color: '#f9fafb', marginBottom: 16 }}>
                     Railroad Grade Crossing Profiler
                 </h1>
@@ -25,7 +25,7 @@ export default function RailroadProfilerPending() {
                     display: 'inline-block', padding: '12px 24px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
                     color: '#fff', textDecoration: 'none', borderRadius: 8, fontWeight: 600, transition: 'background 0.2s'
                 }}>
-                    ← Back to All Tools
+                    â† Back to All Tools
                 </Link>
             </div>
         </div>

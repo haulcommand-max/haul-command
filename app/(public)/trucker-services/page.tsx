@@ -10,12 +10,12 @@ import '@/components/ai-search/answer-block.css';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { SnippetInjector } from '@/components/seo/SnippetInjector';
 
-// ═══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // TRUCKER SERVICES DIRECTORY — Powered by public.places + place_type_metadata
 // Absorbs TruckStopsAndServices.com's entire category taxonomy
 // All data routes through the Claimable Places Engine
 // No duplication — single source of truth in Supabase
-// ═══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const ICON_MAP: Record<string, any> = {
   MapPin, Truck, Wrench, Shield, Fuel, Scale, Phone, Package,
@@ -24,7 +24,7 @@ const ICON_MAP: Record<string, any> = {
 };
 
 const GROUP_LABELS: Record<string, { title: string; order: number }> = {
-  core_escort:         { title: '★ Haul Command Core Services', order: 0 },
+  core_escort:         { title: 'â˜… Haul Command Core Services', order: 0 },
   repair_maintenance:  { title: 'Repair & Maintenance', order: 1 },
   tires_fuel:          { title: 'Tires, Fuel & Fluids', order: 2 },
   towing_emergency:    { title: 'Towing & Emergency Services', order: 3 },
@@ -142,7 +142,7 @@ export default async function TruckerServicesPage() {
   return (
     <div style={{ minHeight: '100vh', background: bg, color: '#e5e7eb', fontFamily: "'Inter', system-ui" }}>
 
-      {/* ── Hero ──────────────────────────────────────────── */}
+      {/* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div style={{ position: 'relative', borderBottom: `1px solid ${border}`, overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(198,146,58,0.1), transparent 70%)', pointerEvents: 'none' }} />
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '3.5rem 1.5rem 3rem' }}>
@@ -180,7 +180,7 @@ export default async function TruckerServicesPage() {
         </div>
       </div>
 
-      {/* ── AI Search Answer Block ── */}
+      {/* â”€â”€ AI Search Answer Block â”€â”€ */}
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem 1.5rem 0' }}>
         <StaticAnswerBlock
           question="What trucker services does Haul Command cover?"
@@ -194,7 +194,7 @@ export default async function TruckerServicesPage() {
         />
       </div>
 
-      {/* ── Category Groups ──────────────────────────────── */}
+      {/* â”€â”€ Category Groups â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2.5rem 1.5rem' }}>
 
         {sortedGroups.map(([groupKey, cats]) => {
@@ -245,7 +245,7 @@ export default async function TruckerServicesPage() {
           );
         })}
 
-        {/* ── Regulation Resources (absorbs Oversize.io) ── */}
+        {/* â”€â”€ Regulation Resources (absorbs Oversize.io) â”€â”€ */}
         <div style={{ marginTop: 24, padding: '2rem', background: 'rgba(255,255,255,0.02)', border: `1px solid ${border}`, borderRadius: 16 }}>
           <h2 style={{ fontSize: 18, fontWeight: 800, color: '#f9fafb', margin: '0 0 8px' }}>
             Oversize / Overweight <span style={{ color: gold }}>Regulations & Compliance</span>
@@ -280,12 +280,12 @@ export default async function TruckerServicesPage() {
           </div>
         </div>
 
-        {/* ── AdGrid — Trucker Services Mid ── */}
+        {/* â”€â”€ AdGrid — Trucker Services Mid â”€â”€ */}
         <div style={{ marginTop: 24, marginBottom: 24 }}>
           <AdGridSlot zone="trucker_services_mid" />
         </div>
 
-        {/* ── Bottom CTA ──────────────────────────────────── */}
+        {/* â”€â”€ Bottom CTA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <div style={{
           marginTop: 48, padding: '2.5rem', borderRadius: 20,
           background: 'linear-gradient(135deg, rgba(198,146,58,0.08), rgba(198,146,58,0.02))',
@@ -303,7 +303,7 @@ export default async function TruckerServicesPage() {
               background: `linear-gradient(135deg, ${gold}, #E4B872)`,
               color: '#000', fontSize: 15, fontWeight: 800, textDecoration: 'none',
             }}>
-              List Your Company →
+              List Your Company â†’
             </Link>
             <Link href="/directory" style={{
               display: 'inline-flex', padding: '14px 36px', borderRadius: 12,
@@ -316,7 +316,7 @@ export default async function TruckerServicesPage() {
         </div>
       </div>
 
-      {/* ── Snippet Injector — featured snippet capture ── */}
+      {/* â”€â”€ Snippet Injector — featured snippet capture â”€â”€ */}
       <SnippetInjector
         blocks={['definition', 'faq']}
         term="trucker services"

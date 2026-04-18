@@ -60,7 +60,7 @@ const STATUS_BADGE: Record<string, { c: string; label: string }> = {
   open:        { c: 'bg-emerald-500/15 text-emerald-400', label: 'Open' },
   matched:     { c: 'bg-blue-500/15 text-blue-400',      label: 'Matched' },
   in_progress: { c: 'bg-amber-500/15 text-amber-400',    label: 'In Progress' },
-  completed:   { c: 'bg-gray-500/15 text-gray-400',      label: 'Completed' },
+  completed:   { c: 'bg-[#1A1A1A]0/15 text-gray-400',      label: 'Completed' },
   cancelled:   { c: 'bg-red-500/15 text-red-400',        label: 'Cancelled' },
   pending:     { c: 'bg-yellow-500/15 text-yellow-400',  label: 'Pending' },
   accepted:    { c: 'bg-blue-500/15 text-blue-400',      label: 'Accepted' },
@@ -87,7 +87,7 @@ export default async function BrokerDashboardPage() {
   ])
 
   return (
-    <div className="min-h-screen bg-[#07090d] text-[#f0f2f5]" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+    <div className=" bg-[#07090d] text-[#f0f2f5]" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
 
       {/* Header */}
       <div className="border-b border-[#131c28] bg-[#0a0d14] px-4 lg:px-10 py-5">
@@ -100,7 +100,7 @@ export default async function BrokerDashboardPage() {
             <Link href="/dashboard/broker/loads" className="px-4 py-2 text-xs font-bold rounded-xl border border-[#1e3048] text-[#8a9ab0] hover:text-white transition-colors">
               My Loads
             </Link>
-            <Link href="/load-board/post" className="px-4 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-black">
+            <Link href="/load-board/post" className="px-4 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white">
               + Post Load
             </Link>
           </div>
@@ -112,9 +112,9 @@ export default async function BrokerDashboardPage() {
         {/* KPI Scorecards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
           {[
-            { label: 'Open Loads', val: stats.openLoads, color: '#22c55e', icon: '📋', href: '/dashboard/broker/loads' },
-            { label: 'Active Assignments', val: stats.activeAssignments, color: '#3b82f6', icon: '🚛', href: '/dashboard/broker/assignments' },
-            { label: 'Operators Available Now', val: stats.availableOps, color: '#d4950e', icon: '📡', href: '/available-now' },
+            { label: 'Open Loads', val: stats.openLoads, color: '#22c55e', icon: 'ðŸ“‹', href: '/dashboard/broker/loads' },
+            { label: 'Active Assignments', val: stats.activeAssignments, color: '#3b82f6', icon: 'ðŸš›', href: '/dashboard/broker/assignments' },
+            { label: 'Operators Available Now', val: stats.availableOps, color: '#d4950e', icon: 'ðŸ“¡', href: '/available-now' },
           ].map(kpi => (
             <Link key={kpi.label} href={kpi.href} className="group bg-[#0f1a24] border border-[#1e3048] rounded-2xl p-5 hover:border-[#2a4060] transition-all">
               <div className="flex items-center gap-3 mb-3">
@@ -122,7 +122,7 @@ export default async function BrokerDashboardPage() {
                 <p className="text-[10px] text-[#566880] font-bold tracking-wider uppercase">{kpi.label}</p>
               </div>
               <p className="text-4xl font-black" style={{ color: kpi.color }}>{kpi.val}</p>
-              <p className="text-[10px] text-[#3a5068] mt-1 group-hover:text-[#566880] transition-colors">View →</p>
+              <p className="text-[10px] text-[#3a5068] mt-1 group-hover:text-[#566880] transition-colors">View â†’</p>
             </Link>
           ))}
         </div>
@@ -130,10 +130,10 @@ export default async function BrokerDashboardPage() {
         {/* Quick Actions */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
           {[
-            { href: '/available-now', icon: '🟢', label: 'Find Capacity', desc: 'Live operator feed' },
-            { href: '/load-board/post', icon: '📤', label: 'Post a Load', desc: 'Broadcast your route' },
-            { href: '/directory', icon: '🔍', label: 'Verify Operator', desc: 'Trust scores & history' },
-            { href: '/tools/route-planner', icon: '🗺️', label: 'Plan Route', desc: 'Restrictions & permits' },
+            { href: '/available-now', icon: 'ðŸŸ¢', label: 'Find Capacity', desc: 'Live operator feed' },
+            { href: '/load-board/post', icon: 'ðŸ“¤', label: 'Post a Load', desc: 'Broadcast your route' },
+            { href: '/directory', icon: 'ðŸ”', label: 'Verify Operator', desc: 'Trust scores & history' },
+            { href: '/tools/route-planner', icon: 'ðŸ—ºï¸', label: 'Plan Route', desc: 'Restrictions & permits' },
           ].map(a => (
             <Link key={a.href} href={a.href} className="group bg-[#0f1a24] border border-[#1e3048] rounded-xl p-4 hover:border-amber-500/30 hover:bg-[#111c2a] transition-all">
               <div className="text-xl mb-2">{a.icon}</div>
@@ -145,17 +145,17 @@ export default async function BrokerDashboardPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-          {/* ── Active Assignments ── */}
+          {/* â”€â”€ Active Assignments â”€â”€ */}
           <div className="bg-[#0f1a24] border border-[#1e3048] rounded-2xl p-5">
             <div className="flex items-center justify-between mb-4">
               <p className="text-xs font-bold text-[#f0f2f5]">Active Assignments</p>
-              <Link href="/dashboard/broker/assignments" className="text-[10px] text-[#566880] hover:text-amber-400 transition-colors">View all →</Link>
+              <Link href="/dashboard/broker/assignments" className="text-[10px] text-[#566880] hover:text-amber-400 transition-colors">View all â†’</Link>
             </div>
             {assignments.length === 0 ? (
               <div className="text-center py-8">
-                <p className="text-3xl mb-2">🤝</p>
+                <p className="text-3xl mb-2">ðŸ¤</p>
                 <p className="text-sm text-[#566880]">No active assignments</p>
-                <Link href="/available-now" className="mt-3 inline-block text-xs font-bold text-amber-400 hover:underline">Find available operators →</Link>
+                <Link href="/available-now" className="mt-3 inline-block text-xs font-bold text-amber-400 hover:underline">Find available operators â†’</Link>
               </div>
             ) : (
               <div className="space-y-2.5">
@@ -166,7 +166,7 @@ export default async function BrokerDashboardPage() {
                         {a.operator_name ?? 'Operator'}
                       </p>
                       <p className="text-[10px] text-[#566880] mt-0.5 truncate">
-                        {a.origin_label && a.destination_label ? `${a.origin_label} → ${a.destination_label}` : 'Route pending'}
+                        {a.origin_label && a.destination_label ? `${a.origin_label} â†’ ${a.destination_label}` : 'Route pending'}
                         {a.pickup_eta ? ` · ETA ${new Date(a.pickup_eta).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : ''}
                       </p>
                     </div>
@@ -177,7 +177,7 @@ export default async function BrokerDashboardPage() {
             )}
           </div>
 
-          {/* ── LIVE AVAILABLE OPERATORS (BROKER FEED) ── */}
+          {/* â”€â”€ LIVE AVAILABLE OPERATORS (BROKER FEED) â”€â”€ */}
           <div className="bg-[#0f1a24] border border-[#d4950e40] rounded-2xl p-5 relative overflow-hidden">
             <div className="absolute top-0 right-0 p-4">
                <span className="flex h-2 w-2">
@@ -189,7 +189,7 @@ export default async function BrokerDashboardPage() {
               <p className="text-xs font-bold text-[#f0f2f5] flex items-center gap-2">
                 <span className="text-amber-500">Live Network Broadcasts</span>
               </p>
-              <Link href="/available-now" className="text-[10px] text-[#566880] hover:text-amber-400 transition-colors">View Map →</Link>
+              <Link href="/available-now" className="text-[10px] text-[#566880] hover:text-amber-400 transition-colors">View Map â†’</Link>
             </div>
             
             <div className="space-y-3 relative z-10">
@@ -203,14 +203,14 @@ export default async function BrokerDashboardPage() {
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-bold text-white truncate">{op.name}</p>
                     <p className="text-[10px] text-[#8a9ab0] mt-0.5 truncate flex items-center gap-1.5">
-                      <span className="text-amber-500">📍</span> {op.loc} · {op.trust}% Trust Score
+                      <span className="text-amber-500">ðŸ“</span> {op.loc} · {op.trust}% Trust Score
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-2">
                      <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${op.status === 'available_now' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-green-500/10 text-green-400'}`}>
                         {op.eta}
                      </span>
-                     <Link href="/find-capacity" className="text-[10px] font-semibold text-amber-500 hover:text-amber-400">Request →</Link>
+                     <Link href="/find-capacity" className="text-[10px] font-semibold text-amber-500 hover:text-amber-400">Request â†’</Link>
                   </div>
                 </div>
               ))}
@@ -230,7 +230,7 @@ export default async function BrokerDashboardPage() {
 
         {/* Market intelligence strip */}
         <div className="mt-6 bg-[#0a1929] border border-[#3b82f640] rounded-2xl p-5">
-          <p className="text-xs font-bold text-[#3b82f6] mb-3">📊 Market Intelligence</p>
+          <p className="text-xs font-bold text-[#3b82f6] mb-3">ðŸ“Š Market Intelligence</p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               { label: 'Avg Response Time', val: '8 min', note: 'Network avg · last 30d' },

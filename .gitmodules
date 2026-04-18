@@ -1,0 +1,4 @@
+# Broken submodule reference commented out
+#[tools/notebooklm-mcp]
+#    path = tools/notebooklm-mcp
+#    url = https://github.com/username/notebooklm-mcp.git

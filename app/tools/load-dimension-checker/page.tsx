@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { JsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
-
+import { AdGridSponsorSlot } from '@/app/_components/directory/AdGridSponsorSlot'
 export const metadata: Metadata = {
   title: 'Is My Load Oversize? Load Dimension & Weight Checker | Haul Command',
   description: 'Enter your load dimensions and weight to instantly find out if it is oversize, what permits you need, and whether a pilot car is required. Free, no login.',
@@ -21,11 +21,11 @@ const STATE_OVERRIDES = [
 ]
 
 const ESCORT_MATRIX = [
-  { trigger:'Width 10–12 ft', requirement:'1 escort vehicle (front or rear per state)', states:'Most US states' },
-  { trigger:'Width 12–14 ft', requirement:'1 front escort + 1 rear escort vehicle',       states:'Most US states' },
-  { trigger:'Width 14–16 ft', requirement:'2 escorts + high pole operator (some states)',  states:'AZ, TX, CA, WA, OR, NV' },
+  { trigger:'Width 10"“12 ft', requirement:'1 escort vehicle (front or rear per state)', states:'Most US states' },
+  { trigger:'Width 12"“14 ft', requirement:'1 front escort + 1 rear escort vehicle',       states:'Most US states' },
+  { trigger:'Width 14"“16 ft', requirement:'2 escorts + high pole operator (some states)',  states:'AZ, TX, CA, WA, OR, NV' },
   { trigger:'Width 16+ ft',   requirement:'2 escorts + high pole + police escort',         states:'Most US states (superload)' },
-  { trigger:'Height 14–15 ft',requirement:'High pole operator required',                   states:'AZ, TX, NM, CA' },
+  { trigger:'Height 14"“15 ft',requirement:'High pole operator required',                   states:'AZ, TX, NM, CA' },
   { trigger:'Height 15+ ft',  requirement:'High pole + police escort (many states)',        states:'Most US states' },
   { trigger:'Length 100+ ft', requirement:'Rear steer / steerman operator',               states:'CA, AZ, TX, OR, NV, WA' },
 ]
@@ -42,7 +42,7 @@ export default function LoadDimensionCheckerPage() {
     <>
       <JsonLd data={schema}/>
       <JsonLd data={faq}/>
-      <div className="min-h-screen bg-[#07090d] text-[#f0f2f5]">
+      <div className=" bg-[#07090d] text-[#f0f2f5]">
         <div className="border-b border-[#131c28] bg-gradient-to-r from-[#0a1929] to-[#07090d]">
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
             <p className="text-[11px] tracking-[0.2em] text-[#22c55e] font-semibold mb-3">FREE TOOL · NO LOGIN REQUIRED</p>
@@ -63,7 +63,7 @@ export default function LoadDimensionCheckerPage() {
                 </div>
               ))}
             </div>
-            <button className="w-full bg-[#22c55e] hover:bg-[#16a34a] text-black font-bold py-3.5 rounded-xl text-sm transition-colors">Check My Load →</button>
+            <button className="w-full bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold py-3.5 rounded-xl text-sm transition-colors">Check My Load â†’</button>
             <p className="text-[10px] text-[#3a5068] text-center mt-3">Interactive engine launching Q2 2026. Use the reference tables below for immediate guidance.</p>
           </div>
 
@@ -84,6 +84,10 @@ export default function LoadDimensionCheckerPage() {
                 </div>
               ))}
             </div>
+          </div>
+
+          <div className="mb-8">
+            <AdGridSponsorSlot regionName="National Routing" type="escort_agency" countryCode="US" />
           </div>
 
           {/* ESCORT MATRIX */}
@@ -132,7 +136,7 @@ export default function LoadDimensionCheckerPage() {
 
           <div className="flex flex-wrap gap-3">
             {[['/tools/permit-cost-calculator','Permit Cost Calculator'],['/tools/axle-weight-calculator','Axle Weight Calculator'],['/tools/superload-calculator','Superload Calculator'],['/find-capacity','Find Pilot Car Now']].map(([href,label])=>(
-              <Link key={href} href={href} className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#22c55e] hover:text-[#22c55e] transition-colors">{label} →</Link>
+              <Link key={href} href={href} className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#22c55e] hover:text-[#22c55e] transition-colors">{label} â†’</Link>
             ))}
           </div>
         </div>

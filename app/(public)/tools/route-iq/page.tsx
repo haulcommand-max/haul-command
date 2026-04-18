@@ -82,13 +82,13 @@ export default function RouteIQPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#030303] text-slate-200">
+        <div className=" bg-[#030303] text-slate-200">
             <div className="max-w-7xl mx-auto px-4 py-12 md:py-20">
 
                 {/* Header Section */}
                 <div className="max-w-3xl mx-auto text-center mb-16">
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#F1A91B]/10 border border-[#F1A91B]/20 rounded-full text-[#F1A91B] text-xs font-bold uppercase tracking-widest mb-6 shadow-[0_0_15px_rgba(241,169,27,0.15)]">
-                        <Cpu className="w-3.5 h-3.5" /> HAUL COMMAND ROUTE IQ™
+                        <Cpu className="w-3.5 h-3.5" /> HAUL COMMAND ROUTE IQâ„¢
                     </div>
                     <h1 className="text-5xl md:text-7xl font-black text-white tracking-tight mb-6 leading-tight">
                         Stop Guessing on <br />
@@ -116,7 +116,7 @@ export default function RouteIQPage() {
                                 <div>
                                     <label className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 block">Origin</label>
                                     <div className="relative">
-                                        <div className="absolute left-3 top-3.5 w-2 h-2 rounded-full bg-slate-500 border-2 border-[#0a0a0f]" />
+                                        <div className="absolute left-3 top-3.5 w-2 h-2 rounded-full bg-[#0A0A0A]0 border-2 border-[#0a0a0f]" />
                                         <input
                                             type="text"
                                             value={formParams.origin_text}
@@ -204,7 +204,7 @@ export default function RouteIQPage() {
                             <button aria-label="Interactive Button"
                                 onClick={handleRunAnalysis}
                                 disabled={loading}
-                                className="w-full py-4 mt-6 bg-[#F1A91B] hover:bg-[#d97706] disabled:opacity-50 text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-[0_4px_20px_rgba(241,169,27,0.25)] flex items-center justify-center gap-2">
+                                className="w-full py-4 mt-6 bg-[#F1A91B] hover:bg-[#d97706] disabled:opacity-50 text-white font-black uppercase tracking-widest rounded-xl transition-all shadow-[0_4px_20px_rgba(241,169,27,0.25)] flex items-center justify-center gap-2">
                                 {loading ? 'Computing...' : <><Search className="w-5 h-5 stroke-[2.5]" /> Run Route IQ Analysis</>}
                             </button>
                         </div>
@@ -214,7 +214,7 @@ export default function RouteIQPage() {
                     <div className="lg:col-span-7 space-y-6">
                         {!result ? (
                             <div className="bg-[#111] border border-white/5 rounded-3xl p-8 md:p-12 text-center h-full flex flex-col items-center justify-center min-h-[500px]">
-                                <div className="w-20 h-20 bg-slate-900 rounded-full flex items-center justify-center mb-6 border border-white/5">
+                                <div className="w-20 h-20  rounded-full flex items-center justify-center mb-6 border border-white/5">
                                     <ShieldAlert className="w-8 h-8 text-slate-600" />
                                 </div>
                                 <h3 className="text-2xl font-bold text-white mb-3">Awaiting Load Parameters</h3>
@@ -301,7 +301,7 @@ export default function RouteIQPage() {
 
                                     <button aria-label="Interactive Button"
                                         onClick={handlePostLoad}
-                                        className="w-full py-4 bg-white hover:bg-slate-200 text-black font-black uppercase tracking-widest rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] flex items-center justify-center gap-2">
+                                        className="w-full py-4 bg-[#121212] hover:bg-[#252525] text-white font-black uppercase tracking-widest rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] flex items-center justify-center gap-2">
                                         <Truck className="w-5 h-5" /> Post Load Now
                                     </button>
                                 </div>

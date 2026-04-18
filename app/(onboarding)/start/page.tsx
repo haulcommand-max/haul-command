@@ -27,7 +27,7 @@ export default function StartPage() {
                 <h1 className="text-3xl font-bold bg-gradient-to-br from-white to-white/60 bg-clip-text text-transparent mb-2">
                     How do you use Haul Command?
                 </h1>
-                <p className="text-brand-muted text-sm">
+                <p className="text-[#9CA3AF] text-sm">
                     This personalizes your experience — loads, tools, and alerts.
                 </p>
             </div>
@@ -43,7 +43,7 @@ export default function StartPage() {
                         <h2 className="text-2xl font-bold bg-gradient-to-br from-white to-white/60 bg-clip-text text-transparent mb-2">
                             What do you run?
                         </h2>
-                        <p className="text-brand-muted text-sm">
+                        <p className="text-[#9CA3AF] text-sm">
                             Select your primary equipment to see available loads.
                         </p>
                     </div>
@@ -65,7 +65,7 @@ export default function StartPage() {
                                     <div className="text-xs text-brand-muted">{eq.desc}</div>
                                 </div>
                                 <div className="absolute right-4 opacity-0 group-hover:opacity-100 transition-opacity text-brand-gold">
-                                    →
+                                    â†’
                                 </div>
                             </button>
                         ))}
@@ -79,7 +79,7 @@ export default function StartPage() {
                     onClick={() => router.push(`/directory?role=${role}`)}
                     className="mt-6 text-center text-sm text-brand-muted hover:text-brand-gold transition-colors"
                 >
-                    Skip equipment — take me to the directory →
+                    Skip equipment — take me to the directory â†’
                 </button>
             )}
         </div>

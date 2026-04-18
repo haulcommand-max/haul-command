@@ -19,9 +19,9 @@ export default function DotLookupLandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-50">
+    <div className="  text-slate-50">
       {/* Hero Header */}
-      <div className="border-b border-slate-800 bg-slate-900/50 pt-24 pb-20">
+      <div className="border-b border-slate-800 /50 pt-24 pb-20">
         <div className="container max-w-4xl mx-auto px-4 text-center">
           <div className="flex gap-2 items-center justify-center text-indigo-400 mb-6 font-mono text-sm uppercase tracking-wider">
             <ShieldCheck className="h-4 w-4" />
@@ -36,7 +36,7 @@ export default function DotLookupLandingPage() {
           
           <form onSubmit={handleSearch} className="max-w-2xl mx-auto relative group">
             <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-emerald-500 rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-            <div className="relative flex items-center bg-slate-900 border border-slate-700 focus-within:border-indigo-500 rounded-xl overflow-hidden shadow-2xl p-2 gap-2">
+            <div className="relative flex items-center  border border-slate-700 focus-within:border-indigo-500 rounded-xl overflow-hidden shadow-2xl p-2 gap-2">
               <Search className="h-6 w-6 text-slate-400 ml-3" />
               <Input 
                 value={usdot}
@@ -56,7 +56,7 @@ export default function DotLookupLandingPage() {
         
         {/* Value Props & SEO Authority */}
         <div className="grid md:grid-cols-3 gap-8 mb-16">
-          <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl">
+          <div className=" border border-slate-800 p-6 rounded-xl">
             <div className="bg-emerald-500/10 p-3 rounded-lg inline-block mb-4">
               <FileCheck2 className="h-6 w-6 text-emerald-400" />
             </div>
@@ -65,7 +65,7 @@ export default function DotLookupLandingPage() {
               Instantly verify if a carrier's MC/FF operating authority is active, inactive, or pending revocation. Protect your brokerage from unregistered operators.
             </p>
           </div>
-          <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl">
+          <div className=" border border-slate-800 p-6 rounded-xl">
             <div className="bg-orange-500/10 p-3 rounded-lg inline-block mb-4">
               <ShieldCheck className="h-6 w-6 text-orange-400" />
             </div>
@@ -74,7 +74,7 @@ export default function DotLookupLandingPage() {
               See the latest FMCSA safety ratings (Satisfactory, Conditional, or Unsatisfactory) and recent inspection violation history.
             </p>
           </div>
-          <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl">
+          <div className=" border border-slate-800 p-6 rounded-xl">
             <div className="bg-blue-500/10 p-3 rounded-lg inline-block mb-4">
               <Building2 className="h-6 w-6 text-blue-400" />
             </div>
@@ -99,7 +99,7 @@ export default function DotLookupLandingPage() {
             </p>
           </div>
           <div className="relative z-10 w-full md:w-auto flex-shrink-0">
-             <Link href="/partners/insurance" className="flex items-center justify-center bg-white text-indigo-950 hover:bg-slate-200 font-bold py-4 px-8 rounded-xl transition-all shadow-xl shadow-indigo-900/20 w-full md:w-auto whitespace-nowrap">
+             <Link href="/partners/insurance" className="flex items-center justify-center bg-[#121212] text-white hover:bg-[#252525] font-bold py-4 px-8 rounded-xl transition-all shadow-xl shadow-indigo-900/20 w-full md:w-auto whitespace-nowrap">
                Get Insurance Quote <ChevronRight className="h-5 w-5 ml-2" />
              </Link>
           </div>

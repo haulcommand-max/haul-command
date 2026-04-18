@@ -45,38 +45,12 @@ export function ScrollReveal({
 }
 
 /**
- * Animated counter for stats (e.g., "3,162+" terms).
+ * Static counter for stats to prevent 0+ trust leaks.
  */
 export function AnimatedCounter({ target, suffix = '' }: { target: number; suffix?: string }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          let start = 0;
-          const duration = 1800;
-          const step = (ts: number) => {
-            if (!start) start = ts;
-            const progress = Math.min((ts - start) / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 4);
-            setCount(Math.floor(eased * target));
-            if (progress < 1) requestAnimationFrame(step);
-          };
-          requestAnimationFrame(step);
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.5 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [target]);
-
-  return <span ref={ref}>{count.toLocaleString()}{suffix}</span>;
+  // We explicitly disable animation to prevent JavaScript/hydation lag from rendering "0+" 
+  // on a critical search-authority surface. Truth first.
+  return <span>{target.toLocaleString()}{suffix}</span>;
 }
 
 /**
@@ -176,7 +150,7 @@ export function GlossarySearch({ terms }: { terms: { slug: string; term: string;
               className="flex items-start gap-3 px-5 py-3.5 hover:bg-white/5 transition-colors border-b border-white/5 last:border-0"
               style={{ animationDelay: `${i * 30}ms` }}
             >
-              <span className="text-[#D4A844] text-lg mt-0.5">◆</span>
+              <span className="text-[#D4A844] text-lg mt-0.5">â—†</span>
               <div className="flex-1 min-w-0">
                 <div className="text-white font-semibold text-sm">{t.term}</div>
                 <div className="text-white/40 text-xs mt-0.5 line-clamp-1">{t.short_definition}</div>

@@ -15,7 +15,7 @@ const COMPARISON = [
   { feature:'Frost law tracker',          hc:true,  hc_note:'Free, push alerts',      comp:false, comp_note:'Not available' },
   { feature:'Load dimension checker',     hc:true,  hc_note:'Free',                   comp:false, comp_note:'Not available' },
   { feature:'Route planner',              hc:true,  hc_note:'Free',                   comp:true,  comp_note:'Paid tier only' },
-  { feature:'Operator directory',         hc:true,  hc_note:'120 countries, verified',comp:false, comp_note:'US only, unverified' },
+  { feature:'Operator directory',         hc:true,  hc_note:'50+ countries, verified',comp:false, comp_note:'US only, unverified' },
   { feature:'Real-time availability',     hc:true,  hc_note:'Live broadcasted feed',  comp:false, comp_note:'Not available' },
   { feature:'Find capacity',              hc:true,  hc_note:'Live broker search',     comp:false, comp_note:'Not available' },
   { feature:'Load board',                 hc:true,  hc_note:'Two-sided marketplace',  comp:false, comp_note:'Not available' },
@@ -23,7 +23,7 @@ const COMPARISON = [
   { feature:'Training & certification',   hc:true,  hc_note:'6-tier, 50+ courses',    comp:false, comp_note:'Not available' },
   { feature:'Trust score / verification', hc:true,  hc_note:'Visible on all profiles',comp:false, comp_note:'Not available' },
   { feature:'Push notifications',         hc:true,  hc_note:'Load match, claims, alerts',comp:false,comp_note:'Not available' },
-  { feature:'Global coverage',            hc:true,  hc_note:'120 countries',          comp:false, comp_note:'US only' },
+  { feature:'Global coverage',            hc:true,  hc_note:'50+ countries',          comp:false, comp_note:'US only' },
   { feature:'Mobile app',                 hc:true,  hc_note:'iOS + Android',          comp:true,  comp_note:'iOS + Android' },
   { feature:'AdGrid / advertising',       hc:true,  hc_note:'Self-serve, 8 zones',    comp:false, comp_note:'Not available' },
   { feature:'Free tier',                  hc:true,  hc_note:'Most tools free, no wall',comp:false,comp_note:'Login wall on most tools' },
@@ -39,7 +39,7 @@ export default function VsOversizeIoPage() {
   return (
     <>
       <JsonLd data={schema}/>
-      <div className="min-h-screen bg-[#07090d] text-[#f0f2f5]">
+      <div className=" bg-[#07090d] text-[#f0f2f5]">
         <div className="border-b border-[#131c28] bg-gradient-to-r from-[#0a1929] to-[#07090d]">
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
             <p className="text-[11px] tracking-[0.2em] text-[#d4950e] font-semibold mb-3">COMPARISON · 2026</p>
@@ -79,13 +79,13 @@ export default function VsOversizeIoPage() {
                     <td className="py-3 pr-4 text-[#d0dce8] font-semibold">{row.feature}</td>
                     <td className="py-3 px-4 text-center">
                       {row.hc
-                        ? <><span className="text-[#22c55e] font-bold">✔</span>{row.hc_note&&<p className="text-[10px] text-[#566880] mt-0.5">{row.hc_note}</p>}</>
+                        ? <><span className="text-[#22c55e] font-bold">âœ"</span>{row.hc_note&&<p className="text-[10px] text-[#566880] mt-0.5">{row.hc_note}</p>}</>
                         : <span className="text-[#3a5068]">-</span>}
                     </td>
                     <td className="py-3 px-4 text-center">
                       {row.comp
-                        ? <><span className="text-[#566880] font-bold">✔</span>{row.comp_note&&<p className="text-[10px] text-[#566880] mt-0.5">{row.comp_note}</p>}</>
-                        : <><span className="text-[#3a5068]">✕</span>{row.comp_note&&<p className="text-[10px] text-[#3a5068] mt-0.5">{row.comp_note}</p>}</>}
+                        ? <><span className="text-[#566880] font-bold">âœ"</span>{row.comp_note&&<p className="text-[10px] text-[#566880] mt-0.5">{row.comp_note}</p>}</>
+                        : <><span className="text-[#3a5068]">âœ•</span>{row.comp_note&&<p className="text-[10px] text-[#3a5068] mt-0.5">{row.comp_note}</p>}</>}
                     </td>
                   </tr>
                 ))}
@@ -98,12 +98,12 @@ export default function VsOversizeIoPage() {
             <h2 className="text-sm font-bold text-[#f0f2f5] mb-4">Why Heavy Haul Professionals Are Switching to Haul Command</h2>
             {[
               {title:'Free tools, no login wall', body:'Every Haul Command tool — permit calculator, axle weight calculator, superload checker, frost law tracker — is fully free and requires no account. Oversize.io gates most functionality behind paid plans.'},
-              {title:'Global operator directory', body:'Haul Command indexes operators across 120 countries with real-time availability, trust scores, and verified credentials. Oversize.io has no operator directory.'},
+              {title:'Global operator directory', body:'Haul Command indexes operators across 50+ countries with real-time availability, trust scores, and verified credentials. Oversize.io has no operator directory.'},
               {title:'Two-sided marketplace', body:'Haul Command connects brokers and operators through a live load board, real-time capacity feed, and instant request system. Oversize.io is a tools-only platform — no marketplace.'},
-              {title:'Training and certification', body:'Haul Command’s Training Academy offers 50+ courses across 6 tiers, including the first pan-Australia, pan-Canada, and UK heavy haul certifications. Oversize.io offers none.'},
+              {title:'Training and certification', body:'Haul Command\'s Training Academy offers 50+ courses across 6 tiers, including the first pan-Australia, pan-Canada, and UK heavy haul certifications. Oversize.io offers none.'},
             ].map((item,i)=>(
               <div key={i} className={`${i<3?'border-b border-[#131c28] pb-4 mb-4':''}`}>
-                <p className="text-xs font-bold text-[#22c55e] mb-1">✔ {item.title}</p>
+                <p className="text-xs font-bold text-[#22c55e] mb-1">âœ" {item.title}</p>
                 <p className="text-xs text-[#8a9ab0] leading-relaxed">{item.body}</p>
               </div>
             ))}
@@ -114,7 +114,7 @@ export default function VsOversizeIoPage() {
             <h2 className="text-lg font-bold text-[#f0f2f5] mb-3">Try Haul Command Free — No Credit Card</h2>
             <p className="text-sm text-[#8a9ab0] mb-6">All tools. All public. No login required for core features.</p>
             <div className="flex flex-wrap gap-3 justify-center">
-              <Link href="/tools/permit-cost-calculator" className="bg-[#22c55e] hover:bg-[#16a34a] text-black font-bold px-5 py-2.5 rounded-xl text-sm">Try Permit Calculator →</Link>
+              <Link href="/tools/permit-cost-calculator" className="bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold px-5 py-2.5 rounded-xl text-sm">Try Permit Calculator →</Link>
               <Link href="/register" className="border border-[#d4950e] text-[#d4950e] hover:bg-[#d4950e20] font-semibold px-5 py-2.5 rounded-xl text-sm">Create Free Account</Link>
             </div>
           </div>

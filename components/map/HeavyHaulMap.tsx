@@ -14,8 +14,8 @@
  */
 
 import { useEffect, useRef, useState, useCallback } from 'react';
-import maplibregl from 'maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { createClient } from '@supabase/supabase-js';
 import type { ConvoyPosition, ClearancePoint, RouteCheckpoint } from '@/lib/routes/types';
 
@@ -44,7 +44,7 @@ export default function HeavyHaulMap({
   showHud = true,
 }: HeavyHaulMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<maplibregl.Map | null>(null);
+  const mapRef = useRef<mapboxgl.Map | null>(null);
   const [convoy, setConvoy] = useState<ConvoyPosition[]>([]);
   const [deviationAlert, setDeviationAlert] = useState<string | null>(null);
   const [clearanceAlert, setClearanceAlert] = useState<{ name: string; clearance_m: number; load_height_m: number } | null>(null);
@@ -54,7 +54,8 @@ export default function HeavyHaulMap({
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
-    const map = new maplibregl.Map({
+    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
+    const map = new mapboxgl.Map({
       container: containerRef.current,
       style: MAP_STYLE,
       center: initialCenter,
@@ -98,6 +99,12 @@ export default function HeavyHaulMap({
 
       // ── Source: Deviation alerts ──
       map.addSource('deviations', {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features: [] },
+      });
+
+      // ── Source: Global Dispatch Fleet ──
+      map.addSource('global-dispatch-fleet', {
         type: 'geojson',
         data: { type: 'FeatureCollection', features: [] },
       });
@@ -239,8 +246,27 @@ export default function HeavyHaulMap({
         },
       });
 
+      // Layer 8: Global Dispatch Fleet (when no loadId)
+      map.addLayer({
+        id: 'dispatch-fleet-markers',
+        type: 'circle',
+        source: 'global-dispatch-fleet',
+        paint: {
+          'circle-color': [
+            'match', ['get', 'status'],
+            'available', '#22c55e',
+            'repositioning', '#8B5CF6',
+            '#F1A91B'
+          ],
+          'circle-radius': 6,
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#fff',
+          'circle-opacity': 0.9,
+        },
+      });
+
       // ── Tooltips ──
-      const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false, maxWidth: '280px' });
+      const popup = new mapboxgl.Popup({ closeButton: false, closeOnClick: false, maxWidth: '280px' });
 
       // Clearance tooltip
       map.on('mouseenter', 'clearance-markers', (e) => {
@@ -270,6 +296,18 @@ export default function HeavyHaulMap({
       });
       map.on('mouseleave', 'convoy-markers', () => { map.getCanvas().style.cursor = ''; popup.remove(); });
 
+      // Dispatch fleet tooltip
+      map.on('mouseenter', 'dispatch-fleet-markers', (e) => {
+        map.getCanvas().style.cursor = 'pointer';
+        const f = e.features?.[0];
+        if (!f) return;
+        const p = f.properties ?? {};
+        popup.setLngLat((f.geometry as any).coordinates)
+          .setHTML(`<div style="padding:8px;font-size:12px;"><strong>${p.id ?? 'Operator'}</strong><br/>Status: ${p.status}<br/>Battery: ${p.battery_pct}%</div>`)
+          .addTo(map);
+      });
+      map.on('mouseleave', 'dispatch-fleet-markers', () => { map.getCanvas().style.cursor = ''; popup.remove(); });
+
       // Checkpoint tooltip
       map.on('mouseenter', 'checkpoint-markers', (e) => {
         map.getCanvas().style.cursor = 'pointer';
@@ -283,7 +321,7 @@ export default function HeavyHaulMap({
       });
       map.on('mouseleave', 'checkpoint-markers', () => { map.getCanvas().style.cursor = ''; popup.remove(); });
 
-      map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
+      map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
     });
 
     return () => {
@@ -305,7 +343,7 @@ export default function HeavyHaulMap({
 
         // Set permit route
         if (data.permit_route?.route_geojson && showPermitRoute) {
-          const routeSrc = map.getSource('permit-route') as maplibregl.GeoJSONSource | undefined;
+          const routeSrc = map.getSource('permit-route') as mapboxgl.GeoJSONSource | undefined;
           if (routeSrc) {
             routeSrc.setData({
               type: 'FeatureCollection',
@@ -323,7 +361,7 @@ export default function HeavyHaulMap({
         setConvoy(convoyData);
         setStats(prev => ({ ...prev, convoySize: convoyData.length }));
 
-        const convoySrc = map.getSource('convoy') as maplibregl.GeoJSONSource | undefined;
+        const convoySrc = map.getSource('convoy') as mapboxgl.GeoJSONSource | undefined;
         if (convoySrc) {
           convoySrc.setData({
             type: 'FeatureCollection',
@@ -342,7 +380,7 @@ export default function HeavyHaulMap({
 
         // Set deviations
         const deviations = data.active_deviations ?? [];
-        const devSrc = map.getSource('deviations') as maplibregl.GeoJSONSource | undefined;
+        const devSrc = map.getSource('deviations') as mapboxgl.GeoJSONSource | undefined;
         if (devSrc) {
           devSrc.setData({
             type: 'FeatureCollection',
@@ -392,6 +430,57 @@ export default function HeavyHaulMap({
     };
   }, [loadId, showPermitRoute]);
 
+  // ── Load Global Dispatch Fleet ───────────────────────────────────────────
+  useEffect(() => {
+    if (loadId || mode !== 'dispatch' || !mapRef.current) return;
+    const map = mapRef.current;
+    
+    async function loadGlobalFleet() {
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      );
+      
+      const { data } = await supabase
+        .from('escort_presence')
+        .select('escort_id, status, last_lat, last_lng, battery_pct')
+        .gt('last_heartbeat_at', new Date(Date.now() - 6 * 3600_000).toISOString())
+        .not('last_lat', 'is', null)
+        .not('last_lng', 'is', null)
+        .limit(300);
+
+      const fleetSrc = map.getSource('global-dispatch-fleet') as mapboxgl.GeoJSONSource | undefined;
+      if (fleetSrc && data) {
+        fleetSrc.setData({
+          type: 'FeatureCollection',
+          features: data.map((c) => ({
+            type: 'Feature',
+            geometry: { type: 'Point', coordinates: [c.last_lng, c.last_lat] },
+            properties: {
+              id: c.escort_id,
+              status: c.status,
+              battery_pct: c.battery_pct
+            },
+          })),
+        });
+      }
+    }
+
+    const waitForMap = setInterval(() => {
+      if (map.loaded()) {
+        clearInterval(waitForMap);
+        loadGlobalFleet();
+      }
+    }, 200);
+
+    const interval = setInterval(loadGlobalFleet, POSITION_UPDATE_INTERVAL);
+
+    return () => {
+      clearInterval(waitForMap);
+      clearInterval(interval);
+    };
+  }, [loadId, mode]);
+
   // ── Load clearance & checkpoint data (based on map viewport) ─────────────
   const loadHazardData = useCallback(async () => {
     const map = mapRef.current;
@@ -413,7 +502,7 @@ export default function HeavyHaulMap({
       if (!res.ok) return;
       const data = await res.json();
 
-      const clearanceSrc = map.getSource('clearances') as maplibregl.GeoJSONSource | undefined;
+      const clearanceSrc = map.getSource('clearances') as mapboxgl.GeoJSONSource | undefined;
       if (clearanceSrc) {
         clearanceSrc.setData({
           type: 'FeatureCollection',

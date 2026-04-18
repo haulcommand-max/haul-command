@@ -69,7 +69,7 @@ export default function BillingPage() {
                             {loading ? (
                                 <tr><td colSpan={7} className="px-6 py-12 text-center text-[#444]">Loading sponsors...</td></tr>
                             ) : sponsors.length === 0 ? (
-                                <tr><td colSpan={7} className="px-6 py-12 text-center"><div className="text-2xl mb-2">📍</div><span className="text-[#444]">No active sponsors yet. Territories are available at <a href="/sponsor" className="text-[#ffb400] hover:underline">/sponsor</a></span></td></tr>
+                                <tr><td colSpan={7} className="px-6 py-12 text-center"><div className="text-2xl mb-2">ðŸ“</div><span className="text-[#444]">No active sponsors yet. Territories are available at <a href="/sponsor" className="text-[#ffb400] hover:underline">/sponsor</a></span></td></tr>
                             ) : sponsors.map((b) => (
                                 <tr key={b.id} className="hover:bg-[#111] transition-colors">
                                     <td className="px-6 py-4 font-black uppercase text-[11px] tracking-tight">{b.sponsor}</td>

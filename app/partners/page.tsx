@@ -20,7 +20,7 @@ const SOLUTIONS = [
   { icon: '\ud83e\udd16', text: 'HC AV-Ready certified operators for autonomous truck corridors' },
   { icon: '\ud83d\udd12', text: 'Escrow payment \u2014 funds release on completion, never before' },
   { icon: '\u23f1\ufe0f', text: 'Median fill time: 47 minutes' },
-  { icon: '\ud83c\udf0d', text: '120 countries, 219+ corridors covered' },
+  { icon: '\ud83c\udf0d', text: '50+ countries, 219+ corridors covered' },
 ];
 
 const USE_CASES = [
@@ -60,7 +60,7 @@ const USE_CASES = [
 
 export default function PartnersPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className=" bg-[#0a0a0a] text-white">
       {/* Hero */}
       <section className="py-20 px-4 text-center">
         <div className="max-w-4xl mx-auto">
@@ -78,7 +78,7 @@ export default function PartnersPage() {
           <div className="flex justify-center gap-4">
             <a
               href="#how-it-works"
-              className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl transition-colors"
+              className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-white font-bold rounded-xl transition-colors"
             >
               See How It Works
             </a>
@@ -107,7 +107,7 @@ export default function PartnersPage() {
 
       {/* Solution */}
       <section id="how-it-works" className="max-w-5xl mx-auto px-4 py-16">
-        <h2 className="text-2xl font-bold mb-8 text-center">One platform. Every corridor. 120 countries.</h2>
+        <h2 className="text-2xl font-bold mb-8 text-center">One platform. Every corridor. 50+ countries.</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {SOLUTIONS.map((s) => (
             <div key={s.text} className="flex items-start gap-3 p-5 bg-white/5 border border-white/10 rounded-xl">

@@ -1,0 +1,16 @@
+# GEMINI-02: Edge Function Trigger & Ownership Matrix
+functions:
+  - name: "fcm-push-worker"
+    type: "db_trigger"
+    trigger_source: "pg_net AFTER INSERT on job_applications, hc_training_diagnostics"
+    inputs: ["table", "record"]
+    writes: []
+    side_effects: ["Firebase FCM HTTP v1 Push"]
+    downstream_consumers: ["Mobile App Router"]
+  - name: "route-matcher-agent"
+    type: "pg_cron"
+    trigger_source: "Nightly cron schedule (0 0 * * *)"
+    inputs: []
+    writes: ["os_events (LOAD_MATCHED)"]
+    side_effects: ["Firebase match alerts"]
+    downstream_consumers: ["fcm-push-worker"]

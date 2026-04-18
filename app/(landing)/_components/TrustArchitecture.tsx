@@ -8,13 +8,13 @@ import {
   ArrowRight, Search, BarChart3, FileCheck,
 } from "lucide-react";
 
-/* ═══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    TRUST ARCHITECTURE SECTION
-   ─ ODS says "trust us" with testimonials and logos.
+   â”€ ODS says "trust us" with testimonials and logos.
      HC shows the score: verified insurance, certifications,
      response speed, completion count, trust score, real-time
      structured trust that a brokerage cannot replicate.
-   ═══════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -85,8 +85,8 @@ export function TrustArchitecture() {
                 style={{ backgroundColor: `${color}12`, border: `1px solid ${color}20` }}>
                 <Icon className="w-4 h-4" style={{ color }} />
               </div>
-              <div className="text-[10px] text-[#6b7280] uppercase tracking-wider mb-0.5">{label}</div>
-              <div className="text-xs font-bold text-white">{value}</div>
+              <div className="text-xs text-[#8fa3b8] uppercase tracking-wider mb-1">{label}</div>
+              <div className="text-sm font-bold text-white">{value}</div>
             </motion.div>
           ))}
         </motion.div>
@@ -113,7 +113,7 @@ export function TrustArchitecture() {
               href="/demo-report-card"
               className="text-[10px] font-bold text-[#C6923A] uppercase tracking-wider hover:text-white transition-colors"
             >
-              See Full Demo →
+              See Full Demo â†’
             </Link>
           </div>
 
@@ -133,16 +133,16 @@ export function TrustArchitecture() {
           </div>
 
           {/* Verification badges */}
-          <div className="px-4 sm:px-5 pb-4 flex flex-wrap items-center gap-2">
+          <div className="px-4 sm:px-5 pb-6 flex flex-wrap items-center justify-center gap-3">
             {[
               { label: "Insurance Verified", color: "#22c55e" },
-              { label: "CEVO Certified", color: "#3b82f6" },
+              { label: "PEVO Certified", color: "#3b82f6" },
               { label: "Background Checked", color: "#F59E0B" },
               { label: "GPS Tracked", color: "#a855f7" },
             ].map(({ label, color }) => (
-              <span key={label} className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md"
+              <span key={label} className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg"
                 style={{ background: `${color}12`, color, border: `1px solid ${color}20` }}>
-                <CheckCircle className="w-2.5 h-2.5" />
+                <CheckCircle className="w-3.5 h-3.5" />
                 {label}
               </span>
             ))}

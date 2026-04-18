@@ -3,6 +3,8 @@
 import { useRole } from '@/lib/role-context';
 import type { RoleConfig, RoleAction, RoleModule } from '@/lib/role-config';
 import RoleSelector from './RoleSelector';
+import { useEffect, useState } from 'react';
+import { getLiveMetrics } from '@/app/actions/live-metrics';
 
 /**
  * RoleCommandCenter — The role-aware home layout.
@@ -24,7 +26,12 @@ export default function RoleCommandCenter() {
   if (!hasRole || !config) {
     return (
       <section className="relative py-10 sm:py-16 md:py-20 px-4 overflow-hidden border-b border-white/5">
-        <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent" />
+        <picture>
+          <source srcSet="/images/hero_background_1774405015235.png" type="image/png" />
+          <img src="/images/hero_background_1774405015235.png" alt="" aria-hidden
+               className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-screen pointer-events-none select-none" />
+        </picture>
+        <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent z-0" />
         <div className="w-full max-w-5xl mx-auto relative z-10">
           <RoleSelector />
         </div>
@@ -35,7 +42,12 @@ export default function RoleCommandCenter() {
   // Role selected → show command center
   return (
     <section className="relative py-8 sm:py-12 md:py-16 px-4 overflow-hidden border-b border-white/5">
-      <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent" />
+      <picture>
+        <source srcSet="/images/hero_background_1774405015235.png" type="image/png" />
+        <img src="/images/hero_background_1774405015235.png" alt="" aria-hidden
+             className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-screen pointer-events-none select-none" />
+      </picture>
+      <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent z-0" />
       <div className="w-full max-w-5xl mx-auto relative z-10 space-y-6 sm:space-y-8">
 
         {/* ─── Role Header ─────────────────────────────────── */}
@@ -160,6 +172,28 @@ function PrimaryActionGrid({ actions }: { actions: RoleAction[] }) {
 
 
 function LiveModuleStrip({ modules }: { modules: RoleModule[] }) {
+  const [data, setData] = useState<Record<string, string | number>>({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+    if (!modules.length) return;
+
+    setLoading(true);
+    getLiveMetrics(modules.map(m => m.id))
+      .then(res => {
+        if (mounted) {
+          setData(res);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (mounted) setLoading(false);
+      });
+
+    return () => { mounted = false; };
+  }, [modules]);
+
   if (!modules.length) return null;
 
   return (
@@ -182,13 +216,12 @@ function LiveModuleStrip({ modules }: { modules: RoleModule[] }) {
                 {mod.label}
               </span>
             </div>
-            {/* Placeholder metric — will be replaced with real data */}
-            <div className="text-accent text-lg sm:text-xl font-black tabular-nums">
-              —
+            <div className={`text-accent text-lg sm:text-xl font-black tabular-nums transition-opacity duration-300 ${loading ? 'opacity-0' : 'opacity-100'}`}>
+              {data[mod.id] ?? '—'}
             </div>
             <div className="text-[9px] text-[#6b7280] mt-0.5 flex items-center gap-1">
-              <span className="w-1 h-1 rounded-full bg-green-500/50" />
-              Loading…
+              <span className={`w-1 h-1 rounded-full ${loading ? 'bg-orange-500/50 animate-pulse' : 'bg-green-500/50'}`} />
+              {loading ? 'Loading…' : 'Live Snapshot'}
             </div>
           </div>
         ))}

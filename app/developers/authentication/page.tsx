@@ -7,9 +7,9 @@ export const metadata = {
 
 export default function AuthenticationPage() {
     return (
-        <main className="min-h-screen bg-gray-950 text-gray-100">
+        <main className=" bg-transparent text-gray-100">
             <div className="mx-auto max-w-3xl py-20 px-6">
-                <Link aria-label="Navigation Link" href="/developers" className="text-sm text-blue-400 hover:text-blue-300 mb-6 inline-block">← Back to Developers</Link>
+                <Link aria-label="Navigation Link" href="/developers" className="text-sm text-blue-400 hover:text-blue-300 mb-6 inline-block">â† Back to Developers</Link>
                 <h1 className="text-4xl font-bold text-white mb-6">Authentication</h1>
 
                 <section className="space-y-12">
@@ -58,12 +58,12 @@ export default function AuthenticationPage() {
                     <div>
                         <h2 className="text-2xl font-semibold text-white mb-4">Security Best Practices</h2>
                         <ul className="space-y-3 text-gray-300">
-                            <li className="flex gap-3"><span className="text-green-400">✓</span> Store API keys in environment variables, never in code.</li>
-                            <li className="flex gap-3"><span className="text-green-400">✓</span> Use separate keys for development and production.</li>
-                            <li className="flex gap-3"><span className="text-green-400">✓</span> Rotate keys regularly. Revoke unused keys immediately.</li>
-                            <li className="flex gap-3"><span className="text-green-400">✓</span> Monitor the usage dashboard for anomalies.</li>
-                            <li className="flex gap-3"><span className="text-red-400">✗</span> Never share keys between applications or team members.</li>
-                            <li className="flex gap-3"><span className="text-red-400">✗</span> Never expose keys in client-side code or URLs.</li>
+                            <li className="flex gap-3"><span className="text-green-400">âœ“</span> Store API keys in environment variables, never in code.</li>
+                            <li className="flex gap-3"><span className="text-green-400">âœ“</span> Use separate keys for development and production.</li>
+                            <li className="flex gap-3"><span className="text-green-400">âœ“</span> Rotate keys regularly. Revoke unused keys immediately.</li>
+                            <li className="flex gap-3"><span className="text-green-400">âœ“</span> Monitor the usage dashboard for anomalies.</li>
+                            <li className="flex gap-3"><span className="text-red-400">âœ—</span> Never share keys between applications or team members.</li>
+                            <li className="flex gap-3"><span className="text-red-400">âœ—</span> Never expose keys in client-side code or URLs.</li>
                         </ul>
                     </div>
 

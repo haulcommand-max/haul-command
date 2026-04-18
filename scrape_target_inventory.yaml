@@ -1,0 +1,34 @@
+scrape_targets:
+  hotels:
+    sources:
+      - title: "Hilton/Marriott oversized parking maps"
+      - title: "Motel 6 Trucker directory"
+    data_points: ["Oversize Parking Available", "24/7 Desk", "Lat/Lon", "API rating"]
+  
+  truck_stops:
+    sources:
+      - title: "Pilot Flying J Locations JSON"
+      - title: "Love's Travel Stops API"
+      - title: "TA Petro Stop Directory"
+    data_points: ["Diesel Lanes", "CAT Scale availability", "Amenities", "High Pole Clearance"]
+
+  pilot_cars:
+    sources:
+      - title: "State DOT Approved Pilot Car lists"
+      - title: "WideloadShipping Directory"
+    data_points: ["Name", "Phone", "Email", "State Certifications"]
+
+  chambers_of_commerce:
+    sources:
+      - title: "US Chamber Directory"
+      - title: "Local County Economic Development sites"
+    data_points: ["Chamber President", "Contact Email", "Economic Impact Focus"]
+
+  vendors_and_installers:
+    sources:
+      - title: "Yellowpages/Yelp Commercial Tire Repair"
+      - title: "Mobile Mechanic directories"
+    data_points: ["Service Radius", "After Hours Availability", "Phone"]
+
+chamber_site_enrichment:
+  method: "Scrape chamber websites for transportation committees, extract contact details, feed into Resend automated outreach sequence for high-priority local enterprise leads."

@@ -178,7 +178,7 @@ export async function runClaimSniper(options: {
       region_code: raw.region_code,
       primary_role: raw.primary_role_type,
       listing_score: raw.listing_score ?? 50,
-      market_demand_score: 60, // TODO: wire to real market demand table
+      market_demand_score: raw.market_demand_score ?? 50, // fed by hc_corridor_demand view if available
       corridor_relevance_score: 50,
       traffic_potential_score: 40,
       missing_value_score: raw.listing_score < 60 ? 80 : 40,
@@ -186,7 +186,14 @@ export async function runClaimSniper(options: {
       claim_status: 'unclaimed',
       contact_email: raw.contact_email,
       contact_phone: raw.contact_phone,
-      missing_fields: [], // TODO: deserialize from listing_states
+      missing_fields: [
+        ...(!raw.contact_email ? ['email'] : []),
+        ...(!raw.contact_phone ? ['phone'] : []),
+        ...(raw.listing_score < 40 ? ['photo'] : []),
+        ...(raw.listing_score < 50 ? ['insurance'] : []),
+        ...(raw.listing_score < 60 ? ['certifications'] : []),
+        ...(raw.listing_score < 70 ? ['service_areas'] : []),
+      ],
       outreach_count: outreach?.touch_count ?? 0,
     };
 
@@ -215,7 +222,7 @@ export async function runClaimSniper(options: {
         title: `Claim Sniper: ${candidate.display_name} (${candidate.country_code})`,
         body: packetText,
         dueAt: new Date(Date.now() + 3 * 86_400_000).toISOString(),
-        status: 'TODO',
+        status: 'IN_PROGRESS',
       },
     };
 

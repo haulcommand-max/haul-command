@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
-import maplibregl from "maplibre-gl";
-import "maplibre-gl/dist/maplibre-gl.css";
+import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
 import { createClient } from "@supabase/supabase-js";
 
 interface LiquidityCell {
@@ -34,33 +34,33 @@ const LIQUIDITY_REFRESH_MS = 30_000;
 
 export function CommandMap({ style, className = "" }: CommandMapProps) {
     const containerRef = useRef<HTMLDivElement>(null);
-    const mapRef = useRef<maplibregl.Map | null>(null);
+    const mapRef = useRef<mapboxgl.Map | null>(null);
     const realtimeRef = useRef<ReturnType<ReturnType<typeof createClient>["channel"]> | null>(null);
     const escortTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const liqTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     // ─── Data fetchers ──────────────────────────────────────────────────────────
-    const fetchAndSetLoads = useCallback(async (map: maplibregl.Map) => {
+    const fetchAndSetLoads = useCallback(async (map: mapboxgl.Map) => {
         try {
             const res = await fetch("/api/map/loads?limit=300");
             if (!res.ok) return;
             const fc = await res.json();
-            const src = map.getSource("loads") as maplibregl.GeoJSONSource | undefined;
+            const src = map.getSource("loads") as mapboxgl.GeoJSONSource | undefined;
             if (src) src.setData(fc);
         } catch { }
     }, []);
 
-    const fetchAndSetEscorts = useCallback(async (map: maplibregl.Map) => {
+    const fetchAndSetEscorts = useCallback(async (map: mapboxgl.Map) => {
         try {
             const res = await fetch("/api/map/escorts");
             if (!res.ok) return;
             const fc = await res.json();
-            const src = map.getSource("escorts") as maplibregl.GeoJSONSource | undefined;
+            const src = map.getSource("escorts") as mapboxgl.GeoJSONSource | undefined;
             if (src) src.setData(fc);
         } catch { }
     }, []);
 
-    const fetchAndSetCorridors = useCallback(async (map: maplibregl.Map) => {
+    const fetchAndSetCorridors = useCallback(async (map: mapboxgl.Map) => {
         try {
             const [corrRes, liqRes] = await Promise.all([
                 fetch("/api/map/corridors"),
@@ -94,7 +94,7 @@ export function CommandMap({ style, className = "" }: CommandMapProps) {
                 })),
             };
 
-            const src = map.getSource("corridors") as maplibregl.GeoJSONSource | undefined;
+            const src = map.getSource("corridors") as mapboxgl.GeoJSONSource | undefined;
             if (src) src.setData(enriched);
         } catch { }
     }, []);
@@ -103,7 +103,8 @@ export function CommandMap({ style, className = "" }: CommandMapProps) {
     useEffect(() => {
         if (!containerRef.current || mapRef.current) return;
 
-        const map = new maplibregl.Map({
+        mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
+        const map = new mapboxgl.Map({
             container: containerRef.current,
             style: style ?? MAP_STYLE,
             center: [-82.5, 28.5], // Florida default — center of US heavy haul
@@ -266,7 +267,7 @@ export function CommandMap({ style, className = "" }: CommandMapProps) {
             });
 
             // ── Tooltips ──
-            const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
+            const popup = new mapboxgl.Popup({ closeButton: false, closeOnClick: false });
 
             map.on("mouseenter", "load-pins", (e) => {
                 map.getCanvas().style.cursor = "pointer";
@@ -302,8 +303,8 @@ export function CommandMap({ style, className = "" }: CommandMapProps) {
                 popup.remove();
             });
 
-            map.addControl(new maplibregl.NavigationControl(), "bottom-right");
-            map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-left");
+            map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
+            map.addControl(new mapboxgl.AttributionControl({ compact: true }), "bottom-left");
 
             // Initial data load
             fetchAndSetLoads(map);

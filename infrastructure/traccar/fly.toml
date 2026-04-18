@@ -1,0 +1,35 @@
+app = "haulcommand-telematics"
+primary_region = "ord"
+
+[build]
+  image = "traccar/traccar:latest"
+
+[env]
+  # Configured to run on minimal footprint
+  JAVA_OPTS="-Xms64m -Xmx256m"
+
+[mounts]
+  source = "traccar_data"
+  destination = "/opt/traccar/data"
+
+[http_service]
+  internal_port = 8082
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[[services]]
+  internal_port = 5055
+  protocol = "tcp"
+  processes = ["app"]
+  [[services.ports]]
+    port = 5055
+
+[[services]]
+  internal_port = 5055
+  protocol = "udp"
+  processes = ["app"]
+  [[services.ports]]
+    port = 5055

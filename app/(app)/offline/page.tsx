@@ -124,7 +124,7 @@ export default function OfflinePage() {
                             alignItems: 'center',
                             gap: '0.5rem',
                         }}>
-                            <span style={{ color: '#F59E0B', fontSize: '0.6rem' }}>●</span>
+                            <span style={{ color: '#F59E0B', fontSize: '0.6rem' }}>â—</span>
                             {tip}
                         </li>
                     ))}
@@ -168,7 +168,7 @@ export default function OfflinePage() {
                     textDecoration: 'none',
                 }}
             >
-                Check system status →
+                Check system status â†’
             </a>
 
             {/* CSS animation */}

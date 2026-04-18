@@ -19,7 +19,7 @@ import {
     type GlobalMarketTier,
 } from '@/lib/monetization/sponsor-pricing';
 
-// ═══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // /advertise — SELF-SERVE SPONSOR STOREFRONT
 //
 // Monetization surfaces:
@@ -30,7 +30,7 @@ import {
 //
 // Role+Intent: sponsor + acquire_territory + geo
 // AdGrid: Every surface on this page IS the product
-// ═══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const T = {
     bg: '#0B0B0C',
@@ -62,11 +62,11 @@ const US_STATES_FULL: Record<string, string> = {
 };
 
 const TIER_LABEL: Record<USMarketTier, string> = {
-    mega: '🔥 Mega Market',
-    major: '⚡ Major Market',
-    mid: '📊 Mid Market',
-    growth: '🌱 Growth Market',
-    emerging: '🌍 Emerging Market',
+    mega: 'ðŸ”¥ Mega Market',
+    major: 'âš¡ Major Market',
+    mid: 'ðŸ“Š Mid Market',
+    growth: 'ðŸŒ± Growth Market',
+    emerging: 'ðŸŒ Emerging Market',
 };
 
 function TierBadge({ tier }: { tier: string }) {
@@ -166,7 +166,7 @@ function PriceCard({ title, subtitle, monthly, annual, tier, features, cta, ctaH
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
                 {features.map((f, i) => (
                     <li key={i} style={{ fontSize: 12, color: T.dim, display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <span style={{ color: T.green, fontSize: 11 }}>✓</span> {f}
+                        <span style={{ color: T.green, fontSize: 11 }}>âœ“</span> {f}
                     </li>
                 ))}
             </ul>
@@ -249,7 +249,7 @@ export default function AdvertisePage() {
                         borderRadius: 999, padding: '6px 16px', fontSize: 10, fontWeight: 800,
                         textTransform: 'uppercase', letterSpacing: '0.12em', color: T.gold, marginBottom: 24,
                     }}>
-                        💰 Revenue Opportunity · Limited Slots
+                        ðŸ’° Revenue Opportunity · Limited Slots
                     </div>
                     <h1 style={{
                         fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 900, lineHeight: 1.08,
@@ -271,19 +271,19 @@ export default function AdvertisePage() {
 
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, fontSize: 13 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <span style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(16,185,129,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>📍</span>
+                            <span style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(16,185,129,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>ðŸ“</span>
                             <div><div style={{ fontWeight: 700 }}>50 US States</div><div style={{ fontSize: 11, color: T.muted }}>$149-$499/mo</div></div>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <span style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(59,130,246,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>🛣️</span>
+                            <span style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(59,130,246,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>ðŸ›£ï¸</span>
                             <div><div style={{ fontWeight: 700 }}>12 Corridors</div><div style={{ fontSize: 11, color: T.muted }}>$179-$349/mo</div></div>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <span style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(139,92,246,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>⚓</span>
+                            <span style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(139,92,246,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>âš“</span>
                             <div><div style={{ fontWeight: 700 }}>10 Ports</div><div style={{ fontSize: 11, color: T.muted }}>$299-$599/mo</div></div>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <span style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(212,168,67,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>🌍</span>
+                            <span style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(212,168,67,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>ðŸŒ</span>
                             <div><div style={{ fontWeight: 700 }}>120 Countries</div><div style={{ fontSize: 11, color: T.muted }}>$219-$399/mo</div></div>
                         </div>
                     </div>
@@ -294,10 +294,10 @@ export default function AdvertisePage() {
             <section style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px 0' }}>
                 <div style={{ display: 'flex', gap: 4, background: 'rgba(255,255,255,0.03)', borderRadius: 12, padding: 4, marginBottom: 24 }}>
                     {([
-                        { id: 'territory' as SponsorTab, label: '📍 US Territories', count: Object.keys(US_STATE_MARKET_TIER).length },
-                        { id: 'corridor' as SponsorTab, label: '🛣️ Corridors', count: Object.keys(CORRIDOR_TIER_MAP).length },
-                        { id: 'port' as SponsorTab, label: '⚓ Ports', count: Object.keys(PORT_TIER_MAP).length },
-                        { id: 'country' as SponsorTab, label: '🌍 Countries', count: 120 },
+                        { id: 'territory' as SponsorTab, label: 'ðŸ“ US Territories', count: Object.keys(US_STATE_MARKET_TIER).length },
+                        { id: 'corridor' as SponsorTab, label: 'ðŸ›£ï¸ Corridors', count: Object.keys(CORRIDOR_TIER_MAP).length },
+                        { id: 'port' as SponsorTab, label: 'âš“ Ports', count: Object.keys(PORT_TIER_MAP).length },
+                        { id: 'country' as SponsorTab, label: 'ðŸŒ Countries', count: 120 },
                     ] as const).map(t => (
                         <button
                             key={t.id}
@@ -319,7 +319,40 @@ export default function AdvertisePage() {
             {/* Content */}
             <section style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px 80px' }}>
 
-                {/* ── TERRITORY TAB ── */}
+                {/* â”€â”€ BUNDLES TAB (New) â”€â”€ */}
+                {tab === 'territory' && (
+                    <div style={{ marginBottom: 40, padding: 32, borderRadius: 16, background: 'linear-gradient(145deg, #1D170A, #111118)', border: `1px solid ${T.goldBorder}` }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
+                            <div>
+                                <h2 style={{ fontSize: 24, fontWeight: 900, color: T.gold, margin: '0 0 8px 0' }}>🔥 Dominance Packages</h2>
+                                <p style={{ fontSize: 13, color: T.dim, margin: 0 }}>Bundle inventory to guarantee the highest ROAS and local dominance.</p>
+                            </div>
+                        </div>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 16 }}>
+                            <div style={{ background: 'rgba(255,255,255,0.03)', padding: 24, borderRadius: 12, border: '1px solid rgba(255,255,255,0.1)' }}>
+                                <h3 style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginBottom: 4 }}>State Dominator</h3>
+                                <p style={{ fontSize: 11, color: T.muted, marginBottom: 16 }}>Top of state directory, 3 major corridors, and alert inclusion.</p>
+                                <div style={{ fontSize: 24, fontWeight: 900, color: T.gold, marginBottom: 16 }}>$899<span style={{fontSize: 12, color: T.muted, fontWeight: 400}}>/mo</span></div>
+                                <button style={{ width: '100%', padding: '10px 0', borderRadius: 8, background: '#fff', color: '#000', fontWeight: 800, border: 'none', cursor: 'pointer' }}>Claim Package</button>
+                            </div>
+                            <div style={{ background: 'rgba(212,168,67,0.1)', padding: 24, borderRadius: 12, border: `1px solid ${T.goldBorder}`, position: 'relative', overflow: 'hidden' }}>
+                                <div style={{ position: 'absolute', top: 12, right: -24, background: T.gold, color: '#000', fontSize: 9, fontWeight: 900, padding: '4px 24px', transform: 'rotate(45deg)' }}>POPULAR</div>
+                                <h3 style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginBottom: 4 }}>Corridor + Port Combo</h3>
+                                <p style={{ fontSize: 11, color: T.muted, marginBottom: 16 }}>Own the route from the port to the major industrial zone.</p>
+                                <div style={{ fontSize: 24, fontWeight: 900, color: T.gold, marginBottom: 16 }}>$1,299<span style={{fontSize: 12, color: T.muted, fontWeight: 400}}>/mo</span></div>
+                                <button style={{ width: '100%', padding: '10px 0', borderRadius: 8, background: T.gold, color: '#000', fontWeight: 800, border: 'none', cursor: 'pointer' }}>Claim Package</button>
+                            </div>
+                            <div style={{ background: 'rgba(255,255,255,0.03)', padding: 24, borderRadius: 12, border: '1px solid rgba(255,255,255,0.1)' }}>
+                                <h3 style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginBottom: 4 }}>Multi-State Launch</h3>
+                                <p style={{ fontSize: 11, color: T.muted, marginBottom: 16 }}>Dominate 3 adjacent states (+ all their corridors) instantly.</p>
+                                <div style={{ fontSize: 24, fontWeight: 900, color: T.gold, marginBottom: 16 }}>$1,999<span style={{fontSize: 12, color: T.muted, fontWeight: 400}}>/mo</span></div>
+                                <button style={{ width: '100%', padding: '10px 0', borderRadius: 8, background: '#fff', color: '#000', fontWeight: 800, border: 'none', cursor: 'pointer' }}>Claim Package</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* â”€â”€ TERRITORY TAB â”€â”€ */}
                 {tab === 'territory' && (
                     <>
                         <div style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}>
@@ -360,7 +393,7 @@ export default function AdvertisePage() {
                     </>
                 )}
 
-                {/* ── CORRIDOR TAB ── */}
+                {/* â”€â”€ CORRIDOR TAB â”€â”€ */}
                 {tab === 'corridor' && (
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
                         {corridorEntries.map(c => (
@@ -384,7 +417,7 @@ export default function AdvertisePage() {
                     </div>
                 )}
 
-                {/* ── PORT TAB ── */}
+                {/* â”€â”€ PORT TAB â”€â”€ */}
                 {tab === 'port' && (
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
                         {portEntries.map(p => (
@@ -408,7 +441,7 @@ export default function AdvertisePage() {
                     </div>
                 )}
 
-                {/* ── COUNTRY TAB ── */}
+                {/* â”€â”€ COUNTRY TAB â”€â”€ */}
                 {tab === 'country' && (
                     <div>
                         <p style={{ fontSize: 13, color: T.dim, marginBottom: 24, lineHeight: 1.6 }}>
@@ -501,7 +534,7 @@ export default function AdvertisePage() {
                             color: '#000', fontWeight: 900, fontSize: 14, textDecoration: 'none',
                             textTransform: 'uppercase', letterSpacing: '0.03em',
                         }}>
-                            Start Sponsoring →
+                            Start Sponsoring â†’
                         </Link>
                         <Link href="/data" style={{
                             padding: '16px 40px', borderRadius: 12,

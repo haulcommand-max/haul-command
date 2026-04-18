@@ -45,7 +45,7 @@ export default function VendorScorecard({
       <div className="space-y-2 mt-4">
         <div className="flex items-center justify-between text-sm">
           <span className="text-hc-gray-400">ACORD Insurance Status</span>
-          <span className="text-green-500 font-bold flex items-center gap-1">✔ Verified</span>
+          <span className="text-green-500 font-bold flex items-center gap-1">âœ” Verified</span>
         </div>
         <div className="flex items-center justify-between text-sm">
           <span className="text-hc-gray-400">Double-Brokering Flags</span>

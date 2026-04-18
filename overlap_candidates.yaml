@@ -1,0 +1,68 @@
+overlaps:
+  - group: email
+    reason: Likely merge candidates under a single email service or worker
+    candidates:
+      - email-claim-nudges
+      - email-digest-builder
+      - email-send
+      - email-worker
+  - group: offer
+    reason: Likely merge candidates under a single offer service or worker
+    candidates:
+      - offer-accept
+      - offer-decline
+      - offer-viewed
+  - group: presence
+    reason: Likely merge candidates under a single presence service or worker
+    candidates:
+      - presence-heartbeat
+      - presence-timeout-offline
+  - group: navixy
+    reason: Likely merge candidates under a single navixy service or worker
+    candidates:
+      - navixy-bridge-formula-calculator
+      - navixy-evidence-vault
+      - navixy-high-pole-alert
+      - navixy-route-hazard-profiler
+      - navixy-schematic-generator
+  - group: corridor
+    reason: Likely merge candidates under a single corridor service or worker
+    candidates:
+      - corridor-metrics-ingest
+      - corridor-stress-refresh
+  - group: trust
+    reason: Likely merge candidates under a single trust service or worker
+    candidates:
+      - trust-event-ingest
+      - trust-score-recompute
+  - group: payment
+    reason: Likely merge candidates under a single payment service or worker
+    candidates:
+      - payments-capture
+      - payments-preauth
+  - group: compliance
+    reason: Likely merge candidates under a single compliance service or worker
+    candidates:
+      - compliance-match-preview
+      - compliance-reminders-run
+      - compliance-snapshot-generate
+  - group: geo
+    reason: Likely merge candidates under a single geo service or worker
+    candidates:
+      - geo-aggregator
+      - geo-content-gap-filler
+      - geocode-worker
+  - group: liquidity
+    reason: Likely merge candidates under a single liquidity service or worker
+    candidates:
+      - liquidity-health
+      - liquidity-map-data
+  - group: hc_
+    reason: Likely merge candidates under a single hc_ service or worker
+    candidates:
+      - hc_ad_inventory_generator
+      - hc_leads_worker
+      - hc_osm_enrichment
+      - hc_quality_scoring_worker
+      - hc_route_iq_compute
+      - hc_webhook_stripe

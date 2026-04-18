@@ -6,14 +6,14 @@ import { supabaseBrowser } from "@/lib/supabase/browser";
 import { BackButton } from "../components/BackButton";
 import { Lock, Phone, Loader2, Shield, Clock, CheckCircle } from "lucide-react";
 
-/* ══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    ClaimClient — Premium Claim Flow (Mobile-First)
    P1: Upgraded from acceptable to premium trust surface.
    - Stronger hierarchy with HC gold accent
    - Trust signals (verified badge, time-to-complete)
    - Better contrast on all text elements
    - Clear progress expectation
-   ══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 function ClaimPageInner() {
     const router = useRouter();

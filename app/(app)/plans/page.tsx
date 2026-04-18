@@ -110,7 +110,7 @@ export default function PricingPage() {
                         background: tab === t ? '#F59E0B' : 'rgba(255,255,255,0.06)',
                         color: tab === t ? '#030712' : '#9CA3AF',
                         fontWeight: 700, fontSize: 14, textTransform: 'capitalize', transition: 'all 0.15s',
-                    }}>{t === 'operators' ? '🚗 Operators' : '🏢 Brokers'}</button>
+                    }}>{t === 'operators' ? 'ðŸš— Operators' : 'ðŸ¢ Brokers'}</button>
                 ))}
             </div>
 
@@ -161,7 +161,7 @@ export default function PricingPage() {
                             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
                                 {plan.features.map((f, i) => (
                                     <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 13, color: '#D1D5DB' }}>
-                                        <span style={{ color: '#10B981', fontSize: 14, flexShrink: 0 }}>✓</span>
+                                        <span style={{ color: '#10B981', fontSize: 14, flexShrink: 0 }}>âœ“</span>
                                         {f}
                                     </div>
                                 ))}
@@ -181,7 +181,7 @@ export default function PricingPage() {
 
             {/* Bottom CTA */}
             <div style={{ textAlign: 'center', marginTop: '3rem', color: '#6B7280', fontSize: 13 }}>
-                <p>All plans include crypto payments (300+ currencies via NOWPayments) • 120 country coverage • Offline PWA</p>
+                <p>All plans include crypto payments (300+ currencies via NOWPayments) "¢ 120 country coverage "¢ Offline PWA</p>
                 <p style={{ marginTop: 4 }}>Questions? <a href="mailto:support@haulcommand.com" style={{ color: '#F59E0B', textDecoration: 'none' }}>support@haulcommand.com</a></p>
             </div>
         </div>

@@ -64,7 +64,7 @@ export default function AICostDashboard() {
   }, [days]);
 
   if (loading) return (
-    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+    <div className=" bg-[#0a0a0a] flex items-center justify-center">
       <div className="animate-spin w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full" />
     </div>
   );
@@ -78,7 +78,7 @@ export default function AICostDashboard() {
   const topFeature = data.by_feature[0];
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white p-4 md:p-8">
+    <div className=" bg-[#0a0a0a] text-white p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -93,7 +93,7 @@ export default function AICostDashboard() {
                 key={d}
                 onClick={() => setDays(d)}
                 className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
-                  days === d ? 'bg-amber-500 text-black font-bold' : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                  days === d ? 'bg-amber-500 text-white font-bold' : 'bg-white/5 text-gray-400 hover:bg-white/10'
                 }`}
               >
                 {d}d

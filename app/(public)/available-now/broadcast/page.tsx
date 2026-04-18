@@ -80,9 +80,9 @@ export default function BroadcastForm() {
   }
 
   if (success) return (
-    <div className="min-h-screen bg-[#07090d] flex items-center justify-center p-4">
+    <div className=" bg-[#07090d] flex items-center justify-center p-4">
       <div className="text-center max-w-sm">
-        <div className="text-4xl mb-4">✅</div>
+        <div className="text-4xl mb-4">âœ…</div>
         <h2 className="text-xl font-bold text-[#22c55e] mb-2">You&apos;re Live!</h2>
         <p className="text-sm text-[#8a9ab0]">Your availability is now broadcasting to brokers in real time. Redirecting to the live feed&hellip;</p>
       </div>
@@ -90,7 +90,7 @@ export default function BroadcastForm() {
   )
 
   return (
-    <div className="min-h-screen bg-[#07090d] text-[#f0f2f5]">
+    <div className=" bg-[#07090d] text-[#f0f2f5]">
       <div className="px-4 lg:px-10 py-10 max-w-2xl mx-auto">
         <p className="text-[11px] tracking-[0.2em] text-[#22c55e] font-semibold mb-3">BROADCAST AVAILABILITY</p>
         <h1 className="text-2xl lg:text-3xl font-extrabold tracking-tight text-[#f0f2f5] mb-2">Go Live — Brokers Are Watching</h1>
@@ -166,8 +166,8 @@ export default function BroadcastForm() {
           {error&&<p className="text-xs text-red-400 bg-red-900/20 border border-red-900/30 rounded-xl px-4 py-3">{error}</p>}
 
           <button type="submit" disabled={loading}
-            className="bg-[#22c55e] hover:bg-[#16a34a] disabled:opacity-50 text-black font-bold py-4 rounded-xl text-sm transition-colors">
-            {loading ? 'Broadcasting…' : '● Go Live Now — Broadcast Availability'}
+            className="bg-[#22c55e] hover:bg-[#16a34a] disabled:opacity-50 text-white font-bold py-4 rounded-xl text-sm transition-colors">
+            {loading ? 'Broadcasting...' : 'â— Go Live Now — Broadcast Availability'}
           </button>
 
           <p className="text-[10px] text-[#3a5068] text-center">Your listing appears in the live feed and is visible to brokers searching for capacity in your area. You can remove it anytime.</p>

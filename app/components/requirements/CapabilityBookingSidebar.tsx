@@ -16,20 +16,20 @@ export default function CapabilityBookingSidebar({
   // Dynamic Localization Simulator mapping hc_localized_capabilities
   const capabilities = {
     'US': [
-      { id: 'lead', name: 'Lead Pilot Car', icon: '🚗' },
-      { id: 'chase', name: 'Chase Pilot Car', icon: '🚙' },
-      { id: 'high_pole', name: 'High-Pole Escort', icon: '🚩' },
-      { id: 'twic', name: 'TWIC Port Access', icon: '⚓' }
+      { id: 'lead', name: 'Lead Pilot Car', icon: 'ðŸš—' },
+      { id: 'chase', name: 'Chase Pilot Car', icon: 'ðŸš™' },
+      { id: 'high_pole', name: 'High-Pole Escort', icon: 'ðŸš©' },
+      { id: 'twic', name: 'TWIC Port Access', icon: 'âš“' }
     ],
     'AU': [
-      { id: 'lead', name: 'Level 1 Pilot Vehicle', icon: '🚗' },
-      { id: 'chase', name: 'Level 2 Pilot Vehicle', icon: '🚙' },
-      { id: 'msic', name: 'MSIC Authorized', icon: '⚓' }
+      { id: 'lead', name: 'Level 1 Pilot Vehicle', icon: 'ðŸš—' },
+      { id: 'chase', name: 'Level 2 Pilot Vehicle', icon: 'ðŸš™' },
+      { id: 'msic', name: 'MSIC Authorized', icon: 'âš“' }
     ],
     'DE': [
-      { id: 'lead', name: 'BF3 Begleitfahrzeug', icon: '🚗' },
-      { id: 'police', name: 'BF4 (Polizeiersatz)', icon: '🚓' },
-      { id: 'route_survey', name: 'Streckenprüfung', icon: '📏' }
+      { id: 'lead', name: 'BF3 Begleitfahrzeug', icon: 'ðŸš—' },
+      { id: 'police', name: 'BF4 (Polizeiersatz)', icon: 'ðŸš“' },
+      { id: 'route_survey', name: 'Streckenprüfung', icon: 'ðŸ“' }
     ]
   };
 

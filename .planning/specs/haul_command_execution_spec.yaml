@@ -1,0 +1,1216 @@
+name: "Haul Command SEO + Conversion + Monopoly Page-System Build Spec"
+version: "2026-04-09"
+mode: "upgrade_only"
+host_posture: "small_now_medium_later"
+mission:
+  primary: "Make Haul Command the default operating system and authority layer for heavy haul discovery, trust, claiming, booking, routing, regulations, tools, and market intelligence."
+  acceptance_standard: "competitor_made_obsolete"
+  day_one_rule: "Every important page family ships with crawlable discovery, trust, monetization, and a next move."
+  no_dead_end_rule: true
+  truth_first_rule: true
+
+global_rules:
+  page_system_laws:
+    - "Every page must have one dominant action."
+    - "Every page must have a clear parent path."
+    - "Every page must have sibling and related links."
+    - "Every page must expose at least one commercial next step."
+    - "Every important page must be reachable through HTML links."
+    - "Every answer page must expose quick answer + expanded answer + freshness + confidence + next step."
+    - "Every local page must expose local proof, local relevance, and local commercial action."
+    - "Every page family must reinforce at least 3 other page families."
+    - "Informational pages feed commercial pages."
+    - "Commercial pages link back to authority pages."
+    - "No page may exist as an island."
+    - "If live data is weak, show truthful fallback utility instead of fake activity."
+
+  universal_page_shell:
+    required_blocks:
+      - id: "hero_intent_header"
+        purpose: "Name the page clearly and route the user immediately."
+        required_fields:
+          - "h1"
+          - "subhead"
+          - "who_this_is_for"
+          - "primary_intent_label"
+          - "location_context_if_relevant"
+          - "one_primary_cta"
+          - "one_secondary_cta"
+      - id: "quick_answer_block"
+        purpose: "Machine-readable answer surface for AI-search and snippets."
+        required_fields:
+          - "direct_answer"
+          - "expanded_explanation"
+          - "freshness_state"
+          - "confidence_state"
+          - "source_path_label"
+          - "next_step_cta"
+      - id: "trust_strip"
+        purpose: "Show proof before ask."
+        required_fields:
+          - "verification_state"
+          - "freshness_signal"
+          - "response_or_activity_signal_if_truthful"
+          - "trust_score_or_proof_proxy_if_truthful"
+      - id: "commercial_next_moves"
+        purpose: "Make money and action obvious."
+        required_fields:
+          - "primary_conversion_cta"
+          - "secondary_conversion_cta"
+          - "claim_cta_if_claimable"
+          - "app_install_or_login_cta_if_operational"
+      - id: "related_link_cluster"
+        purpose: "Prevent islands and strengthen clusters."
+        required_fields:
+          - "parent_links"
+          - "sibling_links"
+          - "related_pages"
+          - "commercial_support_links"
+      - id: "faq_or_decision_block"
+        purpose: "Handle objections and long-tail intent."
+        required_fields:
+          - "decision_questions_only"
+          - "no_filler_faq_spam"
+      - id: "footer_cluster_rail"
+        purpose: "Deep crawl reinforcement."
+        required_fields:
+          - "browse_by_state_or_region_if_relevant"
+          - "browse_by_city_if_relevant"
+          - "browse_by_role_if_relevant"
+          - "browse_by_tool_or_regulation_if_relevant"
+
+  universal_cta_catalog:
+    primary_ctas:
+      - "Find available operators"
+      - "Request escort support"
+      - "Claim this listing"
+      - "Use the tool"
+      - "Check requirements"
+      - "See rates"
+      - "View nearby markets"
+      - "Install the app"
+      - "Book route support"
+      - "Post a load"
+      - "Get urgent replacement"
+      - "Become a sponsor"
+      - "Unlock data"
+    secondary_ctas:
+      - "Compare providers"
+      - "See trusted results"
+      - "View report card"
+      - "Save this market"
+      - "Follow this corridor"
+      - "View related glossary terms"
+      - "View official source path"
+      - "Download forms"
+      - "Start training"
+      - "Get listed"
+      - "Join waitlist"
+      - "Apply as partner"
+
+  universal_internal_link_rules:
+    minimums:
+      parent_links: 1
+      sibling_links: 3
+      related_links: 6
+      commercial_links: 2
+    hard_rules:
+      - "At least one inbound link from a stronger informational page to every commercial page."
+      - "At least one outbound link from every informational page to a commercial next step."
+      - "Every local page must link to nearby local pages."
+      - "Every glossary page must link to at least one regulation page, one tool page, and one service/profile page."
+      - "Every regulation page must link to glossary, tool, service, and location pages."
+      - "Every profile page must link to market pages, rules/tools, and booking/claim flows."
+      - "Every corridor page must link to nearby cities, related rates, related services, and related restrictions."
+      - "Every tool page must link to the problem it solves, the rule it supports, and the service/provider that can act on the result."
+
+  event_contracts:
+    required_events:
+      - "page_viewed"
+      - "answer_block_seen"
+      - "cta_clicked"
+      - "claim_cta_clicked"
+      - "sponsor_cta_clicked"
+      - "related_link_clicked"
+      - "tool_started"
+      - "tool_completed"
+      - "regulation_source_clicked"
+      - "profile_contact_attempted"
+      - "available_now_viewed"
+      - "load_post_started"
+      - "app_install_cta_clicked"
+    high_value_events:
+      - "claim_started"
+      - "claim_completed"
+      - "request_submitted"
+      - "load_post_submitted"
+      - "quote_requested"
+      - "push_opt_in_completed"
+      - "market_followed"
+      - "corridor_followed"
+
+  sponsor_logic:
+    sponsor_surfaces:
+      - "country"
+      - "state_or_region"
+      - "city"
+      - "corridor"
+      - "tool"
+      - "glossary"
+      - "regulation"
+      - "leaderboard"
+      - "available_now"
+      - "claim_surface"
+      - "data_product"
+    display_rules:
+      - "Sponsor units must look native and premium."
+      - "Thin markets still get sponsor inventory."
+      - "Sponsor slots should map to actual intent."
+      - "Claim-related pages should include sponsor or upgrade logic when contextually relevant."
+      - "No sponsor block can push core user utility below the fold."
+
+  fallback_rules:
+    if_no_live_supply:
+      - "Show waitlist CTA"
+      - "Show request support CTA"
+      - "Show claim CTA"
+      - "Show nearby markets"
+      - "Show route/rate/regulation utility"
+    if_no_reviews_or_trust_data:
+      - "Show verification status"
+      - "Show profile freshness"
+      - "Show completion state"
+      - "Show report-card-coming-soon only if workflow exists"
+    if_no_market_data:
+      - "Show foundational facts, nearby markets, and next best action"
+    if_feature_not_live:
+      - "Label truthfully"
+      - "Route to closest useful alternative"
+      - "Do not render dead CTA"
+
+page_families:
+
+  directory_hub:
+    route_examples:
+      - "/directory"
+      - "/directory/[country]"
+      - "/directory/[country]/[state]"
+      - "/directory/[country]/[state]/[city]"
+    primary_goal: "Discovery + claim pressure + local authority + marketplace entry"
+    primary_cta: "Find available operators"
+    secondary_ctas:
+      - "Claim this listing"
+      - "Get listed"
+      - "Install the app"
+    exact_blocks:
+      - "hero_intent_header"
+      - "market_context_strip"
+      - "quick_answer_block"
+      - "live_or_truthful_activity_strip"
+      - "filterable_results_grid"
+      - "trust_strip"
+      - "claim_pressure_block"
+      - "sponsor_slot_market_native"
+      - "related_roles_block"
+      - "related_services_block"
+      - "related_regulations_block"
+      - "nearby_markets_block"
+      - "commercial_next_moves"
+      - "footer_cluster_rail"
+    exact_ctas:
+      top_primary: "Find available operators"
+      top_secondary: "Claim this listing"
+      result_card_primary: "View profile"
+      result_card_secondary: "Request support"
+      result_card_tertiary: "View report card"
+      market_empty_primary: "Request escort support"
+      market_empty_secondary: "Join this market"
+    internal_link_rules:
+      inbound_from:
+        - "homepage"
+        - "city pages"
+        - "role pages"
+        - "service pages"
+        - "corridor pages"
+        - "available-now pages"
+      outbound_to:
+        - "profiles"
+        - "roles"
+        - "services"
+        - "corridors"
+        - "regulations"
+        - "tools"
+        - "claim pages"
+        - "sponsor surfaces"
+      mandatory_related_modules:
+        - "nearby cities"
+        - "nearby corridors"
+        - "top roles in market"
+        - "related requirements"
+        - "related tools"
+    monetization:
+      - "market sponsor"
+      - "boosted listings"
+      - "claim upgrade"
+      - "app install conversion"
+    trust_requirements:
+      - "verification badges only if truthful"
+      - "freshness signals only if truthful"
+      - "report-card access only if workflow exists"
+
+  profile_page:
+    route_examples:
+      - "/place/[id]"
+      - "/directory/[country]/[state]/[city]/[slug]"
+    primary_goal: "Trust + contact + claim + booking"
+    primary_cta: "Request support"
+    secondary_ctas:
+      - "Claim this listing"
+      - "View report card"
+      - "Install the app"
+    exact_blocks:
+      - "hero_intent_header"
+      - "profile_identity_block"
+      - "availability_or_truthful_status_block"
+      - "trust_strip"
+      - "report_card_preview_block"
+      - "coverage_area_block"
+      - "services_offered_block"
+      - "equipment_or_capability_block"
+      - "training_or_badges_block_if_truthful"
+      - "recent_activity_or_freshness_block_if_truthful"
+      - "request_support_cta_block"
+      - "claim_owner_block"
+      - "nearby_related_profiles_block"
+      - "related_market_pages_block"
+      - "related_regulations_tools_block"
+      - "sponsor_or_boost_block"
+    exact_ctas:
+      top_primary: "Request support"
+      top_secondary: "Claim this listing"
+      trust_cta: "View report card"
+      app_cta: "Install the app for live updates"
+      owner_cta: "Claim and improve this profile"
+    internal_link_rules:
+      inbound_from:
+        - "directory"
+        - "role pages"
+        - "service pages"
+        - "city pages"
+        - "corridor pages"
+        - "leaderboards"
+      outbound_to:
+        - "city page"
+        - "state page"
+        - "related corridor pages"
+        - "related services"
+        - "regulations"
+        - "tools"
+        - "claim page"
+      mandatory_related_modules:
+        - "nearby providers"
+        - "same role nearby"
+        - "requirements in this market"
+        - "tools relevant to this role"
+    monetization:
+      - "visibility boost"
+      - "featured badge"
+      - "claim conversion"
+      - "route support upsell"
+    trust_requirements:
+      - "claim state"
+      - "verification state"
+      - "profile freshness"
+      - "response proof only if real"
+
+  role_page:
+    route_examples:
+      - "/roles/pilot-car-operator"
+      - "/roles/pilot-car-broker"
+      - "/roles/route-surveyor"
+    primary_goal: "Own role intent + route to actions, listings, tools, and pages"
+    primary_cta: "Find providers"
+    secondary_ctas:
+      - "Claim your listing"
+      - "Get listed"
+      - "See requirements"
+    exact_blocks:
+      - "hero_intent_header"
+      - "role_quick_answer_block"
+      - "what_this_role_does_block"
+      - "when_you_need_this_role_block"
+      - "market_demand_or_use_cases_block"
+      - "directory_results_teaser"
+      - "related_services_block"
+      - "related_tools_block"
+      - "related_regulations_block"
+      - "related_locations_block"
+      - "claim_and_get_listed_block"
+      - "trust_strip"
+      - "faq_or_decision_block"
+    exact_ctas:
+      top_primary: "Find providers"
+      top_secondary: "Claim your listing"
+      alt_primary: "See requirements"
+      alt_secondary: "Use related tools"
+    internal_link_rules:
+      inbound_from:
+        - "homepage"
+        - "glossary pages"
+        - "service pages"
+        - "city pages"
+        - "comparison pages"
+      outbound_to:
+        - "directory results"
+        - "profiles"
+        - "services"
+        - "tools"
+        - "regulations"
+        - "location pages"
+        - "claim pages"
+    monetization:
+      - "role sponsor"
+      - "get listed upsell"
+      - "featured role partner slot"
+
+  service_page:
+    route_examples:
+      - "/services/pilot-car-services"
+      - "/services/route-survey"
+      - "/services/heavy-haul-escort"
+    primary_goal: "Commercial capture for service-intent queries"
+    primary_cta: "Request service"
+    secondary_ctas:
+      - "Find providers"
+      - "See pricing/rates"
+      - "Check requirements"
+    exact_blocks:
+      - "hero_intent_header"
+      - "service_quick_answer_block"
+      - "when_you_need_this_service_block"
+      - "how_it_works_block"
+      - "pricing_or_rate_context_block"
+      - "trust_strip"
+      - "provider_results_teaser"
+      - "nearby_market_service_block"
+      - "related_regulations_block"
+      - "related_tools_block"
+      - "request_service_cta_block"
+      - "claim_provider_block"
+      - "sponsor_slot_service_native"
+    exact_ctas:
+      top_primary: "Request service"
+      top_secondary: "Find providers"
+      mid_primary: "See pricing"
+      bottom_primary: "Claim your service listing"
+    internal_link_rules:
+      inbound_from:
+        - "role pages"
+        - "tool pages"
+        - "regulation pages"
+        - "city pages"
+        - "comparison pages"
+      outbound_to:
+        - "directory"
+        - "profiles"
+        - "rates"
+        - "regulations"
+        - "tools"
+        - "claim pages"
+    monetization:
+      - "service sponsor"
+      - "lead routing"
+      - "quote routing"
+      - "claim upgrade"
+
+  city_page:
+    route_examples:
+      - "/[country]/[state]/[city]"
+      - "/directory/[country]/[state]/[city]"
+    primary_goal: "Hyperlocal authority + map-pack conquest + market conversion"
+    primary_cta: "Find local providers"
+    secondary_ctas:
+      - "Claim your listing"
+      - "View local requirements"
+      - "See nearby corridors"
+    exact_blocks:
+      - "hero_intent_header"
+      - "city_quick_answer_block"
+      - "city_market_pulse_block"
+      - "top_provider_teaser_block"
+      - "top_services_block"
+      - "city_requirements_teaser_block"
+      - "city_tools_teaser_block"
+      - "city_corridors_block"
+      - "city_glossary_terms_block"
+      - "city_claim_opportunity_block"
+      - "city_sponsor_slot"
+      - "nearby_cities_block"
+      - "commercial_next_moves"
+    exact_ctas:
+      top_primary: "Find local providers"
+      top_secondary: "Claim your listing"
+      local_business_cta: "Get listed in this city"
+      broker_cta: "Request urgent coverage"
+      user_cta: "Install the app for this market"
+    internal_link_rules:
+      inbound_from:
+        - "state pages"
+        - "corridor pages"
+        - "role pages"
+        - "service pages"
+        - "blog/resources"
+      outbound_to:
+        - "directory city results"
+        - "top profiles"
+        - "corridors"
+        - "regulations"
+        - "tools"
+        - "claim pages"
+        - "nearby cities"
+      mandatory_related_modules:
+        - "nearby cities"
+        - "nearby corridors"
+        - "city-specific services"
+        - "city-specific requirements"
+        - "city-specific sponsor"
+    monetization:
+      - "city sponsor"
+      - "city featured listings"
+      - "claim conversion"
+      - "urgent coverage routing"
+
+  corridor_page:
+    route_examples:
+      - "/corridors/[slug]"
+      - "/corridors/[origin]-to-[destination]"
+    primary_goal: "Own route-intent + monetizable corridor intelligence"
+    primary_cta: "Request corridor support"
+    secondary_ctas:
+      - "See providers on this corridor"
+      - "Follow this corridor"
+      - "See restrictions"
+    exact_blocks:
+      - "hero_intent_header"
+      - "corridor_quick_answer_block"
+      - "corridor_heat_or_activity_block"
+      - "corridor_restrictions_block"
+      - "corridor_services_block"
+      - "corridor_rates_block"
+      - "corridor_available_supply_block"
+      - "corridor_nearby_markets_block"
+      - "corridor_tools_block"
+      - "corridor_regulations_block"
+      - "corridor_data_teaser_block"
+      - "corridor_sponsor_slot"
+      - "follow_corridor_cta_block"
+    exact_ctas:
+      top_primary: "Request corridor support"
+      top_secondary: "See providers on this corridor"
+      data_cta: "Unlock corridor data"
+      follow_cta: "Follow this corridor"
+    internal_link_rules:
+      inbound_from:
+        - "city pages"
+        - "rate pages"
+        - "load pages"
+        - "service pages"
+        - "blog/resources"
+      outbound_to:
+        - "origin city"
+        - "destination city"
+        - "related corridors"
+        - "provider profiles"
+        - "rates"
+        - "regulations"
+        - "tools"
+        - "data products"
+    monetization:
+      - "corridor sponsor"
+      - "corridor data product"
+      - "lead routing"
+      - "premium corridor placement"
+
+  rate_page:
+    route_examples:
+      - "/rates/[market]"
+      - "/rates/[corridor]"
+    primary_goal: "Capture pricing intent + convert into request/quote/data"
+    primary_cta: "Request pricing help"
+    secondary_ctas:
+      - "See corridor support"
+      - "Find providers"
+      - "Unlock market intelligence"
+    exact_blocks:
+      - "hero_intent_header"
+      - "rate_quick_answer_block"
+      - "rate_range_block"
+      - "what_moves_price_block"
+      - "market_context_block"
+      - "corridor_context_block_if_relevant"
+      - "related_tools_block"
+      - "related_regulations_block"
+      - "provider_results_teaser"
+      - "data_teaser_block"
+      - "request_quote_cta_block"
+    exact_ctas:
+      top_primary: "Request pricing help"
+      top_secondary: "Find providers"
+      data_cta: "Unlock market intelligence"
+    internal_link_rules:
+      inbound_from:
+        - "service pages"
+        - "corridor pages"
+        - "tool pages"
+        - "regulation pages"
+      outbound_to:
+        - "service pages"
+        - "corridors"
+        - "tools"
+        - "profiles"
+        - "data products"
+    monetization:
+      - "pricing lead routing"
+      - "data upsell"
+      - "rate sponsor"
+
+  load_page:
+    route_examples:
+      - "/loads"
+      - "/loads/[slug]"
+      - "/available-now"
+    primary_goal: "Demand capture + broker workflow + supply activation"
+    primary_cta: "Request coverage"
+    secondary_ctas:
+      - "Post a load"
+      - "See available operators"
+      - "Install the app"
+    exact_blocks:
+      - "hero_intent_header"
+      - "load_quick_answer_block"
+      - "load_details_block"
+      - "coverage_gap_or_match_block"
+      - "available_supply_teaser"
+      - "route_and_regulation_context_block"
+      - "urgent_replacement_block"
+      - "related_corridor_block"
+      - "claim_broker_identity_block_if_relevant"
+      - "sponsor_slot_load_native"
+      - "operational_next_moves_block"
+    exact_ctas:
+      top_primary: "Request coverage"
+      top_secondary: "Post a load"
+      broker_cta: "Get urgent replacement"
+      operator_cta: "See matching work"
+      app_cta: "Install the app for live load alerts"
+    internal_link_rules:
+      inbound_from:
+        - "homepage"
+        - "broker pages"
+        - "available-now pages"
+        - "corridor pages"
+      outbound_to:
+        - "provider profiles"
+        - "corridors"
+        - "regulations"
+        - "tools"
+        - "post-a-load page"
+        - "app install"
+    monetization:
+      - "post load upsell"
+      - "priority routing"
+      - "urgent placement"
+      - "sponsor slot"
+
+  glossary_page:
+    route_examples:
+      - "/glossary/[term]"
+    primary_goal: "Snippet capture + cluster support + commercial routing"
+    primary_cta: "See related requirements"
+    secondary_ctas:
+      - "Use the related tool"
+      - "Find providers"
+      - "View examples"
+    exact_blocks:
+      - "hero_intent_header"
+      - "glossary_quick_answer_block"
+      - "plain_english_definition_block"
+      - "why_it_matters_block"
+      - "where_you_use_it_block"
+      - "related_terms_block"
+      - "related_regulations_block"
+      - "related_tools_block"
+      - "related_services_block"
+      - "related_locations_block"
+      - "commercial_next_moves"
+    exact_ctas:
+      top_primary: "See related requirements"
+      top_secondary: "Use the related tool"
+      tertiary: "Find providers"
+    internal_link_rules:
+      inbound_from:
+        - "regulation pages"
+        - "tool pages"
+        - "service pages"
+        - "blog/resources"
+      outbound_to:
+        - "regulations"
+        - "tools"
+        - "services"
+        - "roles"
+        - "city/corridor pages"
+      mandatory_related_modules:
+        - "3 related terms"
+        - "2 related regulations"
+        - "1 related tool"
+        - "1 related service/provider path"
+    monetization:
+      - "glossary sponsor"
+      - "tool conversion"
+      - "service conversion"
+
+  regulation_page:
+    route_examples:
+      - "/regulations/[jurisdiction]/[topic]"
+      - "/requirements/[jurisdiction]"
+    primary_goal: "Authority capture + trust + route into services/tools"
+    primary_cta: "Check what to do next"
+    secondary_ctas:
+      - "Use the related tool"
+      - "Find compliant support"
+      - "View official source path"
+    exact_blocks:
+      - "hero_intent_header"
+      - "regulation_quick_answer_block"
+      - "what_is_known_block"
+      - "what_is_unknown_block"
+      - "what_to_do_next_block"
+      - "official_source_path_block"
+      - "freshness_and_confidence_block"
+      - "related_glossary_block"
+      - "related_tools_block"
+      - "related_services_block"
+      - "related_locations_block"
+      - "commercial_next_moves"
+    exact_ctas:
+      top_primary: "Check what to do next"
+      top_secondary: "Use the related tool"
+      compliance_cta: "Find compliant support"
+      source_cta: "View official source path"
+    internal_link_rules:
+      inbound_from:
+        - "glossary"
+        - "tools"
+        - "service pages"
+        - "city/corridor pages"
+      outbound_to:
+        - "official source path"
+        - "glossary terms"
+        - "tools"
+        - "services"
+        - "roles"
+        - "city/corridor pages"
+    monetization:
+      - "regulation sponsor"
+      - "compliance lead routing"
+      - "tool conversion"
+    trust_requirements:
+      - "freshness label mandatory"
+      - "confidence label mandatory"
+      - "unknowns must be stated clearly"
+
+  tool_page:
+    route_examples:
+      - "/tools/[tool-slug]"
+    primary_goal: "Utility capture + intent qualification + service conversion"
+    primary_cta: "Use the tool"
+    secondary_ctas:
+      - "Find help with this result"
+      - "See related requirements"
+      - "Unlock saved results"
+    exact_blocks:
+      - "hero_intent_header"
+      - "tool_quick_answer_block"
+      - "problem_this_tool_solves_block"
+      - "tool_interface_block"
+      - "result_explainer_block"
+      - "related_requirement_block"
+      - "related_glossary_block"
+      - "related_service_block"
+      - "save_or_export_block"
+      - "sponsor_slot_tool_native"
+      - "commercial_next_moves"
+    exact_ctas:
+      top_primary: "Use the tool"
+      top_secondary: "Find help with this result"
+      alt_primary: "See related requirements"
+      alt_secondary: "Unlock saved results"
+    internal_link_rules:
+      inbound_from:
+        - "glossary"
+        - "regulations"
+        - "services"
+        - "city/corridor pages"
+        - "blog/resources"
+      outbound_to:
+        - "regulations"
+        - "glossary"
+        - "services"
+        - "profiles"
+        - "training or forms if relevant"
+    monetization:
+      - "tool sponsor"
+      - "saved/exported results upsell"
+      - "service lead routing"
+      - "data product teaser"
+
+  claim_page:
+    route_examples:
+      - "/claim"
+      - "/claim/[entity]"
+    primary_goal: "Claim conversion + profile improvement + monetization unlock"
+    primary_cta: "Claim this listing"
+    secondary_ctas:
+      - "See claim benefits"
+      - "Upgrade visibility"
+      - "Install the app"
+    exact_blocks:
+      - "hero_intent_header"
+      - "claim_benefits_block"
+      - "why_claim_now_block"
+      - "proof_of_ownership_steps_block"
+      - "what_improves_after_claim_block"
+      - "visibility_and_trust_benefits_block"
+      - "upgrade_options_block"
+      - "faq_or_decision_block"
+      - "commercial_next_moves"
+    exact_ctas:
+      top_primary: "Claim this listing"
+      top_secondary: "See claim benefits"
+      upsell_cta: "Upgrade visibility"
+      app_cta: "Install the app after claim"
+    internal_link_rules:
+      inbound_from:
+        - "directory"
+        - "profiles"
+        - "city pages"
+        - "role pages"
+        - "service pages"
+      outbound_to:
+        - "profile page"
+        - "pricing/upgrade page"
+        - "app install"
+        - "help center or support"
+    monetization:
+      - "paid claim enhancements"
+      - "boosts"
+      - "featured placement"
+      - "sponsor upsell"
+    trust_requirements:
+      - "benefits must be truthful"
+      - "no fake urgency"
+      - "show actual post-claim improvements"
+
+  sponsor_page:
+    route_examples:
+      - "/sponsor/[surface]"
+      - "/advertise/[market]"
+    primary_goal: "Self-serve monetization"
+    primary_cta: "Become a sponsor"
+    secondary_ctas:
+      - "See available inventory"
+      - "See audience fit"
+      - "Book this market"
+    exact_blocks:
+      - "hero_intent_header"
+      - "inventory_overview_block"
+      - "surface_explainer_block"
+      - "audience_and_intent_block"
+      - "market_reach_block"
+      - "placement_examples_block"
+      - "scarcity_block_truthful"
+      - "pricing_or_request_quote_block"
+      - "commercial_next_moves"
+    exact_ctas:
+      top_primary: "Become a sponsor"
+      top_secondary: "See available inventory"
+      market_cta: "Book this market"
+    internal_link_rules:
+      inbound_from:
+        - "city pages"
+        - "corridor pages"
+        - "tools"
+        - "glossary"
+        - "leaderboards"
+      outbound_to:
+        - "market pages"
+        - "inventory pages"
+        - "request quote"
+    monetization:
+      - "direct sponsor sales"
+      - "self-serve buying"
+      - "market takeovers"
+
+  data_product_page:
+    route_examples:
+      - "/data"
+      - "/data/[product]"
+    primary_goal: "Enterprise and self-serve data monetization"
+    primary_cta: "Unlock data"
+    secondary_ctas:
+      - "Request enterprise access"
+      - "See sample insights"
+      - "View related market pages"
+    exact_blocks:
+      - "hero_intent_header"
+      - "data_quick_answer_block"
+      - "what_you_get_block"
+      - "sample_insights_block"
+      - "use_cases_block"
+      - "coverage_scope_block"
+      - "update_cadence_block"
+      - "api_or_export_block"
+      - "commercial_next_moves"
+    exact_ctas:
+      top_primary: "Unlock data"
+      top_secondary: "Request enterprise access"
+      teaser_cta: "See sample insights"
+    internal_link_rules:
+      inbound_from:
+        - "corridor pages"
+        - "rate pages"
+        - "city pages"
+        - "blog/resources"
+      outbound_to:
+        - "sample markets"
+        - "corridors"
+        - "rates"
+        - "contact/sales"
+    monetization:
+      - "subscriptions"
+      - "enterprise exports"
+      - "api access"
+      - "custom research"
+
+  training_forms_page:
+    route_examples:
+      - "/training"
+      - "/forms"
+      - "/resources/[topic]"
+    primary_goal: "Capture early-intent users and route to deeper ecosystem actions"
+    primary_cta: "Start training"
+    secondary_ctas:
+      - "Download forms"
+      - "See requirements"
+      - "Find providers"
+    exact_blocks:
+      - "hero_intent_header"
+      - "training_or_forms_quick_answer_block"
+      - "what_this_covers_block"
+      - "who_needs_it_block"
+      - "progress_or_completion_benefits_block"
+      - "related_requirements_block"
+      - "related_glossary_block"
+      - "related_services_block"
+      - "related_markets_block"
+      - "commercial_next_moves"
+    exact_ctas:
+      top_primary: "Start training"
+      top_secondary: "Download forms"
+      alt_primary: "See requirements"
+      alt_secondary: "Find providers"
+    internal_link_rules:
+      inbound_from:
+        - "regulations"
+        - "service pages"
+        - "glossary"
+        - "blog/resources"
+      outbound_to:
+        - "requirements"
+        - "glossary"
+        - "services"
+        - "profiles"
+        - "market pages"
+    monetization:
+      - "training sales"
+      - "forms bundle"
+      - "enterprise training"
+      - "partner referrals"
+
+  available_now_page:
+    route_examples:
+      - "/available-now"
+      - "/backhaul"
+      - "/repositioning"
+    primary_goal: "Sticky live utility + competitor kill surface + high-intent conversion"
+    primary_cta: "See available now"
+    secondary_ctas:
+      - "Broadcast availability"
+      - "Request urgent coverage"
+      - "Install the app"
+    exact_blocks:
+      - "hero_intent_header"
+      - "available_now_quick_answer_block"
+      - "live_or_truthful_freshness_strip"
+      - "map_or_list_results_block"
+      - "coverage_gap_block"
+      - "market_follow_block"
+      - "urgent_request_block"
+      - "repositioning_backhaul_block"
+      - "commercial_next_moves"
+    exact_ctas:
+      top_primary: "See available now"
+      top_secondary: "Request urgent coverage"
+      operator_cta: "Broadcast availability"
+      app_cta: "Install the app for live alerts"
+    internal_link_rules:
+      inbound_from:
+        - "homepage"
+        - "directory"
+        - "load pages"
+        - "city pages"
+      outbound_to:
+        - "profiles"
+        - "corridors"
+        - "city pages"
+        - "app install"
+        - "post a load"
+    monetization:
+      - "urgent placement"
+      - "priority visibility"
+      - "market sponsor"
+      - "app conversion"
+
+homepage:
+  primary_goal: "OS launcher, not brochure"
+  exact_blocks:
+    - "hero_intent_header"
+    - "role_selector_block"
+    - "intent_selector_block"
+    - "market_selector_block"
+    - "available_now_teaser"
+    - "top_tools_teaser"
+    - "top_requirements_teaser"
+    - "top_markets_teaser"
+    - "claim_and_get_listed_block"
+    - "trust_strip"
+    - "sponsor_or_partner_strip"
+    - "footer_cluster_rail"
+  exact_ctas:
+    top_primary: "What do you need?"
+    top_secondary: "Find available operators"
+    additional:
+      - "Check requirements"
+      - "Use a tool"
+      - "Post a load"
+      - "Claim your listing"
+      - "Install the app"
+  internal_link_rules:
+    outbound_to:
+      - "directory"
+      - "available-now"
+      - "roles"
+      - "services"
+      - "tools"
+      - "regulations"
+      - "city/state pages"
+      - "claim pages"
+    hard_rule:
+      - "Homepage must link directly to all core money and authority families."
+
+comparison_pages:
+  required: true
+  route_examples:
+    - "/compare/[topic]"
+    - "/vs/[competitor]"
+  purpose: "Decision-intent capture"
+  exact_blocks:
+    - "hero_intent_header"
+    - "decision_quick_answer_block"
+    - "who_should_choose_what_block"
+    - "feature_comparison_block"
+    - "trust_and_truth_block"
+    - "market_fit_block"
+    - "commercial_next_moves"
+  ctas:
+    primary: "Choose the right path"
+    secondary:
+      - "Find providers"
+      - "Use the tool"
+      - "See live market pages"
+
+internal_link_matrices:
+  glossary_to:
+    - "regulations"
+    - "tools"
+    - "services"
+    - "roles"
+    - "city pages"
+  regulations_to:
+    - "glossary"
+    - "tools"
+    - "services"
+    - "city pages"
+    - "corridors"
+  tools_to:
+    - "regulations"
+    - "glossary"
+    - "services"
+    - "profiles"
+    - "training/forms"
+  city_to:
+    - "directory"
+    - "services"
+    - "regulations"
+    - "tools"
+    - "corridors"
+    - "claim pages"
+  corridor_to:
+    - "origin city"
+    - "destination city"
+    - "services"
+    - "rates"
+    - "regulations"
+    - "data products"
+  profile_to:
+    - "city"
+    - "state"
+    - "related corridor"
+    - "relevant services"
+    - "relevant rules"
+    - "claim page"
+  service_to:
+    - "profiles"
+    - "rates"
+    - "tools"
+    - "regulations"
+    - "city pages"
+  available_now_to:
+    - "profiles"
+    - "city pages"
+    - "load pages"
+    - "app install"
+    - "corridors"
+
+execution_order:
+  wave_1_day_1_structure:
+    - "homepage launcher rebuild"
+    - "directory hub shell"
+    - "profile shell"
+    - "city page shell"
+    - "glossary shell"
+    - "regulation shell"
+    - "tool shell"
+    - "claim shell"
+    - "available-now shell"
+  wave_2_conversion_wiring:
+    - "service pages"
+    - "corridor pages"
+    - "rate pages"
+    - "load pages"
+    - "training/forms cluster"
+    - "comparison pages"
+    - "sponsor pages"
+  wave_3_monopoly_layers:
+    - "data products"
+    - "country expansion templates"
+    - "infrastructure/marketplace pages"
+    - "AV/remote support pages"
+    - "enterprise/API landing pages"
+
+exact_page_family_outputs_required:
+  for_every_family:
+    - "one canonical template"
+    - "one schema contract"
+    - "one CTA contract"
+    - "one analytics contract"
+    - "one internal-link contract"
+    - "one sponsor decision"
+    - "one fallback contract"
+    - "one trust contract"
+
+strongest_bonuses_and_upgrades:
+  bonus_1_market_mode_governor:
+    description: "Change page emphasis by market maturity."
+    rules:
+      - "empty market = claim + waitlist + sponsor + nearby utility"
+      - "thin market = sponsor + claim + request coverage + nearby supply"
+      - "active market = live-ish feed + booking + boosts + data teaser"
+  bonus_2_claim_fomo_engine:
+    description: "Show truthful, local claim pressure everywhere."
+    placements:
+      - "city pages"
+      - "directory results"
+      - "profile pages"
+      - "role pages"
+    messages:
+      - "Claim this listing"
+      - "Improve trust and visibility"
+      - "Unlock report card and live features"
+  bonus_3_corridor_data_teasers:
+    description: "Every corridor page should tease paid market intelligence."
+    teaser_types:
+      - "supply density"
+      - "demand heat"
+      - "pricing movement"
+      - "coverage gaps"
+      - "hazard or restriction summaries"
+  bonus_4_broker_side_capture:
+    description: "Do not let supply pages exist without demand paths."
+    required_surfaces:
+      - "post a load"
+      - "request urgent coverage"
+      - "broker workflow CTA"
+      - "quote request CTA"
+  bonus_5_push_first_wiring:
+    description: "High-intent pages should feed market-follow and corridor-follow triggers."
+    triggers:
+      - "follow city"
+      - "follow corridor"
+      - "save tool result"
+      - "watch claim status"
+      - "urgent load match opt-in"
+  bonus_6_competitor_absorption:
+    description: "Every strong competitor use case must have a page or block."
+    must_exist:
+      - "available now"
+      - "repositioning/backhaul"
+      - "forms hub"
+      - "visible trust on results"
+      - "instant request CTA"
+      - "marketplace/vendor surfaces"
+      - "self-serve sponsor buying"
+
+do_not_ship_without:
+  - "canonical-only routes defined"
+  - "breadcrumbs visible"
+  - "HTML crawlable links present"
+  - "quick-answer block present on answer pages"
+  - "freshness/confidence on regulation-like pages"
+  - "claim CTA on claimable pages"
+  - "commercial CTA on informational pages"
+  - "related links block present"
+  - "empty-state fallback present"
+  - "analytics events mapped"
+  - "sponsor decision made"
+  - "trust strip present where applicable"
+
+kill_list:
+  - "orphan pages"
+  - "JS-only core navigation"
+  - "filler FAQ spam"
+  - "thin local pages with no utility"
+  - "fake trust or fake live activity"
+  - "duplicate route variants"
+  - "decorative hero sections with no next move"
+  - "tool pages with no relation to service/regulation"
+  - "regulation pages with no official source path"
+  - "profile pages with no claim path"
+
+medium_upgrade_trigger:
+  move_from_small_to_medium_when:
+    - "high-frequency corridor/city recompute jobs go live"
+    - "market pulse and available-now publishing becomes regular"
+    - "claim reminder / coverage gap / follow-market notifications scale"
+    - "data teasers and sponsor inventory refresh on schedule"
+    - "more write-heavy agent state tables are activated"

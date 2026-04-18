@@ -52,7 +52,7 @@ const BENEFITS = [
 
 export default function ConsolidatedInvoicingPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className=" bg-[#0a0a0a] text-white">
       {/* Hero */}
       <section className="py-16 sm:py-24 px-4 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(168,85,247,0.08),transparent)] pointer-events-none" />
@@ -76,7 +76,7 @@ export default function ConsolidatedInvoicingPage() {
           <div className="flex flex-wrap justify-center gap-3">
             <Link
               href="/onboarding/start?role=carrier"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-black transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all"
               style={{ background: 'linear-gradient(135deg, #a855f7 0%, #7c3aed 100%)' }}
             >
               Get Started Free <ArrowRight className="w-4 h-4" />
@@ -138,7 +138,7 @@ export default function ConsolidatedInvoicingPage() {
         </p>
         <Link
           href="/onboarding/start?role=carrier"
-          className="inline-flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold text-black transition-all"
+          className="inline-flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold text-white transition-all"
           style={{ background: 'linear-gradient(135deg, #a855f7 0%, #7c3aed 100%)' }}
         >
           Start Free <ArrowRight className="w-4 h-4" />
@@ -152,7 +152,7 @@ export default function ConsolidatedInvoicingPage() {
           "@type": "Service",
           "name": "Consolidated Invoicing for Heavy Haul",
           "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://haulcommand.com" },
-          "description": "One invoice per project for multi-escort, multi-state heavy haul moves. Streamline escort billing across 120 countries.",
+          "description": "One invoice per project for multi-escort, multi-state heavy haul moves. Streamline escort billing across 50+ countries.",
           "areaServed": { "@type": "Place", "name": "Worldwide" },
           "serviceType": "Consolidated Invoicing",
         }),

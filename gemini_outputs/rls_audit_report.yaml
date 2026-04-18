@@ -1,0 +1,25 @@
+# GEM-R03: Row Level Security Comprehensive Audit
+# Priority: CRITICAL (LAUNCH BLOCKER)
+# Deadline: Before Sonnet WAVE-1
+
+rls_scan_results:
+  critical_vulnerabilities:
+    - table: "hc_escrows"
+      status: "RLS Enabled"
+      issue: "Select policy uses 'true' instead of 'auth.uid() = broker_id OR auth.uid() = operator_id'"
+      risk: "CRITICAL. Operators can view foreign wallet balances."
+      action_required: "Harden select policy in next migration."
+    
+    - table: "jobs"
+      status: "RLS Enabled"
+      issue: "Insert policy allows any authenticated user to write without checking kyc_tier."
+      risk: "HIGH. Bypasses KYC gating logic outlined by Opus."
+      action_required: "Add 'AND (SELECT kyc_tier FROM profiles WHERE id = auth.uid()) >= 2'."
+
+  secure_tables:
+    - table: "hc_payouts"
+      RLS: "STRICT"
+    - table: "profiles"
+      RLS: "STRICT"
+    - table: "hc_training_diagnostics"
+      RLS: "STRICT"

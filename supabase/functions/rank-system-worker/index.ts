@@ -1,6 +1,6 @@
 // Setup type definitions for built-in Deno APIs
 /// <reference lib="deno.ns" />
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "npm:@supabase/supabase-js@2";
 import { corsHeaders } from "../_shared/cors.ts";
 
 console.log("Rank System Worker initiated");

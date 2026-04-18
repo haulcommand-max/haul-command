@@ -19,12 +19,12 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 
-// ─── Stripe singleton (never re-init on re-renders) ────────────────────────
+// --- Stripe singleton (never re-init on re-renders) ------------------------
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? ""
 );
 
-// ─── Inner Escrow Form (inside <Elements> context) ─────────────────────────
+// --- Inner Escrow Form (inside <Elements> context) -------------------------
 function EscrowPaymentForm({
   clientSecret,
   loadId,
@@ -71,13 +71,13 @@ function EscrowPaymentForm({
   if (status === "done") {
     return (
       <div className="flex items-center gap-2 text-emerald-400 text-sm font-semibold py-2">
-        🔒 Escrow Authorized — ${amount} held. Operator payout unlocks on delivery.
+        ðŸ"’ Escrow Authorized — ${amount} held. Operator payout unlocks on delivery.
       </div>
     );
   }
 
   return (
-    <div className="mt-4 p-5 bg-slate-900 border border-slate-700 rounded-xl space-y-4 max-w-md">
+    <div className="mt-4 p-5  border border-slate-700 rounded-xl space-y-4 max-w-md">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-white font-bold text-sm">Authorize Escrow Hold</p>
@@ -100,7 +100,7 @@ function EscrowPaymentForm({
 
       {errorMsg && (
         <p className="text-red-400 text-xs bg-red-500/10 border border-red-500/20 rounded px-3 py-2">
-          ⚠️ {errorMsg}
+          ⚠️ï¸ {errorMsg}
         </p>
       )}
 
@@ -111,7 +111,7 @@ function EscrowPaymentForm({
           onClick={handleFundEscrow}
           className="flex-1"
         >
-          {status === "processing" ? "Authorizing..." : `🔒 Fund Escrow — $${amount}`}
+          {status === "processing" ? "Authorizing..." : `ðŸ"’ Fund Escrow — $${amount}`}
         </Button>
         <Button aria-label="Interactive Button"
           onClick={onCancel}
@@ -123,13 +123,13 @@ function EscrowPaymentForm({
 
       <p className="text-slate-600 text-[10px] leading-relaxed">
         Powered by Stripe. Your card is authorized but not charged until the broker confirms delivery. 
-        T+3 settlement. By proceeding you agree to Haul Command's escrow terms.
+        T+3 settlement. By proceeding you agree to Haul Command&apos;s escrow terms.
       </p>
     </div>
   );
 }
 
-// ─── Inner Escrow Form (Crypto) ─────────────────────────────────────────────
+// --- Inner Escrow Form (Crypto) ---------------------------------------------
 function CryptoEscrowForm({
   loadId,
   amount,
@@ -146,8 +146,8 @@ function CryptoEscrowForm({
   const [currency, setCurrency] = useState("usd_trc20");
 
   const CRYPTO_OPTIONS = [
-    { id: "ada_stable", label: "Cardano (ADA) → Auto-Stable", icon: "₳" },
-    { id: "btc_stable", label: "Bitcoin (BTC) → Auto-Stable", icon: "₿" },
+    { id: "ada_stable", label: "Cardano (ADA) → Auto-Stable", icon: "â‚³" },
+    { id: "btc_stable", label: "Bitcoin (BTC) → Auto-Stable", icon: "â‚¿" },
     { id: "usdc", label: "USDC (Global Stable USD)", icon: "$" },
   ];
 
@@ -164,7 +164,7 @@ function CryptoEscrowForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ load_id: loadId, amount, currency, accepted_slippage: acknowledgesSlippage }),
       });
-      // Even if API doesn't exist yet, we simulate success for demo
+      // Even if API doesn&apos;t exist yet, we simulate success for demo
       // const result = await res.json();
       
       setTimeout(() => {
@@ -181,13 +181,13 @@ function CryptoEscrowForm({
   if (status === "done") {
     return (
       <div className="flex items-center gap-2 text-emerald-400 text-sm font-semibold py-2">
-        🔒 Crypto Escrow Authorized — ${amount} held in smart contract.
+        ðŸ"’ Crypto Escrow Authorized — ${amount} held in smart contract.
       </div>
     );
   }
 
   return (
-    <div className="mt-4 p-5 bg-slate-900 border border-slate-700 rounded-xl space-y-4 max-w-md">
+    <div className="mt-4 p-5  border border-slate-700 rounded-xl space-y-4 max-w-md">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-white font-bold text-sm">Fund Milestone Escrow</p>
@@ -235,7 +235,7 @@ function CryptoEscrowForm({
 
       {errorMsg && (
         <p className="text-red-400 text-xs bg-red-500/10 border border-red-500/20 rounded px-3 py-2 mt-2">
-          ⚠️ {errorMsg}
+          ⚠️ï¸ {errorMsg}
         </p>
       )}
 
@@ -246,7 +246,7 @@ function CryptoEscrowForm({
           onClick={handleFundEscrow}
           className="flex-1 bg-blue-600 hover:bg-blue-500 text-white disabled:bg-slate-700 disabled:text-slate-400"
         >
-          {status === "processing" ? "Authorizing..." : `🔒 Fund Crypto Escrow — $${amount}`}
+          {status === "processing" ? "Authorizing..." : `ðŸ"’ Fund Crypto Escrow — $${amount}`}
         </Button>
         <Button aria-label="Interactive Button"
           onClick={onCancel}
@@ -263,7 +263,7 @@ function CryptoEscrowForm({
   );
 }
 
-// ─── Main LoadBoard Component ───────────────────────────────────────────────
+// --- Main LoadBoard Component -----------------------------------------------
 interface ActiveEscrow {
   loadId: string;
   bidId: string;
@@ -514,7 +514,7 @@ export function LoadBoardClient({
       </Card>
 
       {/* Legal Shield Disclaimer */}
-      <div className="mt-8 p-4 bg-slate-900/50 border border-slate-800 rounded-lg max-w-3xl">
+      <div className="mt-8 p-4 /50 border border-slate-800 rounded-lg max-w-3xl">
         <p className="text-xs text-slate-500 leading-relaxed text-center">
           <strong>LEGAL DISCLAIMER:</strong> Haul Command is a technology platform connecting property-carrying commercial entities with independent pilot car escort vehicles. <strong>Haul Command does not dispatch freight or operate as a licensed freight broker under FMCSA regulations.</strong> Services govern the movement of escort vehicles exclusively, not semi-trucks or the underlying freight. By using this dashboard, you confirm understanding of our SaaS marketplace role.
         </p>

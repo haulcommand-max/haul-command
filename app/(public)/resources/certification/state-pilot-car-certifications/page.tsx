@@ -216,7 +216,7 @@ export default function StateCertificationPage() {
 
                     <div style={{ fontSize: 12, color: '#4b5563', lineHeight: 1.6 }}>
                         <strong style={{ color: '#6b7280' }}>Disclaimer:</strong> Certification requirements change frequently. Always verify with your state DOT before operating. This guide is updated quarterly but is not a substitute for official state sources.{' '}
-                        <Link href="/resources" style={{ color: '#C6923A', textDecoration: 'none' }}>Back to Resources →</Link>
+                        <Link href="/resources" style={{ color: '#C6923A', textDecoration: 'none' }}>Back to Resources â†’</Link>
                     </div>
 
                 </div>

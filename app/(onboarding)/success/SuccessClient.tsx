@@ -11,11 +11,11 @@ const EscortBrokerInviteModal = dynamic(
     { ssr: false }
 );
 
-/* ══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    Post-Claim Success — V2: Upsell Ladder
-   Claim → Invite Brokers → Upgrade Path (Featured / Sponsor / Verified)
+   Claim â†’ Invite Brokers â†’ Upgrade Path (Featured / Sponsor / Verified)
    Per Operating Brief: "no claim completion without a paid next step"
-   ══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 function ProfileApprovedInner() {
     const router = useRouter();
@@ -48,7 +48,7 @@ function ProfileApprovedInner() {
                 color: '#D4A844', fontSize: 12, fontWeight: 700,
                 marginBottom: 16,
             }}>
-                🚀 Profile Live
+                ðŸš€ Profile Live
             </div>
 
             <h1 style={{
@@ -79,7 +79,7 @@ function ProfileApprovedInner() {
                         marginBottom: 10,
                     }}
                 >
-                    🚀 Invite My Brokers
+                    ðŸš€ Invite My Brokers
                 </button>
             )}
 
@@ -96,7 +96,7 @@ function ProfileApprovedInner() {
                 <ArrowRight size={16} />
             </button>
 
-            {/* ═══ UPGRADE LADDER ═══ */}
+            {/* â•â•â• UPGRADE LADDER â•â•â• */}
             <div style={{
                 width: '100%', maxWidth: 340,
                 marginTop: 32, textAlign: 'left',

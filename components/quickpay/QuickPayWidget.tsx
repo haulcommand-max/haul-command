@@ -54,14 +54,15 @@ export function QuickPayWidget({
   const fee = Math.round(grossAmount * FEE_RATE * 100) / 100;
   const netToday = Math.round((grossAmount - fee) * 100) / 100;
 
-  // Do not render if invoice is already paid
-  if (isPaid || grossAmount <= 0) return null;
-
   useEffect(() => {
     if (initialStatus === "eligible") {
       QuickPayEvents.ctaViewed({ job_id: jobId, amount: grossAmount });
     }
   }, [jobId, grossAmount, initialStatus]);
+
+  // Do not render if invoice is already paid
+  if (isPaid || grossAmount <= 0) return null;
+
 
   const handleSubmit = async () => {
     setLoading(true);

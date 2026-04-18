@@ -16,13 +16,13 @@ import { MobileGate } from '@/components/mobile/MobileGate';
 import { track } from '@/lib/telemetry';
 
 const PARTNER_TYPES = [
-    { key: 'installer', label: 'Installer / Radio Shop', icon: '🔧', desc: 'Warning lights, radios, equipment installation' },
-    { key: 'upfitter', label: 'Equipment Upfitter', icon: '⚙️', desc: 'Vehicle upfitting and outfitting services' },
-    { key: 'property_host', label: 'Property Host', icon: '🏗', desc: 'Staging yards, secure parking, meetup zones' },
-    { key: 'escort_support', label: 'Escort Support', icon: '🚘', desc: 'Pilot car support, route planning, coordination' },
-    { key: 'route_specialist', label: 'Route Specialist', icon: '🛣', desc: 'Route surveys, bridge checks, permit support' },
-    { key: 'equipment_provider', label: 'Equipment Provider', icon: '📦', desc: 'Rental equipment, temporary signage, safety gear' },
-    { key: 'truck_repair', label: 'Truck Repair', icon: '🔩', desc: 'Heavy duty repair and roadside service' },
+    { key: 'installer', label: 'Installer / Radio Shop', icon: 'ðŸ”§', desc: 'Warning lights, radios, equipment installation' },
+    { key: 'upfitter', label: 'Equipment Upfitter', icon: 'âš™ï¸', desc: 'Vehicle upfitting and outfitting services' },
+    { key: 'property_host', label: 'Property Host', icon: 'ðŸ—', desc: 'Staging yards, secure parking, meetup zones' },
+    { key: 'escort_support', label: 'Escort Support', icon: 'ðŸš˜', desc: 'Pilot car support, route planning, coordination' },
+    { key: 'route_specialist', label: 'Route Specialist', icon: 'ðŸ›£', desc: 'Route surveys, bridge checks, permit support' },
+    { key: 'equipment_provider', label: 'Equipment Provider', icon: 'ðŸ“¦', desc: 'Rental equipment, temporary signage, safety gear' },
+    { key: 'truck_repair', label: 'Truck Repair', icon: 'ðŸ”©', desc: 'Heavy duty repair and roadside service' },
 ];
 
 export default function PartnerApplyPage() {
@@ -46,7 +46,7 @@ export default function PartnerApplyPage() {
                     fontSize: 12, color: 'rgba(255,255,255,0.4)', textDecoration: 'none',
                     display: 'inline-flex', alignItems: 'center', gap: 4, marginBottom: 24,
                 }}>
-                    ← Back to Infrastructure
+                    â† Back to Infrastructure
                 </Link>
 
                 <h1 style={{ fontSize: 'clamp(1.6rem, 4vw, 2.4rem)', fontWeight: 900, lineHeight: 1.1, letterSpacing: '-0.03em', margin: '0 0 8px' }}>
@@ -61,7 +61,7 @@ export default function PartnerApplyPage() {
                         padding: '40px 24px', borderRadius: 20, textAlign: 'center',
                         background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.15)',
                     }}>
-                        <div style={{ fontSize: 48, marginBottom: 16 }}>✓</div>
+                        <div style={{ fontSize: 48, marginBottom: 16 }}>âœ“</div>
                         <div style={{ fontSize: 20, fontWeight: 900, color: '#22C55E', marginBottom: 8 }}>
                             Application Received
                         </div>
@@ -74,7 +74,7 @@ export default function PartnerApplyPage() {
                             background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
                             color: '#fff', fontWeight: 700, fontSize: 13, textDecoration: 'none',
                         }}>
-                            Return to Home →
+                            Return to Home â†’
                         </Link>
                     </div>
                 ) : (

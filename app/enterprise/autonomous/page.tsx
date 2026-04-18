@@ -7,11 +7,11 @@ export const metadata: Metadata = {
 
 export default function AutonomousPartnerPage() {
   const partners = [
-    { name: 'Aurora Innovation', corridor: 'I-45 Dallas–Houston', status: 'Active' },
+    { name: 'Aurora Innovation', corridor: 'I-45 Dallas"“Houston', status: 'Active' },
     { name: 'Kodiak Robotics', corridor: 'I-10 Texas Corridor', status: 'Active' },
     { name: 'Waymo Via', corridor: 'I-20 Southwest', status: 'Expanding' },
     { name: 'Plus', corridor: 'Multi-State', status: 'Active' },
-    { name: 'TuSimple', corridor: 'I-10 AZ–TX', status: 'Planning' },
+    { name: 'TuSimple', corridor: 'I-10 AZ"“TX', status: 'Planning' },
   ];
 
   return (
@@ -25,12 +25,12 @@ export default function AutonomousPartnerPage() {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24, marginBottom: 64 }}>
           {[
-            { icon: '🤖', title: 'AV-Ready Escorts', desc: 'Pre-certified operators trained for autonomous vehicle escort protocols. 24/7 availability on active AV corridors.' },
-            { icon: '⚡', title: 'API Integration', desc: 'RESTful API for programmatic escort dispatch. Webhook notifications, real-time tracking, automated billing.' },
-            { icon: '📋', title: 'Auto-Compliance', desc: 'Automated state permit verification, insurance validation, and regulatory compliance for every escort assignment.' },
-            { icon: '📊', title: 'Enterprise Dashboard', desc: 'Fleet-wide visibility into escort operations. Usage analytics, cost tracking, SLA monitoring, and custom reporting.' },
-            { icon: '🛡️', title: 'Dedicated SLA', desc: '99.9% uptime guarantee. Priority dispatch, dedicated account management, and guaranteed response times.' },
-            { icon: '💰', title: 'Volume Pricing', desc: 'Custom enterprise pricing based on corridor volume. Committed-use discounts and flexible billing terms.' },
+            { icon: 'ðŸ¤–', title: 'AV-Ready Escorts', desc: 'Pre-certified operators trained for autonomous vehicle escort protocols. 24/7 availability on active AV corridors.' },
+            { icon: 'âš¡', title: 'API Integration', desc: 'RESTful API for programmatic escort dispatch. Webhook notifications, real-time tracking, automated billing.' },
+            { icon: 'ðŸ“‹', title: 'Auto-Compliance', desc: 'Automated state permit verification, insurance validation, and regulatory compliance for every escort assignment.' },
+            { icon: 'ðŸ“Š', title: 'Enterprise Dashboard', desc: 'Fleet-wide visibility into escort operations. Usage analytics, cost tracking, SLA monitoring, and custom reporting.' },
+            { icon: 'ðŸ›¡ï¸', title: 'Dedicated SLA', desc: '99.9% uptime guarantee. Priority dispatch, dedicated account management, and guaranteed response times.' },
+            { icon: 'ðŸ’°', title: 'Volume Pricing', desc: 'Custom enterprise pricing based on corridor volume. Committed-use discounts and flexible billing terms.' },
           ].map((f, i) => (
             <div key={i} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: 32, border: '1px solid rgba(255,255,255,0.1)', transition: 'all 0.3s' }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>{f.icon}</div>

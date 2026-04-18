@@ -1,0 +1,13 @@
+# GEMINI-03: SEO Sanity Matrix
+# Focus: Structural compliance for ranking
+
+seo_sanity_matrix:
+  rules:
+    - check: "Glossary Circular Dependency"
+      rule: "No glossary term should cross-link to itself in the InternalLinkCluster."
+    - check: "Hreflang Completeness"
+      rule: "Every /directory/[country] route must emit all 120 country tags or fall back to x-default."
+    - check: "Rate Cannibalization"
+      rule: "/rates/[state] must not semantically overlap with /directory/[state] targeting."
+    - check: "Corridor Indexing"
+      rule: "Ensure origin_city + destination_city logic never produces duplicate identical URL slugs."

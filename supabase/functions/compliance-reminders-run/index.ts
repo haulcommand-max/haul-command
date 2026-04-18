@@ -58,10 +58,32 @@ Deno.serve(async (req: Request) => {
     let skipped = 0;
 
     for (const r of rows ?? []) {
-        // TODO: wire to FCM via notification_events:
-        //   await supabase.from("notification_events").insert({
-        //     user_id: r.actor_id, type: r.kind, title: ..., body: ...
-        //   });
+        // ── Direct FCM Routing Hook ──────────────────────────
+        // This drops the message into the notification_events queue, 
+        // which the underlying Edge Function or Realtime trigger picks up to dispatch via Firebase FCM.
+        let title = "Action Required";
+        let bodyText = "You have a pending compliance item.";
+
+        if (r.kind === "profile_incomplete") {
+            title = "Profile Incomplete";
+            bodyText = "Your profile is missing required fields. Complete it now to activate load matching.";
+        } else if (r.kind === "insurance_expired") {
+            title = "Insurance Expired";
+            bodyText = "Your cargo insurance has expired. Please upload your new COI immediately to stay visible.";
+        }
+
+        const { error: fcmErr } = await supabase.from("notification_events").insert({
+            user_id: r.actor_id,
+            type: r.kind,
+            title: title,
+            body: bodyText,
+            channel: "push", // explicitly target FCM push
+            metadata: { reminder_id: r.id }
+        });
+
+        if (fcmErr) {
+            console.warn(`[FCM-Route] Failed to enqueue push notification for actor ${r.actor_id}:`, fcmErr.message);
+        }
 
         const { error: updateErr } = await supabase
             .from("compliance_reminders")

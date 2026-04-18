@@ -1,0 +1,25 @@
+overlap_analysis:
+  - candidate_set:
+      - "compute-trust-score"
+      - "update-operator-rank"
+    reason: "Both trigger off similar entity mutation events (reviews/jobs). Merge to 'compute-operator-reputation' to save DB read cycles."
+    action: "Target for Sonnet refactor"
+
+  - candidate_set:
+      - "sync-indexnow"
+      - "submit-sitemap-ping"
+    reason: "Both handle SEO proactive submission. Merge queue handlers into a single 'seo-broadcaster' function."
+    action: "Merge"
+
+  - candidate_set:
+      - "send-onboarding-email"
+      - "send-compliance-reminder"
+      - "send-invoice-receipt"
+    reason: "Fragmented email sending. Merge into a central 'communication-router' powered by Postgres queuing."
+    action: "Consolidate to event-driven dispatcher"
+
+  - candidate_set:
+      - "stripe-subscription-update"
+      - "stripe-invoice-paid"
+    reason: "Handled by separate webhooks currently. Consolidate into a single 'stripe-webhook-handler' with internal routing."
+    action: "Merge into single Stripe ingress"

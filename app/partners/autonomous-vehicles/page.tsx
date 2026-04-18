@@ -28,7 +28,7 @@ const AV_FEATURES = [
 
 export default function AVPartnerPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className=" bg-[#0a0a0a] text-white">
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-sm rounded-full mb-6">
@@ -45,7 +45,7 @@ export default function AVPartnerPage() {
           <div className="flex gap-4">
             <a
               href="#inquiry"
-              className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl transition-colors"
+              className="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-white font-bold rounded-xl transition-colors"
             >
               Get Operator Coverage
             </a>

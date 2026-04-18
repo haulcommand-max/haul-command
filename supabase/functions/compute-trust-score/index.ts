@@ -54,19 +54,55 @@ serve(async (req) => {
             });
         }
 
-        // Fetch inputs from various tables (mocking some fetch steps for MVP context)
-        // In a full implementation, these would be complex aggregation queries.
+        // ═══════════════════════════════════════════════════════════════════
+        // REAL DATA AGGREGATION — No hardcoded mock values.
+        // Queries: escort_profiles, trust_profile_view, jobs, match_offers,
+        //          hc_disputes, escort_reviews, escort_presence
+        // ═══════════════════════════════════════════════════════════════════
 
-        // Profiles
+        // Profiles + presence
         const { data: profile } = await supabase.from('escort_profiles').select('*').eq('id', advertiser_id).single();
         const { data: presence } = await supabase.from('escort_presence').select('*').eq('escort_id', advertiser_id).single();
 
-        // 1. RELIABILITY
-        // Simulating aggregate reads for demonstration of the math model
-        const on_time_rate = 0.85;
-        const completion_rate = 0.90;
-        const cancellation_rate = 0.05;
-        const no_show_rate = 0.01;
+        // ── Try canonical trust_profile_view first (powered by trust_score() SQL function) ──
+        const { data: trustView } = await supabase
+            .from('trust_profile_view')
+            .select('trust_score, trust_trend, confidence, confidence_band, trust_tier, components')
+            .eq('profile_id', advertiser_id)
+            .single();
+
+        // ── 1. RELIABILITY — from real jobs data ──
+        const { count: totalJobs } = await supabase
+            .from('jobs')
+            .select('id', { count: 'exact', head: true })
+            .or(`driver_id.eq.${advertiser_id},escort_id.eq.${advertiser_id}`);
+        const { count: completedJobs } = await supabase
+            .from('jobs')
+            .select('id', { count: 'exact', head: true })
+            .or(`driver_id.eq.${advertiser_id},escort_id.eq.${advertiser_id}`)
+            .eq('status', 'completed');
+        const { count: cancelledJobs } = await supabase
+            .from('jobs')
+            .select('id', { count: 'exact', head: true })
+            .or(`driver_id.eq.${advertiser_id},escort_id.eq.${advertiser_id}`)
+            .eq('status', 'cancelled');
+        const { count: noShowJobs } = await supabase
+            .from('jobs')
+            .select('id', { count: 'exact', head: true })
+            .or(`driver_id.eq.${advertiser_id},escort_id.eq.${advertiser_id}`)
+            .eq('status', 'no_show');
+        const { count: onTimeJobs } = await supabase
+            .from('jobs')
+            .select('id', { count: 'exact', head: true })
+            .or(`driver_id.eq.${advertiser_id},escort_id.eq.${advertiser_id}`)
+            .eq('status', 'completed')
+            .not('gps_start_confirmed_at', 'is', null);
+
+        const t = Math.max(totalJobs ?? 1, 1);
+        const on_time_rate = (onTimeJobs ?? 0) / t;
+        const completion_rate = (completedJobs ?? 0) / t;
+        const cancellation_rate = (cancelledJobs ?? 0) / t;
+        const no_show_rate = (noShowJobs ?? 0) / t;
 
         const relBase = (on_time_rate * WEIGHTS.reliability.on_time) +
             (completion_rate * WEIGHTS.reliability.completion) +
@@ -74,43 +110,114 @@ serve(async (req) => {
             ((1 - no_show_rate) * Math.abs(WEIGHTS.reliability.no_show));
         const relRaw = clamp01(relBase);
 
-        // 2. RESPONSIVENESS
-        const acceptance_rate = 0.60;
-        const median_first_response_seconds = 120; // Example
-        const responseLogNorm = clamp01(1 - (Math.log10(median_first_response_seconds + 1) / 4)); // Normalize ~10k seconds to 0
+        // ── 2. RESPONSIVENESS — from real match_offers data ──
+        const { count: totalOffers } = await supabase
+            .from('match_offers')
+            .select('id', { count: 'exact', head: true })
+            .eq('escort_id', advertiser_id);
+        const { count: acceptedOffers } = await supabase
+            .from('match_offers')
+            .select('id', { count: 'exact', head: true })
+            .eq('escort_id', advertiser_id)
+            .eq('status', 'accepted');
+
+        const acceptance_rate = (totalOffers ?? 0) > 0 ? (acceptedOffers ?? 0) / (totalOffers ?? 1) : 0.5;
+
+        // Median response time from responded offers
+        const { data: respondedOffers } = await supabase
+            .from('match_offers')
+            .select('created_at, responded_at')
+            .eq('escort_id', advertiser_id)
+            .not('responded_at', 'is', null)
+            .order('responded_at', { ascending: false })
+            .limit(50);
+
+        let median_first_response_seconds = 300; // default 5min if no data
+        if (respondedOffers && respondedOffers.length > 0) {
+            const responseTimes = respondedOffers.map(o =>
+                (new Date(o.responded_at).getTime() - new Date(o.created_at).getTime()) / 1000
+            ).sort((a, b) => a - b);
+            median_first_response_seconds = responseTimes[Math.floor(responseTimes.length / 2)];
+        }
+
+        const responseLogNorm = clamp01(1 - (Math.log10(median_first_response_seconds + 1) / 4));
         const respBase = (responseLogNorm * Math.abs(WEIGHTS.responsiveness.median_response)) +
             (acceptance_rate * WEIGHTS.responsiveness.acceptance);
         const respRaw = clamp01(respBase);
 
-        // 3. INTEGRITY
-        const dispute_rate = 0.02;
-        const fraud_flags_rate = 0.00;
+        // ── 3. INTEGRITY — from real disputes + fraud data ──
+        const { count: totalDisputes } = await supabase
+            .from('disputes')
+            .select('id', { count: 'exact', head: true })
+            .or(`driver_id.eq.${advertiser_id},broker_id.eq.${advertiser_id}`);
+
+        const dispute_rate = t > 0 ? (totalDisputes ?? 0) / t : 0;
+
+        // Fraud flags from trust_events
+        const { count: fraudEvents } = await supabase
+            .from('trust_events')
+            .select('id', { count: 'exact', head: true })
+            .eq('entity_profile_id', advertiser_id)
+            .in('event_type', ['gps_spoof', 'review_stuffing', 'identity_thin', 'rate_manipulation']);
+
+        const fraudTotal = Math.max(totalJobs ?? 1, 1);
+        const fraud_flags_rate = (fraudEvents ?? 0) / fraudTotal;
+
         const intBase = ((1 - dispute_rate) * Math.abs(WEIGHTS.integrity.dispute)) +
             ((1 - fraud_flags_rate) * Math.abs(WEIGHTS.integrity.fraud));
         const intRaw = clamp01(intBase);
 
-        // 4. CUSTOMER SIGNAL
-        const review_rating_avg = 4.8;
+        // ── 4. CUSTOMER SIGNAL — from real reviews ──
+        const { data: reviewAgg } = await supabase
+            .from('escort_reviews')
+            .select('rating')
+            .eq('escort_id', advertiser_id);
+
+        const review_volume = reviewAgg?.length ?? 0;
+        const review_rating_avg = review_volume > 0
+            ? reviewAgg!.reduce((sum: number, r: any) => sum + (r.rating ?? 0), 0) / review_volume
+            : 3.0;
+
+        // Count unique reviewers who reviewed more than once (repeat customers)
+        const { data: repeatData } = await supabase
+            .from('escort_reviews')
+            .select('reviewer_id')
+            .eq('escort_id', advertiser_id);
+        const reviewerCounts = new Map<string, number>();
+        for (const r of repeatData ?? []) {
+            reviewerCounts.set(r.reviewer_id, (reviewerCounts.get(r.reviewer_id) ?? 0) + 1);
+        }
+        const uniqueReviewers = reviewerCounts.size || 1;
+        const repeatReviewers = Array.from(reviewerCounts.values()).filter(c => c > 1).length;
+        const repeat_customer_rate = repeatReviewers / uniqueReviewers;
+
         const ratingNorm = clamp01((review_rating_avg - 1) / 4);
-        const review_volume = 45;
-        const volLogNorm = clamp01(Math.log10(review_volume + 1) / 3); // 1000 reviews = 1.0
-        const repeat_customer_rate = 0.40;
+        const volLogNorm = clamp01(Math.log10(review_volume + 1) / 3);
         const csBase = (ratingNorm * WEIGHTS.customer_signal.rating_avg) +
             (volLogNorm * WEIGHTS.customer_signal.volume_log) +
             (repeat_customer_rate * WEIGHTS.customer_signal.repeat_rate);
         const csRaw = clamp01(csBase);
 
-        // 5. COMPLIANCE
+        // ── 5. COMPLIANCE — from real profile verification fields ──
         const insurance_verified = profile?.insurance_status === 'verified' ? 1 : 0;
         const compliance_verified = profile?.compliance_status === 'verified' ? 1 : 0;
-        const required_equipment_verified = profile?.certifications_json?.high_pole ? 1 : 0.5; // Example
+        const required_equipment_verified = profile?.certifications_json?.high_pole ? 1 :
+            (profile?.vehicle_type ? 0.6 : 0.3);
         const compBase = (insurance_verified * WEIGHTS.compliance.insurance) +
             (compliance_verified * WEIGHTS.compliance.compliance) +
             (required_equipment_verified * WEIGHTS.compliance.equipment);
         const compRaw = clamp01(compBase);
 
-        // 6. MARKET FIT
-        const geo_relevance_score = 0.8; // Would query territory claims overlapping active loads
+        // ── 6. MARKET FIT — from real territory claims + presence ──
+        // Count active loads in corridors where this operator has coverage
+        const { count: overlappingLoads } = await supabase
+            .from('loads')
+            .select('id', { count: 'exact', head: true })
+            .eq('status', 'active')
+            .eq('origin_state', presence?.current_state ?? profile?.state ?? '');
+
+        const geo_relevance_score = overlappingLoads && overlappingLoads > 0
+            ? clamp01(Math.log10(overlappingLoads + 1) / 2) : 0.2;
         const role_specialization_score = profile?.vehicle_type ? 0.9 : 0.3;
         const mfBase = (geo_relevance_score * WEIGHTS.market_fit.geo_relevance) +
             (role_specialization_score * WEIGHTS.market_fit.role_specialization);

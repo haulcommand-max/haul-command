@@ -1,0 +1,8 @@
+# GEMINI-05: Training Reciprocity Research
+
+training_reciprocity_research_pack:
+  framework:
+    - jurisdiction_origin: "Utah"
+    - jurisdictions_accepted: ["Colorado", "Washington", "Nevada", "Oklahoma", "Florida"]
+    - condition: "Must carry official Utah credentials and adhere to physical equipment standards of the receiving state (e.g., Florida amber light specifications)."
+    - human_verification_needed: true

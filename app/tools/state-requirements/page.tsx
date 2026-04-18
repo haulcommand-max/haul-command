@@ -37,7 +37,7 @@ export default function StateRequirementsCheatsheet() {
             <div style={{ maxWidth: 1000, margin: '0 auto' }}>
                 <header style={{ textAlign: 'center', marginBottom: 32 }}>
                     <div style={{ display: 'inline-flex', gap: 6, padding: '4px 14px', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: 20, marginBottom: 12 }}>
-                        <span style={{ fontSize: 10, fontWeight: 800, color: '#ef4444', textTransform: 'uppercase', letterSpacing: 2 }}>📋 Free Tool</span>
+                        <span style={{ fontSize: 10, fontWeight: 800, color: '#ef4444', textTransform: 'uppercase', letterSpacing: 2 }}>ðŸ“‹ Free Tool</span>
                     </div>
                     <h1 style={{ margin: 0, fontSize: 28, fontWeight: 900, color: '#f9fafb' }}>State Requirements Cheatsheet</h1>
                     <p style={{ margin: '8px 0 0', fontSize: 13, color: '#6b7280' }}>Quick-reference guide to pilot car requirements across all states.</p>
@@ -79,8 +79,8 @@ export default function StateRequirementsCheatsheet() {
                                                 <Link aria-label="Navigation Link" href={`/requirements/${s.code.toLowerCase()}/escort-vehicle-rules`} style={{ color: '#F1A91B', fontWeight: 700, textDecoration: 'none' }}>{s.code}</Link>
                                                 <span style={{ color: '#6b7280', marginLeft: 6 }}>{s.name}</span>
                                             </td>
-                                            <td style={{ padding: '10px 12px', color: s.cert ? '#10b981' : '#6b7280' }}>{s.cert ? '✅' : '❌'}</td>
-                                            <td style={{ padding: '10px 12px', color: s.heightPole ? '#10b981' : '#6b7280' }}>{s.heightPole ? '✅' : '❌'}</td>
+                                            <td style={{ padding: '10px 12px', color: s.cert ? '#10b981' : '#6b7280' }}>{s.cert ? 'âœ…' : 'âŒ'}</td>
+                                            <td style={{ padding: '10px 12px', color: s.heightPole ? '#10b981' : '#6b7280' }}>{s.heightPole ? 'âœ…' : 'âŒ'}</td>
                                             <td style={{ padding: '10px 12px', color: '#d1d5db', fontFamily: 'JetBrains Mono' }}>{s.insurance}</td>
                                             <td style={{ padding: '10px 12px', color: '#f59e0b', fontWeight: 700 }}>{s.escort1}</td>
                                             <td style={{ padding: '10px 12px', color: '#ef4444', fontWeight: 700 }}>{s.escort2}</td>
@@ -94,7 +94,7 @@ export default function StateRequirementsCheatsheet() {
 
                         <div style={{ marginTop: 24, textAlign: 'center' }}>
                             <p style={{ fontSize: 11, color: '#4b5563', marginBottom: 12 }}>Data may not reflect latest changes. Always verify with the state DOT.</p>
-                            <Link aria-label="Navigation Link" href="/tools" style={{ color: '#F1A91B', fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>← Back to Free Tools</Link>
+                            <Link aria-label="Navigation Link" href="/tools" style={{ color: '#F1A91B', fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>â† Back to Free Tools</Link>
                         </div>
                     </div>
                     <aside className="space-y-4">

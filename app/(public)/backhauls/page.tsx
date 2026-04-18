@@ -5,10 +5,10 @@ import { MapPin, ArrowRight, Route, Shield, ChevronRight, CalendarClock, ArrowLe
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 import { ProofStrip } from '@/components/ui/ProofStrip';
 
-// ══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // /backhauls — REPOSITIONING & BACKHAUL BROADCAST
 // The surface for finding operators trying to get a load on their way back home.
-// ══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export const dynamic = 'force-dynamic';
 
@@ -71,7 +71,7 @@ export default async function BackhaulsPage() {
       <ProofStrip variant="bar" />
 
       <div style={{ minHeight: '100vh', background: '#060b12', color: '#e5e7eb', fontFamily: "'Inter', system-ui" }}>
-        {/* ── Hero ── */}
+        {/* â”€â”€ Hero â”€â”€ */}
         <div style={{ position: 'relative', borderBottom: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 50% at 50% -10%, rgba(139,92,246,0.08), transparent 70%)', pointerEvents: 'none' }} />
           <div style={{ maxWidth: 1100, margin: '0 auto', padding: '3.5rem 1.5rem 3rem' }}>
@@ -110,7 +110,7 @@ export default async function BackhaulsPage() {
 
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2.5rem 1.5rem' }}>
 
-          {/* ── Broadcast Cards ── */}
+          {/* â”€â”€ Broadcast Cards â”€â”€ */}
           {activeBroadcasts.length > 0 ? (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))', gap: 16, marginBottom: 48 }}>
               {activeBroadcasts.map((b) => {
@@ -209,7 +209,7 @@ export default async function BackhaulsPage() {
               background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.07)',
               borderRadius: 20, padding: '60px 24px', textAlign: 'center', marginBottom: 48,
             }}>
-              <div style={{ fontSize: 48, marginBottom: 16 }}>🛣️</div>
+              <div style={{ fontSize: 48, marginBottom: 16 }}>ðŸ›£ï¸</div>
               <h3 style={{ fontSize: 20, fontWeight: 800, color: '#f9fafb', marginBottom: 8 }}>
                 No Active Backhauls
               </h3>
@@ -219,21 +219,21 @@ export default async function BackhaulsPage() {
             </div>
           )}
 
-          {/* ── Internal link mesh ── */}
+          {/* â”€â”€ Internal link mesh â”€â”€ */}
           <section style={{ marginBottom: 32, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            <Link href="/available-now" style={{ padding: '8px 14px', background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.15)', borderRadius: 9, fontSize: 12, fontWeight: 700, color: '#22C55E', textDecoration: 'none' }}>🟢 Live Availability Feed</Link>
-            <Link href="/loads" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>📋 Load Board</Link>
-            <Link href="/glossary/deadhead" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>📖 What is Deadheading?</Link>
+            <Link href="/available-now" style={{ padding: '8px 14px', background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.15)', borderRadius: 9, fontSize: 12, fontWeight: 700, color: '#22C55E', textDecoration: 'none' }}>ðŸŸ¢ Live Availability Feed</Link>
+            <Link href="/loads" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>ðŸ“‹ Load Board</Link>
+            <Link href="/glossary/deadhead" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 9, fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none' }}>ðŸ“– What is Deadheading?</Link>
           </section>
 
-          {/* ── No-Dead-End block ── */}
+          {/* â”€â”€ No-Dead-End block â”€â”€ */}
           <NoDeadEndBlock
             heading="Plan a Complete Route"
             moves={[
-              { href: '/available-now', icon: '🟢', title: 'Live Availability', desc: 'Find escorts near you instantly', primary: true, color: '#22C55E' },
-              { href: '/tools/escort-calculator', icon: '🧮', title: 'Route Calculator', desc: 'Factor empty miles and deadhead costs', primary: true, color: '#8B5CF6' },
-              { href: '/claim', icon: '✓', title: 'Post a Backhaul', desc: 'Get paid on your return trip' },
-              { href: '/directory', icon: '🔍', title: 'Operator Search', desc: 'Search by Home Base' },
+              { href: '/available-now', icon: 'ðŸŸ¢', title: 'Live Availability', desc: 'Find escorts near you instantly', primary: true, color: '#22C55E' },
+              { href: '/tools/escort-calculator', icon: 'ðŸ§®', title: 'Route Calculator', desc: 'Factor empty miles and deadhead costs', primary: true, color: '#8B5CF6' },
+              { href: '/claim', icon: 'âœ“', title: 'Post a Backhaul', desc: 'Get paid on your return trip' },
+              { href: '/directory', icon: 'ðŸ”', title: 'Operator Search', desc: 'Search by Home Base' },
             ]}
           />
 

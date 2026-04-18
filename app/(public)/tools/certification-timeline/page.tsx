@@ -44,7 +44,7 @@ export default async function CertificationTimelinePage() {
           <div style={{ maxWidth: 1100, margin: '0 auto', padding: '3.5rem 1.5rem 3rem' }}>
             <nav style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#4b5563', marginBottom: 20, textTransform: 'uppercase', letterSpacing: 1, fontWeight: 700 }}>
               <Link href="/tools" style={{ color: '#6b7280', textDecoration: 'none' }}>Tools Hub</Link>
-              <span style={{ color: '#4b5563' }}>›</span>
+              <span style={{ color: '#4b5563' }}>"º</span>
               <span style={{ color: '#f59e0b' }}>Certifications</span>
             </nav>
             <h1 style={{ margin: '0 0 12px', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: '#f9fafb', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
@@ -115,8 +115,8 @@ export default async function CertificationTimelinePage() {
           <NoDeadEndBlock
             heading="Update Your Profile"
             moves={[
-              { href: '/claim', icon: '✅', title: 'Claim Your Profile', desc: 'Add your certifications', primary: true, color: '#f59e0b' },
-              { href: '/forms', icon: '📄', title: 'Forms Hub', desc: 'Auto-fill compliance forms' },
+              { href: '/claim', icon: 'âœ…', title: 'Claim Your Profile', desc: 'Add your certifications', primary: true, color: '#f59e0b' },
+              { href: '/forms', icon: 'ðŸ“„', title: 'Forms Hub', desc: 'Auto-fill compliance forms' },
             ]}
           />
         </div>

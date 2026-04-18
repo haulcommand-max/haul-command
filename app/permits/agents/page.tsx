@@ -20,7 +20,7 @@ export default async function PermitAgentsPage() {
 
         {(!agents || agents.length === 0) ? (
           <div style={{ textAlign: 'center', padding: 60, background: 'rgba(255,255,255,0.03)', borderRadius: 16 }}>
-            <div style={{ fontSize: 40, marginBottom: 16 }}>🧑‍💼</div>
+            <div style={{ fontSize: 40, marginBottom: 16 }}>ðŸ§‘"ðŸ’¼</div>
             <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>Agent directory launching soon</h2>
             <p style={{ color: 'rgba(255,255,255,0.5)', maxWidth: 400, margin: '0 auto' }}>Permit professionals are being onboarded. Check back shortly or apply to be listed.</p>
           </div>

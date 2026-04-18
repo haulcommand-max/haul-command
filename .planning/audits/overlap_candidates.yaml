@@ -1,0 +1,34 @@
+# GEMINI-02: Edge Function Overlap Candidates
+
+overlap_candidates:
+  - cluster: "Score Recomputation"
+    functions: 
+      - "trust-score-recompute"
+      - "score-recompute"
+      - "broker-score-recompute"
+      - "fraud-score-recompute"
+      - "hazard-score-rollup"
+    analysis: "Highly overlapping logic. These should be merged into a single `score-reconciliation-orchestrator` driven by pg_mq or pg_cron, rather than firing independently and hitting Postgres connection limits under load."
+  
+  - cluster: "Presence \u0026 Availability"
+    functions:
+      - "presence-heartbeat"
+      - "presence-timeout-offline"
+      - "presence-and-availability-core"
+      - "driver-presence-update"
+      - "availability-ping"
+      - "availability-toggle"
+      - "availability-truth-tick"
+    analysis: "Massive UI/Backend fragmentation. Heartbeats and availability pings are overlapping. Suggest merging into one `availability-state-machine` that handles both manual toggles and automated heartbeat expirations via background workers."
+  
+  - cluster: "Communication Core"
+    functions:
+      - "email-worker"
+      - "email-send"
+      - "email-claim-nudges"
+      - "email-digest-builder"
+      - "comms-core"
+      - "notification-dispatch"
+      - "notify-orchestrator"
+      - "fcm-push-worker"
+    analysis: "Too many bespoke dispatchers. Must route all messaging payloads through `notify-orchestrator` which determines the rail (Email vs Push vs SMS) based on user prefs."

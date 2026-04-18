@@ -60,7 +60,7 @@ const ROLE_ROUTE_MAP: Record<HCRole, RouteConfig[]> = {
     both: [
         { href: "/loads/post", icon: MapPin, label: "Post Load", desc: "Need coverage", color: "#C6923A", primary: true },
         { href: "/loads", icon: Package, label: "Find Jobs", desc: "Take a load", color: "#22c55e", primary: true },
-        { href: "#", icon: Repeat, label: "Switch Mode", desc: "Broker ↔ Operator", color: "#3b82f6", primary: false },
+        { href: "#", icon: Repeat, label: "Switch Mode", desc: "Broker â†” Operator", color: "#3b82f6", primary: false },
         { href: "/messages", icon: MessageSquare, label: "Inbox", desc: "Messages", color: "#a855f7", primary: false },
     ],
     fleet_owner: [
@@ -272,7 +272,7 @@ export function LiveMarketHero({
                     </Link>
                 </motion.div>
 
-                {/* ROLE ROUTER — 3×2 grid on mobile, 6-col on desktop */}
+                {/* ROLE ROUTER — 3x2 grid on mobile, 6-col on desktop */}
                 <motion.div
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -321,21 +321,40 @@ export function LiveMarketHero({
                                     change
                                 </button>
                             </div>
-                            <div className="hero-roles" style={{ gridTemplateColumns: 'repeat(2, 1fr)', maxWidth: 400 }}>
-                                {activeRoutes!.map(({ href, icon: Icon, label, desc, color }: RouteConfig) => (
-                                    <Link aria-label="Navigation Link"
-                                        key={href + label}
-                                        href={href}
-                                        className="hero-role-card group"
-                                    >
-                                        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center mb-1.5 transition-colors"
-                                            style={{ backgroundColor: `${color}12`, border: `1px solid ${color}20` }}>
-                                            <Icon className="w-4 h-4 sm:w-5 sm:h-5" style={{ color }} />
-                                        </div>
-                                        <div className="text-[11px] sm:text-xs font-bold text-white group-hover:text-[#C6923A] transition-colors leading-tight">{label}</div>
-                                        <div className="text-[9px] text-[#5A6577] mt-0.5">{desc}</div>
-                                    </Link>
-                                ))}
+                            <div className="flex flex-col gap-3 w-full max-w-[400px] mx-auto mt-4 px-4 sm:px-0">
+                                {activeRoutes!.map(({ href, icon: Icon, label, desc, color, primary }: RouteConfig) => {
+                                    if (primary) {
+                                        return (
+                                            <Link
+                                                key={href + label}
+                                                href={href}
+                                                className="w-full h-14 bg-amber-500 hover:bg-amber-400 active:bg-amber-600 rounded-2xl flex items-center justify-between px-5 transition-all duration-200 group relative overflow-hidden"
+                                            >
+                                                <div className="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-amber-400/20 to-amber-400/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                <div className="flex items-center gap-3 relative z-10">
+                                                    <div className="w-8 h-8 rounded-full bg-black/10 flex items-center justify-center">
+                                                        <Icon className="w-4 h-4 text-black group-hover:scale-110 transition-transform" />
+                                                    </div>
+                                                    <div className="text-left">
+                                                        <div className="text-sm font-black text-black leading-none">{label}</div>
+                                                        <div className="text-[10px] text-black/60 font-semibold mt-0.5">{desc}</div>
+                                                    </div>
+                                                </div>
+                                                <ChevronRight className="w-4 h-4 text-black/40 group-hover:translate-x-1 group-hover:text-black transition-all relative z-10" />
+                                            </Link>
+                                        );
+                                    }
+                                    return (
+                                        <Link
+                                            key={href + label}
+                                            href={href}
+                                            className="w-full h-12 bg-transparent border border-white/[0.12] hover:border-white/[0.25] hover:bg-white/[0.04] rounded-2xl flex items-center justify-center gap-2 px-4 transition-all duration-200 group"
+                                        >
+                                            <Icon className="w-3.5 h-3.5 text-white/50 group-hover:text-amber-400 transition-colors" />
+                                            <span className="text-xs font-semibold text-white/70 group-hover:text-white transition-colors">{label}</span>
+                                        </Link>
+                                    );
+                                })}
                             </div>
                         </>
                     )}

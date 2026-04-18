@@ -1,93 +1,55 @@
-import React from "react";
-import { cn } from "@/lib/utils/cn";
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
 // ══════════════════════════════════════════════════════════════
-// Skeleton — Haul Command v4
-// Gold-shimmer skeleton loader for all loading states.
-// Required on all data surfaces (frustration prevention).
+// HAUL COMMAND — Skeleton
+// Premium shimmer loading states for the Command Black surface.
+// Uses gold-tinted shimmer instead of generic gray bars.
 // ══════════════════════════════════════════════════════════════
 
-interface SkeletonProps {
-    className?: string;
-    width?: string | number;
-    height?: string | number;
+function Skeleton({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn(
+        "rounded-xl",
+        "bg-hc-elevated",
+        "bg-[length:200%_100%]",
+        "bg-skeleton-shimmer",
+        "animate-shimmer",
+        className
+      )}
+      {...props}
+    />
+  );
 }
 
-export function Skeleton({ className, width, height }: SkeletonProps) {
-    return (
-        <div
-            className={cn("skeleton rounded-lg", className)}
-            style={{
-                width: width,
-                height: height ?? "1em",
-            }}
-        />
-    );
-}
+/** Pre-built skeleton patterns for common surfaces */
+const SkeletonCard = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn("rounded-2xl border border-hc-border-bare bg-hc-surface p-6 space-y-4", className)} {...props}>
+    <Skeleton className="h-5 w-2/3" />
+    <Skeleton className="h-4 w-full" />
+    <Skeleton className="h-4 w-4/5" />
+    <div className="flex gap-3 pt-2">
+      <Skeleton className="h-9 w-24 rounded-xl" />
+      <Skeleton className="h-9 w-20 rounded-xl" />
+    </div>
+  </div>
+);
+SkeletonCard.displayName = "SkeletonCard";
 
-// ── Skeleton Card (for load/escort cards) ───────────────────
-export function SkeletonCard({ className }: { className?: string }) {
-    return (
-        <div className={cn("hc-card p-4 space-y-3", className)}>
-            {/* Avatar + name row */}
-            <div className="flex items-center gap-3">
-                <Skeleton className="w-10 h-10 rounded-full flex-shrink-0" />
-                <div className="flex-1 space-y-2">
-                    <Skeleton className="h-4 w-2/3" />
-                    <Skeleton className="h-3 w-1/2" />
-                </div>
-                <Skeleton className="w-16 h-6 rounded-full" />
-            </div>
-            {/* Body lines */}
-            <Skeleton className="h-3 w-full" />
-            <Skeleton className="h-3 w-4/5" />
-            {/* Action button */}
-            <Skeleton className="h-11 w-full rounded-xl" />
-        </div>
-    );
-}
+const SkeletonRow = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn("flex items-center gap-4 py-3", className)} {...props}>
+    <Skeleton className="h-10 w-10 rounded-full shrink-0" />
+    <div className="flex-1 space-y-2">
+      <Skeleton className="h-4 w-1/3" />
+      <Skeleton className="h-3 w-2/3" />
+    </div>
+    <Skeleton className="h-8 w-20 rounded-lg shrink-0" />
+  </div>
+);
+SkeletonRow.displayName = "SkeletonRow";
 
-// ── Skeleton Row (for leaderboard / dense tables) ───────────
-export function SkeletonRow({ className }: { className?: string }) {
-    return (
-        <div className={cn("flex items-center gap-3 p-3", className)}>
-            <Skeleton className="w-8 h-8 rounded-full flex-shrink-0" />
-            <div className="flex-1 space-y-1.5">
-                <Skeleton className="h-3.5 w-1/2" />
-                <Skeleton className="h-2.5 w-1/3" />
-            </div>
-            <Skeleton className="w-12 h-6 rounded-full" />
-        </div>
-    );
-}
-
-// ── Skeleton Text (inline lines) ────────────────────────────
-export function SkeletonText({ lines = 3, className }: { lines?: number; className?: string }) {
-    return (
-        <div className={cn("space-y-2", className)}>
-            {Array.from({ length: lines }, (_, i) => (
-                <Skeleton
-                    key={i}
-                    className={cn("h-3.5", i === lines - 1 ? "w-2/3" : "w-full")}
-                />
-            ))}
-        </div>
-    );
-}
-
-// ── Skeleton Page (full page loading) ───────────────────────
-export function SkeletonPage() {
-    return (
-        <div className="min-h-screen bg-hc-bg p-4 space-y-4">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-6">
-                <Skeleton className="h-6 w-40" />
-                <Skeleton className="h-10 w-10 rounded-full" />
-            </div>
-            {/* Cards */}
-            {[1, 2, 3].map(i => <SkeletonCard key={i} />)}
-        </div>
-    );
-}
-
-export default Skeleton;
+export { Skeleton, SkeletonCard, SkeletonRow };

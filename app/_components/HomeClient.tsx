@@ -4,13 +4,9 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import {
-    Activity, Shield, Zap, Map, TrendingUp, Users,
-    ChevronRight, Star, CheckCircle, ArrowRight, Truck,
-    Clock, BarChart3, Radio, Globe, Navigation
-} from "lucide-react";
+import { Activity, Shield, Zap, Map as MapIcon, TrendingUp, Users, ChevronRight, Star, CheckCircle, ArrowRight, Truck, Clock, BarChart3, Navigation as NavIcon, Globe } from "lucide-react";
 import type { MarketPulseData, DirectoryListing, CorridorData } from "@/lib/server/data";
-import { LOGO_MARK_SRC, BRAND_NAME_UPPER, ALT_TEXT } from "@/lib/config/brand";
+import { HCFooterShell } from "@/components/landing-system/footer/HCFooterShell";
 
 // ===== ANIMATION VARIANTS =====
 const fadeUp = {
@@ -125,8 +121,8 @@ export default function HomeClient({
         : "Real-Time Matching Active";
 
     return (
-        <div className="min-h-screen bg-hc-bg text-white font-[family-name:var(--font-body)]">
-            {/* ── Ambient Background with amber sweep ── */}
+        <div className=" bg-hc-bg text-white font-[family-name:var(--font-body)]">
+            {/* â”€â”€ Ambient Background with amber sweep â”€â”€ */}
             <div className="fixed inset-0 pointer-events-none z-0">
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(198,146,58,0.012)_1px,transparent_1px),linear-gradient(90deg,rgba(198,146,58,0.012)_1px,transparent_1px)] bg-[size:60px_60px]" />
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(198,146,58,0.08),transparent_70%)]" />
@@ -135,71 +131,19 @@ export default function HomeClient({
                 <div className="absolute top-0 left-0 right-0 h-[600px] bg-[radial-gradient(ellipse_50%_80%_at_70%_-10%,rgba(245,158,11,0.04),transparent_60%)] animate-[amberSweep_12s_ease-in-out_infinite_alternate-reverse]" />
             </div>
 
-            {/* ═════════════════════════════════════════════
+            {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
                 NAVIGATION — Clean 3-part layout
                 Brand | Nav Links | CTA
                 FIX: No more overlapping icons. No "ONLINE" pill.
                 No generic HC logo — uses real brand asset.
-            ═════════════════════════════════════════════ */}
-            <nav className="relative z-50 border-b border-white/[0.06]" style={{
-                background: 'rgba(11,11,12,0.85)',
-                backdropFilter: 'blur(24px) saturate(1.5)',
-            }}>
-                <div className="hc-container h-16 flex items-center justify-between">
-                    {/* LEFT: Brand */}
-                    <Link aria-label="Navigation Link" href="/" className="flex items-center gap-3 flex-shrink-0">
-                        <Image
-                            src={LOGO_MARK_SRC}
-                            alt={ALT_TEXT}
-                            width={32}
-                            height={32}
-                            priority
-                            className="flex-shrink-0"
-                            style={{ objectFit: 'contain' }}
-                        />
-                        <span className="font-bold text-white text-sm uppercase tracking-[0.1em]">{BRAND_NAME_UPPER}</span>
-                    </Link>
+            â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+            
 
-                    {/* CENTER: Nav links (desktop only) */}
-                    <div className="hidden md:flex items-center gap-8 text-[11px] text-[#888] font-semibold uppercase tracking-[0.15em]">
-                        <Link aria-label="Navigation Link" href="/directory" className="hover:text-[#C6923A] transition-colors py-2">Directory</Link>
-                        <Link aria-label="Navigation Link" href="/loads" className="hover:text-[#C6923A] transition-colors py-2">Load Board</Link>
-                        <Link aria-label="Navigation Link" href="/corridors" className="hover:text-[#C6923A] transition-colors py-2">Corridors</Link>
-                        <Link aria-label="Navigation Link" href="/leaderboards" className="hover:text-[#C6923A] transition-colors py-2">Leaderboard</Link>
-                    </div>
-
-                    {/* RIGHT: Auth + CTA */}
-                    <div className="flex items-center gap-4 flex-shrink-0">
-                        <Link aria-label="Navigation Link" href="/login"
-                            className="text-[11px] text-[#888] font-semibold uppercase tracking-[0.15em] hover:text-white transition-colors hidden md:block py-2">
-                            Sign In
-                        </Link>
-                        <Link aria-label="Navigation Link" href="/onboarding/start"
-                            className="px-5 py-2.5 font-bold text-[11px] uppercase tracking-[0.1em] rounded-xl transition-all press-scale text-black"
-                            style={{
-                                background: 'linear-gradient(135deg, #C6923A 0%, #E0B05C 50%, #C6923A 100%)',
-                                boxShadow: '0 4px 20px rgba(198,146,58,0.25), 0 0 0 1px rgba(198,146,58,0.3)',
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.transform = 'translateY(-1px)';
-                                e.currentTarget.style.boxShadow = '0 8px 32px rgba(198,146,58,0.35), 0 0 0 1px rgba(198,146,58,0.4)';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.transform = 'translateY(0)';
-                                e.currentTarget.style.boxShadow = '0 4px 20px rgba(198,146,58,0.25), 0 0 0 1px rgba(198,146,58,0.3)';
-                            }}
-                        >
-                            Get Started
-                        </Link>
-                    </div>
-                </div>
-            </nav>
-
-            {/* ═════════════════════════════════════════════
+            {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
                 HERO — Maximum Impact Zone
                 FIX: Smart badge (no "0 escorts"), premium glow
-            ═════════════════════════════════════════════ */}
-            <section className="relative z-10 pt-28 pb-8">
+            â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+            <section className="relative z-10 pt-8 sm:pt-10 pb-8">
                 <div className="hc-container max-w-5xl text-center">
                     {/* Live badge — NEVER shows "0" */}
                     <motion.div
@@ -253,13 +197,13 @@ export default function HomeClient({
                         {/* PRIMARY: Escort — dominant */}
                         <Link aria-label="Navigation Link"
                             href="/onboarding/start?role=escort"
-                            className="group relative flex items-center justify-center gap-2.5 px-10 py-4 text-black font-bold text-sm rounded-2xl transition-all press-scale overflow-hidden"
+                            className="group relative flex items-center justify-center gap-2.5 px-10 py-4 text-white font-bold text-sm rounded-2xl transition-all press-scale overflow-hidden"
                             style={{
                                 background: 'linear-gradient(135deg, #C6923A 0%, #E0B05C 50%, #C6923A 100%)',
                                 boxShadow: '0 4px 24px rgba(198,146,58,0.3), 0 0 48px rgba(198,146,58,0.1)',
                             }}
                         >
-                            <Navigation className="w-4 h-4" />
+                            <NavIcon className="w-4 h-4" />
                             I&apos;m an Escort
                             <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </Link>
@@ -298,10 +242,10 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═════════════════════════════════════════════
+            {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
                 MARKET PULSE — FIX: Hierarchical metrics
                 Primary stat dominant, secondary smaller
-            ═════════════════════════════════════════════ */}
+            â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             <section className="relative z-10 py-16">
                 <div className="hc-container max-w-5xl">
                     <motion.div
@@ -332,7 +276,7 @@ export default function HomeClient({
                                 label: "Active Corridors",
                                 value: corridorCount,
                                 suffix: "",
-                                icon: Map,
+                                icon: MapIcon,
                                 color: "#a855f7",
                                 isPrimary: false,
                             },
@@ -375,7 +319,7 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ── Liquidity Trust Strip — LIVE COUNTS, GLOBAL SCOPE ── */}
+            {/* â”€â”€ Liquidity Trust Strip — LIVE COUNTS, GLOBAL SCOPE â”€â”€ */}
             <section className="relative z-10 pb-8">
                 <div className="hc-container max-w-3xl">
                     <div className="liquidity-strip flex-wrap">
@@ -395,9 +339,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═════════════════════════════════════════════
+            {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
                 HOT CORRIDORS — LIVE FROM SUPABASE
-            ═════════════════════════════════════════════ */}
+            â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             {topCorridors.length > 0 && (
                 <section className="relative z-10 py-20">
                     <div className="hc-container max-w-5xl">
@@ -433,9 +377,9 @@ export default function HomeClient({
                 </section>
             )}
 
-            {/* ═════════════════════════════════════════════
+            {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
                 DIRECTORY PREVIEW — LIVE FROM SUPABASE
-            ═════════════════════════════════════════════ */}
+            â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             {topListings.length > 0 && (
                 <section className="relative z-10 py-20">
                     <div className="hc-container max-w-5xl">
@@ -475,9 +419,9 @@ export default function HomeClient({
                 </section>
             )}
 
-            {/* ═════════════════════════════════════════════
+            {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
                 HOW IT WORKS — FIX: Visual differentiation
-            ═════════════════════════════════════════════ */}
+            â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             <section className="relative z-10 py-24">
                 <div className="hc-container max-w-5xl">
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-16">
@@ -521,9 +465,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═════════════════════════════════════════════
+            {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
                 FEATURE GRID
-            ═════════════════════════════════════════════ */}
+            â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             <section className="relative z-10 py-24">
                 <div className="hc-container max-w-5xl">
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-16">
@@ -550,9 +494,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═════════════════════════════════════════════
+            {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
                 BOTTOM CTA — FIX: More breathing room, no cramping
-            ═════════════════════════════════════════════ */}
+            â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             <section className="relative z-10 pt-24 pb-32">
                 <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn} className="max-w-2xl mx-auto text-center px-4">
                     <div className="relative bg-[var(--hc-surface)] border border-[var(--hc-border)] rounded-3xl p-14 shadow-[0_0_80px_rgba(198,146,58,0.06)] overflow-hidden">
@@ -566,7 +510,7 @@ export default function HomeClient({
                                 Free for escorts. Brokers get 10 boost credits on activation. No card required.
                             </p>
                             <Link aria-label="Navigation Link" href="/onboarding/start"
-                                className="inline-flex items-center gap-2.5 px-10 py-4 text-black font-bold text-sm rounded-2xl transition-all press-scale"
+                                className="inline-flex items-center gap-2.5 px-10 py-4 text-white font-bold text-sm rounded-2xl transition-all press-scale"
                                 style={{
                                     background: 'linear-gradient(135deg, #C6923A 0%, #E0B05C 50%, #C6923A 100%)',
                                     boxShadow: '0 4px 24px rgba(198,146,58,0.3), 0 0 48px rgba(198,146,58,0.1)',
@@ -578,83 +522,9 @@ export default function HomeClient({
                 </motion.div>
             </section>
 
-            {/* ═════════════════════════════════════════════
-                FOOTER — FIX: Real logo, proper spacing, multi-column
-            ═════════════════════════════════════════════ */}
-            <footer className="relative z-10 border-t border-white/[0.06]">
+            <HCFooterShell />
                 {/* Footer columns */}
-                <div className="hc-container py-16">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-                        <div>
-                            <h4 className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.2em] mb-4">Market</h4>
-                            <div className="space-y-2.5">
-                                {[
-                                    { href: "/loads", label: "Load Board" },
-                                    { href: "/directory", label: "Escort Directory" },
-                                    { href: "/leaderboards", label: "Leaderboard" },
-                                    { href: "/corridors", label: "Corridors" },
-                                    { href: "/map", label: "Live Map" },
-                                ].map(l => (
-                                    <Link aria-label="Navigation Link" key={l.href} href={l.href} className="block text-sm text-[#8fa3b8] hover:text-white transition-colors">{l.label}</Link>
-                                ))}
-                            </div>
-                        </div>
-                        <div>
-                            <h4 className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.2em] mb-4">Popular Regions</h4>
-                            <div className="space-y-2.5">
-                                {["Texas", "Florida", "California", "Louisiana", "North Carolina", "Oklahoma"].map(s => (
-                                    <Link aria-label="Navigation Link" key={s} href={`/directory/us/${s.toLowerCase().replace(/\s/g, '-')}`} className="block text-sm text-[#8fa3b8] hover:text-white transition-colors">{s} Pilot Cars</Link>
-                                ))}
-                            </div>
-                        </div>
-                        <div>
-                            <h4 className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.2em] mb-4">Services</h4>
-                            <div className="space-y-2.5">
-                                {[
-                                    { href: "/services/pilot-car", label: "Pilot Car Services" },
-                                    { href: "/services/escort-vehicle", label: "Escort Vehicle Services" },
-                                    { href: "/services/oversize-load", label: "Oversize Load Escorts" },
-                                    { href: "/services/wide-load", label: "Wide Load Escorts" },
-                                    { href: "/services/route-survey", label: "Route Surveys" },
-                                    { href: "/services/height-pole", label: "Height Pole Services" },
-                                ].map(l => (
-                                    <Link aria-label="Navigation Link" key={l.href} href={l.href} className="block text-sm text-[#8fa3b8] hover:text-white transition-colors">{l.label}</Link>
-                                ))}
-                            </div>
-                        </div>
-                        <div>
-                            <h4 className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.2em] mb-4">Company</h4>
-                            <div className="space-y-2.5">
-                                {[
-                                    { href: "/terms", label: "Terms of Service" },
-                                    { href: "/privacy", label: "Privacy Policy" },
-                                    { href: "/contact", label: "Contact Us" },
-                                    { href: "/about", label: "About" },
-                                ].map(l => (
-                                    <Link aria-label="Navigation Link" key={l.href} href={l.href} className="block text-sm text-[#8fa3b8] hover:text-white transition-colors">{l.label}</Link>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                {/* Bottom bar */}
-                <div className="border-t border-white/[0.04] py-6">
-                    <div className="hc-container flex flex-col sm:flex-row justify-between items-center gap-4">
-                        <div className="flex items-center gap-3">
-                            <Image src={LOGO_MARK_SRC} alt={ALT_TEXT} width={24} height={24} style={{ objectFit: 'contain' }} />
-                            <span className="text-[11px] text-[#5A6577] font-semibold uppercase tracking-[0.1em]">
-                                © 2026 Haul Command. The Operating System for Heavy Haul.
-                            </span>
-                        </div>
-                        <div className="flex gap-6 text-[11px] text-[#5A6577] font-semibold uppercase tracking-[0.1em]">
-                            <Link aria-label="Navigation Link" href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
-                            <Link aria-label="Navigation Link" href="/privacy" className="hover:text-white/60 transition-colors">Privacy</Link>
-                            <Link aria-label="Navigation Link" href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
-                        </div>
-                    </div>
-                </div>
-            </footer>
         </div>
     );
 }

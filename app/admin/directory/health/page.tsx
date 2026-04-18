@@ -84,7 +84,7 @@ export default async function DirectoryHealthPage() {
     return (
         <div style={{ padding: "2rem", maxWidth: 1200, margin: "0 auto", fontFamily: "Inter, system-ui, sans-serif", color: "#e2e8f0" }}>
             <h1 style={{ fontSize: "1.75rem", fontWeight: 700, marginBottom: "0.5rem" }}>
-                🛡️ Directory Truth Dashboard
+                ðŸ›¡ï¸ Directory Truth Dashboard
             </h1>
             <p style={{ color: "#94a3b8", marginBottom: "2rem" }}>
                 Real-time health of the Haul Command entity index. Supabase is source of truth.
@@ -96,7 +96,7 @@ export default async function DirectoryHealthPage() {
                     background: "#7f1d1d", border: "1px solid #dc2626", borderRadius: 8,
                     padding: "1rem", marginBottom: "1.5rem",
                 }}>
-                    <strong style={{ color: "#fca5a5" }}>🚨 CRITICAL ALERTS</strong>
+                    <strong style={{ color: "#fca5a5" }}>ðŸš¨ CRITICAL ALERTS</strong>
                     {isOrphanAlert && <p style={{ color: "#fecaca", margin: "0.5rem 0 0" }}>
                         {health.orphan_count} orphan provider(s) detected — entities in Supabase not in directory index
                     </p>}
@@ -116,7 +116,7 @@ export default async function DirectoryHealthPage() {
                     { label: "Orphans", value: health.orphan_count, color: health.orphan_count === 0 ? "#22c55e" : "#ef4444" },
                     { label: "Link Mesh", value: health.link_mesh_edges, color: "#06b6d4" },
                     { label: "National Scope", value: health.national_scope_operators, color: "#a855f7" },
-                    { label: "Freshness", value: isFreshness ? "✅ Fresh" : "⚠️ Stale", color: isFreshness ? "#22c55e" : "#ef4444" },
+                    { label: "Freshness", value: isFreshness ? "âœ… Fresh" : "âš ï¸ Stale", color: isFreshness ? "#22c55e" : "#ef4444" },
                 ].map((s, i) => (
                     <div key={i} style={{
                         background: "#1e293b", borderRadius: 8, padding: "1rem",
@@ -154,15 +154,15 @@ export default async function DirectoryHealthPage() {
             </h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem", marginBottom: "2rem" }}>
                 <div style={{ background: "#1e293b", borderRadius: 8, padding: "1rem" }}>
-                    <div style={{ fontSize: "1.25rem", fontWeight: 700, color: "#3b82f6" }}>🛻 {health.truck_stops}</div>
+                    <div style={{ fontSize: "1.25rem", fontWeight: 700, color: "#3b82f6" }}>ðŸ›» {health.truck_stops}</div>
                     <div style={{ fontSize: "0.8rem", color: "#64748b" }}>Truck Stops</div>
                 </div>
                 <div style={{ background: "#1e293b", borderRadius: 8, padding: "1rem" }}>
-                    <div style={{ fontSize: "1.25rem", fontWeight: 700, color: "#8b5cf6" }}>🏨 {health.hotels}</div>
+                    <div style={{ fontSize: "1.25rem", fontWeight: 700, color: "#8b5cf6" }}>ðŸ¨ {health.hotels}</div>
                     <div style={{ fontSize: "0.8rem", color: "#64748b" }}>Hotels</div>
                 </div>
                 <div style={{ background: "#1e293b", borderRadius: 8, padding: "1rem" }}>
-                    <div style={{ fontSize: "1.25rem", fontWeight: 700, color: "#06b6d4" }}>🏗️ {health.terminals}</div>
+                    <div style={{ fontSize: "1.25rem", fontWeight: 700, color: "#06b6d4" }}>ðŸ—ï¸ {health.terminals}</div>
                     <div style={{ fontSize: "0.8rem", color: "#64748b" }}>Terminals</div>
                 </div>
             </div>

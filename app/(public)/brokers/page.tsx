@@ -3,11 +3,11 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-/* ══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    /brokers — Broker Entry & Conversion Surface
    Converts demand-side attention into load postings and registrations.
    Mobile-first. Real data proof bars. No fluff.
-   ══════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 interface ProofData {
   operators: number;
@@ -203,9 +203,9 @@ export default function BrokersPage() {
         gap: 12,
       }}>
         {[
-          { emoji: '📡', title: 'Live pressure tracking', desc: 'See which corridors have thin escort supply before routes go unfilled.' },
-          { emoji: '⚡', title: 'Surge alerts', desc: 'Know when demand spikes on your lanes so you can act fast or price right.' },
-          { emoji: '🎯', title: 'Fill risk reduction', desc: 'Match loads to corridors where escorts are available, not guessing.' },
+          { emoji: 'ðŸ“¡', title: 'Live pressure tracking', desc: 'See which corridors have thin escort supply before routes go unfilled.' },
+          { emoji: 'âš¡', title: 'Surge alerts', desc: 'Know when demand spikes on your lanes so you can act fast or price right.' },
+          { emoji: 'ðŸŽ¯', title: 'Fill risk reduction', desc: 'Match loads to corridors where escorts are available, not guessing.' },
         ].map(item => (
           <div key={item.title} style={{
             padding: 20,
@@ -261,7 +261,7 @@ export default function BrokersPage() {
                   fontSize: 11,
                   fontWeight: 800,
                 }}>
-                  View →
+                  View â†’
                 </Link>
               </div>
             ))}

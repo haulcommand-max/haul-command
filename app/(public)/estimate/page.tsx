@@ -62,7 +62,7 @@ export default function EstimatePage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <div style={{ minHeight: '100vh', background: '#0B0B0C', color: '#F0F0F2' }}>
-                {/* ── Hero ── */}
+                {/* â”€â”€ Hero â”€â”€ */}
                 <section style={{
                     position: 'relative', overflow: 'hidden',
                     borderBottom: '1px solid rgba(255,255,255,0.05)',
@@ -82,7 +82,7 @@ export default function EstimatePage() {
                             fontSize: 10, fontWeight: 800, textTransform: 'uppercase' as const,
                             letterSpacing: '0.1em', color: '#C6923A', marginBottom: 20,
                         }}>
-                            ⚡ #1 commercial-intent tool in heavy haul
+                            âš¡ #1 commercial-intent tool in heavy haul
                         </div>
                         <h1 style={{
                             fontSize: 'clamp(28px, 5vw, 44px)', fontWeight: 900,
@@ -103,7 +103,7 @@ export default function EstimatePage() {
                     </div>
                 </section>
 
-                {/* ── Quote Form ── */}
+                {/* â”€â”€ Quote Form â”€â”€ */}
                 <EstimateForm />
             </div>
         </>

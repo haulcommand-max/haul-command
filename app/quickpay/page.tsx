@@ -32,9 +32,9 @@ export default function QuickPayPage() {
 
   if (result) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-white" style={{ background: '#060b12' }}>
+      <div className=" flex items-center justify-center text-white" style={{ background: '#060b12' }}>
         <div className="text-center max-w-md">
-          <div className="text-5xl mb-4">💰</div>
+          <div className="text-5xl mb-4">ðŸ’°</div>
           <h1 className="text-2xl font-black mb-2">QuickPay Complete!</h1>
           <div className="mt-6 space-y-3" style={{ background: 'rgba(14,17,24,0.95)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 16, padding: 24 }}>
             <div className="flex justify-between"><span className="text-xs text-[#5A6577]">Invoice</span><span className="text-sm font-black text-white">${result.invoice_amount.toFixed(2)}</span></div>
@@ -42,14 +42,14 @@ export default function QuickPayPage() {
             <div className="border-t border-white/[0.06] pt-3 flex justify-between"><span className="text-xs font-bold text-emerald-400">Advanced to You</span><span className="text-lg font-black text-emerald-400">${result.advance_amount.toFixed(2)}</span></div>
           </div>
           <p className="text-xs text-[#8fa3b8] mt-4">Funds will appear in your account within 1 business day.</p>
-          <Link aria-label="Navigation Link" href="/dashboard" className="text-sm font-bold text-[#C6923A] hover:underline mt-6 inline-block">Back to Dashboard →</Link>
+          <Link aria-label="Navigation Link" href="/dashboard" className="text-sm font-bold text-[#C6923A] hover:underline mt-6 inline-block">Back to Dashboard â†’</Link>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen text-white" style={{ background: '#060b12', fontFamily: 'var(--font-body)' }}>
+    <div className=" text-white" style={{ background: '#060b12', fontFamily: 'var(--font-body)' }}>
       <style>{`
         .qp-card{background:rgba(14,17,24,0.95);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:32px;}
         .qp-highlight{background:linear-gradient(135deg,rgba(16,185,129,0.08),rgba(16,185,129,0.02));border:1px solid rgba(16,185,129,0.2);border-radius:16px;padding:24px;}
@@ -65,7 +65,7 @@ export default function QuickPayPage() {
 
       <main className="max-w-xl mx-auto px-4 py-12">
         <div className="text-center mb-10">
-          <div className="text-4xl mb-3">⚡</div>
+          <div className="text-4xl mb-3">âš¡</div>
           <h1 className="text-2xl sm:text-3xl font-black tracking-tight mb-2">QuickPay</h1>
           <p className="text-sm text-[#8fa3b8]">Get paid now instead of waiting net-30. 97% of your invoice, instantly.</p>
         </div>
@@ -111,7 +111,7 @@ export default function QuickPayPage() {
             <button aria-label="Interactive Button" onClick={() => setShowConfirm(true)} disabled={!jobId || amount <= 0}
               className="w-full mt-6 py-4 rounded-xl font-black text-sm transition-all"
               style={{ background: amount > 0 ? 'linear-gradient(135deg,#10b981,#34d399)' : 'rgba(255,255,255,0.04)', color: amount > 0 ? '#0a0a0f' : '#5A6577' }}>
-              Get Paid Now →
+              Get Paid Now â†’
             </button>
           ) : (
             <div className="mt-6 space-y-3">

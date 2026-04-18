@@ -27,10 +27,13 @@ function typesenseUrl(cfg: TypesenseConfig, path: string): string {
 
 /** Table name → Typesense collection name */
 const COLLECTION_MAP: Record<string, string> = {
-    driver_profiles: "driver_profiles",
-    provider_directory: "provider_directory",
+    // Verified real table names (audited via REST API 2026-04-11)
+    profiles: "profiles",
+    hc_global_operators: "hc_operators",
     loads: "loads",
     corridors: "corridors",
+    glossary_terms: "glossary_terms",   // real name (not glo_terms)
+    listings: "listings",               // real name (not directory_listings)
 };
 
 /** Transform a raw DB row into a Typesense document.
@@ -61,6 +64,27 @@ function transformForTypesense(tableName: string, row: Record<string, any>): Rec
         doc.response_time_min = row.response_time_minutes || 0;
         doc.acceptance_rate = row.acceptance_rate || 0;
         doc.on_time_rate = row.on_time_rate || 0;
+        doc.updated_at = row.updated_at ? new Date(row.updated_at).getTime() : Date.now();
+    } else if (tableName === "hc_global_operators") {
+        doc.display_name = row.name || "";
+        doc.slug = row.slug || "";
+        doc.entity_type = row.entity_type || "escort";
+        doc.country = row.country_code || "US";
+        doc.state_province = row.admin1_code || "";
+        doc.city = row.city || "";
+        doc.phone = row.phone || "";
+        doc.email = row.email || "";
+        if (row.lat && row.lng) {
+            doc.location = [parseFloat(row.lat), parseFloat(row.lng)];
+        }
+        doc.trust_score = row.trust_score || 0;
+        doc.compliance_score = row.compliance_score || 0;
+        doc.is_verified = row.is_verified ?? false;
+        doc.is_claimed = row.is_claimed ?? false;
+        doc.service_types = row.service_types || [];
+        doc.equipment_types = row.equipment_types || [];
+        doc.coverage_status = row.coverage_status || "coming_soon";
+        doc.source_table = row.source_table || "";
         doc.updated_at = row.updated_at ? new Date(row.updated_at).getTime() : Date.now();
     } else if (tableName === "loads") {
         doc.status = row.status || "open";
@@ -111,10 +135,60 @@ function transformForTypesense(tableName: string, row: Record<string, any>): Rec
         if (row.lat && row.lng) {
             doc.location = [parseFloat(row.lat), parseFloat(row.lng)];
         }
+    } else if (tableName === "glossary_terms") {
+        // S3-02: Glossary terms — powers AI-search snippet eligibility
+        // Real table: glossary_terms (not glo_terms)
+        doc.slug = row.slug || "";
+        doc.canonical_term = row.canonical_term || row.term || "";
+        doc.definition_short = row.definition_short || row.short_definition || "";
+        doc.definition_long = row.definition_long || row.long_definition || "";
+        doc.category = row.category || "";
+        doc.topic_tags = row.topic_tags || [];
+        doc.country_codes = row.country_codes || ["US"];
+        doc.is_active = row.is_active ?? true;
+        doc.is_indexable = row.is_indexable ?? true;
+        doc.confidence_state = row.confidence_state || "seeded_needs_review";
+        doc.reviewed_at_epoch = row.reviewed_at ? new Date(row.reviewed_at).getTime() : 0;
+        doc.updated_at = row.updated_at ? new Date(row.updated_at).getTime() : Date.now();
+    } else if (tableName === "listings") {
+        // S3-02: Listings — real table name (not directory_listings)
+        doc.slug = row.slug || "";
+        doc.display_name = row.display_name || row.name || "";
+        doc.entity_type = row.entity_type || "escort";
+        doc.country = row.country_code || "US";
+        doc.state_province = row.state_province || row.admin1_code || "";
+        doc.city = row.city || "";
+        doc.service_types = row.service_types || [];
+        doc.trust_score = row.trust_score || 0;
+        doc.is_verified = row.is_verified ?? false;
+        doc.is_claimed = row.is_claimed ?? false;
+        doc.coverage_status = row.coverage_status || "coming_soon";
+        if (row.lat && row.lng) {
+            doc.location = [parseFloat(row.lat), parseFloat(row.lng)];
+        }
+        doc.updated_at = row.updated_at ? new Date(row.updated_at).getTime() : Date.now();
+    } else if (tableName === "profiles") {
+        // S3-02: Profiles — trust score propagation to Typesense within 30s
+        doc.display_name = row.display_name || row.full_name || "";
+        doc.role = row.role || "operator";
+        doc.country = row.country_code || "US";
+        doc.state_province = row.region_code || "";
+        doc.city = row.city || "";
+        doc.trust_score = row.trust_score || 0;
+        doc.kyc_tier = row.kyc_tier ?? row.kyc_level ?? 0;
+        doc.is_claimed = row.is_claimed ?? false;
+        doc.is_verified = row.verification_status === "verified";
+        doc.slug = row.slug || "";
+        if (row.lat && row.lng) {
+            doc.location = [parseFloat(row.lat), parseFloat(row.lng)];
+        }
+        doc.updated_at = row.updated_at ? new Date(row.updated_at).getTime() : Date.now();
     }
 
     return doc;
 }
+
+
 
 /* ──────────────────────────────────────────────────────────
  * Typesense sync operations

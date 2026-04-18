@@ -13,13 +13,13 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-// ── Supabase Realtime client (public anon key — safe) ──────────────────────
+// â”€â”€ Supabase Realtime client (public anon key — safe) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-// ── Types ──────────────────────────────────────────────────────────────────
+// â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface RequestLog {
   id: string;
   ip: string;
@@ -43,17 +43,17 @@ interface BlockedIP {
   request_count?: number;
 }
 
-// ── Equirectangular projection helpers ─────────────────────────────────────
+// â”€â”€ Equirectangular projection helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const toSVGCoords = (lat: number, lng: number, W: number, H: number) => ({
   x: ((lng + 180) / 360) * W,
   y: ((90 - lat) / 180) * H,
 });
 
-// ── 10° graticule grid lines ───────────────────────────────────────────────
+// â”€â”€ 10° graticule grid lines â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const GRATICULE_H = Array.from({ length: 17 }, (_, i) => (i - 8) * 10);
 const GRATICULE_V = Array.from({ length: 37 }, (_, i) => (i - 18) * 10);
 
-// ── Animated live dot ─────────────────────────────────────────────────────
+// â”€â”€ Animated live dot â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface Dot {
   id: string;
   x: number;
@@ -65,7 +65,7 @@ interface Dot {
   ip: string;
 }
 
-// ── Main Component ─────────────────────────────────────────────────────────
+// â”€â”€ Main Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function DefenseDashboard() {
   const svgRef = useRef<SVGSVGElement>(null);
   const [logs, setLogs] = useState<RequestLog[]>([]);
@@ -151,7 +151,7 @@ export default function DefenseDashboard() {
   const threatRatio = stats.total > 0 ? Math.round((stats.bots / stats.total) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-[#060810] text-slate-100 font-mono">
+    <div className=" bg-[#060810] text-slate-100 font-mono">
       <div className="pointer-events-none fixed inset-0 z-50 opacity-[0.03]" style={{ backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,100,0.05) 2px, rgba(0,255,100,0.05) 4px)" }} />
       <div className="max-w-[1600px] mx-auto px-4 py-6 space-y-5">
 
@@ -252,7 +252,7 @@ export default function DefenseDashboard() {
         </div>
 
         <div className="bg-[#040810] border border-slate-800/70 rounded-2xl overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/30">
+          <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-800/70 /30">
             <div className="flex items-center gap-2 text-sm font-bold tracking-wider uppercase text-slate-300"><Eye className="h-4 w-4 text-rose-400" />Live Feed — Incoming Signatures</div>
             <div className="flex items-center gap-2 text-xs text-rose-500 font-bold tracking-wider"><span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />REC</div>
           </div>

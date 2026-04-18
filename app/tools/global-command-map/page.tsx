@@ -15,7 +15,7 @@ const TARGET_COUNTRIES = [
   // ... representing the major logistics hubs
 ];
 
-// Mocking some live 120-country intelligence data
+// Mocking some live global intelligence data
 const markers = [
   { markerOffset: -15, name: "Houston Hub (TX)", coordinates: [-95.3698, 29.7604], status: "Critical Shortage", count: 42 },
   { markerOffset: -15, name: "Alberta Superload Corridor", coordinates: [-113.4909, 53.5444], status: "Active", count: 18 },
@@ -38,10 +38,10 @@ export default function GlobalCommandMap() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#020617] text-white font-mono flex flex-col pt-[80px]">
+    <div className=" bg-[#020617] text-white font-mono flex flex-col pt-[80px]">
       
       {/* HUD Header */}
-      <div className="border-b border-white/5 bg-slate-900/50 backdrop-blur-xl p-6">
+      <div className="border-b border-white/5 /50 backdrop-blur-xl p-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
             <div className="flex items-center gap-2 text-red-500 text-xs font-bold uppercase tracking-widest mb-1">
@@ -57,7 +57,7 @@ export default function GlobalCommandMap() {
           </div>
           <div className="flex gap-4">
             <div className="bg-slate-800 border border-slate-700 rounded-lg p-3 px-5 text-right">
-              <div className="text-[10px] text-slate-400 uppercase tracking-widest">Active 120-Country Fleet</div>
+              <div className="text-[10px] text-slate-400 uppercase tracking-widest">Active Global Fleet</div>
               <div className="text-2xl font-black text-amber-500 tabular-nums">
                 {activeUsers.toLocaleString()}
               </div>
@@ -85,7 +85,7 @@ export default function GlobalCommandMap() {
             <Geographies geography={geoUrl}>
               {({ geographies }) =>
                 geographies.map((geo) => {
-                  // If it's one of the 120 countries we support, light it up
+                  // If it's one of the 50+ countries we support, light it up
                   const isTarget = TARGET_COUNTRIES.includes(geo.properties.name);
                   
                   return (
@@ -134,7 +134,7 @@ export default function GlobalCommandMap() {
 
         {/* HUD Elements Overlay */}
         <div className="absolute bottom-8 right-8 w-64 space-y-3 pointer-events-none">
-          <div className="bg-slate-900/80 border border-slate-700 p-4 rounded-xl backdrop-blur-md pointer-events-auto">
+          <div className="/80 border border-slate-700 p-4 rounded-xl backdrop-blur-md pointer-events-auto">
              <h3 className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-3 border-b border-slate-700 pb-2 flex items-center gap-2">
                <AlertTriangle className="w-3 h-3 text-red-500" />
                Critical Deficits (SLA Breach)

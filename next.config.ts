@@ -21,6 +21,12 @@ const nextConfig: NextConfig = {
         "livekit-client",
     ],
 
+    // ── Turbopack ───────────────────────────────────────────────────────────
+    // Pin workspace root to this project to silence the "multiple lockfiles" warning
+    turbopack: {
+        root: process.cwd(),
+    },
+
     experimental: {
         // Tree-shake barrel exports so each route only includes used icons/utils
         // NOTE: Do NOT add @supabase/supabase-js here — it breaks PostgrestBuilder's
@@ -118,6 +124,23 @@ const nextConfig: NextConfig = {
         ];
 
         return [
+            // §34 Command-OS — /hq is the canonical board-grade URL
+            {
+                source: '/hq',
+                destination: '/dashboard/command',
+                permanent: false,
+            },
+            {
+                source: '/hq/:path*',
+                destination: '/dashboard/command',
+                permanent: false,
+            },
+            // Canonical homepage — /home is a mobile app route, not an SEO surface
+            {
+                source: '/home',
+                destination: '/',
+                permanent: true,
+            },
             // Legacy URL patterns → canonical
             {
                 source: "/operators/:path*",
@@ -148,6 +171,21 @@ const nextConfig: NextConfig = {
             {
                 source: '/dictionary/:path*',
                 destination: '/glossary/:path*',
+                permanent: true,
+            },
+            {
+                source: '/leaderboard',
+                destination: '/leaderboards',
+                permanent: true,
+            },
+            {
+                source: '/requirements',
+                destination: '/escort-requirements',
+                permanent: true,
+            },
+            {
+                source: '/privacy-policy',
+                destination: '/privacy',
                 permanent: true,
             },
             ...US_STATE_REDIRECTS,

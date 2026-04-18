@@ -214,7 +214,7 @@ export function CorridorOpportunityCards({ corridors, corridorCount }: Props) {
                                     <div className="flex gap-2">
                                         <Link aria-label="Navigation Link"
                                             href={`/corridors/${corridor.id}`}
-                                            className="flex-1 flex items-center justify-center gap-1.5 text-[11px] font-bold text-black rounded-xl py-2.5 transition-all"
+                                            className="flex-1 flex items-center justify-center gap-1.5 text-[11px] font-bold text-white rounded-xl py-2.5 transition-all"
                                             style={{ background: "linear-gradient(135deg, #C6923A 0%, #E0B05C 50%, #C6923A 100%)" }}
                                         >
                                             Run This Corridor <ChevronRight className="w-3 h-3" />

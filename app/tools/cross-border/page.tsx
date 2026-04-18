@@ -3,11 +3,11 @@
 import React, { useState } from 'react';
 import { Share2, FileWarning, ShieldAlert, BadgeCheck, Globe, Truck, Map, Calculator, ArrowRight, Zap, Download } from 'lucide-react';
 
-/* ═══════════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    CROSS-BORDER COMMAND CENTER & PERMIT WIZARD
    High-fidelity interactive tool for calculating cross-jurisdictional
    compliance requirements (US-Canada, State-to-State).
-   ═══════════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 export default function CrossBorderCommandCenter() {
   const [origin, setOrigin] = useState('TX');
@@ -36,7 +36,7 @@ export default function CrossBorderCommandCenter() {
   ];
 
   return (
-    <div className="min-h-screen bg-hc-bg text-hc-text font-display flex flex-col pt-[80px]">
+    <div className=" bg-hc-bg text-hc-text font-display flex flex-col pt-[80px]">
       {/* Header */}
       <div className="border-b border-hc-border bg-hc-surface/50 backdrop-blur-xl sticky top-[80px] z-30">
         <div className="max-w-7xl mx-auto px-4 py-8">
@@ -54,7 +54,7 @@ export default function CrossBorderCommandCenter() {
               <button className="px-5 py-2.5 bg-hc-surface border border-hc-border rounded-xl text-sm font-bold text-white uppercase flex items-center gap-2 hover:bg-hc-border transition-colors">
                 <Share2 className="w-4 h-4" /> Share Route
               </button>
-              <button className="px-5 py-2.5 bg-hc-success text-black rounded-xl text-sm font-black uppercase tracking-wider flex items-center gap-2 hover:bg-emerald-500 transition-colors">
+              <button className="px-5 py-2.5 bg-hc-success text-white rounded-xl text-sm font-black uppercase tracking-wider flex items-center gap-2 hover:bg-emerald-500 transition-colors">
                 <Download className="w-4 h-4" /> Export Itinerary
               </button>
             </div>
@@ -136,7 +136,7 @@ export default function CrossBorderCommandCenter() {
                 </div>
               </div>
 
-              <button className="w-full py-4 bg-hc-gold-500 hover:bg-hc-gold-400 text-black font-black uppercase tracking-wider rounded-xl transition-colors flex items-center justify-center gap-2 mt-4" data-tool-interact="generate-itinerary">
+              <button className="w-full py-4 bg-hc-gold-500 hover:bg-hc-gold-400 text-white font-black uppercase tracking-wider rounded-xl transition-colors flex items-center justify-center gap-2 mt-4" data-tool-interact="generate-itinerary">
                 <Zap className="w-4 h-4" /> Calculate Compliance
               </button>
             </div>
@@ -285,7 +285,7 @@ export default function CrossBorderCommandCenter() {
                     Alberta does not formally accept US Pilot Car certifications. You must hire a Canadian-based pilot car or ensure your US operator has specific temporary clearances and high-load training.
                   </p>
                   <button className="mt-4 px-4 py-2 bg-hc-surface border border-hc-gold-500 text-white text-xs font-bold uppercase rounded hover:bg-hc-bg transition-colors">
-                    Find Alberta Escorts →
+                    Find Alberta Escorts â†’
                   </button>
                 </div>
               </div>

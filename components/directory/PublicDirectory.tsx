@@ -61,19 +61,8 @@ const CORRIDOR_STATUS = {
 
 type CorridorHeat = 'HOT' | 'WARM' | 'COOL';
 
-// ── Seed operators ──────────────────────────────────────────────
-const SEED_OPERATORS: Operator[] = [
-  { id: 'seed-1', name: 'Lone Star Pilot Cars', state: 'TX', region: 'Texas', services: ['pilot_car','height_pole','wide_load'], verified: true, escrow: true, avReady: true, corridorRank: 1, avgResponse: 14, rate: 85, jobCount: 347, corridorHeat: 'HOT', corridors: ['I-10 Corridor','I-35 South'], isSeed: true, trustScore: 94, reviewCount: 48, avgRating: 4.9, reliabilityScore: 97, completionRate: 0.99 },
-  { id: 'seed-2', name: 'Gulf Coast Escorts LLC', state: 'TX', region: 'Houston, TX', services: ['pilot_car','route_survey'], verified: true, escrow: false, avReady: false, corridorRank: 2, avgResponse: 22, rate: 78, jobCount: 218, corridorHeat: 'WARM', corridors: ['I-10 East'], isSeed: true, trustScore: 82, reviewCount: 23, avgRating: 4.7, reliabilityScore: 89, completionRate: 0.96 },
-  { id: 'seed-3', name: 'Dixie Oversize Escorts', state: 'GA', region: 'Atlanta, GA', services: ['pilot_car','wide_load'], verified: false, escrow: false, avReady: false, corridorRank: 5, avgResponse: 31, rate: 72, jobCount: 89, corridorHeat: 'COOL', corridors: ['I-75 South'], isSeed: true, trustScore: 38, reviewCount: 4, avgRating: 3.8, reliabilityScore: 62 },
-  { id: 'seed-4', name: 'Pacific Northwest Pilot', state: 'WA', region: 'Seattle, WA', services: ['pilot_car','height_pole','route_survey'], verified: true, escrow: true, avReady: true, corridorRank: 3, avgResponse: 18, rate: 92, jobCount: 156, corridorHeat: 'HOT', corridors: ['I-5 North','I-90 West'], isSeed: true, trustScore: 91, reviewCount: 35, avgRating: 4.8, reliabilityScore: 95, completionRate: 0.98 },
-  { id: 'seed-5', name: 'Midwest Heavy Haul', state: 'IL', region: 'Chicago, IL', services: ['pilot_car','wide_load','oversize'], verified: true, escrow: false, avReady: false, corridorRank: 4, avgResponse: 25, rate: 80, jobCount: 201, corridorHeat: 'WARM', corridors: ['I-80 East','I-55 North'], isSeed: true, trustScore: 77, reviewCount: 19, avgRating: 4.5, reliabilityScore: 84, completionRate: 0.93 },
-  { id: 'seed-6', name: 'Sunshine State Pilots', state: 'FL', region: 'Orlando, FL', services: ['pilot_car','height_pole'], verified: false, escrow: false, avReady: false, corridorRank: 8, avgResponse: 45, rate: 68, jobCount: 43, corridorHeat: 'COOL', corridors: ['I-95 South'], isSeed: true, trustScore: 28, reviewCount: 2, avgRating: 3.5, reliabilityScore: 55 },
-  { id: 'seed-7', name: 'High Desert Escorts', state: 'NV', region: 'Las Vegas, NV', services: ['pilot_car','oversize','route_survey'], verified: true, escrow: true, avReady: true, corridorRank: 6, avgResponse: 20, rate: 88, jobCount: 134, corridorHeat: 'HOT', corridors: ['I-15 South','US-93'], isSeed: true, trustScore: 85, reviewCount: 28, avgRating: 4.7, reliabilityScore: 91, completionRate: 0.97 },
-  { id: 'seed-8', name: 'Blue Ridge Escorts', state: 'VA', region: 'Richmond, VA', services: ['pilot_car','height_pole'], verified: true, escrow: false, avReady: false, corridorRank: 7, avgResponse: 28, rate: 75, jobCount: 98, corridorHeat: 'WARM', corridors: ['I-81 South','I-64 East'], isSeed: true, trustScore: 63, reviewCount: 12, avgRating: 4.3, reliabilityScore: 78, completionRate: 0.91 },
-  { id: 'seed-9', name: 'Prairie Wind Escorts', state: 'KS', region: 'Wichita, KS', services: ['pilot_car','wide_load'], verified: false, escrow: false, avReady: false, corridorRank: 12, avgResponse: 55, rate: 65, jobCount: 22, corridorHeat: 'COOL', corridors: ['I-35 Central'], isSeed: true, trustScore: 15, reviewCount: 1, avgRating: 3.0, reliabilityScore: 40 },
-  { id: 'seed-10', name: 'Capital Region Pilot Cars', state: 'PA', region: 'Harrisburg, PA', services: ['pilot_car','oversize','height_pole'], verified: true, escrow: true, avReady: false, corridorRank: 9, avgResponse: 19, rate: 82, jobCount: 178, corridorHeat: 'WARM', corridors: ['I-76 East','I-81 North'], isSeed: true, trustScore: 79, reviewCount: 22, avgRating: 4.6, reliabilityScore: 86, completionRate: 0.95 },
-];
+// ── No seed operators -- show honest empty state when DB is empty ──
+const EMPTY_STATE_OPERATORS: Operator[] = [];
 
 const SERVICE_LABELS: Record<string, string> = {
   lead_car: 'Lead Car', chase_car: 'Chase Car', pilot_car: 'Pilot Car',
@@ -134,7 +123,7 @@ function AdGridSlot() {
         </div>
       </div>
       <div style={{fontSize: 11,color: T.muted,lineHeight: 1.6 }}>
-        Get instant quotes for pilot car liability, cargo coverage, and fleet policies. Trusted by 2,400+ operators nationwide.
+        Get instant quotes for pilot car liability, cargo coverage, and fleet policies. Trusted by operators nationwide.
       </div>
       <Link aria-label="Navigation Link" href="/sponsor" style={{display: 'inline-flex',alignItems: 'center',gap: 6,padding: '10px 18px',borderRadius: 10,background: `linear-gradient(135deg, ${T.gold}, ${T.goldLight})`,color: '#000',fontSize: 12,fontWeight: 800,textDecoration: 'none',width: 'fit-content',transition: 'transform 0.15s ease'}} className="ag-press">
         Get Quote <ArrowRight size={12} />
@@ -330,10 +319,10 @@ export function PublicDirectory() {
           sponsored: l.metadata?.is_sponsored || false,
           slug: l.slug,
         }));
-        if (listings.length === 0) { setOperators(SEED_OPERATORS); setTotal(SEED_OPERATORS.length); }
+        if (listings.length === 0) { setOperators([]); setTotal(0); }
         else { setOperators(listings); setTotal(data.total || listings.length); }
-      } else { setOperators(SEED_OPERATORS); setTotal(SEED_OPERATORS.length); }
-    } catch { setOperators(SEED_OPERATORS); setTotal(SEED_OPERATORS.length); }
+      } else { setOperators([]); setTotal(0); }
+    } catch { setOperators([]); setTotal(0); }
     setLoading(false);
   }, [filters.state, filters.serviceType, filters.search]);
 
@@ -405,12 +394,12 @@ export function PublicDirectory() {
             <div style={{width: 1,height: 14,background: T.border }} />
             <div style={{display: 'flex',alignItems: 'center',gap: 5,fontSize: 12,color: T.muted }}>
               <Clock size={12} style={{color: T.gold }} />
-              Avg dispatch <span style={{fontWeight: 700,color: T.gold,margin: '0 2px' }}>47 min</span>
+              Avg dispatch <span style={{fontWeight: 700,color: T.gold,margin: '0 2px' }}>—</span>
             </div>
             <div style={{width: 1,height: 14,background: T.border }} />
             <div style={{display: 'flex',alignItems: 'center',gap: 5,fontSize: 12,color: T.muted }}>
               <Globe size={12} style={{color: T.blue }} />
-              <span style={{fontWeight: 700,color: T.blue }}>120 countries</span>
+              <span style={{fontWeight: 700,color: T.blue }}>US coverage</span>
             </div>
             <div style={{width: 1,height: 14,background: T.border }} />
             <div style={{display: 'flex',alignItems: 'center',gap: 5,fontSize: 12,color: T.muted }}>
@@ -428,7 +417,7 @@ export function PublicDirectory() {
               Find a Pilot Car Near Your Route
             </h1>
             <p style={{fontSize: 13,color: T.textSecondary,margin: '0 0 24px' }}>
-              Search by city, state, corridor, or interstate — lead cars, chase cars, height poles, and route survey operators across 120 countries
+              Search by city, state, corridor, or interstate — lead cars, chase cars, height poles, and route survey operators across the US
             </p>
 
             {/* Search + State + Filters */}
@@ -543,6 +532,20 @@ export function PublicDirectory() {
                     );
                     return item.data ? <OperatorCard key={item.data.id} op={item.data} position={i} /> : null;
                   })}
+                </div>
+              )}
+
+              {/* Empty state when no operators */}
+              {!loading && filteredOps.length === 0 && (
+                <div style={{textAlign: 'center',padding: '60px 20px',background: T.bgCard,border: `1px solid ${T.border}`,borderRadius: 20}}>
+                  <div style={{fontSize: 48,marginBottom: 16}}>🚗</div>
+                  <div style={{fontSize: 22,fontWeight: 900,color: T.text,marginBottom: 8}}>No Operators Listed Yet</div>
+                  <div style={{fontSize: 14,color: T.textSecondary,maxWidth: 420,margin: '0 auto 24px',lineHeight: 1.6}}>
+                    Be the first pilot car operator in this area to claim your free listing and start receiving job requests.
+                  </div>
+                  <Link aria-label="Claim Your Listing" href="/claim" style={{display: 'inline-flex',alignItems: 'center',gap: 8,padding: '14px 28px',borderRadius: 12,background: `linear-gradient(135deg, ${T.gold}, ${T.goldLight})`,color: '#000',fontSize: 14,fontWeight: 900,textDecoration: 'none'}}>
+                    🚛 Get Listed Free
+                  </Link>
                 </div>
               )}
 

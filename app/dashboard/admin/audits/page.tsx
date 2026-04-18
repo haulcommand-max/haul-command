@@ -98,7 +98,7 @@ export default async function AdminAuditsPage({
   ];
 
   return (
-    <main className="min-h-screen bg-[#07090d] text-white p-6">
+    <main className=" bg-[#07090d] text-white p-6">
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
@@ -111,7 +111,7 @@ export default async function AdminAuditsPage({
             href="/dashboard/admin"
             className="text-sm text-gray-400 hover:text-amber-400 transition-colors"
           >
-            ← Admin
+            â† Admin
           </Link>
         </div>
 
@@ -138,7 +138,7 @@ export default async function AdminAuditsPage({
               href={`/dashboard/admin/audits?filter=${f.key}${country ? `&country=${country}` : ''}`}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                 filter === f.key
-                  ? 'bg-amber-500 text-black'
+                  ? 'bg-amber-500 text-white'
                   : 'bg-white/5 border border-white/10 text-gray-400 hover:border-white/20'
               }`}
             >
@@ -236,7 +236,7 @@ export default async function AdminAuditsPage({
               {page > 1 && (
                 <Link href={`/dashboard/admin/audits?filter=${filter}&page=${page - 1}`}
                   className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-400 hover:text-white transition-colors">
-                  ← Prev
+                  â† Prev
                 </Link>
               )}
               <span className="px-3 py-1.5 text-sm text-gray-500">
@@ -245,7 +245,7 @@ export default async function AdminAuditsPage({
               {page < totalPages && (
                 <Link href={`/dashboard/admin/audits?filter=${filter}&page=${page + 1}`}
                   className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-sm text-gray-400 hover:text-white transition-colors">
-                  Next →
+                  Next â†’
                 </Link>
               )}
             </div>

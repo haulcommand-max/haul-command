@@ -1,0 +1,719 @@
+
+> haul-command-bots@1.0.0 typecheck
+> tsc --noEmit
+
+app/(admin)/admin/directory/seeds/page.tsx(134,64): error TS1005: '}' expected.
+app/(admin)/admin/directory/seeds/page.tsx(134,81): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(admin)/admin/layout.tsx(17,77): error TS1003: Identifier expected.
+app/(admin)/admin/layout.tsx(17,80): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(admin)/admin/layout.tsx(17,81): error TS1002: Unterminated string literal.
+app/(admin)/admin/layout.tsx(18,94): error TS1127: Invalid character.
+app/(admin)/admin/layout.tsx(18,98): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(admin)/admin/layout.tsx(19,86): error TS1127: Invalid character.
+app/(admin)/admin/layout.tsx(19,90): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(admin)/admin/layout.tsx(20,83): error TS1127: Invalid character.
+app/(admin)/admin/layout.tsx(20,87): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(admin)/admin/layout.tsx(23,83): error TS1127: Invalid character.
+app/(admin)/admin/layout.tsx(23,87): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(admin)/admin/layout.tsx(25,86): error TS1003: Identifier expected.
+app/(admin)/admin/layout.tsx(25,89): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(admin)/admin/layout.tsx(25,90): error TS1002: Unterminated string literal.
+app/(admin)/admin/layout.tsx(28,83): error TS1003: Identifier expected.
+app/(admin)/admin/layout.tsx(28,86): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(admin)/admin/layout.tsx(28,87): error TS1002: Unterminated string literal.
+app/(admin)/admin/layout.tsx(31,101): error TS1127: Invalid character.
+app/(admin)/admin/layout.tsx(31,105): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(admin)/admin/system/page.tsx(214,74): error TS1127: Invalid character.
+app/(admin)/admin/system/page.tsx(214,85): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/ai/page.tsx(6,58): error TS1127: Invalid character.
+app/(app)/ai/page.tsx(6,69): error TS1005: ':' expected.
+app/(app)/ai/page.tsx(6,78): error TS1005: ',' expected.
+app/(app)/ai/page.tsx(6,82): error TS1005: ',' expected.
+app/(app)/ai/page.tsx(6,93): error TS1127: Invalid character.
+app/(app)/ai/page.tsx(6,94): error TS1005: ',' expected.
+app/(app)/ai/page.tsx(6,96): error TS1005: ':' expected.
+app/(app)/ai/page.tsx(6,96): error TS1351: An identifier or keyword cannot immediately follow a numeric literal.
+app/(app)/ai/page.tsx(6,100): error TS1005: ',' expected.
+app/(app)/ai/page.tsx(6,104): error TS1002: Unterminated string literal.
+app/(app)/ai/page.tsx(7,5): error TS1005: ':' expected.
+app/(app)/ai/page.tsx(8,5): error TS1136: Property assignment expected.
+app/(app)/availability/page.tsx(14,59): error TS1127: Invalid character.
+app/(app)/availability/page.tsx(14,64): error TS1002: Unterminated string literal.
+app/(app)/availability/page.tsx(15,5): error TS1005: ':' expected.
+app/(app)/availability/page.tsx(16,1): error TS1136: Property assignment expected.
+app/(app)/availability/page.tsx(439,43): error TS1127: Invalid character.
+app/(app)/availability/page.tsx(442,29): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/availability/page.tsx(444,37): error TS1005: '}' expected.
+app/(app)/availability/page.tsx(447,29): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/availability/page.tsx(448,39): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(app)/availability/page.tsx(457,27): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/map/jurisdiction/page.tsx(466,73): error TS1127: Invalid character.
+app/(app)/map/jurisdiction/page.tsx(466,114): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/map/jurisdiction/page.tsx(467,34): error TS1005: '}' expected.
+app/(app)/map/jurisdiction/page.tsx(467,102): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/map/jurisdiction/page.tsx(468,34): error TS1005: '}' expected.
+app/(app)/map/jurisdiction/page.tsx(468,108): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/map/jurisdiction/page.tsx(469,37): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(app)/map/jurisdiction/page.tsx(473,27): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/map/jurisdiction/page.tsx(489,63): error TS1127: Invalid character.
+app/(app)/map/jurisdiction/page.tsx(489,163): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(app)/map/jurisdiction/page.tsx(490,30): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/map/jurisdiction/page.tsx(494,64): error TS1003: Identifier expected.
+app/(app)/map/jurisdiction/page.tsx(494,144): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(app)/map/jurisdiction/page.tsx(495,30): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/operator/page.tsx(346,65): error TS1005: ':' expected.
+app/(app)/operator/page.tsx(346,90): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(app)/operator/page.tsx(346,127): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(app)/operator/page.tsx(346,149): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/operator/page.tsx(348,22): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(app)/operator/page.tsx(349,18): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/profile/featured/page.tsx(123,47): error TS1127: Invalid character.
+app/(app)/profile/featured/page.tsx(123,90): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/profile/page.tsx(307,70): error TS1127: Invalid character.
+app/(app)/profile/page.tsx(307,72): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/profile/page.tsx(309,42): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(app)/profile/page.tsx(311,74): error TS1127: Invalid character.
+app/(app)/profile/page.tsx(311,76): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/profile/page.tsx(313,41): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(app)/profile/page.tsx(315,92): error TS1127: Invalid character.
+app/(app)/profile/page.tsx(315,94): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/profile/page.tsx(317,41): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(app)/profile/page.tsx(319,83): error TS1127: Invalid character.
+app/(app)/profile/page.tsx(319,85): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/profile/page.tsx(321,41): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(app)/referral/page.tsx(61,71): error TS1127: Invalid character.
+app/(app)/referral/page.tsx(61,89): error TS1005: ':' expected.
+app/(app)/referral/page.tsx(61,92): error TS1127: Invalid character.
+app/(app)/referral/page.tsx(61,112): error TS1005: ':' expected.
+app/(app)/referral/page.tsx(61,115): error TS1127: Invalid character.
+app/(app)/referral/page.tsx(61,118): error TS1002: Unterminated string literal.
+app/(app)/referral/page.tsx(62,5): error TS1005: ':' expected.
+app/(app)/search/page.tsx(48,72): error TS1127: Invalid character.
+app/(app)/search/page.tsx(48,77): error TS1002: Unterminated string literal.
+app/(app)/search/page.tsx(49,5): error TS1005: ':' expected.
+app/(app)/search/page.tsx(49,11): error TS1005: ',' expected.
+app/(app)/search/page.tsx(49,13): error TS1136: Property assignment expected.
+app/(app)/search/page.tsx(49,22): error TS1003: Identifier expected.
+app/(app)/search/page.tsx(49,30): error TS1005: ':' expected.
+app/(app)/search/page.tsx(49,39): error TS1003: Identifier expected.
+app/(app)/search/page.tsx(49,48): error TS1005: ':' expected.
+app/(app)/search/page.tsx(49,56): error TS1003: Identifier expected.
+app/(app)/search/page.tsx(49,63): error TS1005: ':' expected.
+app/(app)/search/page.tsx(64,1): error TS1128: Declaration or statement expected.
+app/(app)/settings/page.tsx(134,57): error TS1003: Identifier expected.
+app/(app)/settings/page.tsx(134,59): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(app)/settings/page.tsx(140,19): error TS17002: Expected corresponding JSX closing tag for 'div'.
+app/(app)/settings/page.tsx(157,9): error TS1005: ')' expected.
+app/(app)/settings/page.tsx(158,5): error TS1109: Expression expected.
+app/(landing)/_components/GlobalEscortSupplyRadar.tsx(973,143): error TS1127: Invalid character.
+app/(landing)/_components/GlobalEscortSupplyRadar.tsx(973,153): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(landing)/_components/GlobalEscortSupplyRadar.tsx(990,143): error TS1127: Invalid character.
+app/(landing)/_components/GlobalEscortSupplyRadar.tsx(990,146): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(landing)/_components/GlobalEscortSupplyRadar.tsx(992,55): error TS1003: Identifier expected.
+app/(landing)/_components/GlobalEscortSupplyRadar.tsx(1010,29): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(landing)/_components/GlobalEscortSupplyRadar.tsx(1020,30): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(landing)/_components/LiveMarketHero.tsx(63,76): error TS1005: ',' expected.
+app/(landing)/_components/LiveMarketHero.tsx(63,84): error TS1005: ',' expected.
+app/(landing)/_components/LiveMarketHero.tsx(63,95): error TS1127: Invalid character.
+app/(landing)/_components/LiveMarketHero.tsx(63,96): error TS1005: ',' expected.
+app/(landing)/_components/LiveMarketHero.tsx(63,97): error TS1005: ':' expected.
+app/(landing)/_components/LiveMarketHero.tsx(63,97): error TS1351: An identifier or keyword cannot immediately follow a numeric literal.
+app/(landing)/_components/LiveMarketHero.tsx(63,102): error TS1005: ',' expected.
+app/(landing)/_components/LiveMarketHero.tsx(63,122): error TS1002: Unterminated string literal.
+app/(landing)/_components/LiveMarketHero.tsx(64,9): error TS1005: ':' expected.
+app/(landing)/_components/LiveMarketHero.tsx(65,5): error TS1136: Property assignment expected.
+app/(landing)/_components/TrustArchitecture.tsx(30,57): error TS1127: Invalid character.
+app/(landing)/_components/TrustArchitecture.tsx(30,63): error TS1005: ',' expected.
+app/(landing)/_components/TrustArchitecture.tsx(30,72): error TS1005: ':' expected.
+app/(public)/advertise/territory/page.tsx(360,40): error TS1005: ',' expected.
+app/(public)/advertise/territory/page.tsx(360,42): error TS1002: Unterminated string literal.
+app/(public)/advertise/territory/page.tsx(361,29): error TS1005: ':' expected.
+app/(public)/advertise/territory/page.tsx(361,34): error TS1005: ',' expected.
+app/(public)/advertise/territory/page.tsx(363,25): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(public)/advertise/territory/page.tsx(364,52): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(public)/advertise/territory/page.tsx(370,23): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(public)/available-now/page.tsx(479,84): error TS1005: ',' expected.
+app/(public)/available-now/page.tsx(479,87): error TS1005: ',' expected.
+app/(public)/available-now/page.tsx(479,95): error TS1005: ',' expected.
+app/(public)/available-now/page.tsx(479,105): error TS1005: ':' expected.
+app/(public)/available-now/page.tsx(479,113): error TS1005: ',' expected.
+app/(public)/available-now/page.tsx(479,119): error TS1005: ',' expected.
+app/(public)/available-now/page.tsx(479,124): error TS1005: ',' expected.
+app/(public)/available-now/page.tsx(479,129): error TS1005: ',' expected.
+app/(public)/available-now/page.tsx(479,133): error TS1002: Unterminated string literal.
+app/(public)/available-now/page.tsx(480,15): error TS1005: ':' expected.
+app/(public)/available-now/page.tsx(481,15): error TS1136: Property assignment expected.
+app/(public)/available-now/page.tsx(481,47): error TS1005: ',' expected.
+app/(public)/available-now/page.tsx(481,48): error TS1127: Invalid character.
+app/(public)/available-now/page.tsx(481,116): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(public)/available-now/page.tsx(482,14): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(public)/available-now/page.tsx(483,12): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(public)/broker/page.tsx(57,21): error TS1127: Invalid character.
+app/(public)/broker/page.tsx(57,32): error TS1005: ':' expected.
+app/(public)/broker/page.tsx(57,37): error TS1005: ',' expected.
+app/(public)/broker/page.tsx(57,48): error TS1005: ',' expected.
+app/(public)/broker/page.tsx(57,58): error TS1127: Invalid character.
+app/(public)/broker/page.tsx(57,66): error TS1005: ',' expected.
+app/(public)/broker/page.tsx(57,70): error TS1005: ',' expected.
+app/(public)/broker/page.tsx(57,80): error TS1005: ',' expected.
+app/(public)/broker/page.tsx(57,83): error TS1005: ',' expected.
+app/(public)/broker/page.tsx(57,87): error TS1005: ',' expected.
+app/(public)/broker/page.tsx(57,91): error TS1002: Unterminated string literal.
+app/(public)/broker/page.tsx(58,9): error TS1005: ':' expected.
+app/(public)/broker/page.tsx(59,5): error TS1136: Property assignment expected.
+app/(public)/broker/page.tsx(236,47): error TS1005: ',' expected.
+app/(public)/broker/page.tsx(236,48): error TS1005: ',' expected.
+app/(public)/broker/page.tsx(236,59): error TS1005: ':' expected.
+app/(public)/broker/page.tsx(236,66): error TS1005: ',' expected.
+app/(public)/broker/page.tsx(236,70): error TS1005: ',' expected.
+app/(public)/broker/page.tsx(236,74): error TS1005: ',' expected.
+app/(public)/broker/page.tsx(236,84): error TS1005: ':' expected.
+app/(public)/broker/page.tsx(236,93): error TS1005: ',' expected.
+app/(public)/broker/page.tsx(236,100): error TS1005: ',' expected.
+app/(public)/broker/page.tsx(236,103): error TS1005: ',' expected.
+app/(public)/broker/page.tsx(236,106): error TS1005: ',' expected.
+app/(public)/broker/page.tsx(236,110): error TS1002: Unterminated string literal.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,28): error TS1005: ',' expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,39): error TS1005: ':' expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,49): error TS1005: ',' expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,54): error TS1005: ',' expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,64): error TS1005: ':' expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,67): error TS1005: ',' expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,71): error TS1005: ',' expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,76): error TS1005: ',' expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,81): error TS1005: ':' expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,84): error TS1005: ',' expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,91): error TS1005: ',' expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,101): error TS1005: ',' expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,111): error TS1005: ',' expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,120): error TS1005: ',' expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,123): error TS1005: ',' expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,126): error TS1005: ':' expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,126): error TS1351: An identifier or keyword cannot immediately follow a numeric literal.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,137): error TS1005: ',' expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,147): error TS1003: Identifier expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(135,151): error TS1002: Unterminated string literal.
+app/(public)/regulations/autonomous-vehicles/page.tsx(136,15): error TS1005: ':' expected.
+app/(public)/regulations/autonomous-vehicles/page.tsx(137,15): error TS1136: Property assignment expected.
+app/(public)/remove-listing/page.tsx(22,132): error TS1005: ',' expected.
+app/(public)/remove-listing/page.tsx(22,137): error TS1002: Unterminated string literal.
+app/(public)/remove-listing/page.tsx(23,5): error TS1005: ':' expected.
+app/(public)/tools/load-analyzer/page.tsx(103,125): error TS1127: Invalid character.
+app/(public)/tools/load-analyzer/page.tsx(103,370): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(public)/tools/load-analyzer/page.tsx(119,10): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(public)/tools/page.tsx(83,19): error TS1127: Invalid character.
+app/(public)/tools/page.tsx(83,22): error TS1002: Unterminated string literal.
+app/(public)/tools/page.tsx(84,9): error TS1005: ':' expected.
+app/(public)/tools/page.tsx(84,14): error TS1005: ',' expected.
+app/(public)/tools/page.tsx(84,25): error TS1005: ':' expected.
+app/(public)/tools/rate-advisor/page.tsx(105,52): error TS1127: Invalid character.
+app/(public)/tools/rate-advisor/page.tsx(105,76): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(public)/tools/regulation-alerts/page.tsx(9,126): error TS1005: ',' expected.
+app/(public)/tools/regulation-alerts/page.tsx(9,127): error TS1127: Invalid character.
+app/(public)/tools/regulation-alerts/page.tsx(9,128): error TS1127: Invalid character.
+app/(public)/tools/regulation-alerts/page.tsx(9,151): error TS1005: ':' expected.
+app/(public)/tools/regulation-alerts/page.tsx(9,153): error TS1127: Invalid character.
+app/(public)/tools/regulation-alerts/page.tsx(9,154): error TS1127: Invalid character.
+app/(public)/tools/regulation-alerts/page.tsx(9,156): error TS1127: Invalid character.
+app/(public)/tools/regulation-alerts/page.tsx(9,157): error TS1127: Invalid character.
+app/(public)/tools/regulation-alerts/page.tsx(9,184): error TS1005: ':' expected.
+app/(public)/tools/regulation-alerts/page.tsx(9,187): error TS1127: Invalid character.
+app/(public)/tools/regulation-alerts/page.tsx(9,207): error TS1005: ':' expected.
+app/(public)/tools/regulation-alerts/page.tsx(9,208): error TS1127: Invalid character.
+app/(public)/tools/regulation-alerts/page.tsx(9,209): error TS1127: Invalid character.
+app/(public)/tools/regulation-alerts/page.tsx(9,214): error TS1002: Unterminated string literal.
+app/(public)/tools/regulation-alerts/page.tsx(11,1): error TS1005: ':' expected.
+app/(public)/tools/regulation-alerts/page.tsx(11,25): error TS1005: ':' expected.
+app/(public)/tools/regulation-alerts/page.tsx(11,48): error TS1005: ',' expected.
+app/(public)/tools/regulation-alerts/page.tsx(12,11): error TS1005: ':' expected.
+app/(public)/tools/regulation-alerts/page.tsx(12,36): error TS1005: ',' expected.
+app/(public)/tools/regulation-alerts/page.tsx(74,1): error TS1128: Declaration or statement expected.
+app/admin/abuse/page.tsx(94,68): error TS1127: Invalid character.
+app/admin/abuse/page.tsx(94,82): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/admin/ads/page.tsx(130,41): error TS1127: Invalid character.
+app/admin/ads/page.tsx(130,64): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/admin/ads/page.tsx(131,20): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/admin/ads/page.tsx(138,13): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/admin/batch-jobs/page.tsx(51,15): error TS1127: Invalid character.
+app/admin/batch-jobs/page.tsx(51,23): error TS1005: ',' expected.
+app/admin/batch-jobs/page.tsx(51,29): error TS1127: Invalid character.
+app/admin/batch-jobs/page.tsx(51,39): error TS1005: ',' expected.
+app/admin/batch-jobs/page.tsx(51,54): error TS1005: ',' expected.
+app/admin/batch-jobs/page.tsx(51,58): error TS1005: ',' expected.
+app/admin/batch-jobs/page.tsx(51,61): error TS1002: Unterminated string literal.
+app/admin/batch-jobs/page.tsx(52,5): error TS1005: ',' expected.
+app/admin/batch-jobs/page.tsx(52,16): error TS1005: ',' expected.
+app/admin/batch-jobs/page.tsx(53,13): error TS1005: ',' expected.
+app/admin/batch-jobs/page.tsx(54,11): error TS1005: ',' expected.
+app/admin/batch-jobs/page.tsx(55,9): error TS1005: ',' expected.
+app/admin/batch-jobs/page.tsx(56,10): error TS1005: ',' expected.
+app/admin/batch-jobs/page.tsx(57,10): error TS1005: ',' expected.
+app/admin/batch-jobs/page.tsx(58,9): error TS1005: ',' expected.
+app/admin/batch-jobs/page.tsx(59,9): error TS1005: ',' expected.
+app/admin/batch-jobs/page.tsx(60,13): error TS1005: ',' expected.
+app/admin/batch-jobs/page.tsx(61,10): error TS1005: ',' expected.
+app/admin/batch-jobs/page.tsx(62,3): error TS1137: Expression or comma expected.
+app/admin/batch-jobs/page.tsx(62,4): error TS1128: Declaration or statement expected.
+app/admin/batch-jobs/page.tsx(65,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(66,16): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(67,13): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(68,11): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(69,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(69,44): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(69,60): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(69,72): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(69,81): error TS1128: Declaration or statement expected.
+app/admin/batch-jobs/page.tsx(71,10): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(72,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(73,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(74,13): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(75,10): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(76,3): error TS1109: Expression expected.
+app/admin/batch-jobs/page.tsx(76,4): error TS1128: Declaration or statement expected.
+app/admin/batch-jobs/page.tsx(79,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(80,16): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(81,13): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(82,11): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(83,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(83,39): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(83,45): error TS1128: Declaration or statement expected.
+app/admin/batch-jobs/page.tsx(85,10): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(86,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(87,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(88,13): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(89,10): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(90,3): error TS1109: Expression expected.
+app/admin/batch-jobs/page.tsx(90,4): error TS1128: Declaration or statement expected.
+app/admin/batch-jobs/page.tsx(93,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(94,16): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(95,13): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(96,11): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(97,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(97,37): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(97,43): error TS1128: Declaration or statement expected.
+app/admin/batch-jobs/page.tsx(99,10): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(100,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(101,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(102,13): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(103,10): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(104,3): error TS1109: Expression expected.
+app/admin/batch-jobs/page.tsx(104,4): error TS1128: Declaration or statement expected.
+app/admin/batch-jobs/page.tsx(107,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(108,16): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(109,13): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(110,11): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(111,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(111,25): error TS1128: Declaration or statement expected.
+app/admin/batch-jobs/page.tsx(113,10): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(114,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(115,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(116,13): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(117,10): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(118,3): error TS1109: Expression expected.
+app/admin/batch-jobs/page.tsx(118,4): error TS1128: Declaration or statement expected.
+app/admin/batch-jobs/page.tsx(121,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(122,16): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(123,13): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(124,11): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(125,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(125,62): error TS1128: Declaration or statement expected.
+app/admin/batch-jobs/page.tsx(127,10): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(128,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(129,9): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(130,13): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(131,10): error TS1005: ';' expected.
+app/admin/batch-jobs/page.tsx(132,3): error TS1109: Expression expected.
+app/admin/batch-jobs/page.tsx(132,4): error TS1128: Declaration or statement expected.
+app/admin/batch-jobs/page.tsx(133,1): error TS1128: Declaration or statement expected.
+app/admin/dashboards/page.tsx(16,19): error TS1127: Invalid character.
+app/admin/dashboards/page.tsx(16,22): error TS1002: Unterminated string literal.
+app/admin/dashboards/page.tsx(17,9): error TS1005: ':' expected.
+app/admin/dashboards/page.tsx(17,14): error TS1005: ',' expected.
+app/admin/dashboards/page.tsx(17,25): error TS1005: ':' expected.
+app/admin/dashboards/revenue/page.tsx(63,55): error TS1005: ':' expected.
+app/admin/dashboards/revenue/page.tsx(63,66): error TS1005: ';' expected.
+app/admin/dashboards/revenue/page.tsx(63,75): error TS1005: ';' expected.
+app/admin/dashboards/revenue/page.tsx(63,76): error TS1127: Invalid character.
+app/admin/dashboards/revenue/page.tsx(63,86): error TS1002: Unterminated string literal.
+app/admin/page.tsx(12,20): error TS1127: Invalid character.
+app/admin/page.tsx(12,22): error TS1127: Invalid character.
+app/admin/page.tsx(12,23): error TS1127: Invalid character.
+app/admin/page.tsx(12,26): error TS1127: Invalid character.
+app/admin/page.tsx(12,28): error TS1127: Invalid character.
+app/admin/page.tsx(12,29): error TS1127: Invalid character.
+app/admin/page.tsx(12,34): error TS1005: ',' expected.
+app/admin/page.tsx(12,41): error TS1005: ',' expected.
+app/admin/page.tsx(12,43): error TS1002: Unterminated string literal.
+app/admin/page.tsx(13,5): error TS1005: ':' expected.
+app/admin/page.tsx(13,10): error TS1005: ',' expected.
+app/admin/page.tsx(18,5): error TS1109: Expression expected.
+app/admin/page.tsx(18,6): error TS1005: ':' expected.
+app/admin/page.tsx(67,54): error TS1127: Invalid character.
+app/admin/page.tsx(67,115): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/admin/page.tsx(68,20): error TS1005: '}' expected.
+app/admin/page.tsx(68,109): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/admin/page.tsx(69,20): error TS1005: '}' expected.
+app/admin/page.tsx(69,102): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/admin/page.tsx(70,23): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/admin/page.tsx(80,13): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/admin/trust/page.tsx(28,24): error TS1127: Invalid character.
+app/admin/trust/page.tsx(28,32): error TS1005: ',' expected.
+app/admin/trust/page.tsx(28,42): error TS1005: ',' expected.
+app/admin/trust/page.tsx(28,46): error TS1005: ',' expected.
+app/admin/trust/page.tsx(28,48): error TS1002: Unterminated string literal.
+app/admin/trust/page.tsx(29,13): error TS1005: ':' expected.
+app/admin/trust/page.tsx(29,17): error TS1005: ',' expected.
+app/admin/trust/page.tsx(29,104): error TS1005: ':' expected.
+app/admin/trust/page.tsx(49,24): error TS1005: ',' expected.
+app/admin/trust/page.tsx(49,26): error TS1005: ',' expected.
+app/admin/trust/page.tsx(49,32): error TS1005: ',' expected.
+app/admin/trust/page.tsx(49,38): error TS1005: ',' expected.
+app/admin/trust/page.tsx(49,40): error TS1002: Unterminated string literal.
+app/admin/trust/page.tsx(50,13): error TS1005: ':' expected.
+app/admin/trust/page.tsx(50,17): error TS1005: ',' expected.
+app/admin/trust/page.tsx(50,87): error TS1005: ':' expected.
+app/admin/vendors/placements/new/page.tsx(115,53): error TS1127: Invalid character.
+app/admin/vendors/placements/new/page.tsx(115,73): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/admin/vendors/placements/new/page.tsx(121,58): error TS1127: Invalid character.
+app/admin/vendors/placements/new/page.tsx(121,78): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/admin/vendors/placements/new/page.tsx(152,46): error TS1127: Invalid character.
+app/admin/vendors/placements/new/page.tsx(152,69): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/admin/vendors/placements/page.tsx(76,49): error TS1127: Invalid character.
+app/admin/vendors/placements/page.tsx(76,126): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/admin/vendors/placements/page.tsx(81,52): error TS1127: Invalid character.
+app/admin/vendors/placements/page.tsx(81,129): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/api/cron/email-sequences/route.ts(155,33): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,35): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,42): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,48): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,53): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,59): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,67): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,72): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,81): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,90): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,95): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,107): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,115): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,125): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,128): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,133): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,141): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,155): error TS1005: '(' expected.
+app/api/cron/email-sequences/route.ts(155,162): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,168): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,170): error TS1003: Identifier expected.
+app/api/cron/email-sequences/route.ts(155,173): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(155,231): error TS1127: Invalid character.
+app/api/cron/email-sequences/route.ts(155,232): error TS1136: Property assignment expected.
+app/api/cron/email-sequences/route.ts(155,242): error TS1002: Unterminated string literal.
+app/api/cron/email-sequences/route.ts(156,5): error TS1005: ',' expected.
+app/api/cron/email-sequences/route.ts(158,20): error TS1003: Identifier expected.
+app/api/cron/email-sequences/route.ts(158,23): error TS1005: ':' expected.
+app/api/cron/email-sequences/route.ts(159,25): error TS1003: Identifier expected.
+app/api/cron/email-sequences/route.ts(159,37): error TS1005: ':' expected.
+app/api/cron/email-sequences/route.ts(160,22): error TS1003: Identifier expected.
+app/api/cron/email-sequences/route.ts(160,159): error TS1005: ':' expected.
+app/api/cron/email-sequences/route.ts(162,3): error TS1128: Declaration or statement expected.
+app/api/cron/email-sequences/route.ts(162,4): error TS1128: Declaration or statement expected.
+app/api/cron/email-sequences/route.ts(175,24): error TS1005: ';' expected.
+app/api/cron/email-sequences/route.ts(187,26): error TS1005: ';' expected.
+app/api/cron/email-sequences/route.ts(209,1): error TS1109: Expression expected.
+app/claim/page.tsx(86,28): error TS1127: Invalid character.
+app/claim/page.tsx(86,122): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/claim/page.tsx(87,23): error TS1005: '}' expected.
+app/claim/page.tsx(87,135): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/claim/page.tsx(88,23): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/claim/page.tsx(96,17): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/corridors/oilfield/page.tsx(74,15): error TS1127: Invalid character.
+app/corridors/oilfield/page.tsx(74,26): error TS1005: ':' expected.
+app/corridors/oilfield/page.tsx(74,35): error TS1005: ',' expected.
+app/corridors/oilfield/page.tsx(74,43): error TS1005: ',' expected.
+app/corridors/oilfield/page.tsx(74,50): error TS1005: ',' expected.
+app/corridors/oilfield/page.tsx(74,54): error TS1005: ',' expected.
+app/corridors/oilfield/page.tsx(74,70): error TS1005: ',' expected.
+app/corridors/oilfield/page.tsx(74,74): error TS1005: ',' expected.
+app/corridors/oilfield/page.tsx(74,86): error TS1005: ',' expected.
+app/corridors/oilfield/page.tsx(74,88): error TS1005: ',' expected.
+app/corridors/oilfield/page.tsx(74,95): error TS1005: ',' expected.
+app/corridors/oilfield/page.tsx(74,106): error TS1005: ',' expected.
+app/corridors/oilfield/page.tsx(74,111): error TS1005: ',' expected.
+app/corridors/oilfield/page.tsx(74,113): error TS1005: ',' expected.
+app/corridors/oilfield/page.tsx(74,119): error TS1005: ',' expected.
+app/corridors/oilfield/page.tsx(74,123): error TS1005: ',' expected.
+app/corridors/oilfield/page.tsx(74,129): error TS1005: ',' expected.
+app/corridors/oilfield/page.tsx(74,133): error TS1005: ',' expected.
+app/corridors/oilfield/page.tsx(74,145): error TS1005: ',' expected.
+app/corridors/oilfield/page.tsx(74,151): error TS1005: ',' expected.
+app/corridors/oilfield/page.tsx(74,157): error TS1003: Identifier expected.
+app/corridors/oilfield/page.tsx(74,161): error TS1002: Unterminated string literal.
+app/corridors/oilfield/page.tsx(75,3): error TS1005: ',' expected.
+app/dashboard/broker/loads/LoadBoardClient.tsx(430,52): error TS1127: Invalid character.
+app/dashboard/broker/loads/LoadBoardClient.tsx(431,44): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/dashboard/enterprise/page.tsx(103,94): error TS1127: Invalid character.
+app/dashboard/enterprise/page.tsx(103,97): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/dashboard/enterprise/page.tsx(104,20): error TS1005: '}' expected.
+app/dashboard/enterprise/page.tsx(104,101): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/dashboard/enterprise/page.tsx(105,20): error TS1005: '}' expected.
+app/dashboard/enterprise/page.tsx(105,96): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/dashboard/enterprise/page.tsx(106,22): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/dashboard/enterprise/page.tsx(114,13): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/dashboard/loads/page.tsx(413,52): error TS1127: Invalid character.
+app/dashboard/loads/page.tsx(415,16): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/dashboard/operator/OperatorDashboardClient.tsx(488,61): error TS1127: Invalid character.
+app/dashboard/operator/OperatorDashboardClient.tsx(488,88): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/data-products/corridor-intelligence/page.tsx(255,25): error TS1127: Invalid character.
+app/data-products/corridor-intelligence/page.tsx(255,124): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/data-products/corridor-intelligence/page.tsx(256,19): error TS1005: '}' expected.
+app/data-products/corridor-intelligence/page.tsx(256,120): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/data-products/corridor-intelligence/page.tsx(257,19): error TS1005: '}' expected.
+app/data-products/corridor-intelligence/page.tsx(257,131): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/data-products/corridor-intelligence/page.tsx(258,19): error TS1005: '}' expected.
+app/data-products/corridor-intelligence/page.tsx(258,119): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/data-products/corridor-intelligence/page.tsx(259,19): error TS1005: '}' expected.
+app/data-products/corridor-intelligence/page.tsx(259,134): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/data-products/corridor-intelligence/page.tsx(260,19): error TS1005: '}' expected.
+app/data-products/corridor-intelligence/page.tsx(260,123): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/data-products/corridor-intelligence/page.tsx(261,23): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/data-products/corridor-intelligence/page.tsx(267,13): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/data/page.tsx(59,41): error TS1127: Invalid character.
+app/data/page.tsx(59,53): error TS1005: ':' expected.
+app/data/page.tsx(59,70): error TS1005: ',' expected.
+app/data/page.tsx(59,83): error TS1005: ':' expected.
+app/data/page.tsx(59,88): error TS1005: ',' expected.
+app/data/page.tsx(59,93): error TS1005: ',' expected.
+app/data/page.tsx(59,97): error TS1002: Unterminated string literal.
+app/data/page.tsx(60,5): error TS1005: ':' expected.
+app/data/page.tsx(60,24): error TS1005: ',' expected.
+app/data/page.tsx(60,29): error TS1136: Property assignment expected.
+app/data/page.tsx(60,37): error TS1003: Identifier expected.
+app/data/page.tsx(60,43): error TS1005: ':' expected.
+app/data/page.tsx(60,52): error TS1003: Identifier expected.
+app/data/page.tsx(60,72): error TS1005: ':' expected.
+app/data/page.tsx(60,82): error TS1003: Identifier expected.
+app/data/page.tsx(60,97): error TS1005: ':' expected.
+app/data/page.tsx(66,1): error TS1128: Declaration or statement expected.
+app/dev/screenshots/page.tsx(51,33): error TS1127: Invalid character.
+app/dev/screenshots/page.tsx(51,43): error TS1005: ',' expected.
+app/dev/screenshots/page.tsx(51,55): error TS1005: ':' expected.
+app/emergency/nearby/page.tsx(164,49): error TS1127: Invalid character.
+app/emergency/nearby/page.tsx(164,175): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/emergency/nearby/page.tsx(186,76): error TS1127: Invalid character.
+app/emergency/nearby/page.tsx(186,202): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/emergency/nearby/page.tsx(192,47): error TS1127: Invalid character.
+app/emergency/nearby/page.tsx(192,74): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/emergency/nearby/page.tsx(196,47): error TS1127: Invalid character.
+app/emergency/nearby/page.tsx(196,67): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/enterprise/autonomous/page.tsx(33,25): error TS1127: Invalid character.
+app/enterprise/autonomous/page.tsx(33,166): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/enterprise/autonomous/page.tsx(34,25): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/enterprise/autonomous/page.tsx(40,13): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/icons/page.tsx(15,28): error TS1127: Invalid character.
+app/icons/page.tsx(15,39): error TS1005: ',' expected.
+app/icons/page.tsx(15,47): error TS1005: ',' expected.
+app/icons/page.tsx(15,49): error TS1002: Unterminated string literal.
+app/icons/page.tsx(16,5): error TS1005: ':' expected.
+app/icons/page.tsx(16,18): error TS1005: ',' expected.
+app/icons/page.tsx(16,43): error TS1005: ':' expected.
+app/leaderboards/page.tsx(325,41): error TS1005: ',' expected.
+app/leaderboards/page.tsx(325,42): error TS1005: ',' expected.
+app/leaderboards/page.tsx(325,53): error TS1005: ':' expected.
+app/leaderboards/page.tsx(325,57): error TS1005: ',' expected.
+app/leaderboards/page.tsx(325,69): error TS1005: ',' expected.
+app/leaderboards/page.tsx(325,79): error TS1005: ':' expected.
+app/leaderboards/page.tsx(325,85): error TS1005: ',' expected.
+app/leaderboards/page.tsx(325,90): error TS1005: ',' expected.
+app/leaderboards/page.tsx(325,95): error TS1005: ',' expected.
+app/leaderboards/page.tsx(325,105): error TS1005: ',' expected.
+app/leaderboards/page.tsx(325,109): error TS1002: Unterminated string literal.
+app/leaderboards/page.tsx(326,11): error TS1005: ':' expected.
+app/leaderboards/page.tsx(327,9): error TS1136: Property assignment expected.
+app/library/page.tsx(72,101): error TS1005: ',' expected.
+app/library/page.tsx(72,103): error TS1005: ',' expected.
+app/library/page.tsx(72,111): error TS1005: ',' expected.
+app/library/page.tsx(72,117): error TS1005: ',' expected.
+app/library/page.tsx(72,130): error TS1005: ',' expected.
+app/library/page.tsx(72,137): error TS1005: ',' expected.
+app/library/page.tsx(72,148): error TS1005: ',' expected.
+app/library/page.tsx(72,159): error TS1005: ',' expected.
+app/library/page.tsx(72,170): error TS1005: ',' expected.
+app/library/page.tsx(72,182): error TS1005: ',' expected.
+app/library/page.tsx(72,187): error TS1005: ',' expected.
+app/library/page.tsx(72,191): error TS1005: ',' expected.
+app/library/page.tsx(72,200): error TS1005: ',' expected.
+app/library/page.tsx(72,205): error TS1005: ',' expected.
+app/library/page.tsx(72,206): error TS1003: Identifier expected.
+app/library/page.tsx(72,208): error TS1002: Unterminated string literal.
+app/library/page.tsx(73,3): error TS1005: ':' expected.
+app/notifications/page.tsx(11,26): error TS1127: Invalid character.
+app/notifications/page.tsx(11,47): error TS1127: Invalid character.
+app/notifications/page.tsx(11,48): error TS1127: Invalid character.
+app/notifications/page.tsx(11,50): error TS1127: Invalid character.
+app/notifications/page.tsx(11,51): error TS1127: Invalid character.
+app/notifications/page.tsx(11,79): error TS1005: ':' expected.
+app/notifications/page.tsx(11,80): error TS1127: Invalid character.
+app/notifications/page.tsx(11,81): error TS1127: Invalid character.
+app/notifications/page.tsx(11,84): error TS1002: Unterminated string literal.
+app/notifications/page.tsx(12,3): error TS1005: ':' expected.
+app/notifications/page.tsx(12,24): error TS1005: ',' expected.
+app/notifications/page.tsx(12,35): error TS1005: ':' expected.
+app/repositioning/page.tsx(297,64): error TS1127: Invalid character.
+app/repositioning/page.tsx(299,12): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/roles/dispatcher/page.tsx(164,43): error TS1005: ',' expected.
+app/roles/dispatcher/page.tsx(164,44): error TS1005: ',' expected.
+app/roles/dispatcher/page.tsx(164,55): error TS1005: ':' expected.
+app/roles/dispatcher/page.tsx(164,59): error TS1005: ',' expected.
+app/roles/dispatcher/page.tsx(164,68): error TS1005: ',' expected.
+app/roles/dispatcher/page.tsx(164,73): error TS1005: ',' expected.
+app/roles/dispatcher/page.tsx(164,83): error TS1005: ':' expected.
+app/roles/dispatcher/page.tsx(164,92): error TS1005: ',' expected.
+app/roles/dispatcher/page.tsx(164,101): error TS1005: ',' expected.
+app/roles/dispatcher/page.tsx(164,105): error TS1005: ':' expected.
+app/roles/dispatcher/page.tsx(164,116): error TS1005: ',' expected.
+app/roles/dispatcher/page.tsx(164,120): error TS1002: Unterminated string literal.
+app/roles/dispatcher/page.tsx(165,11): error TS1005: ':' expected.
+app/roles/page.tsx(252,55): error TS1005: ',' expected.
+app/roles/page.tsx(252,56): error TS1005: ',' expected.
+app/roles/page.tsx(252,67): error TS1005: ':' expected.
+app/roles/page.tsx(252,71): error TS1005: ',' expected.
+app/roles/page.tsx(252,76): error TS1005: ',' expected.
+app/roles/page.tsx(252,86): error TS1005: ':' expected.
+app/roles/page.tsx(252,95): error TS1005: ',' expected.
+app/roles/page.tsx(252,105): error TS1005: ',' expected.
+app/roles/page.tsx(252,110): error TS1005: ',' expected.
+app/roles/page.tsx(252,113): error TS1005: ',' expected.
+app/roles/page.tsx(252,116): error TS1005: ',' expected.
+app/roles/page.tsx(252,120): error TS1002: Unterminated string literal.
+app/roles/pilot-car-operator/page.tsx(91,39): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(91,40): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(91,51): error TS1005: ':' expected.
+app/roles/pilot-car-operator/page.tsx(91,54): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(91,58): error TS1127: Invalid character.
+app/roles/pilot-car-operator/page.tsx(91,69): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(91,78): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(91,88): error TS1005: ':' expected.
+app/roles/pilot-car-operator/page.tsx(91,92): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(91,101): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(91,113): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(91,117): error TS1002: Unterminated string literal.
+app/roles/pilot-car-operator/page.tsx(92,9): error TS1005: ':' expected.
+app/roles/pilot-car-operator/page.tsx(93,9): error TS1136: Property assignment expected.
+app/roles/pilot-car-operator/page.tsx(93,37): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(93,38): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(93,49): error TS1005: ':' expected.
+app/roles/pilot-car-operator/page.tsx(93,55): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(93,59): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(93,64): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(93,69): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(93,79): error TS1005: ':' expected.
+app/roles/pilot-car-operator/page.tsx(93,87): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(93,95): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(93,101): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(93,104): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(93,109): error TS1005: ',' expected.
+app/roles/pilot-car-operator/page.tsx(93,113): error TS1002: Unterminated string literal.
+app/roles/pilot-car-operator/page.tsx(94,9): error TS1005: ':' expected.
+app/roles/pilot-car-operator/page.tsx(95,9): error TS1136: Property assignment expected.
+app/settings/alerts/page.tsx(188,39): error TS1127: Invalid character.
+app/settings/alerts/page.tsx(188,79): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/tools/axle-weight-calculator/page.tsx(121,192): error TS1005: ',' expected.
+app/tools/axle-weight-calculator/page.tsx(121,193): error TS1005: ':' expected.
+app/tools/axle-weight-calculator/page.tsx(121,334): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/tools/axle-weight-calculator/page.tsx(122,19): error TS1005: '}' expected.
+app/tools/axle-weight-calculator/page.tsx(122,277): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/tools/axle-weight-calculator/page.tsx(123,19): error TS1005: '}' expected.
+app/tools/axle-weight-calculator/page.tsx(123,276): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/tools/axle-weight-calculator/page.tsx(124,19): error TS1005: '}' expected.
+app/tools/axle-weight-calculator/page.tsx(124,247): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/tools/axle-weight-calculator/page.tsx(125,30): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/tools/axle-weight-calculator/page.tsx(130,17): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/tools/compliance-copilot/page.tsx(432,72): error TS1127: Invalid character.
+app/tools/compliance-copilot/page.tsx(454,30): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/tools/compliance-copilot/page.tsx(473,56): error TS1005: '}' expected.
+app/tools/compliance-copilot/page.tsx(473,57): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/tools/compliance-copilot/page.tsx(473,58): error TS1002: Unterminated string literal.
+app/tools/instant-quote/page.tsx(312,53): error TS1127: Invalid character.
+app/tools/instant-quote/page.tsx(312,78): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/tools/instant-quote/page.tsx(313,19): error TS1005: '}' expected.
+app/tools/instant-quote/page.tsx(313,91): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/tools/instant-quote/page.tsx(314,19): error TS1005: '}' expected.
+app/tools/instant-quote/page.tsx(314,73): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/tools/instant-quote/page.tsx(315,20): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/tools/instant-quote/page.tsx(325,13): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/training/av-certification/page.tsx(235,28): error TS1005: ',' expected.
+app/training/av-certification/page.tsx(235,39): error TS1005: ':' expected.
+app/training/av-certification/page.tsx(235,49): error TS1005: ',' expected.
+app/training/av-certification/page.tsx(235,54): error TS1005: ',' expected.
+app/training/av-certification/page.tsx(235,64): error TS1005: ':' expected.
+app/training/av-certification/page.tsx(235,68): error TS1005: ',' expected.
+app/training/av-certification/page.tsx(235,72): error TS1005: ',' expected.
+app/training/av-certification/page.tsx(235,77): error TS1005: ',' expected.
+app/training/av-certification/page.tsx(235,82): error TS1005: ':' expected.
+app/training/av-certification/page.tsx(235,87): error TS1005: ',' expected.
+app/training/av-certification/page.tsx(235,95): error TS1005: ',' expected.
+app/training/av-certification/page.tsx(235,101): error TS1005: ',' expected.
+app/training/av-certification/page.tsx(235,111): error TS1005: ',' expected.
+app/training/av-certification/page.tsx(235,121): error TS1005: ',' expected.
+app/training/av-certification/page.tsx(235,131): error TS1005: ',' expected.
+app/training/av-certification/page.tsx(235,135): error TS1005: ',' expected.
+app/training/av-certification/page.tsx(235,144): error TS1005: ',' expected.
+app/training/av-certification/page.tsx(235,145): error TS1003: Identifier expected.
+app/training/av-certification/page.tsx(235,149): error TS1002: Unterminated string literal.
+app/training/av-certification/page.tsx(236,15): error TS1005: ':' expected.
+app/training/av-certification/page.tsx(237,13): error TS1136: Property assignment expected.
+app/united-states/page.tsx(26,49): error TS1005: ',' expected.
+app/united-states/page.tsx(26,59): error TS1005: ':' expected.
+app/united-states/page.tsx(26,64): error TS1005: ',' expected.
+app/united-states/page.tsx(26,67): error TS1005: ',' expected.
+app/united-states/page.tsx(26,76): error TS1005: ',' expected.
+app/united-states/page.tsx(26,83): error TS1005: ',' expected.
+app/united-states/page.tsx(26,87): error TS1002: Unterminated string literal.
+app/united-states/page.tsx(27,5): error TS1005: ':' expected.
+app/united-states/page.tsx(28,5): error TS1136: Property assignment expected.
+app/vendors/apply/page.tsx(182,128): error TS1127: Invalid character.
+app/vendors/apply/page.tsx(182,150): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/vendors/apply/page.tsx(267,48): error TS1127: Invalid character.
+app/vendors/apply/page.tsx(267,73): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/vs/ods-north-america/page.tsx(95,140): error TS1005: ',' expected.
+app/vs/ods-north-america/page.tsx(95,142): error TS1005: ',' expected.
+app/vs/ods-north-america/page.tsx(95,147): error TS1005: ',' expected.
+app/vs/ods-north-america/page.tsx(95,163): error TS1005: ',' expected.
+app/vs/ods-north-america/page.tsx(95,173): error TS1005: ',' expected.
+app/vs/ods-north-america/page.tsx(95,181): error TS1005: ',' expected.
+app/vs/ods-north-america/page.tsx(95,189): error TS1005: ',' expected.
+app/vs/ods-north-america/page.tsx(95,193): error TS1005: ',' expected.
+app/vs/ods-north-america/page.tsx(95,203): error TS1005: ',' expected.
+app/vs/ods-north-america/page.tsx(95,207): error TS1005: ',' expected.
+app/vs/ods-north-america/page.tsx(95,215): error TS1005: ',' expected.
+app/vs/ods-north-america/page.tsx(95,224): error TS1005: ',' expected.
+app/vs/ods-north-america/page.tsx(95,233): error TS1127: Invalid character.
+app/vs/ods-north-america/page.tsx(95,251): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/vs/ods-north-america/page.tsx(96,21): error TS1005: '}' expected.
+app/vs/ods-north-america/page.tsx(96,241): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/vs/ods-north-america/page.tsx(97,21): error TS1005: '}' expected.
+app/vs/ods-north-america/page.tsx(97,234): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/vs/ods-north-america/page.tsx(98,21): error TS1005: '}' expected.
+app/vs/ods-north-america/page.tsx(98,244): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/vs/ods-north-america/page.tsx(99,28): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/vs/ods-north-america/page.tsx(104,15): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/vs/oversize-io/page.tsx(103,71): error TS1005: ',' expected.
+app/vs/oversize-io/page.tsx(103,73): error TS1005: ',' expected.
+app/vs/oversize-io/page.tsx(103,82): error TS1005: ',' expected.
+app/vs/oversize-io/page.tsx(103,90): error TS1005: ',' expected.
+app/vs/oversize-io/page.tsx(103,97): error TS1005: ',' expected.
+app/vs/oversize-io/page.tsx(103,99): error TS1005: ':' expected.
+app/vs/oversize-io/page.tsx(103,109): error TS1005: ',' expected.
+app/vs/oversize-io/page.tsx(103,116): error TS1005: ',' expected.
+app/vs/oversize-io/page.tsx(103,118): error TS1005: ':' expected.
+app/vs/oversize-io/page.tsx(103,135): error TS1005: ',' expected.
+app/vs/oversize-io/page.tsx(103,139): error TS1005: ',' expected.
+app/vs/oversize-io/page.tsx(103,145): error TS1005: ',' expected.
+app/vs/oversize-io/page.tsx(103,148): error TS1005: ',' expected.
+app/vs/oversize-io/page.tsx(103,176): error TS1005: ',' expected.
+app/vs/oversize-io/page.tsx(103,179): error TS1005: ',' expected.
+app/vs/oversize-io/page.tsx(103,185): error TS1005: ',' expected.
+app/vs/oversize-io/page.tsx(103,190): error TS1005: ',' expected.
+app/vs/oversize-io/page.tsx(103,218): error TS1005: ',' expected.
+app/vs/oversize-io/page.tsx(103,225): error TS1005: ',' expected.
+app/vs/oversize-io/page.tsx(103,230): error TS1003: Identifier expected.
+app/vs/oversize-io/page.tsx(103,233): error TS1002: Unterminated string literal.

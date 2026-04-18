@@ -23,16 +23,22 @@ interface Props {
 const DEFAULT_EQUIPMENT: Array<{ value: string; label: string }> = [
     { value: "all", label: "All Load Types" },
     { value: "general_oversize", label: "General Oversize" },
+    { value: "high_value", label: "High-value Loads" },
+    { value: "hazardous_materials", label: "Hazardous Materials" },
+    { value: "ag_machinery", label: "Agricultural Machinery" },
+    { value: "wind_component", label: "Wind-turbine Components" },
+    { value: "modular_building", label: "Modular Buildings" },
     { value: "mobile_home", label: "Mobile Home" },
-    { value: "wind_blade", label: "Wind Blade" },
-    { value: "transformer", label: "Transformer" },
-    { value: "bridge_beam", label: "Bridge Beam" },
-    { value: "crane", label: "Crane" },
+    { value: "bridge_beam", label: "Bridge Beams / Girders" },
+    { value: "precast_concrete", label: "Pre-cast Concrete Panels" },
     { value: "steel_precast", label: "Steel / Precast" },
+    { value: "crane_components", label: "Crane Components" },
     { value: "heavy_equipment", label: "Heavy Equipment" },
-    { value: "superload", label: "Superload" },
+    { value: "superload", label: "Superloads / Weight-Restricted" },
+    { value: "transformer", label: "Transformer" },
     { value: "high_pole", label: "High Pole" },
     { value: "route_survey", label: "Route Survey" },
+    { value: "other", label: "Other (Specify)" }
 ];
 
 export default function HeroSearchBar({

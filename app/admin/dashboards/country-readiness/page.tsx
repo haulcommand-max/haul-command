@@ -132,7 +132,7 @@ export default function CountryReadinessDashboard() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
                 <div>
                     <h1 style={{ fontSize: 24, fontWeight: 900, color: '#fff', margin: 0 }}>Country Readiness</h1>
-                    <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>All 120 countries • Market modes • Transition status</p>
+                    <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>All 120 countries "¢ Market modes "¢ Transition status</p>
                 </div>
             </div>
 
@@ -241,18 +241,18 @@ export default function CountryReadinessDashboard() {
                                         }}>{c.cds_band}</span>
                                     </td>
                                     <td style={{ padding: '10px 14px', textAlign: 'center', fontSize: 14 }}>
-                                        {c.has_pricing ? '✅' : '❌'}
+                                        {c.has_pricing ? 'âœ…' : 'âŒ'}
                                     </td>
                                     <td style={{ padding: '10px 14px', textAlign: 'center', fontSize: 14 }}>
-                                        {c.has_locale ? '✅' : '❌'}
+                                        {c.has_locale ? 'âœ…' : 'âŒ'}
                                     </td>
                                     <td style={{ padding: '10px 14px', textAlign: 'center', fontSize: 12 }}>
                                         {c.db_recommendation && c.db_recommendation !== 'hold' ? (
                                             <span style={{ color: '#F1A91B', fontWeight: 700, fontSize: 10 }}>
-                                                ⬆ {c.db_recommendation.replace('promote_to_', '').toUpperCase()}
+                                                â¬† {c.db_recommendation.replace('promote_to_', '').toUpperCase()}
                                             </span>
                                         ) : c.transition_ready ? (
-                                            <span style={{ color: '#F59E0B', fontWeight: 700 }}>⬆ Ready</span>
+                                            <span style={{ color: '#F59E0B', fontWeight: 700 }}>â¬† Ready</span>
                                         ) : (
                                             <span style={{ color: '#888' }}>—</span>
                                         )}

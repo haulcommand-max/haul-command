@@ -154,7 +154,7 @@ export default function PermitCheckerPage() {
                                 transition: 'all 0.2s',
                             }}
                         >
-                            {calculating ? '⏳ Calculating...' : '🔍 Check Permit Complexity'}
+                            {calculating ? 'â³ Calculating...' : 'ðŸ” Check Permit Complexity'}
                         </button>
 
                         {/* Results */}
@@ -180,10 +180,10 @@ export default function PermitCheckerPage() {
 
                                 {result.warnings.length > 0 && (
                                     <div style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)', borderRadius: 12, padding: '1rem 1.25rem', marginBottom: '1.5rem' }}>
-                                        <div style={{ fontSize: 11, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>⚠ Route Warnings</div>
+                                        <div style={{ fontSize: 11, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>âš  Route Warnings</div>
                                         {result.warnings.map((w: string, i: number) => (
                                             <div key={i} style={{ fontSize: 13, color: '#d1d5db', padding: '0.3rem 0', display: 'flex', gap: 8 }}>
-                                                <span style={{ color: '#f59e0b' }}>•</span> {w}
+                                                <span style={{ color: '#f59e0b' }}>"¢</span> {w}
                                             </div>
                                         ))}
                                     </div>
@@ -193,7 +193,7 @@ export default function PermitCheckerPage() {
                                     <h3 style={{ margin: '0 0 8px', fontSize: 16, fontWeight: 800, color: '#f9fafb' }}>Need Escorts for This Route?</h3>
                                     <p style={{ margin: '0 0 16px', fontSize: 13, color: '#6b7280' }}>Post your load on Haul Command and get matched with verified escorts in minutes.</p>
                                     <a href="/onboarding/start?role=broker" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 28px', background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 10, textDecoration: 'none' }}>
-                                        Post a Load — Free →
+                                        Post a Load — Free â†’
                                     </a>
                                 </div>
 

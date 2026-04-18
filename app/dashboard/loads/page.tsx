@@ -15,7 +15,7 @@
 import { useState, useCallback } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-// ── Types ─────────────────────────────────────────────────────
+// -- Types -----------------------------------------------------
 interface Lead {
   company: string;
   phone: string;
@@ -36,46 +36,46 @@ interface PushResult {
   role: string;
 }
 
-// ── Constants ─────────────────────────────────────────────────
+// -- Constants -------------------------------------------------
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 const COUNTRIES = [
-  { code: 'US', flag: '🇺🇸', name: 'United States' },
-  { code: 'CA', flag: '🇨🇦', name: 'Canada' },
-  { code: 'MX', flag: '🇲🇽', name: 'Mexico' },
-  { code: 'AU', flag: '🇦🇺', name: 'Australia' },
-  { code: 'GB', flag: '🇬🇧', name: 'United Kingdom' },
-  { code: 'DE', flag: '🇩🇪', name: 'Germany' },
-  { code: 'FR', flag: '🇫🇷', name: 'France' },
-  { code: 'NL', flag: '🇳🇱', name: 'Netherlands' },
-  { code: 'BE', flag: '🇧🇪', name: 'Belgium' },
-  { code: 'ES', flag: '🇪🇸', name: 'Spain' },
-  { code: 'IT', flag: '🇮🇹', name: 'Italy' },
-  { code: 'PL', flag: '🇵🇱', name: 'Poland' },
-  { code: 'SE', flag: '🇸🇪', name: 'Sweden' },
-  { code: 'NO', flag: '🇳🇴', name: 'Norway' },
-  { code: 'FI', flag: '🇫🇮', name: 'Finland' },
-  { code: 'DK', flag: '🇩🇰', name: 'Denmark' },
-  { code: 'CH', flag: '🇨🇭', name: 'Switzerland' },
-  { code: 'AT', flag: '🇦🇹', name: 'Austria' },
-  { code: 'CZ', flag: '🇨🇿', name: 'Czech Republic' },
-  { code: 'BR', flag: '🇧🇷', name: 'Brazil' },
-  { code: 'AR', flag: '🇦🇷', name: 'Argentina' },
-  { code: 'CL', flag: '🇨🇱', name: 'Chile' },
-  { code: 'ZA', flag: '🇿🇦', name: 'South Africa' },
-  { code: 'AE', flag: '🇦🇪', name: 'UAE' },
-  { code: 'SA', flag: '🇸🇦', name: 'Saudi Arabia' },
-  { code: 'IN', flag: '🇮🇳', name: 'India' },
-  { code: 'JP', flag: '🇯🇵', name: 'Japan' },
-  { code: 'KR', flag: '🇰🇷', name: 'South Korea' },
-  { code: 'SG', flag: '🇸🇬', name: 'Singapore' },
-  { code: 'MY', flag: '🇲🇾', name: 'Malaysia' },
-  { code: 'TH', flag: '🇹🇭', name: 'Thailand' },
-  { code: 'ID', flag: '🇮🇩', name: 'Indonesia' },
-  { code: 'PH', flag: '🇵🇭', name: 'Philippines' },
-  { code: 'NZ', flag: '🇳🇿', name: 'New Zealand' },
-  { code: 'OTHER', flag: '🌍', name: 'Other' },
+  { code: 'US', flag: 'ðŸ‡ºðŸ‡¸', name: 'United States' },
+  { code: 'CA', flag: 'ðŸ‡¨ðŸ‡¦', name: 'Canada' },
+  { code: 'MX', flag: 'ðŸ‡²ðŸ‡½', name: 'Mexico' },
+  { code: 'AU', flag: 'ðŸ‡¦ðŸ‡º', name: 'Australia' },
+  { code: 'GB', flag: 'ðŸ‡¬ðŸ‡§', name: 'United Kingdom' },
+  { code: 'DE', flag: 'ðŸ‡©ðŸ‡ª', name: 'Germany' },
+  { code: 'FR', flag: 'ðŸ‡«ðŸ‡·', name: 'France' },
+  { code: 'NL', flag: 'ðŸ‡³ðŸ‡±', name: 'Netherlands' },
+  { code: 'BE', flag: 'ðŸ‡§ðŸ‡ª', name: 'Belgium' },
+  { code: 'ES', flag: 'ðŸ‡ªðŸ‡¸', name: 'Spain' },
+  { code: 'IT', flag: 'ðŸ‡®ðŸ‡¹', name: 'Italy' },
+  { code: 'PL', flag: 'ðŸ‡µðŸ‡±', name: 'Poland' },
+  { code: 'SE', flag: 'ðŸ‡¸ðŸ‡ª', name: 'Sweden' },
+  { code: 'NO', flag: 'ðŸ‡³ðŸ‡´', name: 'Norway' },
+  { code: 'FI', flag: 'ðŸ‡«ðŸ‡®', name: 'Finland' },
+  { code: 'DK', flag: 'ðŸ‡©ðŸ‡°', name: 'Denmark' },
+  { code: 'CH', flag: 'ðŸ‡¨ðŸ‡­', name: 'Switzerland' },
+  { code: 'AT', flag: 'ðŸ‡¦ðŸ‡¹', name: 'Austria' },
+  { code: 'CZ', flag: 'ðŸ‡¨ðŸ‡¿', name: 'Czech Republic' },
+  { code: 'BR', flag: 'ðŸ‡§ðŸ‡·', name: 'Brazil' },
+  { code: 'AR', flag: 'ðŸ‡¦ðŸ‡·', name: 'Argentina' },
+  { code: 'CL', flag: 'ðŸ‡¨ðŸ‡±', name: 'Chile' },
+  { code: 'ZA', flag: 'ðŸ‡¿ðŸ‡¦', name: 'South Africa' },
+  { code: 'AE', flag: 'ðŸ‡¦ðŸ‡ª', name: 'UAE' },
+  { code: 'SA', flag: 'ðŸ‡¸ðŸ‡¦', name: 'Saudi Arabia' },
+  { code: 'IN', flag: 'ðŸ‡®ðŸ‡³', name: 'India' },
+  { code: 'JP', flag: 'ðŸ‡¯ðŸ‡µ', name: 'Japan' },
+  { code: 'KR', flag: 'ðŸ‡°ðŸ‡·', name: 'South Korea' },
+  { code: 'SG', flag: 'ðŸ‡¸ðŸ‡¬', name: 'Singapore' },
+  { code: 'MY', flag: 'ðŸ‡²ðŸ‡¾', name: 'Malaysia' },
+  { code: 'TH', flag: 'ðŸ‡¹ðŸ‡­', name: 'Thailand' },
+  { code: 'ID', flag: 'ðŸ‡®ðŸ‡©', name: 'Indonesia' },
+  { code: 'PH', flag: 'ðŸ‡µðŸ‡­', name: 'Philippines' },
+  { code: 'NZ', flag: 'ðŸ‡³ðŸ‡¿', name: 'New Zealand' },
+  { code: 'OTHER', flag: 'ðŸŒ', name: 'Other' },
 ];
 
 const SAMPLE = `Load Alert!! Atlas 2532400305 Solon OH Ellicott City MD Chase
@@ -93,7 +93,7 @@ Available Chase driver covering TX, OK, NM corridors - text only (214) 555-0192
 High Pole certified operator - Southeast US - available now - (678) 617-2090
 Steer certified - Midwest runs - (312) 555-7841 call or text`;
 
-// ── Helpers ───────────────────────────────────────────────────
+// -- Helpers ---------------------------------------------------
 function normPhone(raw: string | null): string | null {
   if (!raw) return null;
   const d = raw.replace(/\D/g, '');
@@ -125,7 +125,7 @@ const POS_COLOR: Record<string, string> = {
   Steer: '#4ade80', 'Route Survey': '#fb923c',
 };
 
-// ── Supabase push ─────────────────────────────────────────────
+// -- Supabase push ---------------------------------------------
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function pushLead(supabase: any, lead: Lead, cc: string): Promise<PushResult> {
   const phone = normPhone(lead.phone);
@@ -215,7 +215,7 @@ async function pushLead(supabase: any, lead: Lead, cc: string): Promise<PushResu
   }
 }
 
-// ── Component ─────────────────────────────────────────────────
+// -- Component -------------------------------------------------
 export default function LeadParserPage() {
   const [rawInput, setRawInput] = useState('');
   const [countryCode, setCountryCode] = useState('US');
@@ -232,7 +232,7 @@ export default function LeadParserPage() {
   const runPipeline = useCallback(async () => {
     if (!rawInput.trim()) return;
     setLoading(true);
-    setStatus({ state: 'on', text: 'AI extracting leads…' });
+    setStatus({ state: 'on', text: 'AI extracting leads...' });
     setLeads([]);
     setPushResults([]);
 
@@ -253,9 +253,9 @@ export default function LeadParserPage() {
 
       // Step 2: Push to Supabase
       if (supabase) {
-        setStatus({ state: 'on', text: `Saving ${parsed.length} leads…` });
+        setStatus({ state: 'on', text: `Saving ${parsed.length} leads...` });
         for (let i = 0; i < parsed.length; i++) {
-          setStatus({ state: 'on', text: `Saving ${i + 1}/${parsed.length}…` });
+          setStatus({ state: 'on', text: `Saving ${i + 1}/${parsed.length}...` });
           const result = await pushLead(supabase, parsed[i], countryCode);
           results[i] = result;
           setPushResults([...results]);
@@ -363,7 +363,7 @@ export default function LeadParserPage() {
           <textarea
             value={rawInput}
             onChange={e => setRawInput(e.target.value)}
-            placeholder={`Paste load board data here…\n\nBROKER examples (posting a job — NEED someone):\n  Load Alert!! Atlas 2532400305 Solon OH Ellicott City MD Chase\n  Angie's Pilot Car LLC - Tulsa OK to Portal ND - (918) 638-5878 - Lead needed\n\nOPERATOR examples (advertising availability — CAN DO):\n  Available Chase driver - TX corridor - call (555) 123-4567\n  High Pole certified, covering Southeast US - (678) 555-9900`}
+            placeholder={`Paste load board data here...\n\nBROKER examples (posting a job — NEED someone):\n  Load Alert!! Atlas 2532400305 Solon OH Ellicott City MD Chase\n  Angie's Pilot Car LLC - Tulsa OK to Portal ND - (918) 638-5878 - Lead needed\n\nOPERATOR examples (advertising availability — CAN DO):\n  Available Chase driver - TX corridor - call (555) 123-4567\n  High Pole certified, covering Southeast US - (678) 555-9900`}
             style={{ width: '100%', background: 'transparent', border: 'none', color: '#e2e8f0', fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, lineHeight: 1.6, padding: '14px 16px', resize: 'vertical', minHeight: 160, outline: 'none' }}
           />
         </div>
@@ -380,7 +380,7 @@ export default function LeadParserPage() {
               transition: 'all .15s',
             }}
           >
-            ⚡ Extract + Save to Supabase
+            âš¡ Extract + Save to Supabase
           </button>
           <button aria-label="Interactive Button"
             onClick={() => setRawInput(SAMPLE)}
@@ -410,7 +410,7 @@ export default function LeadParserPage() {
               <input
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                placeholder="Search company / city…"
+                placeholder="Search company / city..."
                 style={{ background: '#0d0f12', border: '1px solid #252c3f', color: '#e2e8f0', fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, padding: '5px 12px', width: 200, outline: 'none', marginLeft: 'auto' }}
               />
             </div>
@@ -429,7 +429,7 @@ export default function LeadParserPage() {
                 </button>
               ))}
               <span style={{ marginLeft: 8, fontFamily: "'Barlow Condensed', sans-serif", fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', color: '#64748b', marginRight: 4 }}>Role:</span>
-              {[{ v: 'all', l: 'All Roles' }, { v: 'broker', l: '🏢 Brokers' }, { v: 'operator', l: '🚗 Operators' }].map(r => (
+              {[{ v: 'all', l: 'All Roles' }, { v: 'broker', l: 'ðŸ¢ Brokers' }, { v: 'operator', l: 'ðŸš— Operators' }].map(r => (
                 <button aria-label="Interactive Button" key={r.v} onClick={() => setRoleFilter(r.v)}
                   style={{
                     fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, padding: '4px 9px', background: 'transparent',
@@ -445,8 +445,8 @@ export default function LeadParserPage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: 1, background: '#252c3f' }}>
               {[
                 { n: leads.length, l: 'Total', c: '#f5a623' },
-                { n: brokers, l: '🏢 Brokers', c: '#3b82f6' },
-                { n: ops, l: '🚗 Operators', c: '#a855f7' },
+                { n: brokers, l: 'ðŸ¢ Brokers', c: '#3b82f6' },
+                { n: ops, l: 'ðŸš— Operators', c: '#a855f7' },
                 { n: phones, l: 'Unique Phones', c: '#f5a623' },
                 ...topTypes.map(([t, c]) => ({ n: c, l: t, c: POS_COLOR[t] || '#94a3b8' })),
                 { n: qp, l: 'Quick Pay', c: '#f5a623' },
@@ -498,7 +498,7 @@ export default function LeadParserPage() {
                             color: role === 'operator' ? '#c084fc' : role === 'both' ? '#f5a623' : '#60a5fa',
                             border: `1px solid ${role === 'operator' ? 'rgba(168,85,247,.25)' : role === 'both' ? 'rgba(245,166,35,.25)' : 'rgba(59,130,246,.25)'}`,
                           }}>
-                            {role === 'operator' ? '🚗 Operator' : role === 'both' ? '⚡ Both' : '🏢 Broker'}
+                            {role === 'operator' ? 'ðŸš— Operator' : role === 'both' ? 'âš¡ Both' : 'ðŸ¢ Broker'}
                           </span>
                         </td>
                         <td style={{ padding: '9px 12px', fontSize: 11, whiteSpace: 'nowrap' }}>{l.origin || '—'}</td>
@@ -524,7 +524,7 @@ export default function LeadParserPage() {
                         <td style={{ padding: '9px 12px', fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, whiteSpace: 'nowrap' }}>
                           {!pr ? <span style={{ color: '#252c3f' }}>pending</span>
                             : pr.brokerStatus === 'new' ? <span style={{ color: '#22c55e' }}>✓ new {pr.role}</span>
-                            : pr.brokerStatus === 'updated' ? <span style={{ color: '#f5a623' }}>↻ known</span>
+                            : pr.brokerStatus === 'updated' ? <span style={{ color: '#f5a623' }}>â†» known</span>
                             : pr.brokerStatus === 'no_phone' ? <span style={{ color: '#64748b' }}>no phone</span>
                             : <span style={{ color: '#ef4444' }}>error</span>
                           }
@@ -539,9 +539,9 @@ export default function LeadParserPage() {
             {/* Export row */}
             <div style={{ padding: '10px 16px', borderTop: '1px solid #252c3f', display: 'flex', gap: 8, alignItems: 'center', background: '#1c2030', flexWrap: 'wrap' }}>
               <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 10, letterSpacing: 2, textTransform: 'uppercase', color: '#64748b', marginRight: 4 }}>Export:</span>
-              <button aria-label="Interactive Button" onClick={exportCSV} style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', background: 'transparent', color: '#64748b', border: '1px solid #252c3f', padding: '8px 14px', cursor: 'pointer' }}>📋 Copy CSV</button>
-              <button aria-label="Interactive Button" onClick={() => copyPhones('broker')} style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', background: 'transparent', color: '#64748b', border: '1px solid #252c3f', padding: '8px 14px', cursor: 'pointer' }}>📞 Broker Phones</button>
-              <button aria-label="Interactive Button" onClick={() => copyPhones('operator')} style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', background: 'transparent', color: '#64748b', border: '1px solid #252c3f', padding: '8px 14px', cursor: 'pointer' }}>🚗 Operator Phones</button>
+              <button aria-label="Interactive Button" onClick={exportCSV} style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', background: 'transparent', color: '#64748b', border: '1px solid #252c3f', padding: '8px 14px', cursor: 'pointer' }}>ðŸ"‹ Copy CSV</button>
+              <button aria-label="Interactive Button" onClick={() => copyPhones('broker')} style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', background: 'transparent', color: '#64748b', border: '1px solid #252c3f', padding: '8px 14px', cursor: 'pointer' }}>ðŸ"ž Broker Phones</button>
+              <button aria-label="Interactive Button" onClick={() => copyPhones('operator')} style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', background: 'transparent', color: '#64748b', border: '1px solid #252c3f', padding: '8px 14px', cursor: 'pointer' }}>ðŸš— Operator Phones</button>
             </div>
           </div>
         )}
@@ -550,16 +550,16 @@ export default function LeadParserPage() {
         {leads.length > 0 && (
           <div style={{ background: '#151820', border: '1px solid #252c3f', borderLeft: '3px solid #22c55e', marginTop: 20, overflow: 'hidden' }}>
             <div style={{ padding: '12px 16px', borderBottom: '1px solid #252c3f', fontFamily: "'Barlow Condensed', sans-serif", fontSize: 13, letterSpacing: 2, textTransform: 'uppercase', color: '#22c55e', display: 'flex', alignItems: 'center', gap: 8 }}>
-              💰 Revenue Opportunities Detected
+              ðŸ’° Revenue Opportunities Detected
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 1, background: '#252c3f' }}>
               {[
-                { title: '🔓 Lead Unlock Revenue', desc: `${brokers} broker postings logged. Operators pay $2–5 to unlock contact info.`, value: `$${brokers * 3} est. / batch` },
-                { title: '✅ Verified Broker Badges', desc: `${phones} unique phones. Offer "Verified" status for $29–49/mo.`, value: `$${phones * 39}/mo if all verify` },
-                { title: '📊 Rate Intelligence Feed', desc: `Rate data captured for corridor pricing analytics.`, value: '$99–299/mo per subscriber' },
-                { title: '⚡ Quick Pay Premium', desc: `${qp} loads flagged Quick Pay. Placement fee for priority.`, value: `${qp} QP loads this batch` },
-                { title: '🚗 Operator Matching', desc: `${ops} operators identified. Match to broker loads.`, value: `${ops} operators ready` },
-                { title: '🌍 Global Expansion', desc: 'Same pipeline for 120 countries. Each market = new network.', value: '120 countries, same system' },
+                { title: 'ðŸ"" Lead Unlock Revenue', desc: `${brokers} broker postings logged. Operators pay $2-5 to unlock contact info.`, value: `$${brokers * 3} est. / batch` },
+                { title: 'âœ… Verified Broker Badges', desc: `${phones} unique phones. Offer "Verified" status for $29-49/mo.`, value: `$${phones * 39}/mo if all verify` },
+                { title: 'ðŸ"Š Rate Intelligence Feed', desc: `Rate data captured for corridor pricing analytics.`, value: '$99-299/mo per subscriber' },
+                { title: 'âš¡ Quick Pay Premium', desc: `${qp} loads flagged Quick Pay. Placement fee for priority.`, value: `${qp} QP loads this batch` },
+                { title: 'ðŸš— Operator Matching', desc: `${ops} operators identified. Match to broker loads.`, value: `${ops} operators ready` },
+                { title: 'ðŸŒ Global Expansion', desc: 'Same pipeline for 120 countries. Each market = new network.', value: '120 countries, same system' },
               ].map((c, i) => (
                 <div key={i} style={{ background: '#1c2030', padding: 16, display: 'flex', flexDirection: 'column', gap: 6 }}>
                   <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', color: '#e2e8f0' }}>{c.title}</div>
@@ -575,7 +575,7 @@ export default function LeadParserPage() {
         {loading && leads.length === 0 && (
           <div style={{ textAlign: 'center', padding: '50px 20px', background: '#151820', border: '1px solid #252c3f' }}>
             <div style={{ width: 28, height: 28, border: '2px solid #252c3f', borderTopColor: '#f5a623', borderRadius: '50%', animation: 'spin .8s linear infinite', margin: '0 auto 12px' }} />
-            <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: '#64748b' }}>AI parsing and classifying roles…</p>
+            <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: '#64748b' }}>AI parsing and classifying roles...</p>
             <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
           </div>
         )}

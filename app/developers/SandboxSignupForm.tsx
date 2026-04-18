@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 
-// ─────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // SandboxSignupForm
 //
 // Email capture form for the free API sandbox key.
 // On submit: POST /api/developers/sandbox-key
 // Success: show confirmation + expected delivery time.
-// ─────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 type FormState = 'idle' | 'loading' | 'success' | 'error';
 
@@ -50,7 +50,7 @@ export function SandboxSignupForm() {
         return (
             <div className="text-center py-6 space-y-3 animate-in fade-in duration-300">
                 <div className="mx-auto w-14 h-14 rounded-full bg-blue-500/15 border border-blue-500/30 flex items-center justify-center">
-                    <span className="text-blue-400 text-2xl">📬</span>
+                    <span className="text-blue-400 text-2xl">ðŸ“¬</span>
                 </div>
                 <h3 className="font-bold text-white text-lg">Check your inbox</h3>
                 <p className="text-sm text-gray-400 max-w-xs mx-auto leading-relaxed">
@@ -136,7 +136,7 @@ export function SandboxSignupForm() {
                 disabled={state === 'loading' || !email.trim()}
                 className="w-full py-3.5 rounded-xl bg-blue-600 text-white font-bold text-sm uppercase tracking-widest hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
-                {state === 'loading' ? 'Sending...' : 'Get Free Sandbox Key →'}
+                {state === 'loading' ? 'Sending...' : 'Get Free Sandbox Key â†’'}
             </button>
 
             <p className="text-center text-xs text-gray-600">
@@ -153,7 +153,7 @@ export function SandboxSignupForm() {
                     'JSON docs + Postman collection',
                 ].map(f => (
                     <div key={f} className="flex items-center gap-2 text-xs text-gray-400">
-                        <span className="text-blue-400">✓</span>
+                        <span className="text-blue-400">âœ“</span>
                         {f}
                     </div>
                 ))}

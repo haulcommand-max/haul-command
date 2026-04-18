@@ -122,7 +122,7 @@ export function MobileAppNav({ unreadCount = 0, onFabPress }: MobileNavProps) {
   const rightTabs = NAV_TABS.slice(2);
 
   return (
-    <nav className="m-bottom-nav" role="tablist" aria-label="Main navigation">
+    <nav className="m-bottom-nav" role="tablist" aria-label="Main navigation" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
       <div className="m-bottom-nav__tabs">
         {/* Left tabs: Home, Loads */}
         {leftTabs.map((tab) => {

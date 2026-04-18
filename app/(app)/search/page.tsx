@@ -7,7 +7,7 @@ import {
     HcIconBridgeClearance, HcIconDispatchServices,
 } from '@/components/icons';
 
-/* ─── Result types ────────────────────────────────────────────────────── */
+/* â”€â”€â”€ Result types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 /** Unified search result — maps from hc_search_all RPC output */
 interface SearchResult {
@@ -40,31 +40,31 @@ interface SearchResponse {
     };
 }
 
-/* ─── Entity type display helpers ─────────────────────────────────────── */
+/* â”€â”€â”€ Entity type display helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 const ENTITY_TYPE_LABELS: Record<string, { label: string; color: string; icon: string }> = {
-    operator: { label: 'Operator', color: '#00ff88', icon: '🚗' },
-    pilot_car_operator: { label: 'Pilot Car', color: '#00ff88', icon: '🚗' },
-    pilot_driver: { label: 'Pilot Driver', color: '#00e07a', icon: '👤' },
-    broker: { label: 'Broker', color: '#818cf8', icon: '🤝' },
-    truck_stop: { label: 'Truck Stop', color: '#f59e0b', icon: '⛽' },
-    port: { label: 'Port', color: '#3b82f6', icon: '🏗️' },
-    port_infrastructure: { label: 'Port Infra', color: '#60a5fa', icon: '🏗️' },
-    terminal: { label: 'Terminal', color: '#6366f1', icon: '📦' },
-    hotel: { label: 'Hotel', color: '#a78bfa', icon: '🏨' },
-    support_hotel: { label: 'Support Hotel', color: '#a78bfa', icon: '🏨' },
-    place: { label: 'Place', color: '#fb923c', icon: '📍' },
-    escort_staging_zone: { label: 'Staging Zone', color: '#34d399', icon: '🎯' },
-    crane_rental_yard: { label: 'Crane Yard', color: '#fbbf24', icon: '🏗️' },
-    intermodal_rail_yard: { label: 'Rail Yard', color: '#60a5fa', icon: '🚂' },
-    weigh_station: { label: 'Weigh Station', color: '#94a3b8', icon: '⚖️' },
-    border_crossing: { label: 'Border Crossing', color: '#ef4444', icon: '🚧' },
-    military_base: { label: 'Military Base', color: '#64748b', icon: '🎖️' },
-    mining_site: { label: 'Mining Site', color: '#d97706', icon: '⛏️' },
+    operator: { label: 'Operator', color: '#00ff88', icon: 'ðŸš—' },
+    pilot_car_operator: { label: 'Pilot Car', color: '#00ff88', icon: 'ðŸš—' },
+    pilot_driver: { label: 'Pilot Driver', color: '#00e07a', icon: 'ðŸ‘¤' },
+    broker: { label: 'Broker', color: '#818cf8', icon: 'ðŸ¤' },
+    truck_stop: { label: 'Truck Stop', color: '#f59e0b', icon: 'â›½' },
+    port: { label: 'Port', color: '#3b82f6', icon: 'ðŸ—ï¸' },
+    port_infrastructure: { label: 'Port Infra', color: '#60a5fa', icon: 'ðŸ—ï¸' },
+    terminal: { label: 'Terminal', color: '#6366f1', icon: 'ðŸ“¦' },
+    hotel: { label: 'Hotel', color: '#a78bfa', icon: 'ðŸ¨' },
+    support_hotel: { label: 'Support Hotel', color: '#a78bfa', icon: 'ðŸ¨' },
+    place: { label: 'Place', color: '#fb923c', icon: 'ðŸ“' },
+    escort_staging_zone: { label: 'Staging Zone', color: '#34d399', icon: 'ðŸŽ¯' },
+    crane_rental_yard: { label: 'Crane Yard', color: '#fbbf24', icon: 'ðŸ—ï¸' },
+    intermodal_rail_yard: { label: 'Rail Yard', color: '#60a5fa', icon: 'ðŸš‚' },
+    weigh_station: { label: 'Weigh Station', color: '#94a3b8', icon: 'âš–ï¸' },
+    border_crossing: { label: 'Border Crossing', color: '#ef4444', icon: 'ðŸš§' },
+    military_base: { label: 'Military Base', color: '#64748b', icon: 'ðŸŽ–ï¸' },
+    mining_site: { label: 'Mining Site', color: '#d97706', icon: 'â›ï¸' },
 };
 
 function getEntityDisplay(type: string) {
-    return ENTITY_TYPE_LABELS[type] || { label: type.replace(/_/g, ' '), color: '#888', icon: '📄' };
+    return ENTITY_TYPE_LABELS[type] || { label: type.replace(/_/g, ' '), color: '#888', icon: 'ðŸ“„' };
 }
 
 /** Entity types in the pilot_car_operator_family that get operator-style rendering */
@@ -77,7 +77,7 @@ const SORT_OPTIONS = [
     { value: 'newest', label: 'Newest' },
 ];
 
-/* ─── Main Page Component ─────────────────────────────────────────────── */
+/* â”€â”€â”€ Main Page Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 export default function SearchPage() {
     const [query, setQuery] = useState('');
@@ -94,7 +94,7 @@ export default function SearchPage() {
     const [searchMs, setSearchMs] = useState(0);
     const searchTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-    /* ─── Search function — calls /api/search/all (backed by hc_search_all RPC) ─── */
+    /* â”€â”€â”€ Search function — calls /api/search/all (backed by hc_search_all RPC) â”€â”€â”€ */
     const doSearch = useCallback(async (searchQuery: string) => {
         setLoading(true);
         const start = performance.now();
@@ -119,7 +119,7 @@ export default function SearchPage() {
             if (geoEnabled && userLat && userLng) {
                 params.set('lat', String(userLat));
                 params.set('lng', String(userLng));
-                params.set('radius_km', String(Math.round(radius * 1.609))); // miles → km
+                params.set('radius_km', String(Math.round(radius * 1.609))); // miles â†’ km
             }
 
             params.set('limit', '50');
@@ -165,7 +165,7 @@ export default function SearchPage() {
         return '#ff3333';
     };
 
-    /* ─── Compute facets from results ─── */
+    /* â”€â”€â”€ Compute facets from results â”€â”€â”€ */
     const stateFacets = results.reduce((acc, r) => {
         if (r.region) {
             acc[r.region] = (acc[r.region] || 0) + 1;
@@ -183,13 +183,13 @@ export default function SearchPage() {
         .sort((a, b) => b[1] - a[1])
         .slice(0, 15);
 
-    /* ─── Get link for result ─── */
+    /* â”€â”€â”€ Get link for result â”€â”€â”€ */
     const getResultLink = (r: SearchResult) => {
-        // Operator family → /place/{slug or id}
+        // Operator family â†’ /place/{slug or id}
         if (OPERATOR_FAMILY.has(r.entity_type)) {
             return `/place/${r.slug || r.entity_id}`;
         }
-        // Everything else → /place/{entity_id}
+        // Everything else â†’ /place/{entity_id}
         return `/place/${r.entity_id}`;
     };
 
@@ -321,7 +321,7 @@ export default function SearchPage() {
                                 fontSize: 13,
                                 cursor: 'pointer',
                             }}>
-                                {stateFilter} ✕
+                                {stateFilter} âœ•
                             </button>
                         )}
                     </div>

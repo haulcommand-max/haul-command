@@ -85,7 +85,7 @@ export default function NearMeIndex() {
             display: 'inline-block',
           }}
         >
-          Search All Operators →
+          Search All Operators â†’
         </Link>
       </header>
 
@@ -129,7 +129,7 @@ export default function NearMeIndex() {
                     {reg.countryName}
                   </div>
                   <div style={{ fontSize: '0.75rem', color: '#D4A843', fontWeight: 500 }}>
-                    {cap(reg.terminology.primary)} near me →
+                    {cap(reg.terminology.primary)} near me â†’
                   </div>
                 </Link>
               ))}

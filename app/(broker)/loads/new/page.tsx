@@ -39,7 +39,7 @@ export default function CreateLoadPage() {
 
     async function computeMilesServerSide(): Promise<number | null> {
         // Best practice: RPC that computes miles once and caches it.
-        // You’ll implement compute_miles_and_cache() in backend later (HERE/Google optional).
+        // You'll implement compute_miles_and_cache() in backend later (HERE/Google optional).
         // For now, return what broker typed or null.
         return miles;
     }
@@ -61,8 +61,8 @@ export default function CreateLoadPage() {
             return;
         }
 
-        const { error } = await supabase.from("loads").insert({
-            status: status,
+        const { data: loadRecord, error } = await supabase.from("loads").insert({
+            status: "draft", // Always start as draft locally while we secure pre-auth
             posted_at: new Date().toISOString(),
             origin_country: country,
             origin_admin1: originAdmin1,
@@ -74,16 +74,46 @@ export default function CreateLoadPage() {
             miles: miles,
             rate_amount: rateTotal,
             rate_currency: "USD",
-        });
+        }).select('id').single();
 
         if (error) {
             setMsg(error.message);
-        } else {
-            if (status === "active" && instantMatch) {
-                setMsg("One-Tap Dispatch Initiated! Fetching top candidates...");
-            } else {
-                setMsg(status === "active" ? "Load posted." : "Draft saved.");
+            setSubmitting(false);
+            return;
+        }
+
+        if (status === "active") {
+            try {
+                // Call edge function to invoke Stripe Pre-Auth
+                const { data: preauthData, error: preauthErr } = await supabase.functions.invoke("payments-preauth", {
+                    body: {
+                        job_id: loadRecord.id,
+                        amount_cents: rateTotal ? rateTotal * 100 : 0,
+                        currency: "usd",
+                        broker_user_id: auth.user.id
+                    }
+                });
+
+                if (preauthErr || preauthData?.status === "failed") {
+                    // Hard UI Block
+                    setMsg("âš ï¸ Pre-authorization failed. Please update your payment method in billing settings. Load saved as draft.");
+                    setSubmitting(false);
+                    return;
+                }
+
+                // Preauth succeeded -> activate load
+                await supabase.from("loads").update({ status: "active" }).eq("id", loadRecord.id);
+
+                if (instantMatch) {
+                    setMsg("Pre-Auth secured. One-Tap Dispatch Initiated! Fetching top candidates...");
+                } else {
+                    setMsg("Pre-Auth secured. Load activated and published.");
+                }
+            } catch (err: any) {
+                setMsg("Payment verification error. " + err.message);
             }
+        } else {
+            setMsg("Draft saved successfully.");
         }
 
         setSubmitting(false);
@@ -106,7 +136,7 @@ export default function CreateLoadPage() {
                     color: "#f59e0b",
                     fontWeight: "bold"
                 }}>
-                    ⚠️ Miles required to publish. Loads with full route data fill significantly faster.
+                    âš ï¸ Miles required to publish. Loads with full route data fill significantly faster.
                 </div>
             )}
 
@@ -211,7 +241,7 @@ export default function CreateLoadPage() {
             }}>
                 <div style={{ flex: 1 }}>
                     <div style={{ fontSize: 13, fontWeight: 900, textTransform: "uppercase", display: "flex", alignItems: "center", gap: 6 }}>
-                        ⚡ Instant Match & One-Tap Dispatch
+                        âš¡ Instant Match & One-Tap Dispatch
                         {isCompetitive && <span style={{ fontSize: 10, background: "var(--hc-gold-600)", color: "#000", padding: "2px 6px", borderRadius: 4 }}>RECOMMENDED</span>}
                     </div>
                     <p style={{ fontSize: 11, color: "var(--hc-muted)", margin: "4px 0 0 0" }}>

@@ -10,7 +10,7 @@ const TIERS = [
     name: 'HC Certified',
     subtitle: 'Escort',
     tagline: 'The foundation. Meets all baseline standards.',
-    icon: '🛡️',
+    icon: 'ðŸ›¡ï¸',
     color: '#c0c0c0',
     colorBg: 'rgba(192,192,192,0.08)',
     colorBorder: 'rgba(192,192,192,0.3)',
@@ -40,7 +40,7 @@ const TIERS = [
     name: 'HC AV-Ready',
     subtitle: 'Certified',
     tagline: 'Trained to operate alongside autonomous freight systems.',
-    icon: '🤖',
+    icon: 'ðŸ¤–',
     color: '#f5c842',
     colorBg: 'rgba(245,200,66,0.08)',
     colorBorder: 'rgba(245,200,66,0.35)',
@@ -73,7 +73,7 @@ const TIERS = [
     name: 'HC Elite',
     subtitle: 'Certified',
     tagline: 'The highest standard in global heavy haul escort.',
-    icon: '⚡',
+    icon: 'âš¡',
     color: '#a78bfa',
     colorBg: 'rgba(167,139,250,0.08)',
     colorBorder: 'rgba(167,139,250,0.35)',
@@ -106,26 +106,26 @@ const TIERS = [
 ];
 
 const AV_COMPANIES = [
-  { name: 'Aurora Innovation', corridor: 'I-45 Dallas–Houston', flag: '🇺🇸' },
-  { name: 'Kodiak Robotics', corridor: 'Permian Basin US-287', flag: '🇺🇸' },
-  { name: 'Waabi', corridor: 'Texas highways + Canada', flag: '🇺🇸🇨🇦' },
-  { name: 'Waymo', corridor: 'Austin TX, Phoenix AZ', flag: '🇺🇸' },
-  { name: 'Gatik', corridor: 'Texas + Ontario Canada', flag: '🇺🇸🇨🇦' },
-  { name: 'Torc Robotics', corridor: 'I-81 Virginia + Texas', flag: '🇺🇸' },
-  { name: 'Rio Tinto AutoHaul', corridor: 'Pilbara WA Australia', flag: '🇦🇺' },
-  { name: 'Wayve', corridor: 'UK motorways (Nissan 2027)', flag: '🇬🇧' },
-  { name: 'Einride', corridor: 'Sweden, Germany, Norway, US', flag: '🇸🇪🇩🇪' },
-  { name: 'WeRide', corridor: 'UAE, Singapore, China', flag: '🇦🇪🇸🇬' },
+  { name: 'Aurora Innovation', corridor: 'I-45 Dallas"“Houston', flag: 'ðŸ‡ºðŸ‡¸' },
+  { name: 'Kodiak Robotics', corridor: 'Permian Basin US-287', flag: 'ðŸ‡ºðŸ‡¸' },
+  { name: 'Waabi', corridor: 'Texas highways + Canada', flag: 'ðŸ‡ºðŸ‡¸ðŸ‡¨ðŸ‡¦' },
+  { name: 'Waymo', corridor: 'Austin TX, Phoenix AZ', flag: 'ðŸ‡ºðŸ‡¸' },
+  { name: 'Gatik', corridor: 'Texas + Ontario Canada', flag: 'ðŸ‡ºðŸ‡¸ðŸ‡¨ðŸ‡¦' },
+  { name: 'Torc Robotics', corridor: 'I-81 Virginia + Texas', flag: 'ðŸ‡ºðŸ‡¸' },
+  { name: 'Rio Tinto AutoHaul', corridor: 'Pilbara WA Australia', flag: 'ðŸ‡¦ðŸ‡º' },
+  { name: 'Wayve', corridor: 'UK motorways (Nissan 2027)', flag: 'ðŸ‡¬ðŸ‡§' },
+  { name: 'Einride', corridor: 'Sweden, Germany, Norway, US', flag: 'ðŸ‡¸ðŸ‡ªðŸ‡©ðŸ‡ª' },
+  { name: 'WeRide', corridor: 'UAE, Singapore, China', flag: 'ðŸ‡¦ðŸ‡ªðŸ‡¸ðŸ‡¬' },
 ];
 
 const MODULES = [
   { num: 1, title: 'Platform Fundamentals', dur: '30 min', tier: 'T1', desc: 'How Haul Command works, escrow, profile optimization, and communication protocols.' },
-  { num: 2, title: 'Global Regulations Overview', dur: '60 min', tier: 'T1', desc: 'Escort requirements across 120 countries — width/height thresholds, permit types, curfews, cross-border protocols.' },
+  { num: 2, title: 'Global Regulations Overview', dur: '60 min', tier: 'T1', desc: 'Escort requirements across 50+ countries — width/height thresholds, permit types, curfews, cross-border protocols.' },
   { num: 3, title: 'Load Type Mastery', dur: '60 min', tier: 'T1', desc: 'Every load type: wind, oilfield, mining, construction, aerospace, military, manufactured homes, and more.' },
   { num: 4, title: 'AV Proximity Protocols', dur: '90 min', tier: 'T2', desc: 'How AVs differ from human drivers, LiDAR/radar blind zones, company-specific protocols (Aurora, Kodiak, Waymo), 5 country modules.' },
   { num: 5, title: 'Oilfield Specialist', dur: '75 min', tier: 'T2', desc: 'US oilfield regulations (TxDMV Subchapter D), international oilfield (Aramco, ADNOC, Pilbara), all oilfield load types.' },
   { num: 6, title: 'Superloads & Extreme Moves', dur: '60 min', tier: 'T2', desc: 'Route surveys, police escort coordination, bridge engineering, NASA/SpaceX moves, DOD/SDDC protocols.' },
-  { num: 7, title: 'International Operations', dur: '45 min', tier: 'T3', desc: 'US–Mexico/Canada border handoffs, EU cross-border (ESTA), GCC protocols, Australia state-to-state, currency + insurance.' },
+  { num: 7, title: 'International Operations', dur: '45 min', tier: 'T3', desc: 'US"“Mexico/Canada border handoffs, EU cross-border (ESTA), GCC protocols, Australia state-to-state, currency + insurance.' },
 ];
 
 const TIER_COLORS: Record<string, string> = { T1: '#c0c0c0', T2: '#f5c842', T3: '#a78bfa' };
@@ -160,7 +160,7 @@ export default function AVCertificationPage() {
             color: '#f5c842', fontSize: 12, fontWeight: 700, letterSpacing: '0.1em',
             marginBottom: 24,
           }}>
-            🌐 GLOBAL STANDARD · 120 countries
+            ðŸŒ GLOBAL STANDARD · 50+ countries
           </div>
           <h1 style={{
             fontSize: 'clamp(28px, 5vw, 52px)', fontWeight: 900, margin: '0 0 16px',
@@ -230,10 +230,10 @@ export default function AVCertificationPage() {
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 16 }}>
             {[
-              { icon: '📡', title: 'No CB Radio', body: 'AVs do not respond to Channel 19. Standard escort communication doesn\'t apply.' },
-              { icon: '🔭', title: 'Sensor Blind Zones', body: 'LiDAR, radar, and camera arcs create specific zones to avoid around AV trucks.' },
-              { icon: '🛑', title: 'Emergency Stops', body: 'AVs may stop with zero warning signal. Minimum following distances are different.' },
-              { icon: '🔄', title: 'Merge Behavior', body: 'AVs merge earlier and wider than human drivers — your positioning changes entirely.' },
+              { icon: 'ðŸ“¡', title: 'No CB Radio', body: 'AVs do not respond to Channel 19. Standard escort communication doesn\'t apply.' },
+              { icon: 'ðŸ”­', title: 'Sensor Blind Zones', body: 'LiDAR, radar, and camera arcs create specific zones to avoid around AV trucks.' },
+              { icon: 'ðŸ›‘', title: 'Emergency Stops', body: 'AVs may stop with zero warning signal. Minimum following distances are different.' },
+              { icon: 'ðŸ”„', title: 'Merge Behavior', body: 'AVs merge earlier and wider than human drivers — your positioning changes entirely.' },
             ].map(item => (
               <div key={item.title} style={{
                 background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
@@ -333,7 +333,7 @@ export default function AVCertificationPage() {
                   </div>
                   {tier.requirements.map((req, i) => (
                     <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 8, fontSize: 13, color: '#b0bcd0', lineHeight: 1.5 }}>
-                      <span style={{ color: tier.color, flexShrink: 0 }}>✓</span>
+                      <span style={{ color: tier.color, flexShrink: 0 }}>âœ“</span>
                       <span>{req}</span>
                     </div>
                   ))}
@@ -342,7 +342,7 @@ export default function AVCertificationPage() {
                   </div>
                   {tier.benefits.map((b, i) => (
                     <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 8, fontSize: 13, color: '#b0bcd0', lineHeight: 1.5 }}>
-                      <span style={{ color: '#00ff88', flexShrink: 0 }}>→</span>
+                      <span style={{ color: '#00ff88', flexShrink: 0 }}>â†’</span>
                       <span>{b}</span>
                     </div>
                   ))}
@@ -427,13 +427,13 @@ export default function AVCertificationPage() {
           border: '1px solid rgba(167,139,250,0.25)', borderRadius: 22, padding: '48px 40px',
           textAlign: 'center',
         }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>🏢</div>
+          <div style={{ fontSize: 48, marginBottom: 16 }}>ðŸ¢</div>
           <h2 style={{ fontSize: 28, fontWeight: 900, margin: '0 0 12px', color: '#f0f4f8' }}>
             Corporate Training Programs
           </h2>
           <p style={{ color: '#8fa3c0', fontSize: 15, maxWidth: 580, margin: '0 auto 24px', lineHeight: 1.7 }}>
             AV companies and logistics partners can purchase bulk certifications for their preferred escort networks.
-            Cohort pricing from <strong style={{ color: '#f5c842' }}>$5,000–$25,000</strong>.
+            Cohort pricing from <strong style={{ color: '#f5c842' }}>$5,000"“$25,000</strong>.
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 32 }}>
             {['Aurora Innovation', 'Kodiak Robotics', 'Uber Freight', 'Hirschbach', 'Ryder', 'FedEx Freight', 'Rio Tinto', 'BHP', 'Fortescue'].map(co => (
@@ -467,8 +467,8 @@ export default function AVCertificationPage() {
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 40 }}>
             {[
-              { label: 'Standard escort rate (avg)', val: '$2.50–$4/mile', color: '#8fa3c0' },
-              { label: 'AV corridor rate (premium)', val: '$4–$7/mile', color: '#00ff88' },
+              { label: 'Standard escort rate (avg)', val: '$2.50"“$4/mile', color: '#8fa3c0' },
+              { label: 'AV corridor rate (premium)', val: '$4"“$7/mile', color: '#00ff88' },
               { label: 'Certification cost (annual)', val: '$149/year', color: '#f5c842' },
               { label: 'Break-even at +$2/mile premium', val: '~75 miles extra/year', color: '#f5c842' },
             ].map(item => (

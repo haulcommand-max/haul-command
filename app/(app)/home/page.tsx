@@ -1,6 +1,13 @@
-'use client';
-
 import MobileCommandCenter from '@/components/mobile/screens/MobileCommandCenter';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Command Center | Haul Command',
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 /**
  * /home — Mobile-first Command Center

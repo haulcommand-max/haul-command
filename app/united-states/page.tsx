@@ -16,16 +16,16 @@ export const metadata: Metadata = {
 };
 
 const TOP_STATES = [
-    { code: 'tx', label: 'Texas', emoji: '🤠', note: 'Highest permit volume' },
-    { code: 'ca', label: 'California', emoji: '🌁', note: 'Port-heavy corridors' },
-    { code: 'fl', label: 'Florida', emoji: '🌴', note: 'Mobile home capital' },
-    { code: 'oh', label: 'Ohio', emoji: '⚙️', note: 'Manufacturing crossroads' },
-    { code: 'pa', label: 'Pennsylvania', emoji: '🏭', note: 'I-80 / I-78 corridor' },
-    { code: 'nd', label: 'North Dakota', emoji: '🛢️', note: 'Bakken oil field ops' },
-    { code: 'wy', label: 'Wyoming', emoji: '⛰️', note: 'Wind turbine routes' },
-    { code: 'ga', label: 'Georgia', emoji: '🍑', note: 'Port of Savannah gateway' },
-    { code: 'wa', label: 'Washington', emoji: '🌲', note: 'Boeing + port loads' },
-    { code: 'co', label: 'Colorado', emoji: '🏔️', note: 'Mountain corridor specialist' },
+    { code: 'tx', label: 'Texas', emoji: 'ðŸ¤ ', note: 'Highest permit volume' },
+    { code: 'ca', label: 'California', emoji: 'ðŸŒ', note: 'Port-heavy corridors' },
+    { code: 'fl', label: 'Florida', emoji: 'ðŸŒ´', note: 'Mobile home capital' },
+    { code: 'oh', label: 'Ohio', emoji: 'âš™ï¸', note: 'Manufacturing crossroads' },
+    { code: 'pa', label: 'Pennsylvania', emoji: 'ðŸ­', note: 'I-80 / I-78 corridor' },
+    { code: 'nd', label: 'North Dakota', emoji: 'ðŸ›¢ï¸', note: 'Bakken oil field ops' },
+    { code: 'wy', label: 'Wyoming', emoji: 'â›°ï¸', note: 'Wind turbine routes' },
+    { code: 'ga', label: 'Georgia', emoji: 'ðŸ‘', note: 'Port of Savannah gateway' },
+    { code: 'wa', label: 'Washington', emoji: 'ðŸŒ²', note: 'Boeing + port loads' },
+    { code: 'co', label: 'Colorado', emoji: 'ðŸ”ï¸', note: 'Mountain corridor specialist' },
 ];
 
 export default function UnitedStatesPage() {
@@ -34,7 +34,7 @@ export default function UnitedStatesPage() {
             {/* Hero */}
             <section style={{ textAlign: 'center', marginBottom: 48 }}>
                 <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.12em', color: '#d97706', textTransform: 'uppercase', marginBottom: 12 }}>
-                    🇺🇸 United States Directory
+                    ðŸ‡ºðŸ‡¸ United States Directory
                 </div>
                 <h1 style={{ fontSize: 'clamp(28px,5vw,48px)', fontWeight: 900, margin: '0 0 16px', lineHeight: 1.15 }}>
                     Pilot Car Services Across All 50 States

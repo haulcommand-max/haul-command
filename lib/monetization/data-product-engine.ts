@@ -193,6 +193,20 @@ export const DATA_PRODUCT_CATALOG: DataProduct[] = [
     },
     // ── NEW REVENUE STREAMS (AdGrid Data Products) ──
     {
+        id: 'broker-heatmap-subscription',
+        type: 'enterprise_feed',
+        name: 'Broker Network Intel & Heatmaps',
+        description: 'Complete supply vs demand heatmaps updated live. Know exactly where capacity is scarce before booking loads. Includes full network intelligence for freight brokers.',
+        price_usd: 199,
+        purchase_type: 'subscription',
+        tier_required: 'pro',
+        preview_fields: ['heatmap_preview', 'active_corridors'],
+        full_fields: ['real_time_heatmaps', 'capacity_scarcity_index', 'broker_advantage_flags', 'live_operator_pings', 'predictive_demand'],
+        refresh_frequency: 'realtime',
+        country_scope: ['ALL'],
+        active: true,
+    },
+    {
         id: 'corridor-intelligence-feed',
         type: 'enterprise_feed',
         name: 'Corridor Intelligence Feed',

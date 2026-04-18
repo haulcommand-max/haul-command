@@ -4,7 +4,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { AlertTriangle, Flame, TrendingUp, Activity, Zap, BarChart3, Route, Brain, Loader2, RefreshCw, CheckCircle, XCircle, Clock } from "lucide-react";
 
-// ── Design tokens ────────────────────────────────────────────────────
+// â”€â”€ Design tokens â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const T = {
     bg: "#060b12",
     surface: "rgba(255,255,255,0.03)",
@@ -22,14 +22,14 @@ const T = {
     textSubtle: "#5A6577",
 } as const;
 
-// ── Types ─────────────────────────────────────────────────────────────
+// â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface CtAlert { id: string; alert_type: string; severity: string; geo_key?: string; corridor_slug?: string; message: string; details?: Record<string, unknown>; created_at: string; }
 interface ScarcityRow { geo_key: string; geo_type: string; forecast_band: string; shortage_probability: number; future_shortage_score: number; computed_at: string; }
 interface CorridorRow { corridor_slug: string; shortage_risk_level: string; next_7d_pressure: number; next_14d_pressure: number; computed_at: string; }
 interface UxRow { page_url: string; page_type: string; clarity_score: number; needs_fix: boolean; checked_at: string; }
 interface MatchRow { id: string; status: string; candidate_count: number; created_at: string; }
 
-// ── Severity badge ────────────────────────────────────────────────────
+// â”€â”€ Severity badge â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function SeverityBadge({ severity }: { severity: string }) {
     const cfg: Record<string, { color: string; bg: string }> = {
         critical: { color: T.red, bg: "rgba(248,113,113,0.12)" },
@@ -44,7 +44,7 @@ function SeverityBadge({ severity }: { severity: string }) {
     );
 }
 
-// ── Stat card ─────────────────────────────────────────────────────────
+// â”€â”€ Stat card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function StatCard({ label, value, sub, color, icon: Icon }: { label: string; value: string | number; sub?: string; color: string; icon: React.ElementType }) {
     return (
         <div className="rounded-2xl p-4 flex flex-col gap-2" style={{ background: T.surface, border: `1px solid ${T.border}` }}>
@@ -58,7 +58,7 @@ function StatCard({ label, value, sub, color, icon: Icon }: { label: string; val
     );
 }
 
-// ── Tab button ────────────────────────────────────────────────────────
+// â”€â”€ Tab button â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function Tab({ label, active, onClick, icon: Icon }: { label: string; active: boolean; onClick: () => void; icon: React.ElementType }) {
     return (
         <button aria-label="Interactive Button" onClick={onClick}
@@ -74,7 +74,7 @@ function Tab({ label, active, onClick, icon: Icon }: { label: string; active: bo
     );
 }
 
-// ── Main ──────────────────────────────────────────────────────────────
+// â”€â”€ Main â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function ControlTowerPage() {
     const supabase = createClient();
     const [tab, setTab] = useState<"seo" | "market" | "dispatch">("seo");
@@ -117,7 +117,7 @@ export default function ControlTowerPage() {
     const needsFixPages = uxRows.filter(r => r.needs_fix);
 
     return (
-        <div className="min-h-screen text-white" style={{ background: T.bg }}>
+        <div className=" text-white" style={{ background: T.bg }}>
             {/* Ambient glow */}
             <div className="fixed inset-0 pointer-events-none z-0">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_30%_at_50%_-10%,rgba(241,169,27,0.06),transparent_70%)]" />
@@ -163,7 +163,7 @@ export default function ControlTowerPage() {
                     </div>
                 )}
 
-                {/* ── SEO + Market Tab ──────────────────────────────────── */}
+                {/* â”€â”€ SEO + Market Tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                 {!loading && tab === "seo" && (
                     <div className="space-y-6">
 
@@ -237,7 +237,7 @@ export default function ControlTowerPage() {
                     </div>
                 )}
 
-                {/* ── Corridors Tab ─────────────────────────────────────── */}
+                {/* â”€â”€ Corridors Tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                 {!loading && tab === "market" && (
                     <div className="space-y-4">
                         <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: T.textSubtle }}>Corridor Pressure Forecast</h2>
@@ -271,7 +271,7 @@ export default function ControlTowerPage() {
                     </div>
                 )}
 
-                {/* ── Dispatch Brain Tab ────────────────────────────────── */}
+                {/* â”€â”€ Dispatch Brain Tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                 {!loading && tab === "dispatch" && (
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">

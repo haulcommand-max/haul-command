@@ -106,13 +106,13 @@ export default function SettingsPage() {
                     <p style={{ fontSize: 13, color: '#6B7280', margin: '4px 0 0' }}>{user?.email}</p>
                 </div>
 
-                <Section title="Profile" icon="👤">
+                <Section title="Profile" icon="ðŸ‘¤">
                     <Input label="Display Name" value={profile.display_name} onChange={(v: string) => setProfile(p => ({ ...p, display_name: v }))} placeholder="Your name or company" />
                     <Input label="Phone" value={profile.phone} onChange={(v: string) => setProfile(p => ({ ...p, phone: v }))} placeholder="+1 555 123 4567" />
                     <Input label="Email" value={profile.email} onChange={(v: string) => setProfile(p => ({ ...p, email: v }))} type="email" placeholder="you@example.com" />
                 </Section>
 
-                <Section title="Crypto Payments" icon="₿">
+                <Section title="Crypto Payments" icon="â‚¿">
                     <Toggle label="Enable crypto payments" value={profile.crypto_enabled} onChange={v => setProfile(p => ({ ...p, crypto_enabled: v }))} />
                     {profile.crypto_enabled && (
                         <>
@@ -131,7 +131,7 @@ export default function SettingsPage() {
                     )}
                 </Section>
 
-                <Section title="Notifications" icon="🔔">
+                <Section title="Notifications" icon="ðŸ””">
                     <Toggle label="Push notifications" value={profile.push_enabled} onChange={v => setProfile(p => ({ ...p, push_enabled: v }))} />
                     <Toggle label="SMS alerts" value={profile.sms_enabled} onChange={v => setProfile(p => ({ ...p, sms_enabled: v }))} />
                     <Toggle label="Email notifications" value={profile.email_notifications} onChange={v => setProfile(p => ({ ...p, email_notifications: v }))} />
@@ -144,7 +144,7 @@ export default function SettingsPage() {
                     border: 'none', borderRadius: 12, color: saved ? '#fff' : '#030712', fontWeight: 700, fontSize: 15,
                     cursor: 'pointer', transition: 'all 0.2s', opacity: saving ? 0.6 : 1,
                 }}>
-                    {saving ? 'Saving...' : saved ? '✓ Saved' : 'Save Settings'}
+                    {saving ? 'Saving...' : saved ? 'âœ“ Saved' : 'Save Settings'}
                 </button>
 
                 <div style={{ marginTop: '2rem', textAlign: 'center' }}>

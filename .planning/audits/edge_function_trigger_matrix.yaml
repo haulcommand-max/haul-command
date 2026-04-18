@@ -1,0 +1,39 @@
+# GEMINI-02: Edge Function Trigger Matrix
+# Subset mapping of the 114 edge functions detected
+
+edge_functions:
+  - name: "compliance-reminders-run"
+    trigger: "pg_cron (Daily)"
+    inputs: "None (Queries DB for upcoming expirations)"
+    writes: "logs, notifications"
+    consumers: "Operators, Mobile App (via FCM/Email)"
+  
+  - name: "broker-availability-feed"
+    trigger: "Frontend / App (User request)"
+    inputs: "broker_id, viewport_bounds"
+    writes: "broker_tracking"
+    consumers: "Broker Dashboard UI"
+
+  - name: "stripe-webhook"
+    trigger: "Webhook (Stripe Event)"
+    inputs: "Stripe signature and payload object"
+    writes: "subscriptions, payments, claim_status"
+    consumers: "Internal finance logic, DB triggers"
+
+  - name: "presence-heartbeat"
+    trigger: "Frontend / Mobile App (Periodic every 5 mins)"
+    inputs: "operator_id, current_h3_index"
+    writes: "operator_presence"
+    consumers: "LiveAvailabilityPulse UI, broker-availability-feed"
+
+  - name: "gps-breadcrumb-ingest"
+    trigger: "Navixy / Telematics Webhook"
+    inputs: "telematics payload (lat/lng, speed, ignition)"
+    writes: "gps_log, dispute_scrums"
+    consumers: "Navixy vaults, dispute-auto-resolve"
+
+  - name: "trust-score-recompute"
+    trigger: "DB Trigger (on review insert/dispute close)"
+    inputs: "entity_id"
+    writes: "trust_score_aggregate"
+    consumers: "Directory ranking, AdGrid placement limits"

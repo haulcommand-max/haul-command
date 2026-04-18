@@ -4,7 +4,7 @@ import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
 import { generateInstantQuote, type QuoteRequest, type InstantQuote } from '@/lib/quotes/instant-quote-engine';
 
-// ═══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // INSTANT QUOTE TOOL — Public surface for the #1 commercial query:
 // "How much does a pilot car cost?"
 //
@@ -12,7 +12,7 @@ import { generateInstantQuote, type QuoteRequest, type InstantQuote } from '@/li
 // escort pricing, how much does a pilot car cost in [state]
 //
 // Wires: lib/quotes/instant-quote-engine.ts generateInstantQuote()
-// ═══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const T = {
   bg: '#0B0B0C',
@@ -115,7 +115,7 @@ export default function InstantQuotePage() {
         "url": "https://haulcommand.com/tools/instant-quote",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web",
-        "description": "Get instant pilot car and escort vehicle pricing. Enter load dimensions, route, and urgency for competitive rate quotes across 120 countries.",
+        "description": "Get instant pilot car and escort vehicle pricing. Enter load dimensions, route, and urgency for competitive rate quotes across 50+ countries.",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
         "breadcrumb": {
           "@type": "BreadcrumbList",
@@ -141,22 +141,22 @@ export default function InstantQuotePage() {
         {/* Breadcrumb */}
         <nav style={{ fontSize: 11, color: T.muted, marginBottom: 24, display: 'flex', gap: 6 }}>
           <Link href="/" style={{ color: T.muted, textDecoration: 'none' }}>Home</Link>
-          <span>›</span>
+          <span>"º</span>
           <Link href="/tools" style={{ color: T.muted, textDecoration: 'none' }}>Tools</Link>
-          <span>›</span>
+          <span>"º</span>
           <span style={{ color: T.gold }}>Instant Quote</span>
         </nav>
 
         {/* Header */}
         <header style={{ textAlign: 'center', marginBottom: 40 }}>
           <div style={{ display: 'inline-flex', gap: 6, padding: '4px 14px', background: 'rgba(34,211,238,0.08)', border: '1px solid rgba(34,211,238,0.2)', borderRadius: 20, marginBottom: 16 }}>
-            <span style={{ fontSize: 10, fontWeight: 800, color: T.cyan, textTransform: 'uppercase', letterSpacing: 2 }}>⚡ Instant Quote</span>
+            <span style={{ fontSize: 10, fontWeight: 800, color: T.cyan, textTransform: 'uppercase', letterSpacing: 2 }}>âš¡ Instant Quote</span>
           </div>
           <h1 style={{ margin: 0, fontSize: 32, fontWeight: 900, color: T.text, letterSpacing: -1 }}>
             How Much Does a <span style={{ color: T.gold }}>Pilot Car</span> Cost?
           </h1>
           <p style={{ margin: '12px auto 0', fontSize: 14, color: T.muted, maxWidth: 520, lineHeight: 1.6 }}>
-            Get an instant escort vehicle pricing estimate. Enter your load dimensions, route, and urgency for real-time market rates across 120 countries.
+            Get an instant escort vehicle pricing estimate. Enter your load dimensions, route, and urgency for real-time market rates across 50+ countries.
           </p>
         </header>
 
@@ -222,7 +222,7 @@ export default function InstantQuotePage() {
               letterSpacing: '0.02em',
             }}
           >
-            Get Instant Quote →
+            Get Instant Quote â†’
           </button>
         </div>
 
@@ -278,9 +278,9 @@ export default function InstantQuotePage() {
             {/* Warnings */}
             {quote.warnings.length > 0 && (
               <div style={{ marginTop: 20, padding: 16, borderRadius: 12, background: 'rgba(251,191,36,0.06)', border: '1px solid rgba(251,191,36,0.15)' }}>
-                <div style={{ fontSize: 10, fontWeight: 800, color: '#fbbf24', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>⚠️ Warnings</div>
+                <div style={{ fontSize: 10, fontWeight: 800, color: '#fbbf24', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>âš ï¸ Warnings</div>
                 {quote.warnings.map((w, i) => (
-                  <div key={i} style={{ fontSize: 12, color: T.textSecondary, marginBottom: 4 }}>• {w}</div>
+                  <div key={i} style={{ fontSize: 12, color: T.textSecondary, marginBottom: 4 }}>"¢ {w}</div>
                 ))}
               </div>
             )}
@@ -292,7 +292,7 @@ export default function InstantQuotePage() {
                 background: `linear-gradient(135deg, ${T.gold}, #d97706)`,
                 color: '#000', fontWeight: 800, fontSize: 14, textDecoration: 'none', minWidth: 180,
               }}>
-                {quote.callToAction} →
+                {quote.callToAction} â†’
               </Link>
               <Link href="/contact" style={{
                 flex: 1, padding: '14px 0', borderRadius: 12, textAlign: 'center',
@@ -308,10 +308,10 @@ export default function InstantQuotePage() {
         {/* Bottom Cross-Links */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12, marginTop: 32 }}>
           {[
-            { href: '/tools/escort-calculator', icon: '🧮', label: 'Escort Calculator' },
-            { href: '/tools/rate-lookup', icon: '💰', label: 'Rate Lookup' },
-            { href: '/tools/route-complexity', icon: '🗺️', label: 'Route Complexity' },
-            { href: '/directory', icon: '📂', label: 'Find Operators' },
+            { href: '/tools/escort-calculator', icon: 'ðŸ§®', label: 'Escort Calculator' },
+            { href: '/tools/rate-lookup', icon: 'ðŸ’°', label: 'Rate Lookup' },
+            { href: '/tools/route-complexity', icon: 'ðŸ—ºï¸', label: 'Route Complexity' },
+            { href: '/directory', icon: 'ðŸ“‚', label: 'Find Operators' },
           ].map(l => (
             <Link key={l.href} href={l.href} style={{
               padding: '14px 16px', borderRadius: 12, textDecoration: 'none',

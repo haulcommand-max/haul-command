@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
         }
 
         // Get user session (optional — some products allow anonymous purchase)
-        const supabase = createClient();
+        const supabase = await createClient();
         const { data: { user } } = await supabase.auth.getUser();
 
         // For enterprise tier, require auth

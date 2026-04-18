@@ -1,0 +1,229 @@
+{
+  "version": "1.0.0",
+  "description": "Haul Command Model Routing Policy — auto-selects cheapest model per task",
+  "updated": "2026-04-12",
+
+  "cost_ladder": [
+    "no-model (process/http)",
+    "gpt-5.4-nano / gemini-2.5-flash-lite",
+    "gpt-5.4-mini / gemini-2.5-flash",
+    "gpt-5.4 / claude-sonnet-4.6",
+    "claude-opus-4.6 / gemini-2.5-pro"
+  ],
+
+  "providers": {
+    "anthropic": {
+      "models": {
+        "claude-opus-4.6":   { "input_per_mtok": 5.00,  "output_per_mtok": 25.00, "context_window": 1000000, "tier": "executive" },
+        "claude-sonnet-4.6": { "input_per_mtok": 3.00,  "output_per_mtok": 15.00, "context_window": 1000000, "tier": "senior" },
+        "claude-haiku-4.5":  { "input_per_mtok": 1.00,  "output_per_mtok": 5.00,  "context_window": 200000,  "tier": "junior" }
+      },
+      "env_key": "ANTHROPIC_API_KEY"
+    },
+    "openai": {
+      "models": {
+        "gpt-5.4":      { "input_per_mtok": 2.50,  "output_per_mtok": 15.00, "context_window": 1050000, "tier": "senior" },
+        "gpt-5.4-mini": { "input_per_mtok": 0.75,  "output_per_mtok": 4.50,  "context_window": 1050000, "tier": "junior" },
+        "gpt-5.4-nano": { "input_per_mtok": 0.20,  "output_per_mtok": 1.25,  "context_window": 1050000, "tier": "grunt" }
+      },
+      "env_key": "OPENAI_API_KEY"
+    },
+    "google": {
+      "models": {
+        "gemini-2.5-pro":        { "input_per_mtok": 1.25,  "output_per_mtok": 5.00,  "context_window": 1000000, "tier": "senior" },
+        "gemini-2.5-flash":      { "input_per_mtok": 0.30,  "output_per_mtok": 2.50,  "context_window": 1000000, "tier": "junior" },
+        "gemini-2.5-flash-lite": { "input_per_mtok": 0.10,  "output_per_mtok": 0.40,  "context_window": 1000000, "tier": "grunt" }
+      },
+      "env_key": "GOOGLE_API_KEY"
+    }
+  },
+
+  "routing_rules": {
+    "step_1_no_model": {
+      "description": "If the task is deterministic, skip the LLM entirely",
+      "conditions": [
+        "Database read/write (Supabase RPC, insert, update)",
+        "API polling (DAT, Truckstop, FMCSA SAFER, NOAA, Mapbox)",
+        "Scheduled cron trigger",
+        "Fixed-rules engine (permit filing, A/R aging thresholds)",
+        "Data transform / ETL (CSV parse, JSON reshape)",
+        "Webhook fire (IndexNow, email send via SendGrid/Resend)",
+        "Scraping with known selectors",
+        "Template-based email generation (merge fields only)"
+      ],
+      "route_to": "process/http (no model)"
+    },
+
+    "step_2_classify": {
+      "fields": {
+        "blast_radius":    { "type": "enum", "values": ["low", "medium", "high", "critical"], "description": "What breaks if the answer is wrong?" },
+        "latency_ms":      { "type": "number", "description": "Max acceptable response time" },
+        "context_tokens":  { "type": "number", "description": "Input + expected output tokens" },
+        "modality":        { "type": "enum", "values": ["text", "code", "vision", "voice"], "description": "What kind of I/O?" },
+        "cost_ceiling":    { "type": "number", "description": "Max $ per invocation" }
+      }
+    },
+
+    "step_3_default_tier": [
+      {
+        "condition": "blast_radius == critical OR trust_risk == true OR touches payments/auth/RLS",
+        "model": "claude-opus-4.6",
+        "rationale": "Board-grade judgment. Irreversible decisions. Public compliance claims."
+      },
+      {
+        "condition": "modality == code AND blast_radius >= medium",
+        "model": "gpt-5.4",
+        "rationale": "Default coding model. Schema migrations, debugging, integration planning."
+      },
+      {
+        "condition": "modality == code AND blast_radius == low",
+        "model": "gpt-5.4-mini",
+        "rationale": "Coding subagents. Template generation. Test writing. Boilerplate."
+      },
+      {
+        "condition": "context_tokens > 200000",
+        "model": "gemini-2.5-pro",
+        "rationale": "Giant-context sweeps. Full-codebase audits. Long research. Multi-file diff review."
+      },
+      {
+        "condition": "blast_radius == medium AND modality == text",
+        "model": "gemini-2.5-flash",
+        "rationale": "Smart reasoning at volume. Operational decisions. Content quality checks."
+      },
+      {
+        "condition": "blast_radius <= medium AND trust_risk == false AND modality == text",
+        "model": "claude-sonnet-4.6",
+        "rationale": "Second-tier hard reasoning. Trust/compliance review when Opus not needed."
+      },
+      {
+        "condition": "bulk_classification OR tag_extraction OR simple_rewrite",
+        "model": "gemini-2.5-flash-lite",
+        "rationale": "Ultra-cheap. Tagging, enrichment, drafting, data cleanup."
+      },
+      {
+        "condition": "tiny_label OR routing_decision OR format_conversion",
+        "model": "gpt-5.4-nano",
+        "rationale": "Cheapest text model. Classification, rewrites, routing labels."
+      }
+    ],
+
+    "step_4_escalation": {
+      "triggers": [
+        "Model returns confidence < 0.7",
+        "Model hits context limit",
+        "Task fails twice on current tier",
+        "Task touches payments, trust, compliance, or public claims",
+        "Human-flagged for review"
+      ],
+      "escalation_chain": [
+        "gpt-5.4-nano → gpt-5.4-mini",
+        "gemini-2.5-flash-lite → gemini-2.5-flash",
+        "gpt-5.4-mini → gpt-5.4",
+        "gemini-2.5-flash → gemini-2.5-pro",
+        "gpt-5.4 → claude-sonnet-4.6",
+        "claude-sonnet-4.6 → claude-opus-4.6"
+      ]
+    }
+  },
+
+  "agent_assignments": {
+    "_comment": "Default model for each Magnificent 7 agent. Process agents use this config internally.",
+
+    "ceo": {
+      "paperclip_adapter": "claude_local",
+      "default_model": "claude-opus-4.6",
+      "rationale": "Board-grade strategy, approval authority, irreversible decisions"
+    },
+    "cto": {
+      "paperclip_adapter": "codex_local",
+      "default_model": "gpt-5.4",
+      "rationale": "Default coding model for debugging, schema changes, PR review"
+    },
+    "revenue_engine": {
+      "paperclip_adapter": "process",
+      "sub_tasks": {
+        "cold_email_draft":        { "model": "gpt-5.4-nano",          "rationale": "Template merge, no reasoning needed" },
+        "carrier_onboarding_email": { "model": "gpt-5.4-nano",         "rationale": "Template merge" },
+        "rate_negotiation":         { "model": "gemini-2.5-flash",     "rationale": "Needs reasoning about RPM data" },
+        "sponsor_traffic_check":    { "model": null,                    "rationale": "Deterministic: query analytics DB" },
+        "sponsor_outreach_email":   { "model": "gpt-5.4-nano",         "rationale": "Template merge with traffic data" },
+        "corridor_packaging":       { "model": null,                    "rationale": "Deterministic: query corridor DB" },
+        "directory_upsell_detect":  { "model": null,                    "rationale": "Deterministic: check view count > 50" },
+        "directory_upsell_email":   { "model": "gpt-5.4-nano",         "rationale": "Template merge" },
+        "trust_score_scan":         { "model": null,                    "rationale": "Deterministic: check trust_score > 15" },
+        "trust_unlock_email":       { "model": "gpt-5.4-nano",         "rationale": "Template merge" },
+        "training_funnel_check":    { "model": null,                    "rationale": "Deterministic: query enrollment status" },
+        "training_reminder_email":  { "model": "gpt-5.4-nano",         "rationale": "Template merge" },
+        "escrow_risk_flag":         { "model": "gemini-2.5-flash",     "rationale": "Needs reasoning about broker risk signals" },
+        "escrow_promo_email":       { "model": "gpt-5.4-nano",         "rationale": "Template merge" }
+      }
+    },
+    "seo_engine": {
+      "paperclip_adapter": "process",
+      "sub_tasks": {
+        "local_page_generation":    { "model": "gemini-2.5-flash-lite", "rationale": "Bulk page generation from template + city data" },
+        "hreflang_expansion":       { "model": null,                    "rationale": "Deterministic: tag injection" },
+        "gbp_sync":                 { "model": null,                    "rationale": "Deterministic: API sync" },
+        "canonical_crawl":          { "model": null,                    "rationale": "Deterministic: HTML parse + validate" },
+        "schema_jsonld_inject":     { "model": null,                    "rationale": "Deterministic: structured data template" },
+        "serp_bug_scan":            { "model": null,                    "rationale": "Deterministic: regex scan for mojibake/placeholders" },
+        "glossary_answer_block":    { "model": "gemini-2.5-flash",     "rationale": "Needs reasoning to write 50-word answer blocks" },
+        "regulation_simplify":      { "model": "gemini-2.5-flash",     "rationale": "Needs reasoning to break down legal text" },
+        "faq_generation":           { "model": "gemini-2.5-flash-lite", "rationale": "Semi-structured FAQ from known data" },
+        "timestamp_fix":            { "model": null,                    "rationale": "Deterministic: date comparison" },
+        "metrics_push":             { "model": null,                    "rationale": "Deterministic: query DB, update page" },
+        "link_spider_audit":        { "model": null,                    "rationale": "Deterministic: crawl + check for missing links" }
+      }
+    },
+    "dispatch_engine": {
+      "paperclip_adapter": "process",
+      "sub_tasks": {
+        "dat_scrape":               { "model": null,                    "rationale": "Deterministic: API poll + filter" },
+        "truckstop_scrape":         { "model": null,                    "rationale": "Deterministic: API poll + dedup" },
+        "dispatch_text":            { "model": null,                    "rationale": "Deterministic: SMS via Twilio" },
+        "bridge_height_query":      { "model": null,                    "rationale": "Deterministic: Mapbox API" },
+        "weather_alert":            { "model": null,                    "rationale": "Deterministic: NOAA API + threshold" }
+      }
+    },
+    "back_office": {
+      "paperclip_adapter": "process",
+      "sub_tasks": {
+        "insurance_verify":         { "model": null,                    "rationale": "Deterministic: RMIS API check" },
+        "fmcsa_audit":              { "model": null,                    "rationale": "Deterministic: SAFER API poll" },
+        "cdl_mvr_check":            { "model": null,                    "rationale": "Deterministic: DB validation" },
+        "permit_filing":            { "model": null,                    "rationale": "Deterministic: form submission" },
+        "bol_ocr":                  { "model": "gpt-5.4-mini",         "rationale": "Vision/OCR task needs a model" },
+        "bol_weight_match":         { "model": null,                    "rationale": "Deterministic: compare numbers" },
+        "ar_notice_send":           { "model": null,                    "rationale": "Deterministic: aging threshold + template email" },
+        "factoring_bundle":         { "model": null,                    "rationale": "Deterministic: zip + upload" },
+        "compliance_judgment":      { "model": "claude-sonnet-4.6",    "rationale": "ESCALATION: trust/compliance review needs strong reasoning" }
+      }
+    },
+    "emergency_desk": {
+      "paperclip_adapter": "process",
+      "sub_tasks": {
+        "breakdown_monitor":        { "model": null,                    "rationale": "Deterministic: poll inbox/SMS queue" },
+        "wrecker_dispatch":         { "model": null,                    "rationale": "Deterministic: nearest-wrecker lookup + SMS" },
+        "eld_relay":                { "model": null,                    "rationale": "Deterministic: status forward" },
+        "text_support":             { "model": "gpt-5.4-nano",         "rationale": "Simple Q&A for address/lumper issues" },
+        "claims_escalation":        { "model": "claude-sonnet-4.6",    "rationale": "ESCALATION: insurance claims need careful judgment" },
+        "wellness_check":           { "model": null,                    "rationale": "Deterministic: scheduled ping + response check" }
+      }
+    }
+  },
+
+  "spending_projection": {
+    "_comment": "Estimated monthly spend assuming average task volumes",
+    "ceo_opus":                { "calls_per_day": 6,   "avg_tokens": 5000,  "monthly_cost": "$22.50" },
+    "cto_gpt54":               { "calls_per_day": 12,  "avg_tokens": 8000,  "monthly_cost": "$9.00" },
+    "revenue_nano_emails":     { "calls_per_day": 50,  "avg_tokens": 500,   "monthly_cost": "$0.94" },
+    "revenue_flash_reasoning": { "calls_per_day": 10,  "avg_tokens": 2000,  "monthly_cost": "$1.68" },
+    "seo_flash_lite_pages":    { "calls_per_day": 20,  "avg_tokens": 3000,  "monthly_cost": "$0.72" },
+    "seo_flash_answers":       { "calls_per_day": 15,  "avg_tokens": 2000,  "monthly_cost": "$1.26" },
+    "backoffice_gpt54mini_ocr": { "calls_per_day": 5,  "avg_tokens": 3000,  "monthly_cost": "$0.51" },
+    "backoffice_sonnet_compliance": { "calls_per_day": 2, "avg_tokens": 5000, "monthly_cost": "$5.40" },
+    "emergency_nano_support":  { "calls_per_day": 5,   "avg_tokens": 500,   "monthly_cost": "$0.09" },
+    "emergency_sonnet_claims": { "calls_per_day": 1,   "avg_tokens": 3000,  "monthly_cost": "$1.62" },
+    "TOTAL_ESTIMATED":         "$43.72/month"
+  }
+}

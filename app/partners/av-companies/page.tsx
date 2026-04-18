@@ -85,7 +85,7 @@ export default function AVPartnersPage() {
             background: 'rgba(0,255,136,0.1)', border: '1px solid rgba(0,255,136,0.25)',
             color: '#00ff88', fontSize: 12, fontWeight: 700, letterSpacing: '0.1em', marginBottom: 24,
           }}>
-            🤝 AV COMPANY PARTNERSHIP PROGRAM
+            ðŸ¤ AV COMPANY PARTNERSHIP PROGRAM
           </div>
           <h1 style={{
             fontSize: 'clamp(28px, 5vw, 54px)', fontWeight: 900, margin: '0 0 16px',
@@ -105,7 +105,7 @@ export default function AVPartnersPage() {
                 color: '#07090f', border: 'none', borderRadius: 12,
                 padding: '14px 32px', fontSize: 16, fontWeight: 800, cursor: 'pointer',
               }}>
-                Become a Partner →
+                Become a Partner â†’
               </button>
             </Link>
             <a href="mailto:partners@haulcommand.com">
@@ -151,7 +151,7 @@ export default function AVPartnersPage() {
                     borderRadius: 12, padding: '14px 16px',
                   }}>
                     <span style={{ color: page.accent, fontWeight: 900, flexShrink: 0, fontSize: 16 }}>
-                      {page.accent === '#ef4444' ? '✕' : '✓'}
+                      {page.accent === '#ef4444' ? 'âœ•' : 'âœ“'}
                     </span>
                     <span style={{ color: '#b0bcd0', fontSize: 15, lineHeight: 1.6 }}>{b}</span>
                   </div>
@@ -194,7 +194,7 @@ export default function AVPartnersPage() {
               },
               {
                 letter: 'C', title: 'Data Partnership',
-                desc: 'Share route data → we pre-position certified operators before your trucks arrive. Predictive availability = sub-47-minute fill times.',
+                desc: 'Share route data â†’ we pre-position certified operators before your trucks arrive. Predictive availability = sub-47-minute fill times.',
                 price: 'Data licensing + SLA guarantee', accent: '#00ccff',
               },
             ].map(opt => (
@@ -211,7 +211,7 @@ export default function AVPartnersPage() {
                 }}>{opt.letter}</div>
                 <div style={{ fontWeight: 800, fontSize: 18, color: '#f0f4f8', marginBottom: 10 }}>{opt.title}</div>
                 <div style={{ fontSize: 14, color: '#b0bcd0', lineHeight: 1.7, marginBottom: 16 }}>{opt.desc}</div>
-                <div style={{ fontSize: 12, color: opt.accent, fontWeight: 600 }}>💰 {opt.price}</div>
+                <div style={{ fontSize: 12, color: opt.accent, fontWeight: 600 }}>ðŸ’° {opt.price}</div>
               </div>
             ))}
           </div>
@@ -252,7 +252,7 @@ export default function AVPartnersPage() {
 
         <div style={{ textAlign: 'center', marginTop: 40 }}>
           <Link aria-label="Navigation Link" href="/training/av-certification" style={{ color: '#8fa3c0', fontSize: 14, textDecoration: 'none' }}>
-            ← AV-Ready Certification for Individual Operators
+            â† AV-Ready Certification for Individual Operators
           </Link>
         </div>
       </div>

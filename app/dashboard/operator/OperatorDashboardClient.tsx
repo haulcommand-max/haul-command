@@ -10,15 +10,17 @@ import SwipeableRunCard from "@/components/mobile/SwipeableRunCard";
 import { AvailabilityToggle } from "@/components/dispatch/AvailabilityToggle";
 import AvailabilityQuickSet from "@/components/capture/AvailabilityQuickSet";
 import { TrustScoreBadge } from "@/components/trust/TrustScoreBadge";
+import RewardsCenterCard from "@/components/carrier/RewardsCenterCard";
+import { PushRegistrationGate } from "@/components/auth/PushRegistrationGate";
 import { CheckCircle, AlertCircle, Clock, TrendingUp, DollarSign, Briefcase, User, ChevronRight } from "lucide-react";
 
 const HeavyHaulMap = dynamic(() => import('@/components/map/HeavyHaulMap'), { ssr: false });
 
-// ═══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // OperatorDashboardClient — Fully typed, live-data connected
 // Props are injected 100% server-side from the DB in page.tsx.
 // Zero mocked fallbacks. Client handles UI state only.
-// ═══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 interface OperatorProfile {
   id: string;
@@ -172,7 +174,14 @@ export function OperatorDashboardClient({
   return (
     <div className="space-y-6">
 
-      {/* ── Header ── */}
+      {/* Silent push token collection */}
+      <PushRegistrationGate
+        userId={userId}
+        roleKey={operatorProfile?.claim_status === 'verified' ? 'operator_verified' : 'operator'}
+        countryCode={operatorProfile?.country_code ?? 'US'}
+      />
+
+      {/* -- Header -- */}
       <div className="flex flex-wrap justify-between items-start gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-white">
@@ -191,17 +200,17 @@ export function OperatorDashboardClient({
                 ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20'
                 : 'text-amber-400 bg-amber-400/10 border-amber-400/20'
             }`}>
-              {claimStatus === 'verified' ? '✓ Verified Operator' : `⏳ ${claimStatus}`}
+              {claimStatus === 'verified' ? '✓ Verified Operator' : `â³ ${claimStatus}`}
             </span>
           ) : (
-            <Link href="/claim" className="inline-block px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm rounded-xl transition-colors">
+            <Link href="/claim" className="inline-block px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white font-bold text-sm rounded-xl transition-colors">
               Claim Your Listing →
             </Link>
           )}
         </div>
       </div>
 
-      {/* ── No Profile CTA ── */}
+      {/* -- No Profile CTA -- */}
       {!hasLinkedProfile && (
         <Card>
           <div className="p-6 flex items-center gap-4">
@@ -213,14 +222,14 @@ export function OperatorDashboardClient({
                 It takes less than 2 minutes with email or SMS verification.
               </p>
             </div>
-            <Link href="/claim" className="flex-shrink-0 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm rounded-xl transition-colors">
+            <Link href="/claim" className="flex-shrink-0 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white font-bold text-sm rounded-xl transition-colors">
               Claim Now →
             </Link>
           </div>
         </Card>
       )}
 
-      {/* ── Profile Completeness Bar ── */}
+      {/* -- Profile Completeness Bar -- */}
       {hasLinkedProfile && profileCompleteness < 100 && (
         <Card>
           <div className="p-4 flex items-center gap-4">
@@ -245,7 +254,27 @@ export function OperatorDashboardClient({
         </Card>
       )}
 
-      {/* ── KPI Row ── */}
+      {/* -- Compliance Hub CTA -- */}
+      {hasLinkedProfile && (
+        <Card>
+          <div className="p-4 flex items-center justify-between gap-4 border border-[#22c55e]/20 bg-[#22c55e]/5 rounded-xl">
+            <div className="flex items-center gap-4">
+              <CheckCircle className="w-8 h-8 text-[#22c55e] flex-shrink-0" />
+              <div>
+                <h2 className="font-bold text-white text-sm">Compliance Hub</h2>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Sign auto-filled route surveys, W-9s, and high-pole declarations.
+                </p>
+              </div>
+            </div>
+            <Link href="/dashboard/operator/forms" className="flex-shrink-0 px-4 py-2 bg-[#10b981] hover:bg-[#059669] text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-colors whitespace-nowrap">
+              Manage Forms →
+            </Link>
+          </div>
+        </Card>
+      )}
+
+      {/* -- KPI Row -- */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
           <div className="p-4 flex flex-col gap-1">
@@ -272,7 +301,7 @@ export function OperatorDashboardClient({
           <div className="p-4 flex flex-col gap-1">
             <TrendingUp className="w-4 h-4 text-purple-400 mb-1" />
             <span className="text-2xl font-black text-white">
-              {operatorProfile?.rating_avg ? `${operatorProfile.rating_avg.toFixed(1)}★` : '—'}
+              {operatorProfile?.rating_avg ? `${operatorProfile.rating_avg.toFixed(1)}â˜…` : '—'}
             </span>
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
               Avg Rating ({operatorProfile?.review_count ?? 0} reviews)
@@ -281,7 +310,7 @@ export function OperatorDashboardClient({
         </Card>
       </div>
 
-      {/* ── Availability ── */}
+      {/* -- Availability -- */}
       {operatorId && (
         <AvailabilityToggle 
           operatorId={operatorId} 
@@ -289,7 +318,7 @@ export function OperatorDashboardClient({
         />
       )}
 
-      {/* ── One-Tap Availability Broadcast ── */}
+      {/* -- One-Tap Availability Broadcast -- */}
       {/* This directly writes to availability_broadcasts → appears in /available-now broker feed */}
       {operatorId && (
         <Card>
@@ -314,8 +343,8 @@ export function OperatorDashboardClient({
         </Card>
       )}
 
-      {/* ── Tabs ── */}
-      <div className="flex flex-wrap gap-1 bg-slate-900 border border-slate-800 rounded-xl p-1 w-fit">
+      {/* -- Tabs -- */}
+      <div className="flex flex-wrap gap-1  border border-slate-800 rounded-xl p-1 w-fit">
         {(['assignments', 'loads', 'earnings', 'report_card'] as const).map(tab => (
           <button
             key={tab}
@@ -323,19 +352,19 @@ export function OperatorDashboardClient({
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors ${
               activeTab === tab
-                ? 'bg-amber-500 text-black'
+                ? 'bg-amber-500 text-white'
                 : 'text-slate-500 hover:text-slate-300'
             }`}
           >
             {tab === 'assignments' ? `Missions (${assignments.length})`
               : tab === 'loads' ? `Open Loads (${loads.length})`
-              : tab === 'report_card' ? '📊 Report Card'
+              : tab === 'report_card' ? 'ðŸ"Š Report Card'
               : 'Earnings'}
           </button>
         ))}
       </div>
 
-      {/* ── Assignments Tab ── */}
+      {/* -- Assignments Tab -- */}
       {activeTab === 'assignments' && (
         <Card>
           {assignments.length === 0 ? (
@@ -398,7 +427,7 @@ export function OperatorDashboardClient({
         </Card>
       )}
 
-      {/* ── Open Loads Tab ── */}
+      {/* -- Open Loads Tab -- */}
       {activeTab === 'loads' && (
         <>
           {/* Live Map */}
@@ -486,7 +515,7 @@ export function OperatorDashboardClient({
           {/* Swipeable Cards — Mobile */}
           <div className="md:hidden space-y-4">
             {loads.length === 0 && (
-              <div className="text-center py-10 text-slate-500 bg-slate-900 border border-slate-800 rounded-xl">
+              <div className="text-center py-10 text-slate-500  border border-slate-800 rounded-xl">
                 No open loads right now.
               </div>
             )}
@@ -524,7 +553,7 @@ export function OperatorDashboardClient({
                         min="50"
                       />
                       <div className="flex space-x-3">
-                        <Button aria-label="Submit bid" className="flex-1 py-6 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl" disabled={isProcessing} onClick={() => handleSubmitBid(l.id)}>
+                        <Button aria-label="Submit bid" className="flex-1 py-6 bg-amber-500 hover:bg-amber-400 text-white font-bold rounded-xl" disabled={isProcessing} onClick={() => handleSubmitBid(l.id)}>
                           Submit Bid
                         </Button>
                         <Button aria-label="Cancel bid" variant="ghost" className="py-6 px-4 bg-white/5 text-slate-400 hover:text-white rounded-xl" onClick={() => setBiddingOn(null)}>Cancel</Button>
@@ -538,15 +567,27 @@ export function OperatorDashboardClient({
         </>
       )}
 
-      {/* ── Report Card Tab ── */}
+      {/* -- Report Card Tab -- */}
       {activeTab === 'report_card' && (
         <div className="space-y-4">
+          {/* Public Report Card deep-link */}
+          {operatorId && (
+            <div className="rounded-xl border border-[#C6923A]/20 bg-[#C6923A]/5 p-4 flex items-center justify-between gap-4">
+              <div>
+                <p className="text-sm font-bold text-[#E0B05C]">Public Report Card</p>
+                <p className="text-xs text-slate-400 mt-0.5">View or share your verified operator report card with brokers.</p>
+              </div>
+              <Link href={`/report-card/${operatorId}`} className="shrink-0 px-4 py-2 bg-[#C6923A] hover:bg-[#E0B05C] text-black text-xs font-black rounded-lg transition-colors whitespace-nowrap">
+                View Report Card →
+              </Link>
+            </div>
+          )}
           {/* Period selector */}
-          <div className="flex gap-1 bg-slate-900 border border-slate-800 rounded-xl p-1 w-fit">
+          <div className="flex gap-1  border border-slate-800 rounded-xl p-1 w-fit">
             {([30, 90, 180, 365] as const).map(p => (
               <button key={p} onClick={() => setCardPeriod(p)}
                 className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-colors ${
-                  cardPeriod === p ? 'bg-amber-500 text-black' : 'text-slate-500 hover:text-slate-300'
+                  cardPeriod === p ? 'bg-amber-500 text-white' : 'text-slate-500 hover:text-slate-300'
                 }`}>
                 {p === 365 ? '1 Year' : `${p}d`}
               </button>
@@ -554,8 +595,8 @@ export function OperatorDashboardClient({
           </div>
 
           {!trustProfile ? (
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-10 text-center">
-              <p className="text-2xl mb-2">📊</p>
+            <div className="rounded-2xl border border-slate-800 /50 p-10 text-center">
+              <p className="text-2xl mb-2">ðŸ"Š</p>
               <p className="font-bold text-slate-300 mb-1">No report card yet</p>
               <p className="text-sm text-slate-500">Complete verified jobs to build your performance record.</p>
             </div>
@@ -570,12 +611,12 @@ export function OperatorDashboardClient({
                 {/* KPI grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {[
-                    { label: 'Jobs Completed', val: j != null ? j.toLocaleString() : '—', color: 'text-emerald-400', icon: '✅' },
-                    { label: 'Km Covered', val: km != null ? `${(km / 1000).toFixed(1)}K` : '—', color: 'text-blue-400', icon: '🛣️' },
-                    { label: 'Avg Rating', val: rating != null ? `${rating.toFixed(2)}★` : '—', color: 'text-amber-400', icon: '⭐' },
-                    { label: 'Avg Response', val: resp != null ? `${resp}m` : '—', color: 'text-purple-400', icon: '⚡' },
+                    { label: 'Jobs Completed', val: j != null ? j.toLocaleString() : '—', color: 'text-emerald-400', icon: 'âœ…' },
+                    { label: 'Km Covered', val: km != null ? `${(km / 1000).toFixed(1)}K` : '—', color: 'text-blue-400', icon: 'ðŸ›£ï¸' },
+                    { label: 'Avg Rating', val: rating != null ? `${rating.toFixed(2)}â˜…` : '—', color: 'text-amber-400', icon: 'â­' },
+                    { label: 'Avg Response', val: resp != null ? `${resp}m` : '—', color: 'text-purple-400', icon: 'âš¡' },
                   ].map(k => (
-                    <div key={k.label} className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+                    <div key={k.label} className=" border border-slate-800 rounded-xl p-4">
                       <div className="text-lg mb-1">{k.icon}</div>
                       <p className={`text-2xl font-black ${k.color}`}>{k.val}</p>
                       <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mt-0.5">{k.label}</p>
@@ -584,7 +625,7 @@ export function OperatorDashboardClient({
                 </div>
 
                 {/* Trust badges */}
-                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                <div className=" border border-slate-800 rounded-xl p-5">
                   <p className="text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">Verification Status</p>
                   <div className="flex flex-wrap gap-2">
                     {[
@@ -599,14 +640,14 @@ export function OperatorDashboardClient({
                           ? 'bg-emerald-400/10 border-emerald-400/30 text-emerald-400'
                           : 'bg-slate-800 border-slate-700 text-slate-500'
                       }`}>
-                        {b.ok ? '✓' : '○'} {b.label}
+                        {b.ok ? '✓' : 'â—‹'} {b.label}
                       </span>
                     ))}
                   </div>
                 </div>
 
                 {/* All-time totals */}
-                <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                <div className=" border border-slate-800 rounded-xl p-5">
                   <p className="text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">All-Time Network Record</p>
                   <div className="grid grid-cols-3 gap-4">
                     <div>
@@ -621,7 +662,7 @@ export function OperatorDashboardClient({
                     </div>
                     <div>
                       <p className="text-xl font-black text-white">
-                        {trustProfile.review_avg ? `${trustProfile.review_avg.toFixed(2)}★` : '—'}
+                        {trustProfile.review_avg ? `${trustProfile.review_avg.toFixed(2)}â˜…` : '—'}
                       </p>
                       <p className="text-[10px] text-slate-500 uppercase tracking-wider">
                         Avg Rating ({trustProfile.review_count ?? 0} reviews)
@@ -642,9 +683,18 @@ export function OperatorDashboardClient({
                       <p className="text-sm font-bold text-amber-400">Boost your trust score</p>
                       <p className="text-xs text-slate-400 mt-0.5">Verify identity and claim your profile to unlock higher rankings.</p>
                     </div>
-                    <a href="/claim" className="shrink-0 px-4 py-2 bg-amber-500 text-black text-xs font-black rounded-lg hover:bg-amber-400 transition-colors">
+                    <a href="/claim" className="shrink-0 px-4 py-2 bg-amber-500 text-white text-xs font-black rounded-lg hover:bg-amber-400 transition-colors">
                       Verify Now →
                     </a>
+                  </div>
+                )}
+
+                {operatorId && (
+                  <div className="mt-4">
+                    <RewardsCenterCard 
+                      operatorId={operatorId} 
+                      trustScore={trustProfile.trust_score ?? operatorProfile?.trust_score ?? 0} 
+                    />
                   </div>
                 )}
               </div>
@@ -653,7 +703,7 @@ export function OperatorDashboardClient({
         </div>
       )}
 
-      {/* ── Earnings Tab ── */}
+      {/* -- Earnings Tab -- */}
       {activeTab === 'earnings' && (
         <Card>
           {recentEarnings.length === 0 ? (

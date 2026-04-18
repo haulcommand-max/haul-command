@@ -75,7 +75,7 @@ export default function LiquidityMap() {
     const [data, setData] = useState<MapData | null>(null);
     const [loading, setLoading] = useState(true);
     const [mounted, setMounted] = useState(false);
-    const viewportRef = useRef({ minLat: 24.5, maxLat: 31.0, minLng: -87.6, maxLng: -80.0 }); // Default: Florida
+    const viewportRef = useRef({ minLat: -90.0, maxLat: 90.0, minLng: -180.0, maxLng: 180.0 }); // Default: Global View
 
     useEffect(() => {
         setMounted(true);
@@ -123,8 +123,8 @@ export default function LiquidityMap() {
             )}
 
             <MapContainer
-                center={[27.6648, -81.5158]} // Center on Florida (Engine 1 Priority)
-                zoom={7}
+                center={[35.0, -40.0]} // Center globally across Atlantic
+                zoom={3}
                 style={{ height: '100%', width: '100%' }}
                 zoomControl={false}
             >

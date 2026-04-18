@@ -5,7 +5,7 @@ import React from 'react';
 
 export default function DirectoryEliteStore() {
   return (
-    <div className="bg-hc-gray-900 min-h-screen pt-20 pb-20">
+    <div className="bg-hc-gray-900  pt-20 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="mb-12 text-center">
           <h1 className="text-4xl font-extrabold text-white mb-4">
@@ -20,7 +20,7 @@ export default function DirectoryEliteStore() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Mock Elite Store Cards */}
           <div className="bg-black border border-hc-yellow-400/50 rounded-xl p-6 shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 bg-hc-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-bl-lg">ELITE SPONSOR</div>
+            <div className="absolute top-0 right-0 bg-hc-yellow-400 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">ELITE SPONSOR</div>
             <h3 className="text-xl font-bold text-white mb-1 mt-2">Texas Premiere Escorts</h3>
             <p className="text-sm text-hc-gray-400 mb-4">Based in Houston, TX</p>
             

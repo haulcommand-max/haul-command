@@ -1,0 +1,24 @@
+review_drops:
+  - sonnet_pr: "SmartAutoLinker Refactor"
+    comments:
+      - file: "components/glossary/SmartAutoLinker.tsx"
+        severity: "Medium"
+        comment: "Regex safety issue: The current implementation might accidentally replace terms inside existing anchor tags. Make sure the SmartAutoLinker regex uses negative lookaheads `(?![^<>]*>)` to avoid corrupting existing HTML."
+  
+  - sonnet_pr: "IndexNow Integration"
+    comments:
+      - file: "app/api/glossary/indexnow/route.ts"
+        severity: "High"
+        comment: "Formatting edge case: The Bing IndexNow API rejects payloads greater than 10,000 URLs per batch. Make sure the pg_cron queue consumer chunks the array instead of grabbing 'unsubmitted_all'."
+  
+  - sonnet_pr: "Radar Map Component"
+    comments:
+      - file: "app/(landing)/_components/GlobalEscortSupplyRadar.tsx"
+        severity: "Low"
+        comment: "Visual truth-first fallback: If `activeNodes` length is 0, the `fitToDots` function might blow up with a divide-by-zero or return NaN. Provide a dummy empty-state dot array to keep the animation running smoothly."
+        
+  - sonnet_pr: "Search Indexing"
+    comments:
+      - path: "/search/routes/*"
+        severity: "Medium"
+        comment: "Corridor page duplication risk: We're generating bidirectional routes (A-to-B and B-to-A). If they have identical content, Google will penalize us. Ensure the B-to-A route sets a canonical link pointing to A-to-B."

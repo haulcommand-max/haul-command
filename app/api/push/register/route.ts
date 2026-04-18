@@ -1,46 +1,86 @@
-export const dynamic = 'force-dynamic';
-import { NextResponse } from 'next/server';
-import { getSupabaseAdmin } from '@/lib/supabase/admin';
-import { createClient } from '@/lib/supabase/client';
+import { NextRequest, NextResponse } from "next/server";
+import { supabaseServer } from "@/lib/supabase/server";
 
-export async function POST(req: Request) {
-    try {
-        const { token, platform, locale, region } = await req.json();
+// ══════════════════════════════════════════════════════════════
+// POST /api/push/register — Store FCM device token
+// DELETE /api/push/register — Remove FCM device token (logout)
+//
+// Writes to hc_device_tokens table.
+// Per role-lock.ts: Supabase stores ALL data. Firebase = push only.
+// ══════════════════════════════════════════════════════════════
 
-        if (!token || !platform) {
-            return NextResponse.json({ error: 'token and platform required' }, { status: 400 });
-        }
+export async function POST(req: NextRequest) {
+  try {
+    const supabase = await supabaseServer();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-        if (!['web', 'ios', 'android'].includes(platform)) {
-            return NextResponse.json({ error: 'platform must be web, ios, or android' }, { status: 400 });
-        }
-
-        // The client-side supabase call — auth context comes from the request cookies
-        const supabase = createClient();
-        const { data: { user } } = await supabase.auth.getUser();
-
-        if (!user) {
-            return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
-        }
-
-        const { error } = await supabase.from('push_tokens').upsert(
-            {
-                user_id: user.id,
-                token,
-                platform,
-                locale: locale || 'en-US',
-                region: region || null,
-                updated_at: new Date().toISOString(),
-            },
-            { onConflict: 'user_id,token' }
-        );
-
-        if (error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
-        }
-
-        return NextResponse.json({ ok: true });
-    } catch {
-        return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+
+    const { token, platform, role_key, country_code } = await req.json();
+
+    if (!token) {
+      return NextResponse.json({ error: "Token required" }, { status: 400 });
+    }
+
+    // Upsert — same token for same user = update, new token = insert
+    const { error } = await supabase.from("hc_device_tokens").upsert(
+      {
+        user_id: user.id,
+        token,
+        platform: platform || "web",
+        role_key: role_key || null,
+        country_code: country_code || null,
+        is_active: true,
+        updated_at: new Date().toISOString(),
+      },
+      {
+        onConflict: "user_id,token",
+      }
+    );
+
+    if (error) {
+      console.error("[push/register] Upsert failed:", error);
+      return NextResponse.json({ error: "Failed to store token" }, { status: 500 });
+    }
+
+    return NextResponse.json({ ok: true });
+  } catch (err: any) {
+    console.error("[push/register] Error:", err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const supabase = await supabaseServer();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { token } = await req.json();
+
+    if (!token) {
+      return NextResponse.json({ error: "Token required" }, { status: 400 });
+    }
+
+    // Deactivate rather than delete — preserves audit trail
+    await supabase
+      .from("hc_device_tokens")
+      .update({ is_active: false, updated_at: new Date().toISOString() })
+      .eq("user_id", user.id)
+      .eq("token", token);
+
+    return NextResponse.json({ ok: true });
+  } catch (err: any) {
+    console.error("[push/register] Delete error:", err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
 }

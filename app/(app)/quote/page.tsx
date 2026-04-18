@@ -137,7 +137,7 @@ export default function QuoteWizard() {
                                     padding: '6px 0', borderBottom: '1px solid rgba(255,255,255,0.04)',
                                 }}>
                                     <span style={{ color: '#d1d5db' }}>{l.label}</span>
-                                    <span style={{ color: S.gold, fontWeight: 700 }}>${l.min.toFixed(0)}–${l.max.toFixed(0)}</span>
+                                    <span style={{ color: S.gold, fontWeight: 700 }}>${l.min.toFixed(0)}"“${l.max.toFixed(0)}</span>
                                 </div>
                             ))}
                         </div>

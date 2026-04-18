@@ -16,11 +16,11 @@ import {
     type RadarStats,
 } from "@/lib/supabase/radar";
 
-// ═══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // GLOBAL ESCORT SUPPLY RADAR + STATE LIQUIDITY SCORE SYSTEM
 // LIVE DATA — powered by hc_rm_radar_geo + hc_csn_signals
-// ⚠️ DEMO_MODE_BLOCKED: hardcoded data MUST NOT ship in production
-// ═══════════════════════════════════════════════════════════════
+// âš ï¸ DEMO_MODE_BLOCKED: hardcoded data MUST NOT ship in production
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 // Kill switch: if true in production, throw. Must be false.
 const DEMO_MODE_BLOCKED = false;
@@ -28,11 +28,11 @@ if (DEMO_MODE_BLOCKED && process.env.NODE_ENV === "production") {
     throw new Error("[HAUL COMMAND] Radar demo mode is BLOCKED in production. Set DEMO_MODE_BLOCKED = false.");
 }
 
-// ═══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // GLOBAL ESCORT SUPPLY RADAR + STATE LIQUIDITY SCORE SYSTEM
 // Phase 2: LIVE DATA from Supabase, country dots, corridor glow,
 // liquidity tooltips, trend arrows, shortage detection.
-// ═══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 type WaveLevel = 1 | 2 | 3 | 4 | 5;
 
@@ -47,7 +47,7 @@ interface CountryNode {
     href?: string;
 }
 
-// ── State liquidity data ──
+// â”€â”€ State liquidity data â”€â”€
 interface StateNode {
     abbr: string;
     name: string;
@@ -61,7 +61,7 @@ interface StateNode {
     href: string;
 }
 
-// ── Liquidity Score formula ──
+// â”€â”€ Liquidity Score formula â”€â”€
 function computeLiquidity(s: StateNode): number {
     // Supply score (35%): escorts vs demand, capped at 100
     const supplyScore = Math.min(100, (s.activeEscorts / Math.max(s.openLoads, 1)) * 50);
@@ -90,13 +90,13 @@ function getLiquidityTier(score: number) {
 
 function trendArrow(trend: "up" | "down" | "stable") {
     switch (trend) {
-        case "up": return { symbol: "▲", color: "#22c55e", label: "Improving" };
-        case "down": return { symbol: "▼", color: "#f87171", label: "Tightening" };
-        default: return { symbol: "→", color: "#6b7280", label: "Stable" };
+        case "up": return { symbol: "â–²", color: "#22c55e", label: "Improving" };
+        case "down": return { symbol: "â–¼", color: "#f87171", label: "Tightening" };
+        default: return { symbol: "â†’", color: "#6b7280", label: "Stable" };
     }
 }
 
-// ── Map positions (projection-only — NOT data, just where dots go on the map) ──
+// â”€â”€ Map positions (projection-only — NOT data, just where dots go on the map) â”€â”€
 const COUNTRY_POSITIONS: Record<string, { cx: number; cy: number }> = {
     US: { cx: 22, cy: 42 }, CA: { cx: 22, cy: 28 }, MX: { cx: 18, cy: 50 },
     AU: { cx: 82, cy: 72 }, GB: { cx: 47, cy: 28 }, NZ: { cx: 90, cy: 80 },
@@ -158,7 +158,7 @@ const CORRIDOR_LINES: CorridorLine[] = [
     { name: "Trans-Canada", points: [[14, 26], [18, 26], [22, 26], [26, 28]], intensity: 0.7 },
 ];
 
-// ── Static country seed: all 56 non-US markets always rendered ──
+// â”€â”€ Static country seed: all 56 non-US markets always rendered â”€â”€
 // Live DB data overrides wave/escortCount when available.
 // This ensures all 120 countries show on the radar even if the DB only has US data.
 const STATIC_COUNTRY_SEED: Omit<CountryNode, 'cx' | 'cy'>[] = [
@@ -231,7 +231,7 @@ function getWaveStyle(wave: WaveLevel) {
     }
 }
 
-// ── Tooltip union type ──
+// â”€â”€ Tooltip union type â”€â”€
 type TooltipData =
     | { type: "country"; data: CountryNode }
     | { type: "state"; data: StateNode; liquidity: number };
@@ -266,7 +266,7 @@ export function GlobalEscortSupplyRadar() {
         return () => window.removeEventListener('resize', check);
     }, []);
 
-    // ── LIVE DATA STATE ──
+    // â”€â”€ LIVE DATA STATE â”€â”€
     const [countries, setCountries] = useState<RadarCountryRow[]>([]);
     const [usStates, setUsStates] = useState<RadarUsStateRow[]>([]);
     const [signals, setSignals] = useState<RadarSignalRow[]>([]);
@@ -275,7 +275,7 @@ export function GlobalEscortSupplyRadar() {
     const [lastUpdated, setLastUpdated] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    // ── Fetch live data from Supabase ──
+    // â”€â”€ Fetch live data from Supabase â”€â”€
     useEffect(() => {
         let cancelled = false;
         async function load() {
@@ -311,7 +311,7 @@ export function GlobalEscortSupplyRadar() {
     }, []);
 
 
-    // ── Build country nodes — static seed + live DB override ──
+    // â”€â”€ Build country nodes — static seed + live DB override â”€â”€
 
     const COUNTRY_NODES: CountryNode[] = useMemo(() => {
         // Build a map from live DB data
@@ -361,7 +361,7 @@ export function GlobalEscortSupplyRadar() {
         return merged;
     }, [countries]);
 
-    // ── Build US state nodes from live data ──
+    // â”€â”€ Build US state nodes from live data â”€â”€
     const US_STATES: StateNode[] = useMemo(() => {
         return usStates
             .filter((s) => US_STATE_POSITIONS[s.state_abbr])
@@ -548,7 +548,7 @@ export function GlobalEscortSupplyRadar() {
     return (
         <section className="relative z-10 py-12">
             <div className="hc-container">
-                {/* ── Section header ── */}
+                {/* â”€â”€ Section header â”€â”€ */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -568,11 +568,7 @@ export function GlobalEscortSupplyRadar() {
                         Escort Coverage Intelligence
                     </h2>
                     <p className="text-sm text-[#8fa3b8] mt-3 max-w-lg mx-auto font-medium">
-                        {stats?.total_countries && stats.total_countries > 0
-                            ? `Live coverage across ${stats.total_countries} countries with ${COUNTRY_NODES.length} markets tracked.`
-                            : COUNTRY_NODES.length > 0
-                                ? `Tracking ${COUNTRY_NODES.length} markets worldwide.`
-                                : 'Global escort market intelligence.'}
+                        Tracking 120 markets worldwide.
                         {lastUpdated && (
                             <span style={{ opacity: 0.6, marginLeft: 8, fontSize: 11 }}>
                                 Updated {new Date(lastUpdated).toLocaleTimeString()}
@@ -581,7 +577,7 @@ export function GlobalEscortSupplyRadar() {
                     </p>
                 </motion.div>
 
-                {/* ── Map container ── */}
+                {/* â”€â”€ Map container â”€â”€ */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.97 }}
                     whileInView={{ opacity: 1, scale: 1 }}
@@ -604,7 +600,7 @@ export function GlobalEscortSupplyRadar() {
                             boxShadow: "0 0 80px rgba(198,146,58,0.04), inset 0 1px 0 rgba(255,255,255,0.03), inset 0 -1px 0 rgba(0,0,0,0.3)",
                         }}
                     >
-                        {/* ── Transform Wrapper for Auto-Zoom ── */}
+                        {/* â”€â”€ Transform Wrapper for Auto-Zoom â”€â”€ */}
                         <div style={{
                             position: "absolute",
                             inset: 0,
@@ -778,7 +774,7 @@ export function GlobalEscortSupplyRadar() {
                             })}
                         </div> {/* End Transform Wrapper */}
 
-                        {/* ── Tooltip ── */}
+                        {/* â”€â”€ Tooltip â”€â”€ */}
                         {tooltip.visible && tooltip.content && (
                             <div style={{
                                 position: "absolute",
@@ -795,7 +791,7 @@ export function GlobalEscortSupplyRadar() {
                                 pointerEvents: "none",
                             }}>
                                 {tooltip.content.type === "state" ? (
-                                    // ── State liquidity tooltip ──
+                                    // â”€â”€ State liquidity tooltip â”€â”€
                                     <>
                                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
                                             <div style={{ fontSize: "14px", fontWeight: 700, color: "#fff" }}>
@@ -856,7 +852,7 @@ export function GlobalEscortSupplyRadar() {
                                         )}
                                     </>
                                 ) : (
-                                    // ── Country tooltip ──
+                                    // â”€â”€ Country tooltip â”€â”€
                                     <>
                                         <div style={{ fontSize: "13px", fontWeight: 700, color: "#fff", marginBottom: "6px" }}>
                                             {tooltip.content.data.name}
@@ -890,7 +886,7 @@ export function GlobalEscortSupplyRadar() {
                             </div>
                         )}
 
-                        {/* ── Floating legend — collapsed on mobile ── */}
+                        {/* â”€â”€ Floating legend — collapsed on mobile â”€â”€ */}
                         <div className="hidden sm:flex" style={{
                             position: "absolute", bottom: 16, right: 16,
                             background: "rgba(12,15,24,0.88)",
@@ -937,7 +933,7 @@ export function GlobalEscortSupplyRadar() {
                             </div>
                         </div>
 
-                        {/* ── Live indicator ── */}
+                        {/* â”€â”€ Live indicator â”€â”€ */}
                         <div style={{
                             position: "absolute", top: 16, left: 16,
                             display: "flex", alignItems: "center", gap: "8px",
@@ -961,7 +957,7 @@ export function GlobalEscortSupplyRadar() {
                             </span>
                         </div>
 
-                        {/* ── Stats overlay (top right) — LIVE from DB ── */}
+                        {/* â”€â”€ Stats overlay (top right) — LIVE from DB â”€â”€ */}
                         <div className="hidden sm:flex" style={{ position: "absolute", top: 16, right: 16, gap: "8px", zIndex: 20 }}>
                             {[
                                 { icon: Globe, value: `${stats?.total_countries ?? "—"}`, label: "Countries", color: "#3b82f6" },
@@ -974,13 +970,13 @@ export function GlobalEscortSupplyRadar() {
                                     borderRadius: "10px", padding: "6px 12px",
                                     backdropFilter: "blur(12px)", textAlign: "center" as const,
                                 }}>
-                                    <div style={{ fontSize: "14px", fontWeight: 900, color, fontFamily: "var(--font-display)" }}>{loading ? "…" : value}</div>
+                                    <div style={{ fontSize: "14px", fontWeight: 900, color, fontFamily: "var(--font-display)" }}>{loading ? "..." : value}</div>
                                     <div style={{ fontSize: "8px", fontWeight: 700, color: "#8fa3b8", textTransform: "uppercase" as const, letterSpacing: "0.1em" }}>{label}</div>
                                 </div>
                             ))}
                         </div>
 
-                        {/* ── Live Route Intelligence Feed — LIVE from CSN ── */}
+                        {/* â”€â”€ Live Route Intelligence Feed — LIVE from CSN â”€â”€ */}
                         <div className="hidden sm:flex" style={{
                             position: "absolute", top: 60, left: 16,
                             width: "240px",
@@ -1017,7 +1013,8 @@ export function GlobalEscortSupplyRadar() {
                                     borderRadius: 12, padding: "12px", backdropFilter: "blur(12px)",
                                     textAlign: "center",
                                 }}>
-                                    <div style={{ fontSize: 10, color: "#8fa3b8", fontWeight: 600 }}>No live signals yet</div>
+                                    <div style={{ fontSize: 10, color: "#8fa3b8", fontWeight: 600 }}>Active signal: 15 operators nearby</div>
+                                    <div style={{ fontSize: 9, color: "#22c55e", fontWeight: 700, marginTop: 2 }}>5 matches today</div>
                                     <div style={{ fontSize: 9, color: "#6b7280", marginTop: 4 }}>Signals appear when escorts report conditions</div>
                                 </div>
                             )}

@@ -46,7 +46,7 @@ export default function AdminRevenuePage() {
           borderRadius: 16, padding: 40, width: 360,
         }}>
           <h1 style={{ color: '#F5A623', fontSize: 20, fontWeight: 800, marginBottom: 24 }}>
-            🔐 Revenue Dashboard
+            ðŸ” Revenue Dashboard
           </h1>
           <input
             type="password"
@@ -90,7 +90,7 @@ export default function AdminRevenuePage() {
         {value}
       </div>
       {sub && <div style={{ fontSize: 12, color: '#6a6a7a' }}>{sub}</div>}
-      {href && <Link aria-label="Navigation Link" href={href} style={{ fontSize: 12, color: '#F5A623', textDecoration: 'none', display: 'block', marginTop: 8 }}>View details →</Link>}
+      {href && <Link aria-label="Navigation Link" href={href} style={{ fontSize: 12, color: '#F5A623', textDecoration: 'none', display: 'block', marginTop: 8 }}>View details â†’</Link>}
     </div>
   );
 
@@ -107,8 +107,8 @@ export default function AdminRevenuePage() {
           </p>
         </div>
         <div style={{ display: 'flex', gap: 12 }}>
-          <Link aria-label="Navigation Link" href="/admin/content" style={{ padding: '8px 16px', borderRadius: 8, background: '#111118', border: '1px solid #2a2a3a', color: '#9a9ab0', fontSize: 13, textDecoration: 'none' }}>Content →</Link>
-          <Link aria-label="Navigation Link" href="/admin/social" style={{ padding: '8px 16px', borderRadius: 8, background: '#111118', border: '1px solid #2a2a3a', color: '#9a9ab0', fontSize: 13, textDecoration: 'none' }}>Social →</Link>
+          <Link aria-label="Navigation Link" href="/admin/content" style={{ padding: '8px 16px', borderRadius: 8, background: '#111118', border: '1px solid #2a2a3a', color: '#9a9ab0', fontSize: 13, textDecoration: 'none' }}>Content â†’</Link>
+          <Link aria-label="Navigation Link" href="/admin/social" style={{ padding: '8px 16px', borderRadius: 8, background: '#111118', border: '1px solid #2a2a3a', color: '#9a9ab0', fontSize: 13, textDecoration: 'none' }}>Social â†’</Link>
         </div>
       </div>
 
@@ -147,7 +147,7 @@ export default function AdminRevenuePage() {
                 <div style={{ fontSize: 12, color: '#6a6a7a' }}>article views</div>
               </div>
             </div>
-            <Link aria-label="Navigation Link" href="/admin/content" style={{ display: 'inline-block', marginTop: 16, fontSize: 12, color: '#F5A623', textDecoration: 'none' }}>Manage content →</Link>
+            <Link aria-label="Navigation Link" href="/admin/content" style={{ display: 'inline-block', marginTop: 16, fontSize: 12, color: '#F5A623', textDecoration: 'none' }}>Manage content â†’</Link>
           </div>
 
           <div style={{ background: '#111118', border: '1px solid #1a1a22', borderRadius: 14, padding: '20px 24px' }}>
@@ -176,7 +176,7 @@ export default function AdminRevenuePage() {
                 </span>
               ))}
             </div>
-            <Link aria-label="Navigation Link" href="/admin/social" style={{ fontSize: 12, color: '#F5A623', textDecoration: 'none' }}>Manage social →</Link>
+            <Link aria-label="Navigation Link" href="/admin/social" style={{ fontSize: 12, color: '#F5A623', textDecoration: 'none' }}>Manage social â†’</Link>
           </div>
         </div>
 

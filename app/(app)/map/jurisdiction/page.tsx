@@ -4,11 +4,11 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/client';
 
-// ══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // JURISDICTION MAP CONTROL SURFACE
 // Dark command-center aesthetic · Interactive SVG map
-// Tap a state → bottom drawer with operators, rules, support
-// ══════════════════════════════════════════════════════════════
+// Tap a state â†’ bottom drawer with operators, rules, support
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const T = {
     bg: '#060b12',
@@ -31,7 +31,7 @@ const T = {
 
 const supabase = createClient();
 
-// ── State paths (simplified SVG paths for US states aligned to viewBox 0 0 960 600)
+// â”€â”€ State paths (simplified SVG paths for US states aligned to viewBox 0 0 960 600)
 const US_STATES: Record<string, { code: string; name: string; cx: number; cy: number; path: string }> = {
     'US-WA': { code: 'US-WA', name: 'Washington', cx: 120, cy: 60, path: 'M80,30 L170,30 L175,95 L80,95 Z' },
     'US-OR': { code: 'US-OR', name: 'Oregon', cx: 110, cy: 130, path: 'M80,95 L175,95 L175,170 L80,170 Z' },
@@ -126,7 +126,7 @@ interface DrawerData {
 
 type DrawerTab = 'operators' | 'rules' | 'support';
 
-// ── Analytics tracker
+// â”€â”€ Analytics tracker
 function trackEvent(event: string, data?: Record<string, string>) {
     try {
         if (typeof window !== 'undefined' && (window as any).gtag) {
@@ -135,7 +135,7 @@ function trackEvent(event: string, data?: Record<string, string>) {
     } catch { /* analytics is best-effort */ }
 }
 
-// ── Skeleton Loader
+// â”€â”€ Skeleton Loader
 function DrawerSkeleton() {
     return (
         <div style={{display: 'flex',flexDirection: 'column',gap: 12,padding: '16px 0' }}>
@@ -150,7 +150,7 @@ function DrawerSkeleton() {
     );
 }
 
-// ── Operator Card
+// â”€â”€ Operator Card
 function OperatorCard({ op }: { op: DrawerData['operators'][0] }) {
     return (
         <div style={{background: T.bgCard,border: `1px solid ${T.border}`,borderRadius: 14,padding: 16,transition: 'all 0.18s'}}
@@ -162,7 +162,7 @@ function OperatorCard({ op }: { op: DrawerData['operators'][0] }) {
                     <div style={{display: 'flex',alignItems: 'center',gap: 6,marginBottom: 4 }}>
                         <span style={{fontSize: 15,fontWeight: 800,color: T.textPrimary }}>{op.business_name}</span>
                         {op.verified && (
-                            <span style={{padding: '2px 7px',borderRadius: 6,fontSize: 9,fontWeight: 800,background: 'rgba(39,209,127,0.15)',color: T.green,border: '1px solid rgba(39,209,127,0.3)',textTransform: 'uppercase'}}>✓ Verified</span>
+                            <span style={{padding: '2px 7px',borderRadius: 6,fontSize: 9,fontWeight: 800,background: 'rgba(39,209,127,0.15)',color: T.green,border: '1px solid rgba(39,209,127,0.3)',textTransform: 'uppercase'}}>âœ“ Verified</span>
                         )}
                     </div>
                     <div style={{display: 'flex',gap: 4,flexWrap: 'wrap' }}>
@@ -186,30 +186,30 @@ function OperatorCard({ op }: { op: DrawerData['operators'][0] }) {
                     href={`tel:${op.phone}`}
                     onClick={() => trackEvent('operator_called', { operator_id: op.operator_id })}
                     style={{padding: '8px 16px',borderRadius: 10,background: `linear-gradient(135deg, ${T.green}, #059669)`,color: '#fff',fontSize: 12,fontWeight: 800,textDecoration: 'none',textTransform: 'uppercase',letterSpacing: '0.05em'}}>
-                    📞 Call
+                    ðŸ“ž Call
                 </a>
                 <a
                     href={`sms:${op.phone}`}
                     onClick={() => trackEvent('operator_texted', { operator_id: op.operator_id })}
                     style={{padding: '8px 16px',borderRadius: 10,background: T.bgElevated,border: `1px solid ${T.border}`,color: T.textBody,fontSize: 12,fontWeight: 700,textDecoration: 'none'}}>
-                    💬 Text
+                    ðŸ’¬ Text
                 </a>
                 {op.website_url && (
                     <a
                         href={op.website_url} target="_blank" rel="noopener noreferrer"
                         style={{padding: '8px 16px',borderRadius: 10,background: T.bgElevated,border: `1px solid ${T.border}`,color: T.textBody,fontSize: 12,fontWeight: 700,textDecoration: 'none'}}>
-                        🌐 Website
+                        ðŸŒ Website
                     </a>
                 )}
             </div>
             <div style={{marginTop: 8,fontSize: 11,color: T.textLabel }}>
-                ⚡ Avg Response: {op.response_time_sec_avg > 0 ? `${Math.round(op.response_time_sec_avg / 60)}min` : '—'}
+                âš¡ Avg Response: {op.response_time_sec_avg > 0 ? `${Math.round(op.response_time_sec_avg / 60)}min` : '—'}
             </div>
         </div>
     );
 }
 
-// ── Rules Card
+// â”€â”€ Rules Card
 function RulepackCard({ rp }: { rp: DrawerData['rulepacks'][0] }) {
     const [expanded, setExpanded] = useState(false);
     return (
@@ -222,7 +222,7 @@ function RulepackCard({ rp }: { rp: DrawerData['rulepacks'][0] }) {
         >
             <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'center' }}>
                 <span style={{fontSize: 14,fontWeight: 700,color: T.textPrimary }}>{rp.topic}</span>
-                <span style={{fontSize: 16,color: T.textSecondary,transition: 'transform 0.2s',transform: expanded ? 'rotate(180deg)' : 'rotate(0)' }}>▾</span>
+                <span style={{fontSize: 16,color: T.textSecondary,transition: 'transform 0.2s',transform: expanded ? 'rotate(180deg)' : 'rotate(0)' }}>â–¾</span>
             </div>
             {expanded && (
                 <div style={{marginTop: 10 }}>
@@ -236,7 +236,7 @@ function RulepackCard({ rp }: { rp: DrawerData['rulepacks'][0] }) {
                                 <a key={i} href={link} target="_blank" rel="noopener noreferrer"
                                     onClick={e => e.stopPropagation()}
                                     style={{padding: '4px 10px',borderRadius: 8,fontSize: 10,fontWeight: 700,background: 'rgba(59,164,255,0.1)',color: T.blue,border: '1px solid rgba(59,164,255,0.2)',textDecoration: 'none'}}>
-                                    Source {i + 1} ↗
+                                    Source {i + 1} â†—
                                 </a>
                             ))}
                         </div>
@@ -247,7 +247,7 @@ function RulepackCard({ rp }: { rp: DrawerData['rulepacks'][0] }) {
     );
 }
 
-// ── Support Contact Card
+// â”€â”€ Support Contact Card
 function SupportContactCard({ contact }: { contact: DrawerData['support_contacts'][0] }) {
     return (
         <div style={{background: T.bgCard,border: `1px solid ${T.border}`,borderRadius: 14,padding: 16 }}>
@@ -260,20 +260,20 @@ function SupportContactCard({ contact }: { contact: DrawerData['support_contacts
                 {contact.phone && (
                     <a href={`tel:${contact.phone}`}
                         onClick={() => trackEvent('support_contact_opened', { contact_id: contact.contact_id })}
-                        style={{padding: '6px 14px',borderRadius: 8,fontSize: 11,fontWeight: 700,background: T.bgElevated,border: `1px solid ${T.border}`,color: T.textBody,textDecoration: 'none'}}>📞 {contact.phone}</a>
+                        style={{padding: '6px 14px',borderRadius: 8,fontSize: 11,fontWeight: 700,background: T.bgElevated,border: `1px solid ${T.border}`,color: T.textBody,textDecoration: 'none'}}>ðŸ“ž {contact.phone}</a>
                 )}
                 {contact.website_url && (
                     <a href={contact.website_url} target="_blank" rel="noopener noreferrer"
-                        style={{padding: '6px 14px',borderRadius: 8,fontSize: 11,fontWeight: 700,background: T.bgElevated,border: `1px solid ${T.border}`,color: T.textBody,textDecoration: 'none'}}>🌐 Visit ↗</a>
+                        style={{padding: '6px 14px',borderRadius: 8,fontSize: 11,fontWeight: 700,background: T.bgElevated,border: `1px solid ${T.border}`,color: T.textBody,textDecoration: 'none'}}>ðŸŒ Visit â†—</a>
                 )}
             </div>
         </div>
     );
 }
 
-// ═══════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // MAIN PAGE
-// ═══════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 export default function JurisdictionMapPage() {
     const [selectedCode, setSelectedCode] = useState<string | null>(null);
     const [drawerData, setDrawerData] = useState<DrawerData | null>(null);
@@ -330,7 +330,7 @@ export default function JurisdictionMapPage() {
 
     return (
         <div style={{background: T.bg,minHeight: '100vh',position: 'relative',overflow: 'hidden' }}>
-            {/* ── Header */}
+            {/* â”€â”€ Header */}
             <div className="hc-container" style={{paddingTop: 20,paddingBottom: 10 }}>
                 <div style={{display: 'flex',justifyContent: 'space-between',alignItems: 'flex-end',flexWrap: 'wrap',gap: 12 }}>
                     <div>
@@ -345,14 +345,14 @@ export default function JurisdictionMapPage() {
                     <div style={{display: 'flex',gap: 3,background: T.bgCard,border: `1px solid ${T.border}`,borderRadius: 10,padding: 3 }}>
                         {(['US', 'CA'] as const).map(c => (
                             <button aria-label="Interactive Button" key={c} onClick={() => setCountryFilter(c)} style={{padding: '7px 20px',borderRadius: 8,fontSize: 11,fontWeight: 700,background: countryFilter === c ? T.bgElevated : 'transparent',border: `1px solid ${countryFilter === c ? T.borderStrong : 'transparent'}`,color: countryFilter === c ? T.textPrimary : T.textSecondary,cursor: 'pointer',textTransform: 'uppercase',letterSpacing: '0.06em',transition: 'all 0.15s'}}>
-                                {c === 'US' ? '🇺🇸 United States' : '🇨🇦 Canada'}
+                                {c === 'US' ? 'ðŸ‡ºðŸ‡¸ United States' : 'ðŸ‡¨ðŸ‡¦ Canada'}
                             </button>
                         ))}
                     </div>
                 </div>
             </div>
 
-            {/* ── Map Canvas */}
+            {/* â”€â”€ Map Canvas */}
             <div className="hc-container" style={{paddingBottom: 20 }}>
                 <div style={{position: 'relative',borderRadius: 16,overflow: 'hidden',border: `1px solid ${T.border}`,background: '#0b0f14',boxShadow: '0 20px 60px rgba(0,0,0,0.45)'}}>
                     {/* Grid overlay */}
@@ -399,11 +399,11 @@ export default function JurisdictionMapPage() {
                             {/* Hint text */}
                             <text x="480" y="580" textAnchor="middle" fill={T.textLabel} fontSize="11" opacity="0.4"
                                 fontFamily="'Inter', sans-serif" fontWeight="500">
-                                pinch to zoom • tap a state
+                                pinch to zoom "¢ tap a state
                             </text>
                         </svg>
                     ) : (
-                        /* ── Canada grid */
+                        /* â”€â”€ Canada grid */
                         <div style={{padding: 30,display: 'grid',gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',gap: 10 }}>
                             {Object.values(CA_PROVINCES).map(prov => {
                                 const isSelected = selectedCode === prov.code;
@@ -431,7 +431,7 @@ export default function JurisdictionMapPage() {
                 </div>
             </div>
 
-            {/* ── Bottom Sheet Drawer */}
+            {/* â”€â”€ Bottom Sheet Drawer */}
             <div
                 ref={drawerRef}
                 style={{position: 'fixed',bottom: 0,left: 0,right: 0,zIndex: 50,background: T.bgPanel,backdropFilter: 'blur(24px) saturate(1.4)',borderTop: `1px solid ${T.borderStrong}`,borderRadius: '20px 20px 0 0',transform: drawerOpen ? 'translateY(0)' : 'translateY(100%)',transition: 'transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)',maxHeight: '70vh',overflowY: 'auto',boxShadow: drawerOpen ? '0 -20px 60px rgba(0,0,0,0.6)' : 'none'}}
@@ -457,15 +457,15 @@ export default function JurisdictionMapPage() {
                         <button aria-label="Interactive Button"
                             onClick={closeDrawer}
                             style={{width: 32,height: 32,borderRadius: 8,background: T.bgCard,border: `1px solid ${T.border}`,color: T.textSecondary,fontSize: 16,cursor: 'pointer',display: 'flex',alignItems: 'center',justifyContent: 'center'}}
-                        >✕</button>
+                        >âœ•</button>
                     </div>
 
                     {/* Tab bar */}
                     <div style={{display: 'flex',gap: 4,marginBottom: 16,background: T.bgCard,borderRadius: 10,padding: 3 }}>
                         {([
-                            { key: 'operators' as DrawerTab, label: '👷 Operators', count: tabCounts.operators },
-                            { key: 'rules' as DrawerTab, label: '📋 Rules', count: tabCounts.rules },
-                            { key: 'support' as DrawerTab, label: '📞 Support', count: tabCounts.support },
+                            { key: 'operators' as DrawerTab, label: 'ðŸ‘· Operators', count: tabCounts.operators },
+                            { key: 'rules' as DrawerTab, label: 'ðŸ“‹ Rules', count: tabCounts.rules },
+                            { key: 'support' as DrawerTab, label: 'ðŸ“ž Support', count: tabCounts.support },
                         ]).map(tab => (
                             <button aria-label="Interactive Button" key={tab.key} onClick={() => setDrawerTab(tab.key)} style={{flex: 1,padding: '8px 12px',borderRadius: 8,fontSize: 12,fontWeight: 700,background: drawerTab === tab.key ? T.bgElevated : 'transparent',border: `1px solid ${drawerTab === tab.key ? T.borderStrong : 'transparent'}`,color: drawerTab === tab.key ? T.textPrimary : T.textSecondary,cursor: 'pointer',transition: 'all 0.15s'}}>
                                 {tab.label} {!drawerLoading && <span style={{opacity: 0.5 }}>({tab.count})</span>}
@@ -481,17 +481,17 @@ export default function JurisdictionMapPage() {
                             {drawerTab === 'operators' && (
                                 drawerData.operators.length > 0
                                     ? drawerData.operators.map(op => <OperatorCard key={op.operator_id} op={op} />)
-                                    : <EmptyTabState icon="👷" label="No operators listed yet" sublabel="Be the first — claim your profile in this jurisdiction" />
+                                    : <EmptyTabState icon="ðŸ‘·" label="No operators listed yet" sublabel="Be the first — claim your profile in this jurisdiction" />
                             )}
                             {drawerTab === 'rules' && (
                                 drawerData.rulepacks.length > 0
                                     ? drawerData.rulepacks.map(rp => <RulepackCard key={rp.rulepack_id} rp={rp} />)
-                                    : <EmptyTabState icon="📋" label="No regulations documented yet" sublabel="Rules for this jurisdiction are being compiled" />
+                                    : <EmptyTabState icon="ðŸ“‹" label="No regulations documented yet" sublabel="Rules for this jurisdiction are being compiled" />
                             )}
                             {drawerTab === 'support' && (
                                 drawerData.support_contacts.length > 0
                                     ? drawerData.support_contacts.map(c => <SupportContactCard key={c.contact_id} contact={c} />)
-                                    : <EmptyTabState icon="📞" label="No support contacts yet" sublabel="Coming soon for this jurisdiction" />
+                                    : <EmptyTabState icon="ðŸ“ž" label="No support contacts yet" sublabel="Coming soon for this jurisdiction" />
                             )}
                         </div>
                     ) : null}
@@ -502,7 +502,7 @@ export default function JurisdictionMapPage() {
                             onClick={() => trackEvent('state_packet_exported', { jurisdiction_code: selectedCode })}
                             style={{display: 'block',width: '100%',marginTop: 16,padding: '12px 20px',borderRadius: 12,background: `linear-gradient(135deg, ${T.gold}, #d97706)`,color: '#0a0f16',fontWeight: 900,fontSize: 12,border: 'none',cursor: 'pointer',textTransform: 'uppercase',letterSpacing: '0.07em',boxShadow: `0 3px 16px rgba(245,185,66,0.28)`}}
                         >
-                            📥 Export State Packet for {selectedName}
+                            ðŸ“¥ Export State Packet for {selectedName}
                         </button>
                     )}
                 </div>

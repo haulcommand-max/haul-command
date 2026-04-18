@@ -180,6 +180,8 @@ CREATE TABLE offers (
   dropoff_address     text,
   required_equipment_tags text[] NOT NULL DEFAULT '{}',
   jurisdictions       text[] NOT NULL DEFAULT '{}',
+  country_iso         text NOT NULL DEFAULT 'US',
+  region_code         text,
   rate_cents          int NOT NULL CHECK (rate_cents > 0),
   rate_currency       text NOT NULL DEFAULT 'USD',
   trust_floor         numeric(5,4) NOT NULL DEFAULT 0.50,
@@ -426,6 +428,7 @@ CREATE TABLE provider_directory (
   slug            text UNIQUE NOT NULL,
   display_name    text NOT NULL,
   state           text NOT NULL,
+  country_iso     text NOT NULL DEFAULT 'US',
   city            text NOT NULL,
   lat             numeric(9,6),
   lng             numeric(9,6),
@@ -731,3 +734,7 @@ CREATE VIEW public_compliance_summary AS
 ---
 
 *Last updated: 2026-02-18 — Derived from ANTI_GRAVITY.md v5.0*
+
+
+-- HAUL COMMAND RETROFIT GLOBALIZATION ADDITIONS
+-- Applied Country ISO standard across profiles, jobs, directory, matching

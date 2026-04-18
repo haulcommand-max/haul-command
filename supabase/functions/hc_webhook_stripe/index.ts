@@ -151,6 +151,16 @@ serve(async (req: Request) => {
 
             console.log('[Stripe Webhook] Signature verified ✓');
 
+            // ── GLOBAL WEBHOOK IDEMPOTENCY CHECK (24-hour overlap monitor) ──
+            if (body.id) {
+                const { data: existingEvent } = await supabase.from('idempotency_keys').select('status').eq('key', body.id).single();
+                if (existingEvent) {
+                    console.warn(`[Stripe Webhook MONITOR] Idempotency cache hit: ${body.id} is already ${existingEvent.status}. Overlap handled properly.`);
+                    return new Response(JSON.stringify({ received: true, idempotent: true }), { status: 200, headers: corsHeaders });
+                }
+                await supabase.from('idempotency_keys').upsert({ key: body.id, status: 'PROCESSING' });
+            }
+
             // ── Process checkout.session.completed ──
             if (body.type === 'checkout.session.completed') {
                 const session = body.data?.object;
@@ -224,6 +234,138 @@ serve(async (req: Request) => {
 
             // Acknowledge other checkout events we don't handle yet
             return new Response(JSON.stringify({ received: true, unhandled_type: body.type }), {
+                headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+                status: 200,
+            });
+        }
+
+        if (body.type && (body.type.startsWith('payment_intent.') || body.type.startsWith('payout.'))) {
+            // ── SIGNATURE VERIFICATION ──
+            if (!signatureHeader || !stripeWebhookSecret) {
+                return new Response(JSON.stringify({ error: 'Missing signature' }), { status: 401 });
+            }
+            const isValid = await verifyStripeSignature(rawBody, signatureHeader, stripeWebhookSecret);
+            if (!isValid) return new Response(JSON.stringify({ error: 'Invalid signature' }), { status: 401 });
+
+            // ── GLOBAL WEBHOOK IDEMPOTENCY CHECK (24-hour overlap monitor) ──
+            if (body.id) {
+                const { data: existingEvent } = await supabase.from('idempotency_keys').select('status').eq('key', body.id).single();
+                if (existingEvent) {
+                    console.warn(`[Stripe Webhook MONITOR] Idempotency cache hit: ${body.id} is already ${existingEvent.status}. Overlap handled properly.`);
+                    return new Response(JSON.stringify({ received: true, idempotent: true }), { status: 200, headers: corsHeaders });
+                }
+                await supabase.from('idempotency_keys').upsert({ key: body.id, status: 'PROCESSING' });
+            }
+
+            // ── PAYMENT INTENT EVENTS ──
+            // OPUS-02 S1-02/S1-03: Pre-auth clearance — idempotent DRAFT → OPEN transition
+            if (body.type === 'payment_intent.amount_capturable_updated') {
+                const intent = body.data?.object;
+                const jobId = intent?.metadata?.job_id;
+
+                if (jobId) {
+                    // S1-03: Idempotency check via preauth_status
+                    const { data: existingJob } = await supabase
+                        .from('hc_jobs')
+                        .select('preauth_status')
+                        .eq('id', jobId)
+                        .single();
+
+                    if (existingJob?.preauth_status === 'authorized') {
+                        console.log(`[Stripe Webhook] Job ${jobId} pre-auth already processed — idempotent skip.`);
+                    } else {
+                        await supabase.from('hc_jobs')
+                            .update({ preauth_status: 'authorized', status: 'OPEN' })
+                            .eq('id', jobId);
+                        await supabase.from('hc_escrows')
+                            .update({ status: 'FUNDED' })
+                            .eq('job_id', jobId)
+                            .eq('status', 'PENDING_FUNDS');
+                        await supabase.from('event_log').insert({
+                            actor_role: 'system',
+                            event_type: 'payment.preauth_cleared',
+                            entity_type: 'hc_jobs',
+                            entity_id: jobId,
+                            payload: { payment_intent_id: intent.id, amount: intent.amount },
+                        });
+                        console.log(`[Stripe Webhook] Job ${jobId} OPEN — pre-auth cleared.`);
+                    }
+                }
+            } else if (body.type === 'payment_intent.succeeded') {
+                const intent = body.data?.object;
+                const jobId = intent?.metadata?.job_id;
+                
+                if (jobId) {
+                    await supabase.from('hc_jobs').update({ preauth_status: 'captured' }).eq('id', jobId);
+                    await supabase.from('event_log').insert({
+                        actor_profile_id: null,
+                        actor_role: 'system',
+                        event_type: 'payment.captured_webhook',
+                        entity_type: 'hc_jobs',
+                        entity_id: jobId,
+                        payload: { payment_intent_id: intent.id, amount_received: intent.amount_received },
+                    });
+                }
+            } else if (body.type === 'payment_intent.payment_failed') {
+                const intent = body.data?.object;
+                const jobId = intent?.metadata?.job_id;
+                const brokerId = intent?.metadata?.broker_user_id;
+                
+                if (jobId) {
+                    await supabase.from('hc_jobs').update({ preauth_status: 'failed' }).eq('id', jobId);
+                    if (brokerId) {
+                        await supabase.from('trust_events').insert({
+                            entity_profile_id: brokerId,
+                            event_type: 'preauth_failed',
+                            payload: { job_id: jobId, error: intent.last_payment_error?.message },
+                        });
+                    }
+                }
+            }
+
+
+            // ── PAYOUT EVENTS ──
+            let payoutFailedUserId: string | null = null;
+
+            if (body.type === 'payout.failed' || body.type === 'payout.canceled') {
+                const payout = body.data?.object;
+                const accountId = payout?.destination;
+                
+                // Lookup user by stripe_account_id
+                const { data: profile } = await supabase
+                    .from('operator_profiles')
+                    .select('user_id')
+                    .eq('stripe_account_id', accountId)
+                    .single();
+                    
+                if (profile?.user_id) {
+                    payoutFailedUserId = profile.user_id;
+
+                    // Trust negative signal
+                    await supabase.from('trust_events').insert({
+                        entity_profile_id: profile.user_id,
+                        event_type: 'payout_failed',
+                        payload: { payout_id: payout.id, amount: payout.amount, error: payout.failure_reason },
+                    });
+                    
+                    // Queue push notification (FCM worker will dequeue)
+                    await supabase.from('hc_notifications').insert({
+                        user_id: profile.user_id,
+                        title: '⚠️ Payout Failed',
+                        body: 'Your recent payout failed. Please update your bank details to resume transfers.',
+                        data_json: {
+                            type: 'payout_failed',
+                            deep_link: 'haulcommand://dashboard/wallet/settings',
+                            retry_url: '/dashboard/wallet/settings',
+                        },
+                        channel: 'push',
+                        status: 'queued',
+                    });
+                }
+            }
+
+            // Return payout_failed_user_id so Next.js proxy can flush FCM immediately
+            return new Response(JSON.stringify({ received: true, payout_failed_user_id: payoutFailedUserId }), {
                 headers: { ...corsHeaders, 'Content-Type': 'application/json' },
                 status: 200,
             });

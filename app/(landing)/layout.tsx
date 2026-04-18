@@ -1,12 +1,17 @@
 /**
  * Landing Layout — Marketing pages (homepage, about, pricing)
- * 
- * NO sidebar. NO mobile bottom nav. NO app shell.
- * This is a clean, full-width marketing layout.
- * Header and footer live inside HomeClient for now,
- * and can be extracted to shared LandingHeader/LandingFooter
- * components as more landing pages are added.
+ *
+ * The root app/layout.tsx already mounts GlobalCommandBar globally.
+ * DO NOT mount it again here — that was causing a double-header on mobile.
+ * This layout is a clean full-width pass-through only.
  */
+
 export default function LandingLayout({ children }: { children: React.ReactNode }) {
-    return <>{children}</>;
+    return (
+        <div className="min-h-screen flex flex-col bg-hc-bg">
+            <main className="flex-1 w-full flex flex-col">
+                {children}
+            </main>
+        </div>
+    );
 }

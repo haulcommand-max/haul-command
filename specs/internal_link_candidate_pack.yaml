@@ -1,0 +1,21 @@
+internal_links:
+  corridor_page_variants:
+    - block_id: "corridor_support_block_1"
+      template: "Looking for reliable pilot cars? The {{corridor_name}} route requires specialized escort services. Check our verified list in [[nearest_city_hub]]."
+      injection_rules:
+        - "nearest_city_hub must be within 50 miles of corridor midpoint."
+    - block_id: "corridor_support_block_2"
+      template: "Permit requirements change often. Review our [[state_permit_glossary]] before booking your run."
+      injection_rules:
+        - "state_permit_glossary maps to the destination state of the corridor."
+
+  glossary_candidates:
+    - term: "Gross Vehicle Weight (GVW)"
+      target_url: "/glossary/gross-vehicle-weight"
+      synonyms: ["GVWR", "loaded weight", "truck weight"]
+    - term: "Superload"
+      target_url: "/glossary/superload"
+      synonyms: ["mega load", "oversize overweight", "OSOW"]
+    - term: "Pilot Car / Escort"
+      target_url: "/directory/escorts"
+      synonyms: ["pilot vehicle", "escort driver", "pole car"]

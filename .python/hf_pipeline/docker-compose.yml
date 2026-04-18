@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  hf_whisper:
+    image: onerahmet/openai-whisper-asr-webservice:latest
+    ports:
+      - "9000:9000"
+    environment:
+      - ASR_MODEL=base
+      - ASR_ENGINE=openai_whisper
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  hf_transformers:
+    build: 
+      context: .
+      dockerfile: Dockerfile.transformers
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_NAME=sentence-transformers/all-MiniLM-L6-v2
+      - TASK=feature-extraction
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  hf_nllb:
+    build: 
+      context: .
+      dockerfile: Dockerfile.nllb
+    ports:
+      - "8001:8001"
+    environment:
+      - MODEL_NAME=facebook/nllb-200-distilled-600M
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

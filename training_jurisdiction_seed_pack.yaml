@@ -1,0 +1,35 @@
+training_jurisdiction_seeds:
+  - country: "United States"
+    code: "US"
+    has_state_level_rules: true
+    certification_body_template: "[State] Department of Transportation"
+    training_requirements:
+      - "Defensive Driving"
+      - "Oversize Load Flags and Lighting"
+  - country: "Canada"
+    code: "CA"
+    has_state_level_rules: true
+    certification_body_template: "[Province] Ministry of Transportation"
+    training_requirements:
+      - "Winter Operations"
+      - "Bilingual Signage Standards"
+  - country: "Mexico"
+    code: "MX"
+    has_state_level_rules: false
+    certification_body_template: "Secretaría de Infraestructura, Comunicaciones y Transportes"
+    training_requirements:
+      - "NOM-040-SCT-2"
+  - country: "Australia"
+    code: "AU"
+    has_state_level_rules: true
+    certification_body_template: "National Heavy Vehicle Regulator (NHVR) / [State] Road Authority"
+    training_requirements:
+      - "Level 1 Traffic Control"
+      - "Oversize Vehicle Escort Competency"
+  - country: "United Kingdom"
+    code: "UK"
+    has_state_level_rules: false
+    certification_body_template: "Highways England / DVSA"
+    training_requirements:
+      - "City & Guilds Abnormal Load Escort"
+# [Note to Sonnet: Loop dynamically over all 120 ISO country codes to instantiate base placeholders]

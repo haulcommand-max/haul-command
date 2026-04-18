@@ -1,0 +1,41 @@
+
+> haul-command-bots@1.0.0 typecheck
+> tsc --noEmit
+
+app/(app)/profile/page.tsx(307,70): error TS1127: Invalid character.
+app/(app)/profile/page.tsx(307,72): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/profile/page.tsx(309,42): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(app)/profile/page.tsx(311,74): error TS1127: Invalid character.
+app/(app)/profile/page.tsx(311,76): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/profile/page.tsx(313,41): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(app)/profile/page.tsx(315,92): error TS1127: Invalid character.
+app/(app)/profile/page.tsx(315,94): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/profile/page.tsx(317,41): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/(app)/profile/page.tsx(319,83): error TS1127: Invalid character.
+app/(app)/profile/page.tsx(319,85): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/(app)/profile/page.tsx(321,41): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+app/admin/trust/page.tsx(28,24): error TS1127: Invalid character.
+app/admin/trust/page.tsx(28,32): error TS1005: ',' expected.
+app/admin/trust/page.tsx(28,42): error TS1005: ',' expected.
+app/admin/trust/page.tsx(28,46): error TS1005: ',' expected.
+app/admin/trust/page.tsx(28,48): error TS1002: Unterminated string literal.
+app/admin/trust/page.tsx(29,13): error TS1005: ':' expected.
+app/admin/trust/page.tsx(29,17): error TS1005: ',' expected.
+app/admin/trust/page.tsx(29,104): error TS1005: ':' expected.
+app/admin/trust/page.tsx(49,24): error TS1005: ',' expected.
+app/admin/trust/page.tsx(49,26): error TS1005: ',' expected.
+app/admin/trust/page.tsx(49,32): error TS1005: ',' expected.
+app/admin/trust/page.tsx(49,38): error TS1005: ',' expected.
+app/admin/trust/page.tsx(49,40): error TS1002: Unterminated string literal.
+app/admin/trust/page.tsx(50,13): error TS1005: ':' expected.
+app/admin/trust/page.tsx(50,17): error TS1005: ',' expected.
+app/admin/trust/page.tsx(50,87): error TS1005: ':' expected.
+app/dashboard/broker/loads/LoadBoardClient.tsx(430,52): error TS1127: Invalid character.
+app/dashboard/broker/loads/LoadBoardClient.tsx(431,44): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/dashboard/operator/OperatorDashboardClient.tsx(488,61): error TS1127: Invalid character.
+app/dashboard/operator/OperatorDashboardClient.tsx(488,88): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+app/dev/screenshots/page.tsx(51,33): error TS1127: Invalid character.
+app/dev/screenshots/page.tsx(51,43): error TS1005: ',' expected.
+app/dev/screenshots/page.tsx(51,55): error TS1005: ':' expected.
+app/emergency/nearby/page.tsx(192,57): error TS1127: Invalid character.
+app/emergency/nearby/page.tsx(192,75): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
