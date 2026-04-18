@@ -335,20 +335,20 @@ export default function HomeClient({
             {/* ═══════════════════════════════════════
                 HAVE A HEAVY HAUL QUESTION? (HC ASK)
                 ═══════════════════════════════════════ */}
-            <section className="bg-gradient-to-br from-[#0D2137] to-[#1A3A5C]">
+            <section className="bg-gradient-to-br from-[#FFF8E7] to-[#FFF0CC]">
                 <div className="max-w-4xl mx-auto px-4 py-12 text-center">
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-                        <h2 className="text-xl sm:text-2xl font-black text-white mb-3">Have a Heavy Haul Question?</h2>
-                        <p className="text-sm text-white/70 mb-6 max-w-lg mx-auto">
+                        <h2 className="text-xl sm:text-2xl font-black text-gray-900 mb-3">Have a Heavy Haul Question?</h2>
+                        <p className="text-sm text-gray-600 mb-6 max-w-lg mx-auto">
                             Ask anything about escort requirements, permit rules, and industry standards. Our AI-powered assistant provides FMCSA-grounded answers instantly.
                         </p>
-                        <div className="flex flex-col sm:flex-row items-stretch gap-2 max-w-xl mx-auto bg-white/10 backdrop-blur-md rounded-xl p-2 border border-white/20">
-                            <div className="flex-1 flex items-center gap-2 bg-white/10 rounded-lg px-4 py-3">
-                                <HelpCircle className="w-4 h-4 text-white/50 flex-shrink-0" />
+                        <div className="flex flex-col sm:flex-row items-stretch gap-2 max-w-xl mx-auto bg-white rounded-xl p-2 border border-gray-200 shadow-md">
+                            <div className="flex-1 flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">
+                                <HelpCircle className="w-4 h-4 text-gray-400 flex-shrink-0" />
                                 <input
                                     type="text"
                                     placeholder="&quot;What height requires an escort in Texas?&quot;"
-                                    className="w-full bg-transparent text-sm text-white placeholder-white/40 focus:outline-none"
+                                    className="w-full bg-transparent text-sm text-gray-900 placeholder-gray-400 focus:outline-none"
                                 />
                             </div>
                             <button className="flex items-center justify-center gap-2 bg-[#F1A91B] hover:bg-[#D4951A] text-white font-bold text-sm px-5 py-3 rounded-lg transition-colors">
@@ -357,7 +357,7 @@ export default function HomeClient({
                         </div>
                         <div className="flex flex-wrap justify-center gap-3 mt-4">
                             {["Escort Requirements", "OSOW Regulations", "Height/Weight Limits", "Permit Calculators", "Oversize Load Map"].map((tag) => (
-                                <span key={tag} className="px-3 py-1 text-[10px] font-bold text-white/60 bg-white/5 border border-white/10 rounded-full">
+                                <span key={tag} className="px-3 py-1 text-[10px] font-bold text-gray-500 bg-white border border-gray-200 rounded-full">
                                     {tag}
                                 </span>
                             ))}
@@ -478,76 +478,76 @@ export default function HomeClient({
             {/* ═══════════════════════════════════════
                 FOOTER
                 ═══════════════════════════════════════ */}
-            <footer className="bg-gray-900 text-gray-400">
+            <footer className="bg-gray-50 text-gray-500 border-t border-gray-200">
                 <div className="max-w-6xl mx-auto px-4 py-12">
                     <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-8 mb-10">
                         <div>
-                            <h4 className="text-xs font-black text-white uppercase tracking-widest mb-3">Pilot Car Directory</h4>
+                            <h4 className="text-xs font-black text-gray-900 uppercase tracking-widest mb-3">Pilot Car Directory</h4>
                             <ul className="space-y-2 text-xs">
-                                <li><Link href="/directory" className="hover:text-white transition-colors">Search Operators</Link></li>
-                                <li><Link href="/directory/us" className="hover:text-white transition-colors">United States</Link></li>
-                                <li><Link href="/directory/ca" className="hover:text-white transition-colors">Canada</Link></li>
-                                <li><Link href="/near-me" className="hover:text-white transition-colors">Near Me</Link></li>
-                                <li><Link href="/map" className="hover:text-white transition-colors">Map View</Link></li>
-                                <li><Link href="/available-now" className="hover:text-white transition-colors">Available Now</Link></li>
+                                <li><Link href="/directory" className="hover:text-[#C6923A] transition-colors">Search Operators</Link></li>
+                                <li><Link href="/directory/us" className="hover:text-[#C6923A] transition-colors">United States</Link></li>
+                                <li><Link href="/directory/ca" className="hover:text-[#C6923A] transition-colors">Canada</Link></li>
+                                <li><Link href="/near-me" className="hover:text-[#C6923A] transition-colors">Near Me</Link></li>
+                                <li><Link href="/map" className="hover:text-[#C6923A] transition-colors">Map View</Link></li>
+                                <li><Link href="/available-now" className="hover:text-[#C6923A] transition-colors">Available Now</Link></li>
                             </ul>
                         </div>
                         <div>
-                            <h4 className="text-xs font-black text-white uppercase tracking-widest mb-3">Heavy Haul Tools</h4>
+                            <h4 className="text-xs font-black text-gray-900 uppercase tracking-widest mb-3">Heavy Haul Tools</h4>
                             <ul className="space-y-2 text-xs">
-                                <li><Link href="/loads" className="hover:text-white transition-colors">Load Board</Link></li>
-                                <li><Link href="/tools/route-survey" className="hover:text-white transition-colors">Route Survey</Link></li>
-                                <li><Link href="/tools/permit-calculator" className="hover:text-white transition-colors">Permit Calculator</Link></li>
-                                <li><Link href="/tools/escort-calculator" className="hover:text-white transition-colors">Escort Cost Calculator</Link></li>
-                                <li><Link href="/corridors" className="hover:text-white transition-colors">Corridor Intelligence</Link></li>
-                                <li><Link href="/rates" className="hover:text-white transition-colors">Rate Index</Link></li>
+                                <li><Link href="/loads" className="hover:text-[#C6923A] transition-colors">Load Board</Link></li>
+                                <li><Link href="/tools/route-survey" className="hover:text-[#C6923A] transition-colors">Route Survey</Link></li>
+                                <li><Link href="/tools/permit-calculator" className="hover:text-[#C6923A] transition-colors">Permit Calculator</Link></li>
+                                <li><Link href="/tools/escort-calculator" className="hover:text-[#C6923A] transition-colors">Escort Cost Calculator</Link></li>
+                                <li><Link href="/corridors" className="hover:text-[#C6923A] transition-colors">Corridor Intelligence</Link></li>
+                                <li><Link href="/rates" className="hover:text-[#C6923A] transition-colors">Rate Index</Link></li>
                             </ul>
                         </div>
                         <div>
-                            <h4 className="text-xs font-black text-white uppercase tracking-widest mb-3">Resources</h4>
+                            <h4 className="text-xs font-black text-gray-900 uppercase tracking-widest mb-3">Resources</h4>
                             <ul className="space-y-2 text-xs">
-                                <li><Link href="/escort-requirements" className="hover:text-white transition-colors">Escort Requirements</Link></li>
-                                <li><Link href="/training" className="hover:text-white transition-colors">Training Hub</Link></li>
-                                <li><Link href="/resources/guides/how-to-start-pilot-car-company" className="hover:text-white transition-colors">Start a Pilot Car Co.</Link></li>
-                                <li><Link href="/blog" className="hover:text-white transition-colors">Blog</Link></li>
-                                <li><Link href="/tools/terminology" className="hover:text-white transition-colors">Glossary</Link></li>
-                                <li><Link href="/regulations" className="hover:text-white transition-colors">Regulations</Link></li>
+                                <li><Link href="/escort-requirements" className="hover:text-[#C6923A] transition-colors">Escort Requirements</Link></li>
+                                <li><Link href="/training" className="hover:text-[#C6923A] transition-colors">Training Hub</Link></li>
+                                <li><Link href="/resources/guides/how-to-start-pilot-car-company" className="hover:text-[#C6923A] transition-colors">Start a Pilot Car Co.</Link></li>
+                                <li><Link href="/blog" className="hover:text-[#C6923A] transition-colors">Blog</Link></li>
+                                <li><Link href="/tools/terminology" className="hover:text-[#C6923A] transition-colors">Glossary</Link></li>
+                                <li><Link href="/regulations" className="hover:text-[#C6923A] transition-colors">Regulations</Link></li>
                             </ul>
                         </div>
                         <div>
-                            <h4 className="text-xs font-black text-white uppercase tracking-widest mb-3">For Operators</h4>
+                            <h4 className="text-xs font-black text-gray-900 uppercase tracking-widest mb-3">For Operators</h4>
                             <ul className="space-y-2 text-xs">
-                                <li><Link href="/claim" className="hover:text-white transition-colors">Claim Profile</Link></li>
-                                <li><Link href="/sponsor" className="hover:text-white transition-colors">Advertise</Link></li>
-                                <li><Link href="/pricing" className="hover:text-white transition-colors">Plans & Pricing</Link></li>
-                                <li><Link href="/dashboard" className="hover:text-white transition-colors">Dashboard</Link></li>
-                                <li><Link href="/quickpay" className="hover:text-white transition-colors">QuickPay</Link></li>
-                                <li><Link href="/referral" className="hover:text-white transition-colors">Referral Program</Link></li>
+                                <li><Link href="/claim" className="hover:text-[#C6923A] transition-colors">Claim Profile</Link></li>
+                                <li><Link href="/sponsor" className="hover:text-[#C6923A] transition-colors">Advertise</Link></li>
+                                <li><Link href="/pricing" className="hover:text-[#C6923A] transition-colors">Plans & Pricing</Link></li>
+                                <li><Link href="/dashboard" className="hover:text-[#C6923A] transition-colors">Dashboard</Link></li>
+                                <li><Link href="/quickpay" className="hover:text-[#C6923A] transition-colors">QuickPay</Link></li>
+                                <li><Link href="/referral" className="hover:text-[#C6923A] transition-colors">Referral Program</Link></li>
                             </ul>
                         </div>
                         <div>
-                            <h4 className="text-xs font-black text-white uppercase tracking-widest mb-3">Company</h4>
+                            <h4 className="text-xs font-black text-gray-900 uppercase tracking-widest mb-3">Company</h4>
                             <ul className="space-y-2 text-xs">
-                                <li><Link href="/about" className="hover:text-white transition-colors">About Haul Command</Link></li>
-                                <li><Link href="/press" className="hover:text-white transition-colors">Press</Link></li>
-                                <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
-                                <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-                                <li><Link href="/partner/apply" className="hover:text-white transition-colors">Partner With Us</Link></li>
-                                <li><Link href="/security" className="hover:text-white transition-colors">Security</Link></li>
+                                <li><Link href="/about" className="hover:text-[#C6923A] transition-colors">About Haul Command</Link></li>
+                                <li><Link href="/press" className="hover:text-[#C6923A] transition-colors">Press</Link></li>
+                                <li><Link href="/terms" className="hover:text-[#C6923A] transition-colors">Terms of Service</Link></li>
+                                <li><Link href="/privacy" className="hover:text-[#C6923A] transition-colors">Privacy Policy</Link></li>
+                                <li><Link href="/partner/apply" className="hover:text-[#C6923A] transition-colors">Partner With Us</Link></li>
+                                <li><Link href="/security" className="hover:text-[#C6923A] transition-colors">Security</Link></li>
                             </ul>
                         </div>
                     </div>
 
                     {/* Bottom bar */}
-                    <div className="border-t border-gray-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="border-t border-gray-200 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
                             <img src="/logo.png" alt="Haul Command" className="h-6 opacity-60" />
                             <span className="text-xs text-gray-500">© {new Date().getFullYear()} Haul Command. The Heavy Haul Operating System.</span>
                         </div>
                         <div className="flex gap-4 text-xs text-gray-500">
-                            <Link href="/terms" className="hover:text-white">Terms</Link>
-                            <Link href="/privacy" className="hover:text-white">Privacy</Link>
-                            <Link href="/security" className="hover:text-white">Security</Link>
+                            <Link href="/terms" className="hover:text-gray-900">Terms</Link>
+                            <Link href="/privacy" className="hover:text-gray-900">Privacy</Link>
+                            <Link href="/security" className="hover:text-gray-900">Security</Link>
                         </div>
                     </div>
                 </div>
