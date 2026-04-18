@@ -27,11 +27,11 @@ html, body {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   HAUL COMMAND — Design System v6 — COMMAND BLACK
-   OSOW-Killer Edition — Deep Command Aesthetic
+   HAUL COMMAND — Design System v7 — YELLOW PAGES LIGHT
+   Conversion-Optimized Edition — Clean Professional Aesthetic
 
    Token source: /public/brand/design-tokens.json
-   PRIMARY GOLD: #C6923A  |  BG: #0B0B0C  (DARK COMMAND)
+   PRIMARY GOLD: #C6923A  |  BG: #FFFFFF  (LIGHT YP)
    DO NOT hardcode hex values in components — use Tailwind tokens
    ══════════════════════════════════════════════════════════════ */
 
@@ -47,37 +47,37 @@ html, body {
   /* Pale accents */
 
   /* ═══════════════════════════════════════════════════
-     COMMAND BLACK SURFACE SYSTEM
+     YELLOW PAGES LIGHT SURFACE SYSTEM
      Depth: base → panel → elevated → high
-     Source: OSOW-Killer YAML — lock these values
+     Source: YP Conversion Architecture — light theme
      ═══════════════════════════════════════════════════ */
-  --hc-bg: #0F1318;
-  /* Level 0 — App shell (deepest black) */
-  --hc-surface: #111214;
-  /* Level 1 — Cards, panels */
-  --hc-elevated: #16181B;
+  --hc-bg: #FFFFFF;
+  /* Level 0 — App shell (white) */
+  --hc-surface: #F9FAFB;
+  /* Level 1 — Cards, panels (very light gray) */
+  --hc-elevated: #F3F4F6;
   /* Level 2 — Nested modules, inputs */
-  --hc-high: #1E2028;
-  /* Level 3 — Modals, dropdowns */
+  --hc-high: #FFFFFF;
+  /* Level 3 — Modals, dropdowns (white) */
 
   /* ═══════════════════════════════════════════════════
-     TEXT ON DARK (all pass WCAG AA on #0B0B0C)
+     TEXT ON LIGHT (all pass WCAG AA on #FFFFFF)
      ═══════════════════════════════════════════════════ */
-  --hc-text: #F3F4F6;
-  /* Primary — near-white, max contrast */
-  --hc-muted: #B0B8C4;
-  /* Secondary labels — brightened for readability */
-  --hc-subtle: #5A6577;
-  /* Ghost / caption text — raised contrast */
+  --hc-text: #111827;
+  /* Primary — near-black, max contrast */
+  --hc-muted: #6B7280;
+  /* Secondary labels */
+  --hc-subtle: #9CA3AF;
+  /* Ghost / caption text */
 
-  /* ── Borders (on dark) ── */
-  --hc-border: #23262B;
+  /* ── Borders (on light) ── */
+  --hc-border: #E5E7EB;
   /* Default separator */
-  --hc-border-mid: rgba(255, 255, 255, 0.08);
+  --hc-border-mid: rgba(0, 0, 0, 0.08);
   /* Mid-weight separator */
   --hc-border-high: rgba(198, 146, 58, 0.40);
   /* Active / gold ring */
-  --hc-border-bare: rgba(255, 255, 255, 0.05);
+  --hc-border-bare: rgba(0, 0, 0, 0.05);
   /* Minimal neutral */
 
   /* ═══════════════════════════════════════════════════
@@ -117,14 +117,14 @@ html, body {
   }
 
   /* ═══════════════════════════════════════════════════
-     SHADOW SYSTEM — dark surfaces need gold glow
+     SHADOW SYSTEM — light surfaces with subtle depth
      ═══════════════════════════════════════════════════ */
-  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.04), 0 2px 8px rgba(0, 0, 0, 0.4);
-  --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(198, 146, 58, 0.12);
-  --shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.06);
-  --shadow-gold: 0 4px 24px rgba(198, 146, 58, 0.30), 0 0 48px rgba(198, 146, 58, 0.10);
-  --shadow-lift: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(198, 146, 58, 0.08);
-  --shadow-depth: 0 2px 4px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.10), 0 0 0 1px rgba(198, 146, 58, 0.15);
+  --shadow-modal: 0 20px 48px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  --shadow-gold: 0 4px 16px rgba(198, 146, 58, 0.20), 0 0 32px rgba(198, 146, 58, 0.08);
+  --shadow-lift: 0 8px 24px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(198, 146, 58, 0.06);
+  --shadow-depth: 0 2px 4px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.08);
 
   /* ── Spacing (8pt grid) ── */
   --space-unit: 8px;
@@ -164,21 +164,21 @@ html, body {
   /* 32–48px — live counter numbers */
 
   /* ── Tailwind compat ── */
-  --background: var(--hc-bg);
-  --foreground: var(--hc-text);
+  --background: #FFFFFF;
+  --foreground: #111827;
 
   /* ══════════════════════════════════════════════════════════════
-     2026 SURFACE LAYERING — stepped depth system
+     2026 SURFACE LAYERING — stepped depth system (light)
      Page bg → Section bg → Card → Elevated → High
      NEVER use random rgba() — reference these tokens.
      ══════════════════════════════════════════════════════════════ */
-  --hc-section-bg: #0D0F12;
+  --hc-section-bg: #F9FAFB;
   /* Between page-bg and card: section padding zones, table headers */
-  --hc-section-border: rgba(255, 255, 255, 0.05);
+  --hc-section-border: rgba(0, 0, 0, 0.06);
   /* Very subtle inner border for section zones */
-  --hc-row-hover: rgba(255, 255, 255, 0.028);
+  --hc-row-hover: rgba(0, 0, 0, 0.03);
   /* Table / list row hover tint */
-  --hc-row-zebra: rgba(255, 255, 255, 0.018);
+  --hc-row-zebra: rgba(0, 0, 0, 0.02);
   /* Zebra striping (very subtle) */
 
   /* ══ Canonical Layout Contract ══ */
@@ -219,8 +219,8 @@ html {
 }
 
 body {
-  color: var(--hc-text);
-  background: var(--hc-bg);
+  color: #1a1a1a;
+  background: #ffffff;
   font-family: var(--font-body);
   font-size: var(--text-body);
   line-height: 1.6;
@@ -369,16 +369,16 @@ textarea {
   box-shadow: var(--shadow-card);
 }
 
-/* ══ Glass Effects (dark command) ══ */
+/* ══ Glass Effects (light) ══ */
 .glass-panel {
-  background: rgba(17, 18, 20, 0.80);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
   border: 1px solid var(--hc-border-bare);
 }
 
 .glass-card {
-  background: rgba(22, 24, 27, 0.70);
+  background: rgba(255, 255, 255, 0.80);
   backdrop-filter: blur(12px);
   border: 1px solid var(--hc-border-bare);
 }
@@ -517,7 +517,7 @@ textarea {
 
 .hover-lift:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px #2E3238;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10), 0 0 0 1px #E5E7EB;
 }
 
 /* ── Card Gold Glow on Hover (Final Boss YAML: cards.hover.glow_edge) ── */
@@ -529,23 +529,23 @@ textarea {
   transform: translateY(-3px);
   box-shadow:
     0 0 0 1px rgba(214, 167, 86, 0.20),
-    0 8px 32px rgba(0, 0, 0, 0.42),
-    0 0 24px rgba(214, 167, 86, 0.08);
-  border-color: #2E3238;
+    0 8px 24px rgba(0, 0, 0, 0.10),
+    0 0 16px rgba(214, 167, 86, 0.06);
+  border-color: #E5E7EB;
 }
 
-/* ══ Skeleton Loader (dark command) ══ */
+/* ══ Skeleton Loader (light) ══ */
 .skeleton {
   background: linear-gradient(90deg,
-      rgba(255, 255, 255, 0.03) 25%,
-      rgba(255, 255, 255, 0.07) 50%,
-      rgba(255, 255, 255, 0.03) 75%);
+      rgba(0, 0, 0, 0.04) 25%,
+      rgba(0, 0, 0, 0.08) 50%,
+      rgba(0, 0, 0, 0.04) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: 8px;
 }
 
-/* ══ Scrollbar (dark command) ══ */
+/* ══ Scrollbar (light) ══ */
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
@@ -556,12 +556,12 @@ textarea {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(198, 146, 58, 0.20);
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(198, 146, 58, 0.40);
+  background: rgba(0, 0, 0, 0.25);
 }
 
 /* ══ Focus (Accessibility) ══ */
@@ -774,12 +774,12 @@ textarea {
 }
 
 
-/* ══ Sticky Filter Bar (dark command) ══ */
+/* ══ Sticky Filter Bar (light) ══ */
 .sticky-filter-bar {
   position: sticky;
   top: 0;
   z-index: 30;
-  background: rgba(11, 11, 12, 0.92);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(16px) saturate(1.3);
   -webkit-backdrop-filter: blur(16px) saturate(1.3);
   border-bottom: 1px solid var(--hc-border);

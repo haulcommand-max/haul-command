@@ -5,7 +5,7 @@ import { FooterColumn } from '../types/shell-ia.types';
 export function HCFooterLinkColumn({ column }: { column: FooterColumn }) {
   return (
     <div className="flex flex-col gap-4">
-      <h3 className="text-sm font-semibold tracking-wider text-slate-300 uppercase">
+      <h3 className="text-sm font-semibold tracking-wider text-gray-900 uppercase">
         {column.heading}
       </h3>
       <ul className="flex flex-col gap-3">
@@ -13,7 +13,7 @@ export function HCFooterLinkColumn({ column }: { column: FooterColumn }) {
           <li key={link.href}>
             <Link 
               href={link.href}
-              className="text-sm text-slate-500 hover:text-hc-gold-500 transition-colors"
+              className="text-sm text-gray-500 hover:text-[#C6923A] transition-colors"
             >
               {link.label}
             </Link>

@@ -18,7 +18,7 @@ export default function AppShellLayout({
     return (
         <div
             className={[
-                " bg-hc-bg flex flex-col",
+                " bg-white text-gray-900 flex flex-col",
                 // Safe area padding for notched devices
                 "pt-[env(safe-area-inset-top)]",
             ].join(" ")}

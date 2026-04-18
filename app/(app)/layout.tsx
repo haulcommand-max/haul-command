@@ -13,7 +13,7 @@ import { HCFooterShell } from '@/components/landing-system/footer/HCFooterShell'
  */
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     return (
-        <main className="bg-hc-bg text-slate-100 min-h-screen flex flex-col">
+        <main className="bg-white text-gray-900 min-h-screen flex flex-col">
             {/* Content area */}
             <div className="flex-1 flex flex-col relative z-0">
                 {children}

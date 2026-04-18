@@ -42,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       {/* Google Tag Manager — manages GA4, ads pixels, and all tags from one UI */}
       {gtmId && <GoogleTagManager gtmId={gtmId} />}
-      <body className={`${inter.className} text-white antialiased`} style={{ background: '#0F1318' }}>
+        <body className={`${inter.className} antialiased`} style={{ background: '#ffffff', color: '#1a1a1a' }}>
         <Suspense fallback={null}>
           {/* PostHog — product analytics, session replay, A/B testing */}
           <PostHogProvider>
