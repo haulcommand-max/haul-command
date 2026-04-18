@@ -89,7 +89,7 @@ export function DirectorySearchBar({
       }}>
         <Search style={{
           position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)',
-          width: 16, height: 16, color: '#64748b', pointerEvents: 'none',
+          width: 16, height: 16, color: '#9CA3AF', pointerEvents: 'none',
         }} />
         <input
           type="text"
@@ -98,25 +98,25 @@ export function DirectorySearchBar({
           placeholder={placeholder}
           style={{
             width: '100%', padding: compact ? '10px 40px 10px 40px' : '12px 44px 12px 44px',
-            borderRadius: 12, border: '1px solid rgba(255,255,255,0.08)',
-            background: 'rgba(255,255,255,0.04)', color: '#f9fafb',
+            borderRadius: 8, border: '1px solid #D1D5DB',
+            background: '#ffffff', color: '#111827',
             fontSize: compact ? 13 : 14, fontWeight: 500,
             outline: 'none', transition: 'border-color 0.2s',
           }}
-          onFocus={e => e.target.style.borderColor = 'rgba(198,146,58,0.4)'}
-          onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.08)'}
+          onFocus={e => e.target.style.borderColor = '#C6923A'}
+          onBlur={e => e.target.style.borderColor = '#D1D5DB'}
         />
         {query && (
           <button
             onClick={clearSearch}
             style={{
               position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
-              background: 'none', border: 'none', cursor: 'pointer', padding: 2,
-              color: '#64748b', display: 'flex',
+              background: '#F3F4F6', border: 'none', borderRadius: '50%', cursor: 'pointer', padding: 4,
+              color: '#4B5563', display: 'flex',
             }}
             aria-label="Clear search"
           >
-            <X style={{ width: 16, height: 16 }} />
+            <X style={{ width: 14, height: 14 }} />
           </button>
         )}
       </div>
@@ -126,16 +126,16 @@ export function DirectorySearchBar({
         <div style={{ position: 'relative', flex: '0 0 auto' }}>
           <MapPin style={{
             position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)',
-            width: 14, height: 14, color: '#64748b', pointerEvents: 'none',
+            width: 14, height: 14, color: '#9CA3AF', pointerEvents: 'none',
           }} />
           <select
             value={stateFilter}
             onChange={handleStateChange}
             style={{
               padding: compact ? '10px 16px 10px 34px' : '12px 20px 12px 36px',
-              borderRadius: 12, border: '1px solid rgba(255,255,255,0.08)',
-              background: 'rgba(255,255,255,0.04)', color: stateFilter ? '#f9fafb' : '#64748b',
-              fontSize: compact ? 12 : 13, fontWeight: 600,
+              borderRadius: 8, border: '1px solid #D1D5DB',
+              background: '#ffffff', color: stateFilter ? '#111827' : '#6B7280',
+              fontSize: compact ? 13 : 14, fontWeight: 500,
               cursor: 'pointer', outline: 'none',
               appearance: 'none', WebkitAppearance: 'none',
               minWidth: compact ? 100 : 140,
@@ -155,13 +155,13 @@ export function DirectorySearchBar({
           onClick={clearSearch}
           style={{
             display: 'inline-flex', alignItems: 'center', gap: 6,
-            padding: '8px 14px', borderRadius: 10,
-            background: 'rgba(198,146,58,0.1)', border: '1px solid rgba(198,146,58,0.25)',
-            color: '#C6923A', fontSize: 11, fontWeight: 700,
-            cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.05em',
+            padding: '8px 14px', borderRadius: 8,
+            background: '#FEF9C3', border: '1px solid #FDE047',
+            color: '#854D0E', fontSize: 13, fontWeight: 600,
+            cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.02em',
           }}
         >
-          <X style={{ width: 12, height: 12 }} /> Clear Filters
+          <X style={{ width: 14, height: 14 }} /> Clear Filters
         </button>
       )}
     </div>

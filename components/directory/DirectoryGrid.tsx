@@ -61,19 +61,20 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
             <div
               key={p.contact_id}
               style={{
-                background: '#111214',
-                border: '1px solid rgba(255,255,255,0.06)',
-                borderRadius: 16, padding: '20px 20px 16px',
+                background: '#ffffff',
+                border: '1px solid #E5E7EB',
+                borderRadius: 12, padding: '20px 20px 16px',
                 display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
                 transition: 'all 0.2s ease',
                 position: 'relative', overflow: 'hidden',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
               }}
-              className="hover:border-[rgba(255,255,255,0.16)] hover:-translate-y-0.5 group"
+              className="hover:border-gray-300 hover:shadow-md group"
             >
               {hasHighTrust && (
                 <div style={{
                   position: 'absolute', top: 0, right: 0, width: 80, height: 80,
-                  background: '#E0B05C', opacity: 0.06, borderRadius: '50%', filter: 'blur(24px)',
+                  background: '#FACC15', opacity: 0.15, borderRadius: '50%', filter: 'blur(24px)',
                   pointerEvents: 'none',
                 }} />
               )}
@@ -83,16 +84,16 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12, gap: 12 }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <h3 style={{
-                      fontSize: 16, fontWeight: 800, color: '#F9FAFB',
-                      textTransform: 'uppercase', letterSpacing: '-0.01em',
+                      fontSize: 18, fontWeight: 800, color: '#0056B3', // YP style blue header
+                      letterSpacing: '-0.01em',
                       overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                       margin: '0 0 4px',
                     }}>
                       {p.company || p.name || 'Verified Operator'}
                     </h3>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <MapPin style={{ width: 12, height: 12, color: '#64748b' }} />
-                      <span style={{ fontSize: 12, color: '#9CA3AF', fontWeight: 500 }}>
+                      <MapPin style={{ width: 14, height: 14, color: '#6B7280' }} />
+                      <span style={{ fontSize: 13, color: '#4B5563', fontWeight: 500 }}>
                         {p.city ? `${p.city}, ` : ''}{state}
                       </span>
                       <FreshnessBadge lastSeenAt={p.last_seen_at || new Date().toISOString()} />
@@ -103,14 +104,14 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
                   {trust > 0 && (
                     <div style={{
                       display: 'flex', flexDirection: 'column', alignItems: 'center',
-                      padding: '6px 10px', borderRadius: 10, flexShrink: 0,
-                      background: hasHighTrust ? 'rgba(198,146,58,0.08)' : 'rgba(255,255,255,0.03)',
-                      border: `1px solid ${hasHighTrust ? 'rgba(198,146,58,0.2)' : 'rgba(255,255,255,0.06)'}`,
+                      padding: '6px 10px', borderRadius: 8, flexShrink: 0,
+                      background: hasHighTrust ? '#FEF9C3' : '#F3F4F6', // light yellow or gray
+                      border: `1px solid ${hasHighTrust ? '#FDE047' : '#E5E7EB'}`,
                     }}>
-                      <span style={{ fontSize: 18, fontWeight: 900, color: hasHighTrust ? '#E0B05C' : '#9CA3AF' }}>
+                      <span style={{ fontSize: 18, fontWeight: 900, color: hasHighTrust ? '#854D0E' : '#4B5563' }}>
                         {trust}
                       </span>
-                      <span style={{ fontSize: 8, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                      <span style={{ fontSize: 9, fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                         Trust
                       </span>
                     </div>
@@ -121,29 +122,29 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
                   {p.equipment_types && (
                     <span style={{
-                      fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 6,
-                      background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.15)',
-                      color: '#93c5fd', textTransform: 'uppercase', letterSpacing: '0.04em',
+                      fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 100,
+                      background: '#EFF6FF', border: '1px solid #BFDBFE',
+                      color: '#1D4ED8', textTransform: 'capitalize',
                     }}>
                       {typeof p.equipment_types === 'string' ? p.equipment_types.split(',')[0]?.trim() : 'Escort'}
                     </span>
                   )}
                   {p.verification_status === 'verified' && (
                     <span style={{
-                      fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 6,
-                      background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.15)',
-                      color: '#86efac', display: 'flex', alignItems: 'center', gap: 3,
+                      fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 100,
+                      background: '#F0FDF4', border: '1px solid #BBF7D0',
+                      color: '#15803D', display: 'flex', alignItems: 'center', gap: 4,
                     }}>
-                      <Shield style={{ width: 9, height: 9 }} /> Verified
+                      <Shield style={{ width: 12, height: 12 }} /> Verified
                     </span>
                   )}
                   {p.rating_avg && Number(p.rating_avg) > 0 && (
                     <span style={{
-                      fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 6,
-                      background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
-                      color: '#d1d5db', display: 'flex', alignItems: 'center', gap: 3,
+                      fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 100,
+                      background: '#F9FAFB', border: '1px solid #E5E7EB',
+                      color: '#374151', display: 'flex', alignItems: 'center', gap: 4,
                     }}>
-                      <Star style={{ width: 9, height: 9, color: '#E0B05C' }} /> {Number(p.rating_avg).toFixed(1)}
+                      <Star style={{ width: 12, height: 12, color: '#EAB308' }} /> {Number(p.rating_avg).toFixed(1)}
                     </span>
                   )}
                 </div>
@@ -154,27 +155,27 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
                 <Link
                   href={`/directory/dossier/${p.contact_id}`}
                   style={{
-                    flex: 1, padding: '11px 0', borderRadius: 10, textAlign: 'center',
-                    background: '#1A1C20', border: '1px solid rgba(255,255,255,0.06)',
-                    color: '#F3F4F6', fontSize: 11, fontWeight: 700,
-                    textTransform: 'uppercase', letterSpacing: '0.06em',
+                    flex: 1, padding: '10px 0', borderRadius: 8, textAlign: 'center',
+                    background: '#F3F4F6', border: '1px solid #D1D5DB',
+                    color: '#374151', fontSize: 13, fontWeight: 600,
                     textDecoration: 'none', transition: 'all 0.15s',
                   }}
+                  className="hover:bg-gray-200"
                 >
-                  View Dossier
+                  View Profile
                 </Link>
                 <Link
                   href={`/auth/signup?intent=dispatch&target=${p.contact_id}`}
                   style={{
-                    flex: 1.2, padding: '11px 0', borderRadius: 10, textAlign: 'center',
-                    background: 'linear-gradient(135deg, #C6923A, #E0B05C)',
-                    color: '#000', fontSize: 11, fontWeight: 800,
-                    textTransform: 'uppercase', letterSpacing: '0.06em',
-                    textDecoration: 'none', transition: 'opacity 0.15s',
+                    flex: 1.2, padding: '10px 0', borderRadius: 8, textAlign: 'center',
+                    background: '#0F52BA', // Strong YP CTA Blue
+                    color: '#ffffff', fontSize: 13, fontWeight: 600,
+                    textDecoration: 'none', transition: 'all 0.15s',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                   }}
+                  className="hover:bg-[#0c4296]"
                 >
-                  <MapPin style={{ width: 13, height: 13, opacity: 0.8 }} />
+                  <MapPin style={{ width: 14, height: 14 }} />
                   Live Ping
                 </Link>
               </div>

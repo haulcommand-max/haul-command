@@ -55,26 +55,26 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
 
     return (
         <HCContentPageShell>
-            <HCEditorialHero
-                eyebrow="Operator Intelligence"
-                title="Operator Directory"
-                imageUrl="/images/directory_hero.png"
-                overlayOpacity="medium"
-                metaRow={
-                    <div className="flex flex-wrap items-center gap-4 lg:gap-6 mt-4 text-xs font-bold uppercase tracking-widest text-[#9CA3AF]">
-                        <Link href="/directory?country=US" className={targetCountry === 'US' ? "text-[#E0B05C]" : "hover:text-[#F3F4F6] transition-colors"}>United States</Link>
-                        <span className="inline-block w-1 h-1 rounded-full bg-[rgba(255,255,255,0.2)]"></span>
-                        <Link href="/directory?country=CA" className={targetCountry === 'CA' ? "text-[#E0B05C]" : "hover:text-[#F3F4F6] transition-colors"}>Canada</Link>
-                        <span className="inline-block w-1 h-1 rounded-full bg-[rgba(255,255,255,0.2)]"></span>
-                        <Link href="/directory?country=AU" className={targetCountry === 'AU' ? "text-[#E0B05C]" : "hover:text-[#F3F4F6] transition-colors"}>Australia</Link>
+            {/* YP Style Clean Header instead of Dark EditorialHero */}
+            <div className="w-full bg-[#f8f9fa] border-b border-gray-200 py-12 px-4 shadow-sm">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-xs font-bold text-[#C6923A] uppercase tracking-widest mb-2">Operator Intelligence</div>
+                    <h1 className="text-3xl md:text-5xl font-black text-gray-900 mb-4 tracking-tight">Operator Directory</h1>
+                    
+                    <div className="flex flex-wrap items-center gap-4 lg:gap-6 mt-6 text-sm font-bold uppercase tracking-wider text-gray-400">
+                        <Link href="/directory?country=US" className={targetCountry === 'US' ? "text-[#C6923A]" : "hover:text-gray-900 transition-colors"}>United States</Link>
+                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                        <Link href="/directory?country=CA" className={targetCountry === 'CA' ? "text-[#C6923A]" : "hover:text-gray-900 transition-colors"}>Canada</Link>
+                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                        <Link href="/directory?country=AU" className={targetCountry === 'AU' ? "text-[#C6923A]" : "hover:text-gray-900 transition-colors"}>Australia</Link>
                     </div>
-                }
-            />
+                </div>
+            </div>
 
             <HCContentSection pad="section_balanced_pad">
                 <div className="max-w-7xl mx-auto">
                     {/* HC Ask — intelligence strip */}
-                    <HCAskStrip context="directory" />
+                    <div className="mb-6"><HCAskStrip context="directory" /></div>
 
                     {/* Searchable operator grid */}
                     <DirectoryGrid providers={providers} targetCountry={targetCountry} />
@@ -83,13 +83,13 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
 
             {/* AdGrid Sponsor Zone & Activity Feed — directory landing */}
             <HCContentSection pad="section_balanced_pad">
-                <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 pb-12">
                   <div className="lg:col-span-2">
-                    <h2 className="text-xl font-bold text-white mb-6">Directory Sponsors</h2>
+                    <h2 className="text-xl font-bold text-gray-900 mb-6 border-b border-gray-200 pb-2">Directory Sponsors</h2>
                     <AdGridSlot zone="directory_sponsor" />
                   </div>
                   <div className="lg:col-span-1">
-                    <h2 className="text-xl font-bold text-white mb-6">Live Network Pulse</h2>
+                    <h2 className="text-xl font-bold text-gray-900 mb-6 border-b border-gray-200 pb-2">Live Network Pulse</h2>
                     <LiveActivityFeed />
                   </div>
                 </div>
