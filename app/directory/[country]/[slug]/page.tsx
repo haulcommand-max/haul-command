@@ -153,14 +153,15 @@ export default async function CityDirectoryPage({ params }: PageProps) {
             {ops.length === 0 ? (
               <div style={{ background: '#FFFBEB', border: '1px solid #FEF08A', borderRadius: 16, padding: 40, textAlign: 'center' }}>
                 <MapPin style={{ width: 32, height: 32, color: '#C6923A', margin: '0 auto 12px' }} />
-                <h2 style={{ fontSize: 18, fontWeight: 900, color: '#854D0E', marginBottom: 8 }}>No operators listed in {cityName} yet</h2>
-                <p style={{ fontSize: 13, color: '#6B7280', marginBottom: 20 }}>Be the first verified escort operator in this market.</p>
-                <Link href="/claim" style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 24px',
+                <h2 style={{ fontSize: 20, fontWeight: 900, color: '#111827', marginBottom: 8 }}>Market Open: {cityName}</h2>
+                <p style={{ fontSize: 14, color: '#4B5563', marginBottom: 24 }}>There are currently no verified pilot car operators listed in this territory. Secure the top spot before your competitors do.</p>
+                <Link href={`/claim?market=${slug}`} style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 10, padding: '14px 28px',
                   borderRadius: 12, background: '#FACC15',
-                  color: '#000', fontSize: 13, fontWeight: 900, textDecoration: 'none',
+                  color: '#111827', fontSize: 15, fontWeight: 900, textDecoration: 'none',
+                  boxShadow: '0 4px 14px rgba(250, 204, 21, 0.4)'
                 }}>
-                  Claim Free Listing <ArrowRight style={{ width: 14, height: 14 }} />
+                  Claim the {cityName} Market <ArrowRight style={{ width: 16, height: 16 }} />
                 </Link>
               </div>
             ) : (
@@ -285,6 +286,44 @@ export default async function CityDirectoryPage({ params }: PageProps) {
                     <p style={{ fontSize: 12, color: '#6B7280', lineHeight: 1.5, margin: 0 }}>{faq.a}</p>
                   </div>
                 ))}
+              </div>
+            </div>
+
+            {/* Data Product Teaser: Market Pulse */}
+            <div style={{ background: '#ffffff', border: '1px solid #E5E7EB', borderRadius: 12, padding: 20, boxShadow: '0 1px 2px rgba(0,0,0,0.05)', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                <h3 style={{ fontSize: 14, fontWeight: 800, color: '#111827', textTransform: 'uppercase', letterSpacing: 1 }}>
+                  Market Pulse
+                </h3>
+                <span className="bg-[#FEF9C3] text-[#854D0E] text-[10px] uppercase font-bold px-2 py-0.5 rounded border border-[#FDE047]">
+                  PRO
+                </span>
+              </div>
+              <p style={{ fontSize: 12, color: '#6B7280', marginBottom: 16 }}>Live rate data and high-demand corridors for the {cityName} region.</p>
+              
+              <div style={{ filter: 'blur(4px)', opacity: 0.6, userSelect: 'none', pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E5E7EB', paddingBottom: 8 }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: '#111827' }}>Avg Rate/Mile</span>
+                  <span style={{ fontSize: 12, color: '#059669', fontWeight: 800 }}>$1.85 - $2.10</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E5E7EB', paddingBottom: 8 }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: '#111827' }}>Load Volume (30d)</span>
+                  <span style={{ fontSize: 12, color: '#4B5563', fontWeight: 800 }}>142 Loads</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: '#111827' }}>Top Corridor</span>
+                  <span style={{ fontSize: 12, color: '#4B5563', fontWeight: 800 }}>→ Houston, TX</span>
+                </div>
+              </div>
+
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0.4))' }}>
+                <Link href={`/pricing?intent=market-pulse&region=${slug}`} style={{
+                  background: '#C6923A', color: '#ffffff', padding: '10px 20px', borderRadius: 8,
+                  fontSize: 12, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.5,
+                  textDecoration: 'none', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)'
+                }} className="hover:bg-[#B45309] transition-colors">
+                  Unlock Pro Data
+                </Link>
               </div>
             </div>
           </div>

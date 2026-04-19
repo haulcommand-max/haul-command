@@ -8,9 +8,9 @@ import { HCAskStrip } from '@/components/hc-ask/HCAskStrip';
 import { DirectoryGrid } from '@/components/directory/DirectoryGrid';
 
 import { HCContentPageShell, HCContentSection } from "@/components/content-system/shell/HCContentPageShell";
-import { HCEditorialHero } from "@/components/content-system/heroes/HCEditorialHero";
 import { getPageFamilyOgImage } from "@/components/ui/PageFamilyBackground";
 import { Metadata } from 'next';
+import { getTypesenseSearch, OPERATORS_COLLECTION } from '@/lib/typesense/client';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
     };
 }
 
-export default async function GlobalDirectory({ searchParams }: { searchParams: Promise<{ country?: string }> }) {
+export default async function GlobalDirectory({ searchParams }: { searchParams: Promise<{ country?: string, q?: string, category?: string }> }) {
     const resolvedParams = await searchParams;
     const cookieStore = await cookies();
     const supabase = createServerClient(
@@ -39,23 +39,59 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
         { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
     );
     const targetCountry = resolvedParams.country || 'US';
+    const queryLocation = resolvedParams.q || '';
+    const queryCategory = resolvedParams.category || '';
 
-    // Fetch operators — defensive try/catch
+    // Fetch operators
     let providers: any[] = [];
-    try {
-        const { data } = await supabase
-            .from('v_directory_publishable')
-            .select('*')
-            .order('confidence_score', { ascending: false })
-            .limit(50);
-        providers = data ?? [];
-    } catch (e) {
-        console.warn('[directory] Query failed:', e);
+    
+    // 1. Try Typesense if a search query exists
+    let usedTypesense = false;
+    const searchQuery = [queryLocation, queryCategory].filter(Boolean).join(' ').trim();
+    
+    if (searchQuery) {
+        try {
+            const tsClient = getTypesenseSearch();
+            const filterBy = targetCountry ? `country_code:=${targetCountry}` : undefined;
+            
+            const searchRes = await tsClient.collections(OPERATORS_COLLECTION).documents().search({
+                q: searchQuery,
+                query_by: 'company_name,city,state,role_subtypes,service_categories',
+                filter_by: filterBy,
+                per_page: 50,
+                // Simple typo tolerance for city names
+                num_typos: 1
+            });
+            
+            if (searchRes && searchRes.hits) {
+                providers = searchRes.hits.map(h => Object.assign({}, h.document, {
+                   contact_id: (h.document as any).id,
+                   company: (h.document as any).company_name
+                }));
+                usedTypesense = true;
+            }
+        } catch (e) {
+            console.warn('[directory] Typesense search failed, falling back to Supabase', e);
+        }
+    }
+
+    // 2. Fallback to Supabase
+    if (!usedTypesense) {
+        try {
+            const { data } = await supabase
+                .from('v_directory_publishable')
+                .select('*')
+                .order('confidence_score', { ascending: false })
+                .limit(50);
+            providers = data ?? [];
+        } catch (e) {
+            console.warn('[directory] Supabase query failed:', e);
+        }
     }
 
     return (
         <HCContentPageShell>
-            {/* YP Style Clean Header instead of Dark EditorialHero */}
+            {/* YP Style Clean Header */}
             <div className="w-full bg-[#f8f9fa] border-b border-gray-200 py-12 px-4 shadow-sm">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-xs font-bold text-[#C6923A] uppercase tracking-widest mb-2">Operator Intelligence</div>

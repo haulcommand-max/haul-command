@@ -51,29 +51,30 @@ export function AdGridSlot({ zone, className, showEmptyCta = true }: AdGridSlotP
   if (ad) {
     return (
       <div
-        className={`bg-[#0f1a0c] border border-dashed border-[#3a5e10] rounded-lg p-3 ${className ?? ''}`}
+        className={`bg-white border border-gray-200 shadow-sm rounded-lg p-4 ${className ?? ''}`}
+        style={{ borderTop: '3px solid #C6923A' }}
         data-adgrid-zone={zone}
       >
         <div className="flex items-center gap-1.5 mb-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#7ec850] inline-block" />
-          <span className="text-[9px] tracking-[0.1em] text-[#4a7820]">SPONSORED</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[#C6923A] inline-block" />
+          <span className="text-[10px] uppercase font-bold tracking-widest text-[#9CA3AF]">SPONSORED</span>
         </div>
         <div className="flex items-start gap-3">
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold text-[#a0c880] mb-0.5">{ad.headline}</p>
-            <p className="text-xs text-[#6a9050]">{ad.body}</p>
+            <p className="text-sm font-bold text-[#111827] mb-1">{ad.headline}</p>
+            <p className="text-xs text-[#4B5563] mb-3 leading-relaxed">{ad.body}</p>
           </div>
-          <a
-            href={ad.cta_url}
-            target="_blank"
-            rel="noopener sponsored"
-            className="flex-shrink-0 text-xs bg-[#22401a] text-[#7ec850] border border-[#3a6020] px-3 py-1.5 rounded hover:bg-[#2a5020] transition-colors"
-            onClick={handleClick}
-          >
-            {ad.cta_label}
-          </a>
         </div>
-        <p className="text-[9px] text-[#2a4010] mt-1.5 text-right">{ad.advertiser_name} · AdGrid</p>
+        <a
+          href={ad.cta_url}
+          target="_blank"
+          rel="noopener sponsored"
+          className="inline-block text-xs font-bold bg-[#F3F4F6] text-[#374151] border border-[#D1D5DB] px-3 py-1.5 rounded-md hover:bg-[#E5E7EB] hover:text-[#111827] transition-all"
+          onClick={handleClick}
+        >
+          {ad.cta_label}
+        </a>
+        <p className="text-[10px] text-[#9CA3AF] mt-3 text-right">Sponsored by {ad.advertiser_name}</p>
       </div>
     );
   }
@@ -83,14 +84,14 @@ export function AdGridSlot({ zone, className, showEmptyCta = true }: AdGridSlotP
     return (
       <Link
         href={`/advertise/buy?zone=${zone}`}
-        className={`group block rounded-lg border border-dashed border-white/8 bg-white/[0.015] p-3 text-center transition-all hover:border-amber-500/25 hover:bg-amber-500/[0.03] ${className ?? ''}`}
+        className={`group block rounded-lg border border-dashed border-[#D1D5DB] bg-[#F9FAFB] p-5 text-center transition-all hover:border-[#C6923A] hover:bg-[#FFFBEB] ${className ?? ''}`}
         data-adgrid-zone={zone}
       >
-        <span className="text-[9px] font-bold uppercase tracking-widest text-white/20">
+        <span className="block text-xs font-bold uppercase tracking-widest text-[#6B7280] group-hover:text-[#B45309] transition-colors">
           Sponsor this space
         </span>
-        <span className="block text-[10px] text-amber-400/50 font-medium mt-0.5 group-hover:text-amber-400/80 transition-colors">
-          From $0.75/click →
+        <span className="block text-[11px] text-[#9CA3AF] font-medium mt-1 group-hover:text-[#D97706] transition-colors">
+          Target local directory searches →
         </span>
       </Link>
     );

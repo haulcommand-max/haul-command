@@ -138,13 +138,15 @@ export default function HomeClient({
 
                         {/* Search Bar Floating Inside */}
                         <div className="absolute inset-0 flex items-center justify-center p-4">
-                            <motion.div
+                            <motion.form
+                                action="/directory"
+                                method="GET"
                                 initial="hidden" animate="visible" variants={fadeUp} custom={1}
                                 className="w-full max-w-3xl flex flex-col sm:flex-row items-stretch bg-white rounded-md shadow-2xl overflow-hidden"
                             >
                                 <div className="flex-[1.5] flex items-center gap-2 bg-white px-4 py-3 border-b sm:border-b-0 sm:border-r border-gray-300">
                                     <Search className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                                    <select className="w-full bg-transparent text-sm md:text-base text-gray-700 font-medium focus:outline-none appearance-none cursor-pointer">
+                                    <select name="category" className="w-full bg-transparent text-sm md:text-base text-gray-700 font-medium focus:outline-none appearance-none cursor-pointer">
                                         <option value="">Find a business or category</option>
                                         <option value="escort-vehicle">Escort Vehicle</option>
                                         <option value="pilot-car">Pilot Car</option>
@@ -156,17 +158,18 @@ export default function HomeClient({
                                     <MapPin className="w-5 h-5 text-gray-400 flex-shrink-0" />
                                     <input
                                         type="text"
+                                        name="q"
                                         placeholder="City, State"
                                         className="w-full bg-transparent text-sm md:text-base text-gray-900 placeholder-gray-500 font-medium focus:outline-none"
                                     />
                                 </div>
-                                <Link
-                                    href="/directory"
-                                    className="flex items-center justify-center bg-[#FFD700] hover:bg-[#FACC15] text-gray-900 font-bold text-lg px-8 py-3 transition-colors"
+                                <button
+                                    type="submit"
+                                    className="flex items-center justify-center bg-[#FFD700] hover:bg-[#FACC15] text-gray-900 font-bold text-lg px-8 py-3 transition-colors outline-none focus:ring-2 focus:ring-[#C6923A] focus:ring-inset"
                                 >
                                     Find
-                                </Link>
-                            </motion.div>
+                                </button>
+                            </motion.form>
                         </div>
                     </div>
                 </div>
