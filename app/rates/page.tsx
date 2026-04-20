@@ -57,14 +57,14 @@ export const RATES_JSONLD = `{
 
 export default async function RatesPage() {
   return (
-    <div className=" bg-[#0a0a0a] text-white">
+    <div className="bg-white text-gray-900">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: RATES_JSONLD }} />
       <section className="py-16 px-4 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
-          Pilot Car & Escort Vehicle Rates \u2014 2026
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-[#C6923A] to-[#E4B872] bg-clip-text text-transparent">
+          Pilot Car &amp; Escort Vehicle Rates &mdash; 2026
         </h1>
-        <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-          Current day rates across active markets. Data sourced from Haul Command\u2019s global heavy haul intelligence network.
+        <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+          Current day rates across active markets. Data sourced from Haul Command's global heavy haul intelligence network.
         </p>
       </section>
 
@@ -83,23 +83,23 @@ export default async function RatesPage() {
             <Link aria-label="Navigation Link"
               key={country.code}
               href={`/rates/${country.code}`}
-              className="p-6 bg-white/5 border border-white/10 rounded-2xl hover:border-amber-500/30 transition-all group"
+              className="p-6 bg-white border border-gray-200 rounded-2xl hover:border-[#C6923A]/40 transition-all group shadow-sm"
             >
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-3xl">{country.flag}</span>
                 <div>
-                  <h2 className="text-lg font-bold group-hover:text-amber-400 transition-colors">{country.name}</h2>
+                  <h2 className="text-lg font-bold text-gray-900 group-hover:text-[#C6923A] transition-colors">{country.name}</h2>
                   <span className="text-xs text-gray-500">{country.currency}</span>
                 </div>
               </div>
               <div className="flex justify-between items-end">
                 <div>
                   <p className="text-sm text-gray-500">Average Day Rate</p>
-                  <p className="text-2xl font-bold text-amber-400">
+                  <p className="text-2xl font-bold text-[#C6923A]">
                     {country.symbol}{country.avgRate}
                   </p>
                 </div>
-                <span className="text-gray-500 group-hover:text-amber-400 transition-colors">View details \u2192</span>
+                <span className="text-gray-500 group-hover:text-[#C6923A] transition-colors">View details &rarr;</span>
               </div>
             </Link>
           ))}
@@ -109,7 +109,7 @@ export default async function RatesPage() {
           <p className="text-gray-400 mb-4">Rates vary by corridor, load type, and season.</p>
           <Link aria-label="Navigation Link"
             href="/loads"
-            className="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-white font-semibold rounded-xl transition-colors"
+            className="px-8 py-3 bg-[#C6923A] hover:bg-[#b0802e] text-white font-semibold rounded-xl transition-colors shadow-sm"
           >
             See Current Loads & Rates
           </Link>

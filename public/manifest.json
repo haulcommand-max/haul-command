@@ -4,8 +4,8 @@
   "description": "The command center for escort discovery, heavy-haul dispatch, trust verification, and corridor intelligence across 120 countries.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#07090d",
-  "theme_color": "#f59e0b",
+  "background_color": "#ffffff",
+  "theme_color": "#C6923A",
   "orientation": "any",
   "scope": "/",
   "lang": "en",
@@ -16,46 +16,22 @@
   ],
   "icons": [
     {
-      "src": "../icons/icon-48.webp",
-      "type": "image/png",
-      "sizes": "48x48",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "../icons/icon-72.webp",
-      "type": "image/png",
-      "sizes": "72x72",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "../icons/icon-96.webp",
-      "type": "image/png",
-      "sizes": "96x96",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "../icons/icon-128.webp",
-      "type": "image/png",
-      "sizes": "128x128",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "../icons/icon-192.webp",
+      "src": "/brand/logo-square.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "../icons/icon-256.webp",
-      "type": "image/png",
-      "sizes": "256x256",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "../icons/icon-512.webp",
+      "src": "/brand/logo-square.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/brand/favicon.png",
+      "type": "image/png",
+      "sizes": "48x48",
+      "purpose": "any"
     }
   ],
   "screenshots": [
@@ -82,7 +58,7 @@
       "url": "/available-now",
       "icons": [
         {
-          "src": "/icons/app/icon-128.png",
+          "src": "/brand/logo-square.png",
           "sizes": "128x128"
         }
       ]
@@ -94,7 +70,7 @@
       "url": "/loads/post",
       "icons": [
         {
-          "src": "/icons/app/icon-128.png",
+          "src": "/brand/logo-square.png",
           "sizes": "128x128"
         }
       ]
@@ -106,7 +82,7 @@
       "url": "/dashboard/operator",
       "icons": [
         {
-          "src": "/icons/app/icon-128.png",
+          "src": "/brand/logo-square.png",
           "sizes": "128x128"
         }
       ]

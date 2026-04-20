@@ -34,7 +34,7 @@ export function NoDeadEndBlock({
         }}>
             <h2 style={{
                 fontSize: 12, fontWeight: 700,
-                color: 'rgba(255,255,255,0.35)',
+                color: '#6b7280',
                 textTransform: 'uppercase', letterSpacing: '0.08em',
                 margin: '0 0 14px',
             }}>
@@ -57,10 +57,10 @@ export function NoDeadEndBlock({
                             borderRadius: 12,
                             background: move.primary
                                 ? `${move.color ?? '#D4A844'}0d`
-                                : 'rgba(255,255,255,0.025)',
+                                : '#f9fafb',
                             border: move.primary
                                 ? `1px solid ${move.color ?? '#D4A844'}33`
-                                : '1px solid rgba(255,255,255,0.07)',
+                                : '1px solid #e5e7eb',
                             textDecoration: 'none',
                             transition: 'all 0.12s',
                         }}
@@ -68,13 +68,13 @@ export function NoDeadEndBlock({
                         <span style={{ fontSize: 20, lineHeight: 1 }}>{move.icon}</span>
                         <span style={{
                             fontSize: 13, fontWeight: 700,
-                            color: move.primary ? (move.color ?? '#D4A844') : 'rgba(255,255,255,0.8)',
+                            color: move.primary ? (move.color ?? '#D4A844') : '#1f2937',
                             lineHeight: 1.2,
                         }}>
                             {move.title}
                         </span>
                         {move.desc && (
-                            <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', lineHeight: 1.4 }}>
+                            <span style={{ fontSize: 11, color: '#6b7280', lineHeight: 1.4 }}>
                                 {move.desc}
                             </span>
                         )}

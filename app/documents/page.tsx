@@ -28,13 +28,13 @@ export default async function DocumentsHubPage() {
     }
 
     return (
-        <div className=" bg-[#0a1118] text-[#f0f2f5] pt-24 pb-16">
+        <div className="bg-white text-gray-900 pt-24 pb-16">
             <div className="container mx-auto px-4 max-w-6xl">
                 
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 border-b border-[#1e3048] pb-6">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 border-b border-gray-200 pb-6">
                     <div>
-                        <h1 className="text-3xl font-black text-white uppercase tracking-tight mb-2">Compliance <span className="text-[#e8a828]">Vault</span></h1>
-                        <p className="text-[#8ab0d0] text-sm">
+                        <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tight mb-2">Compliance <span className="text-[#C6923A]">Vault</span></h1>
+                        <p className="text-gray-500 text-sm">
                             Centralized W-9, COI, and state certification storage. Stop emailing PDFs. Send one secure link to brokers.
                         </p>
                     </div>
@@ -42,7 +42,7 @@ export default async function DocumentsHubPage() {
                         {user ? (
                             <ShareLinkManager cois={cois} />
                         ) : (
-                            <button className="bg-[#1e3048] text-[#8ab0d0] px-4 py-2 rounded text-sm uppercase tracking-wider font-bold cursor-not-allowed">
+                            <button className="bg-gray-100 text-gray-500 px-4 py-2 rounded text-sm uppercase tracking-wider font-bold cursor-not-allowed">
                                 Login to Share
                             </button>
                         )}
@@ -58,26 +58,26 @@ export default async function DocumentsHubPage() {
                     {/* Sidebar / Upsell / Alerts */}
                     <div className="lg:col-span-1 space-y-6">
                         
-                        <div className="bg-[#141e28] border border-[#1e3048] rounded-xl p-5 relative overflow-hidden">
-                            <div className="absolute top-0 left-0 w-full h-1 bg-[#e8a828]"></div>
-                            <h3 className="font-bold text-white uppercase tracking-widest text-sm mb-2">Automated Expiry</h3>
-                            <p className="text-[#8ab0d0] text-xs mb-4">
+                        <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 relative overflow-hidden">
+                            <div className="absolute top-0 left-0 w-full h-1 bg-[#C6923A]"></div>
+                            <h3 className="font-bold text-gray-900 uppercase tracking-widest text-sm mb-2">Automated Expiry</h3>
+                            <p className="text-gray-500 text-xs mb-4">
                                 Haul Command automatically scans your COI dates and alerts you 30 days before expiration to keep your Verified Badge active.
                             </p>
-                            <div className="flex items-center gap-2 text-xs font-mono">
+                            <div className="flex items-center gap-2 text-xs font-mono text-gray-600">
                                 <span className="w-2 h-2 rounded-full bg-green-500"></span> All docs current
                             </div>
                         </div>
 
-                        <div className="bg-[#0a1118] border border-[#e8a828]/30 rounded-xl p-5 pt-8 relative mt-10">
+                        <div className="bg-white border border-[#C6923A]/30 rounded-xl p-5 pt-8 relative mt-10 shadow-sm">
                             <div className="absolute -top-5 inset-x-0 flex justify-center">
-                                <span className="bg-[#e8a828] text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-[0_0_10px_rgba(232,168,40,0.5)]">Pro Feature</span>
+                                <span className="bg-[#C6923A] text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-sm">Pro Feature</span>
                             </div>
-                            <h3 className="font-bold text-white uppercase tracking-widest text-sm mb-2 text-center">Auto-Fill Contracts</h3>
-                            <p className="text-[#8ab0d0] text-xs text-center mb-4">
+                            <h3 className="font-bold text-gray-900 uppercase tracking-widest text-sm mb-2 text-center">Auto-Fill Contracts</h3>
+                            <p className="text-gray-500 text-xs text-center mb-4">
                                 Upgrade to Pro to automatically generate standard Heavy Haul Master Service Agreements (MSAs) using your stored LLC data.
                             </p>
-                            <button className="w-full border border-[#e8a828] text-[#e8a828] py-2 rounded text-xs font-bold uppercase tracking-wider hover:bg-[#e8a828] hover:text-white transition-colors">
+                            <button className="w-full border border-[#C6923A] text-[#C6923A] py-2 rounded text-xs font-bold uppercase tracking-wider hover:bg-[#C6923A] hover:text-white transition-colors">
                                 Unlock Workflow ($29/mo)
                             </button>
                         </div>

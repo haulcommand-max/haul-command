@@ -205,15 +205,15 @@ export default function ToolsIndexPage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
             <ProofStrip variant="bar" />
 
-            <div style={{ minHeight: '100vh', background: '#0B0B0C', color: '#F0F0F2' }}>
+            <div style={{ minHeight: '100vh', background: '#ffffff', color: '#1f2937' }}>
                 {/* â”€â”€ Hero â”€â”€ */}
                 <section style={{
                     position: 'relative', overflow: 'hidden',
-                    borderBottom: '1px solid rgba(255,255,255,0.05)',
+                    borderBottom: '1px solid #e5e7eb',
                 }}>
                     <div style={{
-                        position: 'absolute', inset: 0, opacity: 0.15, pointerEvents: 'none',
-                        background: 'radial-gradient(ellipse at 40% 0%, rgba(198,146,58,0.4) 0%, transparent 70%)',
+                        position: 'absolute', inset: 0, opacity: 0.12, pointerEvents: 'none',
+                        background: 'radial-gradient(ellipse at 40% 0%, rgba(198,146,58,0.35) 0%, transparent 70%)',
                     }} />
                     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '80px 24px 64px', position: 'relative', zIndex: 1 }}>
                         <div style={{ maxWidth: 640 }}>
@@ -228,7 +228,7 @@ export default function ToolsIndexPage() {
                             </div>
                             <h1 style={{
                                 fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 900, lineHeight: 1.1,
-                                letterSpacing: '-0.03em', marginBottom: 16,
+                                letterSpacing: '-0.03em', marginBottom: 16, color: '#111827',
                             }}>
                                 Heavy Haul{' '}
                                 <span style={{
@@ -238,7 +238,7 @@ export default function ToolsIndexPage() {
                                     Intelligence Tools
                                 </span>
                             </h1>
-                            <p style={{ fontSize: 17, color: '#9CA3AF', lineHeight: 1.6, marginBottom: 24 }}>
+                            <p style={{ fontSize: 17, color: '#6b7280', lineHeight: 1.6, marginBottom: 24 }}>
                                 Route compliance, cost estimation, permit calculation, market intelligence,
                                 and regulation monitoring. Free. For brokers, carriers, and escorts across 50+ countries.
                             </p>
@@ -276,11 +276,12 @@ export default function ToolsIndexPage() {
                                     style={{
                                         display: 'flex', flexDirection: 'column', gap: 16,
                                         padding: 28, borderRadius: 16,
-                                        background: '#111114',
-                                        border: '1px solid rgba(255,255,255,0.06)',
+                                        background: '#ffffff',
+                                        border: '1px solid #e5e7eb',
                                         textDecoration: 'none', color: 'inherit',
                                         transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
                                         position: 'relative', overflow: 'hidden',
+                                        boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
                                     }}
                                     className="ag-tool-card"
                                 >
@@ -318,13 +319,13 @@ export default function ToolsIndexPage() {
 
                                     {/* Content */}
                                     <div>
-                                        <h2 style={{ fontSize: 18, fontWeight: 800, marginBottom: 2, color: '#F9FAFB' }}>
+                                        <h2 style={{ fontSize: 18, fontWeight: 800, marginBottom: 2, color: '#111827' }}>
                                             {tool.name}
                                         </h2>
                                         <div style={{ fontSize: 11, fontWeight: 700, color: tool.color, textTransform: 'uppercase' as const, letterSpacing: '0.05em', marginBottom: 8 }}>
                                             {tool.tagline}
                                         </div>
-                                        <p style={{ fontSize: 13, color: '#9CA3AF', lineHeight: 1.55 }}>
+                                        <p style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.55 }}>
                                             {tool.description}
                                         </p>
                                     </div>
@@ -356,7 +357,7 @@ export default function ToolsIndexPage() {
                             </Link>
                           </div>
 
-                          <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 18 }}>
+                          <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 16, padding: 18 }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
                               <Shield style={{ width: 14, height: 14, color: '#22c55e' }} />
                               <span style={{ fontSize: 11, fontWeight: 800, color: '#22c55e', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Claim Listing</span>
@@ -367,7 +368,7 @@ export default function ToolsIndexPage() {
                             </Link>
                           </div>
 
-                          <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 18 }}>
+                          <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 16, padding: 18 }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
                               <Award style={{ width: 14, height: 14, color: '#a78bfa' }} />
                               <span style={{ fontSize: 11, fontWeight: 800, color: '#a78bfa', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Get Certified</span>
@@ -378,7 +379,7 @@ export default function ToolsIndexPage() {
                             </Link>
                           </div>
 
-                          <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: 18 }}>
+                          <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 16, padding: 18 }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
                               <Globe style={{ width: 14, height: 14, color: '#38bdf8' }} />
                               <span style={{ fontSize: 11, fontWeight: 800, color: '#38bdf8', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Data Products</span>
@@ -408,17 +409,17 @@ export default function ToolsIndexPage() {
 
                 {/* â”€â”€ Bottom CTA â”€â”€ */}
                 <section style={{
-                    borderTop: '1px solid rgba(255,255,255,0.05)',
-                    background: '#0f0f12',
+                    borderTop: '1px solid #e5e7eb',
+                    background: '#f9fafb',
                 }}>
                     <div style={{
                         maxWidth: 800, margin: '0 auto', padding: '64px 24px',
                         textAlign: 'center',
                     }}>
-                        <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 12 }}>
+                        <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 12, color: '#111827' }}>
                             Need a custom solution?
                         </h2>
-                        <p style={{ fontSize: 14, color: '#9CA3AF', marginBottom: 24, lineHeight: 1.6 }}>
+                        <p style={{ fontSize: 14, color: '#6b7280', marginBottom: 24, lineHeight: 1.6 }}>
                             Enterprise buyers can access Haul Command data via API, bulk exports,
                             and white-glove intelligence reports across all 50+ countries.
                         </p>
@@ -434,9 +435,9 @@ export default function ToolsIndexPage() {
                             </Link>
                             <Link href="/directory" style={{
                                 padding: '14px 32px', borderRadius: 12,
-                                background: 'rgba(255,255,255,0.05)',
-                                border: '1px solid rgba(255,255,255,0.10)',
-                                color: '#F0F0F2', fontWeight: 700, fontSize: 13,
+                                background: '#ffffff',
+                                border: '1px solid #d1d5db',
+                                color: '#374151', fontWeight: 700, fontSize: 13,
                                 textDecoration: 'none',
                             }}>
                                 Find Operators â†’
@@ -477,9 +478,9 @@ export default function ToolsIndexPage() {
             {/* Hover animation style */}
             <style dangerouslySetInnerHTML={{ __html: `
                 .ag-tool-card:hover {
-                    border-color: rgba(255,255,255,0.14) !important;
+                    border-color: #C6923A !important;
                     transform: translateY(-2px);
-                    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+                    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
                 }
             `}} />
         </>

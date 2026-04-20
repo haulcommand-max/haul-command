@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import { Search, X, MapPin, Filter } from 'lucide-react';
+import { stateFullName } from '@/lib/geo/state-names';
 
 /**
  * DirectorySearchBar — Client-side search + filter for directory/available-now grids.
@@ -40,12 +41,18 @@ export function DirectorySearchBar({
     
     if (q.trim()) {
       const lower = q.toLowerCase().trim();
-      result = result.filter(item => 
-        searchFields.some(field => {
+      result = result.filter(item => {
+        // Check standard fields
+        const fieldMatch = searchFields.some(field => {
           const val = item[field];
           return val && String(val).toLowerCase().includes(lower);
-        })
-      );
+        });
+        if (fieldMatch) return true;
+        // Also match against full state name (e.g. "Louisiana" matches state_inferred="LA")
+        const stCode = item.state_inferred || item.state_code || '';
+        const fullName = stateFullName(stCode);
+        return fullName && fullName.toLowerCase().includes(lower);
+      });
     }
 
     if (state) {
