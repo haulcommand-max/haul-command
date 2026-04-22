@@ -72,13 +72,11 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps) 
     notFound();
   }
 
-  const publishedDate = article.published_at
-    ? new Date(article.published_at).toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      })
-    : null;
+  const publishedDate = new Date(article.created_at || article.updated_at || Date.now()).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
 
   // JSON-LD structured data for the article
   const articleJsonLd = {
@@ -87,8 +85,8 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps) 
     headline: article.title,
     description: article.excerpt || article.title,
     image: article.hero_image_url || "/images/blog_hero_bg.png",
-    datePublished: article.published_at,
-    dateModified: article.updated_at || article.published_at,
+    datePublished: article.created_at,
+    dateModified: article.updated_at || article.created_at,
     author: {
       "@type": "Organization",
       name: "Haul Command",

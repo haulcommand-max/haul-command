@@ -88,7 +88,21 @@ export async function GET(req: Request) {
             dynamicUrls = routeBlock.map(op => `${BASE}/directory/profile/${op.slug}`);
         }
 
-        const finalUrls = chunkId === 0 ? [...CONSTANT_YIELDS, ...dynamicUrls] : dynamicUrls;
+        // Add blog articles to chunk 0
+        let blogUrls: string[] = [];
+        if (chunkId === 0) {
+            const { data: blogPosts } = await supabase
+                .from('hc_blog_articles')
+                .select('slug')
+                .eq('status', 'published');
+            if (blogPosts) {
+                blogUrls = blogPosts.map((b: any) => `${BASE}/blog/${b.slug}`);
+            }
+        }
+
+        const finalUrls = chunkId === 0
+            ? [...CONSTANT_YIELDS, ...blogUrls, ...dynamicUrls]
+            : dynamicUrls;
 
         const xmlTemplate = `<?xml version="1.0" encoding="UTF-8"?>
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
