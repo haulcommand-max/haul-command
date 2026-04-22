@@ -56,6 +56,22 @@ export const RATES_JSONLD = `{
 }`;
 
 export default async function RatesPage() {
+  const supabase = (await import('@/lib/supabase/server')).createClient();
+  const { data: ratesData } = await supabase
+    .from('hc_rates_public')
+    .select('jurisdiction_slug, country_slug, surface_type, rate_low, rate_mid, rate_high, currency_code, freshness_timestamp')
+    .eq('surface_type', 'day_rate')
+    .order('country_slug')
+    .limit(50);
+
+  // Merge DB rates into COUNTRIES display (DB rate_mid overrides hardcoded avgRate)
+  const ratesByCountry: Record<string, { rate_low: number; rate_mid: number; rate_high: number; currency_code: string }> = {};
+  (ratesData ?? []).forEach((r: any) => {
+    if (r.jurisdiction_slug === 'national') {
+      ratesByCountry[r.country_slug] = r;
+    }
+  });
+
   return (
     <div className="bg-white text-gray-900">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: RATES_JSONLD }} />

@@ -122,7 +122,7 @@ export async function getCompliantOperatorsForCorridor(routeStates: string[], li
   // We'll fetch operators located in or frequently operating in ANY of the route states.
   
   const { data: operators, error } = await supabase
-    .from('hc_real_operators')
+    .from('hc_global_operators')
     .select('id, full_name, state, certifications, trust_score, avg_response_minutes, availability_status')
     .in('state', routeStates) // Naive geographical net
     .limit(limit * 3); // Over-fetch to allow post-filtering

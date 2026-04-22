@@ -88,8 +88,9 @@ export async function GET(req: Request) {
             dynamicUrls = routeBlock.map(op => `${BASE}/directory/profile/${op.slug}`);
         }
 
-        // Add blog articles to chunk 0
+        // Add blog articles and trucker-services pages to chunk 0
         let blogUrls: string[] = [];
+        let placeUrls: string[] = [];
         if (chunkId === 0) {
             const { data: blogPosts } = await supabase
                 .from('hc_blog_articles')
@@ -98,10 +99,29 @@ export async function GET(req: Request) {
             if (blogPosts) {
                 blogUrls = blogPosts.map((b: any) => `${BASE}/blog/${b.slug}`);
             }
+            // Top 2000 trucker-services pages by demand_score
+            const { data: places } = await supabase
+                .from('hc_places')
+                .select('slug')
+                .not('slug', 'is', null)
+                .order('demand_score', { ascending: false })
+                .limit(2000);
+            if (places) {
+                placeUrls = places.map((p: any) => `${BASE}/trucker-services/${p.slug}`);
+            }
+            // Add corridor pages
+            const { data: corridors } = await supabase
+                .from('hc_corridors')
+                .select('corridor_key')
+                .not('corridor_key', 'is', null)
+                .order('demand_score', { ascending: false });
+            if (corridors) {
+                placeUrls.push(...corridors.map((c: any) => `${BASE}/corridors/${c.corridor_key}`));
+            }
         }
 
         const finalUrls = chunkId === 0
-            ? [...CONSTANT_YIELDS, ...blogUrls, ...dynamicUrls]
+            ? [...CONSTANT_YIELDS, ...blogUrls, ...placeUrls, ...dynamicUrls]
             : dynamicUrls;
 
         const xmlTemplate = `<?xml version="1.0" encoding="UTF-8"?>
