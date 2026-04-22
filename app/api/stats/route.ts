@@ -10,7 +10,7 @@ export async function GET() {
 
     const [operatorCount, loadCount] = await Promise.all([
       supabase
-        .from('directory_listings')
+        .from('hc_global_operators')
         .select('id', { count: 'exact', head: true }),
       supabase
         .from('loads')

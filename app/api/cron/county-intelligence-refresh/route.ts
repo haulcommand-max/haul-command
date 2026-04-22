@@ -48,7 +48,7 @@ export async function GET() {
 
         // Get live escort counts per state from directory_listings (6,949 operators)
         const { data: escortsByState } = await sb
-            .from('directory_listings')
+            .from('hc_global_operators')
             .select('region')
             .not('region', 'is', null);
 

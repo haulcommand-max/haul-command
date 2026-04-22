@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
 
     if (STOP_KW.includes(kw)) {
         await admin.from('profiles').update({ sms_opted_out: true }).eq('phone_e164', from_number);
-        await admin.from('directory_listings').update({ sms_opted_out: true }).eq('phone_e164', from_number);
+        await admin.from('hc_global_operators').update({ sms_opted_out: true }).eq('phone_e164', from_number);
         await admin.from('sms_log').insert({ to_number: from_number, message: `OPT-OUT: ${kw}`, status: 'opted_out', credits_used: 0, provider: 'inbound' });
         return NextResponse.json({ ok: true, action: 'opted_out', reply: 'Unsubscribed from Haul Command SMS. Reply START to re-subscribe.' });
     }

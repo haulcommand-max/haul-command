@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
   // ── TYPE: corridor intel pages ──────────────────────────────────
   if (type === 'corridors') {
     const { data: corridors } = await supabase
-      .from('corridors')
+      .from('hc_corridors')
       .select('id, name, origin_state, destination_state, origin_city, destination_city, load_count, operator_count')
       .is('intel_generated_at', null)
       .order('load_count', { ascending: false })
@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
           await cacheSet('gemini', 'gemini-2.5-flash', cacheKey, res, CACHE_TTL.corridor_intel);
         }
 
-        await supabase.from('corridors').update({
+        await supabase.from('hc_corridors').update({
           intel_content: text,
           intel_generated_at: new Date().toISOString(),
         }).eq('id', c.id);

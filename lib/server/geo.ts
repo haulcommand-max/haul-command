@@ -120,7 +120,7 @@ export async function getCitiesByCountryRegion(
 
     // directory_listings may use either upper or lower case codes
     const { data, error } = await supabase
-        .from("directory_listings")
+        .from("hc_global_operators")
         .select("city")
         .ilike("country_code", countryIso2)
         .ilike("region_code", regionCode)

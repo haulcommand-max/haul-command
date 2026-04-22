@@ -39,7 +39,7 @@ export async function POST(req: Request) {
 
         if (report_type === 'corridor_health' || report_type === 'market_snapshot') {
             const { data: corridors } = await supabaseAdmin
-                .from('corridors')
+                .from('hc_corridors')
                 .select('name, origin_state, dest_state, distance_miles, load_count_30d, avg_rate, liquidity_score')
                 .order('load_count_30d', { ascending: false })
                 .limit(20);

@@ -107,7 +107,7 @@ export async function POST(req: NextRequest) {
     const sentIds = new Set((alreadySent ?? []).map((r: any) => r.operator_id));
 
     const { data: operators, error } = await supabase
-        .from('directory_listings')
+        .from('hc_global_operators')
         .select('id, company_name, contact_email, state_code, region_code, services')
         .not('contact_email', 'is', null)
         .neq('contact_email', '')
@@ -244,7 +244,7 @@ export async function GET(req: NextRequest) {
     const limit = Math.min(Number(req.nextUrl.searchParams.get('limit') ?? 10), 50);
 
     const { data: operators, count } = await supabase
-        .from('directory_listings')
+        .from('hc_global_operators')
         .select('id, company_name, contact_email, state_code, is_claimed', { count: 'exact' })
         .not('contact_email', 'is', null)
         .neq('contact_email', '')

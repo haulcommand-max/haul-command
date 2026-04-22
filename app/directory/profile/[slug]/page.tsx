@@ -33,7 +33,7 @@ const SERVICE_LABELS: Record<string, { label: string; icon: string }> = {
 async function getOperator(slug: string) {
   const supabase = createClient();
   const { data } = await supabase
-    .from('directory_listings')
+    .from('hc_global_operators')
     .select('*')
     .eq('slug', slug)
     .maybeSingle();
@@ -43,7 +43,7 @@ async function getOperator(slug: string) {
 async function getSimilar(state: string, excludeId: string) {
   const supabase = createClient();
   const { data } = await supabase
-    .from('directory_listings')
+    .from('hc_global_operators')
     .select('id, name, slug, region_code, claim_status, trust_score, metadata')
     .eq('region_code', state)
     .neq('id', excludeId)

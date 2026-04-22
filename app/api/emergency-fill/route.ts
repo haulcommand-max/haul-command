@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
 
     // Find all operators on this corridor
     const { data: operators } = await supabase
-      .from('directory_listings')
+      .from('hc_global_operators')
       .select('id, claimed_by')
       .eq('status', 'active')
       .contains('corridors', [corridor])

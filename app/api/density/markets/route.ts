@@ -59,7 +59,7 @@ export async function GET(req: NextRequest) {
 
     while (hasMore) {
         const { data, error } = await supabase
-            .from('directory_listings')
+            .from('hc_global_operators')
             .select(`${resolution}, city, region_code, country_code`)
             .not(resolution, 'is', null)
             .range(offset, offset + PAGE - 1);

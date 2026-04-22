@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
 
     // 2. Find all available operators in the corridor
     const { data: operators, error: opError } = await db
-      .from('directory_listings')
+      .from('hc_global_operators')
       .select('id, name, region_code')
       .neq('is_visible', false)
       .eq('region_code', corridor.split('-')[1] || corridor) // Extract state from corridor

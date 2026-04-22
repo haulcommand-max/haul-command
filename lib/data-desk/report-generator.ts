@@ -314,7 +314,7 @@ export async function generateOperatorSupplyIndex(countryIso2: string): Promise<
             .eq('country_code', countryIso2)
             .gte('created_at', thirtyDaysAgo.toISOString()),
         supabase
-            .from('directory_listings')
+            .from('hc_global_operators')
             .select('id', { count: 'exact', head: true })
             .eq('country_code', countryIso2)
             .eq('is_active', true),

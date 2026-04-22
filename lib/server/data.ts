@@ -75,16 +75,15 @@ export async function getDirectoryListings(params: {
     const limit = params.limit ?? 24;
     const offset = params.offset ?? 0;
 
-    // Primary query: directory_listings where NOT explicitly hidden
-    // Changed from .eq("is_visible", true) to .neq("is_visible", false)
-    // This includes records where is_visible is NULL (not yet set) — fallback display
+    // Primary query: hc_global_operators — canonical table (7,700+ verified records)
+    // directory_listings was removed; hc_global_operators is the source of truth
     let query = sb
-        .from("directory_listings")
-        .select("id, name, slug, entity_type, city, region_code, country_code, rank_score, claim_status, metadata", { count: "exact" })
-        .neq("is_visible", false)
-        .order("rank_score", { ascending: false });
+        .from("hc_global_operators")
+        .select("id, display_name, slug, entity_type, city, state_code, country_code, trust_score, claim_status, source_data", { count: "exact" })
+        .neq("is_public", false)
+        .order("trust_score", { ascending: false });
 
-    if (params.region) query = query.eq("region_code", params.region);
+    if (params.region) query = query.eq("state_code", params.region);
     if (params.entity_type) query = query.eq("entity_type", params.entity_type);
     query = query.range(offset, offset + limit - 1);
 
@@ -95,7 +94,19 @@ export async function getDirectoryListings(params: {
         return { listings: [], total: 0 };
     }
 
-    const listings = (data ?? []) as DirectoryListing[];
+    // Map hc_global_operators schema to DirectoryListing interface
+    const listings: DirectoryListing[] = (data ?? []).map((row: any) => ({
+        id: row.id,
+        name: row.display_name,
+        slug: row.slug,
+        entity_type: row.entity_type,
+        city: row.city,
+        region_code: row.state_code,
+        country_code: row.country_code,
+        rank_score: row.trust_score ?? 0,
+        claim_status: row.claim_status ?? 'unclaimed',
+        metadata: row.source_data ?? {},
+    }));
     const total = count ?? 0;
 
     // If directory_listings is thin (< half the requested limit),
@@ -165,7 +176,7 @@ export interface CorridorData {
 export async function getCorridors(): Promise<CorridorData[]> {
     const sb = getSupabase();
     const { data, error } = await sb
-        .from("corridors")
+        .from("hc_corridors")
         .select("*")
         .order("confidence_score", { ascending: false })
         .limit(50);

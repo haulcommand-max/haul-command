@@ -47,7 +47,7 @@ export async function getCityData(country: string, state: string, citySlug: stri
 
     // DB schema uses `latitude` / `longitude`, not `lat` / `lng`
     const { data, error } = await supabase
-        .from("directory_listings")
+        .from("hc_global_operators")
         .select("city,latitude,longitude")
         .ilike("country_code", country)
         .ilike("region_code", state)
@@ -64,7 +64,7 @@ export async function getCityData(country: string, state: string, citySlug: stri
 
     // Get nearby cities from the same region
     const { data: nearby } = await supabase
-        .from("directory_listings")
+        .from("hc_global_operators")
         .select("city")
         .ilike("country_code", country)
         .ilike("region_code", state)
@@ -100,7 +100,7 @@ export async function getProviderStats(citySlug: string, serviceSlug: string): P
     const cityName = citySlug.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
 
     const { count, error } = await supabase
-        .from("directory_listings")
+        .from("hc_global_operators")
         .select("*", { count: "exact", head: true })
         .ilike("city", cityName);
 
@@ -142,7 +142,7 @@ export async function getProviderBySlug(slug: string): Promise<ProviderProfile |
     const supabase = supabaseServer();
 
     const { data, error } = await supabase
-        .from("directory_listings")
+        .from("hc_global_operators")
         .select("*")
         .eq("slug", slug)
         .maybeSingle();

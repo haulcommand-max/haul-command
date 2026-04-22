@@ -191,7 +191,7 @@ export async function POST(req: NextRequest) {
         //    In production this would filter by corridor geo + availability;
         //    for now we pull the top 200 by trust_score as the candidate pool.
         const { data: candidates, error } = await getSupabaseAdmin()
-        .from("directory_listings")
+        .from("hc_global_operators")
             .select(`
         id,
         trust_score,

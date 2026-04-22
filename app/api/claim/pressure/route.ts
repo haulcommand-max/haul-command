@@ -115,12 +115,12 @@ export async function GET(req: NextRequest) {
     if (h3Cell) {
         // Local market from H3
         const { count: total } = await supabase
-            .from('directory_listings')
+            .from('hc_global_operators')
             .select('*', { count: 'exact', head: true })
             .eq('h3_r7', h3Cell);
 
         const { count: claimed } = await supabase
-            .from('directory_listings')
+            .from('hc_global_operators')
             .select('*', { count: 'exact', head: true })
             .eq('h3_r7', h3Cell)
             .eq('claim_status', 'claimed');
@@ -140,30 +140,30 @@ export async function GET(req: NextRequest) {
         operatorCount = supply?.supply_count ?? 0;
         // Approximate claim rate — use overall rate
         const { count: totalClaimed } = await supabase
-            .from('directory_listings')
+            .from('hc_global_operators')
             .select('*', { count: 'exact', head: true })
             .eq('claim_status', 'claimed');
         const { count: totalAll } = await supabase
-            .from('directory_listings')
+            .from('hc_global_operators')
             .select('*', { count: 'exact', head: true });
         const overallRate = (totalAll ?? 1) > 0 ? (totalClaimed ?? 0) / (totalAll ?? 1) : 0;
         claimedCount = Math.round(operatorCount * overallRate);
     } else if (profileId) {
         // Per-profile: get the H3 cell of this profile and use that
         const { data: profile } = await supabase
-            .from('directory_listings')
+            .from('hc_global_operators')
             .select('h3_r7, claim_status')
             .eq('id', profileId)
             .maybeSingle();
 
         if (profile?.h3_r7) {
             const { count: total } = await supabase
-                .from('directory_listings')
+                .from('hc_global_operators')
                 .select('*', { count: 'exact', head: true })
                 .eq('h3_r7', profile.h3_r7);
 
             const { count: claimed } = await supabase
-                .from('directory_listings')
+                .from('hc_global_operators')
                 .select('*', { count: 'exact', head: true })
                 .eq('h3_r7', profile.h3_r7)
                 .eq('claim_status', 'claimed');

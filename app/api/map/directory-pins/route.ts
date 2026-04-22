@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
     };
 
     let query = supabase
-        .from('directory_listings')
+        .from('hc_global_operators')
         .select('id, name, slug, entity_type, city, city_slug, region_code, country_code, latitude, longitude, claim_status, rank_score, metadata, profile_completeness')
         .eq('is_visible', true)
         .not('latitude', 'is', null)

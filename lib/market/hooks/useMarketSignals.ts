@@ -18,7 +18,7 @@ const fetcher = async (query: string) => {
         // Return null to trigger SWR fallbackData (static, truthful defaults).
         const supabase = createClient();
         const { data } = await supabase
-            .from('directory_listings')
+            .from('hc_global_operators')
             .select('id', { count: 'exact', head: true })
             .ilike('city', region ?? '');
 

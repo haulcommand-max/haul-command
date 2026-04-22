@@ -200,7 +200,7 @@ async function fetchSignals(
     if (regionCode) {
         queries.push((async () => {
             const { count } = await client
-                .from('directory_listings')
+                .from('hc_global_operators')
                 .select('id', { count: 'exact', head: true })
                 .eq('region_code', regionCode);
             listing_count = count ?? 0;

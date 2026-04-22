@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
 
     const boostExpiry = new Date(Date.now() + 30 * 86400000).toISOString();
     await supabase
-      .from('directory_listings')
+      .from('hc_global_operators')
       .update({
         featured: true,
         featured_expires_at: boostExpiry,

@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
 
     // Update directory listing
     await supabase
-      .from('directory_listings')
+      .from('hc_global_operators')
       .update({
         claimed: true,
         claimed_by: claim.user_id,

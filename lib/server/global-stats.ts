@@ -54,17 +54,17 @@ export async function getGlobalStats(): Promise<GlobalStats> {
         if (cErr || !countryRows) return FALLBACK;
 
         const totalCountries = countryRows.length;
-        const liveCountries = countryRows.filter(r => r.status === 'live').length;
-        const nextCountries = countryRows.filter(r => r.status === 'next').length;
-        const plannedCountries = countryRows.filter(r => r.status === 'planned').length;
+        const liveCountries = countryRows.filter(r => r.status === 'active' || r.status === 'live').length;
+        const nextCountries = countryRows.filter(r => r.status === 'next' || r.status === 'silver').length;
+        const plannedCountries = countryRows.filter(r => r.status === 'planned' || r.status === 'bronze').length;
         const futureCountries = countryRows.filter(r => r.status === 'future').length;
 
-        // Operator count — try multiple tables in cascade
+        // Operator count — canonical source: hc_global_operators (7,700+ verified records)
         let opCount: number | null = 0;
         try {
             const { count: c1 } = await sb
-                .from('provider_directory')
-                .select('id', { count: 'exact', head: true })
+                .from('hc_global_operators')
+                .select('id', { count: 'exact', head: true });
             if ((c1 ?? 0) > 0) {
                 opCount = c1;
             } else {
@@ -72,55 +72,34 @@ export async function getGlobalStats(): Promise<GlobalStats> {
                 const { count: c2 } = await sb
                     .from('hc_identities')
                     .select('id', { count: 'exact', head: true });
-                if ((c2 ?? 0) > 0) {
-                    opCount = c2;
-                } else {
-                    // last resort: profiles
-                    const { count: c3 } = await sb
-                        .from('profiles')
-                        .select('id', { count: 'exact', head: true });
-                    opCount = c3 ?? 0;
-                }
+                opCount = (c2 ?? 0) > 0 ? c2 : 0;
             }
         } catch { opCount = 0; }
 
-        // Corridor count — try corridors table, then count active from hc_loads
+        // Corridor count — canonical source: hc_corridors
         let corrCount = 0;
         try {
-            const corrResult = await sb
-                .from('corridors')
+            const { count: c1 } = await sb
+                .from('hc_corridors')
                 .select('id', { count: 'exact', head: true });
-            corrCount = corrResult.count ?? 0;
+            corrCount = c1 ?? 0;
             if (corrCount === 0) {
-                // Fall back: count distinct corridors with loads in last 30 days
-                const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-                const { data: corridorRows } = await sb
-                    .from('hc_loads')
-                    .select('corridor_slug')
-                    .gte('created_at', since)
-                    .not('corridor_slug', 'is', null);
-                if (corridorRows) {
-                    corrCount = new Set(corridorRows.map((r: any) => r.corridor_slug)).size;
-                }
-                // If still 0, fall back to corridor_stress_scores count
-                if (corrCount === 0) {
-                    const { count: stressCount } = await sb
-                        .from('corridor_stress_scores')
-                        .select('corridor_slug', { count: 'exact', head: true });
-                    corrCount = stressCount ?? 0;
-                }
+                const { count: c2 } = await sb
+                    .from('corridor_stress_scores')
+                    .select('corridor_slug', { count: 'exact', head: true });
+                corrCount = c2 ?? 0;
             }
         } catch { /* table may not exist */ }
 
-        // Covered countries: distinct country codes from entities with real data
-        let coveredCountries = liveCountries; // at minimum, live countries are covered
+        // Covered countries: distinct country codes from hc_global_operators
+        let coveredCountries = liveCountries;
         try {
             const { data: coveredRows } = await sb
-                .from('hc_entity')
+                .from('hc_global_operators')
                 .select('country_code')
                 .not('country_code', 'is', null);
             if (coveredRows) {
-                const uniqueCodes = new Set(coveredRows.map(r => r.country_code));
+                const uniqueCodes = new Set(coveredRows.map((r: any) => r.country_code));
                 coveredCountries = Math.max(coveredCountries, uniqueCodes.size);
             }
         } catch { /* table may not exist */ }

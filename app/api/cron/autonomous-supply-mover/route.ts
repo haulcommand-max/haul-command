@@ -62,7 +62,7 @@ export async function GET() {
 
         // Get available operators from directory_listings (live, 6,949 operators)
         const { data: escorts } = await sb
-            .from('directory_listings')
+            .from('hc_global_operators')
             .select('id, region, country')
             .not('latitude', 'is', null)
             .limit(100);

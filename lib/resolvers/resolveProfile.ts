@@ -378,7 +378,7 @@ export async function resolveProfile(
         // 3. directory_listings (by UUID — column-specific)
         path.push("directory_listings");
         const { data: dl } = await supabase
-            .from("directory_listings")
+            .from("hc_global_operators")
             .select("id, name, display_name, company_name, city, region_code, country_code, vehicle_type, trust_score, verification_status, is_claimed, is_seeded, claim_status, latitude, longitude, slug, updated_at, entity_type")
             .eq("id", id)
             .single();
@@ -482,7 +482,7 @@ export async function resolveProfile(
 
         // 2. directory_listings by slug (fallback for entities not in listings)
         const { data: dlSlugRows } = await supabase
-            .from("directory_listings")
+            .from("hc_global_operators")
             .select("id, name, display_name, company_name, city, region_code, country_code, vehicle_type, trust_score, verification_status, is_claimed, is_seeded, slug, updated_at, entity_type")
             .eq("slug", id)
             .limit(1);
@@ -680,7 +680,7 @@ export async function resolveProfileMetadata(
         }
 
         const { data: dl } = await supabase
-            .from("directory_listings")
+            .from("hc_global_operators")
             .select("id, name, city, region_code, country_code, entity_type")
             .eq("id", id)
             .single();
@@ -723,7 +723,7 @@ export async function resolveProfileMetadata(
         // NOTE: directory_listings has NO display_name or company_name columns.
         //       The listing name is in the `name` column.
         const { data: dlSlugRows } = await supabase
-            .from("directory_listings")
+            .from("hc_global_operators")
             .select("id, name, slug, city, region_code, country_code, entity_type")
             .eq("slug", id)
             .limit(1);

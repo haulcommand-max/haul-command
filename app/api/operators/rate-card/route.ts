@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     // Fetch operator profile
     const { data: profile, error } = await db
-      .from('directory_listings')
+      .from('hc_global_operators')
       .select('*')
       .eq('id', operatorId)
       .single();
