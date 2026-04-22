@@ -160,15 +160,11 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps) 
         <HCContentContainer>
           <article className="max-w-3xl mx-auto">
             {/* Render article body content */}
-            {article.body_html ? (
+            {article.content ? (
               <div
                 className="prose prose-invert prose-lg max-w-none prose-headings:text-white prose-headings:font-bold prose-p:text-[#D1D5DB] prose-a:text-[#C6923A] prose-a:no-underline hover:prose-a:underline prose-strong:text-white prose-blockquote:border-[#C6923A]/30 prose-blockquote:text-[#9CA3AF] prose-code:text-[#C6923A]"
-                dangerouslySetInnerHTML={{ __html: article.body_html }}
+                dangerouslySetInnerHTML={{ __html: article.content }}
               />
-            ) : article.body_markdown ? (
-              <div className="prose prose-invert prose-lg max-w-none prose-headings:text-white prose-p:text-[#D1D5DB] prose-a:text-[#C6923A]">
-                <p className="text-[#D1D5DB] text-lg leading-[1.8]">{article.body_markdown}</p>
-              </div>
             ) : (
               <div className="text-center py-16">
                 <p className="text-[#6B7280] text-lg">This article is being prepared. Check back soon.</p>
@@ -178,7 +174,42 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps) 
         </HCContentContainer>
       </HCContentSection>
 
-      {/* Back to blog + CTA */}
+      {/* Conversion Panel — inline article-to-action bridge */}
+      <HCContentSection className="py-10">
+        <HCContentContainer>
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-gradient-to-br from-[#0f1318] to-[#1a1f28] border border-[#C6923A]/20 rounded-2xl p-6 md:p-8">
+              <p className="text-xs font-bold uppercase tracking-widest text-[#C6923A] mb-3">Take Action</p>
+              <h3 className="text-xl font-black text-white mb-2">Put This Intelligence to Work</h3>
+              <p className="text-[#9CA3AF] text-sm mb-6">Find verified operators, check regulations, or get your operation listed on Haul Command.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <Link href="/directory" className="flex items-center justify-center gap-2 px-4 py-3 bg-[#C6923A] hover:bg-[#E0B05C] text-black font-bold text-sm rounded-xl transition-all">
+                  Find Operators →
+                </Link>
+                <Link href="/escort-requirements" className="flex items-center justify-center gap-2 px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-sm rounded-xl transition-all">
+                  Check Requirements →
+                </Link>
+                <Link href="/claim" className="flex items-center justify-center gap-2 px-4 py-3 bg-white/5 hover:bg-white/10 border border-amber-500/20 text-[#C6923A] font-semibold text-sm rounded-xl transition-all">
+                  Claim Your Listing →
+                </Link>
+              </div>
+              <div className="flex flex-wrap gap-3 mt-4">
+                <Link href="/tools/permit-cost-calculator" className="text-xs text-[#6B7280] hover:text-[#C6923A] transition-colors">Permit Calculator</Link>
+                <span className="text-[#2D3748]">·</span>
+                <Link href="/rates" className="text-xs text-[#6B7280] hover:text-[#C6923A] transition-colors">Rate Index</Link>
+                <span className="text-[#2D3748]">·</span>
+                <Link href="/loads" className="text-xs text-[#6B7280] hover:text-[#C6923A] transition-colors">Load Board</Link>
+                <span className="text-[#2D3748]">·</span>
+                <Link href="/training" className="text-xs text-[#6B7280] hover:text-[#C6923A] transition-colors">Training Hub</Link>
+                <span className="text-[#2D3748]">·</span>
+                <Link href="/corridors" className="text-xs text-[#6B7280] hover:text-[#C6923A] transition-colors">Corridor Intel</Link>
+              </div>
+            </div>
+          </div>
+        </HCContentContainer>
+      </HCContentSection>
+
+      {/* Back to blog */}
       <HCContentSection className="pb-20 border-t border-[rgba(255,255,255,0.06)] pt-12">
         <HCContentContainer>
           <div className="max-w-3xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-6">

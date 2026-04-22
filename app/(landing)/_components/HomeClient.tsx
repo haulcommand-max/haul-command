@@ -208,7 +208,7 @@ export default function HomeClient({
                             { value: `${displayCompanies}+`, label: "Companies", icon: Users, color: "#F1A91B" },
                             { value: String(displayCountries), label: "Countries Active", icon: Globe, color: "#3B82F6" },
                             { value: String(displayCategories), label: "Service Categories", icon: Award, color: "#22C55E" },
-                            { value: `$${avgRatePerDay}`, label: "Avg Rate/Day", icon: TrendingUp, color: "#8B5CF6" },
+                            { value: "23,530+", label: "Geocoded Locations", icon: TrendingUp, color: "#8B5CF6" },
                         ].map((stat, i) => (
                             <motion.div
                                 key={stat.label}
