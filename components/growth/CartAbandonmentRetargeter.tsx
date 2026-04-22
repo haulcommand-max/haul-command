@@ -53,7 +53,7 @@ export default function CartAbandonmentRetargeter() {
         <button onClick={() => setShow(false)} className="text-gray-500 hover:text-white" aria-label="Dismiss">✕</button>
       </div>
       <p className="text-sm text-gray-400 mb-5">You started claiming your business but didn't finish. Complete your setup to start receiving load offers.</p>
-      <Link href="/claim" className="block w-full text-center py-2.5 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold rounded-lg text-sm transition-colors uppercase tracking-wide">
+      <Link href="/claim" className="block w-full text-center py-2.5 bg-[#F1A91B] hover:bg-[#D4951A] text-white font-bold rounded-lg text-sm transition-colors uppercase tracking-wide">
         Resume Setup →
       </Link>
       

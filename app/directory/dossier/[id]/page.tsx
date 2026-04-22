@@ -61,8 +61,8 @@ export default async function DossierPage({ params }: { params: { id: string } }
                                     <Shield className="w-3 h-3" />
                                     {operator.confidence_tier || 'Verified Operator'}
                                 </span>
-                                <span className="bg-[#111827] text-[#FACC15] px-3 py-1 rounded text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 shadow-sm">
-                                    <Star className="w-3 h-3 text-[#FACC15] fill-current" />
+                                <span className="bg-[#111827] text-[#F1A91B] px-3 py-1 rounded text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 shadow-sm">
+                                    <Star className="w-3 h-3 text-[#F1A91B] fill-current" />
                                     Top 10 — {stateFullName(operator.state_inferred, true)}
                                 </span>
                                 <span className="bg-[#DCFCE7] border border-[#BBF7D0] px-3 py-1 rounded text-[#166534] text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5">
@@ -208,7 +208,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
                     </div>
                     <Link 
                         href={`/auth/signup?intent=dispatch&target=${id}`}
-                        className="w-full sm:w-auto px-8 py-3 bg-[#FACC15] hover:bg-[#EAB308] text-black font-black text-sm uppercase tracking-widest rounded-xl shadow-sm transition-all focus:ring-4 focus:ring-[#FACC15]/30 flex items-center justify-center gap-2"
+                        className="w-full sm:w-auto px-8 py-3 bg-[#F1A91B] hover:bg-[#D4951A] text-black font-black text-sm uppercase tracking-widest rounded-xl shadow-sm transition-all focus:ring-4 focus:ring-[#F1A91B]/30 flex items-center justify-center gap-2"
                     >
                         <MessageSquare className="w-4 h-4" />
                         Request Live Quote

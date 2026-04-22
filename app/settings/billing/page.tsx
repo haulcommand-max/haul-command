@@ -24,7 +24,7 @@ export default function SubscriptionUpsellMatrix() {
           <li>ðŸ† Featured Directory Placement</li>
           <li>ðŸ“Š Competitor Market Intel</li>
         </ul>
-        <button className="w-full py-2 bg-yellow-500 hover:bg-yellow-400 text-white font-bold rounded transition-colors shadow-lg shadow-yellow-900/30">Upgrade to Premium</button>
+        <button className="w-full py-2 bg-[#F1A91B] hover:bg-[#D4951A] text-white font-bold rounded transition-colors">Upgrade to Premium</button>
       </div>
     </div>
   );

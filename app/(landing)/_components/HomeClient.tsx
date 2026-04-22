@@ -119,7 +119,7 @@ export default function HomeClient({
                 <div className="max-w-6xl mx-auto px-4 pt-10 pb-6 text-center">
                     <motion.h1
                         initial="hidden" animate="visible" variants={fadeUp} custom={0}
-                        className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-2"
+                        className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-2 tracking-tight"
                     >
                         Discover Verified Pilot Cars<span className="text-xs font-bold align-text-top ml-1 text-gray-400">SM</span>
                     </motion.h1>
@@ -127,14 +127,21 @@ export default function HomeClient({
 
                 <div className="relative max-w-6xl mx-auto px-4">
                     {/* Hero Image Container with Rounded Corners (matching YP) */}
-                    <div className="relative w-full h-[300px] sm:h-[350px] md:h-[400px] overflow-hidden rounded-2xl shadow-sm">
+                    <div
+                        className="relative w-full h-[300px] sm:h-[350px] md:h-[400px] overflow-hidden rounded-2xl shadow-lg"
+                        style={{ background: 'linear-gradient(135deg, #0B0F14 0%, #1a2332 40%, #0f1a24 70%, #0B0F14 100%)' }}
+                    >
+                        {/* Hero background — uses existing heavy haul image with CSS gradient fallback */}
                         <img
-                            src="/images/homepage_hero_bg_1775877319950.png"
+                            src="/images/heavy_haul_bg_faded.png"
                             alt="Heavy haul escort vehicle on highway"
-                            className="w-full h-full object-cover object-center"
+                            className="absolute inset-0 w-full h-full object-cover object-center"
+                            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                         />
-                        {/* Light dark overlay to ensure search bar pops */}
-                        <div className="absolute inset-0 bg-black/20" />
+                        {/* Brand overlay: dark gradient + gold accents */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#0B0F14]/80 via-[#0B0F14]/50 to-[#0B0F14]/70" />
+                        {/* Subtle gold accent line at bottom */}
+                        <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-[#F1A91B]/60 to-transparent" />
 
                         {/* Search Bar Floating Inside */}
                         <div className="absolute inset-0 flex items-center justify-center p-4">
@@ -165,7 +172,7 @@ export default function HomeClient({
                                 </div>
                                 <button
                                     type="submit"
-                                    className="flex items-center justify-center bg-[#FFD700] hover:bg-[#FACC15] text-gray-900 font-bold text-lg px-8 py-3 transition-colors outline-none focus:ring-2 focus:ring-[#C6923A] focus:ring-inset"
+                                    className="flex items-center justify-center bg-[#F1A91B] hover:bg-[#D4951A] text-white font-bold text-lg px-8 py-3 transition-colors outline-none focus:ring-2 focus:ring-[#C6923A] focus:ring-inset shadow-sm"
                                 >
                                     Find
                                 </button>

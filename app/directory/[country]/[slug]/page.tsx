@@ -157,7 +157,7 @@ export default async function CityDirectoryPage({ params }: PageProps) {
                 <p style={{ fontSize: 14, color: '#4B5563', marginBottom: 24 }}>There are currently no verified pilot car operators listed in this territory. Secure the top spot before your competitors do.</p>
                 <Link href={`/claim?market=${slug}`} style={{
                   display: 'inline-flex', alignItems: 'center', gap: 10, padding: '14px 28px',
-                  borderRadius: 12, background: '#FACC15',
+                  borderRadius: 12, background: '#F1A91B',
                   color: '#111827', fontSize: 15, fontWeight: 900, textDecoration: 'none',
                   boxShadow: '0 4px 14px rgba(250, 204, 21, 0.4)'
                 }}>

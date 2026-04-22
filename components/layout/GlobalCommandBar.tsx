@@ -77,12 +77,6 @@ export function GlobalCommandBar() {
         {/* Right: Account actions + mobile hamburger */}
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <Link
-            href="/login"
-            className="hidden sm:inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 hover:text-gray-900 transition-colors"
-          >
-            Sign In
-          </Link>
-          <Link
             href="/claim"
             className="hidden sm:inline-flex items-center px-4 py-2 bg-[#F1A91B] hover:bg-[#D4951A] text-white text-sm font-bold rounded-lg transition-colors shadow-sm"
           >
