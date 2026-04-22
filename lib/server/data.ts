@@ -80,7 +80,7 @@ export async function getDirectoryListings(params: {
     let query = sb
         .from("hc_global_operators")
         .select("id, name, slug, entity_type, city, admin1_code, country_code, confidence_score, is_claimed, is_verified", { count: "exact" })
-        .order("confidence_score", { ascending: false });
+        .order("demand_score", { ascending: false });
 
     if (params.region) query = query.eq("admin1_code", params.region);
     if (params.entity_type) query = query.eq("entity_type", params.entity_type);
@@ -177,7 +177,7 @@ export async function getCorridors(): Promise<CorridorData[]> {
     const { data, error } = await sb
         .from("hc_corridors")
         .select("*")
-        .order("confidence_score", { ascending: false })
+        .order("demand_score", { ascending: false })
         .limit(50);
 
     if (error) {
@@ -187,14 +187,14 @@ export async function getCorridors(): Promise<CorridorData[]> {
 
     return (data ?? []).map((c: any) => ({
         id: c.id,
-        name: c.name || `Corridor ${c.slug}`,
-        slug: c.slug || c.id,
-        origin_region: c.states?.[0] || "",
-        destination_region: c.states?.[c.states.length - 1] || "",
-        country_code: c.country || "US",
-        heat_score: Number(c.confidence_score ?? 0),
-        loads_7d: Number(c.metrics?.avg_daily_loads ?? 0) * 7,
-        escorts_online: 0,
+        name: c.name || c.corridor_name || `Corridor ${c.id}`,
+        slug: c.corridor_key || c.id,
+        origin_region: c.start_state || c.origin_zone || "",
+        destination_region: c.end_state || c.destination_zone || "",
+        country_code: c.country_code || "US",
+        heat_score: Number(c.demand_score ?? 0),
+        loads_7d: Number(c.load_count_30d ?? 0),
+        escorts_online: Number(c.operator_count ?? 0),
     }));
 }
 

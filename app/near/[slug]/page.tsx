@@ -57,20 +57,19 @@ export default async function NearCityPage({ params }: NearPageProps) {
 
   const supabase = createServerComponentClient({ cookies });
 
-  // Fetch nearby operators — uses the profiles table with location data
+  // Fetch nearby operators from canonical hc_global_operators
   const { data: operators } = await supabase
-    .from('profiles')
-    .select('id, display_name, company_name, city, state_code, country_code, role, trust_score, is_verified, avatar_url, last_active_at, service_types, years_experience')
-    .or(`city.ilike.%${parsed.city}%,state_code.eq.${stateCode}`)
-    .eq('role', 'operator')
-    .order('trust_score', { ascending: false })
+    .from('hc_global_operators')
+    .select('id, name, city, admin1_code, country_code, entity_type, confidence_score, is_verified, is_claimed, phone_normalized, website_url')
+    .or(`city.ilike.%${parsed.city}%,admin1_code.eq.${stateCode}`)
+    .order('confidence_score', { ascending: false })
     .limit(24);
 
   // Fetch local corridor data
   const { data: corridors } = await supabase
     .from('hc_corridors')
-    .select('id, slug, name, origin_city, destination_city')
-    .or(`origin_city.ilike.%${parsed.city}%,destination_city.ilike.%${parsed.city}%`)
+    .select('id, corridor_key, name, start_city, end_city, start_state, end_state')
+    .or(`start_city.ilike.%${parsed.city}%,end_city.ilike.%${parsed.city}%`)
     .limit(6);
 
   const safeOperators = operators ?? [];
@@ -91,11 +90,11 @@ export default async function NearCityPage({ params }: NearPageProps) {
         position: i + 1,
         item: {
           '@type': 'LocalBusiness',
-          name: op.company_name || op.display_name,
+          name: op.name,
           address: {
             '@type': 'PostalAddress',
             addressLocality: op.city,
-            addressRegion: op.state_code,
+            addressRegion: op.admin1_code,
             addressCountry: op.country_code || 'US',
           },
         },
@@ -170,7 +169,7 @@ export default async function NearCityPage({ params }: NearPageProps) {
                       {/* Avatar */}
                       <div className="shrink-0 h-14 w-14 rounded-2xl bg-hc-elevated flex items-center justify-center overflow-hidden border border-white/5">
                         {op.avatar_url ? (
-                          <img src={op.avatar_url} alt={op.display_name} className="h-full w-full object-cover" />
+                          <img src={op.avatar_url} alt={op.name} className="h-full w-full object-cover" />
                         ) : (
                           <Users className="h-6 w-6 text-hc-subtle" />
                         )}
@@ -180,7 +179,7 @@ export default async function NearCityPage({ params }: NearPageProps) {
                         {/* Name + Verification */}
                         <div className="flex items-center gap-2 mb-1">
                           <span className="text-sm font-bold text-hc-text group-hover:text-hc-gold-400 transition-colors truncate">
-                            {op.company_name || op.display_name}
+                            {op.name}
                           </span>
                           {op.is_verified && (
                             <Shield className="h-4 w-4 text-hc-gold-400 shrink-0" />
@@ -190,16 +189,16 @@ export default async function NearCityPage({ params }: NearPageProps) {
                         {/* Location */}
                         <div className="flex items-center gap-1 text-xs text-hc-subtle mb-2">
                           <MapPin className="h-3 w-3" />
-                          {op.city && `${op.city}, `}{op.state_code}
+                          {op.city && `${op.city}, `}{op.admin1_code}
                         </div>
 
                         {/* Trust + Experience */}
                         <div className="flex items-center gap-3">
-                          {op.trust_score != null && op.trust_score > 0 && (
+                          {op.confidence_score != null && op.confidence_score > 0 && (
                             <div className="flex items-center gap-1">
                               <Star className="h-3.5 w-3.5 text-hc-gold-400" />
                               <span className="text-xs font-bold text-hc-gold-400 font-mono">
-                                {op.trust_score}
+                                {op.confidence_score}
                               </span>
                             </div>
                           )}
@@ -264,7 +263,7 @@ export default async function NearCityPage({ params }: NearPageProps) {
                 {safeCorridors.map(corridor => (
                   <Link
                     key={corridor.id}
-                    href={`/corridors/${corridor.slug}`}
+                    href={`/corridors/${corridor.corridor_key || corridor.id}`}
                     className="group p-5 rounded-2xl bg-hc-surface border border-hc-border hover:border-hc-gold-500/20 transition-all flex items-center gap-4"
                   >
                     <div className="shrink-0 h-10 w-10 rounded-xl bg-hc-gold-500/10 flex items-center justify-center">
@@ -275,7 +274,7 @@ export default async function NearCityPage({ params }: NearPageProps) {
                         {corridor.name}
                       </p>
                       <p className="text-[10px] text-hc-subtle font-mono">
-                        {corridor.origin_city} → {corridor.destination_city}
+                        {corridor.start_city} → {corridor.end_city}
                       </p>
                     </div>
                     <ArrowRight className="h-4 w-4 text-hc-subtle group-hover:text-hc-gold-400 transition-colors shrink-0" />
