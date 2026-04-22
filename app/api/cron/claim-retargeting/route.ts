@@ -42,7 +42,7 @@ export async function POST(req: Request) {
         const userIds = abandonedClaims.map(c => c.auth_user_id);
         const { data: devices } = await supabase
             .from('hc_device_tokens') // Schema from NativeBootstrap
-            .select('user_id, fcm_token')
+            .select('user_id, token')
             .in('user_id', userIds);
 
         // 3. Dispatch High-FOMO Notifications
@@ -52,11 +52,11 @@ export async function POST(req: Request) {
             const userDevices = (devices || []).filter(d => d.user_id === claim.auth_user_id);
             
             for (const device of userDevices) {
-                if (device.fcm_token) {
+                if (device.token) {
                     // Injecting a Firebase push notification via Supabase Edge Function or custom RPC
                     // E.g. we use the built in push handler
                     await supabase.rpc('trigger_fcm_notification', {
-                        p_token: device.fcm_token,
+                        p_token: device.token,
                         p_title: 'Your profile got views today \uD83D\uDC40',
                         p_body: `Verify ${claim.business_name || 'your profile'} to see who is viewing you and start securing loads.`,
                         p_data: { deepLink: `haulcommand://claim/resume/${claim.id}` }

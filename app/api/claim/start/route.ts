@@ -16,6 +16,19 @@ export async function POST(request: NextRequest) {
 
     const session = await ClaimService.startClaimSession(entity_id, user_id);
 
+    // Track claim_started event (non-blocking)
+    try {
+      const { getSupabaseAdmin } = await import('@/lib/supabase/admin');
+      getSupabaseAdmin().from('hc_claim_events').insert({
+        event_type: 'claim_started',
+        surface: (body.surface as string) || 'claim_page',
+        entity_id: entity_id,
+        entity_slug: body.slug || null,
+        entity_type: body.entity_type || 'operator',
+        country_code: body.country_code || null,
+      }).then(() => {}).catch(() => {});
+    } catch {}
+
     return NextResponse.json({
       ok: true,
       data: session,

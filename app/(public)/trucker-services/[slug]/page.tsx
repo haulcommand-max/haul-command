@@ -128,7 +128,10 @@ export default async function TruckerServicePage({ params }: Props) {
                 <div>
                   <p className="font-bold text-gray-900 text-sm mb-1">Is this your business?</p>
                   <p className="text-sm text-gray-600 mb-3">Claim this free listing to update your contact info, add certifications, and get discovered by brokers searching for {catLabel.toLowerCase()}s in {location}.</p>
-                  <Link href={`/claim?place=${place.id}&slug=${slug}`} className="inline-flex items-center gap-2 px-4 py-2 bg-[#F1A91B] hover:bg-[#D4951A] text-white font-bold text-sm rounded-lg transition-colors">
+                  <Link
+                    href={`/claim?place=${place.id}&slug=${slug}&surface=trucker_services`}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-[#F1A91B] hover:bg-[#D4951A] text-white font-bold text-sm rounded-lg transition-colors"
+                  >
                     Claim This Listing Free →
                   </Link>
                 </div>
