@@ -79,11 +79,10 @@ export async function getDirectoryListings(params: {
     // directory_listings was removed; hc_global_operators is the source of truth
     let query = sb
         .from("hc_global_operators")
-        .select("id, display_name, slug, entity_type, city, state_code, country_code, trust_score, claim_status, source_data", { count: "exact" })
-        .neq("is_public", false)
-        .order("trust_score", { ascending: false });
+        .select("id, name, slug, entity_type, city, admin1_code, country_code, confidence_score, is_claimed, is_verified", { count: "exact" })
+        .order("confidence_score", { ascending: false });
 
-    if (params.region) query = query.eq("state_code", params.region);
+    if (params.region) query = query.eq("admin1_code", params.region);
     if (params.entity_type) query = query.eq("entity_type", params.entity_type);
     query = query.range(offset, offset + limit - 1);
 
@@ -97,15 +96,15 @@ export async function getDirectoryListings(params: {
     // Map hc_global_operators schema to DirectoryListing interface
     const listings: DirectoryListing[] = (data ?? []).map((row: any) => ({
         id: row.id,
-        name: row.display_name,
+        name: row.name,
         slug: row.slug,
         entity_type: row.entity_type,
         city: row.city,
-        region_code: row.state_code,
+        region_code: row.admin1_code,
         country_code: row.country_code,
-        rank_score: row.trust_score ?? 0,
-        claim_status: row.claim_status ?? 'unclaimed',
-        metadata: row.source_data ?? {},
+        rank_score: row.confidence_score ?? 0,
+        claim_status: row.is_claimed ? 'claimed' : 'unclaimed',
+        metadata: { is_verified: row.is_verified },
     }));
     const total = count ?? 0;
 
@@ -117,12 +116,12 @@ export async function getDirectoryListings(params: {
             const existingIds = listings.map(l => l.id);
             let fallbackQuery = sb
                 .from("hc_identities")
-                .select("id, display_name, slug, role, city, state_code, country_code, phone, company_name, verification_state", { count: "exact" })
+                .select("id, display_name, slug, role, city, admin1_code, country_code, phone, company_name, verification_state", { count: "exact" })
                 .not("id", "in", `(${existingIds.join(",")})`)
                 .order("created_at", { ascending: false })
                 .limit(limit - listings.length);
 
-            if (params.region) fallbackQuery = fallbackQuery.eq("state_code", params.region);
+            if (params.region) fallbackQuery = fallbackQuery.eq("admin1_code", params.region);
             if (params.entity_type) fallbackQuery = fallbackQuery.eq("role", params.entity_type);
 
             const { data: fallbackData, count: fallbackCount } = await fallbackQuery;
@@ -134,7 +133,7 @@ export async function getDirectoryListings(params: {
                     slug: f.slug || f.id,
                     entity_type: f.role || "escort_operator",
                     city: f.city || null,
-                    region_code: f.state_code || null,
+                    region_code: f.admin1_code || null,
                     country_code: f.country_code || "US",
                     rank_score: 0,
                     claim_status: f.verification_state || "unclaimed",
@@ -230,7 +229,7 @@ export async function getPorts(): Promise<PortData[]> {
         name: p.name || p.port_name || "Unknown Port",
         slug: p.slug || p.port_slug || p.id,
         city: p.city || "",
-        state: p.state || p.region_code || "",
+        state: p.state || p.admin1_code || "",
         country_code: p.country_code || "US",
         port_type: p.port_type || p.type || "port",
     }));
@@ -263,7 +262,7 @@ export async function getRegions(): Promise<RegionData[]> {
         id: r.id,
         name: r.name || r.region_name || "",
         slug: r.slug || r.region_slug || "",
-        iso_code: r.iso_code || r.region_code || "",
+        iso_code: r.iso_code || r.admin1_code || "",
         country_id: r.country_id || "",
     }));
 }

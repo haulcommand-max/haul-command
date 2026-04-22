@@ -124,8 +124,8 @@ export async function GET(req: NextRequest) {
         getSupabaseAdmin()
         .from("hc_global_operators")
             .select("id", { count: "exact", head: true })
-            .eq("is_available", true)
-            .overlaps("states_licensed", [originState, destState].filter(Boolean)),
+            .eq("is_claimed", true)
+            .overlaps("service_area", [originState, destState].filter(Boolean)),
     ]);
 
     liveStats = {

@@ -99,7 +99,7 @@ export async function getGlobalStats(): Promise<GlobalStats> {
                 .select('country_code')
                 .not('country_code', 'is', null);
             if (coveredRows) {
-                const uniqueCodes = new Set(coveredRows.map((r: any) => r.country_code));
+                const uniqueCodes = new Set(coveredRows.map((r: any) => r.country_code).filter(Boolean));
                 coveredCountries = Math.max(coveredCountries, uniqueCodes.size);
             }
         } catch { /* table may not exist */ }

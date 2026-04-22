@@ -67,10 +67,10 @@ export default async function CityDirectoryPage({ params }: PageProps) {
   // Fetch operators in this city
   const { data: operators, count: totalCount } = await supabase
     .from('hc_global_operators')
-    .select('id, company_name, city, state_code, trust_score, verification_status, equipment_types, rating_avg, review_count, primary_service_area', { count: 'exact' })
+    .select('id, name, city, state_code, confidence_score, is_verified, equipment_types, rating_avg, review_count, primary_service_area', { count: 'exact' })
     .ilike('city', cityName)
     .eq('country_code', countryUpper)
-    .order('trust_score', { ascending: false })
+    .order('confidence_score', { ascending: false })
     .limit(24)
     .then(r => r)
     .catch(() => ({ data: null, count: null })) as any;
@@ -93,8 +93,8 @@ export default async function CityDirectoryPage({ params }: PageProps) {
       position: i + 1,
       item: {
         '@type': 'LocalBusiness',
-        name: op.company_name,
-        address: { '@type': 'PostalAddress', addressLocality: op.city, addressRegion: op.state_code, addressCountry: countryUpper },
+        name: op.name,
+        address: { '@type': 'PostalAddress', addressLocality: op.city, addressRegion: op.admin1_code, addressCountry: countryUpper },
       },
     })),
   };
@@ -179,21 +179,21 @@ export default async function CityDirectoryPage({ params }: PageProps) {
                         </h3>
                         {/* <FreshnessBadge lastSeenAt={op.last_seen_at || new Date().toISOString()} /> */}
                       </div>
-                      {op.trust_score && (
+                      {op.confidence_score && (
                         <span style={{
                           fontSize: 11, fontWeight: 900, padding: '4px 8px', borderRadius: 8,
-                          background: op.trust_score >= 80 ? '#F0FDF4' : op.trust_score >= 50 ? '#FEF9C3' : '#FEF2F2',
-                          color: op.trust_score >= 80 ? '#15803D' : op.trust_score >= 50 ? '#854D0E' : '#991B1B',
-                          border: `1px solid ${op.trust_score >= 80 ? '#BBF7D0' : op.trust_score >= 50 ? '#FEF08A' : '#FECACA'}`,
+                          background: op.confidence_score >= 80 ? '#F0FDF4' : op.confidence_score >= 50 ? '#FEF9C3' : '#FEF2F2',
+                          color: op.confidence_score >= 80 ? '#15803D' : op.confidence_score >= 50 ? '#854D0E' : '#991B1B',
+                          border: `1px solid ${op.confidence_score >= 80 ? '#BBF7D0' : op.confidence_score >= 50 ? '#FEF08A' : '#FECACA'}`,
                         }}>
-                          {op.trust_score}
+                          {op.confidence_score}
                         </span>
                       )}
                     </div>
 
                     <div style={{ fontSize: 12, color: '#4B5563', fontWeight: 500 }}>
                       <MapPin style={{ width: 12, height: 12, display: 'inline', marginRight: 4, color: '#6B7280' }} />
-                      {[op.city, stateFullName(op.state_code)].filter(Boolean).join(', ')}
+                      {[op.city, stateFullName(op.admin1_code)].filter(Boolean).join(', ')}
                     </div>
 
                     {op.equipment_types && (

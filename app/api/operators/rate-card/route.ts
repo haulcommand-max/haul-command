@@ -34,11 +34,11 @@ export async function POST(req: NextRequest) {
 
     const rateCardData = buildRateCardFromProfile({
       name: profile.name,
-      company_name: profile.metadata?.company_name,
+      company_name: profile.metadata?.name,
       phone: profile.metadata?.phone || '',
       email: profile.metadata?.email || '',
       website: profile.metadata?.website,
-      region_code: profile.region_code,
+      region_code: profile.admin1_code,
       rates: profile.metadata?.rates || [
         { corridor: 'General', service_type: 'Pilot Car', rate_type: 'hourly', rate: profile.metadata?.hourly_rate || 85 },
       ],

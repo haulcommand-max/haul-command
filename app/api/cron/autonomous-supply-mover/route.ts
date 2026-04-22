@@ -64,7 +64,7 @@ export async function GET() {
         const { data: escorts } = await sb
             .from('hc_global_operators')
             .select('id, region, country')
-            .not('latitude', 'is', null)
+            .not('confidence_score', 'is', null)
             .limit(100);
 
         const eligibleEscorts = (escorts ?? []).filter(e => !recentEscortIds.has(e.id));

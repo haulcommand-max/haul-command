@@ -74,14 +74,14 @@ export interface ResolutionResult {
 function normalizeDriverProfile(row: any): NormalizedProfile {
     return {
         id: row.id,
-        display_name: row.display_name || row.company_name || "Unknown Operator",
+        display_name: row.name || row.company_name || "Unknown Operator",
         company_name: row.company_name ?? null,
         home_base_city: row.home_base_city ?? row.city_slug ?? null,
-        home_base_state: row.home_base_state ?? row.region_code ?? null,
+        home_base_state: row.home_base_state ?? row.admin1_code ?? null,
         country_code: row.country_code ?? null,
         vehicle_type: row.vehicle_type ?? null,
         us_dot_number: row.us_dot_number ?? null,
-        trust_score: row.trust_score ?? 0,
+        trust_score: row.confidence_score ?? 0,
         verification_status: row.verification_status ?? null,
         is_claimed: row.is_claimed ?? false,
         is_seeded: row.is_seeded ?? false,
@@ -109,14 +109,14 @@ function normalizeDriverProfile(row: any): NormalizedProfile {
 function normalizeIdentity(row: any): NormalizedProfile {
     return {
         id: row.id,
-        display_name: row.display_name || row.company_name || "Unknown Operator",
+        display_name: row.name || row.company_name || "Unknown Operator",
         company_name: row.company_name ?? null,
         home_base_city: row.city ?? null,
-        home_base_state: row.region_code ?? null,
+        home_base_state: row.admin1_code ?? null,
         country_code: row.country_code ?? null,
         vehicle_type: null,
         us_dot_number: null,
-        trust_score: row.trust_score ?? 0,
+        trust_score: row.confidence_score ?? 0,
         verification_status: row.verification_status ?? null,
         is_claimed: row.is_claimed ?? false,
         is_seeded: row.is_seeded ?? false,
@@ -144,14 +144,14 @@ function normalizeIdentity(row: any): NormalizedProfile {
 function normalizeDirectoryListing(row: any): NormalizedProfile {
     return {
         id: row.id,
-        display_name: row.display_name || row.name || row.company_name || "Unknown Operator",
+        display_name: row.name || row.name || row.company_name || "Unknown Operator",
         company_name: row.company_name ?? null,
         home_base_city: row.city ?? row.home_base_city ?? null,
-        home_base_state: row.region_code ?? row.home_base_state ?? null,
+        home_base_state: row.admin1_code ?? row.home_base_state ?? null,
         country_code: row.country_code ?? null,
         vehicle_type: row.vehicle_type ?? null,
         us_dot_number: null,
-        trust_score: row.trust_score ?? 0,
+        trust_score: row.confidence_score ?? 0,
         verification_status: row.verification_status ?? null,
         is_claimed: row.is_claimed ?? false,
         is_seeded: row.is_seeded ?? false,
@@ -183,7 +183,7 @@ function normalizeEntity(row: any): NormalizedProfile {
         display_name: row.name || meta.display_name || "Unknown Entity",
         company_name: meta.company_name ?? null,
         home_base_city: meta.city ?? null,
-        home_base_state: meta.region_code ?? null,
+        home_base_state: meta.admin1_code ?? null,
         country_code: row.country_code ?? meta.country_code ?? null,
         vehicle_type: null,
         us_dot_number: null,
@@ -379,7 +379,7 @@ export async function resolveProfile(
         path.push("directory_listings");
         const { data: dl } = await supabase
             .from("hc_global_operators")
-            .select("id, name, display_name, company_name, city, region_code, country_code, vehicle_type, trust_score, verification_status, is_claimed, is_seeded, claim_status, latitude, longitude, slug, updated_at, entity_type")
+            .select("id, name, city, admin1_code, country_code, entity_type, confidence_score, is_claimed, is_verified, slug, updated_at, phone_normalized, website_url")
             .eq("id", id)
             .single();
 
@@ -483,7 +483,7 @@ export async function resolveProfile(
         // 2. directory_listings by slug (fallback for entities not in listings)
         const { data: dlSlugRows } = await supabase
             .from("hc_global_operators")
-            .select("id, name, display_name, company_name, city, region_code, country_code, vehicle_type, trust_score, verification_status, is_claimed, is_seeded, slug, updated_at, entity_type")
+            .select("id, name, city, admin1_code, country_code, entity_type, confidence_score, is_claimed, is_verified, slug, updated_at")
             .eq("slug", id)
             .limit(1);
 
@@ -675,19 +675,19 @@ export async function resolveProfileMetadata(
 
         if (ident) {
             const name = ident.display_name || ident.company_name || "Escort Operator";
-            const location = [ident.city, ident.region_code].filter(Boolean).join(", ");
+            const location = [ident.city, ident.admin1_code].filter(Boolean).join(", ");
             return { name, location, country_code: ident.country_code, rating_score: null, review_count: null, entity_type: "operator", resolved: true };
         }
 
         const { data: dl } = await supabase
             .from("hc_global_operators")
-            .select("id, name, city, region_code, country_code, entity_type")
+            .select("id, name, city, admin1_code, country_code, entity_type")
             .eq("id", id)
             .single();
 
         if (dl) {
             const name = dl.name || "Escort Operator";
-            const location = [dl.city, dl.region_code].filter(Boolean).join(", ");
+            const location = [dl.city, dl.admin1_code].filter(Boolean).join(", ");
             return { name, location, country_code: dl.country_code, rating_score: null, review_count: null, entity_type: dl.entity_type || "operator", resolved: true };
         }
 
@@ -724,14 +724,14 @@ export async function resolveProfileMetadata(
         //       The listing name is in the `name` column.
         const { data: dlSlugRows } = await supabase
             .from("hc_global_operators")
-            .select("id, name, slug, city, region_code, country_code, entity_type")
+            .select("id, name, slug, city, admin1_code, country_code, entity_type")
             .eq("slug", id)
             .limit(1);
 
         const dlSlug = dlSlugRows?.[0];
         if (dlSlug) {
             const name = dlSlug.name || "Escort Operator";
-            const location = [dlSlug.city, dlSlug.region_code].filter(Boolean).join(", ");
+            const location = [dlSlug.city, dlSlug.admin1_code].filter(Boolean).join(", ");
             return { name, location, country_code: dlSlug.country_code, rating_score: null, review_count: null, entity_type: dlSlug.entity_type || "operator", resolved: true };
         }
 
@@ -758,7 +758,7 @@ export async function resolveProfileMetadata(
         const identSlug = identSlugRows?.[0];
         if (identSlug) {
             const name = identSlug.display_name || identSlug.company_name || "Escort Operator";
-            const location = [identSlug.city, identSlug.region_code].filter(Boolean).join(", ");
+            const location = [identSlug.city, identSlug.admin1_code].filter(Boolean).join(", ");
             return { name, location, country_code: identSlug.country_code, rating_score: null, review_count: null, entity_type: "operator", resolved: true };
         }
     }

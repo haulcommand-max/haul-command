@@ -45,7 +45,7 @@ async function getSimilar(state: string, excludeId: string) {
   const { data } = await supabase
     .from('hc_global_operators')
     .select('id, name, slug, region_code, claim_status, trust_score, metadata')
-    .eq('region_code', state)
+    .eq('admin1_code', state)
     .neq('id', excludeId)
     .limit(3);
   return data || [];
@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const op = await getOperator(slug);
   if (!op) return { title: 'Operator Not Found | Haul Command' };
   const name = op.name || 'Operator';
-  const region = op.city ? `${op.city}, ${op.region_code}` : op.region_code || 'US';
+  const region = op.city ? `${op.city}, ${op.admin1_code}` : op.admin1_code || 'US';
   return {
     title: `${name} — Pilot Car & Escort Operator in ${region} | Haul Command`,
     description: `View the verified profile, trust score, services, and contact info for ${name}. Request a quote for escort services in ${region}.`,
@@ -91,7 +91,7 @@ export default async function OperatorProfilePage({ params }: { params: Promise<
   if (!op) notFound();
 
   const name = op.name || 'Operator';
-  const region = op.city ? `${op.city}, ${op.region_code}` : op.region_code || '';
+  const region = op.city ? `${op.city}, ${op.admin1_code}` : op.admin1_code || '';
   const verified = op.claim_status === 'claimed' || op.claim_status === 'verified';
   const trustScore = op.trust_score ?? op.metadata?.trust_score ?? 0;
   const services: string[] = op.metadata?.services || ['pilot_car'];
@@ -108,7 +108,7 @@ export default async function OperatorProfilePage({ params }: { params: Promise<
   const phone = op.metadata?.phone;
   const initials = name.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase();
 
-  const similar = await getSimilar(op.region_code || '', op.id);
+  const similar = await getSimilar(op.admin1_code || '', op.id);
 
   return (
     <main style={{ minHeight: '100vh', background: T.bg, color: T.text, fontFamily: "'Inter', system-ui" }}>
@@ -255,7 +255,7 @@ export default async function OperatorProfilePage({ params }: { params: Promise<
         {/* Similar Operators */}
         {similar.length > 0 && (
           <div style={{ marginTop: 20 }}>
-            <h2 style={{ fontSize: 17, fontWeight: 800, margin: '0 0 14px' }}>Similar Operators in {op.region_code}</h2>
+            <h2 style={{ fontSize: 17, fontWeight: 800, margin: '0 0 14px' }}>Similar Operators in {op.admin1_code}</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 14 }}>
               {similar.map((s: any) => (
                 <Link key={s.id} href={`/directory/profile/${s.slug || s.id}`} style={{
@@ -263,7 +263,7 @@ export default async function OperatorProfilePage({ params }: { params: Promise<
                   background: T.bgCard, border: `1px solid ${T.border}`,
                 }}>
                   <div style={{ fontSize: 14, fontWeight: 800, color: T.text, marginBottom: 4 }}>{s.name}</div>
-                  <div style={{ fontSize: 12, color: T.textSecondary }}>📍 {s.region_code}</div>
+                  <div style={{ fontSize: 12, color: T.textSecondary }}>📍 {s.admin1_code}</div>
                   {s.trust_score > 0 && <div style={{ fontSize: 11, color: gold, marginTop: 6, fontWeight: 700 }}>Trust: {s.trust_score}</div>}
                 </Link>
               ))}

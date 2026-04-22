@@ -33,27 +33,16 @@ export async function GET(req: NextRequest) {
 
     let query = supabase
         .from('hc_global_operators')
-        .select('id, name, slug, entity_type, city, city_slug, region_code, country_code, latitude, longitude, claim_status, rank_score, metadata, profile_completeness')
-        .eq('is_visible', true)
-        .not('latitude', 'is', null)
-        .not('longitude', 'is', null)
+        .select('id, name, slug, entity_type, city, admin1_code, country_code, confidence_score')
+        .not('confidence_score', 'is', null)
+        
         .limit(limit);
 
     if (country) query = query.ilike('country_code', country);
-    if (region) query = query.ilike('region_code', region);
-    if (claimed === 'true') query = query.neq('claim_status', 'unclaimed');
+    if (region) query = query.ilike('admin1_code', region);
+    if (claimed === 'true') query = query.eq('is_claimed', true);
 
-    // Bbox filter: ?bbox=minLng,minLat,maxLng,maxLat — used by dispatch view
-    const bboxParam = searchParams.get('bbox');
-    if (bboxParam) {
-        const parts = bboxParam.split(',').map(Number);
-        if (parts.length === 4 && parts.every(n => !isNaN(n))) {
-            const [minLng, minLat, maxLng, maxLat] = parts;
-            query = query
-                .gte('latitude', minLat).lte('latitude', maxLat)
-                .gte('longitude', minLng).lte('longitude', maxLng);
-        }
-    }
+    // Bbox filter: not available (hc_global_operators has no lat/lng)
 
     // Category filter (entity_type-based)
     if (category && category !== 'all' && CATEGORY_MAP[category]) {
@@ -112,7 +101,7 @@ export async function GET(req: NextRequest) {
             type: 'Feature',
             geometry: {
                 type: 'Point',
-                coordinates: [r.longitude, r.latitude],
+                coordinates: [r.lng, r.lat],
             },
             properties: {
                 id: r.id,

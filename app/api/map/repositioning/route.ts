@@ -108,7 +108,7 @@ export async function GET(req: NextRequest) {
             .single();
         if (ep) {
             escortStates = ep.states_licensed ?? [];
-            escortTrustScore = ep.trust_score ?? 70;
+            escortTrustScore = ep.confidence_score ?? 70;
         }
     }
 

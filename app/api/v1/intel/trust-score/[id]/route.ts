@@ -75,7 +75,7 @@ const DEFAULT_WEIGHTS = {
  * Factor 1 — Trust Score (already 0-100, normalize to 0-1).
  */
 function computeTrustFactor(trust_score: number): number {
-    return Math.min(trust_score, 100) / 100;
+    return Math.min(confidence_score, 100) / 100;
 }
 
 /**
@@ -166,7 +166,7 @@ function computePaidBoost(
     trustThreshold: number
 ): number {
     if (!op.paid_boost_active) return 0;
-    if (op.trust_score < trustThreshold) return 0; // cannot override trust gate
+    if (op.confidence_score < trustThreshold) return 0; // cannot override trust gate
     if (contextFit < 0.3) return 0;                // cannot override severe context mismatch
     return Math.min(contextFit * 0.9, 1);          // boost is proportional to contextual relevance
 }
@@ -194,10 +194,10 @@ export async function POST(req: NextRequest) {
         .from("hc_global_operators")
             .select(`
         id,
-        trust_score,
+        confidence_score,
         states_licensed,
         vehicle_type,
-        is_available,
+        is_claimed,
         surge_eligible,
         paid_boost_active,
         completed_escorts,
@@ -206,8 +206,8 @@ export async function POST(req: NextRequest) {
         avg_response_minutes
       `)
             .eq("is_claimed", true)
-            .not("trust_score", "is", null)
-            .order("trust_score", { ascending: false })
+            .not("confidence_score", "is", null)
+            .order("confidence_score", { ascending: false })
             .limit(200);
 
         if (error || !candidates) {
@@ -227,7 +227,7 @@ export async function POST(req: NextRequest) {
         const scored: ScoredOperator[] = candidates.map((c) => {
             const op: OperatorCandidate = {
                 id: c.id,
-                trust_score: c.trust_score ?? 0,
+                trust_score: c.confidence_score ?? 0,
                 states_licensed: c.states_licensed ?? [],
                 vehicle_type: c.vehicle_type,
                 available_now: c.is_available ?? false,
@@ -240,10 +240,10 @@ export async function POST(req: NextRequest) {
                 selection_rate_7d: statsMap.get(c.id)?.selection_rate_7d ?? 0,
             };
 
-            const s_trust = computeTrustFactor(op.trust_score);
+            const s_trust = computeTrustFactor(op.confidence_score);
             const s_context = computeContextFit(op, ctx);
             const s_freshness = computeFreshness(op);
-            const s_cold = computeColdStartBoost(op, op.trust_score);
+            const s_cold = computeColdStartBoost(op, op.confidence_score);
             const s_paid = computePaidBoost(op, s_context, W.min_trust_gate);
 
             const exposure_score =
@@ -262,7 +262,7 @@ export async function POST(req: NextRequest) {
                 score_paid_boost: s_paid,
                 exposure_score,
                 is_cold_start: op.completed_escorts < 10,
-                suppressed: op.trust_score < W.min_trust_gate,
+                suppressed: op.confidence_score < W.min_trust_gate,
             };
         });
 

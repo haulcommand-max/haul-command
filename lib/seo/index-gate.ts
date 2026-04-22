@@ -70,7 +70,7 @@ export async function checkIndexGate(
         const { count } = await svc
             .from('hc_global_operators')
             .select('id', { count: 'exact', head: true })
-            .eq('region_code', regionCode);
+            .eq('admin1_code', regionCode);
         entity_count = count ?? 0;
     }
 
