@@ -37,8 +37,9 @@ async function getArticles() {
   const supabase = createClient();
   const { data: articles, error } = await supabase
     .from('hc_blog_articles')
-    .select('slug, title, excerpt, hero_image_url, published_at, schema_markup, visual_assets')
-    .order('published_at', { ascending: false });
+    .select('slug, title, excerpt, hero_image_url, created_at, schema_markup, visual_assets')
+    .eq('status', 'published')
+    .order('created_at', { ascending: false });
 
   if (error || !articles || articles.length === 0) {
     // No articles in DB — return empty array. Let UI show an honest empty state.
@@ -54,7 +55,7 @@ async function getArticles() {
     thumbnail: article.hero_image_url || "/images/blog_hero_bg.png",
     read_time: "5 min",
     country_code: "US",
-    published_at: new Date(article.published_at || new Date()).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
+    published_at: new Date(article.created_at || new Date()).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
   }));
 }
 

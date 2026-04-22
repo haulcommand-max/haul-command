@@ -67,7 +67,7 @@ export default async function CityDirectoryPage({ params }: PageProps) {
   // Fetch operators in this city
   const { data: operators, count: totalCount } = await supabase
     .from('hc_global_operators')
-    .select('id, name, city, state_code, confidence_score, is_verified, equipment_types, rating_avg, review_count, primary_service_area', { count: 'exact' })
+    .select('id, name, slug, city, admin1_code, country_code, confidence_score, is_verified, is_claimed, entity_type, phone_normalized', { count: 'exact' })
     .ilike('city', cityName)
     .eq('country_code', countryUpper)
     .order('confidence_score', { ascending: false })
@@ -94,7 +94,7 @@ export default async function CityDirectoryPage({ params }: PageProps) {
       item: {
         '@type': 'LocalBusiness',
         name: op.name,
-        address: { '@type': 'PostalAddress', addressLocality: op.city, addressRegion: op.admin1_code, addressCountry: countryUpper },
+        address: { '@type': 'PostalAddress', addressLocality: op.city, addressRegion: op.admin1_code || countryUpper, addressCountry: countryUpper },
       },
     })),
   };
@@ -196,9 +196,9 @@ export default async function CityDirectoryPage({ params }: PageProps) {
                       {[op.city, stateFullName(op.admin1_code)].filter(Boolean).join(', ')}
                     </div>
 
-                    {op.equipment_types && (
+                    {[] && (
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-                        {(Array.isArray(op.equipment_types) ? op.equipment_types : []).slice(0, 3).map((eq: string) => (
+                        {(Array.isArray([]) ? [] : []).slice(0, 3).map((eq: string) => (
                           <span key={eq} style={{ fontSize: 10, padding: '3px 8px', borderRadius: 100, background: '#F3F4F6', color: '#374151', border: '1px solid #E5E7EB' }}>
                             {eq}
                           </span>

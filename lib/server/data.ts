@@ -80,7 +80,7 @@ export async function getDirectoryListings(params: {
     let query = sb
         .from("hc_global_operators")
         .select("id, name, slug, entity_type, city, admin1_code, country_code, confidence_score, is_claimed, is_verified", { count: "exact" })
-        .order("demand_score", { ascending: false });
+        .order("confidence_score", { ascending: false });
 
     if (params.region) query = query.eq("admin1_code", params.region);
     if (params.entity_type) query = query.eq("entity_type", params.entity_type);
@@ -108,52 +108,7 @@ export async function getDirectoryListings(params: {
     }));
     const total = count ?? 0;
 
-    // If directory_listings is thin (< half the requested limit),
-    // backfill from hc_identities to surface operators/brokers/escorts
-    // that haven't been promoted to directory_listings yet
-    if (listings.length < Math.floor(limit / 2)) {
-        try {
-            const existingIds = listings.map(l => l.id);
-            let fallbackQuery = sb
-                .from("hc_identities")
-                .select("id, display_name, slug, role, city, admin1_code, country_code, phone, company_name, verification_state", { count: "exact" })
-                .not("id", "in", `(${existingIds.join(",")})`)
-                .order("created_at", { ascending: false })
-                .limit(limit - listings.length);
-
-            if (params.region) fallbackQuery = fallbackQuery.eq("admin1_code", params.region);
-            if (params.entity_type) fallbackQuery = fallbackQuery.eq("role", params.entity_type);
-
-            const { data: fallbackData, count: fallbackCount } = await fallbackQuery;
-
-            if (fallbackData && fallbackData.length > 0) {
-                const fallbackListings: DirectoryListing[] = fallbackData.map((f: any) => ({
-                    id: f.id,
-                    name: f.display_name || f.company_name || "Unknown Operator",
-                    slug: f.slug || f.id,
-                    entity_type: f.role || "escort_operator",
-                    city: f.city || null,
-                    region_code: f.admin1_code || null,
-                    country_code: f.country_code || "US",
-                    rank_score: 0,
-                    claim_status: f.verification_state || "unclaimed",
-                    metadata: {
-                        phone: f.phone,
-                        company_name: f.company_name,
-                        is_fallback: true,
-                    },
-                }));
-
-                return {
-                    listings: [...listings, ...fallbackListings],
-                    total: total + (fallbackCount ?? 0),
-                };
-            }
-        } catch (fallbackErr) {
-            console.warn("Directory fallback from hc_identities failed:", fallbackErr);
-        }
-    }
-
+    // hc_global_operators has 7,711+ records — no fallback needed
     return { listings, total };
 }
 
