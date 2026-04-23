@@ -202,6 +202,11 @@ export default async function CorridorPage({ params }: PageProps) {
                 { href: '/rates', label: 'Rate Index' },
                 { href: '/tools/permit-cost-calculator', label: 'Permit Calculator' },
                 { href: '/loads', label: 'Load Board' },
+                { href: '/training', label: 'Get Certified' },
+                { href: '/glossary', label: 'Glossary' },
+                { href: '/available-now', label: 'Available Now' },
+                { href: '/claim', label: 'Claim Profile' },
+                { href: '/advertise/buy', label: 'Sponsor This Corridor' },
               ].map(({ href, label }) => (
                 <Link key={href} href={href} className="flex items-center justify-between text-sm text-gray-600 hover:text-[#C6923A] py-1 transition-colors">
                   <span>{label}</span><ChevronRight className="w-4 h-4" />

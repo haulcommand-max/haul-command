@@ -570,6 +570,27 @@ export default function RegulationsIndexPage() {
           </p>
         </div>
       </div>
+    <>
+      {/* Regulations interlinking strip — no dead ends */}
+      <div style={{ background: '#F9FAFB', borderTop: '1px solid #E5E7EB', padding: '24px', marginTop: 0 }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: 2, marginRight: 8 }}>Related:</span>
+          {[
+            { href: '/glossary', label: 'Glossary' },
+            { href: '/rates', label: 'Rate Index' },
+            { href: '/blog', label: 'Blog' },
+            { href: '/tools/permit-cost-calculator', label: 'Permit Calculator' },
+            { href: '/training', label: 'Get Certified' },
+            { href: '/corridors', label: 'Corridors' },
+            { href: '/directory', label: 'Find Escorts' },
+            { href: '/available-now', label: 'Available Now' },
+          ].map(l => (
+            <a key={l.href} href={l.href} style={{ padding: '4px 12px', background: 'white', border: '1px solid #E5E7EB', borderRadius: 99, fontSize: 12, fontWeight: 600, color: '#374151', textDecoration: 'none' }}>
+              {l.label}
+            </a>
+          ))}
+        </div>
+      </div>
     </>
   );
 }
