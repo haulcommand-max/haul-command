@@ -10,7 +10,7 @@ import { Shield, MapPin, Award, Globe } from 'lucide-react';
 
 export const metadata: Metadata = {
     title: 'Heavy Haul Compliance Tools & Route Calculators | Haul Command',
-    description: 'Free heavy haul calculators and intelligence tools: escort cost estimator, permit calculator, route compliance checker, official source finder, regulation change log, and more. Built for operators across 50+ countries.',
+    description: 'Free heavy haul calculators and intelligence tools: escort cost estimator, permit calculator, route compliance checker, official source finder, regulation change log, and more. Built for operators across 120 countries.',
     alternates: {
         canonical: 'https://www.haulcommand.com/tools',
     },
@@ -40,6 +40,9 @@ const toolsSchema = {
             { '@type': 'ListItem', position: 13, name: 'Permit SLA Tracker', url: 'https://www.haulcommand.com/tools/permit-sla-tracker' },
             { '@type': 'ListItem', position: 14, name: 'Corridor Pricing', url: 'https://www.haulcommand.com/tools/corridor-pricing' },
             { '@type': 'ListItem', position: 15, name: 'Certification Timelines', url: 'https://www.haulcommand.com/tools/certification-timeline' },
+            { '@type': 'ListItem', position: 16, name: 'Oversize Load Checker', url: 'https://www.haulcommand.com/tools/oversize-load-checker' },
+            { '@type': 'ListItem', position: 17, name: 'Escort Count Calculator', url: 'https://www.haulcommand.com/tools/escort-count-calculator' },
+            { '@type': 'ListItem', position: 18, name: 'Total Trip Cost Calculator', url: 'https://www.haulcommand.com/tools/total-trip-cost-calculator' },
         ],
     },
 };
@@ -53,7 +56,7 @@ const faqSchema = {
             name: 'What free tools does Haul Command offer?',
             acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'Haul Command provides 15 free tools for heavy haul logistics including Route IQ, Rate Advisor, Escort Calculator, Permit Calculator, Official Source Finder, Certification Map, Permit Authority Directory, Regulation Change Log, Country Source Library, Forms & Document Hub, Backhaul Locator, Load Type Library, Permit SLA Tracker, Corridor Pricing, and Certification Timelines. All tools cover 50+ countries with no login required.',
+                text: 'Haul Command provides 40+ tools live for heavy haul logistics including Route IQ, Rate Advisor, Escort Calculator, Permit Calculator, Official Source Finder, Certification Map, Permit Authority Directory, Regulation Change Log, Country Source Library, Forms & Document Hub, Backhaul Locator, Load Type Library, Permit SLA Tracker, Corridor Pricing, and Certification Timelines. All tools cover 120 countries with no login required.',
             },
         },
         {
@@ -93,7 +96,7 @@ const TOOLS = [
         icon: 'ðŸ§®',
         color: '#C6923A',
         tagline: 'Escort Cost Estimator',
-        description: 'Calculate detailed heavy haul escort vehicle costs by region, service type, and wait time using live benchmarks across 50+ countries.',
+        description: 'Calculate detailed heavy haul escort vehicle costs by region, service type, and wait time using live benchmarks across 120 countries.',
     },
     {
         name: 'Permit Calculator',
@@ -205,11 +208,11 @@ export default function ToolsIndexPage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
             <ProofStrip variant="bar" />
 
-            <div style={{ minHeight: '100vh', background: '#ffffff', color: '#1f2937' }}>
+            <div style={{ minHeight: '100vh', background: '#0B0F14', color: '#e5e7eb' }}>
                 {/* â”€â”€ Hero â”€â”€ */}
                 <section style={{
                     position: 'relative', overflow: 'hidden',
-                    borderBottom: '1px solid #e5e7eb',
+                    borderBottom: '1px solid rgba(241,169,27,0.1)', background: 'linear-gradient(135deg, #0B0F14 0%, #0f1a24 50%, #0B0F14 100%)',
                 }}>
                     <div style={{
                         position: 'absolute', inset: 0, opacity: 0.12, pointerEvents: 'none',
@@ -228,7 +231,7 @@ export default function ToolsIndexPage() {
                             </div>
                             <h1 style={{
                                 fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 900, lineHeight: 1.1,
-                                letterSpacing: '-0.03em', marginBottom: 16, color: '#111827',
+                                letterSpacing: '-0.03em', marginBottom: 16, color: '#ffffff',
                             }}>
                                 Heavy Haul{' '}
                                 <span style={{
@@ -238,16 +241,16 @@ export default function ToolsIndexPage() {
                                     Intelligence Tools
                                 </span>
                             </h1>
-                            <p style={{ fontSize: 17, color: '#6b7280', lineHeight: 1.6, marginBottom: 24 }}>
+                            <p style={{ fontSize: 17, color: '#9CA3AF', lineHeight: 1.6, marginBottom: 24 }}>
                                 Route compliance, cost estimation, permit calculation, market intelligence,
-                                and regulation monitoring. Free. For brokers, carriers, and escorts across 50+ countries.
+                                and regulation monitoring. Free. For brokers, carriers, and escorts across 120 countries.
                             </p>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, fontSize: 13, color: '#6B7280' }}>
                                 <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                    <span style={{ color: '#22c55e' }}>â—</span> 15 free tools
+                                    <span style={{ color: '#22c55e' }}>â—</span> 40+ tools live
                                 </span>
                                 <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                    <span style={{ color: '#22c55e' }}>â—</span> 50+ countries
+                                    <span style={{ color: '#22c55e' }}>â—</span> 120 countries
                                 </span>
                                 <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                                     <span style={{ color: '#22c55e' }}>â—</span> No sign-up needed
@@ -261,7 +264,7 @@ export default function ToolsIndexPage() {
                 </section>
 
                 {/* â”€â”€ Tool Grid â”€â”€ */}
-                <section style={{ maxWidth: 1200, margin: '0 auto', padding: '64px 24px' }}>
+                <section style={{ maxWidth: 1200, margin: '0 auto', padding: '64px 24px', background: '#0B0F14' }}>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: 40, alignItems: 'start' }}>
                         {/* Tool Grid */}
                         <div style={{
@@ -319,7 +322,7 @@ export default function ToolsIndexPage() {
 
                                     {/* Content */}
                                     <div>
-                                        <h2 style={{ fontSize: 18, fontWeight: 800, marginBottom: 2, color: '#111827' }}>
+                                        <h2 style={{ fontSize: 18, fontWeight: 800, marginBottom: 2, color: '#f9fafb' }}>
                                             {tool.name}
                                         </h2>
                                         <div style={{ fontSize: 11, fontWeight: 700, color: tool.color, textTransform: 'uppercase' as const, letterSpacing: '0.05em', marginBottom: 8 }}>
@@ -416,12 +419,12 @@ export default function ToolsIndexPage() {
                         maxWidth: 800, margin: '0 auto', padding: '64px 24px',
                         textAlign: 'center',
                     }}>
-                        <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 12, color: '#111827' }}>
+                        <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 12, color: '#f9fafb' }}>
                             Need a custom solution?
                         </h2>
                         <p style={{ fontSize: 14, color: '#6b7280', marginBottom: 24, lineHeight: 1.6 }}>
                             Enterprise buyers can access Haul Command data via API, bulk exports,
-                            and white-glove intelligence reports across all 50+ countries.
+                            and white-glove intelligence reports across all 120 countries.
                         </p>
                         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
                             <Link href="/data" style={{
@@ -437,7 +440,7 @@ export default function ToolsIndexPage() {
                                 padding: '14px 32px', borderRadius: 12,
                                 background: '#ffffff',
                                 border: '1px solid #d1d5db',
-                                color: '#374151', fontWeight: 700, fontSize: 13,
+                                color: '#9ca3af', fontWeight: 700, fontSize: 13,
                                 textDecoration: 'none',
                             }}>
                                 Find Operators â†’
@@ -451,7 +454,7 @@ export default function ToolsIndexPage() {
             <section style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px 48px' }}>
               <StaticAnswerBlock
                 question="What free tools does Haul Command offer for heavy haul logistics?"
-                answer="Haul Command provides 15 free tools for heavy haul logistics: Route IQ for route compliance, Rate Advisor for cost benchmarks, Escort Calculator for escort cost estimation, Permit Calculator for multi-state permits, Official Source Finder for verified government documents, Certification Map for credential requirements, Permit Authority Directory for agency contacts, Regulation Change Log for rule updates, Country Source Library for regulatory source maps, Forms & Document Hub for autofill templates, Backhaul Locator for repositioning, Load Type Library for dimension indexes, Permit SLA Tracker for processing times, Corridor Pricing for lane rate history, and Certification Timelines for state-by-state protocols. All tools cover 50+ countries."
+                answer="Haul Command provides 40+ tools live for heavy haul logistics: Route IQ for route compliance, Rate Advisor for cost benchmarks, Escort Calculator for escort cost estimation, Permit Calculator for multi-state permits, Official Source Finder for verified government documents, Certification Map for credential requirements, Permit Authority Directory for agency contacts, Regulation Change Log for rule updates, Country Source Library for regulatory source maps, Forms & Document Hub for autofill templates, Backhaul Locator for repositioning, Load Type Library for dimension indexes, Permit SLA Tracker for processing times, Corridor Pricing for lane rate history, and Certification Timelines for state-by-state protocols. All tools cover 120 countries."
                 confidence="verified_current"
                 ctaLabel="Try Route IQ — Free"
                 ctaUrl="/tools/route-iq"

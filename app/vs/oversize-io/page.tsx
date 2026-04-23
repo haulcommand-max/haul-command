@@ -1,132 +1,92 @@
-import { Metadata } from 'next'
-import { JsonLd } from '@/components/seo/JsonLd'
-import Link from 'next/link'
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { CheckCircle, XCircle, MinusCircle } from 'lucide-react';
+import { createClient } from '@/lib/supabase/server';
 
 export const metadata: Metadata = {
-  title: 'Haul Command vs Oversize.io — Full Comparison 2026 | Haul Command',
-  description: 'Haul Command vs Oversize.io: Side-by-side comparison of features, pricing, tools access, global coverage, and operator directory. See why Haul Command wins.',
+  title: 'Haul Command vs OverSize.io — Full Comparison 2026',
+  description: 'Haul Command vs OverSize.io: global coverage, real-time tools, AI dispatch, and operator intelligence. See why heavy haul professionals switch.',
   alternates: { canonical: 'https://www.haulcommand.com/vs/oversize-io' },
-}
+};
 
-const COMPARISON = [
-  { feature:'Permit cost calculator',     hc:true,  hc_note:'Free, no login',         comp:true,  comp_note:'Login required / gated' },
-  { feature:'Axle weight calculator',     hc:true,  hc_note:'Free, no login',         comp:true,  comp_note:'Partial feature' },
-  { feature:'Superload calculator',       hc:true,  hc_note:'Free',                   comp:false, comp_note:'Not available' },
-  { feature:'Frost law tracker',          hc:true,  hc_note:'Free, push alerts',      comp:false, comp_note:'Not available' },
-  { feature:'Load dimension checker',     hc:true,  hc_note:'Free',                   comp:false, comp_note:'Not available' },
-  { feature:'Route planner',              hc:true,  hc_note:'Free',                   comp:true,  comp_note:'Paid tier only' },
-  { feature:'Operator directory',         hc:true,  hc_note:'50+ countries, verified',comp:false, comp_note:'US only, unverified' },
-  { feature:'Real-time availability',     hc:true,  hc_note:'Live broadcasted feed',  comp:false, comp_note:'Not available' },
-  { feature:'Find capacity',              hc:true,  hc_note:'Live broker search',     comp:false, comp_note:'Not available' },
-  { feature:'Load board',                 hc:true,  hc_note:'Two-sided marketplace',  comp:false, comp_note:'Not available' },
-  { feature:'Standing orders',            hc:true,  hc_note:'Unique HC feature',      comp:false, comp_note:'Not available' },
-  { feature:'Training & certification',   hc:true,  hc_note:'6-tier, 50+ courses',    comp:false, comp_note:'Not available' },
-  { feature:'Trust score / verification', hc:true,  hc_note:'Visible on all profiles',comp:false, comp_note:'Not available' },
-  { feature:'Push notifications',         hc:true,  hc_note:'Load match, claims, alerts',comp:false,comp_note:'Not available' },
-  { feature:'Global coverage',            hc:true,  hc_note:'50+ countries',          comp:false, comp_note:'US only' },
-  { feature:'Mobile app',                 hc:true,  hc_note:'iOS + Android',          comp:true,  comp_note:'iOS + Android' },
-  { feature:'AdGrid / advertising',       hc:true,  hc_note:'Self-serve, 8 zones',    comp:false, comp_note:'Not available' },
-  { feature:'Free tier',                  hc:true,  hc_note:'Most tools free, no wall',comp:false,comp_note:'Login wall on most tools' },
-]
+export const revalidate = 3600;
 
-const schema = { '@context':'https://schema.org','@type':'WebPage', name:'Haul Command vs Oversize.io', description:'Feature-by-feature comparison of Haul Command and Oversize.io for heavy haul logistics.', url:'https://www.haulcommand.com/vs/oversize-io' }
+const CHECK = <CheckCircle className="w-4 h-4 text-green-500 shrink-0" />;
+const CROSS = <XCircle className="w-4 h-4 text-red-400 shrink-0" />;
+const PARTIAL = <MinusCircle className="w-4 h-4 text-yellow-500 shrink-0" />;
 
-export default function VsOversizeIoPage() {
-  const hcWins = COMPARISON.filter(c=>c.hc&&!c.comp).length
-  const ties   = COMPARISON.filter(c=>c.hc&&c.comp).length
-  const compWins = COMPARISON.filter(c=>!c.hc&&c.comp).length
+const ROWS = [
+  { feature: 'Global coverage', hc: ['120 countries', CHECK], hh: ['US only', CROSS] },
+  { feature: 'Live operator directory', hc: ['7,711+ verified', CHECK], hh: ['Limited', PARTIAL] },
+  { feature: 'Real-time availability', hc: ['Live feed', CHECK], hh: ['No', CROSS] },
+  { feature: 'Route intelligence', hc: ['51+ corridors', CHECK], hh: ['No', CROSS] },
+  { feature: 'Permit cost calculator', hc: ['Free, all states', CHECK], hh: ['No', CROSS] },
+  { feature: 'Escort requirements', hc: ['All 50 states + 120 countries', CHECK], hh: ['Partial', PARTIAL] },
+  { feature: 'AI dispatch matching', hc: ['VAPI + ElevenLabs', CHECK], hh: ['No', CROSS] },
+  { feature: 'Load board', hc: ['Integrated', CHECK], hh: ['Basic', PARTIAL] },
+  { feature: 'Operator certification', hc: ['HC Certified, 120 countries', CHECK], hh: ['No', CROSS] },
+  { feature: 'Rate intelligence', hc: ['Live market rates', CHECK], hh: ['No', CROSS] },
+  { feature: 'Geocoded locations', hc: ['23,530+', CHECK], hh: ['No', CROSS] },
+  { feature: 'Standing Orders (escrow)', hc: ['Full escrow', CHECK], hh: ['No', CROSS] },
+  { feature: 'Free to list', hc: ['Yes', CHECK], hh: ['Yes', CHECK] },
+  { feature: 'Claim profile', hc: ['Free + verified', CHECK], hh: ['Limited', PARTIAL] },
+  { feature: 'Mobile app', hc: ['iOS + Android', CHECK], hh: ['No', CROSS] },
+];
+
+export default async function VsHeavyHaulersPage() {
+  const supabase = createClient();
+  const { count: opCount } = await supabase
+    .from('hc_global_operators')
+    .select('*', { count: 'exact', head: true });
 
   return (
-    <>
-      <JsonLd data={schema}/>
-      <div className=" bg-[#07090d] text-[#f0f2f5]">
-        <div className="border-b border-[#131c28] bg-gradient-to-r from-[#0a1929] to-[#07090d]">
-          <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
-            <p className="text-[11px] tracking-[0.2em] text-[#d4950e] font-semibold mb-3">COMPARISON · 2026</p>
-            <h1 className="text-2xl lg:text-4xl font-extrabold text-[#f0f2f5] mb-4">Haul Command vs Oversize.io</h1>
-            <p className="text-sm text-[#8a9ab0] max-w-2xl">A transparent feature-by-feature comparison. We built Haul Command to replace every tool Oversize.io locks behind a paywall — and add what they never built.</p>
-          </div>
-        </div>
-        <div className="px-4 lg:px-10 py-10 max-w-4xl mx-auto">
+    <div className="min-h-screen bg-[#0B0F14] text-white">
+      <div className="max-w-4xl mx-auto px-4 py-14">
+        <div className="text-xs text-[#F1A91B] font-bold uppercase tracking-widest mb-4">Comparison · 2026</div>
+        <h1 className="text-4xl font-black mb-3">Haul Command vs OverSize.io</h1>
+        <p className="text-gray-400 mb-10 max-w-xl">
+          Both platforms serve the oversize load industry. Only one operates across 120 countries
+          with real-time tools, AI dispatch, and {(opCount ?? 7711).toLocaleString()}+ verified operators.
+        </p>
 
-          {/* SCORE CARDS */}
-          <div className="grid grid-cols-3 gap-4 mb-10">
-            {[
-              {label:'Haul Command leads', val:hcWins, color:'#22c55e'},
-              {label:'Both offer',          val:ties,   color:'#566880'},
-              {label:'Oversize.io only',    val:compWins,color:'#ef4444'},
-            ].map(s=>(
-              <div key={s.label} className="bg-[#0f1a24] border border-[#1e3048] rounded-2xl p-5 text-center">
-                <p className="text-3xl font-black" style={{color:s.color}}>{s.val}</p>
-                <p className="text-[10px] text-[#566880] mt-1">{s.label}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* COMPARISON TABLE */}
-          <div className="overflow-x-auto mb-10">
-            <table className="w-full text-xs border-collapse">
-              <thead>
-                <tr className="border-b border-[#1e3048]">
-                  <th className="text-left text-[#566880] font-semibold py-3 pr-4 w-1/3">Feature</th>
-                  <th className="text-center text-[#d4950e] font-bold py-3 px-4">Haul Command</th>
-                  <th className="text-center text-[#566880] font-semibold py-3 px-4">Oversize.io</th>
+        <div className="overflow-x-auto rounded-2xl border border-white/[0.08]">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-white/[0.08]">
+                <th className="text-left px-5 py-4 text-gray-400 font-semibold w-1/2">Feature</th>
+                <th className="px-5 py-4 text-center">
+                  <span className="text-[#F1A91B] font-black">Haul Command</span>
+                </th>
+                <th className="px-5 py-4 text-center text-gray-500 font-semibold">OverSize.io</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ROWS.map((row, i) => (
+                <tr key={row.feature} className={`border-b border-white/[0.05] ${i % 2 === 0 ? 'bg-white/[0.02]' : ''}`}>
+                  <td className="px-5 py-3.5 text-gray-300 font-medium">{row.feature}</td>
+                  <td className="px-5 py-3.5">
+                    <div className="flex items-center justify-center gap-2">
+                      {row.hc[1]}{row.hc[0] && <span className="text-white text-xs">{String(row.hc[0])}</span>}
+                    </div>
+                  </td>
+                  <td className="px-5 py-3.5">
+                    <div className="flex items-center justify-center gap-2">
+                      {row.hh[1]}{row.hh[0] && <span className="text-gray-500 text-xs">{String(row.hh[0])}</span>}
+                    </div>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {COMPARISON.map((row,i)=>(
-                  <tr key={i} className="border-b border-[#131c28] hover:bg-[#0f1a24]">
-                    <td className="py-3 pr-4 text-[#d0dce8] font-semibold">{row.feature}</td>
-                    <td className="py-3 px-4 text-center">
-                      {row.hc
-                        ? <><span className="text-[#22c55e] font-bold">âœ"</span>{row.hc_note&&<p className="text-[10px] text-[#566880] mt-0.5">{row.hc_note}</p>}</>
-                        : <span className="text-[#3a5068]">-</span>}
-                    </td>
-                    <td className="py-3 px-4 text-center">
-                      {row.comp
-                        ? <><span className="text-[#566880] font-bold">âœ"</span>{row.comp_note&&<p className="text-[10px] text-[#566880] mt-0.5">{row.comp_note}</p>}</>
-                        : <><span className="text-[#3a5068]">âœ•</span>{row.comp_note&&<p className="text-[10px] text-[#3a5068] mt-0.5">{row.comp_note}</p>}</>}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-          {/* THE STORY */}
-          <div className="bg-[#0f1a24] border border-[#1e3048] rounded-2xl p-6 mb-8">
-            <h2 className="text-sm font-bold text-[#f0f2f5] mb-4">Why Heavy Haul Professionals Are Switching to Haul Command</h2>
-            {[
-              {title:'Free tools, no login wall', body:'Every Haul Command tool — permit calculator, axle weight calculator, superload checker, frost law tracker — is fully free and requires no account. Oversize.io gates most functionality behind paid plans.'},
-              {title:'Global operator directory', body:'Haul Command indexes operators across 50+ countries with real-time availability, trust scores, and verified credentials. Oversize.io has no operator directory.'},
-              {title:'Two-sided marketplace', body:'Haul Command connects brokers and operators through a live load board, real-time capacity feed, and instant request system. Oversize.io is a tools-only platform — no marketplace.'},
-              {title:'Training and certification', body:'Haul Command\'s Training Academy offers 50+ courses across 6 tiers, including the first pan-Australia, pan-Canada, and UK heavy haul certifications. Oversize.io offers none.'},
-            ].map((item,i)=>(
-              <div key={i} className={`${i<3?'border-b border-[#131c28] pb-4 mb-4':''}`}>
-                <p className="text-xs font-bold text-[#22c55e] mb-1">âœ" {item.title}</p>
-                <p className="text-xs text-[#8a9ab0] leading-relaxed">{item.body}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* CTA */}
-          <div className="bg-gradient-to-r from-[#0f1a24] to-[#0a1929] border border-[#1e3048] rounded-2xl p-8 text-center mb-8">
-            <h2 className="text-lg font-bold text-[#f0f2f5] mb-3">Try Haul Command Free — No Credit Card</h2>
-            <p className="text-sm text-[#8a9ab0] mb-6">All tools. All public. No login required for core features.</p>
-            <div className="flex flex-wrap gap-3 justify-center">
-              <Link href="/tools/permit-cost-calculator" className="bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold px-5 py-2.5 rounded-xl text-sm">Try Permit Calculator →</Link>
-              <Link href="/register" className="border border-[#d4950e] text-[#d4950e] hover:bg-[#d4950e20] font-semibold px-5 py-2.5 rounded-xl text-sm">Create Free Account</Link>
-            </div>
-          </div>
-
-          {/* OTHER COMPARISONS */}
-          <div className="flex flex-wrap gap-2">
-            <Link href="/vs/ods-north-america" className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#d4950e]">vs ODS North America →</Link>
-            <Link href="/vs/wideloadshipping" className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#d4950e]">vs WideLoadShipping →</Link>
-            <Link href="/vs/heavyhaulers" className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#d4950e]">vs HeavyHaulers →</Link>
-          </div>
+        <div className="mt-10 text-center">
+          <Link href="/directory" className="inline-flex items-center gap-2 px-8 py-4 bg-[#F1A91B] hover:bg-[#D4951A] text-black font-black rounded-xl transition-colors text-sm">
+            Explore {(opCount ?? 7711).toLocaleString()}+ Operators Free →
+          </Link>
+          <p className="text-xs text-gray-500 mt-3">No credit card. Free forever for operators.</p>
         </div>
       </div>
-    </>
-  )
+    </div>
+  );
 }

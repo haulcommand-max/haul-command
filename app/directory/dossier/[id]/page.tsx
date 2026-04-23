@@ -47,10 +47,11 @@ export default async function DossierPage({ params }: { params: { id: string } }
 
     return (
         <HCContentPageShell>
-            {/* Nav Header */}
-            <div className="border-b border-gray-200 bg-white">
+            {/* Nav Header — Mode B Command Surface */}
+            <div className="border-b border-[#F1A91B]/10 bg-[#0B0F14]"
+                style={{ background: 'linear-gradient(135deg, #0B0F14 0%, #111827 50%, #0f1a24 100%)' }}>
                 <div className="max-w-5xl mx-auto px-4 py-8">
-                    <Link href="/directory" className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors text-xs font-bold uppercase tracking-widest mb-8">
+                    <Link href="/directory" className="inline-flex items-center gap-2 text-gray-400 hover:text-[#F1A91B] transition-colors text-xs font-bold uppercase tracking-widest mb-8">
                         <ArrowLeft className="w-4 h-4" /> Directory Home
                     </Link>
                     
@@ -69,10 +70,10 @@ export default async function DossierPage({ params }: { params: { id: string } }
                                     <Clock className="w-3 h-3" /> Active Now
                                 </span>
                             </div>
-                            <h1 className="text-4xl md:text-5xl font-black text-gray-900 tracking-tight mb-2">
+                            <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight mb-2">
                                 {operator.company || operator.name || 'Unnamed Operator'}
                             </h1>
-                            <div className="flex items-center gap-2 text-sm font-bold text-gray-500 uppercase tracking-widest">
+                            <div className="flex items-center gap-2 text-sm font-bold text-gray-400 uppercase tracking-widest">
                                 <MapPin className="w-4 h-4 text-[#C6923A]" />
                                 {stateFullName(operator.state_inferred, true)}, {countryFullName(operator.country_code_inferred || 'US')}
                             </div>

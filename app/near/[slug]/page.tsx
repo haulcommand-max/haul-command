@@ -57,13 +57,28 @@ export default async function NearCityPage({ params }: NearPageProps) {
 
   const supabase = createServerComponentClient({ cookies });
 
-  // Fetch nearby operators from canonical hc_global_operators
-  const { data: operators } = await supabase
+  // Fetch nearby operators — city-exact first, state-wide fallback
+  const { data: cityOperators } = await supabase
     .from('hc_global_operators')
     .select('id, name, city, admin1_code, country_code, entity_type, confidence_score, is_verified, is_claimed, phone_normalized, website_url')
-    .or(`city.ilike.%${parsed.city}%,admin1_code.eq.${stateCode}`)
+    .ilike('city', `%${parsed.city}%`)
+    .order('confidence_score', { ascending: false })
+    .limit(12);
+
+  // State-wide fill if city match is thin
+  const { data: stateOperators } = await supabase
+    .from('hc_global_operators')
+    .select('id, name, city, admin1_code, country_code, entity_type, confidence_score, is_verified, is_claimed, phone_normalized, website_url')
+    .eq('admin1_code', stateCode)
     .order('confidence_score', { ascending: false })
     .limit(24);
+
+  // Merge: city-exact on top, deduplicated
+  const cityIds = new Set((cityOperators ?? []).map((o: any) => o.id));
+  const operators = [
+    ...(cityOperators ?? []),
+    ...(stateOperators ?? []).filter((o: any) => !cityIds.has(o.id)),
+  ].slice(0, 24);
 
   // Fetch local corridor data
   const { data: corridors } = await supabase

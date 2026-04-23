@@ -65,15 +65,15 @@ export async function GET(req: NextRequest) {
     let newStatus = 'generated';
 
     if (topic.content_type === 'blog_article') {
-      // Blog = Claude (authoritative, long-form, SEO-critical)
-      const { default: Anthropic } = await import('@anthropic-ai/sdk');
-      const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
-      const res = await anthropic.messages.create({
-        model: 'claude-sonnet-4-5',
-        max_tokens: 4096,
-        messages: [{ role: 'user', content: blogPrompt(topic.topic, topic.keyword, topic.target_audience, topic.country_code) }],
-      });
-      generatedContent = res.content[0].type === 'text' ? res.content[0].text : '';
+      // Blog = Gemini 2.5 Flash (high quality, fast, cost-effective — matches Claude for SEO content)
+      const res = await tracked('content_blog', () =>
+        see(blogPrompt(topic.topic, topic.keyword, topic.target_audience, topic.country_code), {
+          tier: 'fast',
+          system: 'You are a senior content writer for Haul Command, the global operating system for heavy haul logistics across 120 countries. Write authoritative, practical industry content that ranks for search and converts readers into operators and brokers.',
+          maxTokens: 4000,
+        })
+      );
+      generatedContent = res.text;
       newStatus = 'generated';
 
     } else if (topic.content_type === 'linkedin_post') {
