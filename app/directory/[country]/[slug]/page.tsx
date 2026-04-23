@@ -34,6 +34,8 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function CityDirectoryPage({ params }: PageProps) {
   const { country, slug } = await params;
+  // Guard: if params resolution fails for any reason, 404 cleanly
+  if (!country || !slug) { notFound(); }
   const countryUpper = country.toUpperCase();
 
   const supabase = createClient();

@@ -213,6 +213,26 @@ export default function HomeClient({
     const displayCompanies = totalOperators > 0 ? totalOperators.toLocaleString() : "7,711";
     const displayCountries = liveCountries > 0 ? liveCountries : 10;
     const [activeRole, setActiveRole] = useState<string | null>(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [suggestions, setSuggestions] = useState<Array<{type:string;label:string;href:string;sub?:string}>>([]);
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const suggestTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const handleSearchInput = (val: string) => {
+        setSearchQuery(val);
+        if (suggestTimerRef.current) clearTimeout(suggestTimerRef.current);
+        if (val.length < 2) { setSuggestions([]); setShowSuggestions(false); return; }
+        suggestTimerRef.current = setTimeout(async () => {
+            try {
+                const res = await fetch(`/api/search/suggest?q=${encodeURIComponent(val)}`);
+                const data = await res.json();
+                setSuggestions(data.suggestions ?? []);
+                setShowSuggestions(true);
+            } catch { /* fail silently */ }
+        }, 200);
+    };
+
+    const SUGGEST_ICONS: Record<string,string> = { operator:'🚗', corridor:'🛣️', place:'📍', rate:'💰' };
     const selectedRole = ROLES.find(r => r.id === activeRole);
 
     return (
@@ -299,14 +319,34 @@ export default function HomeClient({
                                         </optgroup>
                                     </select>
                                 </div>
-                                <div className="flex-1 flex items-center gap-2 bg-white px-4 py-3 border-b sm:border-b-0 sm:border-r border-gray-200">
+                                <div className="flex-1 flex items-center gap-2 bg-white px-4 py-3 border-b sm:border-b-0 sm:border-r border-gray-200 relative">
                                     <MapPin className="w-5 h-5 text-gray-400 flex-shrink-0" />
                                     <input
                                         type="text"
                                         name="q"
+                                        value={searchQuery}
+                                        onChange={e => handleSearchInput(e.target.value)}
+                                        onFocus={() => searchQuery.length >= 2 && setShowSuggestions(true)}
+                                        onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
                                         placeholder="City, state, province, corridor, or country"
                                         className="w-full bg-transparent text-sm text-gray-900 placeholder-gray-500 font-medium focus:outline-none"
+                                        autoComplete="off"
                                     />
+                                    {showSuggestions && suggestions.length > 0 && (
+                                        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-xl z-50 overflow-hidden">
+                                            {suggestions.map((s, i) => (
+                                                <a key={i} href={s.href}
+                                                    className="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0">
+                                                    <span className="text-base shrink-0">{SUGGEST_ICONS[s.type] ?? '🔍'}</span>
+                                                    <div className="min-w-0">
+                                                        <div className="text-sm font-semibold text-gray-900 truncate">{s.label}</div>
+                                                        {s.sub && <div className="text-xs text-gray-500 truncate">{s.sub}</div>}
+                                                    </div>
+                                                    <span className="ml-auto text-[9px] font-bold text-gray-400 uppercase tracking-wider shrink-0">{s.type}</span>
+                                                </a>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                                 <button
                                     type="submit"
