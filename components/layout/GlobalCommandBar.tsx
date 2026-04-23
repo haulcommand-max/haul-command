@@ -20,7 +20,7 @@ const COMMAND_LINKS: CommandLink[] = [
   { label: "Market Data", href: "/corridors" },
   { label: "Tools", href: "/tools" },
   { label: "Pilot Car Files", href: "/escort-requirements" },
-  { label: "Haul Command Pro", href: "/pricing", badge: "Pro" },
+  { label: "Haul Command Pro", href: "/pricing" },
 ];
 
 export function GlobalCommandBar() {

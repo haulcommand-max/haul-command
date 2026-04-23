@@ -194,5 +194,37 @@ export function GlossaryHub({ payload }: { payload: GlossaryHubPayload }) {
 
       </div>
     </div>
+    {/* Interlinking — Doc 5: no dead ends from glossary */}
+    <div style={{ background: '#0d1117', borderTop: '1px solid rgba(241,169,27,0.1)', padding: '32px 24px' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <p style={{ fontSize: 11, fontWeight: 700, color: '#4B5563', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 16 }}>
+          Put This Knowledge to Work
+        </p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+          {[
+            { href: '/directory', label: '🔍 Find Escorts' },
+            { href: '/escort-requirements', label: '⚖️ Requirements by State' },
+            { href: '/rates', label: '💰 Rate Index' },
+            { href: '/tools/permit-cost-calculator', label: '📋 Permit Calculator' },
+            { href: '/training', label: '🎓 Get Certified' },
+            { href: '/corridors', label: '🛣️ Corridor Intelligence' },
+            { href: '/available-now', label: '📡 Available Now' },
+            { href: '/blog', label: '📰 Industry Blog' },
+            { href: '/claim', label: '✓ Claim Profile' },
+            { href: '/what-is-a-pilot-car', label: '❓ What is a Pilot Car?' },
+          ].map(l => (
+            <Link key={l.href} href={l.href} style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              padding: '7px 16px', background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)', borderRadius: 99,
+              fontSize: 12, fontWeight: 600, color: '#9CA3AF',
+              textDecoration: 'none',
+            }}>
+              {l.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
