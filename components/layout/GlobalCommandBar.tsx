@@ -36,20 +36,18 @@ export function GlobalCommandBar() {
           href="/"
           className="flex shrink-0 items-center gap-2 rounded-xl py-2 outline-none transition hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#F1A91B]/50"
         >
-          {/* Logo: SVG = crisp on retina, PNG fallback for OG/PWA */}
+          {/* Haul Command logo — gold military badge mark */}
           <Image
             src={LOGO_SRC}
             alt={ALT_TEXT}
-            width={200}
-            height={50}
+            width={180}
+            height={87}
             priority
-            unoptimized={LOGO_SRC.endsWith('.svg')}
-            className="h-7 w-auto object-contain sm:h-8"
+            unoptimized
+            className="h-9 w-auto object-contain sm:h-10 rounded-sm"
             onError={(e) => {
               const img = e.target as HTMLImageElement;
-              if (!img.src.includes('logo-wordmark')) {
-                img.src = '/brand/logo-wordmark.png';
-              }
+              img.style.display = 'none';
             }}
           />
         </Link>

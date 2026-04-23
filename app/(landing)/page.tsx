@@ -108,8 +108,9 @@ export default async function LandingPage() {
 
     return (
         <main>
-            <h1 className="text-center text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-white mb-6 px-4">
-                The #1 Global <span className="text-[#D4A348]">Pilot Car Directory</span> &amp; Heavy Haul Operating System
+            {/* SEO h1 — visually hidden, screen-reader accessible, structured data anchor */}
+            <h1 className="sr-only">
+                Haul Command — The #1 Global Pilot Car Directory &amp; Heavy Haul Operating System — 120 Countries
             </h1>
             <script type="application/ld+json" dangerouslySetInnerHTML={{
                 __html: JSON.stringify({
