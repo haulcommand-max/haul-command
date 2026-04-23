@@ -8,7 +8,7 @@ import { createClient } from '@/lib/supabase/server';
 // Covers: height-pole, route-survey, bucket-truck, police-escort,
 //         night-moves, multi-day, deadhead, wait-time, detention
 
-interface Props { params: Promise<{ 'support-type': string }>; }
+interface Props { params: Promise<{ type: string }>; }
 
 const SUPPORT_TYPES: Record<string, {
   title: string; localTerm: string; icon: string;
@@ -100,7 +100,7 @@ const SUPPORT_TYPES: Record<string, {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { 'support-type': type } = await params;
+  const { 'type': type } = await params;
   const info = SUPPORT_TYPES[type];
   if (!info) return { title: 'Rate Guide | Haul Command' };
   return {
@@ -112,7 +112,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function SupportTypeRatePage({ params }: Props) {
-  const { 'support-type': type } = await params;
+  const { 'type': type } = await params;
   const info = SUPPORT_TYPES[type];
   if (!info) notFound();
 

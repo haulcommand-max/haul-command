@@ -146,7 +146,7 @@ export default async function RatesPage() {
             { icon: "🔄", label: "Deadhead / Repo Pay", slug: "deadhead", rate: "50–100% loaded" },
             { icon: "⏱️", label: "Wait Time / Detention", slug: "wait-time", rate: "$45–125/hr" },
           ].map(s => (
-            <Link key={s.slug} href={`/rates/${s.slug}`}
+            <Link key={s.slug} href={`/rates/specialty/${s.slug}`}
               className="flex flex-col gap-2 p-5 bg-white border border-gray-200 hover:border-[#C6923A]/40 rounded-2xl hover:shadow-md transition-all group">
               <span className="text-2xl">{s.icon}</span>
               <p className="font-bold text-gray-900 group-hover:text-[#C6923A] text-sm leading-tight">{s.label}</p>

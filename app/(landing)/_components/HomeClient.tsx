@@ -149,7 +149,7 @@ const CATEGORIES = [
     { label: "Bucket Truck", icon: Wrench, color: "#06B6D4", href: "/directory?category=bucket-truck" },
     { label: "Lead/Chase", icon: ArrowRight, color: "#EC4899", href: "/directory?category=lead-chase" },
     { label: "Police Escort", icon: Shield, color: "#EF4444", href: "/directory?category=police-escort" },
-    { label: "Night Moves", icon: Clock, color: "#6366F1", href: "/rates/night-moves" },
+    { label: "Night Moves", icon: Clock, color: "#6366F1", href: "/rates/specialty/night-moves" },
     { label: "Permits", icon: BookOpen, color: "#22C55E", href: "/tools/permit-cost-calculator" },
     { label: "Rate Index", icon: DollarSign, color: "#C6923A", href: "/rates" },
     { label: "Oversize", icon: Zap, color: "#F97316", href: "/directory?category=oversize" },
@@ -329,8 +329,8 @@ export default function HomeClient({
                                     { label: "Permit Help", href: "/tools/permit-cost-calculator" },
                                     { label: "Rates", href: "/rates" },
                                     { label: "Certification", href: "/training" },
-                                    { label: "Multi-Day Support", href: "/rates/multi-day" },
-                                    { label: "Deadhead / Repo", href: "/rates/deadhead" },
+                                    { label: "Multi-Day Support", href: "/rates/specialty/multi-day" },
+                                    { label: "Deadhead / Repo", href: "/rates/specialty/deadhead" },
                                     { label: "Claim Profile", href: "/claim" },
                                 ].map(chip => (
                                     <Link key={chip.label} href={chip.href}
