@@ -276,12 +276,12 @@ export default function HomeClient({
                                 action="/directory"
                                 method="GET"
                                 initial="hidden" animate="visible" variants={fadeUp} custom={1}
-                                className="w-full max-w-3xl flex flex-col sm:flex-row items-stretch bg-white rounded-xl shadow-2xl overflow-hidden border border-gray-100"
+                                className="w-full max-w-3xl flex flex-col sm:flex-row items-stretch bg-white rounded-xl overflow-hidden border border-white/80 shadow-[0_8px_32px_rgba(0,0,0,0.4)] focus-within:shadow-[0_8px_32px_rgba(241,169,27,0.25)] focus-within:border-[#F1A91B]/40 transition-all duration-300"
                             >
                                 <div className="flex-[1.5] flex items-center gap-2 bg-white px-4 py-3 border-b sm:border-b-0 sm:border-r border-gray-200">
                                     <Search className="w-5 h-5 text-gray-400 flex-shrink-0" />
                                     <select name="category" className="w-full bg-transparent text-sm text-gray-700 font-semibold focus:outline-none appearance-none cursor-pointer">
-                                        <option value="">Pilot cars, escorts, permits, rates…</option>
+                                        <option value="">Find escorts, pilot cars, permits, route support, or rates</option>
                                         <optgroup label="─── Escort Services ───">
                                             <option value="pilot-car">Pilot Car / PEVO</option>
                                             <option value="escort-vehicle">Escort Vehicle</option>
@@ -304,59 +304,18 @@ export default function HomeClient({
                                     <input
                                         type="text"
                                         name="q"
-                                        placeholder="City, state, corridor, or country"
+                                        placeholder="City, state, province, corridor, or country"
                                         className="w-full bg-transparent text-sm text-gray-900 placeholder-gray-500 font-medium focus:outline-none"
                                     />
                                 </div>
                                 <button
                                     type="submit"
-                                    className="flex items-center justify-center bg-[#F1A91B] hover:bg-[#D4951A] text-white font-bold text-base px-7 py-3 transition-colors"
+                                    className="flex items-center justify-center bg-[#F1A91B] hover:bg-[#D4951A] text-black font-bold text-base px-7 py-3 transition-all shadow-[0_0_12px_rgba(241,169,27,0.4)] hover:shadow-[0_0_22px_rgba(241,169,27,0.6)] focus:outline-none focus:ring-2 focus:ring-[#F1A91B]/60"
                                 >
                                     Find
                                 </button>
                             </motion.form>
 
-                            {/* Quick-action chips — full 13-chip set */}
-                            <div className="flex flex-wrap justify-center gap-1.5 max-w-3xl">
-                                {[
-                                    { label: "Pilot Cars", href: "/directory?category=pilot-car" },
-                                    { label: "Escort Vehicles", href: "/directory?category=escort-vehicle" },
-                                    { label: "Available Now", href: "/available-now" },
-                                    { label: "Height Pole", href: "/directory?category=height-pole" },
-                                    { label: "Route Survey", href: "/directory?category=route-survey" },
-                                    { label: "Bucket Truck", href: "/directory?category=bucket-truck" },
-                                    { label: "Police Escort Rules", href: "/escort-requirements?type=police-escort" },
-                                    { label: "Permit Help", href: "/tools/permit-cost-calculator" },
-                                    { label: "Rates", href: "/rates" },
-                                    { label: "Certification", href: "/training" },
-                                    { label: "Multi-Day Support", href: "/rates/specialty/multi-day" },
-                                    { label: "Deadhead / Repo", href: "/rates/specialty/deadhead" },
-                                    { label: "Claim Profile", href: "/claim" },
-                                ].map(chip => (
-                                    <Link key={chip.label} href={chip.href}
-                                        className="px-3 py-1 bg-white/10 hover:bg-[#F1A91B]/20 border border-white/20 hover:border-[#F1A91B]/50 text-white text-[11px] font-semibold rounded-full transition-all">
-                                        {chip.label}
-                                    </Link>
-                                ))}
-                            </div>
-
-                            {/* Journey shortcuts — goal-first routing */}
-                            <div className="flex flex-wrap justify-center gap-2 max-w-2xl mt-1">
-                                {[
-                                    { label: "🔍 Find Support", href: "/directory" },
-                                    { label: "💰 Estimate Rate", href: "/tools/escort-cost-calculator" },
-                                    { label: "📋 Check Escort Rules", href: "/escort-requirements" },
-                                    { label: "⚖️ Compare Providers", href: "/directory" },
-                                    { label: "📦 Post a Load", href: "/loads/post" },
-                                    { label: "🏷️ Claim My Profile", href: "/claim" },
-                                    { label: "🎓 Get Certified", href: "/training" },
-                                ].map(s => (
-                                    <Link key={s.label} href={s.href}
-                                        className="px-3 py-1 bg-black/30 hover:bg-black/50 border border-white/10 hover:border-white/30 text-white/80 hover:text-white text-[11px] font-bold rounded-md transition-all">
-                                        {s.label}
-                                    </Link>
-                                ))}
-                            </div>
                         </div>
                     </div>
                 </div>

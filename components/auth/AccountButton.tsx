@@ -44,7 +44,7 @@ export function AccountButton() {
   return (
     <Link
       href="/login"
-      className="inline-flex h-11 items-center justify-center rounded-2xl bg-[#C6923A] px-5 text-sm font-bold text-[#07090D] shadow-lg transition duration-150 hover:bg-[#D4A348] hover:shadow-[#C6923A]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C6923A]/50"
+      className="inline-flex h-9 items-center justify-center rounded-lg bg-transparent px-4 text-sm font-semibold text-gray-300 hover:text-white border border-white/10 hover:border-white/30 transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F1A91B]/50"
     >
       Sign In
     </Link>

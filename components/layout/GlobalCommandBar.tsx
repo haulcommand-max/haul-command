@@ -27,14 +27,14 @@ export function GlobalCommandBar() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200 shadow-sm">
+    <header className="sticky top-0 z-50 w-full bg-[#0B0F14] border-b border-white/[0.06] shadow-lg">
       {/* ── Single unified row — logo left, desktop nav center, actions right ── */}
       <div className="mx-auto flex h-14 w-full max-w-screen-2xl items-center justify-between px-4 sm:px-5 lg:h-16 lg:px-8 xl:px-10">
 
         {/* Left: Logo */}
         <Link
           href="/"
-          className="flex shrink-0 items-center gap-2 rounded-xl py-2 outline-none transition hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#F1A91B]/50"
+          className="flex shrink-0 items-center gap-2 py-1 outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-[#F1A91B]/50"
         >
           {/* Haul Command logo — gold military badge mark */}
           <Image
@@ -62,13 +62,13 @@ export function GlobalCommandBar() {
                 href={link.href}
                 className={`relative inline-flex h-10 items-center rounded-lg px-3 text-[13px] tracking-[0.01em] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F1A91B]/50 xl:px-4 ${
                   isActive
-                    ? "font-bold text-[#C6923A]"
-                    : "font-semibold text-gray-600 hover:text-gray-900"
+                    ? "font-bold text-[#F1A91B]"
+                    : "font-semibold text-gray-300 hover:text-white"
                 }`}
               >
                 {link.label}
                 {link.badge && (
-                  <span className="ml-1.5 rounded bg-[#F1A91B]/10 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] text-[#C6923A]">
+                  <span className="ml-1.5 rounded bg-[#F1A91B]/15 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] text-[#F1A91B]">
                     {link.badge}
                   </span>
                 )}
@@ -84,7 +84,7 @@ export function GlobalCommandBar() {
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <Link
             href="/claim"
-            className="hidden sm:inline-flex items-center px-4 py-2 bg-[#F1A91B] hover:bg-[#D4951A] text-white text-sm font-bold rounded-lg transition-colors shadow-sm"
+            className="hidden sm:inline-flex items-center px-4 py-2 bg-[#F1A91B] hover:bg-[#D4951A] text-black text-sm font-bold rounded-lg transition-all shadow-[0_0_12px_rgba(241,169,27,0.35)] hover:shadow-[0_0_20px_rgba(241,169,27,0.5)]"
           >
             Claim Profile
           </Link>
