@@ -73,9 +73,9 @@ export default async function RatesPage() {
   });
 
   return (
-    <div className="bg-white text-gray-900">
+    <div className="min-h-screen" style={{ background: "var(--hc-black)", color: "var(--hc-text-primary)" }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: RATES_JSONLD }} />
-      <section className="py-16 px-4 text-center">
+      <section className="hc-surface-a py-16 px-4 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-[#C6923A] to-[#E4B872] bg-clip-text text-transparent">
           Pilot Car &amp; Escort Vehicle Rates &mdash; 2026
         </h1>
@@ -99,7 +99,7 @@ export default async function RatesPage() {
             <Link aria-label="Navigation Link"
               key={country.code}
               href={`/rates/${country.code}`}
-              className="p-6 bg-white border border-gray-200 rounded-2xl hover:border-[#C6923A]/40 transition-all group shadow-sm"
+              className="hc-card rounded-2xl"
             >
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-3xl">{country.flag}</span>
@@ -149,7 +149,7 @@ export default async function RatesPage() {
             <Link key={s.slug} href={`/rates/specialty/${s.slug}`}
               className="flex flex-col gap-2 p-5 bg-white border border-gray-200 hover:border-[#C6923A]/40 rounded-2xl hover:shadow-md transition-all group">
               <span className="text-2xl">{s.icon}</span>
-              <p className="font-bold text-gray-900 group-hover:text-[#C6923A] text-sm leading-tight">{s.label}</p>
+              <p className="font-bold text-white group-hover:text-[#C6923A] text-sm leading-tight">{s.label}</p>
               <p className="text-xs font-semibold text-[#C6923A]">{s.rate}</p>
             </Link>
           ))}

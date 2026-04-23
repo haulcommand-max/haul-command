@@ -94,7 +94,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
                 <div className="md:col-span-2 flex flex-col gap-8">
                     
                     {/* Report Card Summary Module */}
-                    <div className="bg-white border border-gray-200 shadow-sm rounded-2xl p-8">
+                    <div className="hc-card rounded-2xl">
                         <h2 className="text-lg font-black text-gray-900 uppercase tracking-widest mb-6 flex items-center gap-2">
                             <CheckCircle className="w-5 h-5 text-[#C6923A]" />
                             Verification Summary
@@ -142,7 +142,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
                     </div>
 
                     {/* Coverage Module */}
-                    <div className="bg-white border border-blue-200 shadow-sm rounded-2xl p-8 relative overflow-hidden">
+                    <div className="hc-card hc-card-gold-top rounded-2xl relative overflow-hidden">
                         <div className="absolute top-0 right-0 p-8 opacity-10">
                             <MapPin className="w-32 h-32 text-blue-500" />
                         </div>
@@ -164,7 +164,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
 
                 {/* Sidebar Actions */}
                 <div className="flex flex-col gap-6">
-                    <div className="bg-white border border-gray-200 shadow-sm rounded-2xl p-6" id="dispatch">
+                    <div className="hc-card rounded-2xl" id="dispatch">
                         <h2 className="text-sm font-black text-gray-900 uppercase tracking-widest mb-6">Action Center</h2>
                         
                         <div className="flex flex-col gap-3">
@@ -189,7 +189,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
             </div>
 
             {/* Sticky "Request Live Quote" Footer */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] z-50 p-4 sm:p-5">
+            <div className="fixed bottom-0 left-0 right-0 bg-[#0d1117] border-t border-[#F1A91B]/20 shadow-[0_-4px_20px_rgba(0,0,0,0.6)] z-50 p-4 sm:p-5">
                 <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
                         <div className="relative">

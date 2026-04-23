@@ -38,7 +38,7 @@ export function HCEditorialHero({
     };
 
     return (
-        <section className="relative w-full overflow-hidden min-h-[500px] lg:min-h-[600px] flex items-end pb-12 lg:pb-24 pt-32 transition-all">
+        <section className="hc-surface-a relative w-full overflow-hidden min-h-[500px] lg:min-h-[600px] flex items-end pb-12 lg:pb-24 pt-32 transition-all">
             {/* Background Image Layer */}
             {imageUrl && (
                 <div className="absolute inset-0 w-full h-full z-0">

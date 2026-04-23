@@ -17,7 +17,7 @@ export default function WhatIsAPilotCarPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen hc-surface-c">
       {/* Dark hero */}
       <div className="bg-[#0B0F14] text-white py-14">
         <div className="max-w-4xl mx-auto px-4">
@@ -35,7 +35,7 @@ export default function WhatIsAPilotCarPage() {
 
       <div className="max-w-4xl mx-auto px-4 py-10">
         {/* Quick answer */}
-        <div className="bg-[#F1A91B]/5 border border-[#F1A91B]/20 rounded-2xl p-6 mb-10">
+        <div className="bg-[#111827] border border-[#F1A91B]/20 rounded-2xl p-6 mb-10">
           <h2 className="font-black text-gray-900 text-xl mb-3">Quick Answer</h2>
           <p className="text-gray-700 leading-relaxed">
             A <strong>pilot car</strong> (also called an escort vehicle or PEVO) is a vehicle that accompanies an oversize or overweight load on public roads. Pilot cars warn other drivers, verify route clearances, and communicate with the load driver to ensure safe passage. They are legally required when loads exceed certain dimension or weight thresholds — which vary by jurisdiction.
@@ -69,7 +69,7 @@ export default function WhatIsAPilotCarPage() {
           {faqs.map(faq => (
             <div key={faq.q} className="border border-gray-200 rounded-xl p-6">
               <h3 className="font-black text-gray-900 mb-2">{faq.q}</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">{faq.a}</p>
+              <p className="text-gray-400 text-sm leading-relaxed">{faq.a}</p>
             </div>
           ))}
         </div>

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0a1a', color: '#fff' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--hc-surface-c)', color: '#fff' }}>
       <div style={{ maxWidth: 800, margin: '0 auto', padding: '80px 24px' }}>
         <h1 style={{ fontSize: 40, fontWeight: 800, marginBottom: 24 }}>About Haul Command</h1>
         <div style={{ fontSize: 16, lineHeight: 1.8, color: 'rgba(255,255,255,0.8)' }}>

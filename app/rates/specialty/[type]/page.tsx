@@ -125,7 +125,7 @@ export default async function SupportTypeRatePage({ params }: Props) {
     .limit(5);
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <div className="min-h-screen min-h-screen">
       {/* Breadcrumb */}
       <nav className="max-w-5xl mx-auto px-4 pt-6 pb-2 flex items-center gap-1.5 text-xs text-gray-500">
         <Link href="/" className="hover:text-[#C6923A]">Home</Link>

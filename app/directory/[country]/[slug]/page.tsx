@@ -106,24 +106,24 @@ export default async function CityDirectoryPage({ params }: PageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <ProofStrip variant="bar" />
 
-      <main style={{ minHeight: '100vh', background: '#F9FAFB', color: '#111827' }}>
+      <main style={{ minHeight: '100vh', background: 'var(--hc-black)', color: 'var(--hc-text-primary)' }}>
 
         {/* Header */}
-        <div style={{ borderBottom: '1px solid #E5E7EB', background: '#ffffff' }}>
+        <div style={{ borderBottom: '1px solid #E5E7EB', background: 'var(--hc-graphite)' }}>
           <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem 1.5rem 2.5rem' }}>
 
-            <nav style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#6B7280', marginBottom: 16, textTransform: 'uppercase', letterSpacing: 1, fontWeight: 700 }}>
-              <Link href="/directory" style={{ color: '#4B5563', textDecoration: 'none' }}>Directory</Link>
+            <nav style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#6b7280', marginBottom: 16, textTransform: 'uppercase', letterSpacing: 1, fontWeight: 700 }}>
+              <Link href="/directory" style={{ color: '#9ca3af', textDecoration: 'none' }}>Directory</Link>
               <ChevronRight style={{ width: 12, height: 12 }} />
-              <Link href={`/directory/${country}`} style={{ color: '#4B5563', textDecoration: 'none' }}>{countryUpper}</Link>
+              <Link href={`/directory/${country}`} style={{ color: '#9ca3af', textDecoration: 'none' }}>{countryUpper}</Link>
               <ChevronRight style={{ width: 12, height: 12 }} />
               <span style={{ color: '#C6923A' }}>{cityName}</span>
             </nav>
 
-            <h1 style={{ margin: '0 0 8px', fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: 900, color: '#111827', letterSpacing: '-0.02em' }}>
+            <h1 style={{ margin: '0 0 8px', fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: 900, color: '#f9fafb', letterSpacing: '-0.02em' }}>
               Pilot Car Services in <span style={{ color: '#C6923A' }}>{cityName}</span>
             </h1>
-            <p style={{ margin: 0, fontSize: 15, color: '#4B5563', lineHeight: 1.6, maxWidth: 600 }}>
+            <p style={{ margin: 0, fontSize: 15, color: '#9ca3af', lineHeight: 1.6, maxWidth: 600 }}>
               {opCount > 0
                 ? `${opCount} verified escort operators serving the ${cityName} area. Trust scores, real-time availability, and instant dispatch.`
                 : `Looking for pilot car operators in ${cityName}? Be the first to claim your listing.`}
@@ -139,8 +139,8 @@ export default async function CityDirectoryPage({ params }: PageProps) {
                 ].map(s => (
                   <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <s.icon style={{ width: 14, height: 14, color: '#C6923A' }} />
-                    <span style={{ fontSize: 18, fontWeight: 900, color: '#111827' }}>{s.val}</span>
-                    <span style={{ fontSize: 10, fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', letterSpacing: 1 }}>{s.label}</span>
+                    <span style={{ fontSize: 18, fontWeight: 900, color: '#f9fafb' }}>{s.val}</span>
+                    <span style={{ fontSize: 10, fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 1 }}>{s.label}</span>
                   </div>
                 ))}
               </div>
@@ -155,12 +155,12 @@ export default async function CityDirectoryPage({ params }: PageProps) {
             {ops.length === 0 ? (
               <div style={{ background: '#FFFBEB', border: '1px solid #FEF08A', borderRadius: 16, padding: 40, textAlign: 'center' }}>
                 <MapPin style={{ width: 32, height: 32, color: '#C6923A', margin: '0 auto 12px' }} />
-                <h2 style={{ fontSize: 20, fontWeight: 900, color: '#111827', marginBottom: 8 }}>Market Open: {cityName}</h2>
-                <p style={{ fontSize: 14, color: '#4B5563', marginBottom: 24 }}>There are currently no verified pilot car operators listed in this territory. Secure the top spot before your competitors do.</p>
+                <h2 style={{ fontSize: 20, fontWeight: 900, color: '#f9fafb', marginBottom: 8 }}>Market Open: {cityName}</h2>
+                <p style={{ fontSize: 14, color: '#9ca3af', marginBottom: 24 }}>There are currently no verified pilot car operators listed in this territory. Secure the top spot before your competitors do.</p>
                 <Link href={`/claim?market=${slug}`} style={{
                   display: 'inline-flex', alignItems: 'center', gap: 10, padding: '14px 28px',
                   borderRadius: 12, background: '#F1A91B',
-                  color: '#111827', fontSize: 15, fontWeight: 900, textDecoration: 'none',
+                  color: '#f9fafb', fontSize: 15, fontWeight: 900, textDecoration: 'none',
                   boxShadow: '0 4px 14px rgba(250, 204, 21, 0.4)'
                 }}>
                   Claim the {cityName} Market <ArrowRight style={{ width: 16, height: 16 }} />
@@ -170,7 +170,7 @@ export default async function CityDirectoryPage({ params }: PageProps) {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>
                 {ops.map((op: any) => (
                   <div key={op.id} style={{
-                    background: '#ffffff', border: '1px solid #E5E7EB',
+                    background: 'var(--hc-graphite)', border: '1px solid rgba(255,255,255,0.06)',
                     borderRadius: 12, padding: 20, display: 'flex', flexDirection: 'column', gap: 8,
                     boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
                   }}>
@@ -193,15 +193,15 @@ export default async function CityDirectoryPage({ params }: PageProps) {
                       )}
                     </div>
 
-                    <div style={{ fontSize: 12, color: '#4B5563', fontWeight: 500 }}>
-                      <MapPin style={{ width: 12, height: 12, display: 'inline', marginRight: 4, color: '#6B7280' }} />
+                    <div style={{ fontSize: 12, color: '#9ca3af', fontWeight: 500 }}>
+                      <MapPin style={{ width: 12, height: 12, display: 'inline', marginRight: 4, color: '#6b7280' }} />
                       {[op.city, stateFullName(op.admin1_code)].filter(Boolean).join(', ')}
                     </div>
 
                     {[] && (
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
                         {(Array.isArray([]) ? [] : []).slice(0, 3).map((eq: string) => (
-                          <span key={eq} style={{ fontSize: 10, padding: '3px 8px', borderRadius: 100, background: '#F3F4F6', color: '#374151', border: '1px solid #E5E7EB' }}>
+                          <span key={eq} style={{ fontSize: 10, padding: '3px 8px', borderRadius: 100, background: '#F3F4F6', color: '#374151', border: '1px solid rgba(255,255,255,0.06)' }}>
                             {eq}
                           </span>
                         ))}
@@ -211,7 +211,7 @@ export default async function CityDirectoryPage({ params }: PageProps) {
                     <div style={{ display: 'flex', gap: 8, marginTop: 'auto', paddingTop: 8 }}>
                       <Link href={`/report-card/${op.id}`} style={{
                         flex: 1, textAlign: 'center', padding: '8px', borderRadius: 8,
-                        background: '#ffffff', border: '1px solid #D1D5DB',
+                        background: 'var(--hc-graphite)', border: '1px solid #D1D5DB',
                         color: '#374151', fontSize: 12, fontWeight: 700, textDecoration: 'none',
                       }}>
                         View Profile
@@ -249,8 +249,8 @@ export default async function CityDirectoryPage({ params }: PageProps) {
             <AdGridSlot zone={`city_${slug}_sponsor`} />
 
             {/* Local context */}
-            <div style={{ background: '#ffffff', border: '1px solid #E5E7EB', borderRadius: 12, padding: 20, boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
-              <h3 style={{ fontSize: 14, fontWeight: 800, color: '#111827', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 16 }}>
+            <div style={{ background: 'var(--hc-graphite)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, padding: 20, boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
+              <h3 style={{ fontSize: 14, fontWeight: 800, color: '#f9fafb', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 16 }}>
                 {cityName} Area Links
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -263,7 +263,7 @@ export default async function CityDirectoryPage({ params }: PageProps) {
                 ].map(l => (
                   <Link key={l.href} href={l.href} style={{
                     display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px',
-                    borderRadius: 8, fontSize: 13, color: '#4B5563', textDecoration: 'none',
+                    borderRadius: 8, fontSize: 13, color: '#9ca3af', textDecoration: 'none',
                     transition: 'all 0.15s', background: '#F9FAFB'
                   }} className="hover:bg-gray-100">
                     <span>{l.icon}</span> <span style={{ fontWeight: 600 }}>{l.label}</span>
@@ -273,8 +273,8 @@ export default async function CityDirectoryPage({ params }: PageProps) {
             </div>
 
             {/* FAQ Section for local SEO */}
-            <div style={{ background: '#ffffff', border: '1px solid #E5E7EB', borderRadius: 12, padding: 20, boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
-              <h3 style={{ fontSize: 14, fontWeight: 800, color: '#111827', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 16 }}>
+            <div style={{ background: 'var(--hc-graphite)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, padding: 20, boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
+              <h3 style={{ fontSize: 14, fontWeight: 800, color: '#f9fafb', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 16 }}>
                 FAQ
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -284,37 +284,37 @@ export default async function CityDirectoryPage({ params }: PageProps) {
                   { q: `What does a pilot car cost in ${cityName}?`, a: `Rates vary by route, load dimensions, and escort requirements. Use our Escort Calculator for instant estimates based on your specific haul.` },
                 ].map((faq, i) => (
                   <div key={i}>
-                    <h4 style={{ fontSize: 13, fontWeight: 800, color: '#111827', marginBottom: 4 }}>{faq.q}</h4>
-                    <p style={{ fontSize: 12, color: '#6B7280', lineHeight: 1.5, margin: 0 }}>{faq.a}</p>
+                    <h4 style={{ fontSize: 13, fontWeight: 800, color: '#f9fafb', marginBottom: 4 }}>{faq.q}</h4>
+                    <p style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.5, margin: 0 }}>{faq.a}</p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Data Product Teaser: Market Pulse */}
-            <div style={{ background: '#ffffff', border: '1px solid #E5E7EB', borderRadius: 12, padding: 20, boxShadow: '0 1px 2px rgba(0,0,0,0.05)', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ background: 'var(--hc-graphite)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, padding: 20, boxShadow: '0 1px 2px rgba(0,0,0,0.05)', position: 'relative', overflow: 'hidden' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-                <h3 style={{ fontSize: 14, fontWeight: 800, color: '#111827', textTransform: 'uppercase', letterSpacing: 1 }}>
+                <h3 style={{ fontSize: 14, fontWeight: 800, color: '#f9fafb', textTransform: 'uppercase', letterSpacing: 1 }}>
                   Market Pulse
                 </h3>
                 <span className="bg-[#FEF9C3] text-[#854D0E] text-[10px] uppercase font-bold px-2 py-0.5 rounded border border-[#FDE047]">
                   PRO
                 </span>
               </div>
-              <p style={{ fontSize: 12, color: '#6B7280', marginBottom: 16 }}>Live rate data and high-demand corridors for the {cityName} region.</p>
+              <p style={{ fontSize: 12, color: '#6b7280', marginBottom: 16 }}>Live rate data and high-demand corridors for the {cityName} region.</p>
               
               <div style={{ filter: 'blur(4px)', opacity: 0.6, userSelect: 'none', pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E5E7EB', paddingBottom: 8 }}>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: '#111827' }}>Avg Rate/Mile</span>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: '#f9fafb' }}>Avg Rate/Mile</span>
                   <span style={{ fontSize: 12, color: '#059669', fontWeight: 800 }}>$1.85 - $2.10</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E5E7EB', paddingBottom: 8 }}>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: '#111827' }}>Load Volume (30d)</span>
-                  <span style={{ fontSize: 12, color: '#4B5563', fontWeight: 800 }}>142 Loads</span>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: '#f9fafb' }}>Load Volume (30d)</span>
+                  <span style={{ fontSize: 12, color: '#9ca3af', fontWeight: 800 }}>142 Loads</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: '#111827' }}>Top Corridor</span>
-                  <span style={{ fontSize: 12, color: '#4B5563', fontWeight: 800 }}>→ Houston, TX</span>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: '#f9fafb' }}>Top Corridor</span>
+                  <span style={{ fontSize: 12, color: '#9ca3af', fontWeight: 800 }}>→ Houston, TX</span>
                 </div>
               </div>
 

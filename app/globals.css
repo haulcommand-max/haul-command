@@ -6,6 +6,9 @@
 @source "../app";
 @source "../lib";
 
+/* HC Premium Surface System */
+@import url("../styles/hc-surfaces.css");
+
 /* ══ MOBILE LAYOUT PRECISION ══
    Prevent horizontal overflow, off-canvas artifacts,
    and white-box border noise on mobile viewports.
