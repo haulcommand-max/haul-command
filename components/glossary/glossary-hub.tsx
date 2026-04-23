@@ -31,6 +31,7 @@ export function GlossaryHub({ payload }: { payload: GlossaryHubPayload }) {
   };
 
   return (
+    <>
     <div className="w-full bg-[#0a0d14] min-h-screen text-gray-100 font-sans">
       
       {/* 1. DOUBLE PLATINUM HERO HEADER */}
@@ -226,5 +227,6 @@ export function GlossaryHub({ payload }: { payload: GlossaryHubPayload }) {
         </div>
       </div>
     </div>
+    </>
   );
 }

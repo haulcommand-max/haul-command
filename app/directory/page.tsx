@@ -91,18 +91,28 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
 
     return (
         <HCContentPageShell>
-            {/* YP Style Clean Header */}
-            <div className="w-full bg-[#f8f9fa] border-b border-gray-200 py-12 px-4 shadow-sm">
+            {/* ── COMMAND SURFACE HERO (Doc 7 Mode B) ── */}
+            <div className="w-full bg-[#0B0F14] border-b border-[#F1A91B]/10 py-12 px-4"
+                style={{ background: 'linear-gradient(135deg, #0B0F14 0%, #111827 40%, #0f1a24 100%)' }}>
                 <div className="max-w-7xl mx-auto">
-                    <div className="text-xs font-bold text-[#C6923A] uppercase tracking-widest mb-2">Operator Intelligence</div>
-                    <h1 className="text-3xl md:text-5xl font-black text-gray-900 mb-4 tracking-tight">Operator Directory</h1>
-                    
-                    <div className="flex flex-wrap items-center gap-4 lg:gap-6 mt-6 text-sm font-bold uppercase tracking-wider text-gray-400">
-                        <Link href="/directory?country=US" className={targetCountry === 'US' ? "text-[#C6923A]" : "hover:text-gray-900 transition-colors"}>United States</Link>
-                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-                        <Link href="/directory?country=CA" className={targetCountry === 'CA' ? "text-[#C6923A]" : "hover:text-gray-900 transition-colors"}>Canada</Link>
-                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-                        <Link href="/directory?country=AU" className={targetCountry === 'AU' ? "text-[#C6923A]" : "hover:text-gray-900 transition-colors"}>Australia</Link>
+                    <div className="flex items-center gap-2 mb-3">
+                        <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                        <div className="text-xs font-bold text-[#F1A91B] uppercase tracking-widest">Operator Intelligence · 120 Countries</div>
+                    </div>
+                    <h1 className="text-3xl md:text-5xl font-black text-white mb-3 tracking-tight">
+                        Pilot Car &amp; Escort Directory
+                    </h1>
+                    <p className="text-gray-400 text-base mb-5 max-w-xl">
+                        7,711+ verified operators. Real-time availability, trust scores, and instant claim paths.
+                    </p>
+                    <div className="flex flex-wrap items-center gap-3 text-sm font-bold uppercase tracking-wider">
+                        <Link href="/directory?country=US" className={`px-3 py-1.5 rounded-lg transition-all ${targetCountry === 'US' ? 'bg-[#F1A91B] text-black' : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10'}`}>🇺🇸 United States</Link>
+                        <Link href="/directory?country=CA" className={`px-3 py-1.5 rounded-lg transition-all ${targetCountry === 'CA' ? 'bg-[#F1A91B] text-black' : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10'}`}>🇨🇦 Canada</Link>
+                        <Link href="/directory?country=AU" className={`px-3 py-1.5 rounded-lg transition-all ${targetCountry === 'AU' ? 'bg-[#F1A91B] text-black' : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10'}`}>🇦🇺 Australia</Link>
+                        <Link href="/directory?country=GB" className={`px-3 py-1.5 rounded-lg transition-all ${targetCountry === 'GB' ? 'bg-[#F1A91B] text-black' : 'text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10'}`}>🇬🇧 UK</Link>
+                        <Link href="/directory" className="px-3 py-1.5 rounded-lg text-[#F1A91B] hover:text-white bg-[#F1A91B]/10 hover:bg-[#F1A91B]/20 border border-[#F1A91B]/20 transition-all">
+                            All 120 Countries →
+                        </Link>
                     </div>
                 </div>
             </div>

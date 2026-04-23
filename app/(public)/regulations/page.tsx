@@ -570,7 +570,6 @@ export default function RegulationsIndexPage() {
           </p>
         </div>
       </div>
-    <>
       {/* Regulations interlinking strip — no dead ends */}
       <div style={{ background: '#F9FAFB', borderTop: '1px solid #E5E7EB', padding: '24px', marginTop: 0 }}>
         <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
