@@ -130,6 +130,31 @@ export default async function RatesPage() {
             See Current Loads & Rates
           </Link>
         </div>
+
+      {/* Specialty Support Type Rate Guides */}
+      <section className="max-w-6xl mx-auto px-4 pb-16">
+        <h2 className="text-2xl font-black text-gray-900 mb-2 mt-8">Specialty Support Type Rate Guides</h2>
+        <p className="text-gray-500 text-sm mb-6">Beyond base escort rates — specialized support types with their own pricing logic.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { icon: "📏", label: "Height Pole Escort", slug: "height-pole", rate: "$450–850/day" },
+            { icon: "🗺️", label: "Route Survey", slug: "route-survey", rate: "$500–1,200/day" },
+            { icon: "🔧", label: "Bucket Truck / Utility", slug: "bucket-truck", rate: "$600–1,400/day" },
+            { icon: "🚔", label: "Police Escort", slug: "police-escort", rate: "$85–350/hr" },
+            { icon: "🌙", label: "Night Move Premium", slug: "night-moves", rate: "+20–50%" },
+            { icon: "📅", label: "Multi-Day / Layover", slug: "multi-day", rate: "$350–650/day" },
+            { icon: "🔄", label: "Deadhead / Repo Pay", slug: "deadhead", rate: "50–100% loaded" },
+            { icon: "⏱️", label: "Wait Time / Detention", slug: "wait-time", rate: "$45–125/hr" },
+          ].map(s => (
+            <Link key={s.slug} href={`/rates/${s.slug}`}
+              className="flex flex-col gap-2 p-5 bg-white border border-gray-200 hover:border-[#C6923A]/40 rounded-2xl hover:shadow-md transition-all group">
+              <span className="text-2xl">{s.icon}</span>
+              <p className="font-bold text-gray-900 group-hover:text-[#C6923A] text-sm leading-tight">{s.label}</p>
+              <p className="text-xs font-semibold text-[#C6923A]">{s.rate}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
       </section>
     </div>
   );

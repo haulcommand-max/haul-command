@@ -36,13 +36,21 @@ export function GlobalCommandBar() {
           href="/"
           className="flex shrink-0 items-center gap-2 rounded-xl py-2 outline-none transition hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#F1A91B]/50"
         >
+          {/* Logo: SVG = crisp on retina, PNG fallback for OG/PWA */}
           <Image
             src={LOGO_SRC}
             alt={ALT_TEXT}
-            width={180}
-            height={40}
+            width={200}
+            height={50}
             priority
+            unoptimized={LOGO_SRC.endsWith('.svg')}
             className="h-7 w-auto object-contain sm:h-8"
+            onError={(e) => {
+              const img = e.target as HTMLImageElement;
+              if (!img.src.includes('logo-wordmark')) {
+                img.src = '/brand/logo-wordmark.png';
+              }
+            }}
           />
         </Link>
 
