@@ -409,28 +409,7 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
-                SERVICE CATEGORY GRID (expanded)
-                ═══════════════════════════════════════ */}
-            <section className="bg-white border-b border-gray-100">
-                <div className="max-w-6xl mx-auto px-4 py-8">
-                    <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4">
-                        {CATEGORIES.map((cat, i) => (
-                            <motion.div key={cat.label} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i * 0.03}>
-                                <Link href={cat.href} className="flex flex-col items-center gap-1.5 group">
-                                    <div
-                                        className="w-11 h-11 rounded-full flex items-center justify-center transition-transform group-hover:scale-110"
-                                        style={{ backgroundColor: `${cat.color}18` }}
-                                    >
-                                        <cat.icon className="w-5 h-5" style={{ color: cat.color }} />
-                                    </div>
-                                    <span className="text-[10px] font-semibold text-gray-600 group-hover:text-gray-900 transition-colors text-center leading-tight">{cat.label}</span>
-                                </Link>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
+
 
             {/* ═══════════════════════════════════════
                 STATS CARDS
@@ -439,19 +418,21 @@ export default function HomeClient({
                 <div className="max-w-5xl mx-auto px-4 py-10">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {[
-                            { value: `${displayCompanies}+`, label: "Operators Listed", icon: Users, color: "#F1A91B" },
-                            { value: `${totalCountries || 120}`, label: "Countries Covered", icon: Globe, color: "#3B82F6" },
-                            { value: "51", label: "Active Corridors", icon: Navigation, color: "#22C55E" },
-                            { value: "23,530+", label: "Geocoded Locations", icon: MapPin, color: "#8B5CF6" },
+                            { value: `${displayCompanies}+`, label: "Operators Listed", icon: Users, color: "#F1A91B", href: "/directory" },
+                            { value: `${totalCountries || 120}`, label: "Countries Covered", icon: Globe, color: "#3B82F6", href: "/directory" },
+                            { value: "51", label: "Active Corridors", icon: Navigation, color: "#22C55E", href: "/corridors" },
+                            { value: "23,530+", label: "Geocoded Locations", icon: MapPin, color: "#8B5CF6", href: "/available-now" },
                         ].map((stat, i) => (
                             <motion.div
                                 key={stat.label}
                                 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}
-                                className="bg-white rounded-xl border border-gray-200 p-5 text-center hover:shadow-md transition-shadow"
                             >
-                                <stat.icon className="w-5 h-5 mx-auto mb-2" style={{ color: stat.color }} />
-                                <div className="text-2xl font-black text-gray-900">{stat.value}</div>
-                                <div className="text-xs text-gray-500 font-medium mt-1">{stat.label}</div>
+                                <Link href={stat.href} className="block bg-white rounded-xl border border-gray-200 p-5 text-center hover:shadow-md hover:border-[#F1A91B]/30 transition-all group">
+                                    <stat.icon className="w-5 h-5 mx-auto mb-2 group-hover:scale-110 transition-transform" style={{ color: stat.color }} />
+                                    <div className="text-2xl font-black text-gray-900">{stat.value}</div>
+                                    <div className="text-xs text-gray-500 font-medium mt-1">{stat.label}</div>
+                                    <div className="text-[10px] text-[#C6923A] font-bold mt-1 opacity-0 group-hover:opacity-100 transition-opacity">View →</div>
+                                </Link>
                             </motion.div>
                         ))}
                     </div>
@@ -696,10 +677,10 @@ export default function HomeClient({
             {/* ═══════════════════════════════════════
                 APP DOWNLOAD BANNER
                 ═══════════════════════════════════════ */}
-            <section className="bg-[#F1A91B]">
+            <section className="bg-[#0B0F14] border-t border-[#F1A91B]/20">
                 <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <p className="text-white font-bold text-sm">📱 Get Haul Command. Track loads live.</p>
-                    <Link href="/download" className="flex items-center gap-2 bg-[#0B0F14] text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-[#1a2332] transition-colors">
+                    <Link href="/download" className="flex items-center gap-2 bg-[#F1A91B] hover:bg-[#D4951A] text-black px-5 py-2 rounded-lg text-sm font-bold transition-colors shadow-[0_0_12px_rgba(241,169,27,0.3)]">
                         Download the App
                     </Link>
                 </div>
