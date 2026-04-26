@@ -76,7 +76,7 @@ export default async function TruckerServicePage({ params }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <div className="min-h-screen text-gray-100">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <nav className="max-w-5xl mx-auto px-4 pt-6 pb-2 flex items-center gap-1.5 text-xs text-gray-500">
@@ -101,7 +101,7 @@ export default async function TruckerServicePage({ params }: Props) {
               </div>
             </div>
 
-            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
+            <div className="hc-card-on-texture rounded-2xl p-6">
               <h2 className="font-bold text-gray-900 mb-4">Contact & Details</h2>
               <div className="space-y-3">
                 {place.phone && (

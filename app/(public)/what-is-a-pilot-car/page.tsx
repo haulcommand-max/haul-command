@@ -53,7 +53,7 @@ export default function WhatIsAPilotCarPage() {
             { icon: '🔧', title: 'Bucket Truck', desc: 'Lifts power lines and cables to allow overheight loads to pass underneath.' },
             { icon: '🚔', title: 'Police Escort', desc: 'Required by some states for extreme loads or specific route segments.' },
           ].map(t => (
-            <div key={t.title} className="flex gap-4 p-4 bg-gray-50 border border-gray-200 rounded-xl">
+            <div key={t.title} className="flex gap-4 p-4 hc-card-on-texture rounded-xl">
               <span className="text-2xl shrink-0">{t.icon}</span>
               <div>
                 <div className="font-bold text-gray-900 text-sm">{t.title}</div>

@@ -15,14 +15,14 @@ import CartAbandonmentRetargeter from '@/components/growth/CartAbandonmentRetarg
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
     return (
         <>
-            <main className="bg-white text-gray-900 scrollbar-hide min-h-screen flex flex-col">
+            <main className="text-gray-100 scrollbar-hide min-h-screen flex flex-col">
                 {/* Page content */}
                 <div className="flex-1 flex flex-col relative z-0">
                     {children}
                 </div>
 
                 {/* Desktop footer */}
-                <div className="border-t border-gray-200">
+                <div className="border-t border-[#C6923A]/15">
                     <HCFooterShell mode="public" />
                 </div>
 

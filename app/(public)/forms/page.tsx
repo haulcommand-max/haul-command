@@ -13,7 +13,7 @@ export default async function FormsHubPage() {
         .order('created_at', { ascending: false })
 
     return (
-        <div className="bg-white pt-24 pb-32">
+        <div className="pt-24 pb-32">
             <div className="max-w-7xl mx-auto px-4 md:px-6">
                 
                 {/* Headers & Hero */}

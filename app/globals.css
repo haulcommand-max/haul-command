@@ -2588,3 +2588,141 @@ html, body {
   }
 }
 
+
+/* ══════════════════════════════════════════════════════════════
+   HAUL COMMAND — SITEWIDE TEXTURED BACKGROUND SYSTEM v1.0
+   Distressed metallic/gold texture with optional living effect
+
+   DISABLE BACKGROUND:  remove "hc-textured-background-enabled" from <body>
+                        OR set --hc-site-bg-opacity: 0
+   DISABLE MOTION ONLY: remove "hc-living-background-enabled" from <body>
+                        OR set --hc-bg-motion-opacity: 0
+   ══════════════════════════════════════════════════════════════ */
+
+:root {
+  --hc-site-bg-image: url('/images/brand/haul-command-site-background.webp');
+  --hc-site-bg-opacity: 0.40;
+  --hc-site-bg-overlay: rgba(5, 5, 5, 0.55);
+  --hc-site-bg-size: cover;
+  --hc-site-bg-position: center top;
+  --hc-site-bg-repeat: no-repeat;
+  --hc-site-bg-attachment: fixed;
+
+  --hc-bg-motion-opacity: 0.10;
+  --hc-bg-motion-duration: 120s;
+  --hc-bg-motion-distance: 4%;
+}
+
+/* ── Base shell ── */
+body.hc-textured-background-enabled {
+  background-color: #070707;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* ── Layer 1: texture image ── */
+body.hc-textured-background-enabled::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image: var(--hc-site-bg-image);
+  background-size: var(--hc-site-bg-size);
+  background-position: var(--hc-site-bg-position);
+  background-repeat: var(--hc-site-bg-repeat);
+  background-attachment: var(--hc-site-bg-attachment);
+  opacity: var(--hc-site-bg-opacity);
+  pointer-events: none;
+  will-change: auto;
+}
+
+/* ── Layer 2: dark overlay + gold radial glow ── */
+body.hc-textured-background-enabled::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 20%, rgba(184, 122, 34, 0.10), transparent 70%),
+    var(--hc-site-bg-overlay);
+  pointer-events: none;
+  opacity: var(--hc-bg-motion-opacity);
+  will-change: transform, opacity;
+}
+
+/* ── Living background: barely-alive gold drift ── */
+body.hc-textured-background-enabled.hc-living-background-enabled::after {
+  animation: hc-bg-command-drift var(--hc-bg-motion-duration) ease-in-out infinite alternate;
+}
+
+@keyframes hc-bg-command-drift {
+  0%   { transform: translate3d(-2%, -1%, 0) scale(1.03); opacity: var(--hc-bg-motion-opacity); }
+  50%  { transform: translate3d(2%, 1%, 0) scale(1.06);  opacity: calc(var(--hc-bg-motion-opacity) + 0.03); }
+  100% { transform: translate3d(1%, -2%, 0) scale(1.04); opacity: var(--hc-bg-motion-opacity); }
+}
+
+/* ── Accessibility: kill motion ── */
+@media (prefers-reduced-motion: reduce) {
+  body.hc-textured-background-enabled::after,
+  body.hc-textured-background-enabled.hc-living-background-enabled::after {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* ── Mobile tuning ── */
+@media (max-width: 768px) {
+  :root {
+    --hc-site-bg-opacity: 0.32;
+    --hc-site-bg-overlay: rgba(5, 5, 5, 0.62);
+    --hc-site-bg-attachment: scroll;
+    --hc-bg-motion-opacity: 0.05;
+    --hc-bg-motion-duration: 160s;
+  }
+  body.hc-textured-background-enabled::before {
+    position: absolute;
+    background-attachment: scroll;
+  }
+  body.hc-textured-background-enabled::after {
+    position: absolute;
+  }
+}
+
+/* ══ SURFACE TOKENS — cards/panels that sit above the texture ══ */
+
+.hc-surface {
+  background: rgba(12, 12, 12, 0.84);
+  border: 1px solid rgba(214, 151, 46, 0.18);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+}
+
+.hc-surface-elevated {
+  background: rgba(10, 10, 10, 0.90);
+  border: 1px solid rgba(214, 151, 46, 0.24);
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.hc-glass-panel {
+  background: rgba(8, 8, 8, 0.72);
+  border: 1px solid rgba(214, 151, 46, 0.16);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.30);
+}
+
+.hc-dark-panel {
+  background: #0b0b0b;
+  border: 1px solid rgba(214, 151, 46, 0.18);
+}
+
+.hc-surface-light {
+  background: rgba(255, 255, 255, 0.92);
+  color: #111111;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.hc-card-on-texture {
+  background: rgba(14, 14, 14, 0.88);
+  border: 1px solid rgba(214, 151, 46, 0.18);
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.32);
+}
