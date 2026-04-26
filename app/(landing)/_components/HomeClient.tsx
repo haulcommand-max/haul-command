@@ -236,12 +236,12 @@ export default function HomeClient({
     const selectedRole = ROLES.find(r => r.id === activeRole);
 
     return (
-        <div className="font-[family-name:var(--font-body)] antialiased bg-white text-gray-900">
+        <div className="font-[family-name:var(--font-body)] antialiased text-gray-100">
 
             {/* ═══════════════════════════════════════
                 HERO — Brand Image + Role-Aware Search
                 ═══════════════════════════════════════ */}
-            <section className="relative w-full bg-white pb-0">
+            <section className="relative w-full pb-0">
                 <div className="max-w-6xl mx-auto px-4 pt-10 pb-4 text-center">
                     <motion.h1
                         initial="hidden" animate="visible" variants={fadeUp} custom={0}
@@ -250,7 +250,7 @@ export default function HomeClient({
                         The Heavy Haul Operating System
                     </motion.h1>
                     <motion.p initial="hidden" animate="visible" variants={fadeUp} custom={0.5}
-                        className="text-sm text-gray-500 mb-4">
+                        className="text-sm text-gray-400 mb-4">
                         Pilot car operators · Escort vehicles · Permits · Rates · Compliance — 120 countries
                     </motion.p>
                 </div>
@@ -300,7 +300,7 @@ export default function HomeClient({
                             >
                                 <div className="flex-[1.5] flex items-center gap-2 bg-white px-4 py-3 border-b sm:border-b-0 sm:border-r border-gray-200">
                                     <Search className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                                    <select name="category" className="w-full bg-transparent text-sm text-gray-700 font-semibold focus:outline-none appearance-none cursor-pointer">
+                                    <select name="category" className="w-full bg-transparent text-sm text-gray-200 font-semibold focus:outline-none appearance-none cursor-pointer">
                                         <option value="">Find escorts, pilot cars, permits, route support, or rates</option>
                                         <optgroup label="─── Escort Services ───">
                                             <option value="pilot-car">Pilot Car / PEVO</option>
@@ -339,8 +339,8 @@ export default function HomeClient({
                                                     className="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0">
                                                     <span className="text-base shrink-0">{SUGGEST_ICONS[s.type] ?? '🔍'}</span>
                                                     <div className="min-w-0">
-                                                        <div className="text-sm font-semibold text-gray-900 truncate">{s.label}</div>
-                                                        {s.sub && <div className="text-xs text-gray-500 truncate">{s.sub}</div>}
+                                                        <div className="text-sm font-semibold text-gray-100 truncate">{s.label}</div>
+                                                        {s.sub && <div className="text-xs text-gray-400 truncate">{s.sub}</div>}
                                                     </div>
                                                     <span className="ml-auto text-[9px] font-bold text-gray-400 uppercase tracking-wider shrink-0">{s.type}</span>
                                                 </a>
@@ -364,7 +364,7 @@ export default function HomeClient({
             {/* ═══════════════════════════════════════
                 ROLE SELECTOR — "Who are you?"
                 ═══════════════════════════════════════ */}
-            <section className="bg-white border-b border-gray-100">
+            <section className="border-b border-white/[0.06]">
                 <div className="max-w-6xl mx-auto px-4 py-6">
                     <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-3 text-center">Choose your role for a personalized experience</p>
                     <div className="flex flex-wrap justify-center gap-2">
@@ -376,7 +376,7 @@ export default function HomeClient({
                                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border transition-all ${
                                     activeRole === role.id
                                         ? 'bg-[#F1A91B] border-[#F1A91B] text-white shadow-md'
-                                        : 'bg-white border-gray-200 text-gray-700 hover:border-[#F1A91B]/40 hover:text-[#C6923A]'
+                                        : 'bg-white/10 border-white/20 text-gray-200 hover:border-[#F1A91B]/40 hover:text-[#C6923A]'
                                 }`}
                             >
                                 <span>{role.icon}</span>
@@ -394,11 +394,11 @@ export default function HomeClient({
                             className="mt-5 p-5 bg-gradient-to-r from-[#F1A91B]/5 to-[#C6923A]/5 border border-[#F1A91B]/20 rounded-2xl"
                         >
                             <p className="text-sm font-black text-gray-900 mb-1">{selectedRole.icon} {selectedRole.label}</p>
-                            <p className="text-xs text-gray-500 mb-4">{selectedRole.desc}</p>
+                            <p className="text-xs text-gray-400 mb-4">{selectedRole.desc}</p>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
                                 {selectedRole.goals.map(goal => (
                                     <Link key={goal.label} href={goal.href}
-                                        className="flex flex-col items-center text-center p-3 bg-white border border-gray-200 hover:border-[#F1A91B]/40 hover:bg-[#F1A91B]/5 rounded-xl transition-all group">
+                                        className="flex flex-col items-center text-center p-3 hc-card-on-texture hover:border-[#F1A91B]/40 rounded-xl transition-all group">
                                         <span className="text-[11px] font-semibold text-gray-700 group-hover:text-[#C6923A] leading-tight">{goal.label}</span>
                                         <ChevronRight className="w-3 h-3 text-gray-300 group-hover:text-[#F1A91B] mt-1" />
                                     </Link>
@@ -414,7 +414,7 @@ export default function HomeClient({
             {/* ═══════════════════════════════════════
                 STATS CARDS
                 ═══════════════════════════════════════ */}
-            <section className="bg-gray-50 border-b border-gray-100">
+            <section className="bg-black/20 border-b border-white/[0.06]">
                 <div className="max-w-5xl mx-auto px-4 py-10">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {[
@@ -427,10 +427,10 @@ export default function HomeClient({
                                 key={stat.label}
                                 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}
                             >
-                                <Link href={stat.href} className="block bg-white rounded-xl border border-gray-200 p-5 text-center hover:shadow-md hover:border-[#F1A91B]/30 transition-all group">
+                                <Link href={stat.href} className="block hc-card-on-texture rounded-xl p-5 text-center hover:border-[#F1A91B]/30 transition-all group">
                                     <stat.icon className="w-5 h-5 mx-auto mb-2 group-hover:scale-110 transition-transform" style={{ color: stat.color }} />
                                     <div className="text-2xl font-black text-gray-900">{stat.value}</div>
-                                    <div className="text-xs text-gray-500 font-medium mt-1">{stat.label}</div>
+                                    <div className="text-xs text-gray-400 font-medium mt-1">{stat.label}</div>
                                     <div className="text-[10px] text-[#C6923A] font-bold mt-1 opacity-0 group-hover:opacity-100 transition-opacity">View →</div>
                                 </Link>
                             </motion.div>
@@ -442,7 +442,7 @@ export default function HomeClient({
             {/* ═══════════════════════════════════════
                 POPULAR STATES (US) + GLOBAL MARKETS
                 ═══════════════════════════════════════ */}
-            <section className="bg-white">
+            <section className="">
                 <div className="max-w-5xl mx-auto px-4 py-10">
                     <div className="flex items-center justify-between mb-5">
                         <h2 className="text-lg font-black text-gray-900">Popular US States</h2>
@@ -453,7 +453,7 @@ export default function HomeClient({
                             <Link
                                 key={state.slug}
                                 href={`/directory/us/${state.slug}`}
-                                className="flex items-center justify-between px-3 py-2.5 bg-gray-50 hover:bg-[#F1A91B]/10 border border-gray-200 hover:border-[#F1A91B]/30 rounded-lg text-sm font-semibold text-gray-700 hover:text-[#C6923A] transition-all group"
+                                className="flex items-center justify-between px-3 py-2.5 bg-white/5 hover:bg-[#F1A91B]/10 border border-white/10 hover:border-[#F1A91B]/30 rounded-lg text-sm font-semibold text-gray-200 hover:text-[#C6923A] transition-all group"
                             >
                                 {state.name}
                                 <ChevronRight className="w-3.5 h-3.5 text-gray-300 group-hover:text-[#F1A91B] transition-colors" />
@@ -466,7 +466,7 @@ export default function HomeClient({
             {/* ═══════════════════════════════════════
                 BROWSE BY COUNTRY — 120 markets
                 ═══════════════════════════════════════ */}
-            <section className="bg-gray-50 border-y border-gray-100">
+            <section className="bg-black/20 border-y border-white/[0.06]">
                 <div className="max-w-5xl mx-auto px-4 py-10">
                     <div className="flex items-center justify-between mb-5">
                         <h2 className="text-lg font-black text-gray-900">120 Countries. One Platform.</h2>
@@ -477,7 +477,7 @@ export default function HomeClient({
                             <Link
                                 key={country.slug}
                                 href={`/directory/${country.slug}`}
-                                className="flex items-center gap-2 px-3 py-2.5 bg-white hover:bg-[#F1A91B]/5 border border-gray-200 hover:border-[#F1A91B]/30 rounded-lg transition-all group"
+                                className="flex items-center gap-2 px-3 py-2.5 bg-white/5 hover:bg-[#F1A91B]/5 border border-white/10 hover:border-[#F1A91B]/30 rounded-lg transition-all group"
                             >
                                 <span className="text-lg">{country.flag}</span>
                                 <span className="text-xs font-semibold text-gray-700 group-hover:text-[#C6923A] transition-colors">{country.name}</span>
@@ -490,12 +490,12 @@ export default function HomeClient({
             {/* ═══════════════════════════════════════
                 GEOGRAPHY ROUTER — Corridor + Port + Near Me
                 ═══════════════════════════════════════ */}
-            <section className="bg-white border-b border-gray-100">
+            <section className="border-b border-white/[0.06]">
                 <div className="max-w-5xl mx-auto px-4 py-8">
                     <div className="flex items-center justify-between mb-4">
                         <div>
                             <h2 className="text-lg font-black text-gray-900">Route-Based Intelligence</h2>
-                            <p className="text-xs text-gray-500 mt-0.5">Search by corridor, port, border crossing, or near me — global coverage</p>
+                            <p className="text-xs text-gray-400 mt-0.5">Search by corridor, port, border crossing, or near me — global coverage</p>
                         </div>
                         <Link href="/corridors" className="text-xs font-bold text-[#F1A91B] hover:underline hidden sm:block">All corridors →</Link>
                     </div>
@@ -507,9 +507,9 @@ export default function HomeClient({
                             { label: "📍 Available Near Me", sub: "Escorts ready to dispatch", href: "/available-now" },
                         ].map(item => (
                             <Link key={item.label} href={item.href}
-                                className="flex flex-col gap-1 p-4 bg-gray-50 hover:bg-[#F1A91B]/5 border border-gray-200 hover:border-[#F1A91B]/30 rounded-xl transition-all group">
+                                className="flex flex-col gap-1 p-4 bg-white/5 hover:bg-[#F1A91B]/5 border border-white/10 hover:border-[#F1A91B]/30 rounded-xl transition-all group">
                                 <span className="text-sm font-bold text-gray-900 group-hover:text-[#C6923A]">{item.label}</span>
-                                <span className="text-xs text-gray-500">{item.sub}</span>
+                                <span className="text-xs text-gray-400">{item.sub}</span>
                             </Link>
                         ))}
                     </div>
@@ -524,7 +524,7 @@ export default function HomeClient({
                             { name: "Hwy 401 Ontario (CA)", slug: "hwy-401-ontario" },
                         ].map(c => (
                             <Link key={c.slug} href={`/corridors/${c.slug}`}
-                                className="px-3 py-1 text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-[#F1A91B]/10 hover:text-[#C6923A] border border-gray-200 hover:border-[#F1A91B]/30 rounded-full transition-all">
+                                className="px-3 py-1 text-xs font-semibold text-gray-300 bg-white/5 hover:bg-[#F1A91B]/10 hover:text-[#C6923A] border border-white/10 hover:border-[#F1A91B]/30 rounded-full transition-all">
                                 {c.name}
                             </Link>
                         ))}
@@ -536,7 +536,7 @@ export default function HomeClient({
             {/* ═══════════════════════════════════════
                 TRENDING LOCALITIES
                 ═══════════════════════════════════════ */}
-            <section className="bg-white">
+            <section className="">
                 <div className="max-w-5xl mx-auto px-4 py-8">
                     <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">Trending Escort Localities</p>
                     <div className="flex flex-wrap items-center gap-2">
@@ -544,7 +544,7 @@ export default function HomeClient({
                             <Link
                                 key={loc}
                                 href={`/near/${loc.toLowerCase().replace(/\s+/g, '-').replace(',', '')}`}
-                                className="px-3 py-1.5 text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-[#F1A91B]/10 hover:text-[#C6923A] border border-gray-200 hover:border-[#F1A91B]/30 rounded-full transition-all"
+                                className="px-3 py-1.5 text-xs font-semibold text-gray-300 bg-white/5 hover:bg-[#F1A91B]/10 hover:text-[#C6923A] border border-white/10 hover:border-[#F1A91B]/30 rounded-full transition-all"
                             >
                                 {loc}
                             </Link>
@@ -557,7 +557,7 @@ export default function HomeClient({
             {/* ═══════════════════════════════════════
                 CLAIM YOUR FREE LISTING
                 ═══════════════════════════════════════ */}
-            <section className="bg-white border-y border-gray-100">
+            <section className="border-y border-white/[0.06]">
                 <div className="max-w-5xl mx-auto px-4 py-12">
                     <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10">
                         <div className="w-16 h-16 rounded-2xl bg-[#F1A91B]/10 flex items-center justify-center flex-shrink-0">
@@ -565,7 +565,7 @@ export default function HomeClient({
                         </div>
                         <div className="flex-1">
                             <h2 className="text-xl font-black text-gray-900 mb-2">Claim Your Free Listing</h2>
-                            <p className="text-sm text-gray-600 mb-4 max-w-xl">
+                            <p className="text-sm text-gray-300 mb-4 max-w-xl">
                                 Join {displayCompanies}+ verified operators. Claim your profile in under 60 seconds to unlock discoverability, verified badge, trust score, and broker lead flow.
                             </p>
                             <div className="flex flex-wrap gap-4 text-xs text-gray-500 mb-5">
@@ -592,11 +592,11 @@ export default function HomeClient({
                 <div className="max-w-4xl mx-auto px-4 py-12 text-center">
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                         <h2 className="text-xl sm:text-2xl font-black text-gray-900 mb-3">Have a Heavy Haul Question?</h2>
-                        <p className="text-sm text-gray-600 mb-6 max-w-lg mx-auto">
+                        <p className="text-sm text-gray-300 mb-6 max-w-lg mx-auto">
                             Ask anything about escort requirements, permit rules, and industry standards across all 120 countries. FMCSA-grounded answers instantly.
                         </p>
-                        <div className="flex flex-col sm:flex-row items-stretch gap-2 max-w-xl mx-auto bg-white rounded-xl p-2 border border-gray-200 shadow-md">
-                            <div className="flex-1 flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">
+                        <div className="flex flex-col sm:flex-row items-stretch gap-2 max-w-xl mx-auto bg-[#0a0a0a]/80 rounded-xl p-2 border border-white/15 shadow-md backdrop-blur-sm">
+                            <div className="flex-1 flex items-center gap-2 bg-white/5 rounded-lg px-4 py-3">
                                 <HelpCircle className="w-4 h-4 text-gray-400 flex-shrink-0" />
                                 <input
                                     type="text"
@@ -610,7 +610,7 @@ export default function HomeClient({
                         </div>
                         <div className="flex flex-wrap justify-center gap-2 mt-4">
                             {["Escort Requirements", "OSOW Regulations", "Height/Weight Limits", "Permit Calculators", "Oversize Load Map"].map(q => (
-                                <Link key={q} href="/escort-requirements" className="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-medium text-gray-600 hover:text-[#C6923A] hover:border-[#F1A91B]/30 transition-all">{q}</Link>
+                                <Link key={q} href="/escort-requirements" className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs font-medium text-gray-300 hover:text-[#C6923A] hover:border-[#F1A91B]/30 transition-all">{q}</Link>
                             ))}
                         </div>
                     </motion.div>
@@ -620,7 +620,7 @@ export default function HomeClient({
             {/* ═══════════════════════════════════════
                 ADVERTISE ON HAUL COMMAND
                 ═══════════════════════════════════════ */}
-            <section className="bg-white border-y border-gray-100">
+            <section className="border-y border-white/[0.06]">
                 <div className="max-w-5xl mx-auto px-4 py-12">
                     <div className="flex flex-col md:flex-row items-center gap-8">
                         <div className="flex-1">
@@ -628,7 +628,7 @@ export default function HomeClient({
                             <h2 className="text-xl font-black text-gray-900 mb-3">
                                 Advertise on Haul Command & <span className="text-[#F1A91B]">Get Featured</span>
                             </h2>
-                            <p className="text-sm text-gray-600 mb-4 max-w-lg">
+                            <p className="text-sm text-gray-300 mb-4 max-w-lg">
                                 Reach brokers, carriers, and dispatchers actively searching for escorts and services. Geo-targeted placements in directory, corridors, and tool pages.
                             </p>
                             <div className="flex flex-wrap gap-4 text-xs text-gray-500 mb-5">
@@ -641,7 +641,7 @@ export default function HomeClient({
                                 <Link href="/advertise/buy" className="inline-flex items-center gap-2 bg-[#F1A91B] hover:bg-[#D4951A] text-white px-5 py-2.5 rounded-lg text-sm font-bold transition-colors">
                                     View Ad Products
                                 </Link>
-                                <Link href="/advertise/buy" className="inline-flex items-center gap-2 border border-gray-300 hover:border-[#F1A91B]/40 px-5 py-2.5 rounded-lg text-sm font-semibold text-gray-700 hover:text-[#C6923A] transition-all">
+                                <Link href="/advertise/buy" className="inline-flex items-center gap-2 border border-gray-300 hover:border-[#F1A91B]/40 px-5 py-2.5 rounded-lg text-sm font-semibold text-gray-200 hover:text-[#C6923A] transition-all">
                                     Get Proposal
                                 </Link>
                             </div>
@@ -656,19 +656,19 @@ export default function HomeClient({
             {/* ═══════════════════════════════════════
                 I NEED / I PROVIDE — Role Entry Points
                 ═══════════════════════════════════════ */}
-            <section className="bg-gray-50 border-b border-gray-100">
+            <section className="bg-black/20 border-b border-white/[0.06]">
                 <div className="max-w-5xl mx-auto px-4 py-12">
                     <h2 className="text-lg font-black text-gray-900 mb-6 text-center">How Can We Help You?</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <Link href="/directory" className="bg-white border border-gray-200 hover:border-[#F1A91B]/40 rounded-2xl p-6 hover:shadow-md transition-all group">
+                        <Link href="/directory" className="hc-card-on-texture hover:border-[#F1A91B]/40 rounded-2xl p-6 transition-all group">
                             <Search className="w-8 h-8 mb-3 text-[#F1A91B]" />
                             <h3 className="font-black text-gray-900 mb-2 group-hover:text-[#C6923A]">I Need an Escort</h3>
-                            <p className="text-xs text-gray-500">Find a verified pilot car or escort vehicle near your load's origin. Real-time availability, trust scores, and instant dispatch matching.</p>
+                            <p className="text-xs text-gray-400">Find a verified pilot car or escort vehicle near your load's origin. Real-time availability, trust scores, and instant dispatch matching.</p>
                         </Link>
-                        <Link href="/claim" className="bg-white border border-gray-200 hover:border-[#F1A91B]/40 rounded-2xl p-6 hover:shadow-md transition-all group">
+                        <Link href="/claim" className="hc-card-on-texture hover:border-[#F1A91B]/40 rounded-2xl p-6 transition-all group">
                             <Users className="w-8 h-8 mb-3 text-[#F1A91B]" />
                             <h3 className="font-black text-gray-900 mb-2 group-hover:text-[#C6923A]">I Provide Escorts</h3>
-                            <p className="text-xs text-gray-500">Claim your free profile, verify your certifications, get booked by brokers, and unlock visibility tools — all from one dashboard.</p>
+                            <p className="text-xs text-gray-400">Claim your free profile, verify your certifications, get booked by brokers, and unlock visibility tools — all from one dashboard.</p>
                         </Link>
                     </div>
                 </div>
@@ -689,7 +689,7 @@ export default function HomeClient({
             {/* ═══════════════════════════════════════
                 FOOTER DIRECTORY
                 ═══════════════════════════════════════ */}
-            <section className="bg-white border-t border-gray-100 py-12">
+            <section className="border-t border-white/[0.06] py-12">
                 <div className="max-w-6xl mx-auto px-4">
                     <h2 className="text-lg font-black text-gray-900 mb-8 text-center">Take Haul Command With You</h2>
                     <FooterAccordion />
