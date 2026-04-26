@@ -1,105 +1,238 @@
 # =========================================================
-# HAUL COMMAND — GLOBAL HEAVY HAUL SURFACE INTELLIGENCE
-# Version: 1.0
-# Scope: All 52 Countries
+# HAUL COMMAND — GLOBAL HEAVY HAUL SURFACE + SERVICE INTELLIGENCE
+# Version: 2.0
+# Scope: 120 Countries
+# Source of truth: lib/geo/countries.ts
 # Principle: index_where_oversize_touches_pavement
 # =========================================================
 
+version: 2.0
+scope: 120_countries
+country_source_of_truth: lib/geo/countries.ts
+classification_principle: escort_demand_proximity
+strategy: >
+  Every surface that can create oversize/heavy-haul demand must become a
+  crawlable SEO surface, a claimable profile, an AdGrid inventory unit, a
+  dispatch/routing object, a support-service object, and a data-product signal.
+
+non_negotiables:
+  - no_50_52_57_country_shadow_lists
+  - no_us_only_or_canada_only_assumptions
+  - no_fake_live_availability
+  - no_fake_verified_credentials
+  - no_fake_demand_scores
+  - surfaces_must_support_claim_sponsor_request_dispatch_report_paths
+
 global_heavy_haul_surface_taxonomy:
-  version: 1.0
-  classification_principle: escort_demand_proximity
+  tier_1_hard_infrastructure:
+    priority_weight: 1.0
+    adgrid_value: elite
+    service_value: highest
+    surfaces:
+      ports:
+        examples: [seaports, inland_ports, river_ports]
+        service_families: [port_access_dispatch, credentialed_operator_rescue, port_sponsorship, port_capacity_data]
+      port_terminals:
+        examples: [container, breakbulk, roro, heavy_lift, bulk, project_cargo]
+        service_families: [terminal_access, port_no_show_recovery, terminal_sponsor_inventory]
+      dry_ports:
+        examples: [inland_port, customs_inland_terminal, bonded_inland_terminal]
+        service_families: [inland_port_dispatch, corridor_preflight, capacity_data]
+      intermodal_rail:
+        examples: [intermodal_terminal, freight_rail_yard, dry_port, inland_logistics_hub]
+        service_families: [intermodal_dispatch, rail_yard_access, escort_meetup]
+      heavy_industrial:
+        examples: [wind_turbine_factory, transformer_factory, steel_mill, shipyard, modular_home_factory, heavy_equipment_plant, precast_concrete_plant]
+        service_families: [project_cargo_dispatch, route_support_pack, industrial_sponsor_inventory]
+      energy_infra:
+        examples: [power_plant, substation, lng_terminal, refinery, petrochemical_complex, wind_farm, solar_farm]
+        service_families: [energy_project_dispatch, superload_specialist_desk, route_survey]
 
+  tier_2_flow_surfaces:
+    priority_weight: 0.7
+    adgrid_value: high
+    service_value: high
+    surfaces:
+      heavy_haul_corridors:
+        examples: [designated_oversize_route, port_access_corridor, freight_bypass_route, permit_route]
+        service_families: [corridor_preflight, escort_capacity_data, route_support_pack]
+      logistics_parks:
+        examples: [logistics_park, freight_village, bonded_warehouse_zone, free_trade_zone, distribution_megacenter]
+        service_families: [logistics_dispatch, sponsor_inventory, shipper_lead_generation]
+      modular_prefab_zones:
+        examples: [prefab_construction_yard, modular_housing_factory, volumetric_building_facility]
+        service_families: [modular_move_dispatch, staging_support, route_survey]
+      mega_construction:
+        examples: [bridge_project, highway_expansion, port_expansion, data_center_campus, mining_expansion, energy_project]
+        service_families: [project_support_desk, permit_rescue, specialist_marketplace]
+      staging_yards:
+        examples: [laydown_yard, industrial_yard, truck_staging_area, port_waiting_area]
+        service_families: [staging_reservation, curfew_holdover, emergency_delay_support]
+      secure_parking:
+        examples: [oversize_parking, guarded_parking, heavy_truck_parking, freight_rest_area]
+        service_families: [secure_parking, curfew_holdover, parking_sponsorship]
+
+  tier_3_defensive_mesh:
+    priority_weight: 0.4
+    adgrid_value: authority_and_geo_local
+    service_value: medium_to_high
+    surfaces:
+      permit_authorities:
+        examples: [transport_ministry, oversize_permit_office, dot_equivalent, escort_regulation_body]
+        service_families: [permit_rescue_desk, compliance_lookup, authority_data]
+      escort_staging_zones:
+        examples: [escort_meeting_point, wide_load_pull_off, port_waiting_area, police_handoff_area]
+        service_families: [escort_meetup, no_show_replacement, route_support_pack]
+      truck_rest_infra:
+        examples: [heavy_truck_stop, freight_rest_area, oversize_parking_zone]
+        service_families: [truck_stop_sponsorship, route_support, fuel_partner]
+      repair_support:
+        examples: [truck_repair, mobile_tire, heavy_recovery, rotator, inspection_shop]
+        service_families: [breakdown_recovery, repair_partner_routing, emergency_route_support]
+      installers_upfitters:
+        examples: [equipment_upfitter, lightbar_installer, radio_installer, sign_shop, fabrication_shop]
+        service_families: [routeready_installer, gear_install, operator_readiness]
+      oversize_hotels:
+        examples: [hotel_with_truck_parking, motel_with_oversize_parking, crew_lodging]
+        service_families: [crew_lodging, curfew_holdover, hotel_affiliate]
+
+country_priority_model:
+  source: lib/geo/countries.ts
   tiers:
+    tier_A_gold:
+      countries_source: HC_COUNTRIES where tier = A
+      dominant_surfaces: [ports, rail_yards, energy_infrastructure, heavy_industrial_plants, heavy_haul_corridors]
+    tier_B_blue:
+      countries_source: HC_COUNTRIES where tier = B
+      dominant_surfaces: [ports, logistics_parks, energy_nodes, prefab_zones, cross_border_corridors]
+    tier_C_silver:
+      countries_source: HC_COUNTRIES where tier = C
+      dominant_surfaces: [ports, industrial_plants, corridors, logistics_parks, mining_energy_sites]
+    tier_D_slate:
+      countries_source: HC_COUNTRIES where tier = D
+      dominant_surfaces: [ports, logistics_hubs, staging_zones, secure_parking]
+    tier_E_watchlist:
+      countries_source: HC_COUNTRIES where tier = E
+      dominant_surfaces: [ports, energy_nodes, mining_sites, national_corridors]
 
-    tier_1_hard_infrastructure:
-      priority_weight: 1.0
-      adgrid_value: elite
-      surfaces:
-        - ports:              [seaports, inland_ports, river_ports]
-        - port_terminals:     [container, breakbulk, roro, heavy_lift, bulk, project_cargo]
-        - intermodal_rail:    [intermodal_terminal, freight_rail_yard, dry_port, inland_logistics_hub]
-        - heavy_industrial:   [wind_turbine_factory, transformer_factory, steel_mill, shipyard, modular_home_factory, heavy_equipment_plant, precast_concrete_plant]
-        - energy_infra:       [power_plant, substation, lng_terminal, refinery, petrochemical_complex, wind_farm, solar_farm]
-
-    tier_2_flow_surfaces:
-      priority_weight: 0.7
-      adgrid_value: high
-      surfaces:
-        - heavy_haul_corridors:  [designated_oversize_route, port_access_corridor, freight_bypass_route, permit_route]
-        - logistics_parks:       [logistics_park, freight_village, bonded_warehouse_zone, free_trade_zone, distribution_megacenter]
-        - modular_prefab_zones:  [prefab_construction_yard, modular_housing_factory, volumetric_building_facility]
-        - mega_construction:     [bridge_project, highway_expansion, port_expansion, data_center_campus, mining_expansion, energy_project]
-
-    tier_3_defensive_mesh:
-      priority_weight: 0.4
-      adgrid_value: authority_and_geo_local
-      surfaces:
-        - permit_authorities:    [transport_ministry, oversize_permit_office, dot_equivalent, escort_regulation_body]
-        - escort_staging_zones:  [truck_staging_area, escort_meeting_point, wide_load_pull_off, port_waiting_area]
-        - truck_rest_infra:      [heavy_truck_stop, freight_rest_area, oversize_parking_zone]
-
-# ─────────────────────────────────────────────────────────
-# COUNTRY PRIORITY HEAT LIST — 52 Countries
-# ─────────────────────────────────────────────────────────
-country_priority_heat_list:
-
-  tier_A_gold:
-    priority_score: 95-100
-    countries: [US, CA, AU, GB, NZ, ZA, DE, NL, AE, BR]
-    dominant_surfaces: [ports, rail_yards, energy_infrastructure, heavy_industrial_plants, heavy_haul_corridors]
-
-  tier_B_blue:
-    priority_score: 80-94
-    countries: [IE, SE, NO, DK, FI, BE, AT, CH, ES, FR, IT, PT, SA, QA, MX]
-    dominant_surfaces: [ports, logistics_parks, energy_nodes, prefab_zones]
-
-  tier_C_silver:
-    priority_score: 60-79
-    countries: [PL, CZ, SK, HU, SI, EE, LV, LT, HR, RO, BG, GR, TR, KW, OM, BH, SG, MY, JP, KR, CL, AR, CO, PE]
-    dominant_surfaces: [ports, industrial_plants, corridors, logistics_parks]
-
-  tier_D_slate:
-    priority_score: 45-59
-    countries: [UY, PA, CR]
-    dominant_surfaces: [ports, logistics_hubs, staging_zones]
-
-# ─────────────────────────────────────────────────────────
-# PROGRAMMATIC PAGE FACTORY — URL Patterns
-# ─────────────────────────────────────────────────────────
 programmatic_page_factory:
-  version: 1.0
-  goal: infinite_geo_commercial_coverage
+  version: 2.0
+  goal: global_geo_commercial_coverage_without_thin_content
+  rule: >
+    Pages should not be indexable unless they have a useful local data bundle,
+    internal links, service CTAs, sponsor/claim options, and truthful data labels.
 
   url_patterns:
-    port:                "/port/{country}/{port_slug}"                                       # adgrid_slots: 6
-    terminal:            "/port/{country}/{port_slug}/terminal/{terminal_slug}"              # adgrid_slots: 8
-    rail_yard:           "/rail/{country}/{yard_slug}"                                       # adgrid_slots: 5
-    industrial_facility: "/industrial/{country}/{facility_type}/{facility_slug}"             # adgrid_slots: 6
-    energy_site:         "/energy/{country}/{energy_type}/{site_slug}"                       # adgrid_slots: 6
-    corridor:            "/corridor/{country}/{corridor_slug}"                               # adgrid_slots: 10
-    staging_area:        "/staging/{country}/{location_slug}"                                # adgrid_slots: 4
+    port: /port/{country}/{port_slug}
+    terminal: /port/{country}/{port_slug}/terminal/{terminal_slug}
+    dry_port: /dry-port/{country}/{slug}
+    rail_yard: /rail/{country}/{yard_slug}
+    industrial_facility: /industrial/{country}/{facility_type}/{facility_slug}
+    energy_site: /energy/{country}/{energy_type}/{site_slug}
+    corridor: /corridor/{country}/{corridor_slug}
+    staging_area: /staging/{country}/{location_slug}
+    secure_parking: /parking/{country}/{location_slug}
+    truck_stop: /truck-stop/{country}/{location_slug}
+    route_support: /route-support/{country}/{location_slug}
+    installer: /installers/{country}/{location_slug}
+    repair_support: /repair/{country}/{location_slug}
 
-# ─────────────────────────────────────────────────────────
-# DEMAND LIKELIHOOD SCORING MODEL
-# ─────────────────────────────────────────────────────────
+service_factory:
+  credentialed_operator_rescue:
+    triggers: [twic, msic, port_access, high_pole, hazmat, superload, night_move, cross_border, steersman, route_survey]
+    customer_pain: [no_show, last_minute_replacement, port_gate_failure, urgent_move, after_hours_move]
+    monetization: [request_fee, rush_fee, take_rate, subscription, standby_reservation]
+  port_access_dispatch:
+    triggers: [port, terminal, dry_port, credential_required, appointment_window]
+    customer_pain: [gate_delay, appointment_risk, credential_gap, replacement_operator_needed]
+    monetization: [dispatch_fee, sponsor_slot, capacity_report]
+  staging_parking_marketplace:
+    triggers: [curfew, delay, route_hold, port_wait, police_handoff, oversized_parking_needed]
+    customer_pain: [no_safe_place_to_stop, missed_appointment, load_delay, overnight_hold]
+    monetization: [reservation_fee, booking_take_rate, sponsor_slot, partner_subscription]
+  route_support_pack:
+    triggers: [origin_destination_route, corridor, port, industrial_facility, energy_site]
+    customer_pain: [unknown_staging, no_backup_operator, permit_uncertainty, breakdown_risk]
+    monetization: [preflight_fee, subscription, report_export, sponsor_bundle]
+  corridor_preflight:
+    triggers: [heavy_haul_corridor, permit_route, port_access_corridor]
+    customer_pain: [route_uncertainty, bridge_clearance, escorts_needed, support_density_unknown]
+    monetization: [audit_fee, broker_subscription, data_product]
+  emergency_breakdown_support:
+    triggers: [repair_support, truck_repair, mobile_tire, rotator, emergency_breakdown_bay]
+    customer_pain: [stranded_load, blocked_route, damaged_equipment, late_delivery]
+    monetization: [routing_fee, partner_fee, urgent_service_take_rate]
+  installer_upfitter_network:
+    triggers: [operator_readiness, high_pole, lights, signs, radio, gps, route_ready]
+    customer_pain: [not_ready_for_jobs, wrong_equipment, failed_inspection, lost_work]
+    monetization: [referral_fee, install_margin, gear_bundle, partner_subscription]
+  oversize_hotel_holdover:
+    triggers: [curfew, overnight_hold, crew_lodging, parking_needed]
+    customer_pain: [operator_lodging, route_pause, load_security]
+    monetization: [affiliate_fee, booking_fee, sponsored_hotel_slot]
+  permit_rescue_desk:
+    triggers: [permit_authority, urgent_permit, missing_rule, wrong_route]
+    customer_pain: [permit_delay, incorrect_filing, move_cannot_start]
+    monetization: [rescue_fee, filing_support_fee, authority_data_report]
+
 demand_likelihood_scoring_model:
-  version: 1.0
+  version: 2.0
   score_range: 0-100
-
+  labels_must_indicate_estimated_vs_verified: true
   feature_weights:
-    port_proximity_km:              0.18   # curve: inverse_distance, max 300km
-    rail_intermodal_proximity_km:   0.14   # curve: inverse_distance
-    heavy_industry_density:         0.16   # curve: logarithmic_cluster
-    energy_infrastructure_presence: 0.12   # curve: binary_plus_density
-    wind_project_presence:          0.08   # curve: binary_plus_radius
-    mining_activity_score:          0.07   # curve: regional_intensity
-    corridor_classification:        0.10   # designated_oversize=1.0, major_freight=0.7, highway=0.3
-    historical_escort_signals:      0.10   # past_jobs + escort_density + broker_activity
-    regulatory_complexity_index:    0.05   # higher rules → higher escort need
-
+    port_proximity_km: 0.18
+    rail_intermodal_proximity_km: 0.14
+    heavy_industry_density: 0.16
+    energy_infrastructure_presence: 0.12
+    wind_project_presence: 0.08
+    mining_activity_score: 0.07
+    corridor_classification: 0.10
+    historical_escort_signals: 0.10
+    regulatory_complexity_index: 0.05
   scoring_bands:
-    90_100: { label: elite_hot_zone,      action: [prioritize_ads, enable_surge_pricing, sales_alert] }
-    75_89:  { label: high_probability,    action: [strong_seo_push, broker_targeting] }
-    55_74:  { label: emerging_zone,       action: [monitor_growth, light_ad_inventory] }
-    35_54:  { label: watchlist,           action: [passive_index_only] }
-    0_34:   { label: low_priority,        action: [minimal_resources] }
+    90_100:
+      label: elite_hot_zone
+      action: [prioritize_ads, enable_surge_pricing, sales_alert, create_service_bundle]
+    75_89:
+      label: high_probability
+      action: [strong_seo_push, broker_targeting, claim_outreach]
+    55_74:
+      label: emerging_zone
+      action: [monitor_growth, light_ad_inventory, index_when_content_quality_passes]
+    35_54:
+      label: watchlist
+      action: [passive_index_only, no_thin_content]
+    0_34:
+      label: low_priority
+      action: [minimal_resources, noindex_until_useful]
+
+page_acceptance_rules:
+  every_surface_must_answer:
+    - can_someone_claim_it
+    - can_someone_sponsor_it
+    - can_someone_request_help_from_it
+    - can_haul_command_route_a_job_or_service_through_it
+    - can_haul_command_generate_a_data_product_from_it
+    - does_it_work_across_120_countries
+    - is_live_or_estimated_data_truthfully_labeled
+  seo_no_money_left_on_table:
+    required_modules:
+      - local_surface_summary
+      - nearby_support_locations
+      - credentialed_operator_availability_or_truthful_fallback
+      - related_corridors
+      - relevant_regulations_or_requirements
+      - service_cta
+      - sponsor_or_claim_cta
+      - data_report_teaser
+      - internal_links_to_directory_tools_training_regulations_loads
+  monetization_no_money_left_on_table:
+    required_paths:
+      - claim_profile
+      - sponsor_surface
+      - request_dispatch
+      - reserve_support
+      - join_standby_pool
+      - buy_report_or_export
+      - partner_application
+      - gear_or_readiness_upsell
