@@ -2590,140 +2590,114 @@ html, body {
 
 
 /* ══════════════════════════════════════════════════════════════
-   HAUL COMMAND — SITEWIDE BRAND BACKGROUND v2.0
-   CSS-only recreation of the logo brand texture:
-   Dark charcoal stone base + warm amber grain + gold command glow
+   HAUL COMMAND — BURNT STONE BACKGROUND SYSTEM v3.0
+   Real brand asset: burnt charcoal stone + amber ember glow
 
-   DISABLE BACKGROUND:  remove "hc-textured-background-enabled" from <body>
+   DISABLE: remove "hc-textured-background-enabled" from <body>
    DISABLE MOTION ONLY: remove "hc-living-background-enabled" from <body>
    ══════════════════════════════════════════════════════════════ */
 
-/* ── Base: deep charcoal — matches logo backdrop ── */
-body.hc-textured-background-enabled {
-  background-color: #0d0b09;
+:root {
+  --hc-bg-fallback: #090706;
+  --hc-ember: rgba(255, 145, 32, 0.22);
+  --hc-bronze: rgba(197, 111, 35, 0.16);
+  --hc-dark-overlay: rgba(0, 0, 0, 0.48);
+}
+
+body {
+  background-color: var(--hc-bg-fallback);
+}
+
+/* ── Main background wrapper ── */
+.hc-premium-bg {
   position: relative;
   min-height: 100vh;
-}
-
-/* ── Layer 1: stone texture simulation via SVG noise filter ── */
-body.hc-textured-background-enabled::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-  /* Multi-layer CSS background that recreates the stone/asphalt look:
-     - Base: dark charcoal brown (#1a1410)
-     - Grain: repeating micro-noise via SVG data URI
-     - Crosshatch: faint grid lines like the logo backdrop
-     - Warm ambient: subtle amber tint overall */
-  background-color: #111009;
-  background-image:
-    /* Fine grain noise — warm amber/brown tones */
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0.4'/%3E%3CfeBlend in='SourceGraphic' mode='multiply'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E"),
-    /* Subtle warm crosshatch — like the logo grid marks */
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 47px,
-      rgba(180, 120, 30, 0.035) 47px,
-      rgba(180, 120, 30, 0.035) 48px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 47px,
-      rgba(180, 120, 30, 0.025) 47px,
-      rgba(180, 120, 30, 0.025) 48px
-    ),
-    /* Diagonal worn scratches */
-    repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 120px,
-      rgba(150, 100, 20, 0.018) 120px,
-      rgba(150, 100, 20, 0.018) 121px
-    ),
-    /* Base charcoal stone gradient */
-    linear-gradient(
-      160deg,
-      #1c1510 0%,
-      #110e09 30%,
-      #0d0b07 60%,
-      #131008 100%
-    );
-  background-size: 300px 300px, 48px 48px, 48px 48px, 122px 122px, 100% 100%;
-}
-
-/* ── Layer 2: Gold command glow — the signature brand effect ── */
-body.hc-textured-background-enabled::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
+  isolation: isolate;
   background:
-    /* Primary gold glow — upper center, like logo placement */
-    radial-gradient(ellipse 70% 50% at 50% 15%, rgba(198, 146, 58, 0.22) 0%, rgba(160, 100, 20, 0.08) 40%, transparent 70%),
-    /* Secondary warm pool — lower center depth */
-    radial-gradient(ellipse 50% 35% at 50% 85%, rgba(150, 90, 15, 0.10) 0%, transparent 60%),
-    /* Left edge vignette */
-    radial-gradient(ellipse 30% 60% at 0% 50%, rgba(5, 3, 0, 0.5) 0%, transparent 70%),
-    /* Right edge vignette */
-    radial-gradient(ellipse 30% 60% at 100% 50%, rgba(5, 3, 0, 0.5) 0%, transparent 70%),
-    /* Bottom vignette */
-    radial-gradient(ellipse 80% 30% at 50% 100%, rgba(3, 2, 0, 0.6) 0%, transparent 70%);
-  will-change: transform, opacity;
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.58) 0%,
+      rgba(0, 0, 0, 0.32) 42%,
+      rgba(0, 0, 0, 0.68) 100%
+    ),
+    url("/images/backgrounds/haul-command-burnt-stone-bg.webp");
+  background-size: 108% 108%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  animation: hc-bg-drift 80s ease-in-out infinite alternate;
 }
 
-/* ── Living background: slow amber glow drift ── */
-body.hc-textured-background-enabled.hc-living-background-enabled::after {
-  animation: hc-bg-command-drift 120s ease-in-out infinite alternate;
+/* ── Ember glow overlay ── */
+.hc-premium-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(255, 136, 24, 0.16), transparent 24%),
+    radial-gradient(circle at 78% 30%, rgba(255, 173, 61, 0.11), transparent 22%),
+    radial-gradient(circle at 48% 78%, rgba(180, 87, 18, 0.12), transparent 28%);
+  opacity: 0.68;
+  animation: hc-ember-pulse 18s ease-in-out infinite alternate;
 }
 
-@keyframes hc-bg-command-drift {
-  0%   { transform: translate3d(-1.5%, -0.5%, 0) scale(1.02); }
-  33%  { transform: translate3d(1%, 0.5%, 0) scale(1.03); }
-  66%  { transform: translate3d(0.5%, -1%, 0) scale(1.025); }
-  100% { transform: translate3d(-0.5%, 1%, 0) scale(1.02); }
+/* ── Slow bronze light sweep ── */
+.hc-premium-bg.hc-living-background-enabled::after {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    linear-gradient(
+      115deg,
+      transparent 0%,
+      transparent 42%,
+      rgba(255, 176, 72, 0.06) 50%,
+      transparent 58%,
+      transparent 100%
+    );
+  transform: translateX(-18%);
+  opacity: 0.55;
+  animation: hc-light-sweep 42s ease-in-out infinite;
+}
+
+@keyframes hc-bg-drift {
+  0%   { background-position: 50% 50%; background-size: 108% 108%; }
+  100% { background-position: 52% 48%; background-size: 112% 112%; }
+}
+
+@keyframes hc-ember-pulse {
+  0%   { opacity: 0.42; transform: scale(1); }
+  100% { opacity: 0.78; transform: scale(1.035); }
+}
+
+@keyframes hc-light-sweep {
+  0%, 72% { transform: translateX(-22%) translateY(0); opacity: 0; }
+  82%      { opacity: 0.42; }
+  100%     { transform: translateX(22%) translateY(3%); opacity: 0; }
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .hc-premium-bg {
+    background-size: cover;
+    background-attachment: scroll;
+    animation-duration: 120s;
+  }
+  .hc-premium-bg::after {
+    display: none;
+  }
 }
 
 /* ── Accessibility ── */
 @media (prefers-reduced-motion: reduce) {
-  body.hc-textured-background-enabled.hc-living-background-enabled::after {
+  .hc-premium-bg,
+  .hc-premium-bg::before,
+  .hc-premium-bg.hc-living-background-enabled::after {
     animation: none !important;
-    transform: none !important;
-  }
-}
-
-/* ── Mobile: simplify for performance ── */
-@media (max-width: 768px) {
-  body.hc-textured-background-enabled::before {
-    position: absolute;
-    background-image:
-      linear-gradient(160deg, #1c1510 0%, #0d0b07 60%, #131008 100%);
-    background-size: 100% 100%;
-  }
-  body.hc-textured-background-enabled::after {
-    position: absolute;
-    background:
-      radial-gradient(ellipse 90% 40% at 50% 10%, rgba(198, 146, 58, 0.18) 0%, transparent 60%),
-      radial-gradient(ellipse 80% 25% at 50% 100%, rgba(3, 2, 0, 0.5) 0%, transparent 70%);
-  }
-}
-
-/* ── Also use the brand texture image where it loads, as an enhancement ── */
-@supports (background-image: url('/images/brand/haul-command-site-background.webp')) {
-  body.hc-textured-background-enabled::before {
-    background-image:
-      url('/images/brand/haul-command-site-background.webp'),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0.4'/%3E%3CfeBlend in='SourceGraphic' mode='multiply'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E"),
-      linear-gradient(160deg, #1c1510 0%, #110e09 30%, #0d0b07 60%, #131008 100%);
-    background-size: cover, 300px 300px, 100% 100%;
-    background-position: center center, 0 0, 0 0;
-    background-repeat: no-repeat, repeat, no-repeat;
-    background-attachment: fixed, fixed, fixed;
-    opacity: 0.75;
   }
 }
 

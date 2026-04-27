@@ -42,7 +42,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       {/* Google Tag Manager — manages GA4, ads pixels, and all tags from one UI */}
       {gtmId && <GoogleTagManager gtmId={gtmId} />}
-        <body className={`${inter.className} antialiased hc-textured-background-enabled hc-living-background-enabled`} style={{ color: '#e8e8e8' }}>
+        <body className={`${inter.className} antialiased`} style={{ color: '#e8e8e8', backgroundColor: '#090706' }}>
+        <div className="hc-premium-bg hc-living-background-enabled">
         <Suspense fallback={null}>
           {/* PostHog — product analytics, session replay, A/B testing */}
           <PostHogProvider>
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </SignalGridProvider>
           </PostHogProvider>
         </Suspense>
+        </div>
       </body>
     </html>
   );
