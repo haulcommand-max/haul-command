@@ -2601,8 +2601,8 @@ html, body {
 
 :root {
   --hc-site-bg-image: url('/images/brand/haul-command-site-background.webp');
-  --hc-site-bg-opacity: 0.40;
-  --hc-site-bg-overlay: rgba(5, 5, 5, 0.55);
+  --hc-site-bg-opacity: 0.65;
+  --hc-site-bg-overlay: rgba(5, 5, 5, 0.42);
   --hc-site-bg-size: cover;
   --hc-site-bg-position: center top;
   --hc-site-bg-repeat: no-repeat;
@@ -2673,8 +2673,8 @@ body.hc-textured-background-enabled.hc-living-background-enabled::after {
 /* ── Mobile tuning ── */
 @media (max-width: 768px) {
   :root {
-    --hc-site-bg-opacity: 0.32;
-    --hc-site-bg-overlay: rgba(5, 5, 5, 0.62);
+    --hc-site-bg-opacity: 0.55;
+    --hc-site-bg-overlay: rgba(5, 5, 5, 0.52);
     --hc-site-bg-attachment: scroll;
     --hc-bg-motion-opacity: 0.05;
     --hc-bg-motion-duration: 160s;
