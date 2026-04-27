@@ -14,9 +14,9 @@ import HomeClient from "./_components/HomeClient";
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export const metadata = {
-  title: 'Pilot Car & Escort Vehicle Directory | Heavy Haul Load Board | Haul Command',
+  title: 'Pilot Car & Escort Vehicle Directory | Heavy Haul Operating System | Haul Command',
   description:
-    'Find verified pilot car operators and escort vehicles for oversize loads across the US. Browse the heavy haul load board, check state escort requirements, and claim your free listing.',
+    'Find verified pilot car operators and escort vehicles for oversize loads across 120 countries. Browse the heavy haul load board, check state escort requirements, view 2026 rate guides, and claim your free listing.',
   keywords: [
     'pilot car',
     'escort vehicle',
@@ -165,6 +165,46 @@ export default async function LandingPage() {
                     { "@type": "Course", "position": 2, "name": "Pilot Car Operator Training — Texas", "url": "https://www.haulcommand.com/training/region/united-states/texas", "description": "Texas escort vehicle operator training covering TxDOT oversize load escort requirements and certification preparation.", "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://www.haulcommand.com" } },
                     { "@type": "Course", "position": 3, "name": "Global Pilot Car Training Hub — 120 Countries", "url": "https://www.haulcommand.com/training", "description": "Jurisdiction-specific escort vehicle operator training for all 50 US states and 120 countries.", "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://www.haulcommand.com" } }
                   ]
+                })
+            }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "WebSite",
+                  "name": "Haul Command",
+                  "url": "https://www.haulcommand.com",
+                  "description": "The global operating system for pilot cars, escort vehicles, heavy haul permits, and oversize load compliance across 120 countries.",
+                  "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": { "@type": "EntryPoint", "urlTemplate": "https://www.haulcommand.com/directory?q={search_term_string}" },
+                    "query-input": "required name=search_term_string"
+                  }
+                })
+            }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "FAQPage",
+                  "mainEntity": [
+                    { "@type": "Question", "name": "How many pilot cars do I need for an oversize load?", "acceptedAnswer": { "@type": "Answer", "text": "Typically: loads 12-14 ft wide require 1 pilot car; loads 14-16 ft wide require 2 pilot cars (front and rear); loads over 16-17 ft wide require 2 pilot cars plus a police escort. Requirements vary by state — use Haul Command's escort count calculator for your specific load and jurisdiction." }},
+                    { "@type": "Question", "name": "What is a PEVO in heavy haul transportation?", "acceptedAnswer": { "@type": "Answer", "text": "PEVO stands for Pilot/Escort Vehicle Operator — a certified professional who operates a pilot car or escort vehicle accompanying oversize loads on public roads. PEVOs warn oncoming traffic, check route clearances, and communicate with the truck driver. Many US states require specific PEVO certification." }},
+                    { "@type": "Question", "name": "What are current pilot car rates per mile in 2026?", "acceptedAnswer": { "@type": "Answer", "text": "2026 pilot car rates vary by region: Southeast $1.65-$1.85/mile, Midwest $1.75-$1.95/mile, Northeast $1.80-$2.00/mile, Southwest $1.85-$2.00/mile, West Coast $2.00-$2.25+/mile. Height pole operators command $1.90-$2.75/mile. Day rates range $450-$650/day." }},
+                    { "@type": "Question", "name": "When is a height pole required on an oversize load?", "acceptedAnswer": { "@type": "Answer", "text": "A height pole is generally required when the load exceeds 14 feet in height (some states at 13 ft 6 in). The pole must be set to actual load height plus safety margin to detect overhead obstacles — bridges, utility lines, and traffic signals — before the load reaches them." }},
+                    { "@type": "Question", "name": "How do I find a pilot car operator near me?", "acceptedAnswer": { "@type": "Answer", "text": "Use Haul Command's pilot car directory to search by city, state, corridor, or service type. The directory includes 7,700+ verified operators with trust scores, equipment details, and availability signals. Filter by location, equipment type (pilot car, height pole, route survey, bucket truck), and certification status." }}
+                  ]
+                })
+            }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "SoftwareApplication",
+                  "name": "Haul Command",
+                  "applicationCategory": "BusinessApplication",
+                  "operatingSystem": "iOS, Android, Web",
+                  "description": "The global heavy haul operating system for pilot car operators, brokers, carriers, and escort service providers across 120 countries.",
+                  "url": "https://www.haulcommand.com",
+                  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free basic listing for pilot car operators" },
+                  "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://www.haulcommand.com" }
                 })
             }} />
             <HomeClient
