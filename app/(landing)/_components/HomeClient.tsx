@@ -545,18 +545,18 @@ export default function HomeClient({
                 SHORTAGE CALLOUT — scarcity signal
                 ═══════════════════════════════════════ */}
             <section className="border-b border-white/[0.06]">
-                <div className="max-w-5xl mx-auto px-4 py-6">
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl border border-red-500/20 bg-red-500/5">
+                <div className="max-w-5xl mx-auto px-4 py-4">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl border border-red-500/40 bg-[#1a0505]/90 backdrop-blur-sm">
                         <div className="flex items-center gap-3">
                             <Flame className="w-5 h-5 text-red-400 flex-shrink-0" />
                             <div>
-                                <span className="text-sm font-black text-white">Texas escort shortage: Index 56 </span>
-                                <span className="text-xs text-amber-200/60 ml-2">Operators needed in Permian Basin, I-10, and I-35 corridors</span>
+                                <span className="text-sm font-black text-white">Texas escort shortage: Index 56</span>
+                                <span className="text-xs text-red-300/80 ml-2">Operators needed in Permian Basin, I-10, and I-35 corridors</span>
                             </div>
                         </div>
                         <div className="flex gap-3 flex-shrink-0">
-                            <Link href="/shortage-index" className="text-xs font-bold text-red-400 hover:text-red-300 whitespace-nowrap">See Shortage Index →</Link>
-                            <Link href="/claim" className="px-3 py-1.5 bg-[#F1A91B] text-black text-xs font-black rounded-lg hover:bg-[#D4951A] whitespace-nowrap transition-all">Claim Profile</Link>
+                            <Link href="/shortage-index" className="text-xs font-bold text-red-400 hover:text-red-300 whitespace-nowrap underline underline-offset-2">See Shortage Index →</Link>
+                            <Link href="/claim" className="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white text-xs font-black rounded-lg whitespace-nowrap transition-all">Claim Profile</Link>
                         </div>
                     </div>
                 </div>
@@ -566,30 +566,33 @@ export default function HomeClient({
                 RATE INTELLIGENCE WIDGET
                 ═══════════════════════════════════════ */}
             <section className="border-b border-white/[0.06]">
-                <div className="max-w-5xl mx-auto px-4 py-6">
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl border border-[#C6923A]/20 bg-[#C6923A]/5">
+                <div className="max-w-5xl mx-auto px-4 py-4">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl border border-[#C6923A]/40 bg-[#120a02]/90 backdrop-blur-sm">
                         <div className="flex items-center gap-3">
-                            <DollarSign className="w-5 h-5 text-[#C6923A] flex-shrink-0" />
-                            <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs">
-                                <span className="text-amber-200/60">2026 Benchmark Rates:</span>
-                                <span className="font-bold text-white">Southeast <span className="text-[#F1A91B]">$1.65–$1.85</span>/mi</span>
-                                <span className="font-bold text-white">Midwest <span className="text-[#F1A91B]">$1.75–$1.95</span>/mi</span>
-                                <span className="font-bold text-white">West Coast <span className="text-[#F1A91B]">$2.00–$2.25+</span>/mi</span>
-                                <span className="font-bold text-white">Day Rate <span className="text-[#F1A91B]">$450–$650</span></span>
+                            <DollarSign className="w-5 h-5 text-[#F1A91B] flex-shrink-0" />
+                            <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                                <span className="font-bold text-amber-300">2026 Rates:</span>
+                                <span className="text-white">Southeast <span className="text-[#F1A91B] font-bold">$1.65–$1.85</span>/mi</span>
+                                <span className="text-white">Midwest <span className="text-[#F1A91B] font-bold">$1.75–$1.95</span>/mi</span>
+                                <span className="text-white">West Coast <span className="text-[#F1A91B] font-bold">$2.00–$2.25+</span>/mi</span>
+                                <span className="text-white">Day Rate <span className="text-[#F1A91B] font-bold">$450–$650</span></span>
                             </div>
                         </div>
-                        <Link href="/rates/guide/pilot-car" className="text-xs font-bold text-[#C6923A] hover:text-[#F1A91B] whitespace-nowrap flex-shrink-0">Full Rate Guide 2026 →</Link>
+                        <Link href="/rates/guide/pilot-car" className="text-xs font-bold text-[#F1A91B] hover:text-amber-300 whitespace-nowrap flex-shrink-0 underline underline-offset-2">Full Rate Guide 2026 →</Link>
                     </div>
                 </div>
             </section>
 
             {/* ═══════════════════════════════════════
-                POPULAR STATES
+                TOP MARKETS — US states + global
                 ═══════════════════════════════════════ */}
             <section>
                 <div className="max-w-5xl mx-auto px-4 py-10">
                     <div className="flex items-center justify-between mb-5">
-                        <h2 className="hc-heading text-lg">Popular US States</h2>
+                        <div>
+                            <h2 className="hc-heading text-lg">Top Heavy Haul Markets</h2>
+                            <p className="text-xs text-amber-200/60 mt-0.5">United States state markets — part of our 120-country registry</p>
+                        </div>
                         <Link href="/directory/us" className="text-xs font-bold text-[#F1A91B] hover:underline">See all states →</Link>
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3">
@@ -738,9 +741,8 @@ export default function HomeClient({
                                 Claim Your Listing Free <ArrowRight className="w-4 h-4" />
                             </Link>
                         </div>
-                        {/* Example trust card */}
+                        {/* Trust card — shows what a claimed profile looks like */}
                         <div className="hc-card rounded-2xl p-5">
-                            <div className="text-xs font-bold text-amber-200/60 uppercase tracking-wider mb-3">Example Trust Profile</div>
                             <div className="flex items-start justify-between mb-3">
                                 <div>
                                     <div className="hc-heading text-base">J. Martinez Escort Co.</div>
