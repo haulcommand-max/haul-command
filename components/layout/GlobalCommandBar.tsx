@@ -17,7 +17,7 @@ type CommandLink = {
 const COMMAND_LINKS: CommandLink[] = [
   { label: "Directory", href: "/directory" },
   { label: "Route Intel", href: "/tools/route-iq" },
-  { label: "Market Data", href: "/corridors" },
+  { label: "Market Data", href: "/shortage-index" },
   { label: "Tools", href: "/tools" },
   { label: "Pilot Car Files", href: "/escort-requirements" },
   { label: "Haul Command Pro", href: "/pricing" },
