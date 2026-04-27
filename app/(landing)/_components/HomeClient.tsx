@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -206,6 +206,40 @@ export interface HomeClientProps {
     nextMoveSignals?: Partial<UserSignals>;
 }
 
+// ── Animated number counter — counts up on first view ──
+function AnimatedCounter({ value, duration = 1800 }: { value: string; duration?: number }) {
+    const [display, setDisplay] = useState('0');
+    const ref = useRef<HTMLDivElement>(null);
+    const animated = useRef(false);
+
+    useEffect(() => {
+        const node = ref.current;
+        if (!node) return;
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting && !animated.current) {
+                animated.current = true;
+                const numericPart = parseFloat(value.replace(/[^0-9.]/g, ''));
+                const suffix = value.replace(/[0-9,.]/g, '');
+                if (isNaN(numericPart)) { setDisplay(value); return; }
+                const start = Date.now();
+                const tick = () => {
+                    const elapsed = Date.now() - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    const current = Math.round(eased * numericPart);
+                    setDisplay(current.toLocaleString() + suffix);
+                    if (progress < 1) requestAnimationFrame(tick);
+                };
+                requestAnimationFrame(tick);
+            }
+        }, { threshold: 0.3 });
+        observer.observe(node);
+        return () => observer.disconnect();
+    }, [value, duration]);
+
+    return <div ref={ref}>{display}</div>;
+}
+
 export default function HomeClient({
     directoryCount, totalCountries, liveCountries,
     totalOperators, avgRatePerDay = 380,
@@ -245,7 +279,7 @@ export default function HomeClient({
                 <div className="max-w-6xl mx-auto px-4 pt-10 pb-4 text-center">
                     <motion.h1
                         initial="hidden" animate="visible" variants={fadeUp} custom={0}
-                        className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-1 tracking-tight"
+                        className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-1 tracking-tight"
                     >
                         The Heavy Haul Operating System
                     </motion.h1>
@@ -329,7 +363,7 @@ export default function HomeClient({
                                         onFocus={() => searchQuery.length >= 2 && setShowSuggestions(true)}
                                         onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
                                         placeholder="City, state, province, corridor, or country"
-                                        className="w-full bg-transparent text-sm text-gray-900 placeholder-gray-500 font-medium focus:outline-none"
+                                        className="w-full bg-transparent text-sm text-gray-100 placeholder-gray-400 font-medium focus:outline-none"
                                         autoComplete="off"
                                     />
                                     {showSuggestions && suggestions.length > 0 && (
@@ -393,13 +427,13 @@ export default function HomeClient({
                             exit={{ opacity: 0, height: 0 }}
                             className="mt-5 p-5 bg-gradient-to-r from-[#F1A91B]/5 to-[#C6923A]/5 border border-[#F1A91B]/20 rounded-2xl"
                         >
-                            <p className="text-sm font-black text-gray-900 mb-1">{selectedRole.icon} {selectedRole.label}</p>
+                            <p className="text-sm font-black text-white mb-1">{selectedRole.icon} {selectedRole.label}</p>
                             <p className="text-xs text-gray-400 mb-4">{selectedRole.desc}</p>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
                                 {selectedRole.goals.map(goal => (
                                     <Link key={goal.label} href={goal.href}
                                         className="flex flex-col items-center text-center p-3 hc-card-on-texture hover:border-[#F1A91B]/40 rounded-xl transition-all group">
-                                        <span className="text-[11px] font-semibold text-gray-700 group-hover:text-[#C6923A] leading-tight">{goal.label}</span>
+                                        <span className="text-[11px] font-semibold text-gray-300 group-hover:text-[#C6923A] leading-tight">{goal.label}</span>
                                         <ChevronRight className="w-3 h-3 text-gray-300 group-hover:text-[#F1A91B] mt-1" />
                                     </Link>
                                 ))}
@@ -429,7 +463,9 @@ export default function HomeClient({
                             >
                                 <Link href={stat.href} className="block hc-card-on-texture rounded-xl p-5 text-center hover:border-[#F1A91B]/30 transition-all group">
                                     <stat.icon className="w-5 h-5 mx-auto mb-2 group-hover:scale-110 transition-transform" style={{ color: stat.color }} />
-                                    <div className="text-2xl font-black text-gray-900">{stat.value}</div>
+                                    <div className="text-2xl font-black text-white">
+                                        <AnimatedCounter value={stat.value} />
+                                    </div>
                                     <div className="text-xs text-gray-400 font-medium mt-1">{stat.label}</div>
                                     <div className="text-[10px] text-[#C6923A] font-bold mt-1 opacity-0 group-hover:opacity-100 transition-opacity">View →</div>
                                 </Link>
@@ -445,7 +481,7 @@ export default function HomeClient({
             <section className="">
                 <div className="max-w-5xl mx-auto px-4 py-10">
                     <div className="flex items-center justify-between mb-5">
-                        <h2 className="text-lg font-black text-gray-900">Popular US States</h2>
+                        <h2 className="text-lg font-black text-white">Popular US States</h2>
                         <Link href="/directory/us" className="text-xs font-bold text-[#F1A91B] hover:underline">See all states →</Link>
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-3">
@@ -469,7 +505,7 @@ export default function HomeClient({
             <section className="bg-black/20 border-y border-white/[0.06]">
                 <div className="max-w-5xl mx-auto px-4 py-10">
                     <div className="flex items-center justify-between mb-5">
-                        <h2 className="text-lg font-black text-gray-900">120 Countries. One Platform.</h2>
+                        <h2 className="text-lg font-black text-white">120 Countries. One Platform.</h2>
                         <Link href="/directory" className="text-xs font-bold text-[#F1A91B] hover:underline">See all 120 countries →</Link>
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
@@ -480,7 +516,7 @@ export default function HomeClient({
                                 className="flex items-center gap-2 px-3 py-2.5 bg-white/5 hover:bg-[#F1A91B]/5 border border-white/10 hover:border-[#F1A91B]/30 rounded-lg transition-all group"
                             >
                                 <span className="text-lg">{country.flag}</span>
-                                <span className="text-xs font-semibold text-gray-700 group-hover:text-[#C6923A] transition-colors">{country.name}</span>
+                                <span className="text-xs font-semibold text-gray-300 group-hover:text-[#C6923A] transition-colors">{country.name}</span>
                             </Link>
                         ))}
                     </div>
@@ -494,7 +530,7 @@ export default function HomeClient({
                 <div className="max-w-5xl mx-auto px-4 py-8">
                     <div className="flex items-center justify-between mb-4">
                         <div>
-                            <h2 className="text-lg font-black text-gray-900">Route-Based Intelligence</h2>
+                            <h2 className="text-lg font-black text-white">Route-Based Intelligence</h2>
                             <p className="text-xs text-gray-400 mt-0.5">Search by corridor, port, border crossing, or near me — global coverage</p>
                         </div>
                         <Link href="/corridors" className="text-xs font-bold text-[#F1A91B] hover:underline hidden sm:block">All corridors →</Link>
@@ -508,7 +544,7 @@ export default function HomeClient({
                         ].map(item => (
                             <Link key={item.label} href={item.href}
                                 className="flex flex-col gap-1 p-4 bg-white/5 hover:bg-[#F1A91B]/5 border border-white/10 hover:border-[#F1A91B]/30 rounded-xl transition-all group">
-                                <span className="text-sm font-bold text-gray-900 group-hover:text-[#C6923A]">{item.label}</span>
+                                <span className="text-sm font-bold text-gray-100 group-hover:text-[#C6923A]">{item.label}</span>
                                 <span className="text-xs text-gray-400">{item.sub}</span>
                             </Link>
                         ))}
@@ -564,7 +600,7 @@ export default function HomeClient({
                             <Shield className="w-8 h-8 text-[#F1A91B]" />
                         </div>
                         <div className="flex-1">
-                            <h2 className="text-xl font-black text-gray-900 mb-2">Claim Your Free Listing</h2>
+                            <h2 className="text-xl font-black text-white mb-2">Claim Your Free Listing</h2>
                             <p className="text-sm text-gray-300 mb-4 max-w-xl">
                                 Join {displayCompanies}+ verified operators. Claim your profile in under 60 seconds to unlock discoverability, verified badge, trust score, and broker lead flow.
                             </p>
@@ -591,7 +627,7 @@ export default function HomeClient({
             <section className="bg-gradient-to-br from-[#FFF8E7] to-[#FFF0CC]">
                 <div className="max-w-4xl mx-auto px-4 py-12 text-center">
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-                        <h2 className="text-xl sm:text-2xl font-black text-gray-900 mb-3">Have a Heavy Haul Question?</h2>
+                        <h2 className="text-xl sm:text-2xl font-black text-white mb-3">Have a Heavy Haul Question?</h2>
                         <p className="text-sm text-gray-300 mb-6 max-w-lg mx-auto">
                             Ask anything about escort requirements, permit rules, and industry standards across all 120 countries. FMCSA-grounded answers instantly.
                         </p>
@@ -601,7 +637,7 @@ export default function HomeClient({
                                 <input
                                     type="text"
                                     placeholder='"What height requires an escort in Texas?"'
-                                    className="w-full bg-transparent text-sm text-gray-900 placeholder-gray-400 focus:outline-none"
+                                    className="w-full bg-transparent text-sm text-gray-100 placeholder-gray-400 focus:outline-none"
                                 />
                             </div>
                             <button className="flex items-center justify-center gap-2 bg-[#F1A91B] hover:bg-[#D4951A] text-white font-bold text-sm px-5 py-3 rounded-lg transition-colors">
@@ -625,7 +661,7 @@ export default function HomeClient({
                     <div className="flex flex-col md:flex-row items-center gap-8">
                         <div className="flex-1">
                             <p className="text-xs font-bold uppercase tracking-widest text-[#C6923A] mb-2">AdGrid — Sponsor Grid</p>
-                            <h2 className="text-xl font-black text-gray-900 mb-3">
+                            <h2 className="text-xl font-black text-white mb-3">
                                 Advertise on Haul Command & <span className="text-[#F1A91B]">Get Featured</span>
                             </h2>
                             <p className="text-sm text-gray-300 mb-4 max-w-lg">
@@ -658,16 +694,16 @@ export default function HomeClient({
                 ═══════════════════════════════════════ */}
             <section className="bg-black/20 border-b border-white/[0.06]">
                 <div className="max-w-5xl mx-auto px-4 py-12">
-                    <h2 className="text-lg font-black text-gray-900 mb-6 text-center">How Can We Help You?</h2>
+                    <h2 className="text-lg font-black text-white mb-6 text-center">How Can We Help You?</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Link href="/directory" className="hc-card-on-texture hover:border-[#F1A91B]/40 rounded-2xl p-6 transition-all group">
                             <Search className="w-8 h-8 mb-3 text-[#F1A91B]" />
-                            <h3 className="font-black text-gray-900 mb-2 group-hover:text-[#C6923A]">I Need an Escort</h3>
+                            <h3 className="font-black text-white mb-2 group-hover:text-[#C6923A]">I Need an Escort</h3>
                             <p className="text-xs text-gray-400">Find a verified pilot car or escort vehicle near your load's origin. Real-time availability, trust scores, and instant dispatch matching.</p>
                         </Link>
                         <Link href="/claim" className="hc-card-on-texture hover:border-[#F1A91B]/40 rounded-2xl p-6 transition-all group">
                             <Users className="w-8 h-8 mb-3 text-[#F1A91B]" />
-                            <h3 className="font-black text-gray-900 mb-2 group-hover:text-[#C6923A]">I Provide Escorts</h3>
+                            <h3 className="font-black text-white mb-2 group-hover:text-[#C6923A]">I Provide Escorts</h3>
                             <p className="text-xs text-gray-400">Claim your free profile, verify your certifications, get booked by brokers, and unlock visibility tools — all from one dashboard.</p>
                         </Link>
                     </div>
@@ -691,7 +727,7 @@ export default function HomeClient({
                 ═══════════════════════════════════════ */}
             <section className="border-t border-white/[0.06] py-12">
                 <div className="max-w-6xl mx-auto px-4">
-                    <h2 className="text-lg font-black text-gray-900 mb-8 text-center">Take Haul Command With You</h2>
+                    <h2 className="text-lg font-black text-white mb-8 text-center">Take Haul Command With You</h2>
                     <FooterAccordion />
                 </div>
             </section>
