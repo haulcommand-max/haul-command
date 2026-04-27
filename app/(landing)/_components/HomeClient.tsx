@@ -348,7 +348,7 @@ export default function HomeClient({
     const selectedRole = ROLES.find(r => r.id === activeRole);
 
     return (
-        <div className="font-[family-name:var(--font-body)] antialiased text-gray-100">
+        <div className="font-[family-name:var(--font-body)] antialiased text-amber-50">
 
             {/* ═══════════════════════════════════════
                 HERO
@@ -362,7 +362,7 @@ export default function HomeClient({
                         The Heavy Haul Operating System
                     </motion.h1>
                     <motion.p initial="hidden" animate="visible" variants={fadeUp} custom={0.5}
-                        className="text-sm text-gray-400 mb-4">
+                        className="text-sm text-amber-200/60 mb-4">
                         Pilot car operators · Escort vehicles · Permits · Rates · Compliance — 120 countries
                     </motion.p>
                 </div>
@@ -384,10 +384,10 @@ export default function HomeClient({
 
                         {/* Live activity ticker */}
                         <div className="absolute top-3 left-3 right-3 flex justify-center">
-                            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 border border-white/10 backdrop-blur-sm text-xs text-gray-300 max-w-sm">
+                            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 border border-white/10 backdrop-blur-sm text-xs text-amber-100/80 max-w-sm">
                                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
                                 <span className="truncate">{ACTIVITY_FEED[activityIdx].text}</span>
-                                <span className="text-gray-500 flex-shrink-0">{ACTIVITY_FEED[activityIdx].time}</span>
+                                <span className="text-amber-200/60 flex-shrink-0">{ACTIVITY_FEED[activityIdx].time}</span>
                             </div>
                         </div>
 
@@ -412,7 +412,7 @@ export default function HomeClient({
                                 className="w-full max-w-3xl flex flex-col sm:flex-row items-stretch bg-white rounded-xl overflow-hidden border border-white/80 shadow-[0_8px_32px_rgba(0,0,0,0.4)] focus-within:border-[#F1A91B]/40 transition-all duration-300"
                             >
                                 <div className="flex-[1.5] flex items-center gap-2 bg-white px-4 py-3 border-b sm:border-b-0 sm:border-r border-gray-200">
-                                    <Search className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                                    <Search className="w-5 h-5 text-amber-200/60 flex-shrink-0" />
                                     <select name="category" className="w-full bg-transparent text-sm text-gray-700 font-semibold focus:outline-none appearance-none cursor-pointer">
                                         <option value="">Find escorts, pilot cars, permits, or rates</option>
                                         <optgroup label="─── Escort Services ───">
@@ -433,7 +433,7 @@ export default function HomeClient({
                                     </select>
                                 </div>
                                 <div className="flex-1 flex items-center gap-2 bg-white px-4 py-3 border-b sm:border-b-0 sm:border-r border-gray-200 relative">
-                                    <MapPin className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                                    <MapPin className="w-5 h-5 text-amber-200/60 flex-shrink-0" />
                                     <input type="text" name="q" value={searchQuery}
                                         onChange={e => handleSearchInput(e.target.value)}
                                         onFocus={() => searchQuery.length >= 2 && setShowSuggestions(true)}
@@ -450,16 +450,16 @@ export default function HomeClient({
                                                     <span className="text-base shrink-0">{SUGGEST_ICONS[s.type] ?? '🔍'}</span>
                                                     <div className="min-w-0">
                                                         <div className="text-sm font-semibold text-gray-800 truncate">{s.label}</div>
-                                                        {s.sub && <div className="text-xs text-gray-400 truncate">{s.sub}</div>}
+                                                        {s.sub && <div className="text-xs text-amber-200/60 truncate">{s.sub}</div>}
                                                     </div>
-                                                    <span className="ml-auto text-[9px] font-bold text-gray-400 uppercase tracking-wider shrink-0">{s.type}</span>
+                                                    <span className="ml-auto text-[9px] font-bold text-amber-200/60 uppercase tracking-wider shrink-0">{s.type}</span>
                                                 </a>
                                             ))}
                                         </div>
                                     )}
                                 </div>
                                 <button type="submit"
-                                    className="flex items-center justify-center bg-[#F1A91B] hover:bg-[#D4951A] text-black font-bold text-base px-7 py-3 transition-all shadow-[0_0_12px_rgba(241,169,27,0.4)]">
+                                    className="flex items-center justify-center hc-btn-primary text-base px-7 py-3 transition-all shadow-[0_0_12px_rgba(241,169,27,0.4)]">
                                     Find
                                 </button>
                             </motion.form>
@@ -473,15 +473,15 @@ export default function HomeClient({
                 ═══════════════════════════════════════ */}
             <section className="border-b border-white/[0.06]">
                 <div className="max-w-6xl mx-auto px-4 py-6">
-                    <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-3 text-center">Choose your role for a personalized experience</p>
+                    <p className="text-[11px] font-bold uppercase tracking-widest text-amber-200/60 mb-3 text-center">Choose your role for a personalized experience</p>
                     <div className="flex flex-wrap justify-center gap-2">
                         {ROLES.map(role => (
                             <button key={role.id} type="button"
                                 onClick={() => setActiveRole(activeRole === role.id ? null : role.id)}
                                 className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-semibold border transition-all ${
                                     activeRole === role.id
-                                        ? 'bg-[#F1A91B] border-[#F1A91B] text-black shadow-md'
-                                        : 'bg-white/[0.06] border-white/15 text-gray-300 hover:border-[#F1A91B]/40 hover:text-[#C6923A]'
+                                        ? 'hc-chip active'
+                                        : 'hc-chip'
                                 }`}
                             >
                                 <role.Icon className="w-3.5 h-3.5" />
@@ -499,13 +499,13 @@ export default function HomeClient({
                                 <selectedRole.Icon className="w-5 h-5 text-[#F1A91B]" />
                                 <p className="text-sm font-black text-white">{selectedRole.label}</p>
                             </div>
-                            <p className="text-xs text-gray-400 mb-4">{selectedRole.desc}</p>
+                            <p className="text-xs text-amber-200/60 mb-4">{selectedRole.desc}</p>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
                                 {selectedRole.goals.map(goal => (
                                     <Link key={goal.label} href={goal.href}
-                                        className="flex flex-col items-center text-center p-3 hc-card-on-texture hover:border-[#F1A91B]/40 rounded-xl transition-all group">
-                                        <span className="text-[11px] font-semibold text-gray-300 group-hover:text-[#C6923A] leading-tight">{goal.label}</span>
-                                        <ChevronRight className="w-3 h-3 text-gray-400 group-hover:text-[#F1A91B] mt-1" />
+                                        className="hc-card flex flex-col items-center text-center p-3 hover:border-amber-400/40 rounded-xl transition-all group">
+                                        <span className="text-[11px] font-semibold text-amber-100/80 group-hover:text-[#C6923A] leading-tight">{goal.label}</span>
+                                        <ChevronRight className="w-3 h-3 text-amber-200/60 group-hover:text-[#F1A91B] mt-1" />
                                     </Link>
                                 ))}
                             </div>
@@ -527,12 +527,12 @@ export default function HomeClient({
                             { value: "23,530+", label: "Geocoded Support Locations", icon: MapPin, color: "#8B5CF6", href: "/available-now" },
                         ].map((stat, i) => (
                             <motion.div key={stat.label} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}>
-                                <Link href={stat.href} className="block hc-card-on-texture rounded-xl p-5 text-center hover:border-[#F1A91B]/30 transition-all group">
+                                <Link href={stat.href} className="hc-card block rounded-xl p-5 text-center hover:border-amber-400/30 transition-all group">
                                     <stat.icon className="w-5 h-5 mx-auto mb-2 group-hover:scale-110 transition-transform" style={{ color: stat.color }} />
-                                    <div className="text-2xl font-black text-white">
+                                    <div className="hc-heading text-2xl">
                                         <AnimatedCounter value={stat.value} />
                                     </div>
-                                    <div className="text-xs text-gray-400 font-medium mt-1">{stat.label}</div>
+                                    <div className="text-xs text-amber-200/60 font-medium mt-1">{stat.label}</div>
                                     <div className="text-[10px] text-[#C6923A] font-bold mt-1 opacity-0 group-hover:opacity-100 transition-opacity">View →</div>
                                 </Link>
                             </motion.div>
@@ -551,7 +551,7 @@ export default function HomeClient({
                             <Flame className="w-5 h-5 text-red-400 flex-shrink-0" />
                             <div>
                                 <span className="text-sm font-black text-white">Texas escort shortage: Index 56 </span>
-                                <span className="text-xs text-gray-400 ml-2">Operators needed in Permian Basin, I-10, and I-35 corridors</span>
+                                <span className="text-xs text-amber-200/60 ml-2">Operators needed in Permian Basin, I-10, and I-35 corridors</span>
                             </div>
                         </div>
                         <div className="flex gap-3 flex-shrink-0">
@@ -571,7 +571,7 @@ export default function HomeClient({
                         <div className="flex items-center gap-3">
                             <DollarSign className="w-5 h-5 text-[#C6923A] flex-shrink-0" />
                             <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs">
-                                <span className="text-gray-400">2026 Benchmark Rates:</span>
+                                <span className="text-amber-200/60">2026 Benchmark Rates:</span>
                                 <span className="font-bold text-white">Southeast <span className="text-[#F1A91B]">$1.65–$1.85</span>/mi</span>
                                 <span className="font-bold text-white">Midwest <span className="text-[#F1A91B]">$1.75–$1.95</span>/mi</span>
                                 <span className="font-bold text-white">West Coast <span className="text-[#F1A91B]">$2.00–$2.25+</span>/mi</span>
@@ -589,15 +589,15 @@ export default function HomeClient({
             <section>
                 <div className="max-w-5xl mx-auto px-4 py-10">
                     <div className="flex items-center justify-between mb-5">
-                        <h2 className="text-lg font-black text-white">Popular US States</h2>
+                        <h2 className="hc-heading text-lg">Popular US States</h2>
                         <Link href="/directory/us" className="text-xs font-bold text-[#F1A91B] hover:underline">See all states →</Link>
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3">
                         {POPULAR_STATES.map((state) => (
                             <Link key={state.slug} href={`/directory/us/${state.slug}`}
-                                className="flex items-center justify-between px-3 py-2.5 bg-white/5 hover:bg-[#F1A91B]/10 border border-white/10 hover:border-[#F1A91B]/30 rounded-lg text-sm font-semibold text-gray-200 hover:text-[#C6923A] transition-all group">
+                                className="hc-chip rounded-lg w-full justify-between text-sm">
                                 {state.name}
-                                <ChevronRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#F1A91B] transition-colors" />
+                                <ChevronRight className="w-3.5 h-3.5 text-amber-200/60 group-hover:text-[#F1A91B] transition-colors" />
                             </Link>
                         ))}
                     </div>
@@ -610,15 +610,15 @@ export default function HomeClient({
             <section className="bg-black/20 border-y border-white/[0.06]">
                 <div className="max-w-5xl mx-auto px-4 py-10">
                     <div className="flex items-center justify-between mb-5">
-                        <h2 className="text-lg font-black text-white">120 Countries. One Platform.</h2>
+                        <h2 className="hc-heading text-lg">120 Countries. One Platform.</h2>
                         <Link href="/directory" className="text-xs font-bold text-[#F1A91B] hover:underline">See all 120 countries →</Link>
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
                         {COUNTRIES.map((country) => (
                             <Link key={country.slug} href={`/directory/${country.slug}`}
-                                className="flex items-center gap-2 px-3 py-2.5 bg-white/5 hover:bg-[#F1A91B]/5 border border-white/10 hover:border-[#F1A91B]/30 rounded-lg transition-all group">
+                                className="hc-chip rounded-lg">
                                 <span className="text-lg">{country.flag}</span>
-                                <span className="text-xs font-semibold text-gray-300 group-hover:text-[#C6923A] transition-colors">{country.name}</span>
+                                <span className="text-xs font-semibold text-amber-100/80 group-hover:text-[#C6923A] transition-colors">{country.name}</span>
                             </Link>
                         ))}
                     </div>
@@ -632,8 +632,8 @@ export default function HomeClient({
                 <div className="max-w-5xl mx-auto px-4 py-8">
                     <div className="flex items-center justify-between mb-4">
                         <div>
-                            <h2 className="text-lg font-black text-white">Route-Based Intelligence</h2>
-                            <p className="text-xs text-gray-400 mt-0.5">Search by corridor, port, border crossing, or near me — global coverage</p>
+                            <h2 className="hc-heading text-lg">Route-Based Intelligence</h2>
+                            <p className="text-xs text-amber-200/60 mt-0.5">Search by corridor, port, border crossing, or near me — global coverage</p>
                         </div>
                         <Link href="/corridors" className="text-xs font-bold text-[#F1A91B] hover:underline hidden sm:block">All corridors →</Link>
                     </div>
@@ -645,10 +645,10 @@ export default function HomeClient({
                             { label: "Available Near Me", sub: "Escorts ready to dispatch", href: "/available-now", Icon: Radio },
                         ].map(item => (
                             <Link key={item.label} href={item.href}
-                                className="flex flex-col gap-1 p-4 bg-white/5 hover:bg-[#F1A91B]/5 border border-white/10 hover:border-[#F1A91B]/30 rounded-xl transition-all group">
+                                className="hc-card flex flex-col gap-1 p-4 hover:border-amber-400/30 transition-all group">
                                 <item.Icon className="w-4 h-4 text-[#C6923A] mb-1" />
-                                <span className="text-sm font-bold text-gray-100 group-hover:text-[#C6923A]">{item.label}</span>
-                                <span className="text-xs text-gray-400">{item.sub}</span>
+                                <span className="text-sm font-bold text-amber-50 group-hover:text-[#C6923A]">{item.label}</span>
+                                <span className="text-xs text-amber-200/60">{item.sub}</span>
                             </Link>
                         ))}
                     </div>
@@ -663,7 +663,7 @@ export default function HomeClient({
                             { name: "Hwy 401 Ontario (CA)", slug: "hwy-401-ontario" },
                         ].map(c => (
                             <Link key={c.slug} href={`/corridors/${c.slug}`}
-                                className="px-3 py-1 text-xs font-semibold text-gray-300 bg-white/5 hover:bg-[#F1A91B]/10 hover:text-[#C6923A] border border-white/10 hover:border-[#F1A91B]/30 rounded-full transition-all">
+                                className="hc-chip text-xs">
                                 {c.name}
                             </Link>
                         ))}
@@ -678,17 +678,17 @@ export default function HomeClient({
             <section className="border-b border-white/[0.06]">
                 <div className="max-w-5xl mx-auto px-4 py-8">
                     <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-lg font-black text-white">Find Escorts by Load Type</h2>
+                        <h2 className="hc-heading text-lg">Find Escorts by Load Type</h2>
                         <Link href="/directory" className="text-xs font-bold text-[#F1A91B] hover:underline">All load types →</Link>
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                         {LOAD_TYPES.map(lt => (
                             <Link key={lt.label} href={lt.href}
-                                className="flex items-start gap-3 p-4 bg-white/5 hover:bg-[#F1A91B]/5 border border-white/10 hover:border-[#F1A91B]/30 rounded-xl transition-all group">
+                                className="hc-card flex items-start gap-3 p-4 hover:border-amber-400/30 transition-all group">
                                 <lt.icon className="w-5 h-5 text-[#C6923A] mt-0.5 flex-shrink-0" />
                                 <div>
-                                    <div className="text-xs font-bold text-gray-100 group-hover:text-[#C6923A]">{lt.label}</div>
-                                    <div className="text-[10px] text-gray-500 mt-0.5">{lt.tag}</div>
+                                    <div className="text-xs font-bold text-amber-50 group-hover:text-[#C6923A]">{lt.label}</div>
+                                    <div className="text-[10px] text-amber-200/60 mt-0.5">{lt.tag}</div>
                                 </div>
                             </Link>
                         ))}
@@ -701,13 +701,13 @@ export default function HomeClient({
                 ═══════════════════════════════════════ */}
             <section className="border-b border-white/[0.06]">
                 <div className="max-w-5xl mx-auto px-4 py-8">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">Trending Escort Localities</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-amber-200/60 mb-3">Trending Escort Localities</p>
                     <div className="flex flex-wrap items-center gap-2">
                         {TRENDING_LOCALITIES.map((loc) => (
                             <Link key={loc.slug} href={`/near/${loc.slug}`}
-                                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-gray-300 bg-white/5 hover:bg-[#F1A91B]/10 hover:text-[#C6923A] border border-white/10 hover:border-[#F1A91B]/30 rounded-full transition-all">
+                                className="hc-chip text-xs">
                                 {loc.name}
-                                <span className="text-[10px] text-gray-500 font-normal">({loc.count})</span>
+                                <span className="text-[10px] text-amber-200/60 font-normal">({loc.count})</span>
                             </Link>
                         ))}
                         <Link href="/directory" className="text-xs font-bold text-[#F1A91B] hover:underline ml-2">See all →</Link>
@@ -725,11 +725,11 @@ export default function HomeClient({
                             <div className="w-12 h-12 rounded-xl bg-[#F1A91B]/10 flex items-center justify-center mb-4">
                                 <Shield className="w-6 h-6 text-[#F1A91B]" />
                             </div>
-                            <h2 className="text-xl font-black text-white mb-2">Claim Your Free Listing</h2>
-                            <p className="text-sm text-gray-300 mb-4 max-w-md">
+                            <h2 className="hc-heading text-xl mb-2">Claim Your Free Listing</h2>
+                            <p className="text-sm text-amber-100/80 mb-4 max-w-md">
                                 Your profile may already be listed. Join {displayOperators}+ operators — claim it in 60 seconds before someone else controls your visibility.
                             </p>
-                            <div className="flex flex-wrap gap-3 text-xs text-gray-400 mb-5">
+                            <div className="flex flex-wrap gap-3 text-xs text-amber-200/60 mb-5">
                                 {["Verified badge + trust score", "Appears in search & map", "Analytics + lead tracking", "Priority ranking in directory"].map(f => (
                                     <span key={f} className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-green-500" /> {f}</span>
                                 ))}
@@ -739,12 +739,12 @@ export default function HomeClient({
                             </Link>
                         </div>
                         {/* Example trust card */}
-                        <div className="hc-card-on-texture rounded-2xl p-5">
-                            <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Example Trust Profile</div>
+                        <div className="hc-card rounded-2xl p-5">
+                            <div className="text-xs font-bold text-amber-200/60 uppercase tracking-wider mb-3">Example Trust Profile</div>
                             <div className="flex items-start justify-between mb-3">
                                 <div>
-                                    <div className="font-black text-white text-base">J. Martinez Escort Co.</div>
-                                    <div className="text-xs text-gray-400 mt-0.5">Houston, TX · Pilot Car / Height Pole</div>
+                                    <div className="hc-heading text-base">J. Martinez Escort Co.</div>
+                                    <div className="text-xs text-amber-200/60 mt-0.5">Houston, TX · Pilot Car / Height Pole</div>
                                 </div>
                                 <div className="flex flex-col items-center px-3 py-2 rounded-xl bg-[#F1A91B]/15 border border-[#F1A91B]/40">
                                     <span className="text-xl font-black text-[#F1A91B]">94</span>
@@ -756,7 +756,7 @@ export default function HomeClient({
                                     <span key={b} className="text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 font-semibold">{b}</span>
                                 ))}
                             </div>
-                            <div className="text-xs text-gray-400 border-t border-white/[0.06] pt-3">Active 2 hours ago · ⭐ 4.9 (127 reviews)</div>
+                            <div className="text-xs text-amber-200/60 border-t border-white/[0.06] pt-3">Active 2 hours ago · ⭐ 4.9 (127 reviews)</div>
                         </div>
                     </div>
                 </div>
@@ -769,19 +769,19 @@ export default function HomeClient({
                 <div className="max-w-4xl mx-auto px-4 py-12 text-center">
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                         <HelpCircle className="w-8 h-8 text-[#C6923A] mx-auto mb-3" />
-                        <h2 className="text-xl sm:text-2xl font-black text-white mb-3">Have a Heavy Haul Question?</h2>
-                        <p className="text-sm text-gray-400 mb-6 max-w-lg mx-auto">
+                        <h2 className="hc-heading text-xl sm:text-2xl mb-3">Have a Heavy Haul Question?</h2>
+                        <p className="text-sm text-amber-200/60 mb-6 max-w-lg mx-auto">
                             Ask anything about escort requirements, permit rules, and industry standards across all 120 countries. FMCSA-grounded answers instantly.
                         </p>
-                        <div className="flex flex-col sm:flex-row items-stretch gap-2 max-w-xl mx-auto hc-card-on-texture rounded-xl p-2">
+                        <div className="hc-card flex flex-col sm:flex-row items-stretch gap-2 max-w-xl mx-auto rounded-xl p-2">
                             <div className="flex-1 flex items-center gap-2 px-4 py-3">
-                                <HelpCircle className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                                <HelpCircle className="w-4 h-4 text-amber-200/60 flex-shrink-0" />
                                 <input type="text"
                                     placeholder='"What height requires an escort in Texas?"'
-                                    className="w-full bg-transparent text-sm text-gray-100 placeholder-gray-500 focus:outline-none"
+                                    className="w-full bg-transparent text-sm text-amber-50 placeholder-gray-500 focus:outline-none"
                                 />
                             </div>
-                            <button className="flex items-center justify-center gap-2 bg-[#F1A91B] hover:bg-[#D4951A] text-black font-bold text-sm px-5 py-3 rounded-lg transition-colors">
+                            <button className="flex items-center justify-center gap-2 hc-btn-primary text-sm px-5 py-3 rounded-lg transition-colors">
                                 Ask <ArrowRight className="w-4 h-4" />
                             </button>
                         </div>
@@ -793,7 +793,7 @@ export default function HomeClient({
                                 { label: "Permit Calculators", href: "/tools/permit-cost-calculator" },
                                 { label: "Oversize Load Map", href: "/map" },
                             ].map(q => (
-                                <Link key={q.label} href={q.href} className="px-3 py-1 hc-card-on-texture rounded-full text-xs font-medium text-gray-300 hover:text-[#C6923A] hover:border-[#F1A91B]/30 transition-all">{q.label}</Link>
+                                <Link key={q.label} href={q.href} className="hc-chip text-xs">{q.label}</Link>
                             ))}
                         </div>
                     </motion.div>
@@ -807,8 +807,8 @@ export default function HomeClient({
                 <div className="max-w-5xl mx-auto px-4 py-10">
                     <div className="flex items-center justify-between mb-6">
                         <div>
-                            <h2 className="text-lg font-black text-white">Rate Guide Hub</h2>
-                            <p className="text-xs text-gray-400 mt-0.5">Know what the job should cost before you quote it.</p>
+                            <h2 className="hc-heading text-lg">Rate Guide Hub</h2>
+                            <p className="text-xs text-amber-200/60 mt-0.5">Know what the job should cost before you quote it.</p>
                         </div>
                         <Link href="/rates" className="text-xs font-bold text-[#F1A91B] hover:underline">All rates →</Link>
                     </div>
@@ -824,9 +824,9 @@ export default function HomeClient({
                             { label: "Night Move Premiums", href: "/rates/guide/pilot-car#additional", sub: "+$0.25–$0.50/mi" },
                         ].map(r => (
                             <Link key={r.label} href={r.href}
-                                className="p-4 bg-white/5 hover:bg-[#F1A91B]/5 border border-white/10 hover:border-[#F1A91B]/30 rounded-xl transition-all group">
-                                <div className="text-xs font-bold text-gray-100 group-hover:text-[#C6923A] mb-1">{r.label}</div>
-                                <div className="text-[10px] text-gray-500">{r.sub}</div>
+                                className="hc-card p-4 hover:border-amber-400/30 transition-all group">
+                                <div className="text-xs font-bold text-amber-50 group-hover:text-[#C6923A] mb-1">{r.label}</div>
+                                <div className="text-[10px] text-amber-200/60">{r.sub}</div>
                             </Link>
                         ))}
                     </div>
@@ -841,21 +841,21 @@ export default function HomeClient({
                     <div className="flex flex-col md:flex-row items-center gap-8">
                         <div className="flex-1">
                             <p className="text-xs font-bold uppercase tracking-widest text-[#C6923A] mb-2">AdGrid — Sponsor Grid</p>
-                            <h2 className="text-xl font-black text-white mb-3">
+                            <h2 className="hc-heading text-xl mb-3">
                                 Advertise on Haul Command & <span className="text-[#F1A91B]">Get Featured</span>
                             </h2>
-                            <p className="text-sm text-gray-300 mb-2 max-w-lg">
+                            <p className="text-sm text-amber-100/80 mb-2 max-w-lg">
                                 Reach brokers, carriers, and dispatchers actively searching for escorts. Geo-targeted placements in directory, corridors, and tool pages.
                             </p>
                             <p className="text-xs text-[#C6923A] font-bold mb-4">🔥 3 of 12 Texas corridor spots remaining · Featured in 7,711 operator profile views/month</p>
-                            <div className="flex flex-wrap gap-3 text-xs text-gray-400 mb-5">
+                            <div className="flex flex-wrap gap-3 text-xs text-amber-200/60 mb-5">
                                 {["Real-time analytics", "Geo-targeted placements", "Featured in search results", "Self-serve dashboard"].map(f => (
                                     <span key={f} className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-[#F1A91B]" /> {f}</span>
                                 ))}
                             </div>
                             <div className="flex gap-3">
-                                <Link href="/advertise/buy" className="inline-flex items-center gap-2 bg-[#F1A91B] hover:bg-[#D4951A] text-black px-5 py-2.5 rounded-lg text-sm font-black transition-colors">View Ad Products</Link>
-                                <Link href="/advertise/buy" className="inline-flex items-center gap-2 border border-white/20 hover:border-[#F1A91B]/40 px-5 py-2.5 rounded-lg text-sm font-semibold text-gray-300 hover:text-[#C6923A] transition-all">Get Proposal</Link>
+                                <Link href="/advertise/buy" className="inline-flex items-center gap-2 hc-btn-primary px-5 py-2.5 text-sm transition-colors">View Ad Products</Link>
+                                <Link href="/advertise/buy" className="inline-flex items-center gap-2 hc-btn-secondary px-5 py-2.5 text-sm rounded-lg">Get Proposal</Link>
                             </div>
                         </div>
                         <div className="w-20 h-20 rounded-2xl bg-[#F1A91B]/10 flex items-center justify-center flex-shrink-0">
@@ -872,8 +872,8 @@ export default function HomeClient({
                 <div className="max-w-5xl mx-auto px-4 py-10">
                     <div className="flex items-center justify-between mb-5">
                         <div>
-                            <h2 className="text-lg font-black text-white">Industry Intelligence</h2>
-                            <p className="text-xs text-gray-400 mt-0.5">Guides, requirements, and market intelligence for heavy haul professionals.</p>
+                            <h2 className="hc-heading text-lg">Industry Intelligence</h2>
+                            <p className="text-xs text-amber-200/60 mt-0.5">Guides, requirements, and market intelligence for heavy haul professionals.</p>
                         </div>
                         <Link href="/blog" className="text-xs font-bold text-[#F1A91B] hover:underline">All articles →</Link>
                     </div>
@@ -887,10 +887,10 @@ export default function HomeClient({
                             { title: "Escort Shortage Index 2026", href: "/shortage-index", tag: "Market Data" },
                         ].map(a => (
                             <Link key={a.href} href={a.href}
-                                className="p-4 hc-card-on-texture hover:border-[#F1A91B]/30 rounded-xl transition-all group">
+                                className="hc-card p-4 hover:border-amber-400/30 transition-all group">
                                 <div className="text-[10px] font-bold text-[#C6923A] uppercase tracking-wider mb-1.5">{a.tag}</div>
-                                <div className="text-xs font-bold text-gray-100 group-hover:text-[#C6923A] leading-snug">{a.title}</div>
-                                <div className="flex items-center gap-1 text-[10px] text-gray-500 mt-2 group-hover:text-[#F1A91B]">Read more <ChevronRight className="w-3 h-3" /></div>
+                                <div className="text-xs font-bold text-amber-50 group-hover:text-[#C6923A] leading-snug">{a.title}</div>
+                                <div className="flex items-center gap-1 text-[10px] text-amber-200/60 mt-2 group-hover:text-[#F1A91B]">Read more <ChevronRight className="w-3 h-3" /></div>
                             </Link>
                         ))}
                     </div>
@@ -902,17 +902,17 @@ export default function HomeClient({
                 ═══════════════════════════════════════ */}
             <section className="bg-black/20 border-b border-white/[0.06]">
                 <div className="max-w-5xl mx-auto px-4 py-12">
-                    <h2 className="text-lg font-black text-white mb-6 text-center">How Can We Help You?</h2>
+                    <h2 className="hc-heading text-lg mb-6 text-center">How Can We Help You?</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <Link href="/directory" className="hc-card-on-texture hover:border-[#F1A91B]/40 rounded-2xl p-6 transition-all group">
+                        <Link href="/directory" className="hc-card hover:border-amber-400/40 rounded-2xl p-6 transition-all group">
                             <Search className="w-8 h-8 mb-3 text-[#F1A91B]" />
                             <h3 className="font-black text-white mb-2 group-hover:text-[#C6923A]">I Need an Escort</h3>
-                            <p className="text-xs text-gray-400">Find a verified pilot car or escort vehicle near your load's origin. Real-time availability, trust scores, and instant dispatch matching.</p>
+                            <p className="text-xs text-amber-200/60">Find a verified pilot car or escort vehicle near your load's origin. Real-time availability, trust scores, and instant dispatch matching.</p>
                         </Link>
-                        <Link href="/claim" className="hc-card-on-texture hover:border-[#F1A91B]/40 rounded-2xl p-6 transition-all group">
+                        <Link href="/claim" className="hc-card hover:border-amber-400/40 rounded-2xl p-6 transition-all group">
                             <Users className="w-8 h-8 mb-3 text-[#F1A91B]" />
                             <h3 className="font-black text-white mb-2 group-hover:text-[#C6923A]">I Provide Escorts</h3>
-                            <p className="text-xs text-gray-400">Claim your free profile, verify your certifications, get booked by brokers, and unlock visibility tools — all from one dashboard.</p>
+                            <p className="text-xs text-amber-200/60">Claim your free profile, verify your certifications, get booked by brokers, and unlock visibility tools — all from one dashboard.</p>
                         </Link>
                     </div>
                 </div>
@@ -938,7 +938,7 @@ export default function HomeClient({
             {/* FOOTER DIRECTORY */}
             <section className="border-t border-white/[0.06] py-12">
                 <div className="max-w-6xl mx-auto px-4">
-                    <h2 className="text-lg font-black text-white mb-8 text-center">Take Haul Command With You</h2>
+                    <h2 className="hc-heading text-lg mb-8 text-center">Take Haul Command With You</h2>
                     <FooterAccordion />
                 </div>
             </section>
