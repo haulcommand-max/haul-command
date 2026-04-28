@@ -180,6 +180,7 @@
     "@types/web-push": "^3.6.4",
     "@vitest/coverage-v8": "^3.2.4",
     "autoprefixer": "^10.4.27",
+    "caniuse-lite": "^1.0.30001791",
     "fast-glob": "^3.3.3",
     "js-yaml": "^4.1.1",
     "postcss": "^8.5.8",
