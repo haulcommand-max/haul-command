@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import './mobile-homepage-fixes.css';
 import { DynamicBackgroundEngine } from '@/components/ui/DynamicBackgroundEngine';
 import { GlobalCommandBar } from '@/components/layout/GlobalCommandBar';
 import { Suspense } from 'react';
