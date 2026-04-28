@@ -2635,7 +2635,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   /* Transform animation works everywhere — no background-position issues */
-  animation: hc-stone-drift 120s ease-in-out infinite alternate;
+  animation: hc-stone-drift 80s ease-in-out infinite alternate;
   will-change: transform;
 }
 
@@ -2669,10 +2669,11 @@ body {
 /* ── Stone drift — transform-based, GPU-accelerated ── */
 @keyframes hc-stone-drift {
   0%   { transform: scale(1.00) translate(0%, 0%); }
-  25%  { transform: scale(1.02) translate(0.8%, -0.5%); }
-  50%  { transform: scale(1.01) translate(-0.5%, 0.8%); }
-  75%  { transform: scale(1.03) translate(0.6%, 0.4%); }
-  100% { transform: scale(1.02) translate(-0.8%, -0.6%); }
+  20%  { transform: scale(1.05) translate(2%, -1.5%); }
+  40%  { transform: scale(1.03) translate(-2%, 2%); }
+  60%  { transform: scale(1.06) translate(1.5%, 1%); }
+  80%  { transform: scale(1.02) translate(-1.8%, -2%); }
+  100% { transform: scale(1.04) translate(2.2%, -1%); }
 }
 
 @keyframes hc-ember-pulse {
@@ -2811,12 +2812,6 @@ body {
 }
 
 /* ── Typography tokens ── */
-.hc-heading {
-  color: var(--hc-text-main);
-  font-weight: 900;
-  letter-spacing: -0.02em;
-}
-
 .hc-subheading {
   color: var(--hc-text-soft);
   font-weight: 600;
@@ -2824,6 +2819,56 @@ body {
 
 .hc-muted {
   color: var(--hc-text-muted);
+}
+
+
+/* ── Dark backdrop for free-floating text on texture ── */
+.hc-section-veil {
+  background: rgba(8, 6, 4, 0.55);
+  backdrop-filter: blur(2px);
+  border-top: 1px solid rgba(255, 174, 55, 0.06);
+  border-bottom: 1px solid rgba(255, 174, 55, 0.06);
+}
+
+.hc-text-backdrop {
+  background: rgba(10, 8, 6, 0.78);
+  backdrop-filter: blur(8px);
+  border-radius: 0.625rem;
+  border: 1px solid rgba(255, 174, 55, 0.10);
+}
+
+/* ── Fade in/out edges so footer/long sections feel grounded ── */
+.hc-content-floor {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(8, 6, 4, 0.45) 12%,
+    rgba(8, 6, 4, 0.65) 100%
+  );
+}
+
+
+/* ── Section panel — single shared dark glass surface for headings + chips ── */
+.hc-section-panel {
+  background: rgba(8, 6, 4, 0.72);
+  border: 1px solid rgba(255, 174, 55, 0.12);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.34),
+              inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ── Text shadow for any text floating directly on texture ── */
+.hc-text-shadow {
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.75), 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Heading override: ensure all hc-heading get readable shadow ── */
+.hc-heading {
+  color: var(--hc-text-main);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 /* ── Number display — industrial feel ── */

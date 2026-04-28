@@ -106,7 +106,7 @@ export function FooterAccordion() {
                                     <Link aria-label="Navigation Link"
                                         key={l.href}
                                         href={l.href}
-                                        className="block text-sm text-[#8fa3b8] hover:text-white transition-colors"
+                                        className="block text-sm text-amber-100/80 hover:text-white transition-colors"
                                         style={{ minHeight: 36, display: 'flex', alignItems: 'center' }}
                                     >
                                         {l.label}
@@ -124,7 +124,7 @@ export function FooterAccordion() {
                     <h3 className="text-[#C6923A] text-sm sm:text-base font-bold uppercase tracking-[0.1em] mb-4">
                         The Global OS for Pilot Cars & Heavy Haul
                     </h3>
-                    <p className="text-[#5A6577] text-xs leading-relaxed max-w-4xl mx-auto">
+                    <p className="text-amber-200/65 text-xs leading-relaxed max-w-4xl mx-auto">
                         Haul Command is the world's premier logistics infrastructure network for oversize load transportation and superload freight. 
                         We instantly match commercial freight brokers, specialized heavy haul trucking companies, and logistics dispatchers with 
                         certified pilot car operators and escort vehicles across 120 countries. Whether you require standard DOT permit compliance, 
@@ -140,11 +140,11 @@ export function FooterAccordion() {
             <div className="border-t border-white/[0.04] py-6">
                 <div className="hc-container flex flex-col sm:flex-row justify-between items-center gap-4">
                     <div className="flex items-center gap-3">
-                        <span className="text-[11px] text-[#5A6577] font-semibold uppercase tracking-[0.1em]">
+                        <span className="text-[11px] text-amber-200/65 font-semibold uppercase tracking-[0.1em]">
                             © 2026 Haul Command. The Operating System for Heavy Haul.
                         </span>
                     </div>
-                    <div className="flex gap-4 text-[11px] text-[#5A6577] font-semibold uppercase tracking-[0.1em]">
+                    <div className="flex gap-4 text-[11px] text-amber-200/65 font-semibold uppercase tracking-[0.1em]">
                         <Link aria-label="Navigation Link" href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
                         <span className="opacity-50 text-[10px]">·</span>
                         <Link aria-label="Navigation Link" href="/privacy" className="hover:text-white/60 transition-colors">Privacy</Link>

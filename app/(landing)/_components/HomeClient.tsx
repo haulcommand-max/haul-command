@@ -450,7 +450,7 @@ export default function HomeClient({
                                                     <span className="text-base shrink-0">{SUGGEST_ICONS[s.type] ?? '🔍'}</span>
                                                     <div className="min-w-0">
                                                         <div className="text-sm font-semibold text-gray-800 truncate">{s.label}</div>
-                                                        {s.sub && <div className="text-xs text-amber-200/60 truncate">{s.sub}</div>}
+                                                        {s.sub && <div className="text-xs text-amber-100/75 truncate">{s.sub}</div>}
                                                     </div>
                                                     <span className="ml-auto text-[9px] font-bold text-amber-200/60 uppercase tracking-wider shrink-0">{s.type}</span>
                                                 </a>
@@ -473,7 +473,9 @@ export default function HomeClient({
                 ═══════════════════════════════════════ */}
             <section className="border-b border-white/[0.06]">
                 <div className="max-w-6xl mx-auto px-4 py-6">
-                    <p className="text-[11px] font-bold uppercase tracking-widest text-amber-200/60 mb-3 text-center">Choose your role for a personalized experience</p>
+                    <div className="flex justify-center mb-3">
+                        <span className="hc-text-backdrop px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-amber-200">Choose your role for a personalized experience</span>
+                    </div>
                     <div className="flex flex-wrap justify-center gap-2">
                         {ROLES.map(role => (
                             <button key={role.id} type="button"
@@ -499,7 +501,7 @@ export default function HomeClient({
                                 <selectedRole.Icon className="w-5 h-5 text-[#F1A91B]" />
                                 <p className="text-sm font-black text-white">{selectedRole.label}</p>
                             </div>
-                            <p className="text-xs text-amber-200/60 mb-4">{selectedRole.desc}</p>
+                            <p className="text-xs text-amber-100/75 mb-4">{selectedRole.desc}</p>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
                                 {selectedRole.goals.map(goal => (
                                     <Link key={goal.label} href={goal.href}
@@ -532,7 +534,7 @@ export default function HomeClient({
                                     <div className="hc-heading text-2xl">
                                         <AnimatedCounter value={stat.value} />
                                     </div>
-                                    <div className="text-xs text-amber-200/60 font-medium mt-1">{stat.label}</div>
+                                    <div className="text-xs text-amber-100/75 font-medium mt-1">{stat.label}</div>
                                     <div className="text-[10px] text-[#C6923A] font-bold mt-1 opacity-0 group-hover:opacity-100 transition-opacity">View →</div>
                                 </Link>
                             </motion.div>
@@ -587,15 +589,16 @@ export default function HomeClient({
                 TOP MARKETS — US states + global
                 ═══════════════════════════════════════ */}
             <section>
-                <div className="max-w-5xl mx-auto px-4 py-10">
+                <div className="max-w-5xl mx-auto px-4 py-8">
+                    <div className="hc-section-panel rounded-2xl p-6">
                     <div className="flex items-center justify-between mb-5">
                         <div>
                             <h2 className="hc-heading text-lg">Top Heavy Haul Markets</h2>
-                            <p className="text-xs text-amber-200/60 mt-0.5">United States state markets — part of our 120-country registry</p>
+                            <p className="text-xs text-amber-100/70 mt-0.5">United States state markets — part of our 120-country registry</p>
                         </div>
                         <Link href="/directory/us" className="text-xs font-bold text-[#F1A91B] hover:underline">See all states →</Link>
                     </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3 mt-2">
                         {POPULAR_STATES.map((state) => (
                             <Link key={state.slug} href={`/directory/us/${state.slug}`}
                                 className="hc-chip rounded-lg w-full justify-between text-sm">
@@ -604,14 +607,16 @@ export default function HomeClient({
                             </Link>
                         ))}
                     </div>
+                    </div>
                 </div>
             </section>
 
             {/* ═══════════════════════════════════════
                 COUNTRIES
                 ═══════════════════════════════════════ */}
-            <section className="bg-black/20 border-y border-white/[0.06]">
-                <div className="max-w-5xl mx-auto px-4 py-10">
+            <section>
+                <div className="max-w-5xl mx-auto px-4 py-8">
+                    <div className="hc-section-panel rounded-2xl p-6">
                     <div className="flex items-center justify-between mb-5">
                         <h2 className="hc-heading text-lg">120 Countries. One Platform.</h2>
                         <Link href="/directory" className="text-xs font-bold text-[#F1A91B] hover:underline">See all 120 countries →</Link>
@@ -625,18 +630,20 @@ export default function HomeClient({
                             </Link>
                         ))}
                     </div>
+                    </div>
                 </div>
             </section>
 
             {/* ═══════════════════════════════════════
                 ROUTE INTELLIGENCE
                 ═══════════════════════════════════════ */}
-            <section className="border-b border-white/[0.06]">
+            <section>
                 <div className="max-w-5xl mx-auto px-4 py-8">
+                    <div className="hc-section-panel rounded-2xl p-6">
                     <div className="flex items-center justify-between mb-4">
                         <div>
                             <h2 className="hc-heading text-lg">Route-Based Intelligence</h2>
-                            <p className="text-xs text-amber-200/60 mt-0.5">Search by corridor, port, border crossing, or near me — global coverage</p>
+                            <p className="text-xs text-amber-100/70 mt-0.5">Search by corridor, port, border crossing, or near me — global coverage</p>
                         </div>
                         <Link href="/corridors" className="text-xs font-bold text-[#F1A91B] hover:underline hidden sm:block">All corridors →</Link>
                     </div>
@@ -651,7 +658,7 @@ export default function HomeClient({
                                 className="hc-card flex flex-col gap-1 p-4 hover:border-amber-400/30 transition-all group">
                                 <item.Icon className="w-4 h-4 text-[#C6923A] mb-1" />
                                 <span className="text-sm font-bold text-amber-50 group-hover:text-[#C6923A]">{item.label}</span>
-                                <span className="text-xs text-amber-200/60">{item.sub}</span>
+                                <span className="text-xs text-amber-100/75">{item.sub}</span>
                             </Link>
                         ))}
                     </div>
@@ -672,14 +679,16 @@ export default function HomeClient({
                         ))}
                         <Link href="/corridors" className="px-3 py-1 text-xs font-bold text-[#F1A91B] hover:underline">See all →</Link>
                     </div>
+                    </div>
                 </div>
             </section>
 
             {/* ═══════════════════════════════════════
                 FIND BY LOAD TYPE — SEO long-tail
                 ═══════════════════════════════════════ */}
-            <section className="border-b border-white/[0.06]">
+            <section>
                 <div className="max-w-5xl mx-auto px-4 py-8">
+                    <div className="hc-section-panel rounded-2xl p-6">
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="hc-heading text-lg">Find Escorts by Load Type</h2>
                         <Link href="/directory" className="text-xs font-bold text-[#F1A91B] hover:underline">All load types →</Link>
@@ -696,15 +705,17 @@ export default function HomeClient({
                             </Link>
                         ))}
                     </div>
+                    </div>
                 </div>
             </section>
 
             {/* ═══════════════════════════════════════
                 TRENDING LOCALITIES — with operator counts
                 ═══════════════════════════════════════ */}
-            <section className="border-b border-white/[0.06]">
+            <section>
                 <div className="max-w-5xl mx-auto px-4 py-8">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-amber-200/60 mb-3">Trending Escort Localities</p>
+                    <div className="hc-section-panel rounded-2xl p-6">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-amber-200 mb-3">Trending Escort Localities</p>
                     <div className="flex flex-wrap items-center gap-2">
                         {TRENDING_LOCALITIES.map((loc) => (
                             <Link key={loc.slug} href={`/near/${loc.slug}`}
@@ -714,6 +725,7 @@ export default function HomeClient({
                             </Link>
                         ))}
                         <Link href="/directory" className="text-xs font-bold text-[#F1A91B] hover:underline ml-2">See all →</Link>
+                    </div>
                     </div>
                 </div>
             </section>
@@ -732,7 +744,7 @@ export default function HomeClient({
                             <p className="text-sm text-amber-100/80 mb-4 max-w-md">
                                 Your profile may already be listed. Join {displayOperators}+ operators — claim it in 60 seconds before someone else controls your visibility.
                             </p>
-                            <div className="flex flex-wrap gap-3 text-xs text-amber-200/60 mb-5">
+                            <div className="flex flex-wrap gap-3 text-xs text-amber-100/85 mb-5">
                                 {["Verified badge + trust score", "Appears in search & map", "Analytics + lead tracking", "Priority ranking in directory"].map(f => (
                                     <span key={f} className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-green-500" /> {f}</span>
                                 ))}
@@ -746,7 +758,7 @@ export default function HomeClient({
                             <div className="flex items-start justify-between mb-3">
                                 <div>
                                     <div className="hc-heading text-base">J. Martinez Escort Co.</div>
-                                    <div className="text-xs text-amber-200/60 mt-0.5">Houston, TX · Pilot Car / Height Pole</div>
+                                    <div className="text-xs text-amber-100/75 mt-0.5">Houston, TX · Pilot Car / Height Pole</div>
                                 </div>
                                 <div className="flex flex-col items-center px-3 py-2 rounded-xl bg-[#F1A91B]/15 border border-[#F1A91B]/40">
                                     <span className="text-xl font-black text-[#F1A91B]">94</span>
@@ -758,7 +770,7 @@ export default function HomeClient({
                                     <span key={b} className="text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 font-semibold">{b}</span>
                                 ))}
                             </div>
-                            <div className="text-xs text-amber-200/60 border-t border-white/[0.06] pt-3">Active 2 hours ago · ⭐ 4.9 (127 reviews)</div>
+                            <div className="text-xs text-amber-100/75 border-t border-white/[0.06] pt-3">Active 2 hours ago · ⭐ 4.9 (127 reviews)</div>
                         </div>
                     </div>
                 </div>
@@ -767,12 +779,13 @@ export default function HomeClient({
             {/* ═══════════════════════════════════════
                 HAVE A HEAVY HAUL QUESTION? — Fixed background
                 ═══════════════════════════════════════ */}
-            <section className="border-b border-white/[0.06]">
-                <div className="max-w-4xl mx-auto px-4 py-12 text-center">
+            <section>
+                <div className="max-w-4xl mx-auto px-4 py-8">
+                    <div className="hc-section-panel rounded-2xl p-8 text-center">
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-                        <HelpCircle className="w-8 h-8 text-[#C6923A] mx-auto mb-3" />
+                        <HelpCircle className="w-8 h-8 text-[#F1A91B] mx-auto mb-3" />
                         <h2 className="hc-heading text-xl sm:text-2xl mb-3">Have a Heavy Haul Question?</h2>
-                        <p className="text-sm text-amber-200/60 mb-6 max-w-lg mx-auto">
+                        <p className="text-sm text-amber-100/80 mb-6 max-w-lg mx-auto">
                             Ask anything about escort requirements, permit rules, and industry standards across all 120 countries. FMCSA-grounded answers instantly.
                         </p>
                         <div className="hc-card flex flex-col sm:flex-row items-stretch gap-2 max-w-xl mx-auto rounded-xl p-2">
@@ -799,18 +812,20 @@ export default function HomeClient({
                             ))}
                         </div>
                     </motion.div>
+                    </div>
                 </div>
             </section>
 
             {/* ═══════════════════════════════════════
                 RATE GUIDE HUB
                 ═══════════════════════════════════════ */}
-            <section className="bg-black/20 border-b border-white/[0.06]">
-                <div className="max-w-5xl mx-auto px-4 py-10">
+            <section>
+                <div className="max-w-5xl mx-auto px-4 py-8">
+                    <div className="hc-section-panel rounded-2xl p-6">
                     <div className="flex items-center justify-between mb-6">
                         <div>
                             <h2 className="hc-heading text-lg">Rate Guide Hub</h2>
-                            <p className="text-xs text-amber-200/60 mt-0.5">Know what the job should cost before you quote it.</p>
+                            <p className="text-xs text-amber-100/70 mt-0.5">Know what the job should cost before you quote it.</p>
                         </div>
                         <Link href="/rates" className="text-xs font-bold text-[#F1A91B] hover:underline">All rates →</Link>
                     </div>
@@ -832,17 +847,19 @@ export default function HomeClient({
                             </Link>
                         ))}
                     </div>
+                    </div>
                 </div>
             </section>
 
             {/* ═══════════════════════════════════════
                 ADGRID — with scarcity messaging
                 ═══════════════════════════════════════ */}
-            <section className="border-b border-white/[0.06]">
-                <div className="max-w-5xl mx-auto px-4 py-12">
+            <section>
+                <div className="max-w-5xl mx-auto px-4 py-8">
+                    <div className="hc-section-panel rounded-2xl p-8">
                     <div className="flex flex-col md:flex-row items-center gap-8">
                         <div className="flex-1">
-                            <p className="text-xs font-bold uppercase tracking-widest text-[#C6923A] mb-2">AdGrid — Sponsor Grid</p>
+                            <p className="text-xs font-bold uppercase tracking-widest text-[#F1A91B] mb-2">AdGrid — Sponsor Grid</p>
                             <h2 className="hc-heading text-xl mb-3">
                                 Advertise on Haul Command & <span className="text-[#F1A91B]">Get Featured</span>
                             </h2>
@@ -850,7 +867,7 @@ export default function HomeClient({
                                 Reach brokers, carriers, and dispatchers actively searching for escorts. Geo-targeted placements in directory, corridors, and tool pages.
                             </p>
                             <p className="text-xs text-[#C6923A] font-bold mb-4">🔥 3 of 12 Texas corridor spots remaining · Featured in 7,711 operator profile views/month</p>
-                            <div className="flex flex-wrap gap-3 text-xs text-amber-200/60 mb-5">
+                            <div className="flex flex-wrap gap-3 text-xs text-amber-100/85 mb-5">
                                 {["Real-time analytics", "Geo-targeted placements", "Featured in search results", "Self-serve dashboard"].map(f => (
                                     <span key={f} className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-[#F1A91B]" /> {f}</span>
                                 ))}
@@ -864,18 +881,20 @@ export default function HomeClient({
                             <Award className="w-10 h-10 text-[#F1A91B]" />
                         </div>
                     </div>
+                    </div>
                 </div>
             </section>
 
             {/* ═══════════════════════════════════════
                 BLOG / INTELLIGENCE HUB — internal link SEO
                 ═══════════════════════════════════════ */}
-            <section className="border-b border-white/[0.06]">
-                <div className="max-w-5xl mx-auto px-4 py-10">
+            <section>
+                <div className="max-w-5xl mx-auto px-4 py-8">
+                    <div className="hc-section-panel rounded-2xl p-6">
                     <div className="flex items-center justify-between mb-5">
                         <div>
                             <h2 className="hc-heading text-lg">Industry Intelligence</h2>
-                            <p className="text-xs text-amber-200/60 mt-0.5">Guides, requirements, and market intelligence for heavy haul professionals.</p>
+                            <p className="text-xs text-amber-100/70 mt-0.5">Guides, requirements, and market intelligence for heavy haul professionals.</p>
                         </div>
                         <Link href="/blog" className="text-xs font-bold text-[#F1A91B] hover:underline">All articles →</Link>
                     </div>
@@ -896,26 +915,29 @@ export default function HomeClient({
                             </Link>
                         ))}
                     </div>
+                    </div>
                 </div>
             </section>
 
             {/* ═══════════════════════════════════════
                 HOW CAN WE HELP
                 ═══════════════════════════════════════ */}
-            <section className="bg-black/20 border-b border-white/[0.06]">
-                <div className="max-w-5xl mx-auto px-4 py-12">
+            <section>
+                <div className="max-w-5xl mx-auto px-4 py-8">
+                    <div className="hc-section-panel rounded-2xl p-6">
                     <h2 className="hc-heading text-lg mb-6 text-center">How Can We Help You?</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Link href="/directory" className="hc-card hover:border-amber-400/40 rounded-2xl p-6 transition-all group">
                             <Search className="w-8 h-8 mb-3 text-[#F1A91B]" />
                             <h3 className="font-black text-white mb-2 group-hover:text-[#C6923A]">I Need an Escort</h3>
-                            <p className="text-xs text-amber-200/60">Find a verified pilot car or escort vehicle near your load's origin. Real-time availability, trust scores, and instant dispatch matching.</p>
+                            <p className="text-xs text-amber-100/75">Find a verified pilot car or escort vehicle near your load's origin. Real-time availability, trust scores, and instant dispatch matching.</p>
                         </Link>
                         <Link href="/claim" className="hc-card hover:border-amber-400/40 rounded-2xl p-6 transition-all group">
                             <Users className="w-8 h-8 mb-3 text-[#F1A91B]" />
                             <h3 className="font-black text-white mb-2 group-hover:text-[#C6923A]">I Provide Escorts</h3>
-                            <p className="text-xs text-amber-200/60">Claim your free profile, verify your certifications, get booked by brokers, and unlock visibility tools — all from one dashboard.</p>
+                            <p className="text-xs text-amber-100/75">Claim your free profile, verify your certifications, get booked by brokers, and unlock visibility tools — all from one dashboard.</p>
                         </Link>
+                    </div>
                     </div>
                 </div>
             </section>
@@ -940,8 +962,10 @@ export default function HomeClient({
             {/* FOOTER DIRECTORY */}
             <section className="border-t border-white/[0.06] py-12">
                 <div className="max-w-6xl mx-auto px-4">
+                    <div className="hc-section-panel rounded-2xl p-8">
                     <h2 className="hc-heading text-lg mb-8 text-center">Take Haul Command With You</h2>
                     <FooterAccordion />
+                    </div>
                 </div>
             </section>
 
