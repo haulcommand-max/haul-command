@@ -1,312 +1,427 @@
-# Haul Command — Claude Code Operating Manual
+# CLAUDE.md
 
-This file governs how Claude Code behaves in the Haul Command repository. It is read by Claude Code on every session. Public users do not see it.
+Haul Command coding and agent-execution instructions for Claude Code.
 
-Structure:
-1. Karpathy Skills — base coding discipline
-2. Haul Command — product, SEO, monetization, and platform enforcement
-3. Stack-specific verification rules
-4. Never downgrade / always upgrade enforcement
-5. Definition of done
+This file combines the original Karpathy Skills coding discipline with Haul Command-specific enforcement rules. The goal is to make Claude Code move fast without wandering, overwriting strong existing work, weakening commercial surfaces, or accidentally treating Haul Command like a normal small website.
 
 ---
 
-## 1. Karpathy Skills — Base Coding Discipline
+# Karpathy Skills: Coding Discipline Layer
 
-These four rules apply to every coding task, every time. They exist to prevent assumption-driven, sprawling, sloppy, or speculative changes.
+Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
 
-### 1.1 Think Before Coding
+**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
 
-Before writing or editing code, state:
-- What the user actually asked for, in one sentence.
-- What is already true about the codebase that affects the answer.
-- What the smallest correct change looks like.
-- What could break if you change it.
+## 1. Think Before Coding
 
-If any of those are unknown, inspect the relevant files first. Do not guess. Do not invent file paths, function signatures, table names, env vars, or library APIs. Read what exists.
+**Don't assume. Don't hide confusion. Surface tradeoffs.**
 
-If the request is ambiguous, ask one tight clarifying question. Do not start coding on a guess.
+Before implementing:
+- State your assumptions explicitly. If uncertain, ask.
+- If multiple interpretations exist, present them — don't pick silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
 
-### 1.2 Simplicity First
+## 2. Simplicity First
 
-Pick the smallest change that solves the problem.
+**Minimum code that solves the problem. Nothing speculative.**
 
-Avoid:
-- Speculative abstractions
-- New utilities that wrap one-line operations
-- New config layers
-- New dependencies when an existing one works
-- Premature generalization
-- Refactoring code that was not asked about
+- No features beyond what was asked.
+- No abstractions for single-use code.
+- No "flexibility" or "configurability" that wasn't requested.
+- No error handling for impossible scenarios.
+- If you write 200 lines and it could be 50, rewrite it.
 
-Add complexity only when the simple version is demonstrably wrong, not because the complex version "feels more correct."
+Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 
-### 1.3 Surgical Changes
+## 3. Surgical Changes
 
-Touch only what the task requires. Do not "tidy up" unrelated files in the same commit. Do not rename, reformat, or restructure code that is not part of the task. Do not delete code "because it looks unused" without verifying it is actually unused.
+**Touch only what you must. Clean up only your own mess.**
 
-If a related file genuinely must change to make the requested change correct (types, imports, schemas, tests, links), make that change and explain why in the commit message.
+When editing existing code:
+- Don't "improve" adjacent code, comments, or formatting.
+- Don't refactor things that aren't broken.
+- Match existing style, even if you'd do it differently.
+- If you notice unrelated dead code, mention it — don't delete it.
 
-Surgical does not mean leaving the feature half-broken. Surgical means not wandering.
+When your changes create orphans:
+- Remove imports/variables/functions that YOUR changes made unused.
+- Don't remove pre-existing dead code unless asked.
 
-### 1.4 Goal-Driven Execution
+The test: Every changed line should trace directly to the user's request.
 
-Every action serves the stated goal. If, mid-task, you discover an unrelated bug, do one of two things:
+## 4. Goal-Driven Execution
 
-1. Note it for the user to address separately.
-2. Address it only if it blocks the original goal, and say so explicitly.
+**Define success criteria. Loop until verified.**
 
-Do not silently expand scope. Do not hide unrelated changes inside an in-scope diff.
+Transform tasks into verifiable goals:
+- "Add validation" -> "Write tests for invalid inputs, then make them pass"
+- "Fix the bug" -> "Write a test that reproduces it, then make it pass"
+- "Refactor X" -> "Ensure tests pass before and after"
 
-### 1.5 Verify, Then Confirm
+For multi-step tasks, state a brief plan:
 
-After making changes, verify with the strongest check available in this environment:
-- TypeScript compilation
-- Lint
-- Build
-- Targeted runtime check (Supabase query, route smoke test)
-- Manual diff review
+```text
+1. [Step] -> verify: [check]
+2. [Step] -> verify: [check]
+3. [Step] -> verify: [check]
+```
 
-If verification cannot be run, say exactly which check could not run and what command the user should run.
+Strong success criteria let you loop independently. Weak criteria such as "make it work" require constant clarification.
 
-Do not declare success on faith.
+These guidelines are working if there are fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
 
 ---
 
-## 2. Haul Command Enforcement Layer
+# Haul Command Enforcement Layer
 
-These rules extend Karpathy Skills with Haul Command product reality. The base layer prevents bad coding. This layer prevents bad product decisions.
+These rules extend the Karpathy Skills section for the Haul Command codebase.
 
-### 2.1 Never Downgrade, Always Upgrade
+## 0. Never Downgrade, Always Upgrade
 
 Before changing code, audit the existing implementation and preserve the strongest current behavior.
 
-Do not simplify by removing:
-- SEO surfaces (titles, descriptions, canonical URLs, schema, sitemaps, robots.txt, llms.txt)
-- Internal linking (cross-page links, breadcrumbs, related-content blocks)
-- Schema / JSON-LD (Organization, WebSite, FAQPage, Service, Course, ItemList, BreadcrumbList, ProfilePage, LocalBusiness, SoftwareApplication, Dataset)
-- Supabase-backed data paths (RLS, RPCs, views, indexes, triggers, policies)
-- Monetization surfaces (AdGrid placements, sponsorships, claim CTAs, Pro upsells, training paywalls)
-- Country / global support (120-country tier system, hreflang, country selectors)
-- Trust / ranking logic (trust scores, authority scores, verification fields, claim seasoning)
-- Mobile-first design
-- Accessibility (ARIA, prefers-reduced-motion, keyboard nav)
-- Analytics / event tracking (PostHog, GTM, custom events)
-- Claim / listing / conversion flows
-- Glossary / regulation / training / tool / corridor connections
+Do not simplify by removing, weakening, hiding, or bypassing:
+- SEO surfaces
+- internal linking
+- schema / JSON-LD
+- Supabase-backed data paths
+- monetization surfaces
+- 120-country/global support
+- trust/ranking/report-card logic
+- mobile-first design
+- accessibility
+- analytics/event tracking
+- claim/listing/conversion flows
+- glossary/regulation/training/tool/corridor connections
+- Firebase/push readiness
+- Fly.io worker/agent readiness
+- TypeSense search readiness
+- Mapbox/Traccar routing/GPS readiness
 
-If a requested change conflicts with stronger existing implementation, stop and explain the conflict before editing.
+If a requested change conflicts with an existing stronger implementation, stop and explain the conflict before editing.
 
-### 2.2 Haul Command Is Global by Default
+## 1. Haul Command Is Global by Default
 
-The United States is a high-activity market. It is not the whole product.
+Do not assume the United States is the whole product.
 
-Every relevant feature must be checked for:
-- Country support (Tier A through Tier E, 120 countries total)
-- State / province / region support
-- Corridor support (national and cross-border)
-- Language / localization readiness
-- Local regulation / authority readiness
-- Local monetization readiness
-- Market activation state (live, indexed, developing, upcoming)
+Haul Command is built for 120 countries. The U.S. can be a high-activity market, but it must not become the default mental model unless the task is explicitly U.S.-scoped.
 
-When labeling a feature as "Popular X" or "Top X," verify whether X is genuinely the scope or whether it should read "United States X — part of our 120-country registry" or similar honest framing.
+Every relevant feature should be checked for:
+- country support
+- state/province/region support
+- corridor support
+- language/localization readiness
+- local regulation/authority readiness
+- local monetization readiness
+- market activation state
+- data-product readiness
 
-### 2.3 Supabase Before Guessing
+When creating UI copy, labels, filters, cards, landing pages, sitemap entries, or SEO content, use language that supports global operation and does not accidentally imply Haul Command is only a U.S. directory.
 
-Before building or changing data-driven UI, inspect the real data model.
+## 2. Supabase Before Guessing
 
-Always check:
-- Relevant table columns and types
-- Existing RLS policies
-- Existing RPCs
-- Migrations history
-- Seed data presence
-- Index coverage on filtered/sorted columns
+Before building or changing data-driven UI, inspect the real data model first.
 
-Tables that exist (do not duplicate, do not parallel-build):
-- `hc_global_operators` — operator directory
-- `hc_blog_articles` — long-form content
-- `hc_seo_pages` — programmatic SEO surfaces (~76,701 rows)
-- `hc_glossary_terms` — industry vocabulary
-- `hc_corridors` — heavy haul routes
-- `hc_corridor_scarcity` — supply/demand metrics
-- `hc_rates_public` — published rate index
-- `hc_rm_radar_us_states` — state-level demand/supply
-- `hc_content_generation_queue` — pending Gemini-generated content
-- `hc_policy` — runtime policy keys (90-day seasoning, authority score gates)
-- `hc_audit_log` — system events
-- `hc_training_courses` — 50 seeded courses across 6 tiers
-- `hc_countries`, `hc_regions` — geo hierarchy
-- `semantic_search_embeddings` — pgvector replaces Pinecone
+Check relevant Supabase tables, views, RPCs, migrations, RLS policies, and seed data before assuming something is missing.
 
-If the table you need does not exist, propose a migration before writing code that depends on it. Do not create duplicate or parallel tables.
+Especially check:
+- directory listings
+- identity/trust scores
+- glossary/dictionary tables
+- load board tables
+- corridor tables
+- regulation tables
+- training/module tables
+- AdGrid/sponsorship tables
+- claim/profile/contact tables
+- country/region/market tables
+- saved searches, notifications, push-token tables
 
-### 2.4 Outreach Policy (CRITICAL — never bypass)
+Do not create duplicate tables or parallel systems unless the existing system has been audited and the reason is documented.
 
-No email, SMS, or voice outreach to operators until:
-- Profile has 90+ days seasoning
-- AND `authority_score >= 40`
-- AND outreach channel is LiveKit voice only
+If multiple tables appear to serve the same purpose, identify the canonical source before wiring new UI. Do not repeat prior glossary-style fragmentation where a large data source exists but the UI reads from a smaller disconnected table.
 
-Stored in `hc_policy`:
-- `claim.seasoning_days_minimum=90`
-- `claim.outreach.requires_authority_score=40`
-- `claim.outreach.no_email_no_sms=true`
+## 3. Commercial Surface Rule
 
-Enforced via trigger `trg_claim_outreach_seasoning`. Always check `hc_policy` before scheduling any outreach.
+Every public page should be treated as a commercial surface, not just a content page.
 
-Country priority for activation: US first, then CA, then autonomous engines pick.
+When editing a public page, check whether it should include:
+- claim listing CTA
+- advertise/sponsor CTA
+- related providers
+- related loads
+- related corridors
+- related glossary terms
+- related regulations
+- related tools/calculators
+- related training module links
+- data product CTA
+- trust/report-card signals
+- country/region/corridor filters
+- route-support infrastructure links
+- internal links that help Google crawl the ecosystem
 
-### 2.5 Commercial Surface Rule
+Do not create dead-end pages. Every page should push users toward at least one useful next action.
 
-Every page is a commercial surface, not just a content page.
-
-When editing or creating a page, check whether it should include:
-- Claim listing CTA
-- Advertise / sponsor CTA
-- Related providers
-- Related loads
-- Related corridors
-- Related glossary terms
-- Related regulations
-- Related tools / calculators
-- Training module links
-- Data product CTA
-- Trust / report-card signals
-- Country / region / corridor filters
-- Internal links that help Google crawl the ecosystem
-
-Do not create dead-end pages.
-
-### 2.6 SEO and Helpful Content Rule
+## 4. SEO and Helpful Content Rule
 
 Do not ship thin pages.
 
-For public pages, verify:
-- Unique title (no duplicate "Haul Command | Haul Command")
-- Unique meta description
-- Canonical URL
-- Single H1, structured H2/H3 hierarchy
-- Internal links to related pages
-- Relevant schema / JSON-LD
-- Useful content beyond generic copy
-- Role-specific pathways
-- Country / corridor relevance
-- Mobile-first layout
-- Image / visual support where appropriate
-- Indexable unless intentionally noindexed
-- No "Coming soon" placeholder content shipped as live pages
+For public pages, check:
+- unique title
+- unique meta description
+- canonical URL
+- structured headings
+- internal links
+- relevant schema / JSON-LD
+- useful content above generic copy
+- role-specific pathways
+- country/corridor relevance
+- mobile-first layout
+- image/visual support where appropriate
+- indexability unless intentionally noindexed
 
-Pages must help real heavy-haul users complete a job faster, safer, or smarter.
+Pages should help real heavy-haul users complete a job faster, safer, or smarter.
 
-### 2.7 No Fake Stats
+Prioritize internal linking rings among:
+- glossary
+- regulations
+- tools/calculators
+- training
+- directory profiles
+- corridors
+- loads
+- AdGrid/sponsor surfaces
+- data monetization surfaces
 
-If a stat is zero, unknown, or not backed by a live data source, hide it or label it honestly. Do not show "0 operators / 0 countries / 0 corridors" while elsewhere claiming "7,712+ verified operators" — that contradiction destroys trust.
+## 5. Surgical Changes, But Not Weak Changes
 
-When numbers are not yet verified, use honest labels: "Listed Operators," "Countries in Registry," "Active / Seeded Corridors," "Geocoded Support Locations." Never say "Covered" when it's "in registry."
+Follow Surgical Changes from Karpathy Skills, but do not use it as an excuse to avoid necessary connected fixes.
 
-### 2.8 Brand Consistency
+If one change requires updating related types, tests, schemas, routes, links, sitemap behavior, or seed data, do the connected work and explain why it is required.
 
-- Brand name: **Haul Command** (never "Hall Command" — typo found in earlier rate guide images, never use them publicly without correction)
-- Background system: burnt stone texture (`/images/backgrounds/haul-command-burnt-stone-bg.webp`) + amber glow + slow drift
-- Brand tokens (CSS variables in `app/globals.css`): `--hc-text-main #fff7e8`, `--hc-text-soft #d8c6a3`, `--hc-text-muted #a99268`, `--hc-gold #f5a623`, `--hc-gold-dark #b87313`, `--hc-panel rgba(10,8,6,0.82)`, `--hc-border rgba(255,174,55,0.16)`
-- Component classes: `.hc-card`, `.hc-section-panel`, `.hc-btn-primary` (gold gradient + dark text), `.hc-btn-secondary`, `.hc-chip`, `.hc-heading`
-- Icons: Lucide React only. No emoji icons in UI components (emojis acceptable in body text and activity ticker only).
-- CTAs: never white text on gold — always dark text on gold gradient via `.hc-btn-primary`.
+Surgical means "do not wander."
+It does not mean "leave the feature half-broken."
+
+## 6. Credit and Cost Discipline
+
+Before doing large changes, classify the work:
+- quick one-file fix
+- small connected patch
+- schema-backed feature
+- sitewide refactor
+- agent/worker/system change
+- SEO/indexing expansion
+- monetization expansion
+- design-system cleanup
+
+For large work:
+- inspect first
+- make a short plan
+- edit in batches
+- verify each batch
+- avoid rewriting working systems
+- avoid speculative abstractions
+- avoid generating huge unused files
+- preserve existing high-value logic
+
+## 7. Required Verification
+
+After changes, verify with the strongest practical checks available:
+- package install state if dependencies changed
+- npm build
+- TypeScript check
+- lint
+- route smoke tests
+- Supabase query/RPC check where relevant
+- sitemap/robots/llms.txt check where relevant
+- mobile layout check where relevant
+- JSON-LD/schema validation where relevant
+- no broken internal links caused by the change
+- no downgrade to global/country behavior
+
+If verification cannot be run, say exactly why and provide the command the user should run.
+
+## 8. Haul Command Definition of Done
+
+A change is not done until it preserves or improves:
+- 120-country readiness
+- SEO crawlability
+- mobile-first usability
+- monetization readiness
+- trust/profile/listing logic
+- Supabase-backed correctness
+- internal linking
+- claim/activation pathways
+- no-dead-end UX
+- brand consistency
+- performance
+- verification status
+
+## 9. Role and Ecosystem Awareness
+
+Haul Command is not only a pilot-car page. It is an operating system for the fragmented heavy-haul ecosystem.
+
+When building navigation, homepage sections, directories, tools, training, search, or routing, consider the major user groups:
+- pilot car / escort operators
+- heavy-haul carriers
+- brokers
+- shippers
+- permit services
+- route surveyors
+- steer/steerman and scarce specialists
+- law enforcement / certified escorts where market-relevant
+- infrastructure partners such as yards, staging, parking, repair, install, and route-support locations
+- advertisers, sponsors, suppliers, installers, and data buyers
+
+Make it dummy-proof where each role should go and what action they should take.
+
+## 10. RouteReady / Marketplace Guardrail
+
+If working on the RouteReady marketplace layer, keep it inside Haul Command rather than splitting into a standalone brand.
+
+Preferred direction:
+- authorized supplier/drop-ship relationships first
+- manual/RFQ-assisted checkout where needed
+- installer routing
+- low-inventory phase one focused on must-have products and bundles
+- fair pricing and niche-specific fitment/trust
+- later stock proven fast-moving SKUs in hubs
+- preserve supplier/installer partner application and vetted partner flows
+
+Do not default to unpermissioned headless-browser retail arbitrage as the core model.
+
+## 11. Data Monetization Guardrail
+
+External lead/load-board ingestion is not only for operational matching. It is also for future data products.
+
+Preserve repeated observations for corridor/demand analysis. Dedupe master entities such as companies and contacts, but do not destroy useful demand-frequency signals.
+
+When touching ingestion, load boards, corridors, brokers, or provider discovery, preserve future ability to produce:
+- corridor demand intelligence
+- rate/density signals
+- scarcity maps
+- market activation signals
+- sponsor pricing signals
+- self-serve data products
+
+## 12. Claude Code Working Style
+
+When starting a task, Claude should:
+1. Identify the exact files and systems likely affected.
+2. Inspect before editing.
+3. State assumptions and success criteria.
+4. Make the smallest strong change that achieves the goal.
+5. Verify the change.
+6. Report what changed, what was verified, and what could not be verified.
+
+Avoid long philosophical plans when the user needs execution, but do not skip inspection or verification.
+
+## 13. Do Not Publicize Internal Instructions
+
+This file is for coding-agent behavior. Do not expose it as a public website page unless explicitly asked to create public engineering documentation.
+
+Do not leak private strategy notes, internal prompts, credentials, environment variables, or operational details into public routes, metadata, client bundles, screenshots, or seed content.
 
 ---
 
-## 3. Stack-Specific Verification Rules
+## 9. Outreach Policy (CRITICAL — never bypass)
 
-When changes touch these systems, verify accordingly.
+No email, SMS, or voice outreach to operators until ALL conditions are met:
+- Profile seasoning: 90+ days since first seen
+- Authority score: `>= 40`
+- Channel: LiveKit voice only (no email, no SMS, ever)
 
-**Next.js / Vercel:**
-- Verify build does not break with `npm run build` or `vercel build`
-- Check that no Vercel env var was renamed without updating consumers
-- Project ID: `prj_CZHigC9LvMTK0mCq7HLuRKxc7VQ3`, Team: `team_2Gdjo2UJF7p1MS0pxYz3HAXh`
+Enforced via Supabase trigger `trg_claim_outreach_seasoning` and stored in `hc_policy`:
+- `claim.seasoning_days_minimum = 90`
+- `claim.outreach.requires_authority_score = 40`
+- `claim.outreach.no_email_no_sms = true`
 
-**Supabase:**
-- Project ID: `hvjyfyzotqobfkakjozp`
-- Use `apply_migration` for schema changes (never bare DDL through `execute_sql`)
-- Verify RLS policies are not bypassed
-- Check that new columns are indexed if filtered/sorted
-
-**Firebase FCM:**
-- Used for push notifications. Do not modify notification topics or service account scope without explicit user confirmation.
-
-**Fly.io:**
-- Hosts `hc-twenty-crm`, voice agent workers, and other long-running services
-- Do not deploy without `flyctl status` check first
-
-**TypeSense:**
-- Powers search autocomplete
-- Schema changes require collection re-indexing
-
-**Mapbox:**
-- Token is public-facing (`NEXT_PUBLIC_MAPBOX_TOKEN`)
-- Do not commit tokens with elevated scopes; verify token type before edits
-
-**Stripe:**
-- Connect, Issuing, Treasury are partially wired. Do not enable production capabilities without user confirmation.
-- Webhook secret: `STRIPE_SPONSOR_WEBHOOK_SECRET`
-
-**LiveKit:**
-- Voice outreach platform — outreach must respect 90-day seasoning policy
+Always query `hc_policy` before scheduling any outreach. Country activation priority: US → CA → autonomous engine picks.
 
 ---
 
-## 4. Credit and Cost Discipline
+## 10. Supabase Table Inventory (do not duplicate these)
 
-Before large changes, classify the work:
-- Quick one-file fix
-- Small connected patch
-- Schema-backed feature
-- Sitewide refactor
-- Agent / worker / system change
-- SEO / indexing expansion
-- Monetization expansion
+Before creating any table or collection, verify it doesn't already exist:
 
-For anything beyond a quick fix:
-1. Inspect first (read the existing implementation)
-2. State a short plan
-3. Edit in batches
-4. Verify each batch
-5. Avoid rewriting working systems
-6. Avoid speculative abstractions
-7. Avoid generating huge unused files
+| Table | Purpose |
+|-------|---------|
+| `hc_global_operators` | Operator directory (~7,700 records) |
+| `hc_blog_articles` | Long-form content (29 published) |
+| `hc_seo_pages` | Programmatic SEO (~76,701 published rows) |
+| `hc_glossary_terms` | Industry vocabulary (27 published) |
+| `hc_corridors` | Heavy haul routes |
+| `hc_corridor_scarcity` | Supply/demand metrics |
+| `hc_rates_public` | Published rate index (110 records) |
+| `hc_rm_radar_us_states` | State-level shortage data |
+| `hc_content_generation_queue` | Pending Gemini content (50 pending) |
+| `hc_policy` | Runtime policy keys |
+| `hc_audit_log` | System events |
+| `hc_training_courses` | 50 courses across 6 tiers |
+| `hc_countries` | 120-country geo hierarchy |
+| `hc_regions` | 108 seeded regions |
+| `semantic_search_embeddings` | pgvector (replaces Pinecone) |
 
-If a task would burn significant tokens regenerating files that already work, stop and ask whether to proceed.
-
----
-
-## 5. Definition of Done
-
-A change is not done until all of the following are preserved or improved:
-
-- Global 120-country readiness
-- SEO crawlability (title, meta, canonical, schema, internal links)
-- Mobile-first usability
-- Monetization readiness (claim CTAs, ad surfaces, sponsorships, Pro upsells)
-- Trust / profile / listing logic intact
-- Supabase-backed correctness (no broken RPCs, no orphaned tables)
-- Internal linking density preserved or improved
-- Claim / activation pathways unbroken
-- No dead-end UX
-- Brand consistency (texture, tokens, components, icons, CTAs)
-- Performance (no LCP regression, no jank, no layout shift)
-- Verification status reported honestly
-
-If any of these are unverified, say so explicitly. Do not declare done on faith.
+Supabase project ID: `hvjyfyzotqobfkakjozp`
+Vercel project ID: `prj_CZHigC9LvMTK0mCq7HLuRKxc7VQ3`, Team: `team_2Gdjo2UJF7p1MS0pxYz3HAXh`
 
 ---
 
-## 6. When in Doubt
+## 11. Stack-Specific Verification
 
-- **Ask, don't guess.** One tight clarifying question is cheaper than 30 minutes of wandering.
-- **Read, don't assume.** Open the file. Check the table. Verify the route exists.
-- **Inspect, don't invent.** No fake imports, fake table names, fake env vars, fake function signatures.
-- **Surgical, not weak.** Do the connected work that the task actually requires; don't leave half-broken features.
-- **Honest, not performative.** Report what worked, what didn't, what wasn't verified.
+**Next.js / Vercel:** `npm run build` before pushing. No renamed env vars without updating all consumers.
 
-The goal is for Haul Command to become the dominant infrastructure platform for the heavy haul industry globally. Every commit should serve that goal or stay out of the way.
+**Supabase:** Use `apply_migration` for schema DDL. Never raw DDL through `execute_sql`. Verify RLS is not bypassed. New columns on filtered/sorted fields need indexes.
+
+**Firebase FCM:** Push notifications. Do not modify service account scope without user confirmation.
+
+**Fly.io:** Run `flyctl status` before deploying workers/agents.
+
+**TypeSense:** Schema changes require collection re-indexing. Keys: `TYPESENSE_ADMIN_KEY`, `TYPESENSE_API_KEY`, `NEXT_PUBLIC_TYPESENSE_SEARCH_KEY`.
+
+**Stripe:** Connect + Issuing + Treasury partially wired. Do not enable production modes without explicit user confirmation. Webhook: `STRIPE_SPONSOR_WEBHOOK_SECRET`.
+
+**LiveKit:** Voice outreach platform. Outreach must pass 90-day seasoning check before triggering.
+
+**Mapbox:** Token is public-facing. Do not commit elevated-scope tokens.
+
+---
+
+## 12. Brand System Constants
+
+CSS tokens live in `app/globals.css`:
+
+```css
+--hc-text-main:  #fff7e8   /* warm off-white for headings */
+--hc-text-soft:  #d8c6a3   /* sand for subheadings */
+--hc-text-muted: #a99268   /* muted labels */
+--hc-gold:       #f5a623   /* primary gold */
+--hc-gold-dark:  #b87313
+--hc-panel:      rgba(10,8,6,0.82)
+--hc-border:     rgba(255,174,55,0.16)
+```
+
+Component classes (all in globals.css):
+- `.hc-card` / `.hc-section-panel` — dark glass surfaces
+- `.hc-btn-primary` — gold gradient, **dark text** (never white on gold)
+- `.hc-btn-secondary` — dark bg, gold border
+- `.hc-chip` — pill nav elements, dark fill, gold hover
+- `.hc-heading` — off-white, text-shadow for readability on texture
+
+Background: `/images/backgrounds/haul-command-burnt-stone-bg.webp` — burnt stone texture, animated via `transform: scale/translate` on `::before` pseudo-element (80s cycle).
+
+Icons: Lucide React only in UI. No emoji icons in components (emojis OK in live-activity ticker and body copy only).
+
+Brand name spelling: **Haul Command** — never "Hall Command" (known typo in old rate guide images; do not publish those images without correction).
+
+---
+
+## 13. No Fake Stats
+
+If a number is zero, estimated, or not live-backed by Supabase, either hide it or label it honestly.
+
+Never show "0 operators / 0 countries / 0 corridors" while the page also claims "7,712+ verified operators." That contradiction is a live trust killer.
+
+Honest labels: "Listed Operators" / "Countries in Registry" / "Active / Seeded Corridors" / "Geocoded Support Locations" — not "Covered," not "Active" unless the data confirms it.
