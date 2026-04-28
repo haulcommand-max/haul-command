@@ -357,13 +357,14 @@ export default function HomeClient({
                 <div className="max-w-6xl mx-auto px-4 pt-10 pb-4 text-center">
                     <motion.h1
                         initial="hidden" animate="visible" variants={fadeUp} custom={0}
-                        className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-1 tracking-tight"
+                        className="text-[clamp(1.75rem,7vw,3rem)] font-black text-white mb-1 tracking-tight leading-tight"
+                        style={{ textWrap: 'balance' } as React.CSSProperties}
                     >
-                        The Heavy Haul Operating System
+                        The Heavy Haul<br className="hidden xs:block" /> Operating System
                     </motion.h1>
                     <motion.p initial="hidden" animate="visible" variants={fadeUp} custom={0.5}
-                        className="text-sm text-amber-200/60 mb-4">
-                        Pilot car operators · Escort vehicles · Permits · Rates · Compliance — 120 countries
+                        className="text-xs sm:text-sm text-amber-200/60 mb-4 px-2">
+                        Pilot cars · Escort vehicles · Permits · Rates · Compliance — 120 countries
                     </motion.p>
                 </div>
 
@@ -392,18 +393,18 @@ export default function HomeClient({
                         </div>
 
                         <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-4 pb-6">
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 justify-center">
                                 <button type="button"
                                     onClick={() => setActiveRole(activeRole === "broker" ? null : "broker")}
-                                    className={`px-4 py-1.5 rounded-full text-xs font-bold border transition-all ${activeRole === "broker" ? 'bg-[#F1A91B] border-[#F1A91B] text-black' : 'bg-white/10 border-white/20 text-white hover:bg-white/20'}`}
+                                    className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold border transition-all min-h-[40px] ${activeRole === "broker" ? 'bg-[#F1A91B] border-[#F1A91B] text-black' : 'bg-white/10 border-white/20 text-white hover:bg-white/20'}`}
                                 >
-                                    🔍 I Need an Escort
+                                    <Search className="w-3.5 h-3.5 flex-shrink-0" /> I Need an Escort
                                 </button>
                                 <button type="button"
                                     onClick={() => setActiveRole(activeRole === "operator" ? null : "operator")}
-                                    className={`px-4 py-1.5 rounded-full text-xs font-bold border transition-all ${activeRole === "operator" ? 'bg-[#F1A91B] border-[#F1A91B] text-black' : 'bg-white/10 border-white/20 text-white hover:bg-white/20'}`}
+                                    className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold border transition-all min-h-[40px] ${activeRole === "operator" ? 'bg-[#F1A91B] border-[#F1A91B] text-black' : 'bg-white/10 border-white/20 text-white hover:bg-white/20'}`}
                                 >
-                                    🚗 I Provide Escorts
+                                    <Car className="w-3.5 h-3.5 flex-shrink-0" /> I Provide Escorts
                                 </button>
                             </div>
 
@@ -414,7 +415,7 @@ export default function HomeClient({
                                 <div className="flex-[1.5] flex items-center gap-2 bg-white px-4 py-3 border-b sm:border-b-0 sm:border-r border-gray-200">
                                     <Search className="w-5 h-5 text-amber-200/60 flex-shrink-0" />
                                     <select name="category" className="w-full bg-transparent text-sm text-gray-700 font-semibold focus:outline-none appearance-none cursor-pointer">
-                                        <option value="">Find escorts, pilot cars, permits, or rates</option>
+                                        <option value="">Pilot cars, escorts, permits…</option>
                                         <optgroup label="─── Escort Services ───">
                                             <option value="pilot-car">Pilot Car / PEVO</option>
                                             <option value="escort-vehicle">Escort Vehicle</option>
@@ -438,7 +439,7 @@ export default function HomeClient({
                                         onChange={e => handleSearchInput(e.target.value)}
                                         onFocus={() => searchQuery.length >= 2 && setShowSuggestions(true)}
                                         onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-                                        placeholder="City, state, province, corridor, or country"
+                                        placeholder="City, state, or country"
                                         className="w-full bg-transparent text-sm text-gray-700 placeholder-gray-400 font-medium focus:outline-none"
                                         autoComplete="off"
                                     />
@@ -473,21 +474,21 @@ export default function HomeClient({
                 ═══════════════════════════════════════ */}
             <section className="border-b border-white/[0.06]">
                 <div className="max-w-6xl mx-auto px-4 py-6">
-                    <div className="flex justify-center mb-3">
-                        <span className="hc-text-backdrop px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-amber-200">Choose your role for a personalized experience</span>
-                    </div>
-                    <div className="flex flex-wrap justify-center gap-2">
+                    {/* Label - single line, centered, no wrap */}
+                    <p className="text-[11px] font-bold uppercase tracking-widest text-amber-300 text-center mb-4 whitespace-nowrap overflow-hidden text-ellipsis">
+                        Choose your role for a personalized experience
+                    </p>
+                    {/* Grid instead of flex-wrap — guarantees even sizing and alignment */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                         {ROLES.map(role => (
                             <button key={role.id} type="button"
                                 onClick={() => setActiveRole(activeRole === role.id ? null : role.id)}
-                                className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-semibold border transition-all ${
-                                    activeRole === role.id
-                                        ? 'hc-chip active'
-                                        : 'hc-chip'
+                                className={`flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-semibold border transition-all min-h-[44px] w-full text-center ${
+                                    activeRole === role.id ? 'hc-chip active' : 'hc-chip'
                                 }`}
                             >
-                                <role.Icon className="w-3.5 h-3.5" />
-                                {role.label}
+                                <role.Icon className="w-3.5 h-3.5 flex-shrink-0" />
+                                <span className="leading-tight">{role.label}</span>
                             </button>
                         ))}
                     </div>
@@ -520,7 +521,7 @@ export default function HomeClient({
                 STATS — Fixed labels, real data fallbacks
                 ═══════════════════════════════════════ */}
             <section className="bg-black/20 border-b border-white/[0.06]">
-                <div className="max-w-5xl mx-auto px-4 py-10">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {[
                             { value: `${displayOperators}+`, label: "Listed Operators", icon: Users, color: "#F1A91B", href: "/directory" },
@@ -547,7 +548,7 @@ export default function HomeClient({
                 SHORTAGE CALLOUT — scarcity signal
                 ═══════════════════════════════════════ */}
             <section className="border-b border-white/[0.06]">
-                <div className="max-w-5xl mx-auto px-4 py-4">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl border border-red-500/40 bg-[#1a0505]/90 backdrop-blur-sm">
                         <div className="flex items-center gap-3">
                             <Flame className="w-5 h-5 text-red-400 flex-shrink-0" />
@@ -568,7 +569,7 @@ export default function HomeClient({
                 RATE INTELLIGENCE WIDGET
                 ═══════════════════════════════════════ */}
             <section className="border-b border-white/[0.06]">
-                <div className="max-w-5xl mx-auto px-4 py-4">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl border border-[#C6923A]/40 bg-[#120a02]/90 backdrop-blur-sm">
                         <div className="flex items-center gap-3">
                             <DollarSign className="w-5 h-5 text-[#F1A91B] flex-shrink-0" />
@@ -589,7 +590,7 @@ export default function HomeClient({
                 TOP MARKETS — US states + global
                 ═══════════════════════════════════════ */}
             <section>
-                <div className="max-w-5xl mx-auto px-4 py-8">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-6">
                     <div className="flex items-center justify-between mb-5">
                         <div>
@@ -615,7 +616,7 @@ export default function HomeClient({
                 COUNTRIES
                 ═══════════════════════════════════════ */}
             <section>
-                <div className="max-w-5xl mx-auto px-4 py-8">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-6">
                     <div className="flex items-center justify-between mb-5">
                         <h2 className="hc-heading text-lg">120 Countries. One Platform.</h2>
@@ -638,14 +639,14 @@ export default function HomeClient({
                 ROUTE INTELLIGENCE
                 ═══════════════════════════════════════ */}
             <section>
-                <div className="max-w-5xl mx-auto px-4 py-8">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-6">
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-start justify-between mb-4 gap-2">
                         <div>
                             <h2 className="hc-heading text-lg">Route-Based Intelligence</h2>
-                            <p className="text-xs text-amber-100/70 mt-0.5">Search by corridor, port, border crossing, or near me — global coverage</p>
+                            <p className="text-xs text-amber-100/70 mt-0.5">Search by corridor, port, border crossing, or near me</p>
                         </div>
-                        <Link href="/corridors" className="text-xs font-bold text-[#F1A91B] hover:underline hidden sm:block">All corridors →</Link>
+                        <Link href="/corridors" className="text-xs font-bold text-[#F1A91B] hover:underline whitespace-nowrap flex-shrink-0 mt-1">All →</Link>
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
                         {[
@@ -662,7 +663,7 @@ export default function HomeClient({
                             </Link>
                         ))}
                     </div>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 mt-1">
                         {[
                             { name: "I-10 Gulf Coast", slug: "i-10-gulf-coast" },
                             { name: "I-35 Texas NAFTA", slug: "i-35-texas-nafta" },
@@ -673,11 +674,11 @@ export default function HomeClient({
                             { name: "Hwy 401 Ontario (CA)", slug: "hwy-401-ontario" },
                         ].map(c => (
                             <Link key={c.slug} href={`/corridors/${c.slug}`}
-                                className="hc-chip text-xs">
+                                className="hc-chip text-xs min-h-[36px]">
                                 {c.name}
                             </Link>
                         ))}
-                        <Link href="/corridors" className="px-3 py-1 text-xs font-bold text-[#F1A91B] hover:underline">See all →</Link>
+                        <Link href="/corridors" className="hc-chip text-xs font-bold text-[#F1A91B] min-h-[36px]">See all corridors →</Link>
                     </div>
                     </div>
                 </div>
@@ -687,7 +688,7 @@ export default function HomeClient({
                 FIND BY LOAD TYPE — SEO long-tail
                 ═══════════════════════════════════════ */}
             <section>
-                <div className="max-w-5xl mx-auto px-4 py-8">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-6">
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="hc-heading text-lg">Find Escorts by Load Type</h2>
@@ -696,11 +697,11 @@ export default function HomeClient({
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                         {LOAD_TYPES.map(lt => (
                             <Link key={lt.label} href={lt.href}
-                                className="hc-card flex items-start gap-3 p-4 hover:border-amber-400/30 transition-all group">
-                                <lt.icon className="w-5 h-5 text-[#C6923A] mt-0.5 flex-shrink-0" />
+                                className="hc-card flex flex-col gap-2 p-4 hover:border-amber-400/30 transition-all group min-h-[80px]">
+                                <lt.icon className="w-5 h-5 text-[#C6923A] flex-shrink-0" />
                                 <div>
-                                    <div className="text-xs font-bold text-amber-50 group-hover:text-[#C6923A]">{lt.label}</div>
-                                    <div className="text-[10px] text-amber-200/60 mt-0.5">{lt.tag}</div>
+                                    <div className="text-xs font-bold text-amber-50 group-hover:text-[#C6923A] leading-snug">{lt.label}</div>
+                                    <div className="text-[10px] text-amber-200/50 mt-0.5">{lt.tag}</div>
                                 </div>
                             </Link>
                         ))}
@@ -713,7 +714,7 @@ export default function HomeClient({
                 TRENDING LOCALITIES — with operator counts
                 ═══════════════════════════════════════ */}
             <section>
-                <div className="max-w-5xl mx-auto px-4 py-8">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-6">
                     <p className="text-[10px] font-bold uppercase tracking-widest text-amber-200 mb-3">Trending Escort Localities</p>
                     <div className="flex flex-wrap items-center gap-2">
@@ -734,7 +735,7 @@ export default function HomeClient({
                 CLAIM LISTING + TRUST PREVIEW
                 ═══════════════════════════════════════ */}
             <section className="border-b border-white/[0.06]">
-                <div className="max-w-5xl mx-auto px-4 py-12">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
                     <div className="grid md:grid-cols-2 gap-8 items-center">
                         <div>
                             <div className="w-12 h-12 rounded-xl bg-[#F1A91B]/10 flex items-center justify-center mb-4">
@@ -744,12 +745,16 @@ export default function HomeClient({
                             <p className="text-sm text-amber-100/80 mb-4 max-w-md">
                                 Your profile may already be listed. Join {displayOperators}+ operators — claim it in 60 seconds before someone else controls your visibility.
                             </p>
-                            <div className="flex flex-wrap gap-3 text-xs text-amber-100/85 mb-5">
+                            {/* Benefits — stacked on mobile, 2-col on sm+ */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4 text-xs text-amber-100/85 mb-5">
                                 {["Verified badge + trust score", "Appears in search & map", "Analytics + lead tracking", "Priority ranking in directory"].map(f => (
-                                    <span key={f} className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-green-500" /> {f}</span>
+                                    <span key={f} className="flex items-center gap-1.5">
+                                        <CheckCircle className="w-3.5 h-3.5 text-green-500 flex-shrink-0" /> {f}
+                                    </span>
                                 ))}
                             </div>
-                            <Link href="/claim" className="inline-flex items-center gap-2 bg-[#F1A91B] hover:bg-[#D4951A] text-black px-6 py-3 rounded-lg text-sm font-black transition-colors shadow-md">
+                            {/* Full-width on mobile */}
+                            <Link href="/claim" className="flex w-full sm:w-auto sm:inline-flex items-center justify-center gap-2 bg-[#F1A91B] hover:bg-[#D4951A] text-black px-6 py-3.5 rounded-xl text-sm font-black transition-colors shadow-md min-h-[48px]">
                                 Claim Your Listing Free <ArrowRight className="w-4 h-4" />
                             </Link>
                         </div>
@@ -780,7 +785,7 @@ export default function HomeClient({
                 HAVE A HEAVY HAUL QUESTION? — Fixed background
                 ═══════════════════════════════════════ */}
             <section>
-                <div className="max-w-4xl mx-auto px-4 py-8">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-8 text-center">
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                         <HelpCircle className="w-8 h-8 text-[#F1A91B] mx-auto mb-3" />
@@ -790,7 +795,7 @@ export default function HomeClient({
                         </p>
                         <div className="hc-card flex flex-col sm:flex-row items-stretch gap-2 max-w-xl mx-auto rounded-xl p-2">
                             <div className="flex-1 flex items-center gap-2 px-4 py-3">
-                                <HelpCircle className="w-4 h-4 text-amber-200/60 flex-shrink-0" />
+                                <Search className="w-4 h-4 text-amber-200/60 flex-shrink-0" />
                                 <input type="text"
                                     placeholder='"What height requires an escort in Texas?"'
                                     className="w-full bg-transparent text-sm text-amber-50 placeholder-gray-500 focus:outline-none"
@@ -820,7 +825,7 @@ export default function HomeClient({
                 RATE GUIDE HUB
                 ═══════════════════════════════════════ */}
             <section>
-                <div className="max-w-5xl mx-auto px-4 py-8">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-6">
                     <div className="flex items-center justify-between mb-6">
                         <div>
@@ -855,7 +860,7 @@ export default function HomeClient({
                 ADGRID — with scarcity messaging
                 ═══════════════════════════════════════ */}
             <section>
-                <div className="max-w-5xl mx-auto px-4 py-8">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-8">
                     <div className="flex flex-col md:flex-row items-center gap-8">
                         <div className="flex-1">
@@ -889,7 +894,7 @@ export default function HomeClient({
                 BLOG / INTELLIGENCE HUB — internal link SEO
                 ═══════════════════════════════════════ */}
             <section>
-                <div className="max-w-5xl mx-auto px-4 py-8">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-6">
                     <div className="flex items-center justify-between mb-5">
                         <div>
@@ -923,7 +928,7 @@ export default function HomeClient({
                 HOW CAN WE HELP
                 ═══════════════════════════════════════ */}
             <section>
-                <div className="max-w-5xl mx-auto px-4 py-8">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-6">
                     <h2 className="hc-heading text-lg mb-6 text-center">How Can We Help You?</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -943,28 +948,53 @@ export default function HomeClient({
             </section>
 
             {/* ═══════════════════════════════════════
-                APP DOWNLOAD
+                APP DOWNLOAD — Proper badges, balanced design
                 ═══════════════════════════════════════ */}
-            <section className="bg-[#0B0F14] border-t border-[#F1A91B]/20">
-                <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <p className="text-white font-bold text-sm">📱 Get Haul Command. Track loads live.</p>
-                    <div className="flex gap-3">
-                        <Link href="/download" className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg text-xs font-black hover:bg-gray-100 transition-colors">
-                            🍎 App Store
-                        </Link>
-                        <Link href="/download" className="flex items-center gap-2 bg-[#F1A91B] text-black px-4 py-2 rounded-lg text-xs font-black hover:bg-[#D4951A] transition-colors">
-                            ▶ Google Play
-                        </Link>
+            <section className="bg-[#0B0F14] border-t border-b border-[#F1A91B]/20">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-5">
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div className="text-center sm:text-left">
+                            <p className="text-white font-black text-sm mb-0.5">Get Haul Command on Your Phone</p>
+                            <p className="text-amber-200/60 text-xs">Track loads live · Find escorts · Dispatch instantly</p>
+                        </div>
+                        {/* Proper store badges - both dark background, balanced sizing */}
+                        <div className="flex gap-3 w-full sm:w-auto">
+                            <Link href="/download"
+                                className="flex-1 sm:flex-none flex items-center justify-center gap-2.5 bg-black hover:bg-zinc-900 border border-white/20 text-white px-4 py-3 rounded-xl transition-colors min-h-[52px] min-w-[140px]">
+                                {/* Apple logo SVG — official shape */}
+                                <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 814 1000" fill="currentColor" aria-hidden="true">
+                                    <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76.5 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 accommodation 470.3 0 500.1 0c69.2 0 113.4 36.1 161.5 36.1 46.8 0 97.7-38.5 165.7-38.5 46.2 0 147.5 5.1 219.9 97.4zm-132.8-200.4c31.6-37.9 54.8-89.5 54.8-141.2 0-7.1-.6-14.3-1.9-20.1-52.5 2-114.6 34.3-152.6 75.6-29 32.4-56.1 83.9-56.1 136.3 0 7.7 1.3 15.4 1.9 17.9 3.2.6 8.4 1.3 13.6 1.3 47.4 0 105.4-30.4 140.3-69.8z"/>
+                                </svg>
+                                <div className="text-left leading-tight">
+                                    <div className="text-[9px] text-white/60 font-medium">Download on the</div>
+                                    <div className="text-sm font-black">App Store</div>
+                                </div>
+                            </Link>
+                            <Link href="/download"
+                                className="flex-1 sm:flex-none flex items-center justify-center gap-2.5 bg-black hover:bg-zinc-900 border border-white/20 text-white px-4 py-3 rounded-xl transition-colors min-h-[52px] min-w-[140px]">
+                                {/* Google Play logo SVG */}
+                                <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 512 512" aria-hidden="true">
+                                    <path fill="#4CAF50" d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1z"/>
+                                    <path fill="#FF6D00" d="M47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256-256L47 0z"/>
+                                    <path fill="#FFD600" d="M492.3 256.3L425.8 217l-69.5 39.3 69.5 39.7 67.1-39.7z"/>
+                                    <path fill="#FF6D00" d="M104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/>
+                                </svg>
+                                <div className="text-left leading-tight">
+                                    <div className="text-[9px] text-white/60 font-medium">Get it on</div>
+                                    <div className="text-sm font-black">Google Play</div>
+                                </div>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </section>
 
             {/* FOOTER DIRECTORY */}
-            <section className="border-t border-white/[0.06] py-12">
-                <div className="max-w-6xl mx-auto px-4">
-                    <div className="hc-section-panel rounded-2xl p-8">
-                    <h2 className="hc-heading text-lg mb-8 text-center">Take Haul Command With You</h2>
-                    <FooterAccordion />
+            <section className="border-t border-white/[0.06] py-10">
+                <div className="max-w-6xl mx-auto px-4 sm:px-6">
+                    <div className="hc-section-panel rounded-2xl p-5 sm:p-8">
+                        <h2 className="hc-heading text-lg mb-6 text-center">Take Haul Command With You</h2>
+                        <FooterAccordion />
                     </div>
                 </div>
             </section>

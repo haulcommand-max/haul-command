@@ -1,156 +1,115 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
-
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   FOOTER ACCORDION — Mobile-First
-   Mobile: stacked accordion sections, tap to expand.
-   Desktop (â‰¥768px): 4-column grid, all sections visible.
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+import { ChevronRight } from "lucide-react";
 
 const FOOTER_SECTIONS = [
     {
         title: "Market",
         links: [
-            { href: "/loads", label: "Oversize Load Board" },
-            { href: "/directory", label: "Pilot Car Directory" },
-            { href: "/rates", label: "Pilot Car Rates" },
+            { href: "/loads",        label: "Oversize Load Board" },
+            { href: "/directory",    label: "Pilot Car Directory" },
+            { href: "/rates",        label: "Pilot Car Rates" },
             { href: "/leaderboards", label: "Leaderboard" },
-            { href: "/corridors", label: "Corridors" },
-            { href: "/map", label: "Live Map" },
+            { href: "/corridors",    label: "Corridors" },
+            { href: "/map",          label: "Live Map" },
         ],
     },
     {
         title: "Popular Regions",
         links: [
-            { href: "/directory/us/texas", label: "Texas Pilot Cars" },
-            { href: "/directory/us/florida", label: "Florida Pilot Cars" },
-            { href: "/directory/us/california", label: "California Pilot Cars" },
-            { href: "/directory/us/louisiana", label: "Louisiana Pilot Cars" },
+            { href: "/directory/us/texas",         label: "Texas Pilot Cars" },
+            { href: "/directory/us/florida",        label: "Florida Pilot Cars" },
+            { href: "/directory/us/california",     label: "California Pilot Cars" },
+            { href: "/directory/us/louisiana",      label: "Louisiana Pilot Cars" },
             { href: "/directory/us/north-carolina", label: "North Carolina Pilot Cars" },
-            { href: "/directory/us/oklahoma", label: "Oklahoma Pilot Cars" },
+            { href: "/directory/us/oklahoma",       label: "Oklahoma Pilot Cars" },
         ],
     },
     {
         title: "Free Tools",
         links: [
-            { href: "/tools/escort-calculator", label: "Escort Calculator" },
-            { href: "/escort-requirements", label: "Escort Requirements" },
-            { href: "/tools/compliance-copilot", label: "Compliance Copilot" },
-            { href: "/tools/state-requirements", label: "Regulation Alerts" },
-            { href: "/tools/global-command-map", label: "Discovery Map" },
-            { href: "/roles/pilot-car-operator", label: "Pilot Car Services" },
+            { href: "/tools/escort-count-calculator", label: "Escort Calculator" },
+            { href: "/escort-requirements",           label: "Escort Requirements" },
+            { href: "/tools/compliance-card",         label: "Compliance Copilot" },
+            { href: "/tools/regulation-alerts",       label: "Regulation Alerts" },
+            { href: "/tools/discovery-map",           label: "Discovery Map" },
+            { href: "/roles/pilot-car-operator",      label: "Pilot Car Services" },
         ],
     },
     {
         title: "Knowledge Base",
         links: [
-            { href: '/glossary', label: 'Industry Glossary' },
-            { href: '/glossary/pilot-car', label: 'What is a Pilot Car?' },
-            { href: '/glossary/oversize-load', label: 'Oversize Load Defined' },
-            { href: '/escort-requirements', label: 'Escort Requirements' },
-            { href: '/regulations', label: 'State Regulations' },
+            { href: "/glossary",               label: "Industry Glossary" },
+            { href: "/what-is-a-pilot-car",    label: "What is a Pilot Car?" },
+            { href: "/glossary/oversize-load", label: "Oversize Load Defined" },
+            { href: "/regulations",            label: "State Regulations" },
+            { href: "/roles",                  label: "Heavy Haul Role Guide" },
         ],
     },
     {
         title: "Company",
         links: [
-            { href: "/terms", label: "Terms of Service" },
+            { href: "/terms",   label: "Terms of Service" },
             { href: "/privacy", label: "Privacy Policy" },
             { href: "/contact", label: "Contact Us" },
-            { href: "/about", label: "About" },
+            { href: "/about",   label: "About" },
         ],
     },
 ];
 
 export function FooterAccordion() {
     return (
-        <footer className="relative z-10 border-t border-white/[0.06]">
-            {/* Mobile/Desktop responsive footer styles */}
-            <style>{`
-                .ft-grid {
-                    display: grid;
-                    grid-template-columns: 1fr;
-                    gap: 2rem;
-                }
-                .ft-title {
-                    font-size: 11px;
-                    font-weight: 700;
-                    color: #C6923A;
-                    text-transform: uppercase;
-                    letter-spacing: 0.2em;
-                    margin-bottom: 16px;
-                }
-                .ft-links {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 8px;
-                }
-                @media (min-width: 640px) {
-                    .ft-grid { grid-template-columns: repeat(2, 1fr); }
-                }
-                @media (min-width: 768px) {
-                    .ft-grid { grid-template-columns: repeat(5, 1fr); gap: 2rem; }
-                }
-            `}</style>
-
-            <div className="hc-container py-8 md:py-16">
-                <div className="ft-grid">
-                    {FOOTER_SECTIONS.map((section) => (
-                        <div key={section.title} className="ft-section">
-                            <h4 className="ft-title">{section.title}</h4>
-                            <div className="ft-links">
-                                {section.links.map(l => (
-                                    <Link aria-label="Navigation Link"
-                                        key={l.href}
+        <footer className="relative z-10">
+            {/* ── Link grid — 2-col mobile, 3-col sm, 5-col md ── */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-4 gap-y-8">
+                {FOOTER_SECTIONS.map((section) => (
+                    <div key={section.title}>
+                        <h4 className="text-[11px] font-black uppercase tracking-[0.18em] text-[#C6923A] mb-3">
+                            {section.title}
+                        </h4>
+                        <ul className="space-y-0" role="list">
+                            {section.links.map(l => (
+                                <li key={l.href}>
+                                    <Link
                                         href={l.href}
-                                        className="block text-sm text-amber-100/80 hover:text-white transition-colors"
-                                        style={{ minHeight: 36, display: 'flex', alignItems: 'center' }}
+                                        className="flex items-center justify-between gap-1 text-sm text-amber-100/75 hover:text-white hover:bg-white/[0.05] rounded-lg px-2 py-2.5 -mx-2 transition-all group min-h-[44px]"
                                     >
-                                        {l.label}
+                                        <span className="leading-snug">{l.label}</span>
+                                        <ChevronRight className="w-3 h-3 text-amber-200/25 group-hover:text-[#F1A91B] flex-shrink-0 transition-colors" />
                                     </Link>
-                                ))}
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
             </div>
 
-            {/* Crown Jewel SEO Density Block */}
-            <div className="py-8 sm:py-12 mt-8">
-                <div className="hc-container max-w-4xl mx-auto text-center">
-                    <h3 className="text-[#C6923A] text-sm sm:text-base font-bold uppercase tracking-[0.1em] mb-4">
-                        The Global OS for Pilot Cars & Heavy Haul
-                    </h3>
-                    <p className="text-amber-200/65 text-xs leading-relaxed max-w-4xl mx-auto">
-                        Haul Command is the world's premier logistics infrastructure network for oversize load transportation and superload freight. 
-                        We instantly match commercial freight brokers, specialized heavy haul trucking companies, and logistics dispatchers with 
-                        certified pilot car operators and escort vehicles across 120 countries. Whether you require standard DOT permit compliance, 
-                        complex route surveys, lead car height pole validation, or police escort routing, our real-time oversize load board 
-                        and proprietary intelligence engines ensure your high-value cargo moves securely and legally. Join the largest verified PEVO 
-                        (Pilot Escort Vehicle Operator) directory and leverage escrow-backed payments, live corridor tracking, and market analytics 
-                        built specifically for the specialized transportation industry.
-                    </p>
-                </div>
+            {/* ── SEO density block ── */}
+            <div className="mt-10 pt-8 border-t border-white/[0.06] text-center">
+                <h3 className="text-[#C6923A] text-xs font-bold uppercase tracking-widest mb-3">
+                    The Global OS for Pilot Cars &amp; Heavy Haul
+                </h3>
+                <p className="text-amber-200/50 text-xs leading-relaxed max-w-3xl mx-auto">
+                    Haul Command is the world&apos;s premier logistics infrastructure for oversize load transportation.
+                    We match freight brokers, heavy haul carriers, and dispatchers with certified pilot car operators
+                    and escort vehicles across 120 countries — with a live load board, permit tools, corridor
+                    intelligence, trust verification, and real-time dispatch all in one platform.
+                </p>
             </div>
 
-            {/* Bottom bar */}
-            <div className="border-t border-white/[0.04] py-6">
-                <div className="hc-container flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <div className="flex items-center gap-3">
-                        <span className="text-[11px] text-amber-200/65 font-semibold uppercase tracking-[0.1em]">
-                            © 2026 Haul Command. The Operating System for Heavy Haul.
-                        </span>
-                    </div>
-                    <div className="flex gap-4 text-[11px] text-amber-200/65 font-semibold uppercase tracking-[0.1em]">
-                        <Link aria-label="Navigation Link" href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
-                        <span className="opacity-50 text-[10px]">·</span>
-                        <Link aria-label="Navigation Link" href="/privacy" className="hover:text-white/60 transition-colors">Privacy</Link>
-                        <span className="opacity-50 text-[10px]">·</span>
-                        <Link aria-label="Navigation Link" href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
-                    </div>
+            {/* ── Bottom bar ── */}
+            <div className="border-t border-white/[0.04] mt-8 pt-5 flex flex-col sm:flex-row justify-between items-center gap-3">
+                <span className="text-[11px] text-amber-200/45 font-semibold uppercase tracking-wider text-center sm:text-left">
+                    © 2026 Haul Command. The Operating System for Heavy Haul.
+                </span>
+                <div className="flex gap-4 text-[11px] text-amber-200/45 font-semibold uppercase tracking-wider">
+                    <Link href="/terms"   className="hover:text-white/70 transition-colors min-h-[44px] flex items-center">Terms</Link>
+                    <span className="opacity-40">·</span>
+                    <Link href="/privacy" className="hover:text-white/70 transition-colors min-h-[44px] flex items-center">Privacy</Link>
+                    <span className="opacity-40">·</span>
+                    <Link href="/contact" className="hover:text-white/70 transition-colors min-h-[44px] flex items-center">Contact</Link>
                 </div>
             </div>
         </footer>
