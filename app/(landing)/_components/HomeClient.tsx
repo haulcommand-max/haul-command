@@ -210,11 +210,11 @@ const LOAD_TYPES = [
 
 /* ── LIVE ACTIVITY FEED (seeded — will pull from DB when wired) ── */
 const ACTIVITY_FEED = [
-    { text: "Operator claimed profile in Houston, TX", time: "12m ago", icon: BadgeCheck },
-    { text: "Load posted: Permian Basin → Casper, WY", time: "28m ago", icon: Truck },
-    { text: "New permit alert: Texas US-287 frost law lifted", time: "1h ago", icon: AlertTriangle },
-    { text: "Operator available now in Dallas, TX", time: "34m ago", icon: Radio },
-    { text: "Corridor demand spike: I-10 Gulf Coast +22%", time: "2h ago", icon: TrendingUp },
+    { text: "Operator claimed profile in Houston, TX", shortText: "Profile claimed · Houston TX", time: "12m ago", icon: BadgeCheck },
+    { text: "Load posted: Permian Basin → Casper, WY", shortText: "Load posted · I-25 corridor", time: "28m ago", icon: Truck },
+    { text: "New permit alert: Texas US-287 frost law lifted", shortText: "TX frost alert · US-287", time: "1h ago", icon: AlertTriangle },
+    { text: "Operator available now in Dallas, TX", shortText: "Available now · Dallas TX", time: "34m ago", icon: Radio },
+    { text: "Corridor demand spike: I-10 Gulf Coast +22%", shortText: "Demand spike · I-10 +22%", time: "2h ago", icon: TrendingUp },
 ];
 
 const POPULAR_STATES = [
@@ -383,11 +383,11 @@ export default function HomeClient({
                         <div className="absolute inset-0 bg-gradient-to-r from-[#0B0F14]/85 via-[#0B0F14]/55 to-[#0B0F14]/75" />
                         <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-[#F1A91B]/70 to-transparent" />
 
-                        {/* Live activity ticker */}
+                        {/* Live activity ticker — short copy, fits mobile */}
                         <div className="absolute top-3 left-3 right-3 flex justify-center">
-                            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 border border-white/10 backdrop-blur-sm text-xs text-amber-100/80 max-w-sm">
+                            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 border border-white/10 backdrop-blur-sm text-xs text-amber-100/80 max-w-xs">
                                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
-                                <span className="truncate">{ACTIVITY_FEED[activityIdx].text}</span>
+                                <span className="truncate">{ACTIVITY_FEED[activityIdx].shortText ?? ACTIVITY_FEED[activityIdx].text}</span>
                                 <span className="text-amber-200/60 flex-shrink-0">{ACTIVITY_FEED[activityIdx].time}</span>
                             </div>
                         </div>
@@ -470,28 +470,82 @@ export default function HomeClient({
             </section>
 
             {/* ═══════════════════════════════════════
-                ROLE ROUTER — 14 roles, Lucide icons, content swaps
+                ANSWER BLOCK — AI search / entity definition
+                One clear paragraph for Google, ChatGPT,
+                Perplexity, and first-time visitors.
+                ═══════════════════════════════════════ */}
+            <section className="border-b border-white/[0.06] bg-black/30">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+                        <div className="flex-1">
+                            <p className="text-[11px] font-bold uppercase tracking-widest text-[#C6923A] mb-2">What is Haul Command?</p>
+                            <p className="text-sm text-amber-100/80 leading-relaxed">
+                                <strong className="text-white">Haul Command is the global operating system for heavy haul transportation</strong> — 
+                                a verified pilot car directory, oversize load board, permit compliance tools, and route intelligence network 
+                                covering 120 countries. Whether you need an escort vehicle, want to claim your operator listing, 
+                                or need permit/regulations by route, Haul Command is built for every role in the oversize load ecosystem.
+                            </p>
+                        </div>
+                        {/* Quick proof bar */}
+                        <div className="flex sm:flex-col gap-4 sm:gap-2 flex-shrink-0 text-center">
+                            <div>
+                                <div className="text-xl font-black text-[#F1A91B]">7,700+</div>
+                                <div className="text-[10px] text-amber-200/60">Operators listed</div>
+                            </div>
+                            <div>
+                                <div className="text-xl font-black text-[#F1A91B]">120</div>
+                                <div className="text-[10px] text-amber-200/60">Countries</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* How it works — 3-step strip */}
+                    <div className="mt-5 pt-5 border-t border-white/[0.06] grid grid-cols-3 gap-3">
+                        {[
+                            { step: "1", label: "Search Your Route", sub: "City, state, corridor, or country" },
+                            { step: "2", label: "Compare Providers", sub: "Trust scores, certs, availability" },
+                            { step: "3", label: "Claim or Dispatch", sub: "Request escort or claim profile" },
+                        ].map(s => (
+                            <div key={s.step} className="text-center">
+                                <div className="w-7 h-7 rounded-full bg-[#F1A91B]/10 border border-[#F1A91B]/30 flex items-center justify-center mx-auto mb-2">
+                                    <span className="text-xs font-black text-[#F1A91B]">{s.step}</span>
+                                </div>
+                                <div className="text-xs font-black text-white leading-tight mb-0.5">{s.label}</div>
+                                <div className="text-[10px] text-amber-200/55 leading-snug">{s.sub}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════
+                ROLE ROUTER — 14 roles, crawlable links
                 ═══════════════════════════════════════ */}
             <section className="border-b border-white/[0.06]">
-                <div className="max-w-6xl mx-auto px-4 py-6">
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
                     {/* Label - single line, centered, no wrap */}
-                    <p className="text-[11px] font-bold uppercase tracking-widest text-amber-300 text-center mb-4 whitespace-nowrap overflow-hidden text-ellipsis">
+                    <p className="text-[11px] font-bold uppercase tracking-widest text-amber-300 text-center mb-1 whitespace-nowrap overflow-hidden text-ellipsis">
                         Choose your role for a personalized experience
                     </p>
-                    {/* Grid instead of flex-wrap — guarantees even sizing and alignment */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <p className="text-[11px] text-amber-200/55 text-center mb-4">
+                        Used by operators, brokers, carriers, permit teams, staging yards, sponsors, and authorities
+                    </p>
+                    {/* Grid of crawlable <a> links — SEO-indexable role intent paths */}
+                    <nav aria-label="Role navigation" className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                         {ROLES.map(role => (
-                            <button key={role.id} type="button"
-                                onClick={() => setActiveRole(activeRole === role.id ? null : role.id)}
+                            <a key={role.id}
+                                href={`/roles/${role.id}`}
+                                onClick={(e) => { e.preventDefault(); setActiveRole(activeRole === role.id ? null : role.id); }}
+                                aria-pressed={activeRole === role.id}
                                 className={`flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-semibold border transition-all min-h-[44px] w-full text-center ${
                                     activeRole === role.id ? 'hc-chip active' : 'hc-chip'
                                 }`}
                             >
                                 <role.Icon className="w-3.5 h-3.5 flex-shrink-0" />
                                 <span className="leading-tight">{role.label}</span>
-                            </button>
+                            </a>
                         ))}
-                    </div>
+                    </nav>
 
                     {selectedRole && (
                         <motion.div
@@ -521,7 +575,10 @@ export default function HomeClient({
                 STATS — Fixed labels, real data fallbacks
                 ═══════════════════════════════════════ */}
             <section className="bg-black/20 border-b border-white/[0.06]">
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+                    <p className="text-[11px] text-amber-200/50 text-center mb-4 italic">
+                        Registry coverage, verified profiles, and route intelligence expanding by market
+                    </p>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {[
                             { value: `${displayOperators}+`, label: "Listed Operators", icon: Users, color: "#F1A91B", href: "/directory" },
@@ -716,16 +773,26 @@ export default function HomeClient({
             <section>
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-6">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-amber-200 mb-3">Trending Escort Localities</p>
-                    <div className="flex flex-wrap items-center gap-2">
-                        {TRENDING_LOCALITIES.map((loc) => (
-                            <Link key={loc.slug} href={`/near/${loc.slug}`}
-                                className="hc-chip text-xs">
-                                {loc.name}
-                                <span className="text-[10px] text-amber-200/60 font-normal">({loc.count})</span>
-                            </Link>
+                    <div className="flex items-center justify-between mb-4">
+                        <div>
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-amber-200 mb-1">Trending Escort Localities</p>
+                            <p className="text-xs text-amber-100/60">United States · <a href="/directory" className="text-[#F1A91B] hover:underline">Explore 120 countries →</a></p>
+                        </div>
+                        <a href="/directory" className="text-xs font-bold text-[#F1A91B] hover:underline whitespace-nowrap">See all →</a>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        {TRENDING_LOCALITIES.slice(0, 12).map((loc) => (
+                            <a key={loc.slug} href={`/near/${loc.slug}`}
+                                className="hc-chip text-xs justify-between min-h-[40px]">
+                                <span>{loc.name}</span>
+                                <span className="text-[10px] text-amber-200/50 font-normal ml-1">({loc.count})</span>
+                            </a>
                         ))}
-                        <Link href="/directory" className="text-xs font-bold text-[#F1A91B] hover:underline ml-2">See all →</Link>
+                    </div>
+                    {/* Not in your market yet */}
+                    <div className="mt-4 pt-4 border-t border-white/[0.06] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                        <p className="text-xs text-amber-100/60">Not seeing your market? We&apos;re expanding across 120 countries.</p>
+                        <a href="/claim" className="text-xs font-bold text-[#F1A91B] hover:underline whitespace-nowrap flex-shrink-0">Claim your listing →</a>
                     </div>
                     </div>
                 </div>
@@ -742,9 +809,10 @@ export default function HomeClient({
                                 <Shield className="w-6 h-6 text-[#F1A91B]" />
                             </div>
                             <h2 className="hc-heading text-xl mb-2">Claim Your Free Listing</h2>
-                            <p className="text-sm text-amber-100/80 mb-4 max-w-md">
-                                Your profile may already be listed. Join {displayOperators}+ operators — claim it in 60 seconds before someone else controls your visibility.
+                            <p className="text-sm text-amber-100/80 mb-1 max-w-md">
+                                Your company may already appear in search results. Claim it so brokers see the <em>right</em> phone number, services, certifications, and coverage area — not outdated data.
                             </p>
+                            <p className="text-xs text-amber-200/60 mb-4">No credit card. Takes 60 seconds.</p>
                             {/* Benefits — stacked on mobile, 2-col on sm+ */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4 text-xs text-amber-100/85 mb-5">
                                 {["Verified badge + trust score", "Appears in search & map", "Analytics + lead tracking", "Priority ranking in directory"].map(f => (
@@ -948,31 +1016,28 @@ export default function HomeClient({
             </section>
 
             {/* ═══════════════════════════════════════
-                APP DOWNLOAD — Proper badges, balanced design
+                APP — Honest waitlist CTA
                 ═══════════════════════════════════════ */}
             <section className="bg-[#0B0F14] border-t border-b border-[#F1A91B]/20">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-5">
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                         <div className="text-center sm:text-left">
-                            <p className="text-white font-black text-sm mb-0.5">Get Haul Command on Your Phone</p>
-                            <p className="text-amber-200/60 text-xs">Track loads live · Find escorts · Dispatch instantly</p>
+                            <p className="text-white font-black text-sm mb-0.5">Haul Command Mobile App</p>
+                            <p className="text-amber-200/60 text-xs">Track loads · Find escorts · Dispatch — coming to iOS &amp; Android</p>
                         </div>
-                        {/* Proper store badges - both dark background, balanced sizing */}
                         <div className="flex gap-3 w-full sm:w-auto">
-                            <Link href="/download"
-                                className="flex-1 sm:flex-none flex items-center justify-center gap-2.5 bg-black hover:bg-zinc-900 border border-white/20 text-white px-4 py-3 rounded-xl transition-colors min-h-[52px] min-w-[140px]">
-                                {/* Apple logo SVG — official shape */}
+                            <a href="/download"
+                                className="flex-1 sm:flex-none flex items-center justify-center gap-2.5 bg-zinc-900 hover:bg-zinc-800 border border-white/20 text-white px-5 py-3 rounded-xl transition-colors min-h-[52px] min-w-[140px]">
                                 <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 814 1000" fill="currentColor" aria-hidden="true">
-                                    <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76.5 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 accommodation 470.3 0 500.1 0c69.2 0 113.4 36.1 161.5 36.1 46.8 0 97.7-38.5 165.7-38.5 46.2 0 147.5 5.1 219.9 97.4zm-132.8-200.4c31.6-37.9 54.8-89.5 54.8-141.2 0-7.1-.6-14.3-1.9-20.1-52.5 2-114.6 34.3-152.6 75.6-29 32.4-56.1 83.9-56.1 136.3 0 7.7 1.3 15.4 1.9 17.9 3.2.6 8.4 1.3 13.6 1.3 47.4 0 105.4-30.4 140.3-69.8z"/>
+                                    <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76.5 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 570 0 470.3 0 400.6c0-75.8 33.9-145.3 85.1-195.6 56.4-55.4 134.4-88.3 215.5-88.3 44.7 0 89.8 15.2 125.1 38.4 34.1 22.4 61.7 52.3 83.4 87.2 21.3-35.4 50.2-65.5 84.1-87.7 36.3-23.4 78.2-37.9 122.5-37.9 47.7 0 92.4 14.2 130.5 40.1z"/>
                                 </svg>
                                 <div className="text-left leading-tight">
-                                    <div className="text-[9px] text-white/60 font-medium">Download on the</div>
+                                    <div className="text-[9px] text-white/50 font-medium">iOS Waitlist</div>
                                     <div className="text-sm font-black">App Store</div>
                                 </div>
-                            </Link>
-                            <Link href="/download"
-                                className="flex-1 sm:flex-none flex items-center justify-center gap-2.5 bg-black hover:bg-zinc-900 border border-white/20 text-white px-4 py-3 rounded-xl transition-colors min-h-[52px] min-w-[140px]">
-                                {/* Google Play logo SVG */}
+                            </a>
+                            <a href="/download"
+                                className="flex-1 sm:flex-none flex items-center justify-center gap-2.5 bg-zinc-900 hover:bg-zinc-800 border border-white/20 text-white px-5 py-3 rounded-xl transition-colors min-h-[52px] min-w-[140px]">
                                 <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 512 512" aria-hidden="true">
                                     <path fill="#4CAF50" d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1z"/>
                                     <path fill="#FF6D00" d="M47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256-256L47 0z"/>
@@ -980,10 +1045,107 @@ export default function HomeClient({
                                     <path fill="#FF6D00" d="M104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/>
                                 </svg>
                                 <div className="text-left leading-tight">
-                                    <div className="text-[9px] text-white/60 font-medium">Get it on</div>
+                                    <div className="text-[9px] text-white/50 font-medium">Android Waitlist</div>
                                     <div className="text-sm font-black">Google Play</div>
                                 </div>
-                            </Link>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════
+                BROKER PATH — Post or Route a Load
+                ═══════════════════════════════════════ */}
+            <section className="border-b border-white/[0.06]">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+                    <div className="hc-section-panel rounded-2xl p-6">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+                            <div className="flex-1">
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-[#C6923A] mb-1">For Brokers &amp; Carriers</p>
+                                <h2 className="hc-heading text-lg mb-2">Post or Route a Load</h2>
+                                <p className="text-sm text-amber-100/80 mb-4">Need escorts for an oversize move? Post your load details and reach verified pilot car operators on active corridors — or search the directory directly by route.</p>
+                                <div className="flex flex-wrap gap-3">
+                                    <Link href="/loads/post" className="hc-btn-primary flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm">
+                                        <FileText className="w-4 h-4" /> Post a Load
+                                    </Link>
+                                    <Link href="/directory" className="hc-btn-secondary flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm">
+                                        <Search className="w-4 h-4" /> Find Escorts Now
+                                    </Link>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3 flex-shrink-0 w-full sm:w-auto">
+                                {[
+                                    { label: "Load Board", href: "/loads", icon: BarChart3 },
+                                    { label: "Rate Guide", href: "/rates", icon: DollarSign },
+                                    { label: "Corridors", href: "/corridors", icon: Navigation },
+                                    { label: "Regulations", href: "/regulations", icon: BookOpen },
+                                ].map(item => (
+                                    <Link key={item.label} href={item.href}
+                                        className="hc-card flex items-center gap-2 p-3 rounded-xl hover:border-amber-400/30 transition-all text-xs font-semibold text-amber-100/80 hover:text-white">
+                                        <item.icon className="w-3.5 h-3.5 text-[#C6923A]" />
+                                        {item.label}
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════
+                VISIBLE FAQ — Matches FAQPage schema in page.tsx
+                Required: Google/AI answer engines need visible FAQs
+                ═══════════════════════════════════════ */}
+            <section className="border-b border-white/[0.06]">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+                    <div className="hc-section-panel rounded-2xl p-6">
+                        <div className="flex items-center justify-between mb-5">
+                            <div>
+                                <h2 className="hc-heading text-lg">Heavy Haul FAQ</h2>
+                                <p className="text-xs text-amber-100/60 mt-0.5">Common questions about pilot cars, escorts, permits, and heavy haul compliance</p>
+                            </div>
+                            <Link href="/glossary" className="text-xs font-bold text-[#F1A91B] hover:underline whitespace-nowrap">Full glossary →</Link>
+                        </div>
+                        <div className="space-y-4">
+                            {[
+                                {
+                                    q: "What is a pilot car or escort vehicle?",
+                                    a: "A pilot car (also called an escort vehicle or PEVO) is a certified vehicle that travels ahead of or behind an oversize load, warning traffic, checking route clearances, and communicating with the load driver. Most US states require state-specific pilot car certification.",
+                                    link: { label: "Pilot car glossary →", href: "/what-is-a-pilot-car" }
+                                },
+                                {
+                                    q: "How do I find a pilot car near me?",
+                                    a: "Search Haul Command's directory by city, state, corridor, or country. Filter by equipment type (pilot car, height pole, route survey, bucket truck) and certification status. The directory includes 7,700+ operators with trust scores and availability signals.",
+                                    link: { label: "Search directory →", href: "/directory" }
+                                },
+                                {
+                                    q: "Can operators claim a free Haul Command listing?",
+                                    a: "Yes — your company may already appear in search. Claim it in 60 seconds: set your phone, services, coverage area, certifications, and equipment. No credit card required.",
+                                    link: { label: "Claim your listing →", href: "/claim" }
+                                },
+                                {
+                                    q: "Does Haul Command cover more than the United States?",
+                                    a: "Yes. Haul Command covers 120 countries including the US, Canada, Australia, UK, Germany, UAE, South Africa, Brazil, and more. Escort requirements, permit rules, and terminology vary by country.",
+                                    link: { label: "Browse all countries →", href: "/regulations" }
+                                },
+                                {
+                                    q: "Can brokers post or route oversize loads?",
+                                    a: "Yes. Brokers and carriers can post loads to the Haul Command load board, search available escorts on active corridors, and request route intelligence by load type.",
+                                    link: { label: "Post a load →", href: "/loads/post" }
+                                },
+                                {
+                                    q: "Can staging yards, equipment installers, or sponsors join?",
+                                    a: "Yes. Haul Command supports the full oversize load ecosystem — staging yards, secure parking, equipment suppliers, bucket truck operators, permit agents, route surveyors, training providers, and advertisers.",
+                                    link: { label: "Join as a partner →", href: "/claim" }
+                                },
+                            ].map((faq, i) => (
+                                <div key={i} className="hc-card rounded-xl p-4">
+                                    <p className="text-sm font-black text-white mb-2">{faq.q}</p>
+                                    <p className="text-xs text-amber-100/75 leading-relaxed mb-2">{faq.a}</p>
+                                    <Link href={faq.link.href} className="text-xs font-bold text-[#F1A91B] hover:underline">{faq.link.label}</Link>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>

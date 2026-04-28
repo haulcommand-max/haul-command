@@ -10,10 +10,11 @@ const FOOTER_SECTIONS = [
         links: [
             { href: "/loads",        label: "Oversize Load Board" },
             { href: "/directory",    label: "Pilot Car Directory" },
-            { href: "/rates",        label: "Pilot Car Rates" },
+            { href: "/rates",        label: "Pilot Car Rates 2026" },
             { href: "/leaderboards", label: "Leaderboard" },
             { href: "/corridors",    label: "Corridors" },
             { href: "/map",          label: "Live Map" },
+            { href: "/available-now",label: "Available Now" },
         ],
     },
     {
@@ -25,6 +26,7 @@ const FOOTER_SECTIONS = [
             { href: "/directory/us/louisiana",      label: "Louisiana Pilot Cars" },
             { href: "/directory/us/north-carolina", label: "North Carolina Pilot Cars" },
             { href: "/directory/us/oklahoma",       label: "Oklahoma Pilot Cars" },
+            { href: "/regulations",                 label: "All Countries →" },
         ],
     },
     {
@@ -34,8 +36,8 @@ const FOOTER_SECTIONS = [
             { href: "/escort-requirements",           label: "Escort Requirements" },
             { href: "/tools/compliance-card",         label: "Compliance Copilot" },
             { href: "/tools/regulation-alerts",       label: "Regulation Alerts" },
-            { href: "/tools/discovery-map",           label: "Discovery Map" },
-            { href: "/roles/pilot-car-operator",      label: "Pilot Car Services" },
+            { href: "/tools/permit-calculator",       label: "Permit Calculator" },
+            { href: "/shortage-index",                label: "Shortage Index" },
         ],
     },
     {
@@ -43,18 +45,21 @@ const FOOTER_SECTIONS = [
         links: [
             { href: "/glossary",               label: "Industry Glossary" },
             { href: "/what-is-a-pilot-car",    label: "What is a Pilot Car?" },
-            { href: "/glossary/oversize-load", label: "Oversize Load Defined" },
             { href: "/regulations",            label: "State Regulations" },
             { href: "/roles",                  label: "Heavy Haul Role Guide" },
+            { href: "/training",               label: "Training & Academy" },
+            { href: "/blog",                   label: "Industry Intelligence" },
         ],
     },
     {
-        title: "Company",
+        title: "For Business",
         links: [
-            { href: "/terms",   label: "Terms of Service" },
-            { href: "/privacy", label: "Privacy Policy" },
-            { href: "/contact", label: "Contact Us" },
-            { href: "/about",   label: "About" },
+            { href: "/claim",         label: "Claim Your Listing" },
+            { href: "/advertise/buy", label: "Advertise on Haul Command" },
+            { href: "/loads/post",    label: "Post a Load" },
+            { href: "/partner",       label: "Partner Network" },
+            { href: "/advertise",     label: "AdGrid & Sponsorships" },
+            { href: "/contact",       label: "Contact Us" },
         ],
     },
 ];
@@ -92,10 +97,11 @@ export function FooterAccordion() {
                     The Global OS for Pilot Cars &amp; Heavy Haul
                 </h3>
                 <p className="text-amber-200/50 text-xs leading-relaxed max-w-3xl mx-auto">
-                    Haul Command is the world&apos;s premier logistics infrastructure for oversize load transportation.
-                    We match freight brokers, heavy haul carriers, and dispatchers with certified pilot car operators
-                    and escort vehicles across 120 countries — with a live load board, permit tools, corridor
-                    intelligence, trust verification, and real-time dispatch all in one platform.
+                    Haul Command is the world&apos;s premier logistics infrastructure for oversize load transportation —
+                    a verified pilot car directory, oversize load board, permit compliance tools, route corridor
+                    intelligence, and trust verification network covering 120 countries. Built for operators, brokers,
+                    carriers, permit agents, staging yards, equipment suppliers, route surveyors, and heavy-haul
+                    authorities worldwide.
                 </p>
             </div>
 
