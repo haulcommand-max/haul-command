@@ -2879,3 +2879,152 @@ body {
   color: var(--hc-text-main);
   letter-spacing: -0.03em;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   HAUL COMMAND — MOBILE-FIRST SYSTEM
+   All layouts start at mobile (320px) and scale up.
+   Touch targets minimum 44×44px per WCAG 2.5.5.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Prevent iOS font size inflation ── */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* ── Safe area insets for notched phones (iPhone X+, Android punch-holes) ── */
+.hc-safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+.hc-safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.hc-safe-x {
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* ── Touch targets — minimum 44px per WCAG ── */
+.hc-touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Apply to all interactive elements globally */
+button, [role="button"], a, input, select, textarea, label[for] {
+  touch-action: manipulation; /* Removes 300ms tap delay */
+}
+
+/* ── Sticky dispatch footer — clears iOS bottom bar ── */
+.hc-sticky-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  z-index: 50;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ── Mobile-optimized scrolling ── */
+.hc-scroll-container {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+}
+
+/* ── Prevent horizontal overflow on mobile ── */
+.hc-premium-bg,
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* ── Mobile typography scale ── */
+@media (max-width: 639px) {
+  /* Scale down large headings on small screens */
+  h1 { font-size: clamp(1.75rem, 6vw, 3rem); }
+  h2 { font-size: clamp(1.25rem, 5vw, 2rem); }
+  
+  /* Hero text tighter on mobile */
+  .hc-heading { letter-spacing: -0.01em; }
+
+  /* Cards full-width on mobile */
+  .hc-card, .hc-section-panel {
+    border-radius: 0.75rem;
+  }
+
+  /* Buttons full-width friendly */
+  .hc-btn-primary, .hc-btn-secondary {
+    min-height: 48px; /* Larger touch target on mobile */
+    padding: 0.75rem 1.25rem;
+  }
+
+  /* Chips slightly taller for fat fingers */
+  .hc-chip {
+    min-height: 40px;
+    padding: 0.5rem 0.875rem;
+  }
+}
+
+/* ── Tablet (640px - 1023px) ── */
+@media (min-width: 640px) and (max-width: 1023px) {
+  h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+}
+
+/* ── Desktop (1024px+) ── */
+@media (min-width: 1024px) {
+  .hc-btn-primary, .hc-btn-secondary {
+    min-height: 40px;
+  }
+}
+
+/* ── Input fields — prevent iOS zoom on focus (font-size >= 16px) ── */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="search"],
+input[type="password"],
+select,
+textarea {
+  font-size: 16px; /* iOS won't zoom if font-size >= 16px */
+}
+
+/* ── Loading states for mobile ── */
+.hc-skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+  background-size: 200% 100%;
+  animation: hc-shimmer 1.5s infinite;
+}
+
+@keyframes hc-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ── Capacitor / native app specific ── */
+@media (display-mode: standalone) {
+  /* Running as installed PWA or Capacitor app */
+  .hc-premium-bg {
+    /* Ensure background fills notch area */
+    min-height: 100dvh;
+  }
+  
+  /* Hide browser-specific UI hints when in app mode */
+  .hc-browser-only {
+    display: none;
+  }
+}
+
+/* ── Accessibility: reduce motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

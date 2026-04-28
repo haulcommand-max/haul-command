@@ -575,7 +575,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
       </div>
 
       {/* Sticky footer */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#0d1117]/95 border-t border-[#F1A91B]/20 backdrop-blur-sm z-50 p-4">
+      <div className="fixed bottom-0 left-0 right-0 bg-[#0d1117]/95 border-t border-[#F1A91B]/20 backdrop-blur-sm z-50 hc-sticky-footer px-4 pt-3 pb-3">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="relative">
