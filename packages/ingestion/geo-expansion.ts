@@ -1,6 +1,6 @@
 /**
  * HAUL COMMAND — Global Geo Expansion Engine
- * Generates search queries for 57 countries to reach 100K→200K operators.
+ * Generates search queries for 120 countries to reach 100K→200K operators.
  * Prioritized by freight GDP, corridor density, and expected yield.
  */
 

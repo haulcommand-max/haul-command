@@ -6,12 +6,12 @@ import { collectNextMoveSignals } from "@/lib/server/collect-next-move-signals";
 import { createClient } from "@/lib/supabase/server";
 import HomeClient from "./_components/HomeClient";
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// =•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•
 // HOMEPAGE — Server Component
 // Route: / (via (landing) route group)
 // Fetches all data server-side, passes props to client.
 // Resolves country for hero pack server-side (edge geo).
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// =•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•
 
 export const metadata = {
   title: 'Pilot Car & Escort Vehicle Directory | Heavy Haul Operating System | Haul Command',

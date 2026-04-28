@@ -331,7 +331,7 @@ export default function MapPage() {
                         </div>
                     )}
 
-                    {/* â”€â”€ Global: 57-country world map â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+                    {/* â”€â”€ Global: 120-country world map â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
                     {view === "global" && (
                         <div className="absolute inset-0 overflow-hidden">
                             <WorldMapView />

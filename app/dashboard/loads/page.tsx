@@ -5,7 +5,7 @@
  * 
  * Upgrades the old /dashboard/loads parser with:
  * - Broker vs Operator role inference
- * - 57-country support
+ * - 120-country support
  * - Direct Supabase push with dedup
  * - Revenue opportunity detection
  * - Position + role filtering

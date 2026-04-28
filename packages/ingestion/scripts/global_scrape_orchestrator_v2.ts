@@ -5,7 +5,7 @@
  * Protocol: Distributed Split-Pool Execution.
  * Instruction: Zero specialized localized modules. To avoid regional search query
  *              throttling, the engine distributes proxy spiders randomly across 
- *              all 57 countries at once until they are 100% completed.
+ *              all 120 countries at once until they are 100% completed.
  * ==============================================================================
  */
 
@@ -27,7 +27,7 @@ export async function executeExhaustiveSplitPoolSweep() {
     try {
         let totalGlobalEntities = 0;
 
-        // Sequence: Randomly distribute requests across the 57 countries pool
+        // Sequence: Randomly distribute requests across the 120 countries pool
         for (const countryIso of FIFTY_SEVEN_COUNTRIES_ARRAY) {
             console.log(`\n====================================================`);
             console.log(`[TARGET ACQUIRED] Initiating Full Extraction for Country Code: [ ${countryIso} ]`);

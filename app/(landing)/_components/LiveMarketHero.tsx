@@ -60,7 +60,7 @@ const ROLE_ROUTE_MAP: Record<HCRole, RouteConfig[]> = {
     both: [
         { href: "/loads/post", icon: MapPin, label: "Post Load", desc: "Need coverage", color: "#C6923A", primary: true },
         { href: "/loads", icon: Package, label: "Find Jobs", desc: "Take a load", color: "#22c55e", primary: true },
-        { href: "#", icon: Repeat, label: "Switch Mode", desc: "Broker â†” Operator", color: "#3b82f6", primary: false },
+        { href: "#", icon: Repeat, label: "Switch Mode", desc: "Broker =†” Operator", color: "#3b82f6", primary: false },
         { href: "/messages", icon: MessageSquare, label: "Inbox", desc: "Messages", color: "#a855f7", primary: false },
     ],
     fleet_owner: [

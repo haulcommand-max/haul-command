@@ -9,7 +9,7 @@
  *
  * Data sources:
  *   - /api/supply/recommendations → live supply pressure
- *   - Static fallback: 57-country zone data
+ *   - Static fallback: 120-country zone data
  */
 "use client";
 

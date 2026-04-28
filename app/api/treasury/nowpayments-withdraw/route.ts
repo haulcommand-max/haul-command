@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
 
     if (walletError || !wallet) return NextResponse.json({ error: "Wallet not found" }, { status: 404 });
 
-    // 2. LEGAL CHECK: Prevent OFAC/AML violations and assure 57-country compliance
+    // 2. LEGAL CHECK: Prevent OFAC/AML violations and assure 120-country compliance
     // We cannot legally payout crypto to unverified entities (FATF Travel Rule / FinCEN).
     if (wallet.profile?.kyc_status !== 'verified') {
       return NextResponse.json({ 

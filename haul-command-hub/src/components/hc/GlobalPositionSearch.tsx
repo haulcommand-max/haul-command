@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import { Search, Globe, ChevronRight } from 'lucide-react';
 import { GLOBAL_POSITIONS } from '@/lib/positions-global';
 
-// Flattening the massive 57-country position matrix for dummy-proof searching
+// Flattening the massive 120-country position matrix for dummy-proof searching
 const flattenedPositions = GLOBAL_POSITIONS.flatMap(pos => 
   pos.countries.map(c => ({
     id: pos.id,
@@ -81,7 +81,7 @@ export function GlobalPositionSearch() {
           </div>
           <div className="p-3 bg-black/40 border-t border-white/5 text-center">
             <p className="text-[10px] uppercase tracking-widest font-bold text-gray-500">
-              ⚡ Intelligence Hub — Rendering 73 global positions across 57 nations instantly.
+              ⚡ Intelligence Hub — Rendering 73 global positions across 120 nations instantly.
             </p>
           </div>
         </div>

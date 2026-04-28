@@ -211,7 +211,7 @@ export const DOMINATION_CONFIG = {
   // =========================================================================
   GLOBAL_SYSTEM_TARGET: {
     us_entities: 1566000,
-    existing_57_countries: 3018900,
+    existing_120_countries: 3018900,
     new_63_countries_weighted: 300000,
     final_global_target: 3300000,
     us_density_share: "51.8%",

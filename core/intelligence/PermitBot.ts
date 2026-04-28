@@ -3,7 +3,7 @@
  * This file re-exports the new PermitIntelligenceEngine for backward compatibility.
  *
  * The new engine provides:
- * - Per-jurisdiction permit requirements across 57 countries
+ * - Per-jurisdiction permit requirements across 120 countries
  * - Multi-jurisdiction route analysis with cost estimates
  * - AI compliance Q&A (Compliance Copilot, $9/mo revenue)
  * - Imperial + metric unit support

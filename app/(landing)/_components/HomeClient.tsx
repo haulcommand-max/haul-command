@@ -24,7 +24,7 @@ const fadeUp = {
     }),
 };
 
-/* ── ROLES — Lucide icons, no emojis, all 14 roles per master plan ── */
+/* -- ROLES — Lucide icons, no emojis, all 14 roles per master plan -- */
 const ROLES = [
     {
         id: "broker", label: "Broker / Dispatcher", Icon: FileText,
@@ -196,7 +196,7 @@ const ROLES = [
     },
 ];
 
-/* ── LOAD TYPES — for the "Find by Load Type" section ── */
+/* -- LOAD TYPES — for the "Find by Load Type" section -- */
 const LOAD_TYPES = [
     { label: "Wind Turbine Blade", icon: Wind, href: "/directory?load=wind-blade", tag: "High Value" },
     { label: "Power Transformer", icon: Zap, href: "/directory?load=transformer", tag: "Superload" },
@@ -208,7 +208,7 @@ const LOAD_TYPES = [
     { label: "Industrial Machinery", icon: Package, href: "/directory?load=industrial", tag: "Heavy" },
 ];
 
-/* ── LIVE ACTIVITY FEED (seeded — will pull from DB when wired) ── */
+/* -- LIVE ACTIVITY FEED (seeded — will pull from DB when wired) -- */
 const ACTIVITY_FEED = [
     { text: "Operator claimed profile in Houston, TX", shortText: "Profile claimed · Houston TX", time: "12m ago", icon: BadgeCheck },
     { text: "Load posted: Permian Basin → Casper, WY", shortText: "Load posted · I-25 corridor", time: "28m ago", icon: Truck },
@@ -350,9 +350,9 @@ export default function HomeClient({
     return (
         <div className="font-[family-name:var(--font-body)] antialiased text-amber-50">
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 HERO
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section className="relative w-full pb-0">
                 <div className="max-w-6xl mx-auto px-4 pt-10 pb-4 text-center">
                     <motion.h1
@@ -416,7 +416,7 @@ export default function HomeClient({
                                     <Search className="w-5 h-5 text-amber-200/60 flex-shrink-0" />
                                     <select name="category" className="w-full bg-transparent text-sm text-gray-700 font-semibold focus:outline-none appearance-none cursor-pointer">
                                         <option value="">Pilot cars, escorts, permits…</option>
-                                        <optgroup label="─── Escort Services ───">
+                                        <optgroup label="--- Escort Services ---">
                                             <option value="pilot-car">Pilot Car / PEVO</option>
                                             <option value="escort-vehicle">Escort Vehicle</option>
                                             <option value="lead-chase">Lead / Chase Car</option>
@@ -426,7 +426,7 @@ export default function HomeClient({
                                             <option value="police-escort">Police Escort Coordination</option>
                                             <option value="oversize">Oversize / Superload Support</option>
                                         </optgroup>
-                                        <optgroup label="─── Tools & Intelligence ───">
+                                        <optgroup label="--- Tools & Intelligence ---">
                                             <option value="rates">Rate Index</option>
                                             <option value="permits">Permit Services</option>
                                             <option value="training">Certification / Training</option>
@@ -469,11 +469,11 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 ANSWER BLOCK — AI search / entity definition
                 One clear paragraph for Google, ChatGPT,
                 Perplexity, and first-time visitors.
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section className="border-b border-white/[0.06] bg-black/30">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
@@ -518,9 +518,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 ROLE ROUTER — 14 roles, crawlable links
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section className="border-b border-white/[0.06]">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
                     {/* Label - single line, centered, no wrap */}
@@ -571,9 +571,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 STATS — Fixed labels, real data fallbacks
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section className="bg-black/20 border-b border-white/[0.06]">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <p className="text-[11px] text-amber-200/50 text-center mb-4 italic">
@@ -601,9 +601,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 SHORTAGE CALLOUT — scarcity signal
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section className="border-b border-white/[0.06]">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl border border-red-500/40 bg-[#1a0505]/90 backdrop-blur-sm">
@@ -622,9 +622,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 RATE INTELLIGENCE WIDGET
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section className="border-b border-white/[0.06]">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl border border-[#C6923A]/40 bg-[#120a02]/90 backdrop-blur-sm">
@@ -643,9 +643,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 TOP MARKETS — US states + global
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section>
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-6">
@@ -669,9 +669,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 COUNTRIES
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section>
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-6">
@@ -692,9 +692,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 ROUTE INTELLIGENCE
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section>
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-6">
@@ -741,9 +741,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 FIND BY LOAD TYPE — SEO long-tail
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section>
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-6">
@@ -767,9 +767,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 TRENDING LOCALITIES — with operator counts
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section>
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-6">
@@ -798,9 +798,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 CLAIM LISTING + TRUST PREVIEW
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section className="border-b border-white/[0.06]">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
                     <div className="grid md:grid-cols-2 gap-8 items-center">
@@ -849,9 +849,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 HAVE A HEAVY HAUL QUESTION? — Fixed background
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section>
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-8 text-center">
@@ -889,9 +889,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 RATE GUIDE HUB
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section>
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-6">
@@ -924,9 +924,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 ADGRID — with scarcity messaging
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section>
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-8">
@@ -958,9 +958,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 BLOG / INTELLIGENCE HUB — internal link SEO
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section>
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-6">
@@ -992,9 +992,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 HOW CAN WE HELP
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section>
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-6">
@@ -1015,9 +1015,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 APP — Honest waitlist CTA
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section className="bg-[#0B0F14] border-t border-b border-[#F1A91B]/20">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-5">
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -1054,9 +1054,9 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 BROKER PATH — Post or Route a Load
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section className="border-b border-white/[0.06]">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                     <div className="hc-section-panel rounded-2xl p-6">
@@ -1093,10 +1093,10 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ═══════════════════════════════════════
+            {/* =======================================
                 VISIBLE FAQ — Matches FAQPage schema in page.tsx
                 Required: Google/AI answer engines need visible FAQs
-                ═══════════════════════════════════════ */}
+                ======================================= */}
             <section className="border-b border-white/[0.06]">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
                     <div className="hc-section-panel rounded-2xl p-6">

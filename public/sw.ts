@@ -1,6 +1,6 @@
 /**
  * HAUL COMMAND — Service Worker (Workbox)
- * Offline-first caching for 57-country operations.
+ * Offline-first caching for 120-country operations.
  */
 import { precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';

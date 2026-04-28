@@ -425,3 +425,31 @@ If a number is zero, estimated, or not live-backed by Supabase, either hide it o
 Never show "0 operators / 0 countries / 0 corridors" while the page also claims "7,712+ verified operators." That contradiction is a live trust killer.
 
 Honest labels: "Listed Operators" / "Countries in Registry" / "Active / Seeded Corridors" / "Geocoded Support Locations" — not "Covered," not "Active" unless the data confirms it.
+
+---
+
+## 14. CI/CD and Build Health
+
+### TypeScript Gate
+TypeScript errors are NOT ignored on GitHub Actions even though `next.config.ts` has `ignoreBuildErrors: true` for Vercel.
+The `.github/workflows/typecheck.yml` gate runs `npx tsc --noEmit` on every PR/push to main.
+Fix TypeScript errors **before** merging. Do not accumulate them.
+
+### Build Guard
+`.github/workflows/build-guard.yml` scans for:
+- Missing `force-dynamic` exports on protected routes
+- Dangerous `generateStaticParams()` on large-entity routes
+- Verified `staticPageGenerationTimeout` in next.config.ts
+
+### Dangerous Open PRs — Do Not Merge Without Upgrading
+- **PR #43 (training SEO)** — Vercel failure on head commit. Fix build before merge.
+- **PR #31 (Global SEO Domination Engine v2)** — Still references 57-country scope. MUST be upgraded to 120-country standard before merge. Merging as-is would cause scope drift.
+
+### 120-Country Standard (Never Drift Back)
+The platform covers **120 countries** across 5 tiers (A/B/C/D/E).
+Any file or PR that references "57 countries" is stale legacy drift.
+Do not introduce new "57 countries" references anywhere.
+The CRYPTO_EXPANSION_REPORT.md and planning docs note the 57→120 expansion history but are archival only.
+
+### Stale Dependencies Removed
+- `@pinecone-database/pinecone` — removed from package.json (env.example correctly marks it removed)

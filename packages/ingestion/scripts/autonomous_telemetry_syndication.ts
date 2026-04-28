@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
  * HAUL COMMAND: ENTERPRISE TELEMETRY SYNDICATION
  * Target: Autonomous Trucking Companies (Kodiak, Aurora, Waymo) & DOTs.
  * Data: Millions of data points mapping exact highway lane-closures, weigh-station wait times, 
- *       and mobile home/superload transport congestion across 57 countries.
+ *       and mobile home/superload transport congestion across 120 countries.
  * Compliance: 100% PII Stripped. We do NOT sell the pilot car's name, only their geospatial velocity.
  */
 

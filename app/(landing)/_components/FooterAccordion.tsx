@@ -67,7 +67,7 @@ const FOOTER_SECTIONS = [
 export function FooterAccordion() {
     return (
         <footer className="relative z-10">
-            {/* ── Link grid — 2-col mobile, 3-col sm, 5-col md ── */}
+            {/* -- Link grid — 2-col mobile, 3-col sm, 5-col md -- */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-x-4 gap-y-8">
                 {FOOTER_SECTIONS.map((section) => (
                     <div key={section.title}>
@@ -91,7 +91,7 @@ export function FooterAccordion() {
                 ))}
             </div>
 
-            {/* ── SEO density block ── */}
+            {/* -- SEO density block -- */}
             <div className="mt-10 pt-8 border-t border-white/[0.06] text-center">
                 <h3 className="text-[#C6923A] text-xs font-bold uppercase tracking-widest mb-3">
                     The Global OS for Pilot Cars &amp; Heavy Haul
@@ -105,7 +105,7 @@ export function FooterAccordion() {
                 </p>
             </div>
 
-            {/* ── Bottom bar ── */}
+            {/* -- Bottom bar -- */}
             <div className="border-t border-white/[0.04] mt-8 pt-5 flex flex-col sm:flex-row justify-between items-center gap-3">
                 <span className="text-[11px] text-amber-200/45 font-semibold uppercase tracking-wider text-center sm:text-left">
                     © 2026 Haul Command. The Operating System for Heavy Haul.

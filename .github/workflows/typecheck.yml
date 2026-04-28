@@ -1,0 +1,51 @@
+# .github/workflows/typecheck.yml
+#
+# PURPOSE: Hard TypeScript gate — blocks broken code from reaching main.
+# Runs on every PR and push to main.
+# This is separate from Vercel's ignoreBuildErrors:true which only
+# applies to the Vercel build pipeline. This gate runs in GitHub Actions
+# and will FAIL the PR if TypeScript has errors.
+#
+# WHY: ignoreBuildErrors:true keeps Vercel fast during sprints, but
+# errors silently accumulate. This gate catches them before they pile up.
+
+name: TypeScript Gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  typecheck:
+    name: TypeScript — no errors allowed
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Run TypeScript check
+        run: npx tsc --noEmit
+        # Fails PR if any TS errors exist.
+        # Fix: resolve errors in the files listed, then re-push.
+
+      - name: Report status
+        if: failure()
+        run: |
+          echo ""
+          echo "TypeScript errors detected. Fix them before merging."
+          echo "Run 'npx tsc --noEmit' locally to see all errors."
+          echo ""
+          echo "IMPORTANT: next.config.ts has ignoreBuildErrors:true which"
+          echo "lets Vercel deploy with TS errors — but this gate prevents"
+          echo "broken code from accumulating silently on main."

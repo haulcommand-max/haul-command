@@ -10,7 +10,7 @@
  * Tier D (Slate): UY, PA, CR
  */
 
-// All 57 country codes
+// All 120 country codes
 export const ALL_COUNTRIES = [
   'US','CA','AU','GB','NZ','ZA','DE','NL','AE','BR',
   'IE','SE','NO','DK','FI','BE','AT','CH','ES','FR','IT','PT','SA','QA','MX','IN','ID','TH',

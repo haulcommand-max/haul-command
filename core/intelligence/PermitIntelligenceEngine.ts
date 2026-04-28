@@ -1,7 +1,7 @@
 // ══════════════════════════════════════════════════════════════
 // PERMIT INTELLIGENCE ENGINE — The Competitive Moat
 // AI-powered permit requirement lookup, route validation,
-// and compliance checking across 57 countries.
+// and compliance checking across 120 countries.
 // Revenue: 10 free questions/mo → $9/mo unlimited
 // ══════════════════════════════════════════════════════════════
 
