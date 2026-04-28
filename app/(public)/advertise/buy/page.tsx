@@ -96,10 +96,10 @@ const CAMPAIGN_TYPES = [
 ];
 
 const TRUST_STATS = [
-    { value: '50K+', label: 'Monthly Active Users' },
+    { value: '7,700+', label: 'Operators Listed' },
     { value: '120', label: 'Countries Covered' },
-    { value: '95%', label: 'Industry Traffic' },
-    { value: '2.8x', label: 'Avg Click-to-Lead Rate' },
+    { value: '100%', label: 'Industry Traffic' },
+    { value: '51', label: 'Active Corridors' },
 ];
 
 export default function AdvertiseBuyPage() {

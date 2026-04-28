@@ -226,6 +226,48 @@ serve(async (req: Request) => {
                     console.log(`[Stripe Webhook] Order ${orderId} paid. Featured placement created for ${geoKey}.`);
                 }
 
+                // ── grant_paid_entitlement for priceKey-based checkouts ──
+                // Handles: plans page, corridor/territory/founding sponsor pages
+                // Idempotent — safe even if sponsorship_orders path also ran above
+                const priceKey = session?.metadata?.price_key;
+                const userId = session?.metadata?.user_id;
+                if (priceKey && priceKey !== 'undefined') {
+                    try {
+                        await supabase.rpc('grant_paid_entitlement', {
+                            p_session_id:      session.id,
+                            p_user_id:         (userId && userId !== 'anonymous') ? userId : null,
+                            p_price_key:       priceKey,
+                            p_amount_cents:    session.amount_total || 0,
+                            p_currency:        session.currency || 'usd',
+                            p_payment_intent:  session.payment_intent || null,
+                            p_subscription_id: session.subscription || null,
+                            p_customer_id:     session.customer || null,
+                            p_geo_key:         session.metadata?.geo_key || null,
+                            p_metadata:        {
+                                price_key:  priceKey,
+                                session_id: session.id,
+                                order_id:   orderId || null,
+                            },
+                        });
+                        console.log('[Stripe Webhook] grant_paid_entitlement OK for priceKey:', priceKey);
+                    } catch (grantErr) {
+                        // Non-fatal — can be granted manually from admin queue
+                        console.error('[Stripe Webhook] grant_paid_entitlement error:', grantErr);
+                    }
+                }
+
+                // Mark processed in stripe_events (dedupe log)
+                await supabase.from('stripe_events').upsert({
+                    stripe_event_id: body.id,
+                    event_type:      body.type,
+                    livemode:        body.livemode ?? false,
+                    data:            body.data,
+                    processed:       true,
+                    processed_at:    new Date().toISOString(),
+                }, { onConflict: 'stripe_event_id' }).throwOnError().then(() => {
+                    supabase.from('idempotency_keys').upsert({ key: body.id, status: 'DONE' });
+                });
+
                 return new Response(JSON.stringify({ received: true }), {
                     headers: { ...corsHeaders, 'Content-Type': 'application/json' },
                     status: 200,

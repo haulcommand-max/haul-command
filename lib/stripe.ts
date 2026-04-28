@@ -23,20 +23,30 @@ export function getStripe(): Stripe {
  *   prod_UBdrf1TVSNl2aT = "Load Boost"           → $14 one-time
  */
 export const STRIPE_PRICE_IDS = {
-  // Escort / Operator tiers
-  escort_pro_monthly:   process.env.STRIPE_PRICE_ESCORT_PRO_MONTHLY   || 'price_1TDDWXRiV0LOCA36ZtcV4tjs',
-  escort_pro_yearly:    process.env.STRIPE_PRICE_ESCORT_PRO_YEARLY    || 'price_1TDGZlRiV0LOCA36XCdlvtMt',
-  escort_elite_monthly: process.env.STRIPE_PRICE_ESCORT_ELITE_MONTHLY || 'price_1TDDWYRiV0LOCA36urpGznvy',
-  escort_elite_yearly:  process.env.STRIPE_PRICE_ESCORT_ELITE_YEARLY  || 'price_1TDGZmRiV0LOCA36BnUWRUJ0',
-  // Broker tiers
-  broker_seat_monthly:  process.env.STRIPE_PRICE_BROKER_SEAT_MONTHLY  || 'price_1TDGZnRiV0LOCA366WNx1EUF',
-  broker_seat_yearly:   process.env.STRIPE_PRICE_BROKER_SEAT_YEARLY   || 'price_1TDGZoRiV0LOCA36qvviObj4',
-  // One-time
-  load_boost:           process.env.STRIPE_PRICE_LOAD_BOOST           || 'price_1TDGZpRiV0LOCA36F8yt0svI',
-  // HC Certified Training (one-time payments / annual subscriptions)
-  hc_certified:         process.env.STRIPE_PRICE_HC_CERTIFIED         || '',
-  av_ready:             process.env.STRIPE_PRICE_AV_READY             || '',
-  hc_elite:             process.env.STRIPE_PRICE_HC_ELITE             || '',
+  // ── Operator / Escort tiers ──────────────────────────────────────────────
+  escort_pro_monthly:       process.env.STRIPE_PRICE_ESCORT_PRO_MONTHLY       || 'price_1TDDWXRiV0LOCA36ZtcV4tjs',
+  escort_pro_yearly:        process.env.STRIPE_PRICE_ESCORT_PRO_YEARLY        || 'price_1TDGZlRiV0LOCA36XCdlvtMt',
+  escort_elite_monthly:     process.env.STRIPE_PRICE_ESCORT_ELITE_MONTHLY     || 'price_1TDDWYRiV0LOCA36urpGznvy',
+  escort_elite_yearly:      process.env.STRIPE_PRICE_ESCORT_ELITE_YEARLY      || 'price_1TDGZmRiV0LOCA36BnUWRUJ0',
+  // ── Broker tiers ─────────────────────────────────────────────────────────
+  broker_seat_monthly:      process.env.STRIPE_PRICE_BROKER_SEAT_MONTHLY      || 'price_1TDGZnRiV0LOCA366WNx1EUF',
+  broker_seat_yearly:       process.env.STRIPE_PRICE_BROKER_SEAT_YEARLY       || 'price_1TDGZoRiV0LOCA36qvviObj4',
+  // ── One-time boosts ───────────────────────────────────────────────────────
+  load_boost:               process.env.STRIPE_PRICE_LOAD_BOOST               || 'price_1TDGZpRiV0LOCA36F8yt0svI',
+  // ── Training / Certification ─────────────────────────────────────────────
+  hc_certified:             process.env.STRIPE_PRICE_HC_CERTIFIED             || '',
+  av_ready:                 process.env.STRIPE_PRICE_AV_READY                 || '',
+  hc_elite:                 process.env.STRIPE_PRICE_HC_ELITE                 || '',
+  // ── Advertising / Sponsorships ───────────────────────────────────────────
+  // Create these in Stripe Dashboard → Products → Add Product
+  // then set the env var to the resulting price_... ID
+  corridor_sponsor_monthly: process.env.STRIPE_PRICE_CORRIDOR_SPONSOR_MONTHLY || '',  // $199/mo corridor sponsorship
+  territory_sponsor_monthly:process.env.STRIPE_PRICE_TERRITORY_SPONSOR_MONTHLY|| '',  // $149-499/mo territory takeover
+  cpc_deposit:              process.env.STRIPE_PRICE_CPC_DEPOSIT              || '',  // $50 CPC campaign deposit (one-time)
+  // ── Founding Sponsor packages (one-time) ─────────────────────────────────
+  founding_sponsor_bronze:  process.env.STRIPE_PRICE_FOUNDING_SPONSOR_BRONZE  || '',  // $299 one-time
+  founding_sponsor_silver:  process.env.STRIPE_PRICE_FOUNDING_SPONSOR_SILVER  || '',  // $799 one-time
+  founding_sponsor_gold:    process.env.STRIPE_PRICE_FOUNDING_SPONSOR_GOLD    || '',  // $1499 one-time
 } as const;
 
 export type StripePriceKey = keyof typeof STRIPE_PRICE_IDS;
