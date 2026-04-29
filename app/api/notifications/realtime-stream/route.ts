@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
         try {
           controller.enqueue(encoder.encode(`data: ${JSON.stringify(data)}\n\n`));
         } catch {
-          // Client disconnected
+          // Client disconnected or stream already closed.
         }
       };
 
@@ -73,7 +73,7 @@ export async function GET(req: NextRequest) {
         .subscribe();
 
       // Also subscribe to hc_events for system broadcasts
-      serviceClient
+      const systemChannel = serviceClient
         .channel(`system-events:${user.id}`)
         .on(
           'postgres_changes',
@@ -90,11 +90,13 @@ export async function GET(req: NextRequest) {
         )
         .subscribe();
 
-      // Cleanup on disconnect
+      // Cleanup on disconnect. Every controller/channel action is guarded because
+      // Vercel/Next can fire abort after the stream has already closed.
       req.signal.addEventListener('abort', () => {
         clearInterval(heartbeat);
-        serviceClient.removeChannel(channel);
-        controller.close();
+        try { serviceClient.removeChannel(channel); } catch {}
+        try { serviceClient.removeChannel(systemChannel); } catch {}
+        try { controller.close(); } catch {}
       });
     },
   });
