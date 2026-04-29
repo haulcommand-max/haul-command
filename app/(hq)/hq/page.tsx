@@ -4,6 +4,8 @@ import { Server, Activity, ArrowRight, ShieldCheck, DollarSign, Database, BrainC
 import Link from "next/link";
 import LiquidityMap from '@/components/dashboard/LiquidityMap';
 
+export const dynamic = 'force-dynamic';
+
 export default async function HQDashboard() {
   const supabase = createServerComponentClient({ cookies });
 
