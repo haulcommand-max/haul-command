@@ -28,7 +28,7 @@ export function HCMobileMenu({ mode = 'public' }: { mode?: 'public' | 'app' }) {
         onClick={() => setOpen(true)}
         aria-label="Open navigation menu"
         aria-expanded={open}
-        className="lg:hidden flex items-center justify-center w-10 h-10 -mr-1 rounded-xl text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+        className="lg:hidden flex items-center justify-center w-10 h-10 -mr-1 rounded-xl text-amber-100/75 hover:text-white hover:bg-white/[0.05] transition-colors"
       >
         <Bars3Icon className="w-6 h-6" />
       </button>
@@ -36,30 +36,30 @@ export function HCMobileMenu({ mode = 'public' }: { mode?: 'public' | 'app' }) {
       {open && (
         <div
           onClick={() => setOpen(false)}
-          className="fixed inset-0 bg-black/30 z-[9998] backdrop-blur-sm"
+          className="fixed inset-0 bg-black/60 z-[9998] backdrop-blur-sm"
           aria-hidden="true"
         />
       )}
 
-      {/* Main Drawer — Light Yellow Pages Theme */}
+      {/* Main Drawer — Haul Command dark brand theme */}
       <nav
         className={`fixed top-0 left-0 bottom-0 w-[min(320px,88vw)] z-[9999] overflow-x-hidden overflow-y-auto overscroll-contain transform transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ${open ? 'translate-x-0' : '-translate-x-full'}`}
         style={{
-          background: '#ffffff',
-          borderRight: '1px solid #E5E7EB',
-          boxShadow: open ? '8px 0 40px rgba(0,0,0,0.12)' : 'none',
+          background: '#090706',
+          borderRight: '1px solid rgba(255,255,255,0.06)',
+          boxShadow: open ? '8px 0 40px rgba(0,0,0,0.45)' : 'none',
         }}
         aria-label="Mobile navigation"
       >
         {/* Top Header */}
-        <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-4 border-b border-gray-200 bg-white">
-          <Link href="/" onClick={() => setOpen(false)} className="font-black text-[#C6923A] tracking-tight text-sm uppercase">
+        <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-4 border-b border-white/[0.06] bg-[#090706]">
+          <Link href="/" onClick={() => setOpen(false)} className="font-black text-[#F1A91B] tracking-tight text-sm uppercase">
             {BRAND_NAME_UPPER}
           </Link>
           <button
             onClick={() => setOpen(false)}
             aria-label="Close menu"
-            className="flex items-center justify-center w-9 h-9 rounded-xl text-gray-400 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+            className="flex items-center justify-center w-9 h-9 rounded-xl text-amber-100/50 hover:text-white hover:bg-white/[0.05] transition-colors"
           >
             <XMarkIcon className="w-5 h-5" />
           </button>
@@ -72,7 +72,7 @@ export function HCMobileMenu({ mode = 'public' }: { mode?: 'public' | 'app' }) {
             <Link
               href="/loads/post"
               onClick={() => setOpen(false)}
-              className="flex items-center justify-between w-full p-4 rounded-xl bg-[#F1A91B] hover:bg-[#D4951A] text-white font-black text-sm uppercase tracking-widest shadow-md transition-colors"
+              className="flex items-center justify-between w-full p-4 rounded-xl bg-[#F1A91B] hover:bg-[#D4951A] text-black font-black text-sm uppercase tracking-widest shadow-md transition-colors"
             >
               <div className="flex items-center gap-3">
                 <PlusCircleIcon className="w-5 h-5" />
@@ -84,7 +84,7 @@ export function HCMobileMenu({ mode = 'public' }: { mode?: 'public' | 'app' }) {
             <Link
               href="/claim"
               onClick={() => setOpen(false)}
-              className="flex items-center justify-between w-full p-4 rounded-xl bg-gray-50 border border-[#C6923A]/30 hover:border-[#C6923A]/50 text-[#C6923A] font-bold text-sm uppercase tracking-widest transition-all shadow-sm"
+              className="flex items-center justify-between w-full p-4 rounded-xl bg-white/[0.04] border border-[#C6923A]/30 hover:border-[#C6923A]/50 text-[#F1A91B] font-bold text-sm uppercase tracking-widest transition-all shadow-sm"
             >
               <div className="flex items-center gap-3">
                 <UserIcon className="w-5 h-5 opacity-80" />
@@ -96,7 +96,7 @@ export function HCMobileMenu({ mode = 'public' }: { mode?: 'public' | 'app' }) {
 
           {/* Discover Category */}
           <div>
-            <div className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3 px-1 border-l-2 border-[#F1A91B] pl-2">Discover</div>
+            <div className="text-[10px] font-black text-amber-100/45 uppercase tracking-[0.2em] mb-3 px-1 border-l-2 border-[#F1A91B] pl-2">Discover</div>
             <div className="flex flex-col gap-1">
               {[
                 { label: 'Pilot Car Directory', href: '/directory', badge: null },
@@ -110,11 +110,11 @@ export function HCMobileMenu({ mode = 'public' }: { mode?: 'public' | 'app' }) {
                     key={item.href}
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className={`flex items-center justify-between py-3 px-3 rounded-xl text-sm font-semibold transition-colors ${isActive ? 'text-[#C6923A] bg-[#F1A91B]/8' : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'}`}
+                    className={`flex items-center justify-between py-3 px-3 rounded-xl text-sm font-semibold transition-colors ${isActive ? 'text-[#F1A91B] bg-[#F1A91B]/10' : 'text-amber-100/75 hover:text-white hover:bg-white/[0.05]'}`}
                   >
                     <span>{item.label}</span>
                     {item.badge && (
-                      <span className="text-[9px] font-black tracking-widest uppercase px-1.5 py-0.5 rounded bg-green-50 text-green-600 border border-green-200">
+                      <span className="text-[9px] font-black tracking-widest uppercase px-1.5 py-0.5 rounded bg-green-500/10 text-green-400 border border-green-500/20">
                         {item.badge}
                       </span>
                     )}
@@ -126,7 +126,7 @@ export function HCMobileMenu({ mode = 'public' }: { mode?: 'public' | 'app' }) {
 
           {/* Intelligence Category */}
           <div>
-            <div className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3 px-1 border-l-2 border-[#F1A91B] pl-2">Intelligence</div>
+            <div className="text-[10px] font-black text-amber-100/45 uppercase tracking-[0.2em] mb-3 px-1 border-l-2 border-[#F1A91B] pl-2">Intelligence</div>
             <div className="flex flex-col gap-1">
               {[
                 { label: 'All Tools', href: '/tools' },
@@ -139,7 +139,7 @@ export function HCMobileMenu({ mode = 'public' }: { mode?: 'public' | 'app' }) {
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className={`block py-3 px-3 rounded-xl text-sm font-semibold transition-colors ${pathname === item.href ? 'text-[#C6923A]' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}`}
+                  className={`block py-3 px-3 rounded-xl text-sm font-semibold transition-colors ${pathname === item.href ? 'text-[#F1A91B] bg-[#F1A91B]/10' : 'text-amber-100/75 hover:text-white hover:bg-white/[0.05]'}`}
                 >
                   {item.label}
                 </Link>
@@ -149,12 +149,12 @@ export function HCMobileMenu({ mode = 'public' }: { mode?: 'public' | 'app' }) {
         </div>
 
         {/* Sticky Bottom Bar */}
-        <div className="sticky bottom-0 left-0 w-full border-t border-gray-200 bg-white p-3 safe-area-bottom">
+        <div className="sticky bottom-0 left-0 w-full border-t border-white/[0.06] bg-[#090706] p-3 safe-area-bottom">
           <div className="flex justify-between items-center gap-2">
             <Link
               href="/directory"
               onClick={() => setOpen(false)}
-              className="flex flex-col items-center justify-center flex-1 py-2 text-gray-500 hover:text-[#C6923A] transition-colors"
+              className="flex flex-col items-center justify-center flex-1 py-2 text-amber-100/60 hover:text-white hover:bg-white/[0.05] rounded-xl transition-colors"
             >
               <MagnifyingGlassIcon className="w-6 h-6 mb-1" />
               <span className="text-[10px] font-bold uppercase tracking-wider">Find</span>
@@ -163,9 +163,9 @@ export function HCMobileMenu({ mode = 'public' }: { mode?: 'public' | 'app' }) {
             <Link
               href="/loads/post"
               onClick={() => setOpen(false)}
-              className="flex flex-col items-center justify-center flex-1 py-2 text-[#C6923A] relative"
+              className="flex flex-col items-center justify-center flex-1 py-2 text-[#F1A91B] relative"
             >
-              <div className="absolute -top-6 bg-[#F1A91B] rounded-full p-3 shadow-md text-white mb-1 hover:scale-105 transition-transform">
+              <div className="absolute -top-6 bg-[#F1A91B] rounded-full p-3 shadow-md text-black mb-1 hover:scale-105 transition-transform">
                  <PlusCircleIcon className="w-7 h-7" />
               </div>
               <span className="text-[10px] font-bold uppercase tracking-wider mt-5">Post</span>
@@ -174,7 +174,7 @@ export function HCMobileMenu({ mode = 'public' }: { mode?: 'public' | 'app' }) {
             <Link
               href="/dashboard"
               onClick={() => setOpen(false)}
-              className="flex flex-col items-center justify-center flex-1 py-2 text-gray-500 hover:text-gray-900 transition-colors"
+              className="flex flex-col items-center justify-center flex-1 py-2 text-amber-100/60 hover:text-white hover:bg-white/[0.05] rounded-xl transition-colors"
             >
               <UserIcon className="w-6 h-6 mb-1" />
               <span className="text-[10px] font-bold uppercase tracking-wider">Profile</span>
