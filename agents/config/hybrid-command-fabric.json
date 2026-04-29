@@ -1,0 +1,159 @@
+{
+  "version": "2026-04-29-hybrid-1",
+  "name": "Haul Command Hybrid Paperclip Fabric",
+  "principle": "Seven real execution owners, 208 zero-cost virtual mandates, unlimited task fanout through Supabase command tasks.",
+  "locked_architecture": {
+    "pinecone": "removed",
+    "supabase": "system_of_record_vector_rag_staging_validation_search_intelligence_monetization",
+    "typesense": "fast_user_facing_hero_directory_autocomplete_search",
+    "firecrawl": "public_source_intelligence_intake",
+    "paperclip_command_layer": "central_nervous_system_for_agents_heartbeats_tasks_approvals_runs_money_events_proof_packets"
+  },
+  "real_super_agents": [
+    {
+      "slug": "ceo-command-brain",
+      "title": "CEO Command Brain",
+      "domain": "command",
+      "adapter_type": "agent",
+      "default_model_class": "highest_reasoning_only_when_needed",
+      "monthly_budget_cents": 15000,
+      "heartbeat_minutes": 240,
+      "owns": ["strategy", "budget_overrides", "market_priority", "approval_gates", "weekly_execution_focus"],
+      "money_paths": ["market_launch_prioritization", "revenue_leakage_review", "data_product_approval"]
+    },
+    {
+      "slug": "cto-platform-engine",
+      "title": "CTO Platform Engine",
+      "domain": "platform",
+      "adapter_type": "hybrid",
+      "default_model_class": "code_model_or_worker_first",
+      "monthly_budget_cents": 8000,
+      "heartbeat_minutes": 120,
+      "owns": ["build_health", "schema_integrity", "edge_functions", "search_indexing", "command_fabric_wiring", "security"],
+      "money_paths": ["downtime_prevention", "search_conversion", "worker_cost_control"]
+    },
+    {
+      "slug": "seo-aeo-dominator",
+      "title": "SEO/AEO Dominator",
+      "domain": "seo",
+      "adapter_type": "worker",
+      "default_model_class": "cheap_generation_plus_review",
+      "monthly_budget_cents": 0,
+      "heartbeat_minutes": 120,
+      "owns": ["long_tail_pages", "glossary", "blogs", "voice_faq", "schema", "internal_linking", "llms_txt", "sitemap", "ai_search_answers"],
+      "money_paths": ["organic_claims", "adgrid_inventory", "data_product_discovery", "training_enrollment"]
+    },
+    {
+      "slug": "firecrawl-intelligence-engine",
+      "title": "Firecrawl Intelligence Engine",
+      "domain": "intelligence",
+      "adapter_type": "worker",
+      "default_model_class": "worker_first_llm_extract_only_on_high_value_sources",
+      "monthly_budget_cents": 1600,
+      "heartbeat_minutes": 360,
+      "owns": ["source_authority_graph", "regulation_change_detection", "competitor_gap_radar", "pain_point_mining", "country_readiness", "emerging_service_watch"],
+      "money_paths": ["paid_alerts", "data_products", "adgrid_signals", "seo_gap_tasks", "partner_leads"],
+      "credit_caps": {
+        "phase_free": { "max_credits_per_run": 10, "max_credits_per_day": 40, "monthly_soft_cap": 500 },
+        "phase_hobby": { "max_credits_per_run": 25, "max_credits_per_day": 90, "monthly_soft_cap": 2700 },
+        "phase_standard": { "max_credits_per_run": 250, "max_credits_per_day": 3000, "monthly_soft_cap": 90000 }
+      }
+    },
+    {
+      "slug": "revenue-adgrid-engine",
+      "title": "Revenue / AdGrid Engine",
+      "domain": "revenue",
+      "adapter_type": "worker",
+      "default_model_class": "worker_first_llm_for_offer_copy_only",
+      "monthly_budget_cents": 0,
+      "heartbeat_minutes": 60,
+      "owns": ["adgrid_yield", "sponsorship_inventory", "premium_profiles", "data_products", "route_ready_partner_revenue", "missed_money_detection"],
+      "money_paths": ["sponsorships", "data_exports", "premium_listing", "supplier_installer_referrals"]
+    },
+    {
+      "slug": "dispatch-liquidity-engine",
+      "title": "Dispatch / Liquidity Engine",
+      "domain": "dispatch",
+      "adapter_type": "worker",
+      "default_model_class": "worker_realtime_first",
+      "monthly_budget_cents": 0,
+      "heartbeat_minutes": 15,
+      "owns": ["market_liquidity", "operator_density", "broker_demand", "available_now", "urgent_coverage", "load_matching", "no_show_recovery"],
+      "money_paths": ["load_fill", "broker_retention", "urgent_dispatch", "operator_activation"]
+    },
+    {
+      "slug": "trust-compliance-localization-engine",
+      "title": "Trust / Compliance / Localization Engine",
+      "domain": "trust_compliance",
+      "adapter_type": "hybrid",
+      "default_model_class": "worker_with_human_review_for_sensitive_facts",
+      "monthly_budget_cents": 2000,
+      "heartbeat_minutes": 120,
+      "owns": ["regulation_review", "insurance", "credential_rules", "country_localization", "language_culture_currency_units", "proof_packets", "safety_rules"],
+      "money_paths": ["verified_profiles", "compliance_alerts", "training", "risk_reduction"]
+    }
+  ],
+  "virtual_matrix": {
+    "total_virtual_mandates": 208,
+    "note": "These are not separate paid LLM agents. They are task scopes routed to the seven super agents and cheap workers.",
+    "country_mandates": {
+      "count": 120,
+      "required_fields": ["country_code", "local_country_name", "primary_languages", "secondary_languages", "currency_code", "measurement_system", "region_model", "authority_sources", "permit_terms", "escort_terms", "heavy_haul_terms", "search_engine_preferences", "culture_notes", "last_verified_at"],
+      "owner_super_agents": ["firecrawl-intelligence-engine", "seo-aeo-dominator", "trust-compliance-localization-engine", "revenue-adgrid-engine"]
+    },
+    "us_state_mandates": {
+      "count": 50,
+      "required_fields": ["state_code", "dot_sources", "escort_thresholds", "permit_urls", "top_corridors", "city_targets", "operator_density", "adgrid_slots", "claim_targets", "last_verified_at"],
+      "owner_super_agents": ["seo-aeo-dominator", "dispatch-liquidity-engine", "trust-compliance-localization-engine"]
+    },
+    "hq_domain_mandates": {
+      "count": 30,
+      "domains": ["seo", "aeo", "glossary", "regulations", "training", "directory", "profiles", "load_board", "adgrid", "data_products", "route_ready", "infrastructure", "claims", "broker_acquisition", "operator_activation", "dispatch", "trust", "payments", "compliance", "market_intelligence", "corridors", "maps", "notifications", "livekit", "twenty_crm", "typesense", "supabase_vector", "firecrawl", "content_queue", "command_fabric"],
+      "owner_super_agents": ["ceo-command-brain", "cto-platform-engine"]
+    },
+    "emerging_service_mandates": {
+      "count": 8,
+      "services": ["autonomous_escort_and_heavy_haul", "drone_route_survey_and_aerial_clearance", "ev_heavy_haul_and_charging_corridors", "hydrogen_heavy_transport", "port_wind_energy_and_superload_projects", "ai_permit_precheck", "connected_vehicle_telematics", "robotic_yard_and_staging_operations"],
+      "owner_super_agents": ["firecrawl-intelligence-engine", "trust-compliance-localization-engine", "revenue-adgrid-engine"]
+    }
+  },
+  "routing_rules": {
+    "default_to_worker": true,
+    "use_llm_only_for": ["summarization_of_changed_sources", "multi_source_conflict_resolution", "high_value_offer_copy", "code_generation", "country_localization_review", "sensitive_regulation_interpretation_draft"],
+    "requires_human_review": ["public_regulation_fact", "legal_compliance_claim", "financial_action", "public_safety_claim", "destructive_data_action", "customer_comms_at_scale"],
+    "no_dead_data_rule": "Every signal must route to a page, task, alert, data product, adgrid signal, proof packet, money event, country readiness score, or rejection reason."
+  },
+  "hyperlocal_required_dimensions": [
+    "country_code",
+    "region_code",
+    "city_or_locality",
+    "corridor_key",
+    "language_code",
+    "currency_code",
+    "measurement_system",
+    "role_context",
+    "source_url",
+    "source_type",
+    "confidence_score",
+    "monetization_score",
+    "last_verified_at"
+  ],
+  "accepted_signal_routes": [
+    "seo_gap",
+    "aeo_answer_gap",
+    "glossary_term_candidate",
+    "regulation_change_candidate",
+    "blog_update_candidate",
+    "tool_gap",
+    "training_gap",
+    "directory_supply_candidate",
+    "partner_candidate",
+    "infrastructure_candidate",
+    "adgrid_signal",
+    "data_product_signal",
+    "dispatch_liquidity_signal",
+    "pain_point_signal",
+    "country_readiness_signal",
+    "emerging_service_signal"
+  ]
+}
