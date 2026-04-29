@@ -7,6 +7,8 @@ import {
   Timer, BarChart3
 } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 // ══════════════════════════════════════════════════════════════
 // HQ AGENTS & SWARMS DASHBOARD
 // Per Master Prompt §34-35: Agent swarm runs must be observable.
