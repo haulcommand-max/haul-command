@@ -1,134 +1,74 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Pinecone } from '@pinecone-database/pinecone';
-import Typesense from 'typesense';
 import { createClient } from '@supabase/supabase-js';
 
-// Lazy initialization to prevent build-time crashes when env vars are missing
-function getPinecone() {
-  const apiKey = process.env.PINECONE_API_KEY;
-  if (!apiKey) throw new Error('PINECONE_API_KEY not set');
-  return new Pinecone({ apiKey });
-}
-
-function getTypesenseClient() {
-  return new Typesense.Client({
-    nodes: [{ host: process.env.TYPESENSE_HOST!, port: Number(process.env.TYPESENSE_PORT) || 8108, protocol: process.env.TYPESENSE_PROTOCOL || 'http' }],
-    apiKey: process.env.TYPESENSE_API_KEY!,
-    connectionTimeoutSeconds: 5
-  });
-}
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 export async function POST(req: NextRequest) {
   try {
-    const { 
-      query,
-      filters = {},
-      country_code,
-      family = 'profiles' // profiles, glossary, regulations, tools
-    } = await req.json();
+    const { query, index_name, country_code, role_context, limit = 10 } = await req.json();
 
     if (!query) {
-      return NextResponse.json({ error: 'Query is required' }, { status: 400 });
+      return NextResponse.json({ error: 'query is required' }, { status: 400 });
     }
 
-    const tsCollectionMap: Record<string, string> = {
-      'profiles': 'hc_profiles',
-      'glossary': 'hc_glossary',
-      'regulations': 'hc_regulations',
-      'tools': 'hc_tools'
-    };
-    const collection = tsCollectionMap[family] || 'hc_profiles';
+    // HC Vector search — Supabase pgvector replaces Pinecone.
+    // Full-text search via Postgres replaces Typesense in this orchestrator.
+    let vectorQuery = supabase
+      .from('hc_vector')
+      .select('id, vector_id, index_name, content_type, content, country_code, role_context, corridor_key, source_url, metadata, confidence_score')
+      .textSearch('content', query, { type: 'websearch', config: 'english' })
+      .eq('is_active', true)
+      .limit(limit);
 
-    // 1. FAST PATH: Execute Typesense Lexical/Facet Search
-    let tsFilterStr = Object.entries(filters)
-      .map(([k, v]) => `${k}:=${v}`)
-      .join(' && ');
-    if (country_code) {
-      tsFilterStr = tsFilterStr ? `${tsFilterStr} && country_code:=${country_code}` : `country_code:=${country_code}`;
+    if (index_name) vectorQuery = vectorQuery.eq('index_name', index_name);
+    if (country_code) vectorQuery = vectorQuery.eq('country_code', country_code);
+    if (role_context) vectorQuery = vectorQuery.eq('role_context', role_context);
+
+    const { data: textResults, error: textError } = await vectorQuery;
+
+    if (textError) {
+      console.error('HC Vector search error:', textError);
+      return NextResponse.json({ error: textError.message }, { status: 500 });
     }
 
-    const tsClient = getTypesenseClient();
-    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+    // Also search operators directory via Postgres fallback.
+    let operatorQuery = supabase
+      .from('hc_operators')
+      .select('id, company_name, state, city, phone, trust_score, profile_completeness')
+      .or(`company_name.ilike.%${query}%,city.ilike.%${query}%,state.ilike.%${query}%`)
+      .eq('is_active', true)
+      .limit(5);
 
-    const tsResponse = await tsClient.collections(collection).documents().search({
-      q: query,
-      query_by: family === 'profiles' ? 'display_name,services,certifications' :
-                family === 'glossary' ? 'canonical_term,synonyms' :
-                family === 'regulations' ? 'title,rule_type' : 'tool_name,tool_family',
-      filter_by: tsFilterStr || undefined,
-      per_page: 20
-    });
+    if (country_code) operatorQuery = operatorQuery.eq('country_code', country_code);
 
-    const isStrongLexicalHit = tsResponse.found > 3 && (Number(tsResponse.hits?.[0]?.text_match_info?.score) || 0) > 50;
-
-    if (isStrongLexicalHit) {
-      // Strong lexical intent, return immediately for speed (Typesense First Rule)
-      return NextResponse.json({
-        source: 'typesense',
-        query,
-        results: (tsResponse.hits ?? []).map(h => h.document),
-        semanticExpanded: false
-      });
-    }
-
-    // 2. AMBIGUOUS/WEAK PATH: Fallback to Pinecone Semantic Expansion
-    // Embed the incoming query (Assume we have an internal embedder or call OpenAI)
-    // Stubbing the embedding array here since real API call depends on selected provider
-    const queryEmbedding = new Array(1536).fill(0.1); 
-
-    const pineconeIndex = getPinecone().Index('antigravity');
-    const pcNamespace = family === 'profiles' ? 'hc_entities_semantic' : 'hc_content_rag';
-
-    const pcResponse = await pineconeIndex.namespace(pcNamespace).query({
-      topK: 15,
-      vector: queryEmbedding,
-      includeMetadata: true,
-      filter: country_code ? { country_code: { $eq: country_code } } : undefined
-    });
-
-    if (pcResponse.matches.length === 0) {
-      return NextResponse.json({
-        source: 'typesense_only_weak',
-        query,
-        results: tsResponse.hits?.map(h => h.document) || [],
-        semanticExpanded: false
-      });
-    }
-
-    // 3. MERGE & HYDRATE: Rerank Pinecone hits and hydrate from Supabase
-    const pineconeRecordIds = pcResponse.matches
-        .filter(m => m.score && m.score > 0.70) // Confidence threshold
-        .map(m => m.metadata?.entity_id || m.metadata?.page_id || m.id);
-
-    let finalHydratedResults = [];
-    if (pineconeRecordIds.length > 0) {
-      const { data: dbRecords } = await supabase
-        .from(family === 'profiles' ? 'entities' : family === 'glossary' ? 'glossary_terms' : 'seo_pages')
-        .select('*')
-        .in('id', pineconeRecordIds);
-      
-      finalHydratedResults = dbRecords || [];
-    }
-
-    // Merging logic: Combine TS and PC results, prioritizing high-trust PC results
-    const combinedSet = new Map();
-    (tsResponse.hits ?? []).forEach(h => combinedSet.set((h.document as any).id, h.document));
-    finalHydratedResults.forEach(r => {
-      // Basic manual schema mapping from Supabase back to response formatting
-      // In production, we project this exactly like TS documents
-      combinedSet.set(r.id, r);
-    });
+    const { data: operatorResults } = await operatorQuery;
 
     return NextResponse.json({
-      source: 'merged_semantic',
-      query,
-      results: Array.from(combinedSet.values()),
-      semanticExpanded: true,
-      semanticMatchesCount: finalHydratedResults.length
+      results: textResults || [],
+      operators: operatorResults || [],
+      total: (textResults?.length || 0) + (operatorResults?.length || 0),
+      source: 'hc_vector',
     });
 
-  } catch (error) {
-    console.error('Search Orchestrator Error:', error);
-    return NextResponse.json({ error: 'Internal search failure' }, { status: 500 });
+  } catch (err) {
+    console.error('Search orchestrator error:', err);
+    return NextResponse.json({ error: 'Internal error' }, { status: 500 });
   }
+}
+
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const query = searchParams.get('q') || '';
+  const index_name = searchParams.get('index_name') || undefined;
+  const country_code = searchParams.get('country_code') || undefined;
+  const role_context = searchParams.get('role_context') || undefined;
+  const limit = Number(searchParams.get('limit') || 10);
+
+  return POST(new NextRequest(req.url, {
+    method: 'POST',
+    body: JSON.stringify({ query, index_name, country_code, role_context, limit }),
+  }));
 }
