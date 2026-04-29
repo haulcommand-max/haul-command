@@ -180,6 +180,16 @@ const nextConfig: NextConfig = {
                 permanent: true,
             },
             {
+                source: '/loads',
+                destination: '/load-board',
+                permanent: true,
+            },
+            {
+                source: '/loads/post',
+                destination: '/load-board/post',
+                permanent: true,
+            },
+            {
                 source: '/leaderboard',
                 destination: '/leaderboards',
                 permanent: true,
