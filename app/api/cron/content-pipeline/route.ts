@@ -4,25 +4,32 @@ import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 /**
- * POST /api/cron/content-pipeline
+ * GET/POST /api/cron/content-pipeline
  * 
  * The missing engine — processes content_jobs queue:
  * 1. Picks highest-priority queued jobs
  * 2. Generates page content (enrich + link + schema)
  * 3. Marks done or failed
  * 
- * Schedule: Every 15 minutes via cron
+ * Schedule: Every 15 minutes via Vercel cron
  * Batch size: 50 jobs per run (safe for serverless)
  */
 
 const BATCH_SIZE = 50;
 const MAX_ATTEMPTS = 3;
 
+export async function GET(req: Request) {
+    return runContentPipeline(req);
+}
 
 export async function POST(req: Request) {
-    // Verify cron secret
+    return runContentPipeline(req);
+}
+
+async function runContentPipeline(req: Request) {
+    // Verify cron secret. Vercel cron uses GET, but manual/internal callers may use POST.
     const authHeader = req.headers.get('authorization');
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -53,7 +60,7 @@ export async function POST(req: Request) {
         // Mark running
         await svc
             .from('content_jobs')
-            .update({ status: 'running', attempts: job.attempts + 1, updated_at: new Date().toISOString() })
+            .update({ status: 'running', attempts: (job.attempts ?? 0) + 1, updated_at: new Date().toISOString() })
             .eq('id', job.id);
 
         try {
@@ -64,10 +71,11 @@ export async function POST(req: Request) {
                 .eq('id', job.id);
             processed++;
         } catch (err: any) {
+            const nextAttempts = (job.attempts ?? 0) + 1;
             await svc
                 .from('content_jobs')
                 .update({
-                    status: job.attempts + 1 >= MAX_ATTEMPTS ? 'failed' : 'queued',
+                    status: nextAttempts >= MAX_ATTEMPTS ? 'failed' : 'queued',
                     last_error: err?.message?.slice(0, 500),
                     updated_at: new Date().toISOString(),
                 })
