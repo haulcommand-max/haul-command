@@ -218,6 +218,10 @@ const nextConfig: NextConfig = {
         return {
             beforeFiles: [
                 {
+                    source: '/available-now',
+                    destination: '/available-now-fixed',
+                },
+                {
                     source: '/sitemap.xml',
                     destination: '/api/sitemap',
                 },
