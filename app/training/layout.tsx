@@ -1,5 +1,9 @@
 import { Metadata } from 'next';
 import { getPageFamilyOgImage } from '@/components/ui/PageFamilyBackground';
+import { HCGlobalHeader } from '@/components/landing-system/navigation/HCGlobalHeader';
+import { HCFooterShell } from '@/components/landing-system/footer/HCFooterShell';
+
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(): Promise<Metadata> {
     return {
@@ -17,9 +21,6 @@ export async function generateMetadata(): Promise<Metadata> {
     };
 }
 
-import { HCGlobalHeader } from '@/components/landing-system/navigation/HCGlobalHeader';
-import { HCFooterShell } from '@/components/landing-system/footer/HCFooterShell';
-
 export default function TrainingLayout({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex flex-col ">
@@ -31,7 +32,7 @@ export default function TrainingLayout({ children }: { children: React.ReactNode
                <a href="/training/pre-class-support" style={{ color: '#9a9ab0', textDecoration: 'none', transition: 'color 0.2s' }}>Pre-Class Tech Support</a>
                <a href="/training/replacement-card" style={{ color: '#9a9ab0', textDecoration: 'none', transition: 'color 0.2s' }}>Replacement Cards</a>
                <a href="/training/corporate" style={{ color: '#9a9ab0', textDecoration: 'none', transition: 'color 0.2s' }}>Corporate Booking</a>
-               <a href="/training/report-card" style={{ color: '#F5A623', textDecoration: 'none', marginLeft: 'auto' }}>Your Report Card â†’</a>
+               <a href="/training/report-card" style={{ color: '#F5A623', textDecoration: 'none', marginLeft: 'auto' }}>Your Report Card →</a>
             </div>
             <main className="flex-1">
                 {children}
