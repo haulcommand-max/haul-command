@@ -10,7 +10,7 @@ import {
 
 interface DirectoryGridProps {
   providers: any[];
-  targetCountry: string;
+  targetCountry?: string;
 }
 
 const STATE_OPTIONS = [
@@ -62,7 +62,8 @@ function AvailabilityDot({ lastSeen }: { lastSeen?: string }) {
   );
 }
 
-export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) {
+export function DirectoryGrid({ providers, targetCountry = 'US' }: DirectoryGridProps) {
+  const country = targetCountry || 'US';
   const [search, setSearch] = useState('');
   const [stateFilter, setStateFilter] = useState('');
   const [equipFilter, setEquipFilter] = useState('');
@@ -76,15 +77,15 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
       items = items.filter(p =>
         (p.company || p.name || '').toLowerCase().includes(q) ||
         (p.city || '').toLowerCase().includes(q) ||
-        (p.state_inferred || '').toLowerCase().includes(q)
+        (p.state_inferred || p.admin1_code || '').toLowerCase().includes(q)
       );
     }
-    if (stateFilter) items = items.filter(p => (p.state_inferred || '').toUpperCase() === stateFilter);
+    if (stateFilter) items = items.filter(p => (p.state_inferred || p.admin1_code || '').toUpperCase() === stateFilter);
     if (equipFilter) items = items.filter(p => (p.equipment_types || '').toLowerCase().includes(equipFilter));
     items.sort((a, b) => {
       if (sortBy === 'trust')  return (b.confidence_score || 0) - (a.confidence_score || 0);
       if (sortBy === 'name')   return (a.company || a.name || '').localeCompare(b.company || b.name || '');
-      if (sortBy === 'state')  return (a.state_inferred || '').localeCompare(b.state_inferred || '');
+      if (sortBy === 'state')  return (a.state_inferred || a.admin1_code || '').localeCompare(b.state_inferred || b.admin1_code || '');
       if (sortBy === 'recent') return new Date(b.last_seen_at || 0).getTime() - new Date(a.last_seen_at || 0).getTime();
       return 0;
     });
@@ -95,7 +96,7 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
   const unclaimed = displayItems.length - claimed;
 
   return (
-    <div>
+    <div data-country={country}>
       {/* Search + Filters */}
       <div className="mb-6 space-y-3">
         <div className="flex gap-2">
@@ -169,14 +170,15 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {displayItems.length > 0 ? displayItems.map((p: any) => {
-          const state = stateFullName(p.state_inferred, true);
+          const state = stateFullName(p.state_inferred || p.admin1_code, true);
           const trust = p.confidence_score || 0;
           const isClaimed = trust > 40;
           const isHighTrust = trust > 80;
           const name = p.company || p.name || 'Unclaimed Operator';
+          const contactId = p.contact_id || p.id;
 
           return (
-            <div key={p.contact_id}
+            <div key={contactId}
               className={`relative rounded-2xl overflow-hidden transition-all duration-200 group flex flex-col justify-between ${
                 isHighTrust
                   ? 'border border-[#C6923A]/30 bg-[#0e0d0a] hover:border-[#F1A91B]/50 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(198,146,58,0.15)]'
@@ -229,22 +231,22 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
               <div className="px-5 pb-5 flex gap-2">
                 {isClaimed ? (
                   <>
-                    <Link href={`/directory/dossier/${p.contact_id}`}
+                    <Link href={`/directory/dossier/${contactId}`}
                       className="flex-1 py-2.5 rounded-xl text-center text-xs font-bold text-gray-300 border border-white/10 hover:border-white/20 hover:text-white transition-all">
                       View Profile
                     </Link>
-                    <Link href={`/auth/signup?intent=dispatch&target=${p.contact_id}`}
+                    <Link href={`/auth/signup?intent=dispatch&target=${contactId}`}
                       className="flex-[1.2] py-2.5 rounded-xl text-center text-xs font-black text-black bg-[#F1A91B] hover:bg-[#D4951A] transition-all flex items-center justify-center gap-1">
                       <Zap className="w-3 h-3" /> Live Ping
                     </Link>
                   </>
                 ) : (
                   <>
-                    <Link href={`/directory/dossier/${p.contact_id}`}
+                    <Link href={`/directory/dossier/${contactId}`}
                       className="flex-1 py-2.5 rounded-xl text-center text-xs font-semibold text-gray-400 border border-white/[0.06] hover:border-white/10 hover:text-gray-300 transition-all">
                       View Listing
                     </Link>
-                    <Link href={`/claim?operator=${p.contact_id}`}
+                    <Link href={`/claim?operator=${contactId}`}
                       className="flex-[1.2] py-2.5 rounded-xl text-center text-xs font-black text-black bg-[#F1A91B] hover:bg-[#D4951A] transition-all">
                       Claim Free →
                     </Link>
