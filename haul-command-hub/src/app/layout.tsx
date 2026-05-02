@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "./haul-command-background.css";
 import { OrganizationSchema, WebSiteSchema } from "@/components/BreadcrumbSchema";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
@@ -79,7 +80,7 @@ export default function RootLayout({
       <head>
         {/* PWA — iOS Safari doesn't read manifest for these */}
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
-        <meta name="theme-color" content="#0B0F14" />
+        <meta name="theme-color" content="#f5c64a" />
         <meta name="rating" content="general" />
         <meta name="age-verification" content="18+" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -103,7 +104,7 @@ export default function RootLayout({
         <RoleProvider>
           <OrganizationSchema />
           <WebSiteSchema />
-          <div className="min-h-screen flex flex-col pb-14 md:pb-0 overflow-x-hidden max-w-full">
+          <div className="hc-site-shell min-h-screen flex flex-col pb-14 md:pb-0 overflow-x-hidden max-w-full bg-transparent">
             {children}
             <Footer />
           </div>
