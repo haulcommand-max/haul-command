@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import './haul-command-background.css';
 import { DynamicBackgroundEngine } from '@/components/ui/DynamicBackgroundEngine';
 import { GlobalCommandBar } from '@/components/layout/GlobalCommandBar';
 import { Suspense } from 'react';
@@ -56,10 +57,10 @@ export const viewport: Viewport = {
   maximumScale: 5,          // Allow user zoom (accessibility) but not auto-zoom
   userScalable: true,
   themeColor: [
-    { media: '(prefers-color-scheme: dark)',  color: '#090706' },
-    { media: '(prefers-color-scheme: light)', color: '#F1A91B' },
+    { media: '(prefers-color-scheme: dark)',  color: '#f5c64a' },
+    { media: '(prefers-color-scheme: light)', color: '#f5c64a' },
   ],
-  colorScheme: 'dark',
+  colorScheme: 'light',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -69,8 +70,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       {/* Google Tag Manager — manages GA4, ads pixels, and all tags from one UI */}
       {gtmId && <GoogleTagManager gtmId={gtmId} />}
-        <body className={`${inter.className} antialiased`} style={{ color: '#e8e8e8', backgroundColor: '#090706', overflowX: 'hidden' }}>
-        <div className="hc-premium-bg hc-living-background-enabled hc-safe-x">
+        <body className={`${inter.className} antialiased`} style={{ color: '#e8e8e8', overflowX: 'hidden' }}>
+        <div className="hc-premium-bg hc-living-background-enabled hc-safe-x hc-site-shell">
         <Suspense fallback={null}>
           {/* PostHog — product analytics, session replay, A/B testing */}
           <PostHogProvider>
