@@ -3,6 +3,14 @@
 // Haul Command — Global Subscription Pricing Configuration
 // Single source of truth for directory + mobile subscription tiers.
 // PPP-adjusted, cost-floor protected, App Store compliant.
+//
+// Public naming standard:
+// - Road Ready = free/base access
+// - Fast Lane = core paid growth tier
+// - Corridor Elite = premium corridor visibility
+// - Fleet Command = enterprise/fleet/API tier
+//
+// Stripe lookup keys stay stable so existing checkout/webhook/RLS logic does not break.
 
 // ============================================================
 // TYPES
@@ -16,6 +24,7 @@ export interface PricePlan {
     tier: PricingTier;
     platform: Platform;
     name: string;
+    public_name: string;
     tagline: string;
     base_price_usd: number;
     stripe_price_lookup_key: string; // Stripe lookup key for price resolution
@@ -30,6 +39,17 @@ export interface PPPMultiplier {
     multiplier: number;
     countries: string[];
 }
+
+// ============================================================
+// PUBLIC PLAN NAMES
+// ============================================================
+
+export const PUBLIC_PLAN_NAMES: Record<PricingTier, string> = {
+    free: 'Road Ready',
+    pro: 'Fast Lane',
+    elite: 'Corridor Elite',
+    enterprise: 'Fleet Command',
+};
 
 // ============================================================
 // PPP TIERS (Purchasing Power Parity)
@@ -84,7 +104,8 @@ export const DIRECTORY_PLANS: PricePlan[] = [
     {
         tier: 'free',
         platform: 'directory',
-        name: 'Starter Listing',
+        name: 'Road Ready',
+        public_name: 'Road Ready',
         tagline: 'Get discovered by brokers and carriers',
         base_price_usd: 0,
         stripe_price_lookup_key: 'directory_free',
@@ -105,8 +126,9 @@ export const DIRECTORY_PLANS: PricePlan[] = [
     {
         tier: 'pro',
         platform: 'directory',
-        name: 'Verified Pro',
-        tagline: 'Stand out and win more loads',
+        name: 'Fast Lane',
+        public_name: 'Fast Lane',
+        tagline: 'Stand out, respond faster, and win more loads',
         base_price_usd: 29,
         stripe_price_lookup_key: 'directory_pro_monthly',
         features: [
@@ -130,11 +152,12 @@ export const DIRECTORY_PLANS: PricePlan[] = [
         tier: 'elite',
         platform: 'directory',
         name: 'Corridor Elite',
+        public_name: 'Corridor Elite',
         tagline: 'Dominate your corridors',
         base_price_usd: 79,
         stripe_price_lookup_key: 'directory_elite_monthly',
         features: [
-            'Everything in Verified Pro',
+            'Everything in Fast Lane',
             'Top-of-corridor priority placement',
             'Leaderboard visibility boost',
             'Advanced analytics + competitor insights',
@@ -153,7 +176,8 @@ export const DIRECTORY_PLANS: PricePlan[] = [
     {
         tier: 'enterprise',
         platform: 'directory',
-        name: 'Fleet / Enterprise',
+        name: 'Fleet Command',
+        public_name: 'Fleet Command',
         tagline: 'Multi-vehicle operations and API access',
         base_price_usd: 999,
         stripe_price_lookup_key: 'directory_enterprise_monthly',
@@ -184,7 +208,8 @@ export const MOBILE_PLANS: PricePlan[] = [
     {
         tier: 'free',
         platform: 'mobile',
-        name: 'Mobile Free',
+        name: 'Road Ready Mobile',
+        public_name: 'Road Ready',
         tagline: 'Essential tools on the go',
         base_price_usd: 0,
         stripe_price_lookup_key: 'mobile_free',
@@ -204,7 +229,8 @@ export const MOBILE_PLANS: PricePlan[] = [
     {
         tier: 'pro',
         platform: 'mobile',
-        name: 'Mobile Basic',
+        name: 'Fast Lane Mobile',
+        public_name: 'Fast Lane',
         tagline: 'Never miss a load',
         base_price_usd: 4.99,
         stripe_price_lookup_key: 'mobile_basic_monthly',
@@ -225,12 +251,13 @@ export const MOBILE_PLANS: PricePlan[] = [
     {
         tier: 'elite',
         platform: 'mobile',
-        name: 'Mobile Pro',
+        name: 'Corridor Elite Mobile',
+        public_name: 'Corridor Elite',
         tagline: 'Smart matching and route intelligence',
         base_price_usd: 24.99,
         stripe_price_lookup_key: 'mobile_pro_monthly',
         features: [
-            'Everything in Mobile Basic',
+            'Everything in Fast Lane Mobile',
             'Full live job feed',
             'Smart match priority ranking',
             'Route intelligence (basic)',
@@ -249,12 +276,13 @@ export const MOBILE_PLANS: PricePlan[] = [
     {
         tier: 'enterprise',
         platform: 'mobile',
-        name: 'Mobile Elite',
+        name: 'Fleet Command Mobile',
+        public_name: 'Fleet Command',
         tagline: 'Full corridor intelligence and AI dispatch',
         base_price_usd: 59.99,
         stripe_price_lookup_key: 'mobile_elite_monthly',
         features: [
-            'Everything in Mobile Pro',
+            'Everything in Corridor Elite Mobile',
             'Real-time corridor intelligence',
             'Demand heatmaps',
             'Priority dispatch signals',
