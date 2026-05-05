@@ -76,7 +76,7 @@ const BATCH_JOBS = [
   },
   {
     id: 'regulations',
-    name: '57-Country Regulation Summaries',
+    name: '120-Country Regulation Summaries',
     description: 'Gemini + Google Search generates accurate oversize load regulation pages for all 120 countries.',
     endpoint: '/api/admin/batch/corridors',
     method: 'POST',

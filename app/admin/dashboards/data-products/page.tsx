@@ -108,7 +108,7 @@ export default function DataProductsDashboard() {
 
             {activeTab === 'pricing' && (
                 <div style={{ padding: 24, borderRadius: 16, border: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)', marginBottom: 24 }}>
-                    <h2 style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginBottom: 16 }}>57-Country Pricing by Tier</h2>
+                    <h2 style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginBottom: 16 }}>120-Country Pricing by Tier</h2>
                     {Object.entries({ A: ['US','CA','AU','GB','NZ','ZA','DE','NL','AE','BR'], B: ['IE','SE','NO','DK','FI','BE','AT','CH','ES','FR','IT','PT','SA','QA','MX','IN','ID','TH'], C: ['PL','CZ','SK','HU','SI','EE','LV','LT','HR','RO','BG','GR','TR','KW','OM','BH','SG','MY','JP','KR','CL','AR','CO','PE','VN','PH'], D: ['UY','PA','CR'] }).map(([tier, countries]) => {
                         const meta = TIER_LABELS[tier];
                         const multiplier = tier === 'A' ? 1.0 : tier === 'B' ? 0.65 : tier === 'C' ? 0.40 : 0.25;
