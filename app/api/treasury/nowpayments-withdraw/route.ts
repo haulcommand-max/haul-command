@@ -10,7 +10,7 @@ import { createClient } from "@/lib/supabase/server";
  * 1. LEGAL (KYC & OFAC): 
  *    - In the US, UK, EU, sending unregulated crypto without KYC is money laundering.
  *    - We enforce a "kyc_status = verified" requirement before honoring the API.
- *    - 57-Country Check: We map the operator's geo against the `marketplace_liability_profile`.
+ *    - 120-Country Check: We map the operator's geo against the `marketplace_liability_profile`.
  * 
  * 2. THE RED (LIQUIDITY & GAS PROTECTION):
  *    - A broker can chargeback on Stripe up to 120 days later. Crypto is irreversible.

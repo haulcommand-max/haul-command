@@ -10,6 +10,7 @@
     "start": "next start",
     "lint": "next lint",
     "lint:mojibake": "node scripts/check-mojibake.js",
+    "lint:country-drift": "node scripts/check-country-drift.js",
     "typecheck": "tsc --noEmit",
     "brand:generate": "node scripts/brand/generate-assets.mjs",
     "brand:verify": "node scripts/brand/verify-assets.mjs",

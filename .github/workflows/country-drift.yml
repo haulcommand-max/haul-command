@@ -1,0 +1,26 @@
+name: 120-Country Drift Guardrail
+
+# Prevents stale "57 countries" scope drift from re-entering live source
+# paths (app/, components/, lib/, pages/). Historical artifacts in
+# migrations and planning docs are intentionally not scanned.
+#
+# See CLAUDE.md > "120-Country Standard (Never Drift Back)" and
+# scripts/check-country-drift.js for the rule itself.
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  check-country-drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run country-drift checker
+        run: node scripts/check-country-drift.js
