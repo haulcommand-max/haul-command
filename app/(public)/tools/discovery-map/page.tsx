@@ -6,7 +6,7 @@ import { createClient } from '@/utils/supabase/client';
 interface DiscoveryZone { id: string; zone_name: string; zone_type: string; country_code: string; city: string; lat: number; lng: number; search_radius_miles: number; heavy_haul_score: number; }
 interface IndustrialOrigin { id: string; name: string; company: string; origin_type: string; country_code: string; city: string; avg_loads_per_month: number; }
 
-const ZONE_ICONS: Record<string, string> = { logistics_hub: 'ðŸ­', port_area: 'âš“', wind_farm: 'ðŸŒ¬ï¸', mining_site: 'â›ï¸', industrial_origin: 'ðŸ”§', interstate_junction: 'ðŸ›£ï¸', truck_stop_cluster: 'ðŸ…¿ï¸', border_crossing: 'ðŸ›‚', metro_center: 'ðŸ™ï¸', military_base: 'ðŸŽ–ï¸' };
+const ZONE_ICONS: Record<string, string> = { logistics_hub: '🏭', port_area: '⚓', wind_farm: '🌬️', mining_site: '⛏️', industrial_origin: '🔧', interstate_junction: '🛣️', truck_stop_cluster: '🅿️', border_crossing: '🛂', metro_center: '🏙️', military_base: '🎖️' };
 const FLAG: Record<string, string> = { US: 'ðŸ‡ºðŸ‡¸', CA: 'ðŸ‡¨ðŸ‡¦', AU: 'ðŸ‡¦ðŸ‡º', GB: 'ðŸ‡¬ðŸ‡§', NZ: 'ðŸ‡³ðŸ‡¿', ZA: 'ðŸ‡¿ðŸ‡¦', DE: 'ðŸ‡©ðŸ‡ª', NL: 'ðŸ‡³ðŸ‡±', AE: 'ðŸ‡¦ðŸ‡ª', BR: 'ðŸ‡§ðŸ‡·', BE: 'ðŸ‡§ðŸ‡ª', SA: 'ðŸ‡¸ðŸ‡¦', SG: 'ðŸ‡¸ðŸ‡¬', TH: 'ðŸ‡¹ðŸ‡­', IN: 'ðŸ‡®ðŸ‡³', KR: 'ðŸ‡°ðŸ‡·' };
 
 export default function AvailabilityMapPage() {

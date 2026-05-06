@@ -104,7 +104,7 @@ export default async function LoadTypesPage() {
                 </div>
                 
                 <div style={{ marginTop: 'auto', borderTop: '1px solid rgba(255,255,255,0.05)', padding: '12px 20px', background: 'rgba(0,0,0,0.2)' }}>
-                  <Link href={`/tools/permit-calculator`} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 6, padding: '10px', background: 'rgba(59,130,246,0.1)', color: '#60a5fa', borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: 'none' }}>
+              { href: '/tools/permit-cost-calculator', icon: '📋', title: 'Permit Calculator', desc: 'Find state-specific rules', primary: true, color: '#3b82f6' },
                     View Permit SLAs <ArrowRight style={{ width: 14, height: 14 }} />
                   </Link>
                 </div>
@@ -115,8 +115,8 @@ export default async function LoadTypesPage() {
           <NoDeadEndBlock
             heading="Analyze Your Next Haul"
             moves={[
-              { href: '/tools/permit-calculator', icon: 'ðŸ“‹', title: 'Permit Calculator', desc: 'Find state-specific rules', primary: true, color: '#3b82f6' },
-              { href: '/available-now', icon: 'ðŸŸ¢', title: 'Hire Escorts', desc: 'Available to dispatch' },
+              { href: '/tools/permit-cost-calculator', icon: '📋', title: 'Permit Calculator', desc: 'Find state-specific rules', primary: true, color: '#3b82f6' },
+              { href: '/available-now', icon: '🟢', title: 'Hire Escorts', desc: 'Available to dispatch' },
             ]}
           />
         </div>
