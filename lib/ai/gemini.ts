@@ -1,7 +1,13 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
+import { GoogleGenAI } from '@google/genai'
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' })
+
+// Legacy compatibility exports used by app/api/admin/ai routes
+// gemini uses @google/genai (newer SDK) as expected by existing routes
+export const HC_IMAGE_MODEL = 'gemini-2.0-flash-exp'
+export const gemini = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! })
 
 export interface GeneratedArticle {
   title: string

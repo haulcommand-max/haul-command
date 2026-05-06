@@ -5,6 +5,14 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-04-10',
 })
 
+// Legacy compatibility exports used by lib/marketplace/booking-payment.ts
+export const PLATFORM_FEE_BPS = 250 // 2.5%
+export const ESCROW_HOLD_DAYS = 3
+
+export function getStripeClient(): Stripe {
+  return stripe
+}
+
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
