@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
     await supabase.from('hc_seo_pages').update({
       title: generated.title ?? page.title,
       meta_description: generated.meta_description,
-      body: generated.body_html,
+      content_blocks: { h1: generated.title, intro: generated.meta_description, body: generated.body_html },
       schema_json: generated.schema_json,
       is_published: true,
       updated_at: new Date().toISOString(),

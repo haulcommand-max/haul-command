@@ -12,11 +12,11 @@ export async function POST(req: NextRequest) {
 
   let query = supabase
     .from('hc_blog_articles')
-    .select('id, title, topic, country, role')
-    .or('body_html.is.null,body_html.eq.')
+    .select('id, title, country_code')
+    .or('content.is.null,content.eq.')
     .limit(Math.min(count, 25))
 
-  if (country) query = query.eq('country', country)
+  if (country) query = query.eq..country_code., country)
 
   const { data: articles, error } = await query
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
@@ -37,15 +37,15 @@ export async function POST(req: NextRequest) {
 
   const results = await generateBatch(articles, async (article) => {
     const generated = await generateArticle(
-      article.topic ?? article.title,
-      article.country ?? 'United States',
-      article.role
+      article.title,
+      article.country_code ?? 'United States',
+      undefined
     )
 
     await supabase.from('hc_blog_articles').update({
       title: generated.title,
       meta_description: generated.meta_description,
-      body_html: generated.body_html,
+      content: generated.body_html,
       faq_items: generated.faq_items,
       schema_json: generated.schema_json,
       published: true,
