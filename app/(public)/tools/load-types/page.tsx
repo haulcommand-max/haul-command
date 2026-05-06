@@ -104,7 +104,7 @@ export default async function LoadTypesPage() {
                 </div>
                 
                 <div style={{ marginTop: 'auto', borderTop: '1px solid rgba(255,255,255,0.05)', padding: '12px 20px', background: 'rgba(0,0,0,0.2)' }}>
-              { href: '/tools/permit-cost-calculator', icon: '📋', title: 'Permit Calculator', desc: 'Find state-specific rules', primary: true, color: '#3b82f6' },
+                  <Link href={'/tools/permit-cost-calculator'} style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#C6923A', fontSize: 13, fontWeight: 600, textDecoration: 'none' }}>
                     View Permit SLAs <ArrowRight style={{ width: 14, height: 14 }} />
                   </Link>
                 </div>
