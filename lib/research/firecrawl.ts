@@ -6,7 +6,14 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
-const firecrawl = new FirecrawlApp({ apiKey: process.env.FIRECRAWL_API_KEY! })
+let _firecrawl: FirecrawlApp | null = null
+function getFirecrawl(): FirecrawlApp {
+  if (!_firecrawl) {
+    if (!process.env.FIRECRAWL_API_KEY) throw new Error('FIRECRAWL_API_KEY not set')
+    _firecrawl = new FirecrawlApp({ apiKey: process.env.FIRECRAWL_API_KEY })
+  }
+  return _firecrawl
+}
 
 async function wasRecentlyCrawled(url: string): Promise<boolean> {
   const since = new Date(Date.now() - 24 * 3600 * 1000).toISOString()
@@ -37,7 +44,7 @@ export async function crawlUrl(url: string, options?: any) {
   })
 
   try {
-    const result = await firecrawl.scrapeUrl(url, {
+    const result = await getFirecrawl().scrapeUrl(url, {
       formats: ['markdown'],
       ...options,
     }) as any
