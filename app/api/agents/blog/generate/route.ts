@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     .or('content.is.null,content.eq.')
     .limit(Math.min(count, 25))
 
-  if (country) query = query.eq..country_code., country)
+  if (country) query = query.eq('country_code', country)
 
   const { data: articles, error } = await query
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
