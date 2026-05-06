@@ -92,3 +92,34 @@ export async function syncLocations(operatorId: string) {
   }
   return locations.length
 }
+
+// ── Bulk sync for all active connections ─────────────────────────────────────
+
+export async function syncAllMotiveConnections() {
+  const { createClient } = await import('@supabase/supabase-js')
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+  const { data: connections } = await supabase
+    .from('motive_connections')
+    .select('operator_id')
+    .eq('status', 'active')
+
+  if (!connections?.length) return { synced: 0, failed: 0 }
+
+  let synced = 0, failed = 0
+  for (const conn of connections) {
+    try {
+      await Promise.all([
+        syncDrivers(conn.operator_id),
+        syncVehicles(conn.operator_id),
+        syncLocations(conn.operator_id),
+      ])
+      synced++
+    } catch {
+      failed++
+    }
+  }
+  return { synced, failed }
+}

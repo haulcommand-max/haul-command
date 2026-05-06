@@ -96,3 +96,13 @@ export async function getMotiveClient(operatorId: string) {
     headers: { Authorization: `Bearer ${token}` },
   })
 }
+
+// ── Legacy compatibility exports ─────────────────────────────────────────────
+
+export function generateMotiveConnectURL(operatorId: string): string {
+  return getAuthorizationUrl(operatorId)
+}
+
+export async function handleMotiveOAuthCallback(code: string, state: string) {
+  return exchangeCodeForTokens(code, state)
+}
