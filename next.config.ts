@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+    allowedDevOrigins: ["127.0.0.1", "localhost"],
+
     // ── TypeScript ────────────────────────────────────────────────────────
     // ignoreBuildErrors: Vercel build won't fail on TS errors.
     // This is intentional during active sprint development.

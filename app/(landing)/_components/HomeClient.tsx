@@ -211,14 +211,6 @@ export default function HomeClient({
     const [heroChipOffset, setHeroChipOffset] = useState(0);
     const [heroChipSlotCount, setHeroChipSlotCount] = useState(DESKTOP_HERO_CHIP_SLOT_COUNT);
     const activeHeroChips = useMemo(() => selectHeroChips(heroChipPool, heroChipOffset, heroChipSlotCount), [heroChipPool, heroChipOffset, heroChipSlotCount]);
-    const heroChipDataJson = useMemo(
-        () => JSON.stringify(heroChipPool.map((chip) => ({
-            id: chip.id,
-            label: chip.label,
-            href: chip.href || `/directory?q=${encodeURIComponent(chip.label)}`,
-        }))).replace(/</g, "\\u003c"),
-        [heroChipPool],
-    );
     const displayRegistryOperators = totalOperators > 0 ? `${totalOperators.toLocaleString()}+` : "Data syncing";
     const registryCountries = totalCountries > 0 ? totalCountries : 120;
     const registryCountryLabel = String(registryCountries);
@@ -880,78 +872,6 @@ export default function HomeClient({
                             </div>
                         </div>
                     </div>
-                    <script
-                        id="hc-role-chip-data"
-                        type="application/json"
-                        dangerouslySetInnerHTML={{ __html: heroChipDataJson }}
-                    />
-                    <script
-                        dangerouslySetInnerHTML={{
-                            __html: `
-(function () {
-  var dataEl = document.getElementById("hc-role-chip-data");
-  var root = document.querySelector("[data-role-chip-root='true']");
-  if (!dataEl || !root) return;
-
-  var chips = [];
-  try {
-    chips = JSON.parse(dataEl.textContent || "[]").filter(function (chip) {
-      return chip && chip.label;
-    });
-  } catch (error) {
-    return;
-  }
-
-  var list = root.querySelector(".hc-role-window-list");
-  if (!list || chips.length === 0) return;
-
-  var offset = 0;
-  var desktopCount = ${DESKTOP_HERO_CHIP_SLOT_COUNT};
-  var mobileCount = ${MOBILE_HERO_CHIP_SLOT_COUNT};
-  var cycleMs = ${HERO_CHIP_ROTATION_MS};
-  var staggerMs = 420;
-  var mobileQuery = window.matchMedia("(max-width: 767px)");
-
-  function visibleCount() {
-    return Math.min(mobileQuery.matches ? mobileCount : desktopCount, chips.length);
-  }
-
-  function render() {
-    var count = visibleCount();
-    root.setAttribute("data-role-chip-offset", String(offset));
-    list.replaceChildren();
-
-    for (var index = 0; index < count; index += 1) {
-      var chip = chips[(offset + index) % chips.length];
-      var link = document.createElement("a");
-      link.href = chip.href || ("/directory?q=" + encodeURIComponent(chip.label));
-      link.className = "hc-role-window-chip hc-role-window-chip-" + (index + 1);
-      link.style.animationDelay = String(index * staggerMs) + "ms";
-      link.title = chip.label;
-      link.setAttribute("aria-label", "Search " + chip.label + " on Haul Command");
-      var label = document.createElement("span");
-      label.className = "hc-role-window-label";
-      label.textContent = chip.label;
-      link.appendChild(label);
-      list.appendChild(link);
-    }
-  }
-
-  function advance() {
-    offset = (offset + visibleCount()) % chips.length;
-    render();
-  }
-
-  render();
-  window.setInterval(advance, cycleMs);
-
-  if (mobileQuery.addEventListener) {
-    mobileQuery.addEventListener("change", render);
-  }
-})();
-                            `.trim(),
-                        }}
-                    />
                 </div>
 
                 <div className="mx-auto mt-7 max-w-7xl px-4">
