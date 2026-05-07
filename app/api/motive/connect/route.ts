@@ -1,33 +1,41 @@
-/**
- * Motive Connect — Initiate OAuth Flow
- *
- * GET /api/motive/connect?profile_id=xxx&return_url=/dashboard
- *
- * Redirects the user to Motive's OAuth authorize page.
- * After approval, Motive redirects to /api/motive/oauth-callback.
- */
+import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
 
-import { NextRequest, NextResponse } from 'next/server';
-import { buildMotiveAuthorizeUrl } from '@/lib/motive/client';
-import type { MotiveOAuthState } from '@/types/motive';
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
 
-export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const profileId = searchParams.get('profile_id');
-  const returnUrl = searchParams.get('return_url') || '/settings/integrations';
+export async function GET(req: NextRequest) {
+  const operator_id = req.nextUrl.searchParams.get('operator_id')
+  if (!operator_id) return NextResponse.json({ error: 'operator_id required' }, { status: 400 })
 
-  if (!profileId) {
-    return NextResponse.json(
-      { error: 'Missing profile_id parameter' },
-      { status: 400 }
-    );
-  }
+  const { data: conn } = await supabase
+    .from('motive_connections')
+    .select('status, connected_at, expires_at')
+    .eq('operator_id', operator_id)
+    .single()
 
-  const state: MotiveOAuthState = {
-    profile_id: profileId,
-    return_url: returnUrl,
-  };
+  if (!conn || conn.status !== 'active') return NextResponse.json({ connected: false })
 
-  const authorizeUrl = buildMotiveAuthorizeUrl(state);
-  return NextResponse.redirect(authorizeUrl);
+  const [{ count: driverCount }, { count: vehicleCount }] = await Promise.all([
+    supabase.from('motive_drivers').select('*', { count: 'exact', head: true }).eq('operator_id', operator_id),
+    supabase.from('motive_vehicles').select('*', { count: 'exact', head: true }).eq('operator_id', operator_id),
+  ])
+
+  const { data: lastSync } = await supabase
+    .from('motive_drivers')
+    .select('synced_at')
+    .eq('operator_id', operator_id)
+    .order('synced_at', { ascending: false })
+    .limit(1)
+    .single()
+
+  return NextResponse.json({
+    connected: true,
+    driver_count: driverCount ?? 0,
+    vehicle_count: vehicleCount ?? 0,
+    last_sync: lastSync?.synced_at ?? null,
+    connected_at: conn.connected_at,
+  })
 }

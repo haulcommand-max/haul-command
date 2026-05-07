@@ -102,13 +102,13 @@ export async function GET(req: NextRequest) {
     let escortTrustScore = 70;
     if (escortId) {
         const { data: ep } = await getSupabaseAdmin()
-        .from("directory_listings")
+        .from("hc_global_operators")
             .select("states_licensed, trust_score")
             .eq("id", escortId)
             .single();
         if (ep) {
             escortStates = ep.states_licensed ?? [];
-            escortTrustScore = ep.trust_score ?? 70;
+            escortTrustScore = ep.confidence_score ?? 70;
         }
     }
 

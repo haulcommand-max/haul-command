@@ -136,7 +136,7 @@ export async function POST(req: NextRequest) {
 
   // Get all operators with contact info
   const { data: operators } = await sb
-    .from('directory_listings')
+    .from('hc_global_operators')
     .select('id, name, city, region_code, country_code')
     .not('id', 'is', null)
     .neq('claim_status', 'claimed')
@@ -280,7 +280,7 @@ export async function GET(req: NextRequest) {
   const sb = getSupabaseAdmin();
 
   const { count: totalUnclaimed } = await sb
-    .from('directory_listings')
+    .from('hc_global_operators')
     .select('*', { count: 'exact', head: true })
     .neq('claim_status', 'claimed')
     .neq('claim_status', 'verified');

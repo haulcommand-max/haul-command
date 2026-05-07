@@ -92,14 +92,14 @@ export async function getRegionByCode(
         .from("state_regulations")
         .select("state_code,state_name")
         .eq("country", countryIso2.toUpperCase())
-        .eq("state_code", regionCode.toUpperCase())
+        .eq("admin1_code", regionCode.toUpperCase())
         .maybeSingle();
 
     if (error || !data) return null;
 
     return {
-        code: data.state_code,
-        slug: data.state_code.toLowerCase(),
+        code: data.admin1_code,
+        slug: data.admin1_code.toLowerCase(),
         name: data.state_name,
         region_type: null,
     };
@@ -120,10 +120,10 @@ export async function getCitiesByCountryRegion(
 
     // directory_listings may use either upper or lower case codes
     const { data, error } = await supabase
-        .from("directory_listings")
+        .from("hc_global_operators")
         .select("city")
         .ilike("country_code", countryIso2)
-        .ilike("region_code", regionCode)
+        .ilike("admin1_code", regionCode)
         .not("city", "is", null)
         .limit(limit);
 

@@ -14339,3 +14339,50 @@
  GET / 200 in 2.3s (next.js: 4ms, application-code: 2.3s)
  GET / 200 in 7.0s (next.js: 4ms, application-code: 7.0s)
  GET / 200 in 8.0s (next.js: 51ms, application-code: 8.0s)
+ GET / 200 in 2.4s (next.js: 3ms, application-code: 2.4s)
+ GET / 200 in 6.1s (next.js: 1850ms, application-code: 4.3s)
+ GET / 200 in 3.2s (next.js: 253ms, application-code: 2.9s)
+ GET / 200 in 2.7s (next.js: 2ms, application-code: 2.7s)
+ GET / 200 in 3.6s (next.js: 5ms, application-code: 3.6s)
+ GET / 200 in 2.5s (next.js: 14ms, application-code: 2.4s)
+ GET / 200 in 2.3s (next.js: 3ms, application-code: 2.3s)
+ GET / 200 in 20.2s (next.js: 7ms, application-code: 20.1s)
+ GET / 200 in 9.5s (next.js: 1614ms, application-code: 7.9s)
+ GET / 200 in 2.1s (next.js: 7ms, application-code: 2.1s)
+ GET / 200 in 2.0s (next.js: 3ms, application-code: 2.0s)
+ GET / 200 in 3.1s (next.js: 13ms, application-code: 3.1s)
+ GET / 200 in 3.9s (next.js: 3ms, application-code: 3.9s)
+ GET / 200 in 2.1s (next.js: 2ms, application-code: 2.1s)
+ GET / 200 in 2.0s (next.js: 2ms, application-code: 2.0s)
+ GET / 200 in 2.3s (next.js: 6ms, application-code: 2.3s)
+ GET / 200 in 2.0s (next.js: 3ms, application-code: 2.0s)
+ GET / 200 in 2.8s (next.js: 29ms, application-code: 2.8s)
+ GET / 200 in 2.1s (next.js: 8ms, application-code: 2.1s)
+ GET / 200 in 7.1s (next.js: 29ms, application-code: 7.1s)
+ GET / 200 in 2.2s (next.js: 4ms, application-code: 2.2s)
+ GET / 200 in 1969ms (next.js: 4ms, application-code: 1965ms)
+ GET / 200 in 3.0s (next.js: 3ms, application-code: 3.0s)
+ GET / 200 in 3.3s (next.js: 121ms, application-code: 3.2s)
+ GET / 200 in 1947ms (next.js: 4ms, application-code: 1943ms)
+ GET / 200 in 2.7s (next.js: 11ms, application-code: 2.7s)
+ GET / 200 in 1967ms (next.js: 3ms, application-code: 1964ms)
+ GET / 200 in 1935ms (next.js: 3ms, application-code: 1932ms)
+▲ Next.js 16.2.3 (Turbopack)
+- Local:         http://localhost:3005
+- Network:       http://192.168.1.129:3005
+- Environments: .env.local, .env
+✓ Ready in 811ms
+It looks like you're trying to use TypeScript but do not have the required package(s) installed.
+Installing dependencies
+
+If you are not trying to use TypeScript, please remove the tsconfig.json file from your package root (and any TypeScript files in your app and pages directories).
+
+
+Installing devDependencies (npm):
+- typescript
+- @types/react
+- @types/node
+
+✓ Finished writing to filesystem cache in 54s
+✓ Finished filesystem cache database compaction in 17.0s
+✓ Finished filesystem cache database compaction in 19.8s

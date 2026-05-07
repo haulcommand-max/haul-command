@@ -3,7 +3,7 @@ import { supabaseServer } from '@/lib/supabase-server';
 
 /* ══════════════════════════════════════════════════════
    /api/regulations/countries
-   Fetches all 57 country regulations from Supabase
+   Fetches all 120 country regulations from Supabase
    ══════════════════════════════════════════════════════ */
 
 export async function GET() {

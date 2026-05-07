@@ -56,7 +56,7 @@ export async function GET() {
 
         // ── Real operator count ──
         const { count: operatorCount } = await sb
-            .from('directory_listings')
+            .from('hc_global_operators')
             .select('*', { count: 'exact', head: true });
 
         // ── Format digest content ──

@@ -56,10 +56,26 @@ export const RATES_JSONLD = `{
 }`;
 
 export default async function RatesPage() {
+  const supabase = (await import('@/lib/supabase/server')).createClient();
+  const { data: ratesData } = await supabase
+    .from('hc_rates_public')
+    .select('jurisdiction_slug, country_slug, surface_type, rate_low, rate_mid, rate_high, currency_code, freshness_timestamp')
+    .eq('surface_type', 'day_rate')
+    .order('country_slug')
+    .limit(50);
+
+  // Merge DB rates into COUNTRIES display (DB rate_mid overrides hardcoded avgRate)
+  const ratesByCountry: Record<string, { rate_low: number; rate_mid: number; rate_high: number; currency_code: string }> = {};
+  (ratesData ?? []).forEach((r: any) => {
+    if (r.jurisdiction_slug === 'national') {
+      ratesByCountry[r.country_slug] = r;
+    }
+  });
+
   return (
-    <div className="bg-white text-gray-900">
+    <div className="min-h-screen" style={{ background: "var(--hc-black)", color: "var(--hc-text-primary)" }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: RATES_JSONLD }} />
-      <section className="py-16 px-4 text-center">
+      <section className="hc-surface-a py-16 px-4 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-[#C6923A] to-[#E4B872] bg-clip-text text-transparent">
           Pilot Car &amp; Escort Vehicle Rates &mdash; 2026
         </h1>
@@ -83,7 +99,7 @@ export default async function RatesPage() {
             <Link aria-label="Navigation Link"
               key={country.code}
               href={`/rates/${country.code}`}
-              className="p-6 bg-white border border-gray-200 rounded-2xl hover:border-[#C6923A]/40 transition-all group shadow-sm"
+              className="hc-card rounded-2xl"
             >
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-3xl">{country.flag}</span>
@@ -114,6 +130,31 @@ export default async function RatesPage() {
             See Current Loads & Rates
           </Link>
         </div>
+
+      {/* Specialty Support Type Rate Guides */}
+      <section className="max-w-6xl mx-auto px-4 pb-16">
+        <h2 className="text-2xl font-black text-gray-900 mb-2 mt-8">Specialty Support Type Rate Guides</h2>
+        <p className="text-gray-500 text-sm mb-6">Beyond base escort rates — specialized support types with their own pricing logic.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { icon: "📏", label: "Height Pole Escort", slug: "height-pole", rate: "$450–850/day" },
+            { icon: "🗺️", label: "Route Survey", slug: "route-survey", rate: "$500–1,200/day" },
+            { icon: "🔧", label: "Bucket Truck / Utility", slug: "bucket-truck", rate: "$600–1,400/day" },
+            { icon: "🚔", label: "Police Escort", slug: "police-escort", rate: "$85–350/hr" },
+            { icon: "🌙", label: "Night Move Premium", slug: "night-moves", rate: "+20–50%" },
+            { icon: "📅", label: "Multi-Day / Layover", slug: "multi-day", rate: "$350–650/day" },
+            { icon: "🔄", label: "Deadhead / Repo Pay", slug: "deadhead", rate: "50–100% loaded" },
+            { icon: "⏱️", label: "Wait Time / Detention", slug: "wait-time", rate: "$45–125/hr" },
+          ].map(s => (
+            <Link key={s.slug} href={`/rates/specialty/${s.slug}`}
+              className="flex flex-col gap-2 p-5 bg-white border border-gray-200 hover:border-[#C6923A]/40 rounded-2xl hover:shadow-md transition-all group">
+              <span className="text-2xl">{s.icon}</span>
+              <p className="font-bold text-white group-hover:text-[#C6923A] text-sm leading-tight">{s.label}</p>
+              <p className="text-xs font-semibold text-[#C6923A]">{s.rate}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
       </section>
     </div>
   );

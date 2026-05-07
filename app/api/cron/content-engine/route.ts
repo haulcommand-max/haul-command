@@ -19,17 +19,29 @@ export async function GET(req: NextRequest) {
   const supabase = createClient();
   const results: any[] = [];
 
-  // Pull next 5 unused topics (was 3 — increased since Gemini is faster+cheaper)
-  const { data: topics } = await supabase
-    .from('content_topics')
+  // Pull next 5 pending items from hc_content_generation_queue
+  const { data: rawTopics } = await supabase
+    .from('hc_content_generation_queue')
     .select('*')
-    .eq('used', false)
+    .eq('status', 'pending')
+    .eq('task_type', 'text')
     .order('priority', { ascending: true })
     .limit(5);
 
-  if (!topics || topics.length === 0) {
-    return NextResponse.json({ message: 'No unused topics remaining', generated: 0 });
+  if (!rawTopics || rawTopics.length === 0) {
+    return NextResponse.json({ message: 'No pending content tasks', generated: 0 });
   }
+
+  // Map hc_content_generation_queue shape to expected topic shape
+  const topics = rawTopics.map((item: any) => ({
+    id: item.id,
+    topic: item.payload?.title ?? item.payload?.slug ?? 'Untitled',
+    content_type: item.payload?.pillar ?? 'blog_article',
+    keyword: item.payload?.slug ?? null,
+    country_code: item.payload?.country ?? null,
+    target_audience: 'freight brokers, pilot car operators, and carriers',
+    priority: item.priority,
+  }));
 
   // Process in parallel (Gemini handles concurrent load well)
   const settled = await Promise.allSettled(topics.map(async (topic) => {
@@ -53,15 +65,15 @@ export async function GET(req: NextRequest) {
     let newStatus = 'generated';
 
     if (topic.content_type === 'blog_article') {
-      // Blog = Claude (authoritative, long-form, SEO-critical)
-      const { default: Anthropic } = await import('@anthropic-ai/sdk');
-      const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
-      const res = await anthropic.messages.create({
-        model: 'claude-sonnet-4-5',
-        max_tokens: 4096,
-        messages: [{ role: 'user', content: blogPrompt(topic.topic, topic.keyword, topic.target_audience, topic.country_code) }],
-      });
-      generatedContent = res.content[0].type === 'text' ? res.content[0].text : '';
+      // Blog = Gemini 2.5 Flash (high quality, fast, cost-effective — matches Claude for SEO content)
+      const res = await tracked('content_blog', () =>
+        see(blogPrompt(topic.topic, topic.keyword, topic.target_audience, topic.country_code), {
+          tier: 'fast',
+          system: 'You are a senior content writer for Haul Command, the global operating system for heavy haul logistics across 120 countries. Write authoritative, practical industry content that ranks for search and converts readers into operators and brokers.',
+          maxTokens: 4000,
+        })
+      );
+      generatedContent = res.text;
       newStatus = 'generated';
 
     } else if (topic.content_type === 'linkedin_post') {
@@ -131,15 +143,13 @@ export async function GET(req: NextRequest) {
       const titleMatch = generatedContent.match(/<h1[^>]*>(.*?)<\/h1>/i);
       const title = titleMatch ? titleMatch[1].replace(/<[^>]+>/g, '') : topic.topic;
 
-      const { data: post } = await supabase.from('blog_posts').insert({
+      const { data: post } = await supabase.from('hc_blog_articles').insert({
         slug,
         title,
-        content_html: generatedContent,
-        meta_description: topic.topic.slice(0, 160),
-        target_keyword: topic.keyword ?? null,
-        country_code: topic.country_code ?? null,
-        published: true,
-        published_at: new Date().toISOString(),
+        content: generatedContent,
+        excerpt: topic.topic.slice(0, 160),
+        status: 'published',
+        created_at: new Date().toISOString(),
       }).select('id, slug').single();
 
       if (post) {
@@ -151,9 +161,9 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // Mark topic as used
-    await supabase.from('content_topics')
-      .update({ used: true, used_at: new Date().toISOString() })
+    // Mark task as completed
+    await supabase.from('hc_content_generation_queue')
+      .update({ status: 'completed', completed_at: new Date().toISOString() })
       .eq('id', topic.id);
 
     return { topic: topic.topic, type: topic.content_type, status: newStatus };

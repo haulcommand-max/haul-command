@@ -2,9 +2,15 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
     // ── TypeScript ────────────────────────────────────────────────────────
-    // Skip tsc during build — Turbopack already catches real import/export errors.
-    // Legacy TS errors across 200+ files should not block deployment.
+    // ignoreBuildErrors: Vercel build won't fail on TS errors.
+    // This is intentional during active sprint development.
+    // TypeScript errors ARE caught by the GitHub Actions typecheck.yml gate
+    // which runs on every PR/push to main. Fix errors there, not here.
     typescript: { ignoreBuildErrors: true },
+
+    // ── Static page generation timeout ───────────────────────────────────
+    // Build fails fast (45s) instead of hanging indefinitely on large pages.
+    staticPageGenerationTimeout: 45,
 
 
     // ── Output ───────────────────────────────────────────────────────────────
@@ -174,6 +180,16 @@ const nextConfig: NextConfig = {
                 permanent: true,
             },
             {
+                source: '/loads',
+                destination: '/load-board',
+                permanent: true,
+            },
+            {
+                source: '/loads/post',
+                destination: '/load-board/post',
+                permanent: true,
+            },
+            {
                 source: '/leaderboard',
                 destination: '/leaderboards',
                 permanent: true,
@@ -201,6 +217,10 @@ const nextConfig: NextConfig = {
     async rewrites() {
         return {
             beforeFiles: [
+                {
+                    source: '/available-now',
+                    destination: '/available-now-fixed',
+                },
                 {
                     source: '/sitemap.xml',
                     destination: '/api/sitemap',

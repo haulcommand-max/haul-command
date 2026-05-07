@@ -3,7 +3,7 @@
  * This file provides backward-compatible wrappers around the new engine.
  *
  * The old permit_checker only supported 3 US states (TX, OK, LA).
- * The new PermitIntelligenceEngine supports 57 countries with:
+ * The new PermitIntelligenceEngine supports 120 countries with:
  * - Full dimension threshold checking
  * - Fine schedules
  * - Time restrictions

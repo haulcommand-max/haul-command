@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
     // Ownership check
     const { data: op } = await supabase
-      .from('hc_operators')
+      .from('hc_global_operators')
       .select('id, user_id')
       .eq('id', operator_id)
       .maybeSingle();
@@ -59,7 +59,7 @@ export async function DELETE(req: NextRequest) {
 
     // Ownership check
     const { data: op } = await supabase
-      .from('hc_operators')
+      .from('hc_global_operators')
       .select('id, user_id')
       .eq('id', operator_id)
       .maybeSingle();

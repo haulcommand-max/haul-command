@@ -7,7 +7,7 @@ export const runtime = 'edge';
 
 export const metadata: Metadata = {
   title:'OSOW Haven Alternative — The Global Pilot Car Network',
-  description: 'Looking for an OSOW Haven alternative? Unfetter your logistics with Haul Command’s live directory of 7,800+ verified pilot cars and autonomous 57-country routing.',
+  description: 'Looking for an OSOW Haven alternative? Unfetter your logistics with Haul Command’s live directory of 7,800+ verified pilot cars and autonomous 120-country routing.',
   openGraph: {
     title: 'OSOW Haven Alternative: Upgrade to Haul Command',
     description: 'Stop using fragmented, static pilot car directories. Access Haul Command’s live global network with instant dispatch, real-time rates, and integrated permit tools.',

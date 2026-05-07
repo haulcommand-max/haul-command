@@ -38,7 +38,7 @@ export interface LocaleConfig {
     decimalSep: string;
 }
 
-// ── All 57 country locale configs ──
+// ── All 120 country locale configs ──
 
 export const COUNTRY_LOCALES: Record<string, LocaleConfig> = {
     // ── Tier A Gold (10) ──

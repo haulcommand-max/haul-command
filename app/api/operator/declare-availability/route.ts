@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 
     // Verify caller owns this operator profile
     const { data: op, error: opErr } = await supabase
-      .from('hc_operators')
+      .from('hc_global_operators')
       .select('id, user_id')
       .eq('id', operator_id)
       .maybeSingle();

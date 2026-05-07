@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
 
     // Corridors (top-level)
     let corrQ = svc
-        .from('corridors')
+        .from('hc_corridors')
         .select('id, name, slug, states, country, is_active')
         .eq('is_active', true)
         .limit(limit);

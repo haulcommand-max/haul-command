@@ -2,7 +2,7 @@
  * Compliance Copilot Cache Seeder — GLOBAL COUNTRIES
  * 
  * Seeds the copilot_cache Supabase table with Claude-generated
- * compliance answers for all 57 countries (minus US states already done).
+ * compliance answers for all 120 countries (minus US states already done).
  * 
  * Each country gets 4 questions:
  * 1. Do I need an escort/pilot car in {country}?

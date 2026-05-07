@@ -3,7 +3,7 @@
  * Queue-based, rate-limited, retry-capable operator ingestion engine.
  * Merges into existing enrichment pipeline (lib/enrichment/).
  * 
- * Scale target: 100K→200K unique operators across 57 countries.
+ * Scale target: 100K→200K unique operators across 120 countries.
  * Architecture: queue → fetch → enrich → dedupe → upsert → log
  */
 import { createClient, SupabaseClient } from '@supabase/supabase-js';

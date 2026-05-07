@@ -47,10 +47,10 @@ export async function getCityData(country: string, state: string, citySlug: stri
 
     // DB schema uses `latitude` / `longitude`, not `lat` / `lng`
     const { data, error } = await supabase
-        .from("directory_listings")
-        .select("city,latitude,longitude")
+        .from("hc_global_operators")
+        .select("city, admin1_code, country_code")
         .ilike("country_code", country)
-        .ilike("region_code", state)
+        .ilike("admin1_code", state)
         .ilike("city", cityName)
         .limit(1)
         .maybeSingle();
@@ -64,10 +64,10 @@ export async function getCityData(country: string, state: string, citySlug: stri
 
     // Get nearby cities from the same region
     const { data: nearby } = await supabase
-        .from("directory_listings")
+        .from("hc_global_operators")
         .select("city")
         .ilike("country_code", country)
-        .ilike("region_code", state)
+        .ilike("admin1_code", state)
         .not("city", "ilike", cityName)
         .not("city", "is", null)
         .limit(20);
@@ -80,8 +80,8 @@ export async function getCityData(country: string, state: string, citySlug: stri
         country,
         state,
         city: data.city ?? cityName,
-        lat: Number(data.latitude ?? 0),
-        lng: Number(data.longitude ?? 0),
+        lat: 0,
+        lng: 0,
         slug: citySlug,
         nearbyCities,
     };
@@ -100,7 +100,7 @@ export async function getProviderStats(citySlug: string, serviceSlug: string): P
     const cityName = citySlug.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
 
     const { count, error } = await supabase
-        .from("directory_listings")
+        .from("hc_global_operators")
         .select("*", { count: "exact", head: true })
         .ilike("city", cityName);
 
@@ -142,7 +142,7 @@ export async function getProviderBySlug(slug: string): Promise<ProviderProfile |
     const supabase = supabaseServer();
 
     const { data, error } = await supabase
-        .from("directory_listings")
+        .from("hc_global_operators")
         .select("*")
         .eq("slug", slug)
         .maybeSingle();
@@ -154,7 +154,7 @@ export async function getProviderBySlug(slug: string): Promise<ProviderProfile |
         slug: data.slug ?? slug,
         name: data.business_name ?? data.place_name ?? slug,
         city: data.city ?? "",
-        state: data.region_code ?? "",
+        state: data.admin1_code ?? "",
         verified: data.is_verified ?? false,
         rating: data.overall_rating ? Number(data.overall_rating) : null,
         reviewCount: data.review_count ?? 0,

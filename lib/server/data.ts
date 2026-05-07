@@ -75,16 +75,14 @@ export async function getDirectoryListings(params: {
     const limit = params.limit ?? 24;
     const offset = params.offset ?? 0;
 
-    // Primary query: directory_listings where NOT explicitly hidden
-    // Changed from .eq("is_visible", true) to .neq("is_visible", false)
-    // This includes records where is_visible is NULL (not yet set) — fallback display
+    // Primary query: hc_global_operators — canonical table (7,700+ verified records)
+    // directory_listings was removed; hc_global_operators is the source of truth
     let query = sb
-        .from("directory_listings")
-        .select("id, name, slug, entity_type, city, region_code, country_code, rank_score, claim_status, metadata", { count: "exact" })
-        .neq("is_visible", false)
-        .order("rank_score", { ascending: false });
+        .from("hc_global_operators")
+        .select("id, name, slug, entity_type, city, admin1_code, country_code, confidence_score, is_claimed, is_verified", { count: "exact" })
+        .order("confidence_score", { ascending: false });
 
-    if (params.region) query = query.eq("region_code", params.region);
+    if (params.region) query = query.eq("admin1_code", params.region);
     if (params.entity_type) query = query.eq("entity_type", params.entity_type);
     query = query.range(offset, offset + limit - 1);
 
@@ -95,55 +93,22 @@ export async function getDirectoryListings(params: {
         return { listings: [], total: 0 };
     }
 
-    const listings = (data ?? []) as DirectoryListing[];
+    // Map hc_global_operators schema to DirectoryListing interface
+    const listings: DirectoryListing[] = (data ?? []).map((row: any) => ({
+        id: row.id,
+        name: row.name,
+        slug: row.slug,
+        entity_type: row.entity_type,
+        city: row.city,
+        region_code: row.admin1_code,
+        country_code: row.country_code,
+        rank_score: row.confidence_score ?? 0,
+        claim_status: row.is_claimed ? 'claimed' : 'unclaimed',
+        metadata: { is_verified: row.is_verified },
+    }));
     const total = count ?? 0;
 
-    // If directory_listings is thin (< half the requested limit),
-    // backfill from hc_identities to surface operators/brokers/escorts
-    // that haven't been promoted to directory_listings yet
-    if (listings.length < Math.floor(limit / 2)) {
-        try {
-            const existingIds = listings.map(l => l.id);
-            let fallbackQuery = sb
-                .from("hc_identities")
-                .select("id, display_name, slug, role, city, state_code, country_code, phone, company_name, verification_state", { count: "exact" })
-                .not("id", "in", `(${existingIds.join(",")})`)
-                .order("created_at", { ascending: false })
-                .limit(limit - listings.length);
-
-            if (params.region) fallbackQuery = fallbackQuery.eq("state_code", params.region);
-            if (params.entity_type) fallbackQuery = fallbackQuery.eq("role", params.entity_type);
-
-            const { data: fallbackData, count: fallbackCount } = await fallbackQuery;
-
-            if (fallbackData && fallbackData.length > 0) {
-                const fallbackListings: DirectoryListing[] = fallbackData.map((f: any) => ({
-                    id: f.id,
-                    name: f.display_name || f.company_name || "Unknown Operator",
-                    slug: f.slug || f.id,
-                    entity_type: f.role || "escort_operator",
-                    city: f.city || null,
-                    region_code: f.state_code || null,
-                    country_code: f.country_code || "US",
-                    rank_score: 0,
-                    claim_status: f.verification_state || "unclaimed",
-                    metadata: {
-                        phone: f.phone,
-                        company_name: f.company_name,
-                        is_fallback: true,
-                    },
-                }));
-
-                return {
-                    listings: [...listings, ...fallbackListings],
-                    total: total + (fallbackCount ?? 0),
-                };
-            }
-        } catch (fallbackErr) {
-            console.warn("Directory fallback from hc_identities failed:", fallbackErr);
-        }
-    }
-
+    // hc_global_operators has 7,711+ records — no fallback needed
     return { listings, total };
 }
 
@@ -165,9 +130,9 @@ export interface CorridorData {
 export async function getCorridors(): Promise<CorridorData[]> {
     const sb = getSupabase();
     const { data, error } = await sb
-        .from("corridors")
+        .from("hc_corridors")
         .select("*")
-        .order("confidence_score", { ascending: false })
+        .order("demand_score", { ascending: false })
         .limit(50);
 
     if (error) {
@@ -177,14 +142,14 @@ export async function getCorridors(): Promise<CorridorData[]> {
 
     return (data ?? []).map((c: any) => ({
         id: c.id,
-        name: c.name || `Corridor ${c.slug}`,
-        slug: c.slug || c.id,
-        origin_region: c.states?.[0] || "",
-        destination_region: c.states?.[c.states.length - 1] || "",
-        country_code: c.country || "US",
-        heat_score: Number(c.confidence_score ?? 0),
-        loads_7d: Number(c.metrics?.avg_daily_loads ?? 0) * 7,
-        escorts_online: 0,
+        name: c.name || c.corridor_name || `Corridor ${c.id}`,
+        slug: c.corridor_key || c.id,
+        origin_region: c.start_state || c.origin_zone || "",
+        destination_region: c.end_state || c.destination_zone || "",
+        country_code: c.country_code || "US",
+        heat_score: Number(c.demand_score ?? 0),
+        loads_7d: Number(c.load_count_30d ?? 0),
+        escorts_online: Number(c.operator_count ?? 0),
     }));
 }
 
@@ -219,7 +184,7 @@ export async function getPorts(): Promise<PortData[]> {
         name: p.name || p.port_name || "Unknown Port",
         slug: p.slug || p.port_slug || p.id,
         city: p.city || "",
-        state: p.state || p.region_code || "",
+        state: p.state || p.admin1_code || "",
         country_code: p.country_code || "US",
         port_type: p.port_type || p.type || "port",
     }));
@@ -252,7 +217,7 @@ export async function getRegions(): Promise<RegionData[]> {
         id: r.id,
         name: r.name || r.region_name || "",
         slug: r.slug || r.region_slug || "",
-        iso_code: r.iso_code || r.region_code || "",
+        iso_code: r.iso_code || r.admin1_code || "",
         country_id: r.country_id || "",
     }));
 }

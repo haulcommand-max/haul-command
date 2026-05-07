@@ -27,9 +27,9 @@ const PLATFORM_COLORS: Record<string, string> = {
 const PLATFORM_ICONS: Record<string, string> = {
   linkedin: 'in',
   facebook_page: 'f',
-  facebook_group: 'fâ—',
-  youtube_community: 'â–¶',
-  twitter: 'ð•',
+  facebook_group: 'fb',
+  youtube_community: '▶',
+  twitter: 'X',
 };
 
 export default function AdminSocialPage() {
@@ -77,7 +77,6 @@ export default function AdminSocialPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#080808', color: '#e8e8e8', fontFamily: "'Inter','Segoe UI',sans-serif" }}>
-      {/* Header */}
       <div style={{ background: '#0c0c10', borderBottom: '1px solid #1a1a22', padding: '20px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
           <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>Social Queue</h1>
@@ -86,12 +85,11 @@ export default function AdminSocialPage() {
           </p>
         </div>
         <div style={{ display: 'flex', gap: 12 }}>
-          <Link aria-label="Navigation Link" href="/admin/revenue" style={{ padding: '8px 16px', borderRadius: 8, background: '#111118', border: '1px solid #2a2a3a', color: '#9a9ab0', fontSize: 13, textDecoration: 'none' }}>Revenue â†’</Link>
-          <Link aria-label="Navigation Link" href="/admin/content" style={{ padding: '8px 16px', borderRadius: 8, background: '#111118', border: '1px solid #2a2a3a', color: '#9a9ab0', fontSize: 13, textDecoration: 'none' }}>Content â†’</Link>
+          <Link aria-label="Navigation Link" href="/admin/revenue" style={{ padding: '8px 16px', borderRadius: 8, background: '#111118', border: '1px solid #2a2a3a', color: '#9a9ab0', fontSize: 13, textDecoration: 'none' }}>Revenue →</Link>
+          <Link aria-label="Navigation Link" href="/admin/content" style={{ padding: '8px 16px', borderRadius: 8, background: '#111118', border: '1px solid #2a2a3a', color: '#9a9ab0', fontSize: 13, textDecoration: 'none' }}>Content →</Link>
         </div>
       </div>
 
-      {/* Tabs */}
       <div style={{ background: '#0c0c10', borderBottom: '1px solid #1a1a22', padding: '0 32px', display: 'flex', gap: 0 }}>
         {(['draft', 'scheduled', 'posted'] as const).map(t => (
           <button aria-label="Interactive Button" key={t} onClick={() => setTab(t)} style={{
@@ -111,7 +109,7 @@ export default function AdminSocialPage() {
           <div style={{ textAlign: 'center', color: '#5a5a6a', padding: 48 }}>Loading posts...</div>
         ) : posts.length === 0 ? (
           <div style={{ textAlign: 'center', color: '#5a5a6a', padding: 48 }}>
-            <div style={{ fontSize: 36, marginBottom: 12 }}>âœ“</div>
+            <div style={{ fontSize: 36, marginBottom: 12 }}>✓</div>
             <div style={{ fontWeight: 600 }}>No {tab} posts</div>
             <div style={{ fontSize: 13, marginTop: 4 }}>
               {tab === 'draft' ? 'Content machine will populate this queue when new articles publish or corridors go HOT.' : `No ${tab} posts yet.`}
@@ -121,7 +119,7 @@ export default function AdminSocialPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {posts.map(post => {
               const platColor = PLATFORM_COLORS[post.platform] || '#555';
-              const platIcon = PLATFORM_ICONS[post.platform] || 'ðŸ“£';
+              const platIcon = PLATFORM_ICONS[post.platform] || '•';
               return (
                 <div key={post.id} style={{
                   background: '#111118', border: '1px solid #1a1a22',
@@ -150,7 +148,6 @@ export default function AdminSocialPage() {
                     </div>
                   </div>
 
-                  {/* Post content preview */}
                   <div style={{
                     background: '#0c0c10', border: '1px solid #1a1a22',
                     borderRadius: 10, padding: 16, marginBottom: 16,
@@ -160,7 +157,6 @@ export default function AdminSocialPage() {
                     {post.content}
                   </div>
 
-                  {/* Engagement (for posted) */}
                   {tab === 'posted' && post.engagement && Object.keys(post.engagement).length > 0 && (
                     <div style={{ display: 'flex', gap: 16, marginBottom: 16, flexWrap: 'wrap' }}>
                       {Object.entries(post.engagement).map(([key, val]) => (
@@ -172,7 +168,6 @@ export default function AdminSocialPage() {
                     </div>
                   )}
 
-                  {/* Actions */}
                   {tab === 'draft' && (
                     <div style={{ display: 'flex', gap: 10 }}>
                       <button aria-label="Interactive Button"
@@ -185,7 +180,7 @@ export default function AdminSocialPage() {
                           cursor: 'pointer',
                         }}
                       >
-                        {approvingId === post.id ? 'Approving...' : 'âœ“ Approve & Schedule'}
+                        {approvingId === post.id ? 'Approving...' : '✓ Approve & Schedule'}
                       </button>
                       <button aria-label="Interactive Button"
                         onClick={() => reject(post.id)}
@@ -206,7 +201,7 @@ export default function AdminSocialPage() {
                       background: '#111118', border: `1px solid ${platColor}40`,
                       color: platColor, fontSize: 12, fontWeight: 600, textDecoration: 'none',
                     }}>
-                      View on {post.platform.replace('_', ' ')} â†’
+                      View on {post.platform.replace('_', ' ')} →
                     </a>
                   )}
                 </div>

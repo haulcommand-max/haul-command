@@ -117,7 +117,7 @@ export async function GET(req: NextRequest) {
 
         // 2. Operator counts
         let opsQuery = supabase
-            .from('directory_listings')
+            .from('hc_global_operators')
             .select('id, verification_status, is_claimed', { count: 'exact', head: false });
 
         if (state) {

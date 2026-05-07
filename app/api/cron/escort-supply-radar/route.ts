@@ -34,7 +34,7 @@ export async function GET() {
 
         // Fetch active operators from real directory graph (6,949+ operators)
         const { data: escorts } = await sb
-            .from('directory_listings')
+            .from('hc_global_operators')
             .select('id, region_code, rank_score, claim_status')
             .eq('is_visible', true);
 

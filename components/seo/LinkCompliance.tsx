@@ -90,7 +90,7 @@ export function AdGridCreative({ headline, body, ctaLabel, ctaUrl, advertiserNam
       <div className="text-[10px] text-gray-500 uppercase tracking-widest mb-3">Sponsored · {advertiserName}</div>
       <h4 className="text-lg font-bold text-white mb-2">{headline}</h4>
       <p className="text-sm text-gray-400 mb-4">{body}</p>
-      <SponsoredLink href={ctaUrl} onClick={handleClick} className="bg-yellow-500 text-black font-bold text-sm px-6 py-2 rounded hover:bg-yellow-400 transition inline-block">
+      <SponsoredLink href={ctaUrl} onClick={handleClick} className="bg-[#F1A91B] text-white font-bold text-sm px-6 py-2 rounded hover:bg-[#D4951A] transition inline-block">
         {ctaLabel}
       </SponsoredLink>
     </div>

@@ -473,6 +473,59 @@ export default async function TrainingHome() {
           <ShieldCheck className="w-4 h-4" /> Start Your Certification
         </Link>
       </section>
+
+      {/* ── Interlinking strip — no dead ends (Doc 5) ── */}
+      <div style={{ background: 'rgba(0,0,0,0.6)', borderTop: '1px solid rgba(241,169,27,0.15)', padding: '24px', marginTop: 0 }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+          <span style={{ fontSize: 10, fontWeight: 700, color: 'rgba(241,169,27,0.6)', textTransform: 'uppercase', letterSpacing: '0.12em', marginRight: 8 }}>
+            EXPLORE MORE:
+          </span>
+          {[
+            { href: '/escort-requirements', label: '⚖️ Escort Requirements' },
+            { href: '/glossary', label: '📖 Glossary' },
+            { href: '/rates', label: '💰 Rate Index' },
+            { href: '/directory', label: '🔍 Find Escorts' },
+            { href: '/corridors', label: '🛣️ Corridors' },
+            { href: '/claim', label: '✓ Claim Profile' },
+            { href: '/what-is-a-pilot-car', label: '❓ What is a Pilot Car?' },
+            { href: '/tools/permit-cost-calculator', label: '📋 Permit Calculator' },
+            { href: '/blog', label: '📰 Industry Blog' },
+          ].map((l) => (
+            <a key={l.href} href={l.href} style={{
+              display: 'inline-flex', alignItems: 'center', gap: 5,
+              padding: '5px 13px', background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(255,255,255,0.1)', borderRadius: 99,
+              fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.6)',
+              textDecoration: 'none',
+            }}>
+              {l.label}
+            </a>
+          ))}
+        </div>
+      </div>
+      </div>
+      {/* Training interlinking — no dead ends */}
+      <div style={{ background: 'rgba(0,0,0,0.4)', borderTop: '1px solid rgba(241,169,27,0.15)', padding: '20px 24px', marginTop: 0 }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.1em', marginRight: 8 }}>Explore More:</span>
+          {[
+            { href: '/directory', label: '🔍 Find Escorts' },
+            { href: '/escort-requirements', label: '⚖️ Requirements' },
+            { href: '/rates', label: '💰 Rate Index' },
+            { href: '/tools', label: '🔧 Tools' },
+            { href: '/glossary', label: '📖 Glossary' },
+            { href: '/corridors', label: '🛣️ Corridors' },
+            { href: '/available-now', label: '📡 Available Now' },
+            { href: '/blog', label: '📰 Blog' },
+            { href: '/claim', label: '✓ Claim Profile' },
+          ].map(l => (
+            <a key={l.href} href={l.href} style={{
+              padding: '5px 12px', background: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.1)', borderRadius: 99,
+              fontSize: 12, fontWeight: 600, color: '#9CA3AF', textDecoration: 'none'
+            }}>{l.label}</a>
+          ))}
+        </div>
       </div>
     </div>
   );

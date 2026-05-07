@@ -122,7 +122,7 @@ export default function PricingPage() {
                                 <ul className="space-y-2 flex-1">
                                     {tier.features.map(f => (
                                         <li key={f} className="flex items-start gap-2 text-sm text-gray-300">
-                                            <span className="text-hc-gold-400 mt-0.5 flex-shrink-0">âœ“</span>
+                                            <span className="text-hc-gold-400 mt-0.5 flex-shrink-0">✓</span>
                                             {f}
                                         </li>
                                     ))}
@@ -176,7 +176,7 @@ export default function PricingPage() {
                                     <ul className="space-y-2 flex-1">
                                         {tier.features.map(f => (
                                             <li key={f} className="flex items-start gap-2 text-sm text-gray-300">
-                                                <span className="text-blue-400 mt-0.5 flex-shrink-0">âœ“</span>
+                                                <span className="text-blue-400 mt-0.5 flex-shrink-0">✓</span>
                                                 {f}
                                             </li>
                                         ))}

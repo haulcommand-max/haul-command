@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
 
     // Check listing exists
     const { data: listing } = await supabase
-      .from('directory_listings')
+      .from('hc_global_operators')
       .select('id, name, company_name, country_code')
       .eq('id', listing_id)
       .single();

@@ -3,7 +3,7 @@ import { ContentLayout } from '../config/content-system.tokens';
 
 export function HCContentPageShell({ children, className = '' }: { children: React.ReactNode, className?: string }) {
     return (
-        <main className={`min-h-screen bg-white text-gray-900 font-body selection:bg-[#C6923A]/30 w-full overflow-x-hidden ${className}`}>
+        <main className={`min-h-screen hc-surface-c font-body selection:bg-[#F1A91B]/30 w-full overflow-x-hidden ${className}`}>
             {children}
         </main>
     );

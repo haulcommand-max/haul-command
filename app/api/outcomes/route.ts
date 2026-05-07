@@ -71,7 +71,7 @@ async function deriveOutcomes(supabase: any, filters: {
     // 2. Recent claims from directory_listings
     try {
         let claimQuery = supabase
-            .from('directory_listings')
+            .from('hc_global_operators')
             .select('id, company_name, home_base_state, is_claimed, claimed_at, updated_at')
             .eq('is_claimed', true)
             .order('claimed_at', { ascending: false })

@@ -200,9 +200,9 @@ async function fetchSignals(
     if (regionCode) {
         queries.push((async () => {
             const { count } = await client
-                .from('directory_listings')
+                .from('hc_global_operators')
                 .select('id', { count: 'exact', head: true })
-                .eq('region_code', regionCode);
+                .eq('admin1_code', regionCode);
             listing_count = count ?? 0;
         })());
     }
@@ -336,7 +336,7 @@ export async function getIndexableCities(
         return {
             city: c.city,
             slug: c.city.toLowerCase().replace(/\s+/g, '-'),
-            state: c.region_code.toLowerCase(),
+            state: c.admin1_code.toLowerCase(),
             country: (c.country?.toLowerCase() === 'ca' ? 'ca' : 'us'),
             priority: Math.round(priority * 100) / 100,
             lastmod: c.updated_at ? new Date(c.updated_at).toISOString().split('T')[0] : null,

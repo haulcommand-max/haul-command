@@ -8,13 +8,13 @@ import {
   ArrowRight, Search, BarChart3, FileCheck,
 } from "lucide-react";
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* =•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•
    TRUST ARCHITECTURE SECTION
-   â”€ ODS says "trust us" with testimonials and logos.
+   =”€ ODS says "trust us" with testimonials and logos.
      HC shows the score: verified insurance, certifications,
      response speed, completion count, trust score, real-time
      structured trust that a brokerage cannot replicate.
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+   =•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=• */
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -113,7 +113,7 @@ export function TrustArchitecture() {
               href="/demo-report-card"
               className="text-[10px] font-bold text-[#C6923A] uppercase tracking-wider hover:text-white transition-colors"
             >
-              See Full Demo â†’
+              See Full Demo =†’
             </Link>
           </div>
 

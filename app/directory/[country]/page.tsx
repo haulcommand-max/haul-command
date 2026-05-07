@@ -8,11 +8,17 @@ import { CompetitorAbsorptionCard } from '@/components/seo/CompetitorAbsorptionC
 import { ClaimFirstCTA } from '@/components/seo/ClaimFirstCTA';
 
 interface PageProps {
-    params: Promise<{ country: string }>;
+    params: Promise<{ country?: string; countryCode?: string }> | { country?: string; countryCode?: string };
+}
+
+async function resolveCountryParam(params: PageProps['params']) {
+    const resolvedParams = await Promise.resolve(params);
+    const country = resolvedParams?.country ?? resolvedParams?.countryCode ?? 'us';
+    return String(country || 'us').toLowerCase();
 }
 
 export async function generateMetadata({ params }: PageProps) {
-    const { country } = await params;
+    const country = await resolveCountryParam(params);
     const formattedCountry = country.toUpperCase();
     
     return generatePageMetadata({
@@ -28,7 +34,7 @@ export async function generateMetadata({ params }: PageProps) {
  * Serves as the master route that trickles crawling power down to states -> cities -> corridors.
  */
 export default async function CountryDirectoryPage({ params }: PageProps) {
-    const { country } = await params;
+    const country = await resolveCountryParam(params);
     const isUSA = country.toLowerCase() === 'us';
     const formattedName = isUSA ? 'United States' : country.toUpperCase();
 

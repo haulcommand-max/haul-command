@@ -67506,3 +67506,191 @@ getDirectoryListings error: {
   hint: null,
   message: "Could not find the table 'public.directory_listings' in the schema cache"
 }
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
+npm error code EJSONPARSE
+npm error JSON.parse Invalid package.json: JSONParseError: Expected property name or '}' in JSON at position 3 (line 2 column 1) while parsing near "{\r\n<<<<<<< HEAD\r\n    \"n..."
+npm error JSON.parse Failed to parse JSON data.
+npm error JSON.parse Note: package.json must be actual JSON, not just JavaScript.
+npm error A complete log of this run can be found in: C:\Users\PC User\AppData\Local\npm-cache\_logs\2026-05-07T17_47_36_841Z-debug-0.log
+Failed to install required TypeScript dependencies, please install them manually to continue:
+npm install --save-exact --save-dev typescript @types/react @types/node
+
+Unhandled Rejection: {
+  command: 'npm install --save-exact --save-dev typescript @types/react @types/node'
+}
+(node:1683960) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/PC%20User/Biz/tailwind.config.ts?id=1778176089029 is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\PC User\Biz\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1684768) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/PC%20User/Biz/tailwind.config.ts?id=1778176294485 is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\PC User\Biz\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)

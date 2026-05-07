@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
 
         // Step 3: Get existing entity_ids
         const { data: existing } = await sb
-            .from('directory_listings')
+            .from('hc_global_operators')
             .select('entity_id')
             .limit(5000);
 
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
                     const slug = generateSlug(name + '-' + (ident.home_base_region || 'us'));
 
                     const { error: upsertErr } = await sb
-                        .from('directory_listings')
+                        .from('hc_global_operators')
                         .insert({
                             entity_type: ident.role || 'escort_operator',
                             entity_id: ident.identity_id,
@@ -109,7 +109,7 @@ export async function POST(req: NextRequest) {
                     const slug = generateSlug(name + '-' + (prof.home_state || prof.country || 'us'));
 
                     const { error: upsertErr } = await sb
-                        .from('directory_listings')
+                        .from('hc_global_operators')
                         .insert({
                             entity_type: prof.role || 'escort_operator',
                             entity_id: prof.id,

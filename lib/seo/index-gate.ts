@@ -68,9 +68,9 @@ export async function checkIndexGate(
     // 2. Check entity density
     if (pageType === 'county' && regionCode) {
         const { count } = await svc
-            .from('directory_listings')
+            .from('hc_global_operators')
             .select('id', { count: 'exact', head: true })
-            .eq('region_code', regionCode);
+            .eq('admin1_code', regionCode);
         entity_count = count ?? 0;
     }
 

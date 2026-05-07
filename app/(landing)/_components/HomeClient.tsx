@@ -973,7 +973,7 @@ export default function HomeClient({
                                     {` ${registryCountryLabel}`}-country coverage model.
                                 </p>
                             </div>
-                            <div className="grid grid-cols-2 gap-3 lg:block lg:space-y-5 lg:text-right">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:block lg:space-y-5 lg:text-right">
                                 {[
                                     { value: displayRegistryOperators, label: "Industry records indexed" },
                                     { value: registryCountryLabel, label: "Country framework" },
@@ -1041,7 +1041,7 @@ export default function HomeClient({
                                 </Link>
                             </div>
                         </div>
-                        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:grid-cols-4">
                             {[
                                 { value: displayRegistryOperators, label: "Listed Operators" },
                                 { value: registryCountryLabel, label: "Country Coverage Model" },
@@ -1067,7 +1067,7 @@ export default function HomeClient({
                                 <Link href="/directory/us" className="text-[11px] font-bold text-[#F1A91B]">See all states &rarr;</Link>
                             </div>
                             <p className="mb-3 text-xs text-white/58">United States state markets - part of our {registryCountryLabel}-country registry</p>
-                            <div className="grid grid-cols-2 gap-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 {[
                                     "Texas", "Florida", "California", "Louisiana", "Pennsylvania", "Ohio",
                                     "Georgia", "Illinois", "New York", "Alabama", "North Carolina", "Virginia",
@@ -1086,7 +1086,7 @@ export default function HomeClient({
                                 <h2 className="text-sm font-black text-white">120-country Coverage Model</h2>
                                 <Link href="/directory" className="text-[11px] font-bold text-[#F1A91B]">Explore the framework &rarr;</Link>
                             </div>
-                            <div className="grid grid-cols-2 gap-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 {GLOBAL_MARKETS.map((market) => (
                                     <Link key={market.slug} href={`/directory/${market.slug}`} className="hc-chip rounded-lg px-3 py-3 text-xs font-bold">
                                         <span className="mr-2">{market.flag}</span>{market.name}
@@ -1130,7 +1130,7 @@ export default function HomeClient({
                                 <h2 className="text-sm font-black text-white">Find Escorts by Load Type</h2>
                                 <Link href="/tools/escort-calculator" className="text-[11px] font-bold text-[#F1A91B]">All load types &rarr;</Link>
                             </div>
-                            <div className="grid grid-cols-2 gap-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 {LOAD_TYPES.map((loadType) => (
                                     <Link key={loadType.title} href="/directory" className="rounded-lg border border-white/10 bg-black/35 px-3 py-3 hover:border-[#F1A91B]/35">
                                         <span className="block text-xs font-black text-white">{loadType.title}</span>
@@ -1193,7 +1193,7 @@ export default function HomeClient({
                         <h2 className="text-sm font-black uppercase tracking-[0.16em] text-[#F1A91B]">Find by service</h2>
                         <p className="text-xs font-semibold text-white/68">Jump straight to the support type you need.</p>
                     </div>
-                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
                         {CATEGORIES.map((cat) => (
                             <Link
                                 key={cat.label}

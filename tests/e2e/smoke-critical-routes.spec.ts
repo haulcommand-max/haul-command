@@ -13,6 +13,7 @@
  *   - /robots.txt returns valid text
  *   - /sitemap.xml returns valid XML
  *   - /llms.txt accessible and non-empty
+ *   - SEO discovery routes do not expose literal template strings or legacy canonical targets
  *
  * Design principles:
  *   - Resilient: no hard waits, use expect().toBeVisible() with timeout
@@ -190,6 +191,23 @@ test.describe('SEO + System Route Checks', () => {
     expect(body).toContain('<url>');
   });
 
+  test('/sitemap.xml?chunk=0 — no literal template strings or duplicate static URLs', async ({ page }) => {
+    const response = await gotoAndWaitForLoad(page, '/sitemap.xml?chunk=0');
+
+    expect(response?.status()).toBeLessThan(400);
+
+    const body = await page.textContent('body') ?? '';
+    const locs = Array.from(body.matchAll(/<loc>(.*?)<\/loc>/g)).map((match) => match[1]);
+
+    expect(body).toContain('urlset');
+    expect(body).not.toContain('${BASE}');
+    expect(body).not.toContain('/loads/post');
+    expect(body).not.toContain('/requirements');
+    expect(body).not.toContain('/corridors');
+    expect(locs.length).toBeGreaterThan(0);
+    expect(new Set(locs).size).toBe(locs.length);
+  });
+
   test('/llms.txt — accessible and non-empty', async ({ page }) => {
     const response = await gotoAndWaitForLoad(page, '/llms.txt');
 
@@ -200,5 +218,19 @@ test.describe('SEO + System Route Checks', () => {
 
     // Must NOT be an HTML page (should be plain text)
     expect(body).not.toContain('<!DOCTYPE html');
+  });
+
+  test('/llms.txt — uses canonical public URLs for AI citation guidance', async ({ page }) => {
+    const response = await gotoAndWaitForLoad(page, '/llms.txt');
+
+    expect(response?.status()).toBe(200);
+
+    const body = await page.textContent('body') ?? '';
+    expect(body).toContain('https://www.haulcommand.com/load-board');
+    expect(body).toContain('https://www.haulcommand.com/escort-requirements');
+    expect(body).toContain('https://www.haulcommand.com/corridor');
+    expect(body).not.toContain('https://www.haulcommand.com/loads');
+    expect(body).not.toContain('https://www.haulcommand.com/requirements');
+    expect(body).not.toContain('https://www.haulcommand.com/corridors');
   });
 });

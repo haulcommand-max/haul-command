@@ -109,7 +109,7 @@ export async function GET(req: NextRequest) {
     // Get density from H3 if provided
     if (h3Cell) {
         const { count } = await supabase
-            .from('directory_listings')
+            .from('hc_global_operators')
             .select('*', { count: 'exact', head: true })
             .eq('h3_r7', h3Cell);
         operatorCount = count ?? 0;

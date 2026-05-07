@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     // Find active operators (active in last 30 days)
     const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000).toISOString();
     const { data: operators } = await admin
-        .from('directory_listings')
+        .from('hc_global_operators')
         .select('user_id')
         .not('user_id', 'is', null)
         .gte('updated_at', thirtyDaysAgo);

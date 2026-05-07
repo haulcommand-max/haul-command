@@ -1,93 +1,93 @@
 {
   "name": "Haul Command",
-  "short_name": "HaulCmd",
-  "description": "The command center for escort discovery, heavy-haul dispatch, trust verification, and corridor intelligence across 120 countries.",
-  "start_url": "/",
+  "short_name": "Haul Command",
+  "description": "The heavy haul operating system — pilot car directory, load board, permits, and escort dispatch across 120 countries.",
+  "start_url": "/?source=pwa",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#C6923A",
+  "display_override": ["standalone", "minimal-ui"],
+  "background_color": "#090706",
+  "theme_color": "#090706",
   "orientation": "any",
   "scope": "/",
   "lang": "en",
-  "categories": [
-    "business",
-    "logistics",
-    "productivity"
-  ],
+  "dir": "ltr",
+  "categories": ["business", "logistics", "productivity"],
+  "id": "com.haulcommand.app",
   "icons": [
-    {
-      "src": "/brand/logo-square.png",
-      "type": "image/png",
-      "sizes": "192x192",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/brand/logo-square.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "any maskable"
-    },
     {
       "src": "/brand/favicon.png",
       "type": "image/png",
       "sizes": "48x48",
       "purpose": "any"
+    },
+    {
+      "src": "/brand/logo-square.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "/brand/logo-square.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
     }
   ],
   "screenshots": [
+    {
+      "src": "/screenshots/dashboard-narrow.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Find Pilot Cars Near Your Load"
+    },
     {
       "src": "/screenshots/dashboard-wide.png",
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
       "label": "Operator Command Dashboard"
-    },
-    {
-      "src": "/screenshots/dashboard-narrow.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Mobile Dispatch View"
     }
   ],
   "shortcuts": [
     {
-      "name": "Available Now",
-      "short_name": "Available",
-      "description": "See operators broadcasting availability right now",
-      "url": "/available-now",
-      "icons": [
-        {
-          "src": "/brand/logo-square.png",
-          "sizes": "128x128"
-        }
-      ]
+      "name": "Find an Escort Now",
+      "short_name": "Find Escort",
+      "description": "Search verified pilot car operators near your load origin",
+      "url": "/directory",
+      "icons": [{ "src": "/brand/logo-square.png", "sizes": "128x128" }]
     },
     {
       "name": "Post a Load",
       "short_name": "Post Load",
-      "description": "Instantly post a load to find an escort operator",
+      "description": "Post an oversize load and find escort operators instantly",
       "url": "/loads/post",
-      "icons": [
-        {
-          "src": "/brand/logo-square.png",
-          "sizes": "128x128"
-        }
-      ]
+      "icons": [{ "src": "/brand/logo-square.png", "sizes": "128x128" }]
     },
     {
       "name": "My Dashboard",
       "short_name": "Dashboard",
-      "description": "Your operator command center",
+      "description": "Your operator or broker command center",
       "url": "/dashboard/operator",
-      "icons": [
-        {
-          "src": "/brand/logo-square.png",
-          "sizes": "128x128"
-        }
-      ]
+      "icons": [{ "src": "/brand/logo-square.png", "sizes": "128x128" }]
+    },
+    {
+      "name": "Shortage Index",
+      "short_name": "Shortage",
+      "description": "Live escort shortage map by state and country",
+      "url": "/shortage-index",
+      "icons": [{ "src": "/brand/logo-square.png", "sizes": "128x128" }]
     }
   ],
-  "related_applications": [],
-  "prefer_related_applications": false
+  "share_target": {
+    "action": "/share-handler",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "prefer_related_applications": false,
+  "related_applications": []
 }

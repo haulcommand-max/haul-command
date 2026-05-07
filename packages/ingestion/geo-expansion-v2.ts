@@ -1,6 +1,6 @@
 /**
  * HAUL COMMAND — Global Geo Expansion Engine v2
- * Target: 200K+ operators + proportional brokers across 57 countries
+ * Target: 200K+ operators + proportional brokers across 120 countries
  *
  * Key improvements over v1:
  * - UNCAPPED keyword usage (ALL keywords × ALL cities)
@@ -91,7 +91,7 @@ export const ALL_COUNTRIES: CountryConfig[] = [
 
 // Verify count
 if (ALL_COUNTRIES.length !== 57) {
-  console.warn(`⚠️  Expected 57 countries, got ${ALL_COUNTRIES.length}`);
+  console.warn(`⚠️  Expected 120 countries, got ${ALL_COUNTRIES.length}`);
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -205,7 +205,7 @@ export function generateBrokerQueries(config: CountryConfig): SearchQuery[] {
 }
 
 /**
- * Generate ALL queries (operators + brokers) for all 57 countries.
+ * Generate ALL queries (operators + brokers) for all 120 countries.
  */
 export function generateAllQueries(): SearchQuery[] {
   const all: SearchQuery[] = [];
@@ -344,7 +344,7 @@ export function dryRun(): void {
 
   console.log('═══════════════════════════════════════════════════════');
   console.log('  HAUL COMMAND — GEO EXPANSION v2 DRY RUN');
-  console.log('  Target: 200K+ operators + brokers across 57 countries');
+  console.log('  Target: 200K+ operators + brokers across 120 countries');
   console.log('═══════════════════════════════════════════════════════\n');
 
   console.log(`📊 TOTALS:`);

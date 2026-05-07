@@ -91,7 +91,7 @@ export const HC_COUNTRY_TIERS: Record<CountryTier, CountryEntry[]> = {
 
 // ─── HELPERS ──────────────────────────────────────────────────────────
 
-/** Get all 57 countries as a flat array */
+/** Get all 120 countries as a flat array */
 export function getAllCountries(): CountryEntry[] {
   return Object.values(HC_COUNTRY_TIERS).flat();
 }

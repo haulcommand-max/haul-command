@@ -6,6 +6,9 @@
 @source "../app";
 @source "../lib";
 
+/* HC Premium Surface System */
+@import url("../styles/hc-surfaces.css");
+
 /* ══ MOBILE LAYOUT PRECISION ══
    Prevent horizontal overflow, off-canvas artifacts,
    and white-box border noise on mobile viewports.
@@ -2589,3 +2592,443 @@ html, body {
   }
 }
 
+
+/* ══════════════════════════════════════════════════════════════
+   HAUL COMMAND — BRAND SYSTEM v4.0
+   Burnt stone background + token system + unified components
+
+   KILL BACKGROUND:  remove "hc-premium-bg" class from root div
+   KILL MOTION ONLY: remove "hc-living-background-enabled" class
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Brand color tokens ── */
+:root {
+  --hc-text-main:    #fff7e8;
+  --hc-text-soft:    #d8c6a3;
+  --hc-text-muted:   #a99268;
+  --hc-gold:         #f5a623;
+  --hc-gold-dark:    #b87313;
+  --hc-panel:        rgba(10, 8, 6, 0.82);
+  --hc-border:       rgba(255, 174, 55, 0.16);
+  --hc-bg-fallback:  #090706;
+}
+
+body {
+  background-color: var(--hc-bg-fallback);
+  color: var(--hc-text-main);
+}
+
+/* ── Root background wrapper ── */
+.hc-premium-bg {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* ── Layer 1: Stone texture — uses transform animation (GPU, works everywhere) ── */
+.hc-premium-bg::before {
+  content: "";
+  position: fixed;
+  /* Oversized so transform:scale doesn't show edges */
+  inset: -10%;
+  width: 120%;
+  height: 120%;
+  z-index: -2;
+  pointer-events: none;
+  background-image: url("/images/backgrounds/haul-command-burnt-stone-bg.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* Transform animation works everywhere — no background-position issues */
+  animation: hc-stone-drift 80s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* ── Layer 2: Overlay — lighter center, dark edges but NOT pitch black ── */
+.hc-premium-bg::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    /* Large amber center glow — fills most of the page */
+    radial-gradient(ellipse 120% 90% at 50% 45%,
+      rgba(180, 100, 20, 0.18) 0%,
+      rgba(140, 70, 10, 0.10) 35%,
+      transparent 65%
+    ),
+    /* Corner softening — much lighter than before */
+    radial-gradient(ellipse 100% 80% at 50% 50%,
+      rgba(0, 0, 0, 0.30) 0%,
+      rgba(0, 0, 0, 0.55) 70%,
+      rgba(0, 0, 0, 0.68) 100%
+    );
+}
+
+/* ── Living: ember glow animation ── */
+.hc-premium-bg.hc-living-background-enabled::after {
+  animation: hc-ember-pulse 20s ease-in-out infinite alternate;
+}
+
+/* ── Stone drift — transform-based, GPU-accelerated ── */
+@keyframes hc-stone-drift {
+  0%   { transform: scale(1.00) translate(0%, 0%); }
+  20%  { transform: scale(1.05) translate(2%, -1.5%); }
+  40%  { transform: scale(1.03) translate(-2%, 2%); }
+  60%  { transform: scale(1.06) translate(1.5%, 1%); }
+  80%  { transform: scale(1.02) translate(-1.8%, -2%); }
+  100% { transform: scale(1.04) translate(2.2%, -1%); }
+}
+
+@keyframes hc-ember-pulse {
+  0%   { opacity: 0.88; }
+  50%  { opacity: 1.0;  }
+  100% { opacity: 0.90; }
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .hc-premium-bg::before {
+    animation-duration: 180s;
+  }
+}
+
+/* ── Accessibility ── */
+@media (prefers-reduced-motion: reduce) {
+  .hc-premium-bg::before,
+  .hc-premium-bg.hc-living-background-enabled::after {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* ══ BRAND COMPONENT SYSTEM — cards, buttons, chips ══ */
+
+/* ── Unified dark card — use on EVERY content zone ── */
+.hc-card,
+.hc-card-on-texture {
+  background: rgba(10, 8, 6, 0.86);
+  border: 1px solid rgba(255, 174, 55, 0.16);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.34),
+              inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px);
+  border-radius: 0.75rem;
+}
+
+.hc-surface,
+.hc-surface-elevated {
+  background: rgba(10, 8, 6, 0.86);
+  border: 1px solid rgba(255, 174, 55, 0.16);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(10px);
+}
+
+.hc-glass-panel {
+  background: rgba(8, 6, 4, 0.72);
+  border: 1px solid rgba(255, 174, 55, 0.14);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.30);
+}
+
+.hc-dark-panel {
+  background: rgba(9, 7, 6, 0.92);
+  border: 1px solid rgba(255, 174, 55, 0.16);
+}
+
+.hc-surface-light {
+  background: rgba(255, 247, 232, 0.94);
+  color: #1a0f05;
+  border: 1px solid rgba(90, 54, 22, 0.18);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+}
+
+/* ── Primary CTA button — gold gradient, dark text ── */
+.hc-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(180deg, #ffba3c 0%, #f5a623 45%, #c97810 100%);
+  color: #140d05;
+  border: 1px solid rgba(255, 207, 102, 0.55);
+  box-shadow: 0 10px 28px rgba(245, 166, 35, 0.22);
+  font-weight: 700;
+  border-radius: 0.625rem;
+  padding: 0.625rem 1.5rem;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.hc-btn-primary:hover {
+  background: linear-gradient(180deg, #ffc84a 0%, #f9b030 45%, #d68a18 100%);
+  box-shadow: 0 14px 36px rgba(245, 166, 35, 0.32);
+  transform: translateY(-1px);
+}
+
+/* ── Secondary button — dark with gold border ── */
+.hc-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: rgba(12, 9, 6, 0.72);
+  color: #f6d28a;
+  border: 1px solid rgba(245, 166, 35, 0.34);
+  font-weight: 600;
+  border-radius: 0.625rem;
+  padding: 0.625rem 1.5rem;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.hc-btn-secondary:hover {
+  border-color: rgba(245, 166, 35, 0.6);
+  color: var(--hc-gold);
+  background: rgba(20, 14, 8, 0.86);
+}
+
+/* ── Chips — role pills, state pills, load type pills ── */
+.hc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  background: rgba(18, 13, 9, 0.68);
+  border: 1px solid var(--hc-border);
+  border-radius: 9999px;
+  color: var(--hc-text-soft);
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: all 0.15s;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.hc-chip:hover,
+.hc-chip.active {
+  border-color: var(--hc-gold);
+  color: var(--hc-gold);
+  background: rgba(245, 166, 35, 0.08);
+}
+
+/* ── Typography tokens ── */
+.hc-subheading {
+  color: var(--hc-text-soft);
+  font-weight: 600;
+}
+
+.hc-muted {
+  color: var(--hc-text-muted);
+}
+
+
+/* ── Dark backdrop for free-floating text on texture ── */
+.hc-section-veil {
+  background: rgba(8, 6, 4, 0.55);
+  backdrop-filter: blur(2px);
+  border-top: 1px solid rgba(255, 174, 55, 0.06);
+  border-bottom: 1px solid rgba(255, 174, 55, 0.06);
+}
+
+.hc-text-backdrop {
+  background: rgba(10, 8, 6, 0.78);
+  backdrop-filter: blur(8px);
+  border-radius: 0.625rem;
+  border: 1px solid rgba(255, 174, 55, 0.10);
+}
+
+/* ── Fade in/out edges so footer/long sections feel grounded ── */
+.hc-content-floor {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(8, 6, 4, 0.45) 12%,
+    rgba(8, 6, 4, 0.65) 100%
+  );
+}
+
+
+/* ── Section panel — single shared dark glass surface for headings + chips ── */
+.hc-section-panel {
+  background: rgba(8, 6, 4, 0.72);
+  border: 1px solid rgba(255, 174, 55, 0.12);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.34),
+              inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ── Text shadow for any text floating directly on texture ── */
+.hc-text-shadow {
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.75), 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Heading override: ensure all hc-heading get readable shadow ── */
+.hc-heading {
+  color: var(--hc-text-main);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Number display — industrial feel ── */
+.hc-stat-number {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  font-weight: 900;
+  color: var(--hc-text-main);
+  letter-spacing: -0.03em;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HAUL COMMAND — MOBILE-FIRST SYSTEM
+   All layouts start at mobile (320px) and scale up.
+   Touch targets minimum 44×44px per WCAG 2.5.5.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Prevent iOS font size inflation ── */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* ── Safe area insets for notched phones (iPhone X+, Android punch-holes) ── */
+.hc-safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+.hc-safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.hc-safe-x {
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* ── Touch targets — minimum 44px per WCAG ── */
+.hc-touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Apply to all interactive elements globally */
+button, [role="button"], a, input, select, textarea, label[for] {
+  touch-action: manipulation; /* Removes 300ms tap delay */
+}
+
+/* ── Sticky dispatch footer — clears iOS bottom bar ── */
+.hc-sticky-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  z-index: 50;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ── Mobile-optimized scrolling ── */
+.hc-scroll-container {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+}
+
+/* ── Prevent horizontal overflow on mobile ── */
+.hc-premium-bg,
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* ── Mobile typography scale ── */
+@media (max-width: 639px) {
+  /* Scale down large headings on small screens */
+  h1 { font-size: clamp(1.75rem, 6vw, 3rem); }
+  h2 { font-size: clamp(1.25rem, 5vw, 2rem); }
+  
+  /* Hero text tighter on mobile */
+  .hc-heading { letter-spacing: -0.01em; }
+
+  /* Cards full-width on mobile */
+  .hc-card, .hc-section-panel {
+    border-radius: 0.75rem;
+  }
+
+  /* Buttons full-width friendly */
+  .hc-btn-primary, .hc-btn-secondary {
+    min-height: 48px; /* Larger touch target on mobile */
+    padding: 0.75rem 1.25rem;
+  }
+
+  /* Chips slightly taller for fat fingers */
+  .hc-chip {
+    min-height: 40px;
+    padding: 0.5rem 0.875rem;
+  }
+}
+
+/* ── Tablet (640px - 1023px) ── */
+@media (min-width: 640px) and (max-width: 1023px) {
+  h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+}
+
+/* ── Desktop (1024px+) ── */
+@media (min-width: 1024px) {
+  .hc-btn-primary, .hc-btn-secondary {
+    min-height: 40px;
+  }
+}
+
+/* ── Input fields — prevent iOS zoom on focus (font-size >= 16px) ── */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="search"],
+input[type="password"],
+select,
+textarea {
+  font-size: 16px; /* iOS won't zoom if font-size >= 16px */
+}
+
+/* ── Loading states for mobile ── */
+.hc-skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+  background-size: 200% 100%;
+  animation: hc-shimmer 1.5s infinite;
+}
+
+@keyframes hc-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ── Capacitor / native app specific ── */
+@media (display-mode: standalone) {
+  /* Running as installed PWA or Capacitor app */
+  .hc-premium-bg {
+    /* Ensure background fills notch area */
+    min-height: 100dvh;
+  }
+  
+  /* Hide browser-specific UI hints when in app mode */
+  .hc-browser-only {
+    display: none;
+  }
+}
+
+/* ── Accessibility: reduce motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

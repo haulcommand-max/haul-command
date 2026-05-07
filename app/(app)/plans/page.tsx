@@ -78,11 +78,55 @@ export default function PricingPage() {
     const [tab, setTab] = useState<'operators' | 'brokers'>('operators');
     const [annual, setAnnual] = useState(false);
 
-    const handleCTA = (planId: string) => {
-        if (planId.includes('enterprise') || planId === 'elite' || planId === 'broker_enterprise') {
+    const PLAN_TO_PRICE_KEY: Record<string, string> = {
+        pro:            annual ? 'escort_pro_yearly'    : 'escort_pro_monthly',
+        elite:          annual ? 'escort_elite_yearly'  : 'escort_elite_monthly',
+        broker_starter: annual ? 'broker_seat_yearly'   : 'broker_seat_monthly',
+        broker_pro:     annual ? 'broker_seat_yearly'   : 'broker_seat_monthly',
+    };
+
+    const handleCTA = async (planId: string) => {
+        // Free plan → direct to claim/login
+        if (planId === 'free') {
+            window.location.href = '/claim';
+            return;
+        }
+        // Enterprise/contact plans → email sales
+        if (planId.includes('enterprise') || planId === 'broker_enterprise') {
             window.location.href = 'mailto:sales@haulcommand.com?subject=Enterprise Inquiry';
-        } else {
-            window.location.href = `/login?plan=${planId}&billing=${annual ? 'annual' : 'monthly'}`;
+            return;
+        }
+        // Elite for operators → contact sales for now
+        if (planId === 'elite') {
+            window.location.href = 'mailto:sales@haulcommand.com?subject=Fleet Admiral Plan Inquiry';
+            return;
+        }
+
+        const priceKey = PLAN_TO_PRICE_KEY[planId];
+        if (!priceKey) {
+            window.location.href = `/login?plan=${planId}`;
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/stripe/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    priceKey,
+                    successUrl: window.location.origin + '/dashboard/operator?subscribed=true',
+                    cancelUrl: window.location.href,
+                }),
+            });
+            const data = await res.json();
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                // Price not configured in Stripe yet → waitlist
+                window.location.href = '/claim?plan=' + planId;
+            }
+        } catch {
+            window.location.href = '/claim?plan=' + planId;
         }
     };
 

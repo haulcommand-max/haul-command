@@ -1,28 +1,22 @@
 /**
  * postinstall-patch.mjs
  *
- * Patches @supabase/postgrest-js to add .catch() to PostgrestBuilder class.
- * PostgrestBuilder only implements .then() (PromiseLike), but Next.js's
- * webpack prerender calls .catch() on it, causing:
- *   TypeError: a.rpc(...).catch is not a function
- *
- * Strategy: inject a .catch() method directly INTO the class body, right after
- * the .then() method. This ensures every module instance has the method,
- * regardless of ESM module identity issues.
+ * 1) Patches @supabase/postgrest-js to add .catch() to PostgrestBuilder.
+ * 2) Applies tiny build-safety source patches for known mobile/homepage issues
+ *    that are safer to patch by exact strings than by replacing very large files.
  */
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const repoRoot = resolve(__dirname, '..');
 const targets = [
-    resolve(__dirname, '..', 'node_modules', '@supabase', 'postgrest-js', 'dist', 'index.mjs'),
-    resolve(__dirname, '..', 'node_modules', '@supabase', 'postgrest-js', 'dist', 'index.cjs'),
+    resolve(repoRoot, 'node_modules', '@supabase', 'postgrest-js', 'dist', 'index.mjs'),
+    resolve(repoRoot, 'node_modules', '@supabase', 'postgrest-js', 'dist', 'index.cjs'),
 ];
 
 const PATCH_MARKER = '/* POSTGREST_CATCH_PATCHED */';
-
-// The .catch() method to inject inside the class body
 const CATCH_METHOD = [
     '\t' + PATCH_MARKER,
     '\tcatch(onRejected) {',
@@ -43,31 +37,21 @@ for (const file of targets) {
             continue;
         }
 
-        // Strategy: Find the unique "returns()" method that appears inside
-        // PostgrestBuilder class (line ~208 in unpatched file).
-        // It has a unique comment: "@deprecated Use overrideTypes"
-        // Insert .catch() right BEFORE this "returns()" method.
-        //
-        // The anchor text we look for (unique to PostgrestBuilder):
         const anchor = '\t/**\n\t* Override the type of the returned `data`.\n\t*\n\t* @typeParam NewResult - The new result type to override with\n\t* @deprecated Use overrideTypes';
 
         let idx = src.indexOf(anchor);
         if (idx === -1) {
-            // Try with \r\n line endings
             const anchorCRLF = anchor.replace(/\n/g, '\r\n');
             idx = src.indexOf(anchorCRLF);
         }
 
         if (idx !== -1) {
-            // Insert .catch() method right before the @deprecated returns() block
             src = src.slice(0, idx) + CATCH_METHOD + '\n' + src.slice(idx);
             writeFileSync(file, src, 'utf8');
             console.log(`[postinstall-patch] ✅ Patched .catch() into PostgrestBuilder class body: ${file}`);
         } else {
             console.warn(`[postinstall-patch] ⚠️ Could not find anchor text in: ${file}`);
             console.warn(`[postinstall-patch]    Trying fallback: inserting before "overrideTypes"...`);
-
-            // Fallback: look for overrideTypes method
             const fallbackAnchor = '\toverrideTypes()';
             let fbIdx = src.indexOf(fallbackAnchor);
             if (fbIdx !== -1) {
@@ -82,3 +66,40 @@ for (const file of targets) {
         console.warn(`[postinstall-patch] ⚠️ Could not patch ${file}:`, err.message);
     }
 }
+
+function patchTextFile(relativePath, patcher) {
+    const file = resolve(repoRoot, relativePath);
+    try {
+        if (!existsSync(file)) return;
+        const before = readFileSync(file, 'utf8');
+        const after = patcher(before);
+        if (after !== before) {
+            writeFileSync(file, after, 'utf8');
+            console.log(`[postinstall-patch] ✅ Source patch applied: ${relativePath}`);
+        }
+    } catch (err) {
+        console.warn(`[postinstall-patch] ⚠️ Could not patch ${relativePath}:`, err.message);
+    }
+}
+
+patchTextFile('app/(landing)/_components/HomeClient.tsx', (src) => {
+    let out = src;
+
+    // Remove fake/demo operator proof details from the homepage mobile card.
+    // We keep the surrounding component intact to avoid JSX damage, but all fake
+    // identity/review/availability values are replaced with live-data language.
+    out = out.replaceAll('J. Martinez Escort Co.', 'Live operator preview');
+    out = out.replaceAll('I-10 Specialist', 'Live profile data');
+    out = out.replaceAll('PEVO Certified', 'Verified data only');
+    out = out.replaceAll('127 reviews', 'Live reviews only');
+    out = out.replaceAll('Active 2 hours ago', 'Availability loads from live data');
+    out = out.replaceAll('Trust 94', 'Trust score pending');
+
+    // Mobile overflow fix: claim-benefit card grids should not force 2 columns
+    // on narrow screens.
+    out = out.replace(/grid\s+grid-cols-2\s+gap-2/g, 'grid grid-cols-1 sm:grid-cols-2 gap-2');
+    out = out.replace(/grid\s+grid-cols-2\s+gap-3/g, 'grid grid-cols-1 sm:grid-cols-2 gap-3');
+    out = out.replace(/grid\s+grid-cols-2\s+gap-4/g, 'grid grid-cols-1 sm:grid-cols-2 gap-4');
+
+    return out;
+});

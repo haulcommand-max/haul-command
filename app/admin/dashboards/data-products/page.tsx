@@ -7,7 +7,7 @@
  * - Product catalog with create/toggle
  * - Revenue chart over time (Recharts)
  * - Sales metrics per product
- * - 57-country tier pricing
+ * - 120-country tier pricing
  */
 
 import { useState, useEffect, useMemo } from 'react';

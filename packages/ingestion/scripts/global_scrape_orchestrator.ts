@@ -4,7 +4,7 @@
  * 
  * Priority: SPEED, SCALE, COST.
  * Instruction: Ignore localized blitzes (e.g., Texas Automotive) until the 
- *              global database is mathematically satisfied across 57 countries.
+ *              global database is mathematically satisfied across 120 countries.
  * ==============================================================================
  */
 

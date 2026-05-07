@@ -57,7 +57,7 @@ export default function AdvertiserDashboard() {
             <h1 className="text-3xl font-black uppercase tracking-tighter">AdGrid Command Center</h1>
             <p className="text-sm text-gray-400 mt-1">Manage campaigns, track performance, and scale spend.</p>
           </div>
-          <Link href="/advertise/buy" className="bg-yellow-500 text-white font-bold text-sm px-6 py-3 rounded hover:bg-yellow-400 transition uppercase">
+          <Link href="/advertise/buy" className="bg-[#F1A91B] text-white font-bold text-sm px-6 py-3 rounded hover:bg-[#D4951A] transition uppercase">
             + New Campaign
           </Link>
         </div>
@@ -127,7 +127,7 @@ export default function AdvertiserDashboard() {
         <div className="bg-gradient-to-r from-yellow-900/20 to-black border border-yellow-500/20 rounded-xl p-8 text-center">
           <h3 className="text-xl font-black text-white mb-2">Want Higher Placement?</h3>
           <p className="text-sm text-gray-400 mb-4">Upgrade from CPC to Corridor or Territory Sponsorship for guaranteed top-slot visibility.</p>
-          <Link href="/advertise/buy" className="bg-yellow-500 text-white font-bold text-sm px-8 py-3 rounded hover:bg-yellow-400 transition uppercase">
+          <Link href="/advertise/buy" className="bg-[#F1A91B] text-white font-bold text-sm px-8 py-3 rounded hover:bg-[#D4951A] transition uppercase">
             Explore Sponsorships
           </Link>
         </div>

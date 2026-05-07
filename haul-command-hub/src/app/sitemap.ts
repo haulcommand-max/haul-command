@@ -101,7 +101,7 @@ export default async function sitemap({ id = 0 }: { id?: number }): Promise<Meta
       { url: `${siteUrl}/directory/gb/wales`, lastModified: now, changeFrequency: 'daily', priority: 0.7 },
     ];
 
-    // 57-country route families
+    // 120-country route families
     const countryRoutes: MetadataRoute.Sitemap = COUNTRIES.flatMap(c => [
       { url: `${siteUrl}/directory/${c.slug}`, lastModified: now, changeFrequency: 'daily' as const, priority: 0.8 },
       { url: `${siteUrl}/requirements/${c.slug}`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.7 },

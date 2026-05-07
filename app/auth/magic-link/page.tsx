@@ -28,9 +28,9 @@ export default function MagicLinkFallback() {
             onChange={e => setEmail(e.target.value)}
             placeholder="pilot@example.com"
             required
-            className="w-full bg-black border border-gray-800 rounded-lg p-3 text-white focus:outline-none focus:border-yellow-500 transition-colors"
+            className="w-full bg-black border border-gray-800 rounded-lg p-3 text-white focus:outline-none focus:border-[#F1A91B] transition-colors"
           />
-          <button type="submit" className="w-full bg-yellow-500 hover:bg-yellow-400 text-white font-bold py-3 rounded-lg transition-colors shadow-lg shadow-yellow-900/30">
+          <button type="submit" className="w-full bg-[#F1A91B] hover:bg-[#D4951A] text-white font-bold py-3 rounded-lg transition-colors shadow-lg shadow-yellow-900/30">
             Send Secure Link
           </button>
         </form>

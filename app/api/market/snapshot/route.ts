@@ -92,7 +92,7 @@ export async function GET(req: NextRequest) {
 
         // Pro/Enterprise: return full data
         const { data: corridors } = await supabase
-            .from('corridors')
+            .from('hc_corridors')
             .select('origin_state, destination_state, load_count, operator_count')
             .or(`origin_city.ilike.%${geo.split(',')[0]}%,destination_city.ilike.%${geo.split(',')[0]}%`)
             .limit(5);

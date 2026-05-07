@@ -446,7 +446,7 @@ export default function AdGridDashboard() {
           <div style={{ textAlign: 'center', padding: '80px 20px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20 }}>
             <Target size={40} color="#334155" style={{ marginBottom: 16 }} />
             <h3 style={{ margin: '0 0 10px', fontSize: 18, fontWeight: 800, color: '#475569' }}>No campaigns yet</h3>
-            <p style={{ margin: '0 0 24px', fontSize: 14, color: '#334155' }}>Launch your first ad to reach 1.5M+ logistics operators across 57 countries.</p>
+            <p style={{ margin: '0 0 24px', fontSize: 14, color: '#334155' }}>Launch your first ad to reach 1.5M+ logistics operators across 120 countries.</p>
             <button onClick={() => setShowCreate(true)} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 24px', background: 'linear-gradient(135deg, #6366f1, #4f46e5)', border: 'none', borderRadius: 14, color: '#fff', fontSize: 14, fontWeight: 800, cursor: 'pointer' }}>
               <Plus size={15} /> Create First Campaign
             </button>

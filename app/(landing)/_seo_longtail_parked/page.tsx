@@ -14,14 +14,14 @@ import {
 } from '@/lib/seo/long-tail-domination';
 import { COUNTRY_KEYWORD_SEEDS } from '@/lib/seo/global-keyword-matrix';
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// =•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•
 // LONG-TAIL PROGRAMMATIC SEO PAGE
 // [service]/[...slug] — handles all combinatorial routes:
 //   /pilot-car/us/florida
 //   /oversize-escort/wind-turbine/us/texas  
 //   /pilot-car/near-me/us
 //   /heavy-haul-escort/requirements/au/queensland
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// =•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•
 
 const T = {
     bg: '#fafcff',
@@ -215,7 +215,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                     {' '}Compare rates, reviews, and availability on Haul Command.
                 </p>
 
-                {/* â”€â”€ CTA Block */}
+                {/* =”€=”€ CTA Block */}
                 <div style={{
                     display: 'flex', gap: 12, marginBottom: 40, flexWrap: 'wrap',
                 }}>
@@ -225,7 +225,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                         fontSize: 15, fontWeight: 800, textDecoration: 'none',
                         boxShadow: '0 4px 16px rgba(37,99,235,0.25)',
                     }}>
-                        Find Operators in {geo} â†’
+                        Find Operators in {geo} =†’
                     </Link>
                     <Link aria-label="Navigation Link" href="/available-now" style={{
                         padding: '14px 28px', borderRadius: 12,
@@ -233,11 +233,11 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                         fontSize: 15, fontWeight: 800, textDecoration: 'none',
                         border: `2px solid ${T.green}`,
                     }}>
-                        ðŸŸ¢ Available Now
+                        =ŸŸ¢ Available Now
                     </Link>
                 </div>
 
-                {/* â”€â”€ Definition Block (Snippet Bait) */}
+                {/* =”€=”€ Definition Block (Snippet Bait) */}
                 <section style={{
                     padding: 24, borderRadius: 16, marginBottom: 32,
                     background: T.snippetBg, border: `1px solid ${T.accentLight}`,
@@ -247,7 +247,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                     }} />
                 </section>
 
-                {/* â”€â”€ Steps (HowTo Schema) */}
+                {/* =”€=”€ Steps (HowTo Schema) */}
                 <section style={{ marginBottom: 40 }}>
                     <h2 style={{ fontSize: 24, fontWeight: 800, color: T.textPrimary, marginBottom: 16 }}>
                         How to Arrange a {titleize(primaryTerm)} in {geo}
@@ -258,7 +258,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                     }} />
                 </section>
 
-                {/* â”€â”€ Quick Reference Table (Snippet Target) */}
+                {/* =”€=”€ Quick Reference Table (Snippet Target) */}
                 <section style={{ marginBottom: 40 }}>
                     <h2 style={{ fontSize: 24, fontWeight: 800, color: T.textPrimary, marginBottom: 16 }}>
                         Escort Requirements Quick Reference — {geo}
@@ -279,7 +279,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                     `}</style>
                 </section>
 
-                {/* â”€â”€ FAQ Section (FAQPage Schema) */}
+                {/* =”€=”€ FAQ Section (FAQPage Schema) */}
                 <section style={{ marginBottom: 40 }}>
                     <h2 style={{ fontSize: 24, fontWeight: 800, color: T.textPrimary, marginBottom: 20 }}>
                         Frequently Asked Questions
@@ -294,7 +294,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                     `}</style>
                 </section>
 
-                {/* â”€â”€ Internal Links: Related Equipment */}
+                {/* =”€=”€ Internal Links: Related Equipment */}
                 {relatedEquipment.length > 0 && (
                     <section style={{ marginBottom: 32 }}>
                         <h2 style={{ fontSize: 20, fontWeight: 800, color: T.textPrimary, marginBottom: 14 }}>
@@ -313,14 +313,14 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                                         transition: 'all 0.15s',
                                     }}
                                 >
-                                    {e.label} Escort â†’
+                                    {e.label} Escort =†’
                                 </Link>
                             ))}
                         </div>
                     </section>
                 )}
 
-                {/* â”€â”€ Internal Links: Nearby Regions */}
+                {/* =”€=”€ Internal Links: Nearby Regions */}
                 {nearbyStates.length > 0 && (
                     <section style={{ marginBottom: 32 }}>
                         <h2 style={{ fontSize: 20, fontWeight: 800, color: T.textPrimary, marginBottom: 14 }}>
@@ -344,7 +344,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                     </section>
                 )}
 
-                {/* â”€â”€ Internal Links: Modifiers */}
+                {/* =”€=”€ Internal Links: Modifiers */}
                 <section style={{ marginBottom: 32 }}>
                     <h2 style={{ fontSize: 20, fontWeight: 800, color: T.textPrimary, marginBottom: 14 }}>
                         More {titleize(primaryTerm)} Options
@@ -366,7 +366,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                     </div>
                 </section>
 
-                {/* â”€â”€ Bottom CTA */}
+                {/* =”€=”€ Bottom CTA */}
                 <div style={{
                     textAlign: 'center', padding: 40,
                     background: T.cardBg, borderRadius: 16,
@@ -385,7 +385,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                         fontSize: 16, fontWeight: 900, textDecoration: 'none',
                         boxShadow: '0 4px 16px rgba(37,99,235,0.25)',
                     }}>
-                        Browse All Operators â†’
+                        Browse All Operators =†’
                     </Link>
                 </div>
             </div>
