@@ -14,7 +14,7 @@ if (UPSTASH_CONFIGURED) {
         console.warn('[resolve] Upstash rate limiter failed to initialize:', e);
     }
 } else {
-    console.warn('[resolve] UPSTASH_REDIS_REST_URL/TOKEN not set — rate limiting disabled');
+    console.warn('[resolve] UPSTASH_REDIS_REST_URL/TOKEN not set; proxy fallback rate limiting protects sensitive API paths');
 }
 
 /* ── Supabase (service role — bypasses RLS) ── */

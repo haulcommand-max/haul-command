@@ -4,11 +4,16 @@
  * Lazy-initialized to prevent build-time crashes when STRIPE_SECRET_KEY is missing.
  */
 import Stripe from 'stripe';
+import { getStripeCheckoutBlockReason } from '@/lib/launch/production-guards';
 
 let _stripe: Stripe | null = null;
 
 export function getStripeClient(): Stripe {
     if (!_stripe) {
+        const blockReason = getStripeCheckoutBlockReason();
+        if (blockReason) {
+            throw new Error(`[HC Stripe] Checkout unavailable: ${blockReason}`);
+        }
         if (!process.env.STRIPE_SECRET_KEY) {
             throw new Error('[HC Stripe] STRIPE_SECRET_KEY not set — cannot create Stripe client');
         }

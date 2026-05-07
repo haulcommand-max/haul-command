@@ -8,10 +8,12 @@ import { PwaRegistry } from '@/components/layout/PwaRegistry';
 import { PostHogProvider } from '@/components/analytics/PostHogProvider';
 import { GoogleTagManager } from '@next/third-parties/google';
 import { SignalGridProvider } from '@/components/telematics/SignalGridProvider';
+import { SITE_URL } from '@/lib/site-url';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     template: '%s | Haul Command Operations',
     default: 'Haul Command | Autonomous Heavy Haul Operating System',
@@ -21,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Haul Command Logistics OS',
     description: 'Autonomous Heavy Haul Network',
-    url: 'https://haulcommand.com',
+    url: SITE_URL,
     siteName: 'Haul Command',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630 }],
     locale: 'en_US',
@@ -39,10 +41,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       {/* Google Tag Manager — manages GA4, ads pixels, and all tags from one UI */}
       {gtmId && <GoogleTagManager gtmId={gtmId} />}
-        <body className={`${inter.className} antialiased`} style={{ background: '#ffffff', color: '#1a1a1a' }}>
+        <body className={`${inter.className} antialiased`} suppressHydrationWarning>
         <Suspense fallback={null}>
           {/* PostHog — product analytics, session replay, A/B testing */}
           <PostHogProvider>

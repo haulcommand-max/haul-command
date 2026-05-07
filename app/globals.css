@@ -222,7 +222,11 @@ html {
 
 body {
   color: #1a1a1a;
-  background: #ffffff;
+  background-color: #171717;
+  background-image: url("/backgrounds/haul-command-industrial-gold-texture-background.png");
+  background-repeat: repeat-y;
+  background-size: 100% auto;
+  background-position: top center;
   font-family: var(--font-body);
   font-size: var(--text-body);
   line-height: 1.6;

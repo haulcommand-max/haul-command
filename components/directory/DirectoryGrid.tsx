@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { DirectorySearchBar } from '@/components/ui/DirectorySearchBar';
 import { FreshnessBadge } from '@/components/ui/FreshnessBadge';
 import { stateFullName } from '@/lib/geo/state-names';
-import { Shield, MapPin, Star, ChevronRight } from 'lucide-react';
+import { Shield, MapPin, Star } from 'lucide-react';
 
 /**
  * DirectoryGrid — Client component that wraps operator cards with search/filter.
@@ -34,7 +34,7 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
       <DirectorySearchBar
         items={providers}
         onFilter={setFiltered}
-        placeholder="Search by operator name, city, or state..."
+        placeholder="Search by provider name, city, or state..."
         stateOptions={STATE_OPTIONS}
       />
 
@@ -44,7 +44,7 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
         marginBottom: 16, padding: '0 4px',
       }}>
         <span style={{ fontSize: 12, color: '#64748b', fontWeight: 600 }}>
-          {displayItems.length} operator{displayItems.length !== 1 ? 's' : ''} found
+          {displayItems.length} listed provider{displayItems.length !== 1 ? 's' : ''} shown
           {filtered !== null && filtered.length !== providers.length && (
             <span style={{ color: '#C6923A' }}> (filtered from {providers.length})</span>
           )}
@@ -54,8 +54,8 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {displayItems.length > 0 ? displayItems.map((p: any) => {
           const state = stateFullName(p.state_inferred, true);
-          const trust = p.confidence_score || 0;
-          const hasHighTrust = trust > 80;
+          const profileSignal = p.confidence_score || 0;
+          const hasHighSignal = profileSignal > 80;
 
           return (
             <div
@@ -71,7 +71,7 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
               }}
               className="hover:border-gray-300 hover:shadow-md group"
             >
-              {hasHighTrust && (
+              {hasHighSignal && (
                 <div style={{
                   position: 'absolute', top: 0, right: 0, width: 80, height: 80,
                   background: '#FACC15', opacity: 0.15, borderRadius: '50%', filter: 'blur(24px)',
@@ -89,30 +89,30 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
                       overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                       margin: '0 0 4px',
                     }}>
-                      {p.company || p.name || 'Verified Operator'}
+                      {p.company || p.name || 'Listed Provider'}
                     </h3>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <MapPin style={{ width: 14, height: 14, color: '#6B7280' }} />
                       <span style={{ fontSize: 13, color: '#4B5563', fontWeight: 500 }}>
                         {p.city ? `${p.city}, ` : ''}{state}
                       </span>
-                      <FreshnessBadge lastSeenAt={p.last_seen_at || new Date().toISOString()} />
+                      {p.last_seen_at && <FreshnessBadge lastSeenAt={p.last_seen_at} />}
                     </div>
                   </div>
 
-                  {/* Trust score */}
-                  {trust > 0 && (
+                  {/* Profile signal score */}
+                  {profileSignal > 0 && (
                     <div style={{
                       display: 'flex', flexDirection: 'column', alignItems: 'center',
                       padding: '6px 10px', borderRadius: 8, flexShrink: 0,
-                      background: hasHighTrust ? '#FEF9C3' : '#F3F4F6', // light yellow or gray
-                      border: `1px solid ${hasHighTrust ? '#FDE047' : '#E5E7EB'}`,
+                      background: hasHighSignal ? '#FEF9C3' : '#F3F4F6', // light yellow or gray
+                      border: `1px solid ${hasHighSignal ? '#FDE047' : '#E5E7EB'}`,
                     }}>
-                      <span style={{ fontSize: 18, fontWeight: 900, color: hasHighTrust ? '#854D0E' : '#4B5563' }}>
-                        {trust}
+                      <span style={{ fontSize: 18, fontWeight: 900, color: hasHighSignal ? '#854D0E' : '#4B5563' }}>
+                        {profileSignal}
                       </span>
                       <span style={{ fontSize: 9, fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                        Trust
+                        Signal
                       </span>
                     </div>
                   )}
@@ -176,20 +176,20 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
                   className="hover:bg-[#0c4296]"
                 >
                   <MapPin style={{ width: 14, height: 14 }} />
-                  Live Ping
+                  Request Match
                 </Link>
               </div>
             </div>
           );
         }) : (
           <div className="col-span-full" style={{
-            padding: 48, border: '1px solid rgba(255,255,255,0.08)',
-            borderRadius: 20, textAlign: 'center', background: '#111214',
+            padding: 48, border: '1px solid #E5E7EB',
+            borderRadius: 20, textAlign: 'center', background: '#F9FAFB',
           }}>
-            <p style={{ color: '#9CA3AF', fontWeight: 700, fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-              No operators match your search.
+            <p style={{ color: '#6B7280', fontWeight: 700, fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              No listed providers match your search.
             </p>
-            <p style={{ color: '#64748b', fontSize: 13, marginTop: 8 }}>
+            <p style={{ color: '#9CA3AF', fontSize: 13, marginTop: 8 }}>
               Try broadening your search or clearing filters.
             </p>
           </div>

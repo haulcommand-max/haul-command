@@ -208,7 +208,7 @@ export async function GET(req: NextRequest) {
     }
 
     // ── STEP 8: Verify Board API returns data ──
-    const boardRes = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/command/board`);
+    const boardRes = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.haulcommand.com'}/api/command/board`);
     const boardData = boardRes.ok ? await boardRes.json() : null;
 
     testResults.steps.push({

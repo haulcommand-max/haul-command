@@ -59,7 +59,7 @@ export async function POST() {
 
         // 2. Trigger the actual outbound API
         // For local / absolute routing, determine base URL
-        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.haulcommand.com';
         
         const triggerRes = await fetch(`${baseUrl}/api/livekit/outbound`, {
             method: 'POST',

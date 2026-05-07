@@ -1,0 +1,28 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "incremental": false,
+    "pretty": false
+  },
+  "include": [
+    "app/api/health/route.ts",
+    "lib/site-url.ts",
+    "lib/launch/**/*.ts",
+    "lib/stripe.ts",
+    "lib/stripe/**/*.ts",
+    "lib/firebase-admin.ts",
+    "proxy.ts",
+    "next-env.d.ts"
+  ],
+  "exclude": [
+    ".next/dev",
+    "node_modules",
+    "supabase",
+    "vendor",
+    "command-dashboard",
+    "haul-command-hub",
+    "scripts",
+    "mcp",
+    "tests"
+  ]
+}

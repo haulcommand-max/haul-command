@@ -1,3 +1,5 @@
+import { SITE_URL } from "@/lib/site-url";
+
 const required = (value: string | undefined, key: string): string => {
   if (!value) throw new Error(`Missing required env var: ${key}`);
   return value;
@@ -22,7 +24,7 @@ export const env = {
   ),
   INTERNAL_APP_BASE_URL: optional(
     process.env.INTERNAL_APP_BASE_URL,
-    "http://localhost:3000",
+    SITE_URL,
   ),
 };
 

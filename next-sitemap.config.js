@@ -29,7 +29,7 @@ module.exports = {
   },
   transform: async (config, path) => {
     // Priority overrides for money/SEO pages
-    const priorityMap: Record<string, number> = {
+    const priorityMap = {
       '/training':   0.95,
       '/directory':  0.95,
       '/loads':      0.90,
@@ -40,7 +40,7 @@ module.exports = {
       '/blog':       0.75,
     };
 
-    const changefreqMap: Record<string, string> = {
+    const changefreqMap = {
       '/loads':   'hourly',
       '/leaderboards': 'hourly',
       '/training': 'daily',

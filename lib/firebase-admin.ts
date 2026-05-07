@@ -1,38 +1,5 @@
-// =====================================================================
-// Haul Command — Firebase Admin SDK (Server-Side)
-// lib/firebase-admin.ts
-//
-// Used by edge functions and API routes to SEND push notifications
-// via Firebase Cloud Messaging (FCM). This is the server-side counterpart
-// to lib/firebase.ts (client-side).
-// =====================================================================
-
 import * as admin from 'firebase-admin';
-
-// Initialize Firebase Admin (singleton)
-if (!admin.apps.length) {
-  const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
-
-  if (serviceAccount) {
-    try {
-      admin.initializeApp({
-        credential: admin.credential.cert(JSON.parse(serviceAccount)),
-      });
-    } catch (err) {
-      console.error('[Firebase Admin] Init failed:', err);
-      // Fallback: try default credentials (for Cloud Run / GCE environments)
-      admin.initializeApp();
-    }
-  } else {
-    // No service account key — init with default credentials
-    console.warn('[Firebase Admin] No FIREBASE_SERVICE_ACCOUNT_KEY found, using default credentials');
-    admin.initializeApp();
-  }
-}
-
-const messaging = admin.messaging();
-
-// ─── Send Push Notification ──────────────────────────────────────────
+import { getFirebaseAdminStatus, isFirebaseAdminEnabled } from '@/lib/launch/production-guards';
 
 export interface PushPayload {
   title: string;
@@ -42,11 +9,51 @@ export interface PushPayload {
   clickAction?: string;
 }
 
+function initializeFirebaseAdmin(): boolean {
+  if (!isFirebaseAdminEnabled()) return false;
+  if (admin.apps.length) return true;
+
+  const rawServiceAccount =
+    process.env.FIREBASE_SERVICE_ACCOUNT_KEY || process.env.FIREBASE_SERVICE_ACCOUNT;
+
+  if (rawServiceAccount) {
+    admin.initializeApp({
+      credential: admin.credential.cert(JSON.parse(rawServiceAccount)),
+    });
+    return true;
+  }
+
+  const projectId = process.env.FIREBASE_PROJECT_ID;
+  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+  const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+
+  if (projectId && clientEmail && privateKey) {
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId,
+        clientEmail,
+        privateKey,
+      }),
+    });
+    return true;
+  }
+
+  return false;
+}
+
+function getMessaging() {
+  if (!initializeFirebaseAdmin()) return null;
+  return admin.messaging();
+}
+
 export async function sendPush(
   token: string,
-  payload: PushPayload
+  payload: PushPayload,
 ): Promise<{ success: boolean; messageId?: string; error?: string }> {
   try {
+    const messaging = getMessaging();
+    if (!messaging) return { success: false, error: getFirebaseAdminStatus() };
+
     const message: admin.messaging.Message = {
       token,
       notification: {
@@ -57,7 +64,7 @@ export async function sendPush(
       data: payload.data ?? {},
       webpush: {
         fcmOptions: {
-          link: payload.clickAction ?? 'https://haulcommand.com',
+          link: payload.clickAction ?? 'https://www.haulcommand.com',
         },
         notification: {
           icon: '/icons/hc-icon-192.png',
@@ -86,7 +93,6 @@ export async function sendPush(
     const messageId = await messaging.send(message);
     return { success: true, messageId };
   } catch (err: any) {
-    // Handle invalid token
     if (
       err.code === 'messaging/registration-token-not-registered' ||
       err.code === 'messaging/invalid-registration-token'
@@ -97,13 +103,14 @@ export async function sendPush(
   }
 }
 
-// ─── Send to Multiple Tokens ──────────────────────────────────────────
-
 export async function sendPushBatch(
   tokens: string[],
-  payload: PushPayload
+  payload: PushPayload,
 ): Promise<{ successCount: number; failureCount: number; invalidTokens: string[] }> {
   if (tokens.length === 0) return { successCount: 0, failureCount: 0, invalidTokens: [] };
+
+  const messaging = getMessaging();
+  if (!messaging) return { successCount: 0, failureCount: tokens.length, invalidTokens: [] };
 
   const message: admin.messaging.MulticastMessage = {
     tokens,
@@ -115,14 +122,14 @@ export async function sendPushBatch(
     data: payload.data ?? {},
     webpush: {
       fcmOptions: {
-        link: payload.clickAction ?? 'https://haulcommand.com',
+        link: payload.clickAction ?? 'https://www.haulcommand.com',
       },
     },
   };
 
   const response = await messaging.sendEachForMulticast(message);
-
   const invalidTokens: string[] = [];
+
   response.responses.forEach((resp, idx) => {
     if (!resp.success && resp.error) {
       if (
@@ -141,12 +148,10 @@ export async function sendPushBatch(
   };
 }
 
-// ─── Topic Messaging ──────────────────────────────────────────────────
+export async function sendToTopic(topic: string, payload: PushPayload): Promise<string> {
+  const messaging = getMessaging();
+  if (!messaging) return 'firebase_admin_disabled';
 
-export async function sendToTopic(
-  topic: string,
-  payload: PushPayload
-): Promise<string> {
   const message: admin.messaging.Message = {
     topic,
     notification: {

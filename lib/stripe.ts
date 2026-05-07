@@ -1,9 +1,12 @@
 import Stripe from 'stripe';
+import { getStripeCheckoutBlockReason } from '@/lib/launch/production-guards';
 
 let _stripe: Stripe | null = null;
 
 export function getStripe(): Stripe {
   if (!_stripe) {
+    const blockReason = getStripeCheckoutBlockReason();
+    if (blockReason) throw new Error(`Stripe checkout unavailable: ${blockReason}`);
     const key = process.env.STRIPE_SECRET_KEY;
     if (!key) throw new Error('STRIPE_SECRET_KEY is not set');
     _stripe = new Stripe(key);

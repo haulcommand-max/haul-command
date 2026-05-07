@@ -1,0 +1,174 @@
+(node:1347064) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/PC%20User/Biz/tailwind.config.ts?id=1777696013984 is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\PC User\Biz\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3005". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+⨯ The requested resource isn't a valid image for /brand/haul-command-logo.png received null
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⚠ Blocked cross-origin request to Next.js dev resource /_next/webpack-hmr from "127.0.0.1".
+Cross-origin access to Next.js dev resources is blocked by default for safety.
+
+To allow this host in development, add it to "allowedDevOrigins" in next.config.js and restart the dev server:
+
+// next.config.js
+module.exports = {
+  allowedDevOrigins: ['127.0.0.1'],
+}
+
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+⨯ The requested resource isn't a valid image for /brand/haul-command-logo.png received null
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⨯ The requested resource isn't a valid image for /brand/haul-command-logo.png received null
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⨯ The requested resource isn't a valid image for /brand/haul-command-logo.png received null
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⨯ The requested resource isn't a valid image for /brand/haul-command-logo.png received null
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⨯ The requested resource isn't a valid image for /brand/haul-command-logo.png received null
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⨯ The requested resource isn't a valid image for /brand/haul-command-logo.png received null
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3005". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⨯ The requested resource isn't a valid image for /brand/haul-command-logo.png received null
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⨯ The requested resource isn't a valid image for /brand/haul-command-logo.png received null
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⨯ The requested resource isn't a valid image for /brand/haul-command-logo.png received null
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⨯ The requested resource isn't a valid image for /brand/haul-command-logo.png received null
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⨯ The requested resource isn't a valid image for /brand/haul-command-logo.png received null
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⨯ The requested resource isn't a valid image for /brand/haul-command-logo.png received null
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3005". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3005". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3005". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⨯ The requested resource isn't a valid image for /brand/haul-command-logo.png received null
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⨯ The requested resource isn't a valid image for /brand/haul-command-logo.png received null
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}
+⨯ The requested resource isn't a valid image for /brand/haul-command-logo.png received null
+getDirectoryListings error: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not find the table 'public.directory_listings' in the schema cache"
+}

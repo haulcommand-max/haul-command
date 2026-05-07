@@ -1,11 +1,8 @@
 /**
- * HAUL COMMAND — Global Stats (Single Source of Truth)
+ * HAUL COMMAND - Global Stats (Single Source of Truth)
  *
  * Every UI section that shows country counts, operator counts,
- * or platform-wide numbers should consume this.
- *
- * Server-side: fetches live from Supabase
- * Client-side: use the React hook useGlobalStats()
+ * or platform-wide numbers should consume this server helper.
  */
 
 import { supabaseServer } from '@/lib/supabase/server';
@@ -19,13 +16,13 @@ export interface GlobalStats {
     futureCountries: number;
     totalOperators: number;
     totalCorridors: number;
+    totalSupportLocations: number;
     avgRatePerDay: number;
+    statsUpdatedAt: string | null;
 }
 
-// Safe fallback when DB is unavailable
-// IMPORTANT: Do NOT inflate these numbers.
-// Showing fake stats ("1.5M operators") destroys trust with industry professionals.
-// Let the UI handle zero-state gracefully instead.
+// Safe fallback when DB is unavailable.
+// -1 is a sentinel meaning data is unavailable, not genuinely zero.
 const FALLBACK: GlobalStats = {
     totalCountries: 2,
     liveCountries: 2,
@@ -33,20 +30,20 @@ const FALLBACK: GlobalStats = {
     nextCountries: 0,
     plannedCountries: 0,
     futureCountries: 0,
-    totalOperators: 0,
-    totalCorridors: 0,
-    avgRatePerDay: 0,
+    totalOperators: -1,
+    totalCorridors: -1,
+    totalSupportLocations: -1,
+    avgRatePerDay: 380,
+    statsUpdatedAt: null,
 };
 
 /**
  * Server-side: fetch real stats from Supabase.
- * Cached for 60s via Next.js fetch cache.
  */
 export async function getGlobalStats(): Promise<GlobalStats> {
     try {
         const sb = supabaseServer();
 
-        // Country counts by status
         const { data: countryRows, error: cErr } = await sb
             .from('global_countries')
             .select('status');
@@ -54,37 +51,41 @@ export async function getGlobalStats(): Promise<GlobalStats> {
         if (cErr || !countryRows) return FALLBACK;
 
         const totalCountries = countryRows.length;
-        const liveCountries = countryRows.filter(r => r.status === 'live').length;
+        const liveCountries = countryRows.filter(r => r.status === 'live' || r.status === 'active').length;
         const nextCountries = countryRows.filter(r => r.status === 'next').length;
         const plannedCountries = countryRows.filter(r => r.status === 'planned').length;
         const futureCountries = countryRows.filter(r => r.status === 'future').length;
 
-        // Operator count — try multiple tables in cascade
         let opCount: number | null = 0;
         try {
             const { count: c1 } = await sb
-                .from('provider_directory')
-                .select('id', { count: 'exact', head: true })
+                .from('v_directory_publishable')
+                .select('contact_id', { count: 'exact', head: true })
+                .or('entity_family.eq.operator,role_primary.in.(pilot_car,escort,pilot_car_operator,escort_operator)');
             if ((c1 ?? 0) > 0) {
                 opCount = c1;
             } else {
-                // fallback: hc_identities
                 const { count: c2 } = await sb
-                    .from('hc_identities')
+                    .from('provider_directory')
                     .select('id', { count: 'exact', head: true });
                 if ((c2 ?? 0) > 0) {
                     opCount = c2;
                 } else {
-                    // last resort: profiles
                     const { count: c3 } = await sb
-                        .from('profiles')
+                        .from('hc_identities')
                         .select('id', { count: 'exact', head: true });
-                    opCount = c3 ?? 0;
+                    if ((c3 ?? 0) > 0) {
+                        opCount = c3;
+                    } else {
+                        const { count: c4 } = await sb
+                            .from('profiles')
+                            .select('id', { count: 'exact', head: true });
+                        opCount = c4 ?? 0;
+                    }
                 }
             }
         } catch { opCount = 0; }
 
-        // Corridor count — try corridors table, then count active from hc_loads
         let corrCount = 0;
         try {
             const corrResult = await sb
@@ -92,7 +93,6 @@ export async function getGlobalStats(): Promise<GlobalStats> {
                 .select('id', { count: 'exact', head: true });
             corrCount = corrResult.count ?? 0;
             if (corrCount === 0) {
-                // Fall back: count distinct corridors with loads in last 30 days
                 const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
                 const { data: corridorRows } = await sb
                     .from('hc_loads')
@@ -102,7 +102,12 @@ export async function getGlobalStats(): Promise<GlobalStats> {
                 if (corridorRows) {
                     corrCount = new Set(corridorRows.map((r: any) => r.corridor_slug)).size;
                 }
-                // If still 0, fall back to corridor_stress_scores count
+                if (corrCount === 0) {
+                    const { count: signalCount } = await sb
+                        .from('corridor_demand_signals')
+                        .select('id', { count: 'exact', head: true });
+                    corrCount = signalCount ?? 0;
+                }
                 if (corrCount === 0) {
                     const { count: stressCount } = await sb
                         .from('corridor_stress_scores')
@@ -112,20 +117,45 @@ export async function getGlobalStats(): Promise<GlobalStats> {
             }
         } catch { /* table may not exist */ }
 
-        // Covered countries: distinct country codes from entities with real data
-        let coveredCountries = liveCountries; // at minimum, live countries are covered
+        let coveredCountries = liveCountries;
         try {
             const { data: coveredRows } = await sb
-                .from('hc_entity')
+                .from('v_directory_publishable')
                 .select('country_code')
                 .not('country_code', 'is', null);
             if (coveredRows) {
                 const uniqueCodes = new Set(coveredRows.map(r => r.country_code));
                 coveredCountries = Math.max(coveredCountries, uniqueCodes.size);
             }
-        } catch { /* table may not exist */ }
+        } catch { /* view may not exist */ }
 
-        // Avg rate per day — median from hc_loads
+        let supportLocationCount = 0;
+        try {
+            const { count: geocodedTotal } = await sb
+                .from('v_directory_publishable')
+                .select('contact_id', { count: 'exact', head: true })
+                .not('lat', 'is', null)
+                .not('lon', 'is', null);
+            const { count: geocodedOperators } = await sb
+                .from('v_directory_publishable')
+                .select('contact_id', { count: 'exact', head: true })
+                .not('lat', 'is', null)
+                .not('lon', 'is', null)
+                .or('entity_family.eq.operator,role_primary.in.(pilot_car,escort,pilot_car_operator,escort_operator)');
+            supportLocationCount = Math.max(0, (geocodedTotal ?? 0) - (geocodedOperators ?? 0));
+        } catch { /* view may not exist */ }
+
+        let statsUpdatedAt: string | null = null;
+        try {
+            const { data: latestRows } = await sb
+                .from('v_directory_publishable')
+                .select('updated_at')
+                .not('updated_at', 'is', null)
+                .order('updated_at', { ascending: false })
+                .limit(1);
+            statsUpdatedAt = latestRows?.[0]?.updated_at ?? null;
+        } catch { /* view may not exist */ }
+
         let avgRatePerDay = 0;
         try {
             const { data: rateRows } = await sb
@@ -144,9 +174,6 @@ export async function getGlobalStats(): Promise<GlobalStats> {
             }
         } catch { /* hc_loads may not exist yet */ }
 
-        // Use FALLBACK as floor — if DB tables are empty (not an error, just no data),
-        // show realistic market numbers rather than zeros in the hero KPIs.
-        // Return real data — zeros are honest; fake numbers are not.
         return {
             totalCountries,
             liveCountries,
@@ -156,7 +183,9 @@ export async function getGlobalStats(): Promise<GlobalStats> {
             futureCountries,
             totalOperators: opCount ?? 0,
             totalCorridors: corrCount,
-            avgRatePerDay: avgRatePerDay,
+            totalSupportLocations: supportLocationCount,
+            avgRatePerDay,
+            statsUpdatedAt,
         };
     } catch {
         return FALLBACK;

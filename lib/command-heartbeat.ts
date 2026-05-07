@@ -15,6 +15,7 @@
 //   }
 // =====================================================================
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { getSiteUrl } from '@/lib/site-url';
 
 interface HeartbeatStartResult {
   run_id: string;
@@ -51,11 +52,7 @@ export class CommandHeartbeat {
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
 
-    this.baseUrl = options?.baseUrl ?? (
-      process.env.NEXT_PUBLIC_SITE_URL ??
-      process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` :
-      'http://localhost:3000'
-    );
+    this.baseUrl = options?.baseUrl ?? getSiteUrl();
   }
 
   /**

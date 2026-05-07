@@ -25,9 +25,7 @@ export function AccountButton() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="inline-flex h-11 w-24 animate-pulse items-center justify-center rounded-2xl border border-[#D4A348]/20 bg-black/50 px-4 sm:px-5" />
-    );
+    return null;
   }
 
   if (session) {

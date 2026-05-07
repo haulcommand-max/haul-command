@@ -27,9 +27,9 @@ export function GlobalCommandBar() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200 shadow-sm">
+    <header className="sticky top-0 z-50 w-full border-b border-[#2A1A05] bg-[#050505] shadow-[0_10px_30px_rgba(0,0,0,0.55)]">
       {/* ── Single unified row — logo left, desktop nav center, actions right ── */}
-      <div className="mx-auto flex h-14 w-full max-w-screen-2xl items-center justify-between px-4 sm:px-5 lg:h-16 lg:px-8 xl:px-10">
+      <div className="mx-auto flex h-16 w-full max-w-screen-2xl items-center justify-between px-4 sm:px-5 lg:h-[72px] lg:px-8 xl:px-10">
 
         {/* Left: Logo */}
         <Link
@@ -39,30 +39,36 @@ export function GlobalCommandBar() {
           <Image
             src={LOGO_SRC}
             alt={ALT_TEXT}
-            width={180}
-            height={40}
+            width={240}
+            height={60}
             priority
-            className="h-7 w-auto object-contain sm:h-8"
+            className="h-10 w-auto object-contain sm:h-11 lg:h-12"
           />
         </Link>
 
         {/* Center: Desktop-only nav — strictly hidden on mobile */}
-        <nav className="hidden lg:flex min-w-0 items-center gap-1 xl:gap-2" aria-label="Primary navigation">
+        <nav className="hidden lg:flex min-w-0 items-center gap-1.5 xl:gap-2" aria-label="Primary navigation">
           {COMMAND_LINKS.map((link) => {
             const isActive = pathname?.startsWith(link.href) && link.href !== "/";
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative inline-flex h-10 items-center rounded-lg px-3 text-[13px] tracking-[0.01em] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F1A91B]/50 xl:px-4 ${
+                className={`relative inline-flex h-10 items-center rounded-lg border px-3 text-[13px] font-black tracking-[0.01em] shadow-[0_8px_18px_rgba(0,0,0,0.24)] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F1A91B]/70 xl:px-4 ${
                   isActive
-                    ? "font-bold text-[#C6923A]"
-                    : "font-semibold text-gray-600 hover:text-gray-900"
+                    ? "border-[#F1A91B]/55 bg-[#F1A91B]/18 !text-[#F1A91B]"
+                    : "border-white/12 bg-white/[0.055] !text-[#F5F7FB] hover:border-[#F1A91B]/45 hover:bg-[#F1A91B]/12 hover:!text-[#F1A91B]"
                 }`}
+                style={{
+                  color: isActive ? "#F1A91B" : "#F5F7FB",
+                  backgroundColor: isActive ? "rgba(241,169,27,0.18)" : "rgba(255,255,255,0.075)",
+                  borderColor: isActive ? "rgba(241,169,27,0.62)" : "rgba(255,255,255,0.2)",
+                  textShadow: "0 1px 8px rgba(0,0,0,0.95)",
+                }}
               >
                 {link.label}
                 {link.badge && (
-                  <span className="ml-1.5 rounded bg-[#F1A91B]/10 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] text-[#C6923A]">
+                  <span className="ml-1.5 rounded bg-[#F1A91B] px-1.5 py-0.5 text-[10px] font-black uppercase tracking-[0.08em] text-black">
                     {link.badge}
                   </span>
                 )}
@@ -77,18 +83,14 @@ export function GlobalCommandBar() {
         {/* Right: Account actions + mobile hamburger */}
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <Link
-            href="/login"
-            className="hidden sm:inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 hover:text-gray-900 transition-colors"
-          >
-            Sign In
-          </Link>
-          <Link
             href="/claim"
-            className="hidden sm:inline-flex items-center px-4 py-2 bg-[#F1A91B] hover:bg-[#D4951A] text-white text-sm font-bold rounded-lg transition-colors shadow-sm"
+            className="hidden sm:inline-flex items-center rounded-lg bg-[#F1A91B] px-4 py-2 text-sm font-black text-black shadow-[0_8px_18px_rgba(0,0,0,0.24)] transition-colors hover:bg-[#D4951A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F1A91B]/70"
           >
             Claim Profile
           </Link>
-          <AccountButton />
+          <div className="hidden sm:block">
+            <AccountButton />
+          </div>
           {/* Mobile menu — ONLY renders on <lg, sole instance across the app */}
           <div className="lg:hidden">
             <HCMobileMenu mode="public" />

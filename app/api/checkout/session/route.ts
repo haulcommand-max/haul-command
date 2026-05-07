@@ -11,6 +11,8 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { getSiteUrl } from '@/lib/site-url';
+import { getStripeCheckoutBlockReason } from '@/lib/launch/production-guards';
 
 export const dynamic = 'force-dynamic';
 
@@ -55,7 +57,8 @@ export async function POST(req: NextRequest) {
             cancel_path?: string;
         };
 
-        const origin = req.headers.get('origin') ?? 'https://www.haulcommand.com';
+        const origin = (req.headers.get('origin') ?? getSiteUrl()).replace(/\/+$/, '');
+        const stripeBlockReason = getStripeCheckoutBlockReason();
 
         // Get user for pre-fill (optional)
         const supabase = createClient();
@@ -83,14 +86,15 @@ export async function POST(req: NextRequest) {
 
         // Dynamic import — graceful if stripe not installed
         const StripeModule = await import('stripe').catch(() => null);
-        if (!StripeModule || !process.env.STRIPE_SECRET_KEY) {
+        if (!StripeModule || !process.env.STRIPE_SECRET_KEY || stripeBlockReason) {
             return NextResponse.json({
                 ok: false,
-                stub: true,
-                checkout_url: `${origin}${success_path}&stub=1`,
+                payments_disabled: true,
+                reason: stripeBlockReason || 'stripe_unavailable',
+                checkout_url: `${origin}${success_path}&billing=pending`,
                 install_hint: 'Run: npm install stripe',
                 product_key,
-            });
+            }, { status: 503 });
         }
 
         const stripe = new StripeModule.default(process.env.STRIPE_SECRET_KEY);

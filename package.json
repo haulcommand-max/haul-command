@@ -11,6 +11,7 @@
         "lint": "next lint",
         "lint:mojibake": "node scripts/check-mojibake.js",
         "typecheck": "tsc --noEmit",
+        "typecheck:go-live": "tsc -p tsconfig.go-live.json --noEmit --pretty false",
         "brand:generate": "node scripts/brand/generate-assets.mjs",
         "brand:verify": "node scripts/brand/verify-assets.mjs",
         "brand:build": "npm run brand:generate && npm run brand:verify",

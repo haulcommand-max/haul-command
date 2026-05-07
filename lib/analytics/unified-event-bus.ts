@@ -142,7 +142,7 @@ async function sinkMarketSignalEngine(eventType: string, props: Record<string, u
                 keepalive: true
             }).catch(() => {});
         } else {
-            const internalUrl = process.env.INTERNAL_APP_BASE_URL || 'http://localhost:3000';
+            const internalUrl = process.env.INTERNAL_APP_BASE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://www.haulcommand.com';
             fetch(`${internalUrl}/api/events/ingest`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

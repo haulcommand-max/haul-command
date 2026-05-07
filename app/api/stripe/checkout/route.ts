@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getStripe, STRIPE_PRICE_IDS, type StripePriceKey } from '@/lib/stripe';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import { getSiteUrl } from '@/lib/site-url';
+import { getStripeCheckoutBlockReason } from '@/lib/launch/production-guards';
 
 async function getSupabaseUser() {
   const cookieStore = await cookies();
@@ -32,6 +34,13 @@ export async function POST(req: NextRequest) {
     if (!priceKey || !STRIPE_PRICE_IDS[priceKey]) {
       return NextResponse.json({ error: 'Invalid price key' }, { status: 400 });
     }
+    const stripeBlockReason = getStripeCheckoutBlockReason();
+    if (stripeBlockReason) {
+      return NextResponse.json(
+        { error: 'Checkout is temporarily unavailable.', reason: stripeBlockReason },
+        { status: 503 }
+      );
+    }
 
     const priceId = STRIPE_PRICE_IDS[priceKey];
     if (!priceId) {
@@ -56,7 +65,7 @@ export async function POST(req: NextRequest) {
     const isSubscription = priceKey.includes('monthly') || priceKey.includes('yearly');
     const checkoutMode = mode || (isSubscription ? 'subscription' : 'payment');
 
-    const origin = req.nextUrl.origin;
+    const origin = getSiteUrl();
 
     const session = await stripe.checkout.sessions.create({
       mode: checkoutMode,
