@@ -94,6 +94,20 @@ const RATE_GUIDES = [
     { title: "Night Move Premiums", body: "+$0.25-$0.50/mi" },
 ];
 
+const HERO_LOCATION_PROMPTS = [
+    "Houston TX pilot car",
+    "Ontario escort vehicle",
+    "Queensland permits",
+    "I-10 route survey",
+];
+
+const HC_ASK_PROMPTS = [
+    "What height requires an escort in Texas?",
+    "Do I need a pilot car for 14 ft wide?",
+    "What gear should an escort vehicle carry?",
+    "How do I check permit rules by country?",
+];
+
 const INDUSTRY_ARTICLES = [
     { category: "Regulations", title: "Texas Oversize Escort Requirements 2026" },
     { category: "Certification", title: "Florida FDOT Pilot Car Certification 2026" },
@@ -151,7 +165,7 @@ const FALLBACK_POSITION_CHIPS: HomepageHeroChip[] = [
 ];
 
 const DESKTOP_HERO_CHIP_SLOT_COUNT = 7;
-const MOBILE_HERO_CHIP_SLOT_COUNT = 3;
+const MOBILE_HERO_CHIP_SLOT_COUNT = 4;
 const HERO_CHIP_ROTATION_MS = 11200;
 
 function buildWeightedChipPool(roleChips: HomepageHeroChip[]) {
@@ -168,6 +182,12 @@ function buildWeightedChipPool(roleChips: HomepageHeroChip[]) {
 
 function selectHeroChips(pool: HomepageHeroChip[], offset: number, visibleCount: number) {
     return buildHeroRoleWindow(pool, offset, visibleCount);
+}
+
+function getHeroChipClassName(chip: HomepageHeroChip, index: number) {
+    const wordCount = chip.label.trim().split(/\s+/).filter(Boolean).length;
+    const compactClass = chip.label.length > 22 || wordCount > 3 ? " hc-role-window-chip-compact" : "";
+    return `hc-role-window-chip hc-role-window-chip-${index + 1}${compactClass}`;
 }
 
 /* ═══════════════════════════════════════
@@ -210,6 +230,7 @@ export default function HomeClient({
     const heroChipPool = useMemo(() => buildWeightedChipPool(heroRoleChips), [heroRoleChips]);
     const [heroChipOffset, setHeroChipOffset] = useState(0);
     const [heroChipSlotCount, setHeroChipSlotCount] = useState(DESKTOP_HERO_CHIP_SLOT_COUNT);
+    const [searchPromptIndex, setSearchPromptIndex] = useState(0);
     const activeHeroChips = useMemo(() => selectHeroChips(heroChipPool, heroChipOffset, heroChipSlotCount), [heroChipPool, heroChipOffset, heroChipSlotCount]);
     const displayRegistryOperators = totalOperators > 0 ? `${totalOperators.toLocaleString()}+` : "Data syncing";
     const registryCountries = totalCountries > 0 ? totalCountries : 120;
@@ -247,6 +268,14 @@ export default function HomeClient({
 
         return () => window.clearTimeout(timeout);
     }, [heroChipOffset, heroChipPool.length, heroChipSlotCount]);
+
+    useEffect(() => {
+        const timer = window.setInterval(() => {
+            setSearchPromptIndex((index) => (index + 1) % HERO_LOCATION_PROMPTS.length);
+        }, 2600);
+
+        return () => window.clearInterval(timer);
+    }, []);
 
     return (
         <div className="hc-homepage-shell font-[family-name:var(--font-body)] antialiased bg-transparent text-white">
@@ -491,7 +520,8 @@ export default function HomeClient({
                     position: absolute;
                     pointer-events: auto;
                     display: inline-flex;
-                    align-items: flex-start;
+                    align-items: center;
+                    justify-content: center;
                     gap: 6px;
                     max-width: min(210px, 24vw);
                     overflow: visible;
@@ -510,17 +540,25 @@ export default function HomeClient({
                     text-transform: uppercase;
                     text-shadow: 0 1px 8px rgba(0,0,0,0.90);
                     backdrop-filter: blur(4px);
+                    text-align: center;
                     opacity: 0;
                     transform: translate3d(0, 44px, 0) scale(0.985);
                     animation: hcRoleBubbleFloat 11.2s ease-in-out forwards;
                     transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
+                }
+                .hc-role-window-chip-compact {
+                    max-width: min(250px, 30vw);
+                    padding-inline: 12px;
+                    font-size: 9.5px;
+                    letter-spacing: 0.028em;
+                    line-height: 1.05;
                 }
                 .hc-role-window-chip::before {
                     content: "";
                     width: 6px;
                     height: 6px;
                     flex: 0 0 auto;
-                    margin-top: 0.2em;
+                    align-self: center;
                     border-radius: 999px;
                     background: #F1A91B;
                     box-shadow: 0 0 12px rgba(241,169,27,0.95);
@@ -531,8 +569,9 @@ export default function HomeClient({
                     overflow: hidden;
                     overflow-wrap: anywhere;
                     text-wrap: balance;
+                    text-align: center;
                     -webkit-box-orient: vertical;
-                    -webkit-line-clamp: 2;
+                    -webkit-line-clamp: 3;
                 }
                 .hc-role-window-chip:hover {
                     border-color: rgba(241,169,27,0.52);
@@ -627,6 +666,46 @@ export default function HomeClient({
                     72% { opacity: 0.84; transform: translate3d(0, -42px, 0) scale(1.01); }
                     100% { opacity: 0; transform: translate3d(0, -86px, 0) scale(1.015); }
                 }
+                @keyframes hcSearchBreath {
+                    0%, 100% { box-shadow: 0 18px 46px rgba(0,0,0,0.50), 0 0 0 1px rgba(241,169,27,0.10); }
+                    50% { box-shadow: 0 18px 52px rgba(0,0,0,0.56), 0 0 0 3px rgba(241,169,27,0.22), 0 0 34px rgba(241,169,27,0.18); }
+                }
+                @keyframes hcPromptNudge {
+                    0%, 100% { transform: translate3d(0,0,0); opacity: 0.76; }
+                    50% { transform: translate3d(0,-2px,0); opacity: 1; }
+                }
+                .hc-hero-search-form {
+                    animation: hcSearchBreath 3.8s ease-in-out infinite;
+                }
+                .hc-hero-search-field {
+                    min-height: 58px;
+                }
+                .hc-search-step-label {
+                    display: block;
+                    margin-bottom: 2px;
+                    font-size: 10px;
+                    font-weight: 900;
+                    letter-spacing: 0.12em;
+                    line-height: 1;
+                    text-transform: uppercase;
+                    color: #9a6a12;
+                }
+                .hc-search-use-hint {
+                    animation: hcPromptNudge 2.4s ease-in-out infinite;
+                }
+                .hc-ask-card {
+                    position: relative;
+                }
+                .hc-ask-card::before {
+                    content: "";
+                    position: absolute;
+                    inset: -1px;
+                    border-radius: 0.75rem;
+                    pointer-events: none;
+                    background: linear-gradient(120deg, rgba(241,169,27,0.00), rgba(241,169,27,0.24), rgba(241,169,27,0.00));
+                    opacity: 0.55;
+                    animation: hcSearchBreath 4.4s ease-in-out infinite;
+                }
                 @media (max-width: 1023px) {
                     .hc-role-window-chip {
                         max-width: min(200px, 36vw);
@@ -667,6 +746,12 @@ export default function HomeClient({
                         opacity: 0.48;
                         animation-duration: 5.3s;
                     }
+                    .hc-hero-search-form {
+                        border-radius: 18px;
+                    }
+                    .hc-hero-search-field {
+                        min-height: 62px;
+                    }
                     .hc-role-window-title {
                         display: none;
                     }
@@ -676,8 +761,14 @@ export default function HomeClient({
                         font-size: 9px;
                         letter-spacing: 0.03em;
                     }
+                    .hc-role-window-chip-compact {
+                        max-width: min(238px, 61vw);
+                        padding-inline: 10px;
+                        font-size: 8.5px;
+                        letter-spacing: 0.018em;
+                    }
                     .hc-role-window-label {
-                        -webkit-line-clamp: 2;
+                        -webkit-line-clamp: 3;
                     }
                     .hc-role-window-chip-1 {
                         left: auto;
@@ -695,7 +786,9 @@ export default function HomeClient({
                         top: 41%;
                     }
                     .hc-role-window-chip-4 {
-                        display: none;
+                        left: 10px;
+                        right: auto;
+                        top: 50%;
                     }
                     .hc-role-window-chip-5,
                     .hc-role-window-chip-6,
@@ -749,6 +842,11 @@ export default function HomeClient({
                     .hc-hero-action-zone::before {
                         animation: none !important;
                     }
+                    .hc-hero-search-form,
+                    .hc-search-use-hint,
+                    .hc-ask-card::before {
+                        animation: none !important;
+                    }
                     .hc-hero-beacon {
                         opacity: 0.28;
                     }
@@ -799,7 +897,7 @@ export default function HomeClient({
                                         <Link
                                             key={`role-window-${chip.id}-${heroChipOffset}-${index}`}
                                             href={chip.href || `/directory?q=${encodeURIComponent(chip.label)}`}
-                                            className={`hc-role-window-chip hc-role-window-chip-${index + 1}`}
+                                            className={getHeroChipClassName(chip, index)}
                                             style={{ animationDelay: `${index * 420}ms` }}
                                             title={chip.label}
                                             aria-label={`Search ${chip.label} on Haul Command`}
@@ -841,34 +939,47 @@ export default function HomeClient({
                                 <form
                                     action="/directory"
                                     method="GET"
-                                    className="w-full max-w-3xl flex flex-col sm:flex-row items-stretch bg-white rounded-lg shadow-[0_18px_46px_rgba(0,0,0,0.5)] overflow-hidden"
+                                    className="hc-hero-search-form w-full max-w-3xl flex flex-col sm:flex-row items-stretch bg-white rounded-lg overflow-hidden"
+                                    data-search="hero-directory"
                                 >
-                                    <div className="flex-[1.5] flex items-center gap-2 bg-white px-4 py-3 border-b sm:border-b-0 sm:border-r border-gray-300">
+                                    <div className="hc-hero-search-field flex-[1.35] flex items-center gap-2 bg-white px-4 py-3 border-b sm:border-b-0 sm:border-r border-gray-300">
                                         <Search className="w-5 h-5 text-[#D4A348] flex-shrink-0" />
-                                        <select name="category" className="w-full bg-transparent text-sm md:text-base text-gray-700 font-medium focus:outline-none appearance-none cursor-pointer">
-                                            <option value="">Pilot cars, escorts, permits...</option>
-                                            <option value="escort-vehicle">Escort Vehicle</option>
-                                            <option value="pilot-car">Pilot Car</option>
-                                            <option value="height-pole">Height Pole</option>
-                                            <option value="route-survey">Route Survey</option>
-                                        </select>
+                                        <label className="w-full text-left">
+                                            <span className="hc-search-step-label">1. Service</span>
+                                            <select name="category" className="w-full bg-transparent text-sm md:text-base text-gray-800 font-black focus:outline-none appearance-none cursor-pointer" aria-label="Choose heavy haul service type">
+                                                <option value="">Pilot cars, escorts, permits</option>
+                                                <option value="escort-vehicle">Escort Vehicle</option>
+                                                <option value="pilot-car">Pilot Car</option>
+                                                <option value="height-pole">Height Pole</option>
+                                                <option value="route-survey">Route Survey</option>
+                                            </select>
+                                        </label>
                                     </div>
-                                    <div className="flex-1 flex items-center gap-2 bg-white px-4 py-3 border-b sm:border-b-0 sm:border-r border-gray-300">
+                                    <div className="hc-hero-search-field flex-1 flex items-center gap-2 bg-white px-4 py-3 border-b sm:border-b-0 sm:border-r border-gray-300">
                                         <MapPin className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                                        <input
-                                            type="text"
-                                            name="q"
-                                            placeholder="City, state, or country"
-                                            className="w-full bg-transparent text-sm md:text-base text-gray-900 placeholder-gray-500 font-medium focus:outline-none"
-                                        />
+                                        <label className="w-full text-left">
+                                            <span className="hc-search-step-label">2. Where</span>
+                                            <input
+                                                type="search"
+                                                name="q"
+                                                placeholder={HERO_LOCATION_PROMPTS[searchPromptIndex]}
+                                                className="w-full bg-transparent text-sm md:text-base text-gray-900 placeholder-gray-500 font-black focus:outline-none"
+                                                aria-label="Search by city, state, corridor, or country"
+                                                autoComplete="off"
+                                            />
+                                        </label>
                                     </div>
                                     <button
                                         type="submit"
-                                        className="flex items-center justify-center bg-[#F1A91B] hover:bg-[#D4951A] !text-black font-bold text-base px-8 py-3 transition-colors outline-none focus:ring-2 focus:ring-[#C6923A] focus:ring-inset"
+                                        className="flex min-h-[58px] items-center justify-center gap-2 bg-[#F1A91B] hover:bg-[#D4951A] !text-black font-black text-base px-8 py-3 transition-colors outline-none focus:ring-2 focus:ring-[#C6923A] focus:ring-inset"
                                     >
                                         Find
+                                        <ArrowRight className="h-4 w-4" />
                                     </button>
                                 </form>
+                                <p className="hc-search-use-hint rounded-full border border-[#F1A91B]/24 bg-black/60 px-3 py-1.5 text-[11px] font-bold text-white/86 shadow-[0_8px_24px_rgba(0,0,0,0.32)]">
+                                    Start with one field. Try “{HERO_LOCATION_PROMPTS[searchPromptIndex]}” or choose a service.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -1221,19 +1332,22 @@ export default function HomeClient({
                         <p className="text-sm text-white/65 mb-6 max-w-lg mx-auto">
                             Ask about escort requirements, permit rules, and oversize load regulations. U.S. answers reference FMCSA and state DOT sources. Global answers cite official source paths when available.
                         </p>
-                        <div className="flex flex-col sm:flex-row items-stretch gap-2 max-w-xl mx-auto bg-white rounded-xl p-2 border border-gray-200 shadow-md">
-                            <div className="flex-1 flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">
+                        <form action="/search" method="GET" className="hc-ask-card flex flex-col sm:flex-row items-stretch gap-2 max-w-xl mx-auto bg-white rounded-xl p-2 border border-gray-200 shadow-md" data-search="hc-ask">
+                            <div className="relative z-10 flex-1 flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3">
                                 <HelpCircle className="w-4 h-4 text-gray-400 flex-shrink-0" />
                                 <input
-                                    type="text"
-                                    placeholder="&quot;What height requires an escort in Texas?&quot;"
+                                    type="search"
+                                    name="q"
+                                    placeholder={`"${HC_ASK_PROMPTS[searchPromptIndex % HC_ASK_PROMPTS.length]}"`}
                                     className="w-full bg-transparent text-sm text-gray-900 placeholder-gray-400 focus:outline-none"
+                                    aria-label="Ask a heavy haul question"
+                                    autoComplete="off"
                                 />
                             </div>
-                            <button className={goldButtonClass}>
+                            <button type="submit" className={`relative z-10 ${goldButtonClass}`}>
                                 Ask <ArrowRight className="w-4 h-4" />
                             </button>
-                        </div>
+                        </form>
                         <div className="flex flex-wrap justify-center gap-3 mt-4">
                             {["Escort Requirements", "OSOW Regulations", "Height/Weight Limits", "Permit Calculators", "Oversize Load Map"].map((tag) => (
                                 <span key={tag} className="px-3 py-1 text-[10px] font-bold text-gray-500 bg-white border border-gray-200 rounded-full">
