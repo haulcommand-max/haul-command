@@ -190,6 +190,55 @@ function getHeroChipClassName(chip: HomepageHeroChip, index: number) {
     return `hc-role-window-chip hc-role-window-chip-${index + 1}${compactClass}`;
 }
 
+type AuthorityProofStatProps = {
+    value: string;
+    label: string;
+    proof?: string;
+    href?: string;
+    index?: number;
+    compact?: boolean;
+};
+
+function AuthorityProofStat({ value, label, proof, href, index = 0, compact = false }: AuthorityProofStatProps) {
+    const className = [
+        "hc-authority-proof-stat group rounded-lg border border-[#D79622]/20 bg-black/32 px-3 py-3 text-center",
+        compact ? "hc-authority-proof-stat-compact" : "",
+        href ? "hover:border-[#F1A91B]/45" : "lg:border-transparent lg:bg-transparent lg:px-0 lg:py-0",
+    ].filter(Boolean).join(" ");
+    const body = (
+        <>
+            <span className="hc-authority-proof-scan" aria-hidden="true" />
+            <span className="hc-authority-proof-value block font-black leading-none text-[#F1A91B]">
+                {value}
+            </span>
+            <span className="mt-1 block text-[11px] font-semibold leading-tight text-[#E0B05C]">
+                {label}
+            </span>
+            {proof && (
+                <span className="mt-2 flex items-center justify-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-white/45">
+                    <span className="hc-authority-proof-dot" aria-hidden="true" />
+                    {proof}
+                </span>
+            )}
+            <span
+                className="hc-authority-proof-meter"
+                style={{ animationDelay: `${index * 180}ms` }}
+                aria-hidden="true"
+            />
+        </>
+    );
+
+    if (href) {
+        return (
+            <Link href={href} className={className}>
+                {body}
+            </Link>
+        );
+    }
+
+    return <div className={className}>{body}</div>;
+}
+
 /* ═══════════════════════════════════════
    COMPONENT PROPS
    ═══════════════════════════════════════ */
@@ -674,6 +723,24 @@ export default function HomeClient({
                     0%, 100% { transform: translate3d(0,0,0); opacity: 0.76; }
                     50% { transform: translate3d(0,-2px,0); opacity: 1; }
                 }
+                @keyframes hcAuthorityProofPulse {
+                    0%, 100% { border-color: rgba(215,150,34,0.20); box-shadow: 0 10px 26px rgba(0,0,0,0.20), inset 0 1px 0 rgba(255,255,255,0.04); }
+                    50% { border-color: rgba(241,169,27,0.36); box-shadow: 0 14px 34px rgba(0,0,0,0.28), 0 0 28px rgba(241,169,27,0.10), inset 0 1px 0 rgba(255,255,255,0.06); }
+                }
+                @keyframes hcAuthorityProofScan {
+                    0%, 24% { transform: translateX(-115%); opacity: 0; }
+                    38% { opacity: 0.42; }
+                    68%, 100% { transform: translateX(115%); opacity: 0; }
+                }
+                @keyframes hcAuthorityProofMeter {
+                    0% { transform: scaleX(0.18); opacity: 0.35; }
+                    45% { opacity: 0.95; }
+                    100% { transform: scaleX(1); opacity: 0.72; }
+                }
+                @keyframes hcAuthorityProofDot {
+                    0%, 100% { opacity: 0.52; box-shadow: 0 0 0 rgba(241,169,27,0.00); }
+                    50% { opacity: 1; box-shadow: 0 0 14px rgba(241,169,27,0.55); }
+                }
                 .hc-hero-search-form {
                     animation: hcSearchBreath 3.8s ease-in-out infinite;
                 }
@@ -705,6 +772,65 @@ export default function HomeClient({
                     background: linear-gradient(120deg, rgba(241,169,27,0.00), rgba(241,169,27,0.24), rgba(241,169,27,0.00));
                     opacity: 0.55;
                     animation: hcSearchBreath 4.4s ease-in-out infinite;
+                }
+                .hc-authority-proof-stat {
+                    position: relative;
+                    isolation: isolate;
+                    overflow: hidden;
+                    text-decoration: none;
+                    animation: hcAuthorityProofPulse 8s ease-in-out infinite;
+                }
+                .hc-authority-proof-stat::before {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    z-index: -1;
+                    background:
+                        radial-gradient(circle at 50% 0%, rgba(241,169,27,0.10), transparent 44%),
+                        linear-gradient(180deg, rgba(255,255,255,0.045), transparent 58%);
+                    opacity: 0.68;
+                }
+                .hc-authority-proof-scan {
+                    position: absolute;
+                    inset: 0;
+                    background: linear-gradient(90deg, transparent 8%, rgba(255,222,156,0.16) 48%, transparent 88%);
+                    transform: translateX(-115%);
+                    animation: hcAuthorityProofScan 9.5s ease-in-out infinite;
+                    pointer-events: none;
+                }
+                .hc-authority-proof-value {
+                    position: relative;
+                    font-size: 1.875rem;
+                    font-variant-numeric: tabular-nums;
+                    text-shadow: 0 0 18px rgba(241,169,27,0.22);
+                }
+                .hc-authority-proof-stat-compact .hc-authority-proof-value {
+                    font-size: 1.25rem;
+                }
+                .hc-authority-proof-meter {
+                    display: block;
+                    height: 2px;
+                    width: min(72px, 72%);
+                    margin: 10px auto 0;
+                    transform-origin: left center;
+                    border-radius: 999px;
+                    background: linear-gradient(90deg, rgba(241,169,27,0.20), rgba(241,169,27,0.86), rgba(255,255,255,0.34));
+                    animation: hcAuthorityProofMeter 1.4s cubic-bezier(0.22,1,0.36,1) both;
+                }
+                .hc-authority-proof-dot {
+                    width: 5px;
+                    height: 5px;
+                    border-radius: 999px;
+                    background: #F1A91B;
+                    animation: hcAuthorityProofDot 3.8s ease-in-out infinite;
+                }
+                @media (min-width: 640px) {
+                    .hc-authority-proof-value {
+                        font-size: 2.25rem;
+                    }
+                    .hc-authority-proof-stat-compact .hc-authority-proof-value {
+                        font-size: 1.25rem;
+                    }
                 }
                 @media (max-width: 1023px) {
                     .hc-role-window-chip {
@@ -844,7 +970,11 @@ export default function HomeClient({
                     }
                     .hc-hero-search-form,
                     .hc-search-use-hint,
-                    .hc-ask-card::before {
+                    .hc-ask-card::before,
+                    .hc-authority-proof-stat,
+                    .hc-authority-proof-scan,
+                    .hc-authority-proof-meter,
+                    .hc-authority-proof-dot {
                         animation: none !important;
                     }
                     .hc-hero-beacon {
@@ -1006,17 +1136,16 @@ export default function HomeClient({
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:block lg:space-y-5 lg:text-right">
                                 {[
-                                    { value: displayRegistryOperators, label: "Industry records indexed" },
-                                    { value: registryCountryLabel, label: "Country framework" },
-                                ].map((stat) => (
-                                    <div key={stat.label} className="rounded-lg border border-[#D79622]/20 bg-black/25 px-3 py-3 lg:border-transparent lg:bg-transparent lg:px-0 lg:py-0">
-                                        <div className="text-3xl font-black leading-none text-[#F1A91B] sm:text-4xl">
-                                            {stat.value}
-                                        </div>
-                                        <div className="mt-1 text-[11px] font-semibold leading-tight text-[#E0B05C]">
-                                            {stat.label}
-                                        </div>
-                                    </div>
+                                    { value: displayRegistryOperators, label: "Industry records indexed", proof: "Registry live" },
+                                    { value: registryCountryLabel, label: "Country framework", proof: "Global model" },
+                                ].map((stat, index) => (
+                                    <AuthorityProofStat
+                                        key={stat.label}
+                                        value={stat.value}
+                                        label={stat.label}
+                                        proof={stat.proof}
+                                        index={index}
+                                    />
                                 ))}
                             </div>
                         </div>
@@ -1074,16 +1203,20 @@ export default function HomeClient({
                         </div>
                         <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:grid-cols-4">
                             {[
-                                { value: displayRegistryOperators, label: "Listed Operators" },
-                                { value: registryCountryLabel, label: "Country Coverage Model" },
-                                { value: displayCorridors, label: corridorLabel },
-                                { value: displaySupportLocations, label: supportLocationLabel },
-                            ].map((stat) => (
-                                <Link key={stat.label} href="/directory" className="rounded-lg border border-white/10 bg-black/40 px-3 py-3 text-center hover:border-[#F1A91B]/35">
-                                    <div className="text-xl font-black text-white">{stat.value}</div>
-                                    <div className="mt-1 text-[10px] font-bold uppercase tracking-[0.1em] text-white/55">{stat.label}</div>
-                                    <span className="mt-2 block text-[10px] font-bold text-[#F1A91B]">View &rarr;</span>
-                                </Link>
+                                { value: displayRegistryOperators, label: "Listed Operators", proof: "View", href: "/directory" },
+                                { value: registryCountryLabel, label: "Country Coverage Model", proof: "Explore", href: "/directory" },
+                                { value: displayCorridors, label: corridorLabel, proof: "Corridors", href: "/corridors" },
+                                { value: displaySupportLocations, label: supportLocationLabel, proof: "Mapped", href: "/map" },
+                            ].map((stat, index) => (
+                                <AuthorityProofStat
+                                    key={stat.label}
+                                    value={stat.value}
+                                    label={stat.label}
+                                    proof={stat.proof}
+                                    href={stat.href}
+                                    index={index}
+                                    compact
+                                />
                             ))}
                         </div>
                         <p className="mt-3 text-[11px] font-semibold leading-5 text-white/45">
