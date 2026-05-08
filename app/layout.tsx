@@ -25,11 +25,20 @@ export const metadata: Metadata = {
     description: 'Autonomous Heavy Haul Network',
     url: SITE_URL,
     siteName: 'Haul Command',
-    images: [{ url: '/og-image.jpg', width: 1200, height: 630 }],
+    images: [{ url: '/brand/generated/og-1200x630.png', width: 1200, height: 630 }],
     locale: 'en_US',
     type: 'website',
   },
   manifest: '/manifest.json',
+  icons: {
+    icon: [
+      { url: '/brand/generated/favicon-16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/brand/generated/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/brand/generated/favicon-48.png', sizes: '48x48', type: 'image/png' },
+    ],
+    apple: [{ url: '/apple-icon.png', sizes: '180x180', type: 'image/png' }],
+    shortcut: ['/brand/generated/favicon-32.png'],
+  },
   // ── Google Search Console Ownership Verification ──
   // Replace with token from: GSC > Settings > Ownership verification > HTML tag
   verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION_TOKEN
@@ -44,7 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       {/* Google Tag Manager — manages GA4, ads pixels, and all tags from one UI */}
       {gtmId && <GoogleTagManager gtmId={gtmId} />}
-        <body className={`${inter.className} antialiased`} suppressHydrationWarning>
+        <body className={`${inter.className} hc-brand-site antialiased`} suppressHydrationWarning>
         <Suspense fallback={null}>
           {/* PostHog — product analytics, session replay, A/B testing */}
           <PostHogProvider>

@@ -28,9 +28,10 @@ export function HCMobileMenu({ mode = 'public' }: { mode?: 'public' | 'app' }) {
         onClick={() => setOpen(true)}
         aria-label="Open navigation menu"
         aria-expanded={open}
-        className="lg:hidden flex h-10 w-10 -mr-1 items-center justify-center rounded-xl border border-[#F1A91B]/35 bg-black/45 text-[#F1A91B] shadow-[0_8px_18px_rgba(0,0,0,0.24)] transition-colors hover:bg-[#F1A91B]/12 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F1A91B]/70"
+        className="lg:hidden inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-white/12 bg-white/[0.055] px-2.5 text-[11px] font-black text-[#F5F7FB] shadow-[0_8px_18px_rgba(0,0,0,0.22)] transition-colors hover:border-[#F1A91B]/45 hover:bg-[#F1A91B]/12 hover:text-[#F1A91B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F1A91B]/70"
       >
-        <Bars3Icon className="w-6 h-6" />
+        <Bars3Icon className="h-4 w-4" />
+        <span>More</span>
       </button>
 
       {open && (

@@ -1,7 +1,8 @@
 /**
  * lib/comms/smsFailover.ts — Haul Command SMS Fallback Logic Engine
  *
- * Philosophy: Push first. SMS only when push fails AND the event justifies the cost.
+ * Philosophy: Push first. SMS only when push fails, the user explicitly opted in,
+ * and the event is transactional enough to justify the cost.
  * This utility defines:
  *   1. PRIORITY_SMS_EVENTS — the allowlist of events that warrant SMS spend
  *   2. shouldSendSms() — evaluates whether an event + user state requires SMS
@@ -17,8 +18,6 @@ export type HcEventType =
   | 'load.match_found'
   | 'insurance.expiring_30d'
   | 'insurance.expired'
-  | 'claim.verification_required'
-  | 'claim.abandoned_7d'
   | 'escrow.payment_released'
   | 'escrow.payment_failed'
   | 'assignment.confirmed'
@@ -51,16 +50,6 @@ export const PRIORITY_SMS_EVENTS: Record<
     send_sms: true,
     cost_weight: 4,
     reason: 'Account suspension risk — operator may be operating illegally without knowing.',
-  },
-  'claim.verification_required': {
-    send_sms: true,
-    cost_weight: 3,
-    reason: 'Onboarding blocker. SMS breaks friction faster than email for new users.',
-  },
-  'claim.abandoned_7d': {
-    send_sms: false,
-    cost_weight: 2,
-    reason: 'Push retargeting handles this. SMS only if push token is missing AND value is high.',
   },
   'escrow.payment_released': {
     send_sms: true,
@@ -113,7 +102,7 @@ export function shouldSendSms(params: {
   hasDeviceToken: boolean;
   userOptedIntoSms?: boolean;
 }): boolean {
-  const { eventType, pushDelivered, hasDeviceToken, userOptedIntoSms = true } = params;
+  const { eventType, pushDelivered, hasDeviceToken, userOptedIntoSms = false } = params;
   const rule = PRIORITY_SMS_EVENTS[eventType];
   if (!rule || !rule.send_sms) return false;
   if (!userOptedIntoSms) return false;
@@ -135,8 +124,6 @@ export function buildSmsPayload(
       `HC: New load match in ${vars.region ?? 'your area'}. Open the app to accept before it expires. haulcommand.com`,
     'insurance.expired':
       `HC ALERT: Your insurance on file has expired. Your profile is now suspended. Update at haulcommand.com/dashboard`,
-    'claim.verification_required':
-      `HC: Verify your profile to start receiving load matches. Takes 2 min: haulcommand.com/claim`,
     'escrow.payment_released':
       `HC: Payment of ${vars.amount ?? 'your funds'} released. Check your account at haulcommand.com/dashboard`,
     'escrow.payment_failed':
@@ -153,8 +140,6 @@ export function buildSmsPayload(
       `HC: Your bid was accepted for ${vars.load_ref ?? 'a load'}! Confirm your route details: haulcommand.com/dashboard`,
     'insurance.expiring_30d':
       `HC: Insurance expiring in 30 days. Update before it lapses: haulcommand.com/dashboard`,
-    'claim.abandoned_7d':
-      `HC: Your profile claim is incomplete. Finish claiming to get load matches: haulcommand.com/claim`,
     'load.post_expiring_4h':
       `HC: Your load post expires in 4 hours. Extend or close it: haulcommand.com/dashboard`,
   };

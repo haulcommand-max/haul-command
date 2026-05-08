@@ -14,16 +14,16 @@ export const BRAND_NAME = "Haul Command" as const;
 export const BRAND_NAME_UPPER = "HAUL COMMAND" as const;
 
 /** Full logo (mark + wordmark), SVG — primary UI rendering */
-export const LOGO_SRC = "/brand/logo.svg" as const;
+export const LOGO_SRC = "/brand/logo-header-full.png" as const;
 
 /** Icon-only mark (hexagon badge), SVG — sidebar, mobile header */
-export const LOGO_MARK_SRC = "/brand/logo-mark.png" as const;
+export const LOGO_MARK_SRC = "/brand/logo-square.png" as const;
 
 /** Raster logo for OG/PWA/marketing (when available) */
-export const LOGO_RASTER_SRC = "/brand/haul-command-logo.png" as const;
+export const LOGO_RASTER_SRC = "/brand/haul-command-logo-real.png" as const;
 
 /** OG image source */
-export const OG_IMAGE_SRC = "/og-image.png" as const;
+export const OG_IMAGE_SRC = "/brand/generated/og-1200x630.png" as const;
 
 /** Alt text for all logo <img> tags */
 export const ALT_TEXT = "Haul Command" as const;

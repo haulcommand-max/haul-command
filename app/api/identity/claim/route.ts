@@ -36,8 +36,13 @@ export async function POST(req: Request) {
     }
 
     // ── Validate claimMethod ──
-    if (!['email', 'sms'].includes(claimMethod)) {
-      return NextResponse.json({ error: 'Invalid claimMethod. Use "email" or "sms".' }, { status: 400 });
+    // Seeded/directory claim verification stays email-first or manual-review-first.
+    // SMS is reserved for explicit opt-in transactional alerts elsewhere, not profile claim ownership.
+    if (claimMethod !== 'email') {
+      return NextResponse.json(
+        { error: 'Invalid claimMethod. Use email verification or request manual review.' },
+        { status: 400 }
+      );
     }
 
     const sb = getSupabaseAdmin();
@@ -66,12 +71,7 @@ export async function POST(req: Request) {
     }).throwOnError();
 
     // ── Verify OTP via Supabase Auth ──
-    // Both email and phone OTP verification use the same verifyOtp API.
-    // Email OTP: type = 'email'
-    // SMS OTP: type = 'sms'
-    const verifyPayload = claimMethod === 'email'
-      ? { type: 'email' as const, email: phoneOrEmail, token: verificationToken }
-      : { type: 'sms' as const, phone: phoneOrEmail, token: verificationToken };
+    const verifyPayload = { type: 'email' as const, email: phoneOrEmail, token: verificationToken };
 
     // Use an ephemeral client (not admin) so Supabase runs normal OTP validation
     const authClient = await createClient();
@@ -110,7 +110,7 @@ export async function POST(req: Request) {
       .update({
         claim_status: 'verified',
         user_id: verifiedUserId,
-        primary_trust_source: claimMethod === 'sms' ? 'Supabase SMS OTP' : 'Supabase Email OTP',
+        primary_trust_source: 'Supabase Email OTP',
         claimed_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })

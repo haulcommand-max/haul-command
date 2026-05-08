@@ -1,7 +1,7 @@
 // ══════════════════════════════════════════════════════════════
 // OUTREACH ENGINE
 // Multi-touch claim outreach with:
-//   - Escalation ladder (email -> SMS -> in_app -> voice)
+//   - Evidence-based ladder (email + in-app only for seeded claim outreach)
 //   - Fatigue limits (max 6/30d, 36h minimum gap)
 //   - Template system with variable interpolation
 //   - Kill switch and governor controls
@@ -13,7 +13,7 @@ import { sendViaSMTP, resolveProvider, type EmailEnvelope } from '@/lib/email/se
 
 // ── Types ────────────────────────────────────────────────────
 
-export type OutreachChannel = 'email' | 'sms' | 'whatsapp' | 'in_app' | 'voice';
+export type OutreachChannel = 'email' | 'whatsapp' | 'in_app' | 'voice';
 
 export interface OutreachTemplate {
     id: string;
@@ -37,80 +37,132 @@ export interface OutreachQueueItem {
 
 // ── Constants ────────────────────────────────────────────────
 
-const MAX_ATTEMPTS_30D = 6;
+const MAX_ATTEMPTS_90D = 8;
 const MIN_HOURS_BETWEEN = 36;
 
-const ESCALATION_LADDER: Array<{
+export const CLAIM_OUTREACH_LADDER: Array<{
     step: number;
     channel: OutreachChannel;
     wait_hours: number;
     template_key: string;
 }> = [
-        { step: 1, channel: 'email', wait_hours: 48, template_key: 'claim_invite_v1' },
-        { step: 2, channel: 'sms', wait_hours: 72, template_key: 'claim_reminder_v1' },
-        { step: 3, channel: 'in_app', wait_hours: 96, template_key: 'claim_banner_v1' },
-        { step: 4, channel: 'email', wait_hours: 168, template_key: 'claim_reminder_v1' },
+        { step: 1, channel: 'email', wait_hours: 48, template_key: 'ownership_invite_v1' },
+        { step: 2, channel: 'in_app', wait_hours: 72, template_key: 'claim_value_banner_v1' },
+        { step: 3, channel: 'email', wait_hours: 168, template_key: 'profile_completion_v1' },
+        { step: 4, channel: 'email', wait_hours: 336, template_key: 'local_visibility_v1' },
+        { step: 5, channel: 'in_app', wait_hours: 504, template_key: 'job_alert_eligibility_v1' },
+        { step: 6, channel: 'email', wait_hours: 720, template_key: 'report_card_v1' },
+        { step: 7, channel: 'email', wait_hours: 1440, template_key: 'market_signal_v1' },
+        { step: 8, channel: 'email', wait_hours: 2160, template_key: 'value_packet_v1' },
     ];
 
 // ── Templates ────────────────────────────────────────────────
 
-const TEMPLATES: Record<string, Record<string, OutreachTemplate>> = {
+export const CLAIM_OUTREACH_TEMPLATES: Record<string, Record<string, OutreachTemplate>> = {
     email: {
-        claim_invite_v1: {
-            id: 'email_claim_invite_v1',
+        ownership_invite_v1: {
+            id: 'email_ownership_invite_v1',
             channel: 'email',
-            subject: 'Claim your listing on Haul Command (verification link)',
+            subject: 'Confirm your Haul Command profile',
             body: `Hi,
 
-Your listing "{{surface_name}}" on Haul Command is ready to be claimed.
+Your profile "{{surface_name}}" is eligible to be claimed on Haul Command.
 
-By verifying ownership, you unlock:
+Claiming lets you confirm:
 - {{benefit_1}}
 - {{benefit_2}}
-- Full edit access to your listing
+- Job-alert preferences for your role and service area
 
-Claim now: {{claim_link}}
+Claim free: {{claim_link}}
 
-This takes less than 60 seconds.
+If this listing is wrong, you can report it from the claim page.
 
 - The Haul Command Team`,
             vars: ['surface_name', 'country', 'claim_link', 'benefit_1', 'benefit_2'],
         },
-        claim_reminder_v1: {
-            id: 'email_claim_reminder_v1',
+        profile_completion_v1: {
+            id: 'email_profile_completion_v1',
             channel: 'email',
-            subject: 'Reminder: verify ownership to unlock your listing',
+            subject: 'Add the proof fields buyers look for',
             body: `Hi,
 
-Just a reminder that "{{surface_name}}" is still unclaimed on Haul Command.
+Your Haul Command profile can become more useful when the service area, role, equipment, and contact preferences are accurate.
 
-Verify now to unlock your trust badge and visibility boost: {{claim_link}}
+Next step: confirm ownership and add the missing proof fields here:
+{{claim_link}}
 
-Verification will close on {{deadline}} if not completed.
+Haul Command does not mark a profile verified until evidence exists.
 
 - The Haul Command Team`,
-            vars: ['surface_name', 'claim_link', 'deadline'],
+            vars: ['surface_name', 'claim_link'],
         },
-    },
-    sms: {
-        claim_invite_v1: {
-            id: 'sms_claim_invite_v1',
-            channel: 'sms',
-            body: 'Haul Command: Claim "{{surface_name}}" and unlock your trust badge + visibility boost. Verify now: {{claim_short_link}}',
-            vars: ['surface_name', 'claim_short_link'],
+        local_visibility_v1: {
+            id: 'email_local_visibility_v1',
+            channel: 'email',
+            subject: 'Help buyers understand where you actually work',
+            body: `Hi,
+
+Profiles with accurate city, region, country, corridor, and service-area data are easier to route into relevant searches.
+
+Confirm "{{surface_name}}" and update your coverage here:
+{{claim_link}}
+
+- The Haul Command Team`,
+            vars: ['surface_name', 'claim_link'],
         },
-        claim_reminder_v1: {
-            id: 'sms_claim_reminder_v1',
-            channel: 'sms',
-            body: 'Reminder: "{{surface_name}}" is still unclaimed. Verify in 60 sec: {{claim_short_link}}',
-            vars: ['surface_name', 'claim_short_link'],
+        report_card_v1: {
+            id: 'email_report_card_v1',
+            channel: 'email',
+            subject: 'Build the report-card proof buyers need',
+            body: `Hi,
+
+Haul Command report cards are based on proof, not paid claims. Claim "{{surface_name}}" to start attaching service details, evidence, and future job outcomes to the right profile.
+
+Claim free: {{claim_link}}
+
+- The Haul Command Team`,
+            vars: ['surface_name', 'claim_link'],
+        },
+        market_signal_v1: {
+            id: 'email_market_signal_v1',
+            channel: 'email',
+            subject: 'Make this profile easier to match to real demand',
+            body: `Hi,
+
+Haul Command uses role, country, service area, availability, and proof fields to understand which profiles can help with real work.
+
+Confirm "{{surface_name}}" here:
+{{claim_link}}
+
+- The Haul Command Team`,
+            vars: ['surface_name', 'claim_link'],
+        },
+        value_packet_v1: {
+            id: 'email_value_packet_v1',
+            channel: 'email',
+            subject: 'Your Haul Command profile is still unclaimed',
+            body: `Hi,
+
+"{{surface_name}}" is still unclaimed. Claiming is free and gives you control over the profile data buyers use to understand your role, service area, and job-alert preferences.
+
+Claim or report this listing:
+{{claim_link}}
+
+- The Haul Command Team`,
+            vars: ['surface_name', 'claim_link'],
         },
     },
     in_app: {
-        claim_banner_v1: {
-            id: 'in_app_claim_banner_v1',
+        claim_value_banner_v1: {
+            id: 'in_app_claim_value_banner_v1',
             channel: 'in_app',
-            body: 'Claim "{{surface_name}}" to unlock edits, trust badge, and lead routing. {{claim_link}}',
+            body: 'Claim "{{surface_name}}" to confirm ownership, service area, role, and job-alert preferences. {{claim_link}}',
+            vars: ['surface_name', 'claim_link', 'benefit_1'],
+        },
+        job_alert_eligibility_v1: {
+            id: 'in_app_job_alert_eligibility_v1',
+            channel: 'in_app',
+            body: 'Complete "{{surface_name}}" so Haul Command can understand which job alerts may fit this profile. {{claim_link}}',
             vars: ['surface_name', 'claim_link', 'benefit_1'],
         },
     },
@@ -119,12 +171,12 @@ Verification will close on {{deadline}} if not completed.
 // ── Benefit mapping by surface type ──────────────────────────
 
 const BENEFITS: Record<string, [string, string]> = {
-    operator_profile: ['Rank boost + trust badge + leads', 'Priority placement in search results'],
-    port: ['Authority badge + compliance links + visibility', 'Inbound logistics routing'],
+    operator_profile: ['Service area and equipment proof', 'Job-alert preferences and role matching'],
+    port: ['Authority/source links', 'Inbound logistics routing preferences'],
     hotel: ['Crew lodging visibility + route corridor placement', 'Direct booking leads from drivers'],
     motel: ['Crew lodging visibility + route corridor placement', 'Direct booking leads from drivers'],
     facility: ['Inbound logistics listing + reviews', 'Lead routing from nearby loads'],
-    service_provider: ['Verified provider badge', 'Lead routing from operators'],
+    service_provider: ['Provider proof fields', 'Lead routing preferences'],
 };
 
 // ══════════════════════════════════════════════════════════════
@@ -208,7 +260,7 @@ export class OutreachEngine {
             if (countryCounts[cc] > limitPerCountry) continue;
 
             // Fatigue: max attempts
-            if (surface.outreach_attempts_30d >= MAX_ATTEMPTS_30D) {
+            if (surface.outreach_attempts_30d >= MAX_ATTEMPTS_90D) {
                 skippedFatigue++;
                 continue;
             }
@@ -230,16 +282,15 @@ export class OutreachEngine {
             }
 
             // Determine escalation step
-            const step = Math.min(surface.outreach_step + 1, ESCALATION_LADDER.length);
-            const ladder = ESCALATION_LADDER[step - 1];
+            const step = Math.min(surface.outreach_step + 1, CLAIM_OUTREACH_LADDER.length);
+            const ladder = CLAIM_OUTREACH_LADDER[step - 1];
             if (!ladder) continue;
 
             // Check channel availability
             if (ladder.channel === 'email' && !surface.email) continue;
-            if (ladder.channel === 'sms' && !surface.phone) continue;
 
             // Get template
-            const template = TEMPLATES[ladder.channel]?.[ladder.template_key];
+            const template = CLAIM_OUTREACH_TEMPLATES[ladder.channel]?.[ladder.template_key];
             if (!template) continue;
 
             // Queue the outreach event
@@ -305,7 +356,7 @@ export class OutreachEngine {
                     const result = await sendViaSMTP(envelope, provider);
                     if (!result.success) throw new Error(result.error);
                 }
-                // SMS/voice channels fall through to mark-as-sent (requires Twilio/Vapi)
+                // In-app/voice events are queued for their downstream transports.
 
                 await this.db.from('outreach_events').update({
                     status: 'sent',

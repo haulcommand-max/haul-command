@@ -23,13 +23,20 @@ const COMMAND_LINKS: CommandLink[] = [
   { label: "Haul Command Pro", href: "/pricing", badge: "Pro" },
 ];
 
+const MOBILE_COMMAND_LINKS: CommandLink[] = [
+  { label: "Directory", href: "/directory" },
+  { label: "Post Load", href: "/loads/post" },
+  { label: "Tools", href: "/tools" },
+  { label: "Claim", href: "/claim" },
+];
+
 export function GlobalCommandBar() {
   const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#2A1A05] bg-[#050505] shadow-[0_10px_30px_rgba(0,0,0,0.55)]">
       {/* ── Single unified row — logo left, desktop nav center, actions right ── */}
-      <div className="mx-auto flex h-16 w-full max-w-screen-2xl items-center justify-between px-4 sm:px-5 lg:h-[72px] lg:px-8 xl:px-10">
+      <div className="mx-auto flex h-16 w-full max-w-screen-2xl items-center justify-between gap-3 px-4 sm:px-5 lg:h-[72px] lg:px-8 xl:px-10">
 
         {/* Left: Logo */}
         <Link
@@ -42,12 +49,12 @@ export function GlobalCommandBar() {
             width={240}
             height={60}
             priority
-            className="h-10 w-auto object-contain sm:h-11 lg:h-12"
+            className="h-10 w-auto max-w-[132px] object-contain sm:h-11 sm:max-w-[164px] lg:h-12 lg:max-w-[190px] xl:max-w-[220px]"
           />
         </Link>
 
         {/* Center: Desktop-only nav — strictly hidden on mobile */}
-        <nav className="hidden lg:flex min-w-0 items-center gap-1.5 xl:gap-2" aria-label="Primary navigation">
+        <nav className="hidden min-w-0 items-center gap-1.5 lg:flex xl:gap-2" aria-label="Primary navigation">
           {COMMAND_LINKS.map((link) => {
             const isActive = pathname?.startsWith(link.href) && link.href !== "/";
             return (
@@ -98,6 +105,30 @@ export function GlobalCommandBar() {
         </div>
       </div>
       {/* NO horizontal pill rail — that caused the mobile overflow bug */}
+      <nav
+        className="mx-auto grid w-full max-w-screen-sm grid-cols-4 gap-1.5 px-3 pb-2 lg:hidden"
+        aria-label="Quick navigation"
+      >
+        {MOBILE_COMMAND_LINKS.map((link) => {
+          const isActive = pathname?.startsWith(link.href) && link.href !== "/";
+          const isPrimary = link.href === "/loads/post" || link.href === "/claim";
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`inline-flex h-9 min-w-0 items-center justify-center rounded-lg border px-2 text-center text-[11px] font-black tracking-[0.01em] shadow-[0_8px_18px_rgba(0,0,0,0.22)] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F1A91B]/70 ${
+                isPrimary
+                  ? "border-[#F1A91B]/65 bg-[#F1A91B] text-black hover:bg-[#D4951A]"
+                  : isActive
+                    ? "border-[#F1A91B]/55 bg-[#F1A91B]/18 text-[#F1A91B]"
+                    : "border-white/12 bg-white/[0.055] text-[#F5F7FB] hover:border-[#F1A91B]/45 hover:bg-[#F1A91B]/12 hover:text-[#F1A91B]"
+              }`}
+            >
+              <span className="truncate">{link.label}</span>
+            </Link>
+          );
+        })}
+      </nav>
     </header>
   );
 }

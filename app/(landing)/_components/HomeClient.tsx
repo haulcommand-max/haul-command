@@ -1732,7 +1732,7 @@ export default function HomeClient({
                     {/* Bottom bar */}
                     <div className="border-t border-[#D79622]/25 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
-                            <img src="/brand/logo.svg" alt="Haul Command" className="h-8 w-auto opacity-90" />
+                            <img src="/brand/logo-header-full.png" alt="Haul Command" className="h-10 w-auto opacity-90" />
                             <span className="text-xs text-white/50">&copy; {new Date().getFullYear()} Haul Command. The Operating System for Heavy Haul.</span>
                         </div>
                         <div className="flex gap-4 text-xs text-white/50">
