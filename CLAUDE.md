@@ -453,3 +453,31 @@ The CRYPTO_EXPANSION_REPORT.md and planning docs note the 57→120 expansion his
 
 ### Stale Dependencies Removed
 - `@pinecone-database/pinecone` — removed from package.json (env.example correctly marks it removed)
+
+---
+
+## 15. Haul Command Category-Killer / DA97 Rule
+
+Always upgrade. Never downgrade.
+
+Treat DA97 as the external authority scoreboard, even though the underlying goal is lawful category dominance through real utility, links, trust, data, and distribution.
+
+For every feature, route, component, table, worker, tool, or content surface added to Haul Command, enforce the 15X Authority Checklist:
+
+1. It must support a real user workflow, not just SEO.
+2. It must create or consume structured data.
+3. It must create internal-link opportunities.
+4. It must support at least one of: trust, readiness, matching, rates, credentials, equipment, payments, corridors, or AdGrid.
+5. It must include an AEO-ready answer block where applicable.
+6. It must include valid JSON-LD where applicable.
+7. It must support country/region/corridor expansion across the 120-country scope.
+8. It must expose confidence labels when data is incomplete.
+9. It must avoid thin, scraped, copied, misleading, or fake-review content.
+10. It must create a monetization path where reasonable: Fast Lane, AdGrid, affiliate, partner, RouteReady, escrow, fast pay, data/API, or verified profile.
+11. It must push users from public discovery into Haul Command-owned workflows: claim, Road Ready, credential wallet, autonomous matching, leaderboard, report cards, or verified payer.
+12. It must not create a one-off island. Shared logic must live in reusable modules.
+13. It must not weaken existing Supabase-backed systems.
+14. It must not reintroduce deprecated architecture such as Pinecone unless explicitly approved.
+15. It must make Haul Command look more like the default operating system for heavy haul support.
+
+If a feature fails this checklist, expand it until it passes.
