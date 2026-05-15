@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
+import { DirectoryBackgroundShell } from '@/components/directory/DirectoryBackgroundShell';
+import { SITE_URL } from '@/lib/site-url';
 
 // ═══════════════════════════════════════════════════════════════
 // CATEGORY DIRECTORY PAGE — /directory/category/[slug]
@@ -66,19 +68,76 @@ const CATEGORY_META: Record<
 
 const PAGE_SIZE = 36;
 
+type CategoryCoverage = {
+  category_key: string;
+  public_label: string;
+  route_slug: string;
+  ecosystem_family: string;
+  category_intent: string;
+  primary_roles: string[] | null;
+  entity_subtypes: string[] | null;
+  data_sources: string[] | null;
+  claim_route: string;
+  lead_route: string;
+  index_policy: string;
+  schema_org_type: string;
+  directory_records: number;
+  staged_pending_records: number;
+  computed_index_state: string;
+};
+
+function keywordsForCategory(category: CategoryCoverage) {
+  return [
+    category.public_label.toLowerCase(),
+    ...((category.primary_roles ?? []).slice(0, 8).map((role) => role.replace(/_/g, ' '))),
+    ...((category.entity_subtypes ?? []).slice(0, 8).map((subtype) => subtype.replace(/_/g, ' '))),
+  ];
+}
+
+function canIndexCategory(category: CategoryCoverage) {
+  if (category.index_policy.includes('noindex') || category.index_policy.includes('manual_review')) {
+    return false;
+  }
+  return category.computed_index_state === 'indexable_global';
+}
+
+async function getCategoryCoverage(slug: string) {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from('v_hc_directory_category_coverage')
+    .select('*')
+    .eq('route_slug', slug)
+    .maybeSingle();
+
+  return data as CategoryCoverage | null;
+}
+
 export async function generateStaticParams() {
-  return Object.keys(CATEGORY_META).map((slug) => ({ slug }));
+  const supabase = createClient();
+  const { data } = await supabase
+    .from('hc_directory_category_registry')
+    .select('route_slug')
+    .eq('active', true);
+
+  return (data ?? Object.keys(CATEGORY_META).map((slug) => ({ route_slug: slug })))
+    .map((category: any) => ({ slug: category.route_slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const meta = CATEGORY_META[slug];
-  if (!meta) return {};
+  const category = await getCategoryCoverage(slug);
+  if (!category) return {};
+  const index = canIndexCategory(category);
+
   return {
-    title: `${meta.label} Directory | Haul Command`,
-    description: meta.description,
-    alternates: { canonical: `https://haulcommand.com/directory/category/${slug}` },
-    keywords: meta.keywords,
+    title: `${category.public_label} Directory | Haul Command`,
+    description: category.category_intent,
+    alternates: { canonical: `${SITE_URL}/directory/category/${slug}` },
+    keywords: keywordsForCategory(category),
+    robots: {
+      index,
+      follow: true,
+    },
   };
 }
 
@@ -87,8 +146,8 @@ export const revalidate = 3600; // ISR — revalidate every hour
 export default async function CategoryDirectoryPage({ params, searchParams }: Props) {
   const { slug } = await params;
   const sp = await searchParams;
-  const meta = CATEGORY_META[slug];
-  if (!meta) notFound();
+  const category = await getCategoryCoverage(slug);
+  if (!category) notFound();
 
   const country = (sp.country ?? 'us').toUpperCase();
   const state = sp.state?.toUpperCase();
@@ -97,35 +156,65 @@ export default async function CategoryDirectoryPage({ params, searchParams }: Pr
 
   const supabase = createClient();
 
-  // Query hc_places by category key
-  let placesQuery = supabase
-    .from('hc_places')
-    .select('id, slug, name, locality, admin1_code, country_code, phone, claim_status, demand_score', {
-      count: 'exact',
-    })
-    .eq('status', 'published')
-    .eq('is_search_indexable', true)
-    .eq('surface_category_key', meta.supabaseKey)
-    .eq('country_code', country);
+  const entitySubtypes = category.entity_subtypes ?? [];
+  let total = 0;
+  let operators: Array<{
+    id: string;
+    slug: string | null;
+    name: string;
+    city: string | null;
+    state: string | null;
+    country: string | null;
+    claimed: boolean;
+    demandScore: number;
+    label: string | null;
+  }> = [];
 
-  if (state) placesQuery = placesQuery.eq('admin1_code', state);
+  if (entitySubtypes.length > 0) {
+    let entityQuery = supabase
+      .from('v_hc_directory_active')
+      .select('id, slug, name, display_name, city, admin1_code, country_code, claim_status, confidence_score, trust_score, public_url, entity_subtype_label', {
+        count: 'exact',
+      })
+      .in('entity_subtype', entitySubtypes)
+      .eq('country_code', country);
 
-  placesQuery = placesQuery
-    .order('demand_score', { ascending: false, nullsFirst: false })
-    .range(offset, offset + PAGE_SIZE - 1);
+    if (state) entityQuery = entityQuery.eq('admin1_code', state);
 
-  const { data: places, count: total } = await placesQuery;
+    entityQuery = entityQuery
+      .order('trust_score', { ascending: false, nullsFirst: false })
+      .order('confidence_score', { ascending: false, nullsFirst: false })
+      .range(offset, offset + PAGE_SIZE - 1);
 
-  const operators = (places ?? []).map((p: any) => ({
-    id: p.id,
-    slug: p.slug,
-    name: p.name,
-    city: p.locality,
-    state: p.admin1_code,
-    country: p.country_code,
-    claimed: p.claim_status === 'claimed',
-    demandScore: p.demand_score ?? 0,
-  }));
+    const { data: entities, count } = await entityQuery;
+    total = count ?? 0;
+
+    operators = (entities ?? []).map((entity: any) => ({
+      id: entity.id,
+      slug: entity.slug ?? entity.public_url ?? entity.id,
+      name: entity.display_name || entity.name || 'Directory listing',
+      city: entity.city,
+      state: entity.admin1_code,
+      country: entity.country_code,
+      claimed: entity.claim_status === 'claimed' || entity.claim_status === 'verified',
+      demandScore: entity.trust_score ?? entity.confidence_score ?? 0,
+      label: entity.entity_subtype_label ?? null,
+    }));
+  }
+
+  const { data: relatedCategoriesRaw } = await supabase
+    .from('v_hc_directory_category_coverage')
+    .select('route_slug, public_label, ecosystem_family, directory_records')
+    .eq('ecosystem_family', category.ecosystem_family)
+    .neq('route_slug', slug)
+    .order('directory_records', { ascending: false })
+    .limit(8);
+
+  const relatedCategories = (relatedCategoriesRaw ?? []) as Array<{
+    route_slug: string;
+    public_label: string;
+    directory_records: number;
+  }>;
 
   const totalPages = Math.ceil((total ?? 0) / PAGE_SIZE);
 
@@ -133,13 +222,13 @@ export default async function CategoryDirectoryPage({ params, searchParams }: Pr
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Directory', item: 'https://haulcommand.com/directory' },
-      { '@type': 'ListItem', position: 2, name: meta.label, item: `https://haulcommand.com/directory/category/${slug}` },
+      { '@type': 'ListItem', position: 1, name: 'Directory', item: `${SITE_URL}/directory` },
+      { '@type': 'ListItem', position: 2, name: category.public_label, item: `${SITE_URL}/directory/category/${slug}` },
     ],
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <DirectoryBackgroundShell>
       <SchemaGenerator type="BreadcrumbList" data={breadcrumbSchema} />
 
       {/* Header */}
@@ -149,15 +238,16 @@ export default async function CategoryDirectoryPage({ params, searchParams }: Pr
           <nav className="flex items-center gap-2 mb-4 text-xs text-gray-600">
             <Link href="/directory" className="hover:text-amber-400 transition-colors">Directory</Link>
             <span>/</span>
-            <span className="text-gray-400">{meta.label}</span>
+            <span className="text-gray-400">{category.public_label}</span>
           </nav>
 
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-bold mb-2">{meta.label}</h1>
-              <p className="text-gray-500 max-w-2xl">{meta.description}</p>
+              <h1 className="text-3xl font-bold mb-2">{category.public_label}</h1>
+              <p className="text-gray-500 max-w-2xl">{category.category_intent}</p>
               <p className="text-sm text-gray-600 mt-2">
-                {(total ?? 0).toLocaleString()} verified providers · Browse by location below
+                {(total ?? 0).toLocaleString()} source-backed listings for {country}
+                {category.staged_pending_records > 0 ? ` · ${category.staged_pending_records.toLocaleString()} staged records pending` : ''}
               </p>
             </div>
           </div>
@@ -189,7 +279,7 @@ export default async function CategoryDirectoryPage({ params, searchParams }: Pr
               {operators.map((op) => (
                 <Link
                   key={op.id}
-                  href={`/directory/profile/${op.slug ?? op.id}`}
+                  href={`/directory/dossier/${op.slug ?? op.id}`}
                   className="group flex flex-col gap-2 p-5 bg-white/5 border border-white/8 rounded-2xl hover:border-amber-500/30 hover:bg-amber-500/5 transition-all"
                 >
                   <div className="flex items-start justify-between gap-2">
@@ -209,9 +299,10 @@ export default async function CategoryDirectoryPage({ params, searchParams }: Pr
                   <p className="text-xs text-gray-500">
                     {[op.city, op.state, op.country].filter(Boolean).join(', ')}
                   </p>
+                  {op.label ? <p className="text-[11px] text-gray-600">{op.label}</p> : null}
                   {!op.claimed && (
                     <p className="text-xs text-amber-500/70 mt-1">
-                      Is this your business?{' '}
+                      Operate or steward this listing?{' '}
                       <span className="font-bold text-amber-500 group-hover:underline">Claim it free →</span>
                     </p>
                   )}
@@ -247,16 +338,27 @@ export default async function CategoryDirectoryPage({ params, searchParams }: Pr
         ) : (
           <div className="text-center py-20">
             <p className="text-gray-500 mb-4">
-              No {meta.label.toLowerCase()} listed in this region yet.
+              No {category.public_label.toLowerCase()} listed in this region yet.
             </p>
             <Link
-              href="/claim"
+              href={category.claim_route}
               className="inline-block px-6 py-3 bg-amber-500 hover:bg-amber-400 text-black text-sm font-bold rounded-xl transition-colors"
             >
               List Your Business Free →
             </Link>
           </div>
         )}
+
+        <section className="mt-10 grid gap-3 rounded-2xl border border-white/10 bg-white/5 p-5">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-amber-400">Coverage gate</p>
+          <p className="text-sm text-gray-400">
+            Index policy: {category.index_policy}. Current state: {category.computed_index_state}.
+            Haul Command keeps thin markets useful through claim, request, and sponsor paths before broad indexation.
+          </p>
+          <p className="text-xs text-gray-600">
+            Public map data may include OpenStreetMap contributors. Listings remain unclaimed until the provider or an approved source verifies them.
+          </p>
+        </section>
 
         {/* Cross-category links */}
         <section className="mt-16">
@@ -266,16 +368,14 @@ export default async function CategoryDirectoryPage({ params, searchParams }: Pr
             <div className="h-px flex-1 bg-white/5" />
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {Object.entries(CATEGORY_META)
-              .filter(([s]) => s !== slug)
-              .map(([s, m]) => (
+            {relatedCategories.map((related) => (
                 <Link
-                  key={s}
-                  href={`/directory/category/${s}`}
+                  key={related.route_slug}
+                  href={`/directory/category/${related.route_slug}`}
                   className="group p-4 bg-white/5 border border-white/8 rounded-2xl hover:border-amber-500/30 hover:bg-amber-500/5 transition-all"
                 >
-                  <p className="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">{m.label}</p>
-                  <p className="text-xs text-gray-600 mt-1 line-clamp-1">{m.keywords[0]}</p>
+                  <p className="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">{related.public_label}</p>
+                  <p className="text-xs text-gray-600 mt-1 line-clamp-1">{related.directory_records.toLocaleString()} global records</p>
                 </Link>
               ))}
           </div>
@@ -283,26 +383,26 @@ export default async function CategoryDirectoryPage({ params, searchParams }: Pr
 
         {/* Claim CTA */}
         <div className="mt-12 p-6 bg-amber-500/10 border border-amber-500/20 rounded-2xl text-center">
-          <p className="font-bold text-white mb-2">Are you a {meta.label.toLowerCase()} provider?</p>
+          <p className="font-bold text-white mb-2">Are you the operator, steward, or authorized representative for this category?</p>
           <p className="text-sm text-gray-400 mb-4">
-            Claim your free Haul Command profile and get found by brokers and carriers searching for {meta.keywords[0]} services.
+            Claim the right listing type for your business, facility, public asset, or authority reference. Public infrastructure claims require steward or official proof.
           </p>
           <div className="flex gap-3 justify-center flex-wrap">
             <Link
-              href="/claim"
+              href={category.claim_route}
               className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm rounded-xl transition-colors"
             >
               Claim Free Listing
             </Link>
             <Link
-              href="/directory"
+              href={category.lead_route}
               className="px-6 py-2.5 border border-white/20 text-white text-sm rounded-xl hover:border-white/40 transition-colors"
             >
-              Back to Directory
+              Request Support
             </Link>
           </div>
         </div>
       </div>
-    </div>
+    </DirectoryBackgroundShell>
   );
 }

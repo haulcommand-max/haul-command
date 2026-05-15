@@ -190,7 +190,7 @@ export async function serveAds(ctx: AuctionContext): Promise<ServedAd[]> {
             .lte('start_date', new Date().toISOString());
 
         if (!campaigns || campaigns.length === 0) {
-            return getTopHouseAds(limit);
+            return getTopHouseAds(limit, { surface: ctx.zone, role: ctx.role });
         }
 
         // Score each campaign with AdRank formula
@@ -225,7 +225,7 @@ export async function serveAds(ctx: AuctionContext): Promise<ServedAd[]> {
             .sort((a: { rank: number }, b: { rank: number }) => b.rank - a.rank)
             .slice(0, limit);
 
-        if (scored.length === 0) return getTopHouseAds(limit);
+        if (scored.length === 0) return getTopHouseAds(limit, { surface: ctx.zone, role: ctx.role });
 
         return scored.map(({ c, rank }: { c: Record<string, unknown>, rank: number }) => ({
             ad_id: `${c.id}-${Date.now()}`,

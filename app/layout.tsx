@@ -9,6 +9,7 @@ import { PostHogProvider } from '@/components/analytics/PostHogProvider';
 import { GoogleTagManager } from '@next/third-parties/google';
 import { SignalGridProvider } from '@/components/telematics/SignalGridProvider';
 import { SITE_URL } from '@/lib/site-url';
+import { TopicHeroRouteSlot } from '@/components/topic-hero/TopicHeroRouteSlot';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,6 +21,7 @@ export const metadata: Metadata = {
   },
   description: "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
   keywords: ['heavy haul load board', 'pilot car directory', 'oversize load routing', 'logistics MSB settlement'],
+  alternates: { canonical: '/' },
   openGraph: {
     title: 'Haul Command Logistics OS',
     description: 'Autonomous Heavy Haul Network',
@@ -58,10 +60,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {/* PostHog — product analytics, session replay, A/B testing */}
           <PostHogProvider>
             <SignalGridProvider>
+              <DynamicBackgroundEngine />
               <PwaRegistry />
               <GlobalCommandBar />
-              <DynamicBackgroundEngine />
-              {children}
+              <div className="relative z-10 min-h-screen">
+                <TopicHeroRouteSlot />
+                {children}
+              </div>
             </SignalGridProvider>
           </PostHogProvider>
         </Suspense>

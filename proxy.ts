@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import type { NextFetchEvent, NextRequest } from 'next/server'
 import { supabaseMiddleware } from './lib/supabase/middleware'
 import { getStripeCheckoutBlockReason, isProductionRuntime } from './lib/launch/production-guards'
+import { scheduleRequestLog } from './lib/observability/request-log'
 
 const sensitiveApiPrefixes = [
   '/api/search',
@@ -12,6 +13,7 @@ const sensitiveApiPrefixes = [
   '/api/checkout',
   '/api/billing',
   '/api/livekit',
+  '/api/agents',
   '/api/reviews',
   '/api/review',
   '/api/intake',
@@ -19,11 +21,18 @@ const sensitiveApiPrefixes = [
   '/api/loads/ingest',
   '/api/loads/post',
   '/api/ai',
+  '/api/admin',
   '/api/intelligence',
   '/api/data',
+  '/api/routes',
+  '/api/v1/loads',
+  '/api/v1/entities',
+  '/api/v1/workflows',
+  '/api/v1/seo',
 ];
 
 const fallbackBuckets = new Map<string, { count: number; resetAt: number }>();
+const CANONICAL_PUBLIC_HOST = 'www.haulcommand.com';
 
 function getClientIp(request: NextRequest) {
   return (
@@ -35,6 +44,27 @@ function getClientIp(request: NextRequest) {
 
 function isSensitiveApi(pathname: string) {
   return sensitiveApiPrefixes.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+}
+
+function isAdminOrCommandPath(pathname: string) {
+  return pathname === '/admin' || pathname.startsWith('/admin/') || pathname === '/hq' || pathname.startsWith('/hq/');
+}
+
+function hostWithoutPort(request: NextRequest) {
+  return (request.headers.get('host') || '').split(':')[0].toLowerCase();
+}
+
+function isGeneratedVercelHost(request: NextRequest) {
+  return hostWithoutPort(request).endsWith('.vercel.app');
+}
+
+function withCanonicalHostPolicy(request: NextRequest, response: NextResponse) {
+  if (!isGeneratedVercelHost(request)) return response;
+
+  const canonicalUrl = new URL(request.nextUrl.pathname + request.nextUrl.search, `https://${CANONICAL_PUBLIC_HOST}`);
+  response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+  response.headers.set('Link', `<${canonicalUrl.toString()}>; rel="canonical"`);
+  return response;
 }
 
 function strictFallbackRateLimit(request: NextRequest) {
@@ -53,7 +83,9 @@ function strictFallbackRateLimit(request: NextRequest) {
   return { allowed: existing.count <= limit, remaining: Math.max(0, limit - existing.count) };
 }
 
-export async function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest, event: NextFetchEvent) {
+  scheduleRequestLog(request, event);
+
   if (isSensitiveApi(request.nextUrl.pathname)) {
     const stripeBlockReason = getStripeCheckoutBlockReason();
     const isPaymentPath =
@@ -71,24 +103,28 @@ export async function proxy(request: NextRequest) {
     if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
       const fallback = strictFallbackRateLimit(request);
       if (!fallback.allowed) {
-        return NextResponse.json(
+        return withCanonicalHostPolicy(request, NextResponse.json(
           { error: 'Too many requests. Please try again shortly.' },
           { status: 429, headers: { 'x-ratelimit-remaining': '0' } },
-        );
+        ));
       }
     }
 
-    return NextResponse.next();
+    return withCanonicalHostPolicy(request, NextResponse.next());
+  }
+
+  if (!isAdminOrCommandPath(request.nextUrl.pathname)) {
+    return withCanonicalHostPolicy(request, NextResponse.next());
   }
 
   // First, run the existing supabase auth middleware to sync cookies
   const { res, user, supabase } = await supabaseMiddleware(request);
 
-  // Check if this is a Command /hq route
-  if (request.nextUrl.pathname.startsWith('/hq')) {
+  // Check if this is a Command/admin route.
+  if (isAdminOrCommandPath(request.nextUrl.pathname)) {
     // If no user is logged in, redirect to login
     if (!user) {
-      return NextResponse.redirect(new URL('/login?next=/hq', request.url));
+      return NextResponse.redirect(new URL(`/login?next=${encodeURIComponent(request.nextUrl.pathname)}`, request.url));
     }
 
     // Role-based verification (must be a system administrator or explicit HQ team)
@@ -106,29 +142,12 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  return res;
+  return withCanonicalHostPolicy(request, res);
 }
 
-// Only match /hq routes for strict execution context.
+// Keep the proxy on public/app routes so request_log does not go blind again.
 export const config = {
   matcher: [
-    '/hq/:path*',
-    '/api/search/:path*',
-    '/api/claim/:path*',
-    '/api/claims/:path*',
-    '/api/contact/:path*',
-    '/api/stripe/:path*',
-    '/api/checkout/:path*',
-    '/api/billing/:path*',
-    '/api/livekit/:path*',
-    '/api/reviews/:path*',
-    '/api/review/:path*',
-    '/api/intake/:path*',
-    '/api/loads/create',
-    '/api/loads/ingest',
-    '/api/loads/post',
-    '/api/ai/:path*',
-    '/api/intelligence/:path*',
-    '/api/data/:path*',
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|txt|xml|json|css|js|map|woff|woff2|ttf|otf)$).*)',
   ],
 }
