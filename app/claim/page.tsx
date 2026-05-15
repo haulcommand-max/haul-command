@@ -1,13 +1,14 @@
 import { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
-import { notFound } from 'next/navigation'
 import { JsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
 import { InstantAIVerificationCard } from '@/components/support/InstantAIVerificationCard'
+import { DirectoryBackgroundShell } from '@/components/directory/DirectoryBackgroundShell'
 import { buildClaimPreviewPacket } from '@/lib/claims/claim-preview-packet'
-import { 
-  ArrowTrendingUpIcon, CheckBadgeIcon, ShieldCheckIcon, 
-  ChatBubbleLeftRightIcon, BriefcaseIcon, AcademicCapIcon,
+import { buildClaimPath, normalizeClaimParams, resolveClaimTarget } from '@/lib/claims/claim-target'
+import {
+  ArrowTrendingUpIcon, CheckBadgeIcon,
+  ChatBubbleLeftRightIcon, BriefcaseIcon,
   EyeIcon, HandRaisedIcon, ArrowPathIcon
 } from '@heroicons/react/24/outline'
 
@@ -18,19 +19,50 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic'
 
-export default async function ClaimPage({ searchParams }: { searchParams: { hcid?: string } }) {
+type ClaimSearchParams = Record<string, string | string[] | undefined>
+
+const CLAIM_HIDDEN_FIELDS = [
+  'entity',
+  'hcid',
+  'operator',
+  'eq',
+  'listing',
+  'place',
+  'surface_id',
+  'id',
+  'slug',
+  'market',
+  'country',
+  'region',
+  'plan',
+  'upgrade',
+  'tool',
+  'ref',
+  'intent',
+  'source',
+] as const
+
+export default async function ClaimPage({ searchParams }: { searchParams: ClaimSearchParams }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  const claimParams = normalizeClaimParams(searchParams)
+  const claimPath = buildClaimPath(claimParams)
+  const nextParam = encodeURIComponent(claimPath)
 
-  let operator: any = null
-  if (searchParams.hcid) {
-    const { data } = await supabase
-      .from('operators')
-      .select('id,hc_id,company_name,state,country_code,is_claimed')
-      .eq('hc_id', searchParams.hcid)
-      .single()
-    operator = data
-  }
+  const claimTarget = await resolveClaimTarget(supabase, claimParams)
+  const operator: any = claimTarget ? {
+    id: claimTarget.entityId,
+    hc_id: claimTarget.raw.hc_id ?? (claimTarget.targetParam === 'hcid' ? claimTarget.targetValue : undefined),
+    company_name: claimTarget.name,
+    state: claimTarget.region,
+    country_code: claimTarget.countryCode,
+    is_claimed: claimTarget.isClaimed,
+    source_table: claimTarget.sourceTable,
+    entity_type: claimTarget.entityType,
+    claim_type: claimTarget.claimType,
+    accepted_claim_actor: claimTarget.acceptedClaimActor,
+    required_claim_proof: claimTarget.requiredClaimProof,
+  } : null
 
   const claimPacket = operator ? buildClaimPreviewPacket({
     name: operator.company_name,
@@ -44,7 +76,7 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
   return (
     <>
       <JsonLd data={schema}/>
-      <div className=" bg-[#07090d] text-[#f0f2f5] min-h-screen">
+      <DirectoryBackgroundShell className="text-[#f0f2f5]">
         <div className="px-4 lg:px-10 py-12 max-w-2xl mx-auto pb-32">
 
           {/* HEADER */}
@@ -63,11 +95,11 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
             }`}>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-[#141e28] flex items-center justify-center text-sm font-bold text-[#8ab0d0]">
-                  {(operator.company_name??'O').split(' ').map((w:string)=>w[0]).join('').slice(0,2)}
+                  {(operator.company_name ?? 'O').split(' ').map((w:string)=>w[0]).join('').slice(0,2)}
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-[#f0f2f5]">{operator.company_name}</p>
-                  <p className="text-[10px] text-[#566880] font-mono">{operator.hc_id} · {[operator.state,operator.country_code].filter(Boolean).join(', ')}</p>
+                  <p className="text-sm font-bold text-[#f0f2f5]">{operator.company_name ?? 'Directory listing'}</p>
+                  <p className="text-[10px] text-[#566880] font-mono">{[operator.hc_id, operator.state, operator.country_code].filter(Boolean).join(' - ')}</p>
                 </div>
                 <div className="ml-auto">
                   {operator.is_claimed
@@ -77,7 +109,7 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
                 </div>
               </div>
               {operator.is_claimed ? (
-                <p className="text-xs text-[#22c55e] mt-4 font-semibold">✔ This profile has already been claimed. <Link href="/support" className="underline hover:text-white">Contact support</Link> if this is yours.</p>
+                <p className="text-xs text-[#22c55e] mt-4 font-semibold">This profile has already been claimed. <Link href="/support" className="underline hover:text-white">Contact support</Link> if this is yours.</p>
               ) : (
                 <div className="mt-5 border-t border-[#d4950e20] pt-4">
                   {claimPacket && (
@@ -85,6 +117,22 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
                       <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#d4950e]">{claimPacket.roleLabel}</p>
                       <p className="mt-1 text-xs font-semibold text-white">{claimPacket.headline}</p>
                       <p className="mt-1 text-[11px] leading-relaxed text-[#8a9ab0]">{claimPacket.summary}</p>
+                    </div>
+                  )}
+                  {operator.claim_type && (
+                    <div className="mb-4 rounded-xl border border-[#1e3048] bg-[#07111a] p-3">
+                      <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#8ab0d0]">Required claim path</p>
+                      <p className="mt-1 text-xs font-semibold text-white">{operator.claim_type.replace(/_/g, ' ')}</p>
+                      {operator.accepted_claim_actor && (
+                        <p className="mt-1 text-[11px] leading-relaxed text-[#8a9ab0]">
+                          Accepted actor: {operator.accepted_claim_actor.replace(/_/g, ' ')}.
+                        </p>
+                      )}
+                      {operator.required_claim_proof?.length ? (
+                        <p className="mt-1 text-[11px] leading-relaxed text-[#8a9ab0]">
+                          Proof: {operator.required_claim_proof.join(', ')}.
+                        </p>
+                      ) : null}
                     </div>
                   )}
                   <div className="grid grid-cols-3 gap-2">
@@ -147,12 +195,12 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
             <div className="flex flex-col gap-3">
               {!user ? (
                 <>
-                  <Link href={`/sign-up?next=/claim${searchParams.hcid?`?hcid=${searchParams.hcid}`:''}`}
+                  <Link href={`/auth/register?next=${nextParam}`}
                     className="relative group bg-gradient-to-r from-[#d4950e] to-[#c4850e] text-white font-black uppercase tracking-widest py-4 rounded-xl text-sm text-center transition-all shadow-[0_0_20px_rgba(212,149,14,0.3)] hover:shadow-[0_0_30px_rgba(212,149,14,0.5)] overflow-hidden">
-                    <span className="relative z-10">Claim My Profile — Free</span>
+                    <span className="relative z-10">Claim My Profile - Free</span>
                     <div className="absolute inset-0 bg-white/20 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300" />
                   </Link>
-                  <Link href={`/sign-in?next=/claim${searchParams.hcid?`?hcid=${searchParams.hcid}`:''}`}
+                  <Link href={`/login?next=${nextParam}`}
                     className="border border-[#1e3048] text-[#8a9ab0] font-bold hover:text-white hover:bg-white/5 py-4 rounded-xl text-sm text-center transition-all">
                     I Already Have an Account
                   </Link>
@@ -160,10 +208,18 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
               ) : (
                 <form action="/api/claim/submit" method="POST" className="bg-[#0f1a24] border border-[#1e3048] p-6 rounded-2xl">
                   <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-widest border-b border-white/[0.05] pb-3">Final Verification Step</h3>
-                  {searchParams.hcid && <input type="hidden" name="hcid" value={searchParams.hcid}/>}
+                  {CLAIM_HIDDEN_FIELDS.map((field) => (
+                    claimParams[field] ? <input key={field} type="hidden" name={field} value={claimParams[field]} /> : null
+                  ))}
+                  {claimTarget?.entityId && <input type="hidden" name="claim_entity_id" value={claimTarget.entityId} />}
+                  {claimTarget?.entityType && <input type="hidden" name="claim_entity_type" value={claimTarget.entityType} />}
+                  {claimTarget?.sourceTable && <input type="hidden" name="claim_source_table" value={claimTarget.sourceTable} />}
+                  {claimTarget?.countryCode && <input type="hidden" name="country_code" value={claimTarget.countryCode} />}
+                  {claimTarget?.claimType && <input type="hidden" name="claim_type" value={claimTarget.claimType} />}
+                  {claimTarget?.acceptedClaimActor && <input type="hidden" name="accepted_claim_actor" value={claimTarget.acceptedClaimActor} />}
                   <input type="hidden" name="user_id" value={user.id}/>
 
-                  <InstantAIVerificationCard hcid={searchParams.hcid} companyName={operator?.company_name} />
+                  <InstantAIVerificationCard hcid={claimParams.hcid} companyName={operator?.company_name} />
 
                   <div className="mb-4">
                     <label className="block text-[10px] text-[#8a9ab0] mb-1.5 font-bold tracking-widest uppercase">Company Name <span className="text-red-400">*</span></label>
@@ -185,17 +241,17 @@ export default async function ClaimPage({ searchParams }: { searchParams: { hcid
           )}
 
           {/* SEARCH YOUR LISTING */}
-          {!searchParams.hcid && (
+          {!claimTarget && (
             <div className="mt-8 pt-8 border-t border-[#1e3048]">
               <p className="text-[10px] font-black tracking-[0.1em] uppercase text-[#8a9ab0] mb-3">Find Your Profile</p>
               <form action="/claim" method="GET" className="flex gap-2">
-                <input name="hcid" placeholder="Enter HC ID (e.g. HC-TX-123)" className="flex-1 bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-3 text-sm text-white placeholder-[#3a5068] focus:border-[#d4950e] outline-none transition-all"/>
+                <input name="operator" placeholder="Enter HC ID, slug, or listing ID" className="flex-1 bg-[#0f1a24] border border-[#1e3048] rounded-xl px-4 py-3 text-sm text-white placeholder-[#3a5068] focus:border-[#d4950e] outline-none transition-all"/>
                 <button type="submit" className="bg-[#1e3048] hover:bg-[#2a4060] text-white font-bold px-5 py-3 rounded-xl text-sm transition-colors">Search</button>
               </form>
             </div>
           )}
         </div>
-      </div>
+      </DirectoryBackgroundShell>
     </>
   )
 }

@@ -18,6 +18,35 @@ import {
 
 export const dynamic = 'force-dynamic';
 
+const DIRECTORY_DOSSIER_SURFACES = [
+  'v_hc_directory_active',
+  'v_directory_operators',
+  'v_directory_support_locations',
+  'v_directory_services',
+  'v_directory_brokers',
+  'v_directory_carriers',
+  'v_directory_infrastructure',
+  'v_directory_authorities',
+] as const;
+
+function normalizeDossierRecord(record: any) {
+  if (!record) return null;
+  return {
+    ...record,
+    contact_id: record.contact_id ?? record.id,
+    company: record.company ?? record.company_name ?? record.public_label ?? record.display_name ?? record.name,
+    state_inferred: record.state_inferred ?? record.state ?? record.admin1_code,
+    city_inferred: record.city_inferred ?? record.city,
+    role_primary: record.role_primary ?? record.primary_role,
+    entity_family: record.entity_family,
+    entity_subtype: record.entity_subtype,
+  };
+}
+
+function ratingText(value: number | null | undefined) {
+  return value ? `${Number(value).toFixed(1)} / 5` : 'Needs report';
+}
+
 // ── Proof state badge ────────────────────────────────────────────────────────
 function ProofBadge({ state }: { state: ProofState }) {
   return (
@@ -79,12 +108,22 @@ export default async function DossierPage({ params }: { params: { id: string } }
 
   let operator: any = null;
   try {
-    const { data } = await supabase
-      .from('v_directory_publishable')
-      .select('*')
-      .eq('contact_id', id)
-      .single();
-    operator = data;
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+
+    for (const surface of DIRECTORY_DOSSIER_SURFACES) {
+      let query = supabase.from(surface).select('*').limit(1);
+      query = isUuid ? query.eq('id', id) : query.eq('slug', id);
+
+      const { data, error } = await query.maybeSingle();
+      if (error) {
+        console.warn(`[dossier] ${surface} query failed for id:`, id, error.message);
+        continue;
+      }
+      if (data) {
+        operator = normalizeDossierRecord(data);
+        break;
+      }
+    }
   } catch (e) {
     console.warn('[dossier] Query failed for id:', id, e);
   }
@@ -102,6 +141,20 @@ export default async function DossierPage({ params }: { params: { id: string } }
         </div>
       </HCContentPageShell>
     );
+  }
+
+  let infrastructureReadiness: any = null;
+  if (operator.entity_family === 'infrastructure' || ['rest_area', 'weigh_station', 'truck_parking', 'port', 'rail_intermodal', 'border_crossing', 'tunnel', 'tunnel_authority'].includes(operator.entity_subtype)) {
+    try {
+      const { data } = await supabase
+        .from('v_hc_public_infrastructure_readiness')
+        .select('*')
+        .eq('entity_id', operator.contact_id)
+        .maybeSingle();
+      infrastructureReadiness = data;
+    } catch (e) {
+      console.warn('[dossier] Infrastructure readiness query failed for id:', id, e);
+    }
   }
 
   // ── Resolve location — NEVER default to US ──────────────────────────────
@@ -225,7 +278,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
             </div>
 
             <div className="flex gap-3 flex-shrink-0">
-              <Link href={`/auth/signup?intent=dispatch&target=${id}`}
+              <Link href={`/auth/register?intent=dispatch&target=${id}`}
                 className="hc-btn-primary px-6 py-3 rounded-xl flex items-center gap-2">
                 <Navigation className="w-4 h-4" />
                 Request Dispatch
@@ -308,6 +361,48 @@ export default async function DossierPage({ params }: { params: { id: string } }
               )}
             </div>
           </div>
+
+          {infrastructureReadiness && (
+            <div className="hc-card rounded-2xl p-6">
+              <div className="flex items-center gap-2 mb-5">
+                <MapPin className="w-5 h-5 text-[#F1A91B]" />
+                <h2 className="text-sm font-black text-white uppercase tracking-wider">Route Support Conditions</h2>
+                <span className="ml-auto text-[10px] text-amber-200/60">{infrastructureReadiness.readiness_state?.replace(/_/g, ' ')}</span>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {[
+                  ['Open status', infrastructureReadiness.open_status?.replace(/_/g, ' ') || 'unknown'],
+                  ['Safety', ratingText(infrastructureReadiness.safety_rating)],
+                  ['Cleanliness', ratingText(infrastructureReadiness.cleanliness_rating)],
+                  ['Lighting', ratingText(infrastructureReadiness.lighting_rating)],
+                  ['Wi-Fi', infrastructureReadiness.wifi_available ? 'Reported' : 'Not reported'],
+                  ['Restrooms', infrastructureReadiness.restrooms_available ? 'Reported' : 'Not reported'],
+                  ['Overnight', infrastructureReadiness.overnight_allowed ? 'Reported' : 'Not reported'],
+                  ['Security', infrastructureReadiness.security_presence?.replace(/_/g, ' ') || 'unknown'],
+                ].map(([label, value]) => (
+                  <div key={label} className="bg-white/[0.04] rounded-xl p-4 border border-white/[0.06]">
+                    <div className="text-[10px] text-amber-200/60 uppercase tracking-wider mb-1">{label}</div>
+                    <div className="text-sm font-black text-white capitalize">{value}</div>
+                  </div>
+                ))}
+              </div>
+              {(infrastructureReadiness.latest_oversized_access_notes || infrastructureReadiness.latest_hazard_notes || infrastructureReadiness.latest_amenity_notes) && (
+                <div className="mt-4 space-y-2 text-xs text-amber-100/70">
+                  {infrastructureReadiness.latest_oversized_access_notes && <p><strong className="text-white">Oversize access:</strong> {infrastructureReadiness.latest_oversized_access_notes}</p>}
+                  {infrastructureReadiness.latest_hazard_notes && <p><strong className="text-white">Hazards:</strong> {infrastructureReadiness.latest_hazard_notes}</p>}
+                  {infrastructureReadiness.latest_amenity_notes && <p><strong className="text-white">Amenities:</strong> {infrastructureReadiness.latest_amenity_notes}</p>}
+                </div>
+              )}
+              <div className="mt-4 rounded-xl border border-amber-500/20 bg-amber-500/5 p-3">
+                <p className="text-xs text-amber-100/70">
+                  Field facts are source-backed or human-reported and moderated before public display. If you operate, maintain, patrol, or officially represent this asset, claim the steward path.
+                </p>
+                <Link href={infrastructureReadiness.steward_claim_route} className="mt-3 inline-flex rounded-lg bg-[#F1A91B] px-4 py-2 text-xs font-black uppercase tracking-widest text-black">
+                  Claim or update conditions
+                </Link>
+              </div>
+            </div>
+          )}
 
           {/* 2. Compliance & Documents */}
           <div className="hc-card rounded-2xl p-6">
@@ -492,23 +587,23 @@ export default async function DossierPage({ params }: { params: { id: string } }
             <h2 className="text-xs font-black text-white uppercase tracking-wider mb-4">Action Center</h2>
             <div className="flex flex-col gap-3">
               {isClaimed ? (
-                <Link href={`/auth/signup?intent=dispatch&target=${id}`}
+                <Link href={`/auth/register?intent=dispatch&target=${id}`}
                   className="hc-btn-primary w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm">
                   <Zap className="w-4 h-4" /> Request Dispatch
                 </Link>
               ) : (
                 <>
-                  <Link href={`/claim?operator=${id}`}
+                  <Link href={`/claim?entity=${operator.contact_id || id}&operator=${id}`}
                     className="hc-btn-primary w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm">
                     <Shield className="w-4 h-4" /> Claim This Profile
                   </Link>
-                  <Link href={`/auth/signup?intent=dispatch&target=${id}`}
+                  <Link href={`/auth/register?intent=dispatch&target=${id}`}
                     className="hc-btn-secondary w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm">
                     <MessageSquare className="w-4 h-4" /> Request Quote
                   </Link>
                 </>
               )}
-              <Link href={`/directory/profile/${id}/report-card`}
+              <Link href={`/report-card/${id}`}
                 className="hc-btn-secondary w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm">
                 <FileText className="w-4 h-4" /> Full Report Card
               </Link>
@@ -566,7 +661,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
               <AlertTriangle className="w-5 h-5 text-amber-400 mb-2" />
               <p className="text-xs font-bold text-amber-300 mb-1">Is this your listing?</p>
               <p className="text-xs text-amber-100/60 mb-3">Claim it free in 60 seconds to unlock trust scores, broker leads, and verified badges.</p>
-              <Link href={`/claim?operator=${id}`} className="hc-btn-primary w-full py-2 rounded-lg flex items-center justify-center gap-2 text-xs">
+              <Link href={`/claim?entity=${operator.contact_id || id}&operator=${id}`} className="hc-btn-primary w-full py-2 rounded-lg flex items-center justify-center gap-2 text-xs">
                 Claim Free →
               </Link>
             </div>
@@ -591,7 +686,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
               <p className="text-xs text-amber-200/60">{locationDisplay} · {freshnessText}</p>
             </div>
           </div>
-          <Link href={`/auth/signup?intent=dispatch&target=${id}`}
+          <Link href={`/auth/register?intent=dispatch&target=${id}`}
             className="hc-btn-primary px-6 py-2.5 rounded-xl flex items-center gap-2 text-sm whitespace-nowrap">
             <MessageSquare className="w-4 h-4" />
             Request Live Quote
