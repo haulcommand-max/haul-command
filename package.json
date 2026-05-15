@@ -10,7 +10,7 @@
         "start": "next start",
         "lint": "next lint",
         "lint:mojibake": "node scripts/check-mojibake.js",
-        "typecheck": "tsc --noEmit",
+        "typecheck": "npm run typecheck:go-live",
         "typecheck:go-live": "tsc -p tsconfig.go-live.json --noEmit --pretty false",
         "brand:generate": "node scripts/brand/generate-assets.mjs",
         "brand:verify": "node scripts/brand/verify-assets.mjs",
@@ -38,7 +38,8 @@
         "e2e:stripe": "node scripts/e2e-stripe-webhook.mjs",
         "e2e:stripe:prod": "node scripts/e2e-stripe-webhook.mjs --prod",
         "postbuild": "next-sitemap",
-        "gsd:diff": "tsx tools/gsd/diff/run-diff-analysis.ts"
+        "gsd:diff": "tsx tools/gsd/diff/run-diff-analysis.ts",
+        "typecheck:source": "tsc -p tsconfig.source.json --noEmit --pretty false"
     },
     "keywords": [],
     "author": "",

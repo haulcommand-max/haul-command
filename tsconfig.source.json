@@ -1,0 +1,33 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "incremental": false,
+    "pretty": false
+  },
+  "include": [
+    "next-env.d.ts",
+    "tests/**/*.ts",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "lib/**/*.ts",
+    "lib/**/*.tsx",
+    "utils/**/*.ts",
+    "utils/**/*.tsx",
+    "components/**/*.ts",
+    "components/**/*.tsx",
+    "core/**/*.ts",
+    "hooks/**/*.ts",
+    "hooks/**/*.tsx",
+    "types/**/*.ts"
+  ],
+  "exclude": [
+    ".next",
+    "node_modules",
+    "supabase",
+    "vendor",
+    "command-dashboard",
+    "haul-command-hub",
+    "scripts",
+    "mcp"
+  ]
+}
