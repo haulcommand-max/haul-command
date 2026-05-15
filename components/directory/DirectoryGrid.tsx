@@ -17,7 +17,8 @@ interface DirectoryGridProps {
   targetCountry: string;
 }
 
-// Common US states for filter dropdown
+// Common US states for filter dropdown. Do not show this in global / non-US
+// directory mode because it makes the page look US-only.
 const STATE_OPTIONS = [
   'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA',
   'KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ',
@@ -25,17 +26,25 @@ const STATE_OPTIONS = [
   'VA','WA','WV','WI','WY',
 ].map(code => ({ code, name: stateFullName(code) || code }));
 
+function providerLocation(p: any, targetCountry: string): string {
+  const state = stateFullName(p.state_inferred, true) || p.state_inferred || p.state_code;
+  const country = p.country_code_inferred || p.country_code || (targetCountry !== 'GLOBAL' ? targetCountry : '');
+  return [p.city, state, country].filter(Boolean).join(', ');
+}
+
 export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) {
   const [filtered, setFiltered] = useState<any[] | null>(null);
   const displayItems = filtered ?? providers;
+  const isUsMode = targetCountry === 'US';
 
   return (
     <>
       <DirectorySearchBar
         items={providers}
         onFilter={setFiltered}
-        placeholder="Search by provider name, city, or state..."
-        stateOptions={STATE_OPTIONS}
+        placeholder="Search company, city, state/province, role, service, or support type..."
+        stateOptions={isUsMode ? STATE_OPTIONS : undefined}
+        searchFields={['company', 'name', 'company_name', 'city', 'state_inferred', 'state_code', 'country_code_inferred', 'primary_service_area', 'source']}
       />
 
       {/* Results count */}
@@ -44,16 +53,19 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
         marginBottom: 16, padding: '0 4px',
       }}>
         <span style={{ fontSize: 12, color: '#64748b', fontWeight: 600 }}>
-          {displayItems.length} listed provider{displayItems.length !== 1 ? 's' : ''} shown
+          {displayItems.length} support record{displayItems.length !== 1 ? 's' : ''} shown
           {filtered !== null && filtered.length !== providers.length && (
             <span style={{ color: '#C6923A' }}> (filtered from {providers.length})</span>
           )}
+        </span>
+        <span style={{ fontSize: 12, color: '#9CA3AF', fontWeight: 600 }}>
+          {targetCountry === 'GLOBAL' ? 'Global directory mode' : `${targetCountry} directory mode`}
         </span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {displayItems.length > 0 ? displayItems.map((p: any) => {
-          const state = stateFullName(p.state_inferred, true);
+          const location = providerLocation(p, targetCountry);
           const profileSignal = p.confidence_score || 0;
           const hasHighSignal = profileSignal > 80;
 
@@ -84,17 +96,17 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12, gap: 12 }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <h3 style={{
-                      fontSize: 18, fontWeight: 800, color: '#0056B3', // YP style blue header
+                      fontSize: 18, fontWeight: 800, color: '#0056B3',
                       letterSpacing: '-0.01em',
                       overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                       margin: '0 0 4px',
                     }}>
-                      {p.company || p.name || 'Listed Provider'}
+                      {p.company || p.name || 'Listed Support Record'}
                     </h3>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <MapPin style={{ width: 14, height: 14, color: '#6B7280' }} />
                       <span style={{ fontSize: 13, color: '#4B5563', fontWeight: 500 }}>
-                        {p.city ? `${p.city}, ` : ''}{state}
+                        {location || 'Location pending'}
                       </span>
                       {p.last_seen_at && <FreshnessBadge lastSeenAt={p.last_seen_at} />}
                     </div>
@@ -105,7 +117,7 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
                     <div style={{
                       display: 'flex', flexDirection: 'column', alignItems: 'center',
                       padding: '6px 10px', borderRadius: 8, flexShrink: 0,
-                      background: hasHighSignal ? '#FEF9C3' : '#F3F4F6', // light yellow or gray
+                      background: hasHighSignal ? '#FEF9C3' : '#F3F4F6',
                       border: `1px solid ${hasHighSignal ? '#FDE047' : '#E5E7EB'}`,
                     }}>
                       <span style={{ fontSize: 18, fontWeight: 900, color: hasHighSignal ? '#854D0E' : '#4B5563' }}>
@@ -127,6 +139,15 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
                       color: '#1D4ED8', textTransform: 'capitalize',
                     }}>
                       {typeof p.equipment_types === 'string' ? p.equipment_types.split(',')[0]?.trim() : 'Escort'}
+                    </span>
+                  )}
+                  {p.confidence_tier && (
+                    <span style={{
+                      fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 100,
+                      background: '#FFFBEB', border: '1px solid #FDE68A',
+                      color: '#92400E',
+                    }}>
+                      {p.confidence_tier}
                     </span>
                   )}
                   {p.verification_status === 'verified' && (
@@ -168,7 +189,7 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
                   href={`/auth/signup?intent=dispatch&target=${p.contact_id}`}
                   style={{
                     flex: 1.2, padding: '10px 0', borderRadius: 8, textAlign: 'center',
-                    background: '#0F52BA', // Strong YP CTA Blue
+                    background: '#0F52BA',
                     color: '#ffffff', fontSize: 13, fontWeight: 600,
                     textDecoration: 'none', transition: 'all 0.15s',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
@@ -183,15 +204,32 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
           );
         }) : (
           <div className="col-span-full" style={{
-            padding: 48, border: '1px solid #E5E7EB',
-            borderRadius: 20, textAlign: 'center', background: '#F9FAFB',
+            padding: 32, border: '1px solid #E5E7EB',
+            borderRadius: 20, textAlign: 'left', background: '#F9FAFB',
           }}>
-            <p style={{ color: '#6B7280', fontWeight: 700, fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-              No listed providers match your search.
+            <p style={{ color: '#6B7280', fontWeight: 800, fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              No support records match this search yet.
             </p>
-            <p style={{ color: '#9CA3AF', fontSize: 13, marginTop: 8 }}>
-              Try broadening your search or clearing filters.
+            <h3 style={{ color: '#111827', fontWeight: 900, fontSize: 22, marginTop: 8 }}>
+              Turn this empty result into a support packet, claim path, or market signal.
+            </h3>
+            <p style={{ color: '#6B7280', fontSize: 14, lineHeight: 1.65, marginTop: 8, maxWidth: 760 }}>
+              Haul Command should not dead-end when a role, route, city, or country is thin. Use the search as a demand signal: request help, suggest a provider, become the first verified support option, or sponsor the gap for buyers searching this moment.
             </p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link href="/loads" className="rounded-lg bg-[#0F52BA] px-4 py-2 text-sm font-bold text-white hover:bg-[#0c4296]">
+                Build support packet
+              </Link>
+              <Link href="/claim" className="rounded-lg border border-[#C6923A] bg-[#FFFBEB] px-4 py-2 text-sm font-bold text-[#854D0E] hover:bg-[#FEF3C7]">
+                Claim or add profile
+              </Link>
+              <Link href="/contact?intent=suggest-provider" className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-bold text-gray-800 hover:bg-gray-100">
+                Suggest provider
+              </Link>
+              <Link href="/advertise/buy?zone=directory_gap" className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-bold text-gray-800 hover:bg-gray-100">
+                Sponsor this gap
+              </Link>
+            </div>
           </div>
         )}
       </div>
