@@ -1,7 +1,7 @@
 'use client';
 // components/home/AdGridSlot.tsx
-// Reads from hc_adgrid_inventory via /api/adgrid/serve.
-// Shows self-serve CTA when no ad is booked.
+// Reads from /api/adgrid/serve and always leaves a monetizable fallback.
+// Paid ads win. House ads keep the slot useful when inventory is empty or AdGrid is degraded.
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
@@ -20,6 +20,45 @@ interface Ad {
   cta_label: string;
   cta_url: string;
   advertiser_name: string;
+  is_house?: boolean;
+}
+
+const CLIENT_HOUSE_ADS: Record<string, Ad> = {
+  directory_sponsor: {
+    id: 'house-directory-sponsor',
+    headline: 'Own the next heavy-haul support search',
+    body: 'Sponsor pilot car, permit, parking, repair, staging, and route-support discovery moments before a move stalls.',
+    cta_label: 'Sponsor this market',
+    cta_url: '/advertise/buy?zone=directory_sponsor',
+    advertiser_name: 'Haul Command',
+    is_house: true,
+  },
+  directory_gap: {
+    id: 'house-directory-gap',
+    headline: 'Be the first answer in a low-supply market',
+    body: 'Put your company in front of buyers searching for hard-to-find heavy-haul support by role, country, corridor, and urgency.',
+    cta_label: 'Claim the gap',
+    cta_url: '/advertise/buy?zone=directory_gap',
+    advertiser_name: 'Haul Command',
+    is_house: true,
+  },
+  default: {
+    id: 'house-adgrid-default',
+    headline: 'Sponsor a high-intent Haul Command surface',
+    body: 'Reach brokers, carriers, operators, suppliers, yards, and support providers at the moment they are planning or rescuing a move.',
+    cta_label: 'View sponsor options',
+    cta_url: '/advertise',
+    advertiser_name: 'Haul Command',
+    is_house: true,
+  },
+};
+
+function getClientHouseAd(zone: string): Ad {
+  return CLIENT_HOUSE_ADS[zone] ?? CLIENT_HOUSE_ADS.default;
+}
+
+function isExternalUrl(url: string): boolean {
+  return /^https?:\/\//i.test(url);
 }
 
 export function AdGridSlot({ zone, className, showEmptyCta = true }: AdGridSlotProps) {
@@ -28,10 +67,16 @@ export function AdGridSlot({ zone, className, showEmptyCta = true }: AdGridSlotP
 
   useEffect(() => {
     const role = (() => { try { return localStorage.getItem('hc_role'); } catch { return null; } })();
-    fetch(`/api/adgrid/serve?zone=${zone}${role ? `&role=${role}` : ''}`)
+    fetch(`/api/adgrid/serve?zone=${encodeURIComponent(zone)}${role ? `&role=${encodeURIComponent(role)}` : ''}`)
       .then(r => r.json())
-      .then(d => { if (d.ad) setAd(d.ad); setLoaded(true); })
-      .catch(() => { setLoaded(true); });
+      .then(d => {
+        setAd(d.ad ?? getClientHouseAd(zone));
+        setLoaded(true);
+      })
+      .catch(() => {
+        setAd(getClientHouseAd(zone));
+        setLoaded(true);
+      });
   }, [zone]);
 
   const handleClick = () => {
@@ -43,21 +88,26 @@ export function AdGridSlot({ zone, className, showEmptyCta = true }: AdGridSlotP
         event_type: 'click',
         creative_id: ad.id,
         surface: zone,
+        is_house: Boolean(ad.is_house),
       }),
     }).catch(() => {});
   };
 
-  // Sponsored content
+  // Sponsored or house content. House content is intentionally visible instead of a dead empty slot.
   if (ad) {
+    const external = isExternalUrl(ad.cta_url);
     return (
       <div
         className={`bg-white border border-gray-200 shadow-sm rounded-lg p-4 ${className ?? ''}`}
         style={{ borderTop: '3px solid #C6923A' }}
         data-adgrid-zone={zone}
+        data-adgrid-house={ad.is_house ? 'true' : 'false'}
       >
         <div className="flex items-center gap-1.5 mb-2">
           <span className="w-1.5 h-1.5 rounded-full bg-[#C6923A] inline-block" />
-          <span className="text-[10px] uppercase font-bold tracking-widest text-[#9CA3AF]">SPONSORED</span>
+          <span className="text-[10px] uppercase font-bold tracking-widest text-[#9CA3AF]">
+            {ad.is_house ? 'HOUSE AD' : 'SPONSORED'}
+          </span>
         </div>
         <div className="flex items-start gap-3">
           <div className="flex-1 min-w-0">
@@ -67,8 +117,8 @@ export function AdGridSlot({ zone, className, showEmptyCta = true }: AdGridSlotP
         </div>
         <a
           href={ad.cta_url}
-          target="_blank"
-          rel="noopener sponsored"
+          target={external ? '_blank' : undefined}
+          rel={external ? 'noopener sponsored' : undefined}
           className="inline-block text-xs font-bold bg-[#F3F4F6] text-[#374151] border border-[#D1D5DB] px-3 py-1.5 rounded-md hover:bg-[#E5E7EB] hover:text-[#111827] transition-all"
           onClick={handleClick}
         >
@@ -79,11 +129,11 @@ export function AdGridSlot({ zone, className, showEmptyCta = true }: AdGridSlotP
     );
   }
 
-  // Empty slot CTA — self-serve revenue path
+  // Final dead-stop fallback should almost never render now.
   if (loaded && showEmptyCta) {
     return (
       <Link
-        href={`/advertise/buy?zone=${zone}`}
+        href={`/advertise/buy?zone=${encodeURIComponent(zone)}`}
         className={`group block rounded-lg border border-dashed border-[#D1D5DB] bg-[#F9FAFB] p-5 text-center transition-all hover:border-[#C6923A] hover:bg-[#FFFBEB] ${className ?? ''}`}
         data-adgrid-zone={zone}
       >
@@ -99,4 +149,3 @@ export function AdGridSlot({ zone, className, showEmptyCta = true }: AdGridSlotP
 
   return null;
 }
-
