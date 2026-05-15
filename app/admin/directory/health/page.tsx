@@ -1,258 +1,266 @@
 export const dynamic = "force-dynamic";
 
-import { Metadata } from "next";
-import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import type { Metadata } from "next";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
 
 export const metadata: Metadata = {
-    title: "Directory Truth Dashboard | Haul Command Admin",
-    robots: "noindex, nofollow",
+  title: "Directory Truth Dashboard | Haul Command Admin",
+  robots: "noindex, nofollow",
 };
 
-
-
-
 type HealthRow = {
-    total_operators: number;
-    total_listings: number;
-    operators_with_state: number;
-    operators_with_city: number;
-    national_scope_operators: number;
-    unclaimed: number;
-    claimed: number;
-    verified: number;
-    orphan_count: number;
-    link_mesh_edges: number;
-    last_rehydrate_at: string | null;
-    index_freshness_minutes: number | null;
-    last_pipeline_status: string | null;
-    truck_stops: number;
-    hotels: number;
-    terminals: number;
+  total_operators?: number;
+  total_listings?: number;
+  operators_with_state?: number;
+  operators_with_city?: number;
+  national_scope_operators?: number;
+  unclaimed?: number;
+  claimed?: number;
+  verified?: number;
+  orphan_count?: number;
+  link_mesh_edges?: number;
+  last_rehydrate_at?: string | null;
+  index_freshness_minutes?: number | null;
+  last_pipeline_status?: string | null;
+  truck_stops?: number;
+  hotels?: number;
+  terminals?: number;
 };
 
 type EntityHealth = {
-    entity_type: string;
-    total: number;
-    missing_city: number;
-    missing_region: number;
-    missing_geo: number;
-    hidden: number;
-    unclaimed: number;
-    claimed: number;
-    verified: number;
-    avg_rank_score: string;
-    avg_completeness: string;
+  entity_type: string;
+  total: number;
+  missing_city: number;
+  missing_region: number;
+  missing_geo: number;
+  hidden: number;
+  unclaimed: number;
+  avg_rank_score: string | number | null;
+  avg_completeness: string | number | null;
 };
 
 type PipelineRun = {
-    id: string;
-    run_type: string;
-    started_at: string;
-    finished_at: string | null;
-    status: string;
-    entities_scanned: number;
-    entities_upserted: number;
-    orphans_fixed: number;
-    errors: number;
-    error_sample: string | null;
+  id: string;
+  run_type: string;
+  started_at: string;
+  finished_at: string | null;
+  status: string;
+  entities_scanned: number;
+  entities_upserted: number;
+  orphans_fixed: number;
+  errors: number;
+  error_sample: string | null;
 };
 
+type QueueHealth = {
+  queue_name: string;
+  queue_state: string;
+  item_count: number | string;
+  oldest_created_at: string | null;
+  newest_updated_at: string | null;
+  operational_state: string;
+};
+
+function number(value: unknown) {
+  return Number(value ?? 0).toLocaleString();
+}
+
+function pct(numerator = 0, denominator = 0) {
+  if (!denominator) return "0.0";
+  return ((numerator / denominator) * 100).toFixed(1);
+}
+
+function healthColor(state?: string) {
+  if (!state) return "#94a3b8";
+  if (state.includes("backlog") || state.includes("ingestion")) return "#f59e0b";
+  if (state.includes("quarantined") || state.includes("resolved") || state.includes("clear")) return "#22c55e";
+  if (state.includes("review")) return "#ef4444";
+  return "#38bdf8";
+}
+
+function card(label: string, value: string | number | undefined, color = "#d4950e") {
+  return (
+    <div style={{ background: "#111827", border: "1px solid #1f2937", borderRadius: 8, padding: "1rem" }}>
+      <div style={{ color: "#94a3b8", fontSize: 12, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+        {label}
+      </div>
+      <div style={{ color, fontSize: 24, fontWeight: 750, marginTop: 6 }}>{value ?? 0}</div>
+    </div>
+  );
+}
+
 export default async function DirectoryHealthPage() {
-    const svc = getSupabaseAdmin();
+  const svc = getSupabaseAdmin();
 
-    const [healthRes, entityRes, runsRes] = await Promise.all([
-        svc.from("directory_admin_health").select("*").single(),
-        svc.from("directory_entity_health").select("*"),
-        svc.from("pipeline_runs").select("*").order("started_at", { ascending: false }).limit(10),
-    ]);
+  const [healthRes, entityRes, runsRes, queueRes] = await Promise.all([
+    svc.from("directory_admin_health").select("*").single(),
+    svc.from("directory_entity_health").select("*").order("total", { ascending: false }).limit(80),
+    svc.from("pipeline_runs").select("*").order("started_at", { ascending: false }).limit(10),
+    svc.from("v_hc_execution_queue_health").select("*").order("queue_name", { ascending: true }),
+  ]);
 
-    const health = (healthRes.data as HealthRow) || {} as HealthRow;
-    const entities = (entityRes.data as EntityHealth[]) || [];
-    const runs = (runsRes.data as PipelineRun[]) || [];
+  const health = (healthRes.data ?? {}) as HealthRow;
+  const entities = (entityRes.data ?? []) as EntityHealth[];
+  const runs = (runsRes.data ?? []) as PipelineRun[];
+  const queues = (queueRes.data ?? []) as QueueHealth[];
 
-    const statePct = health.total_operators
-        ? ((health.operators_with_state / health.total_operators) * 100).toFixed(1)
-        : "0";
-    const cityPct = health.total_operators
-        ? ((health.operators_with_city / health.total_operators) * 100).toFixed(1)
-        : "0";
+  const totalOperators = Number(health.total_operators ?? 0);
+  const statePct = pct(Number(health.operators_with_state ?? 0), totalOperators);
+  const cityPct = pct(Number(health.operators_with_city ?? 0), totalOperators);
+  const isFresh = Number(health.index_freshness_minutes ?? 999999) < 1500;
+  const queueBacklog = queues.filter((q) => q.operational_state.includes("backlog") || q.operational_state.includes("ingestion"));
+  const queueNeedsReview = queues.filter((q) => q.operational_state.includes("review"));
 
-    const isOrphanAlert = health.orphan_count > 0;
-    const isCronAlert = health.last_pipeline_status === "failed";
-    const isFreshness = (health.index_freshness_minutes ?? 999) < 1500; // 25 hours
+  return (
+    <main style={{ padding: "2rem", maxWidth: 1280, margin: "0 auto", fontFamily: "Inter, system-ui, sans-serif", color: "#e5e7eb" }}>
+      <header style={{ marginBottom: "1.5rem" }}>
+        <p style={{ color: "#d4950e", margin: 0, fontSize: 12, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+          Haul Command Admin
+        </p>
+        <h1 style={{ fontSize: "1.9rem", fontWeight: 800, margin: "0.25rem 0" }}>Directory Truth Dashboard</h1>
+        <p style={{ color: "#94a3b8", maxWidth: 860, margin: 0 }}>
+          Source-of-truth status for directory coverage, claim pressure, execution queues, ingestion, and index activation.
+          Pending queues are active work; quarantined rows are intentionally held out of SEO until they are enriched.
+        </p>
+      </header>
 
-    return (
-        <div style={{ padding: "2rem", maxWidth: 1200, margin: "0 auto", fontFamily: "Inter, system-ui, sans-serif", color: "#e2e8f0" }}>
-            <h1 style={{ fontSize: "1.75rem", fontWeight: 700, marginBottom: "0.5rem" }}>
-                ðŸ›¡ï¸ Directory Truth Dashboard
-            </h1>
-            <p style={{ color: "#94a3b8", marginBottom: "2rem" }}>
-                Real-time health of the Haul Command entity index. Supabase is source of truth.
+      {(healthRes.error || entityRes.error || runsRes.error || queueRes.error) && (
+        <section style={{ background: "#451a03", border: "1px solid #92400e", borderRadius: 8, padding: "1rem", marginBottom: "1.5rem" }}>
+          <strong style={{ color: "#fbbf24" }}>Dashboard data gap</strong>
+          <p style={{ color: "#fde68a", margin: "0.5rem 0 0" }}>
+            One or more health views could not be read. Check Supabase view grants, migrations, and admin service-role env wiring.
+          </p>
+        </section>
+      )}
+
+      {queueNeedsReview.length > 0 && (
+        <section style={{ background: "#450a0a", border: "1px solid #b91c1c", borderRadius: 8, padding: "1rem", marginBottom: "1.5rem" }}>
+          <strong style={{ color: "#fca5a5" }}>Queue review required</strong>
+          <p style={{ color: "#fecaca", margin: "0.5rem 0 0" }}>
+            {queueNeedsReview.length} queue state(s) need manual review before claiming full operational health.
+          </p>
+        </section>
+      )}
+
+      <section style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: "1rem", marginBottom: "2rem" }}>
+        {card("Operators", number(health.total_operators), "#60a5fa")}
+        {card("Listings", number(health.total_listings), "#a78bfa")}
+        {card("With State", `${statePct}%`, Number(statePct) > 95 ? "#22c55e" : "#f59e0b")}
+        {card("With City", `${cityPct}%`, Number(cityPct) > 50 ? "#22c55e" : "#f59e0b")}
+        {card("Orphans", number(health.orphan_count), Number(health.orphan_count ?? 0) === 0 ? "#22c55e" : "#ef4444")}
+        {card("Unclaimed", number(health.unclaimed), "#f59e0b")}
+        {card("Verified", number(health.verified), "#22c55e")}
+        {card("Freshness", isFresh ? "Fresh" : "Stale", isFresh ? "#22c55e" : "#ef4444")}
+      </section>
+
+      <section style={{ marginBottom: "2rem" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", alignItems: "end", marginBottom: "0.75rem" }}>
+          <div>
+            <h2 style={{ fontSize: "1.2rem", margin: 0 }}>Execution Queue Health</h2>
+            <p style={{ color: "#94a3b8", margin: "0.25rem 0 0", fontSize: 13 }}>
+              {queueBacklog.length} active backlog state(s). Backlog is acceptable when newest timestamps are moving.
             </p>
-
-            {/* Alert Banner */}
-            {(isOrphanAlert || isCronAlert) && (
-                <div style={{
-                    background: "#7f1d1d", border: "1px solid #dc2626", borderRadius: 8,
-                    padding: "1rem", marginBottom: "1.5rem",
-                }}>
-                    <strong style={{ color: "#fca5a5" }}>ðŸš¨ CRITICAL ALERTS</strong>
-                    {isOrphanAlert && <p style={{ color: "#fecaca", margin: "0.5rem 0 0" }}>
-                        {health.orphan_count} orphan provider(s) detected — entities in Supabase not in directory index
-                    </p>}
-                    {isCronAlert && <p style={{ color: "#fecaca", margin: "0.5rem 0 0" }}>
-                        Last pipeline run failed — check pipeline_runs table
-                    </p>}
-                </div>
-            )}
-
-            {/* Top Stats Grid */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "1rem", marginBottom: "2rem" }}>
-                {[
-                    { label: "Operators", value: health.total_operators, color: "#3b82f6" },
-                    { label: "Listings", value: health.total_listings, color: "#8b5cf6" },
-                    { label: "% w/ State", value: `${statePct}%`, color: parseFloat(statePct) > 95 ? "#22c55e" : "#f59e0b" },
-                    { label: "% w/ City", value: `${cityPct}%`, color: parseFloat(cityPct) > 50 ? "#22c55e" : "#f59e0b" },
-                    { label: "Orphans", value: health.orphan_count, color: health.orphan_count === 0 ? "#22c55e" : "#ef4444" },
-                    { label: "Link Mesh", value: health.link_mesh_edges, color: "#06b6d4" },
-                    { label: "National Scope", value: health.national_scope_operators, color: "#a855f7" },
-                    { label: "Freshness", value: isFreshness ? "âœ… Fresh" : "âš ï¸ Stale", color: isFreshness ? "#22c55e" : "#ef4444" },
-                ].map((s, i) => (
-                    <div key={i} style={{
-                        background: "#1e293b", borderRadius: 8, padding: "1rem",
-                        borderLeft: `4px solid ${s.color}`,
-                    }}>
-                        <div style={{ fontSize: "0.75rem", color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                            {s.label}
-                        </div>
-                        <div style={{ fontSize: "1.5rem", fontWeight: 700, color: s.color, marginTop: 4 }}>
-                            {s.value}
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-            {/* Claim Status */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem", marginBottom: "2rem" }}>
-                <div style={{ background: "#1e293b", borderRadius: 8, padding: "1rem", textAlign: "center" }}>
-                    <div style={{ fontSize: "2rem", fontWeight: 700, color: "#94a3b8" }}>{health.unclaimed}</div>
-                    <div style={{ fontSize: "0.8rem", color: "#64748b" }}>Unclaimed</div>
-                </div>
-                <div style={{ background: "#1e293b", borderRadius: 8, padding: "1rem", textAlign: "center" }}>
-                    <div style={{ fontSize: "2rem", fontWeight: 700, color: "#f59e0b" }}>{health.claimed}</div>
-                    <div style={{ fontSize: "0.8rem", color: "#64748b" }}>Claimed</div>
-                </div>
-                <div style={{ background: "#1e293b", borderRadius: 8, padding: "1rem", textAlign: "center" }}>
-                    <div style={{ fontSize: "2rem", fontWeight: 700, color: "#22c55e" }}>{health.verified}</div>
-                    <div style={{ fontSize: "0.8rem", color: "#64748b" }}>Verified</div>
-                </div>
-            </div>
-
-            {/* Support Listings */}
-            <h2 style={{ fontSize: "1.2rem", fontWeight: 600, marginBottom: "0.75rem", color: "#e2e8f0" }}>
-                Support Listings Density
-            </h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem", marginBottom: "2rem" }}>
-                <div style={{ background: "#1e293b", borderRadius: 8, padding: "1rem" }}>
-                    <div style={{ fontSize: "1.25rem", fontWeight: 700, color: "#3b82f6" }}>ðŸ›» {health.truck_stops}</div>
-                    <div style={{ fontSize: "0.8rem", color: "#64748b" }}>Truck Stops</div>
-                </div>
-                <div style={{ background: "#1e293b", borderRadius: 8, padding: "1rem" }}>
-                    <div style={{ fontSize: "1.25rem", fontWeight: 700, color: "#8b5cf6" }}>ðŸ¨ {health.hotels}</div>
-                    <div style={{ fontSize: "0.8rem", color: "#64748b" }}>Hotels</div>
-                </div>
-                <div style={{ background: "#1e293b", borderRadius: 8, padding: "1rem" }}>
-                    <div style={{ fontSize: "1.25rem", fontWeight: 700, color: "#06b6d4" }}>ðŸ—ï¸ {health.terminals}</div>
-                    <div style={{ fontSize: "0.8rem", color: "#64748b" }}>Terminals</div>
-                </div>
-            </div>
-
-            {/* Entity Health Table */}
-            <h2 style={{ fontSize: "1.2rem", fontWeight: 600, marginBottom: "0.75rem", color: "#e2e8f0" }}>
-                Entity Health by Type
-            </h2>
-            <div style={{ overflowX: "auto", marginBottom: "2rem" }}>
-                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.85rem" }}>
-                    <thead>
-                        <tr style={{ borderBottom: "1px solid #334155" }}>
-                            {["Type", "Total", "No City", "No State", "No Geo", "Hidden", "Unclaimed", "Avg Rank", "Avg Complete"].map((h) => (
-                                <th key={h} style={{ padding: "0.5rem", textAlign: "left", color: "#94a3b8", fontWeight: 500 }}>{h}</th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {entities.map((e, i) => (
-                            <tr key={i} style={{ borderBottom: "1px solid #1e293b" }}>
-                                <td style={{ padding: "0.5rem", fontWeight: 600, color: "#e2e8f0" }}>{e.entity_type}</td>
-                                <td style={{ padding: "0.5rem", color: "#3b82f6" }}>{e.total}</td>
-                                <td style={{ padding: "0.5rem", color: e.missing_city > 0 ? "#f59e0b" : "#22c55e" }}>{e.missing_city}</td>
-                                <td style={{ padding: "0.5rem", color: e.missing_region > 0 ? "#f59e0b" : "#22c55e" }}>{e.missing_region}</td>
-                                <td style={{ padding: "0.5rem", color: e.missing_geo > 0 ? "#94a3b8" : "#22c55e" }}>{e.missing_geo}</td>
-                                <td style={{ padding: "0.5rem" }}>{e.hidden}</td>
-                                <td style={{ padding: "0.5rem" }}>{e.unclaimed}</td>
-                                <td style={{ padding: "0.5rem" }}>{e.avg_rank_score}</td>
-                                <td style={{ padding: "0.5rem" }}>{(parseFloat(e.avg_completeness) * 100).toFixed(0)}%</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-
-            {/* Pipeline Runs */}
-            <h2 style={{ fontSize: "1.2rem", fontWeight: 600, marginBottom: "0.75rem", color: "#e2e8f0" }}>
-                Pipeline Run History
-            </h2>
-            <div style={{ overflowX: "auto" }}>
-                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.85rem" }}>
-                    <thead>
-                        <tr style={{ borderBottom: "1px solid #334155" }}>
-                            {["Type", "Started", "Finished", "Status", "Scanned", "Upserted", "Orphans Fixed", "Errors"].map((h) => (
-                                <th key={h} style={{ padding: "0.5rem", textAlign: "left", color: "#94a3b8", fontWeight: 500 }}>{h}</th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {runs.map((r, i) => (
-                            <tr key={i} style={{ borderBottom: "1px solid #1e293b" }}>
-                                <td style={{ padding: "0.5rem", color: "#e2e8f0" }}>{r.run_type}</td>
-                                <td style={{ padding: "0.5rem", color: "#94a3b8", fontSize: "0.75rem" }}>
-                                    {r.started_at ? new Date(r.started_at).toLocaleString() : "-"}
-                                </td>
-                                <td style={{ padding: "0.5rem", color: "#94a3b8", fontSize: "0.75rem" }}>
-                                    {r.finished_at ? new Date(r.finished_at).toLocaleString() : "-"}
-                                </td>
-                                <td style={{ padding: "0.5rem" }}>
-                                    <span style={{
-                                        padding: "2px 8px", borderRadius: 4, fontSize: "0.75rem", fontWeight: 600,
-                                        background: r.status === "success" ? "#052e16" : r.status === "running" ? "#1e3a5f" : "#450a0a",
-                                        color: r.status === "success" ? "#4ade80" : r.status === "running" ? "#60a5fa" : "#f87171",
-                                    }}>
-                                        {r.status}
-                                    </span>
-                                </td>
-                                <td style={{ padding: "0.5rem" }}>{r.entities_scanned}</td>
-                                <td style={{ padding: "0.5rem" }}>{r.entities_upserted}</td>
-                                <td style={{ padding: "0.5rem" }}>{r.orphans_fixed}</td>
-                                <td style={{ padding: "0.5rem", color: r.errors > 0 ? "#ef4444" : "#94a3b8" }}>
-                                    {r.errors}{r.error_sample ? ` — ${r.error_sample}` : ""}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-
-            {/* Last Rehydrate */}
-            <div style={{ marginTop: "2rem", padding: "1rem", background: "#0f172a", borderRadius: 8, border: "1px solid #1e293b" }}>
-                <span style={{ color: "#64748b", fontSize: "0.8rem" }}>Last successful rehydration: </span>
-                <span style={{ color: "#e2e8f0", fontWeight: 600 }}>
-                    {health.last_rehydrate_at ? new Date(health.last_rehydrate_at).toLocaleString() : "Never"}
-                </span>
-                <span style={{ color: "#64748b", fontSize: "0.8rem", marginLeft: "1rem" }}>Freshness: </span>
-                <span style={{ color: isFreshness ? "#22c55e" : "#ef4444", fontWeight: 600 }}>
-                    {health.index_freshness_minutes != null ? `${Math.round(health.index_freshness_minutes)} min` : "Unknown"}
-                </span>
-            </div>
+          </div>
         </div>
-    );
+        <div style={{ overflowX: "auto", border: "1px solid #1f2937", borderRadius: 8 }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+            <thead>
+              <tr style={{ background: "#0f172a", color: "#94a3b8" }}>
+                {["Queue", "State", "Items", "Operational State", "Oldest", "Newest"].map((h) => (
+                  <th key={h} style={{ padding: "0.65rem", textAlign: "left", fontWeight: 650 }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {queues.map((q) => (
+                <tr key={`${q.queue_name}:${q.queue_state}`} style={{ borderTop: "1px solid #1f2937" }}>
+                  <td style={{ padding: "0.65rem", fontWeight: 700 }}>{q.queue_name}</td>
+                  <td style={{ padding: "0.65rem" }}>{q.queue_state}</td>
+                  <td style={{ padding: "0.65rem", color: "#d4950e", fontWeight: 700 }}>{number(q.item_count)}</td>
+                  <td style={{ padding: "0.65rem", color: healthColor(q.operational_state), fontWeight: 700 }}>{q.operational_state}</td>
+                  <td style={{ padding: "0.65rem", color: "#94a3b8" }}>{q.oldest_created_at ? new Date(q.oldest_created_at).toLocaleString() : "-"}</td>
+                  <td style={{ padding: "0.65rem", color: "#94a3b8" }}>{q.newest_updated_at ? new Date(q.newest_updated_at).toLocaleString() : "-"}</td>
+                </tr>
+              ))}
+              {queues.length === 0 && (
+                <tr>
+                  <td colSpan={6} style={{ padding: "1rem", color: "#94a3b8" }}>
+                    No queue health rows returned. Verify v_hc_execution_queue_health exists and is granted to the runtime role.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1rem", marginBottom: "2rem" }}>
+        {card("Truck Stops", number(health.truck_stops), "#60a5fa")}
+        {card("Hotels", number(health.hotels), "#a78bfa")}
+        {card("Terminals", number(health.terminals), "#38bdf8")}
+        {card("Link Mesh Edges", number(health.link_mesh_edges), "#22c55e")}
+      </section>
+
+      <section style={{ marginBottom: "2rem" }}>
+        <h2 style={{ fontSize: "1.2rem", marginBottom: "0.75rem" }}>Entity Health by Type</h2>
+        <div style={{ overflowX: "auto", border: "1px solid #1f2937", borderRadius: 8 }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+            <thead>
+              <tr style={{ background: "#0f172a", color: "#94a3b8" }}>
+                {["Type", "Total", "No City", "No State", "No Geo", "Hidden", "Unclaimed", "Avg Rank", "Avg Complete"].map((h) => (
+                  <th key={h} style={{ padding: "0.65rem", textAlign: "left", fontWeight: 650 }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {entities.map((e) => (
+                <tr key={e.entity_type} style={{ borderTop: "1px solid #1f2937" }}>
+                  <td style={{ padding: "0.65rem", fontWeight: 700 }}>{e.entity_type}</td>
+                  <td style={{ padding: "0.65rem", color: "#60a5fa" }}>{number(e.total)}</td>
+                  <td style={{ padding: "0.65rem", color: e.missing_city > 0 ? "#f59e0b" : "#22c55e" }}>{number(e.missing_city)}</td>
+                  <td style={{ padding: "0.65rem", color: e.missing_region > 0 ? "#f59e0b" : "#22c55e" }}>{number(e.missing_region)}</td>
+                  <td style={{ padding: "0.65rem", color: e.missing_geo > 0 ? "#94a3b8" : "#22c55e" }}>{number(e.missing_geo)}</td>
+                  <td style={{ padding: "0.65rem" }}>{number(e.hidden)}</td>
+                  <td style={{ padding: "0.65rem" }}>{number(e.unclaimed)}</td>
+                  <td style={{ padding: "0.65rem" }}>{e.avg_rank_score ?? "-"}</td>
+                  <td style={{ padding: "0.65rem" }}>{Number(e.avg_completeness ?? 0).toFixed(2)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2 style={{ fontSize: "1.2rem", marginBottom: "0.75rem" }}>Pipeline Run History</h2>
+        <div style={{ overflowX: "auto", border: "1px solid #1f2937", borderRadius: 8 }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+            <thead>
+              <tr style={{ background: "#0f172a", color: "#94a3b8" }}>
+                {["Type", "Started", "Finished", "Status", "Scanned", "Upserted", "Orphans Fixed", "Errors"].map((h) => (
+                  <th key={h} style={{ padding: "0.65rem", textAlign: "left", fontWeight: 650 }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {runs.map((r) => (
+                <tr key={r.id} style={{ borderTop: "1px solid #1f2937" }}>
+                  <td style={{ padding: "0.65rem", fontWeight: 700 }}>{r.run_type}</td>
+                  <td style={{ padding: "0.65rem", color: "#94a3b8" }}>{r.started_at ? new Date(r.started_at).toLocaleString() : "-"}</td>
+                  <td style={{ padding: "0.65rem", color: "#94a3b8" }}>{r.finished_at ? new Date(r.finished_at).toLocaleString() : "-"}</td>
+                  <td style={{ padding: "0.65rem", color: r.status === "success" ? "#22c55e" : r.status === "running" ? "#60a5fa" : "#f87171", fontWeight: 700 }}>{r.status}</td>
+                  <td style={{ padding: "0.65rem" }}>{number(r.entities_scanned)}</td>
+                  <td style={{ padding: "0.65rem" }}>{number(r.entities_upserted)}</td>
+                  <td style={{ padding: "0.65rem" }}>{number(r.orphans_fixed)}</td>
+                  <td style={{ padding: "0.65rem", color: r.errors > 0 ? "#ef4444" : "#94a3b8" }}>
+                    {number(r.errors)}{r.error_sample ? ` - ${r.error_sample}` : ""}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  );
 }

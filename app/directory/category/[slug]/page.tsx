@@ -95,9 +95,14 @@ function keywordsForCategory(category: CategoryCoverage) {
 }
 
 function canIndexCategory(category: CategoryCoverage) {
-  if (category.index_policy.includes('noindex') || category.index_policy.includes('manual_review')) {
+  if (category.index_policy.includes('never_index') || category.index_policy.includes('manual_review')) {
     return false;
   }
+
+  if (category.index_policy.includes('noindex_until_threshold')) {
+    return category.computed_index_state === 'indexable_global';
+  }
+
   return category.computed_index_state === 'indexable_global';
 }
 

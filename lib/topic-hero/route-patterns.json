@@ -55,6 +55,7 @@
   { "id": "homepage-aliases", "match": "^/(home|_seo_longtail_parked|dev)(?:/.*)?$", "pageFamily": "homepage", "heroTier": "tier4", "classificationSource": "pattern" },
   { "id": "enterprise-pages", "match": "^/enterprise(?:/.*)?$", "pageFamily": "service", "heroTier": "tier2", "classificationSource": "pattern" },
   { "id": "network-retention", "match": "^/(alerts|leaderboards|next-moves|referral)(?:/.*)?$", "pageFamily": "dashboard", "heroTier": "tier4", "classificationSource": "pattern" },
+  { "id": "autonomous-freight", "match": "^/autonomous-freight(?:/.*)?$", "pageFamily": "route-intel", "heroTier": "tier2", "classificationSource": "pattern" },
   { "id": "proof-demo", "match": "^/demo-report-card(?:/.*)?$", "pageFamily": "profile", "heroTier": "tier3", "classificationSource": "pattern" },
   { "id": "icon-assets-page", "match": "^/icons(?:/.*)?$", "pageFamily": "utility", "heroTier": "tier4", "classificationSource": "pattern" },
   { "id": "fallback", "match": "^/.*$", "pageFamily": "utility", "heroTier": "tier4", "classificationSource": "fallback" }

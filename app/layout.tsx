@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 import { DynamicBackgroundEngine } from '@/components/ui/DynamicBackgroundEngine';
 import { GlobalCommandBar } from '@/components/layout/GlobalCommandBar';
@@ -10,8 +9,6 @@ import { GoogleTagManager } from '@next/third-parties/google';
 import { SignalGridProvider } from '@/components/telematics/SignalGridProvider';
 import { SITE_URL } from '@/lib/site-url';
 import { TopicHeroRouteSlot } from '@/components/topic-hero/TopicHeroRouteSlot';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -55,7 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       {/* Google Tag Manager — manages GA4, ads pixels, and all tags from one UI */}
       {gtmId && <GoogleTagManager gtmId={gtmId} />}
-        <body className={`${inter.className} hc-brand-site antialiased`} suppressHydrationWarning>
+        <body className="hc-brand-site antialiased" suppressHydrationWarning>
         <Suspense fallback={null}>
           {/* PostHog — product analytics, session replay, A/B testing */}
           <PostHogProvider>

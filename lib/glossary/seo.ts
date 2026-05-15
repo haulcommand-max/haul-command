@@ -156,19 +156,12 @@ const COUNTRY_LANG_MAP: Record<string, string> = {
 
 function buildHreflangAlternates(
   basePath: string,
-  countryCodes: string[]
+  _countryCodes: string[]
 ): Metadata["alternates"] {
   const languages: Record<string, string> = {};
 
   // x-default always points to the canonical term page (no country prefix)
   languages["x-default"] = `${SITE_URL}${basePath}`;
-
-  for (const cc of countryCodes) {
-    const lang = COUNTRY_LANG_MAP[cc];
-    if (lang) {
-      languages[lang] = `${SITE_URL}/glossary/${cc.toLowerCase()}`;
-    }
-  }
 
   return {
     canonical: `${SITE_URL}${basePath}`,
@@ -215,7 +208,7 @@ export function glossaryTopicMetadata(payload: GlossaryTopicPayload): Metadata {
       payload.topic.description ||
       `Browse ${payload.topic.name} glossary terms for heavy haul and pilot car operations.`,
     alternates: {
-      canonical: `${SITE_URL}/glossary/topics/${payload.topic.slug}`,
+      canonical: `${SITE_URL}/glossary/category/${payload.topic.slug}`,
     },
   };
 }
@@ -227,10 +220,10 @@ export function glossaryCountryMetadata(payload: GlossaryCountryPayload): Metada
     title: `${payload.country_code} Heavy Haul Glossary | Haul Command`,
     description: `Country-specific heavy haul glossary terms, overlays, aliases, and related links for ${payload.country_code}.`,
     alternates: {
-      canonical: `${SITE_URL}/glossary/${payload.country_code.toLowerCase()}`,
+      canonical: `${SITE_URL}/glossary/country/${payload.country_code.toLowerCase()}`,
       ...(lang && {
         languages: {
-          [lang]: `${SITE_URL}/glossary/${payload.country_code.toLowerCase()}`,
+          [lang]: `${SITE_URL}/glossary/country/${payload.country_code.toLowerCase()}`,
           "x-default": `${SITE_URL}/glossary`,
         },
       }),
