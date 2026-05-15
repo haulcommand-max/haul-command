@@ -86,6 +86,29 @@ type CategoryCoverage = {
   computed_index_state: string;
 };
 
+function fallbackCategoryCoverage(slug: string): CategoryCoverage | null {
+  const meta = CATEGORY_META[slug];
+  if (!meta) return null;
+
+  return {
+    category_key: meta.supabaseKey,
+    public_label: meta.label,
+    route_slug: slug,
+    ecosystem_family: 'heavy_haul_support',
+    category_intent: meta.description,
+    primary_roles: meta.keywords,
+    entity_subtypes: [meta.supabaseKey],
+    data_sources: ['category_registry_fallback'],
+    claim_route: `/claim?category=${slug}`,
+    lead_route: `/request-support?category=${slug}`,
+    index_policy: 'noindex_until_threshold',
+    schema_org_type: 'LocalBusiness',
+    directory_records: 0,
+    staged_pending_records: 0,
+    computed_index_state: 'fallback_needs_registry_payload',
+  };
+}
+
 function keywordsForCategory(category: CategoryCoverage) {
   return [
     category.public_label.toLowerCase(),
@@ -114,7 +137,7 @@ async function getCategoryCoverage(slug: string) {
     .eq('route_slug', slug)
     .maybeSingle();
 
-  return data as CategoryCoverage | null;
+  return (data as CategoryCoverage | null) ?? fallbackCategoryCoverage(slug);
 }
 
 export async function generateStaticParams() {
@@ -131,7 +154,13 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const category = await getCategoryCoverage(slug);
-  if (!category) return {};
+  if (!category) {
+    return {
+      title: `${slug.replace(/-/g, ' ')} Directory | Haul Command`,
+      alternates: { canonical: `${SITE_URL}/directory/category/${slug}` },
+      robots: { index: false, follow: true },
+    };
+  }
   const index = canIndexCategory(category);
 
   return {

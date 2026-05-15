@@ -1,9 +1,19 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import Link from "next/link";
 
 import GlossaryPage from "@/components/surfaces/GlossaryPage";
 import { getGlossaryTermPayload } from "@/lib/glossary/queries";
 import { glossaryTermMetadata } from "@/lib/glossary/seo";
+
+const SITE_URL = "https://www.haulcommand.com";
+
+function labelFromSlug(slug: string) {
+  return slug
+    .split("-")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
 
 export async function generateMetadata({
   params,
@@ -14,8 +24,10 @@ export async function generateMetadata({
   const payload = await getGlossaryTermPayload(slug, countryCode);
 
   if (!payload) {
+    const country = countryCode.toUpperCase();
     return {
-      title: `${slug.replace(/-/g, " ")} | ${countryCode.toUpperCase()} Heavy Haul Glossary`,
+      title: `${labelFromSlug(slug)} | ${country} Heavy Haul Glossary`,
+      alternates: { canonical: `${SITE_URL}/glossary/country/${country.toLowerCase()}/${slug}` },
       robots: { index: false, follow: true },
     };
   }
@@ -37,7 +49,35 @@ export default async function GlossaryCountryTermPage({
 }) {
   const { countryCode, slug } = await params;
   const payload = await getGlossaryTermPayload(slug, countryCode);
-  if (!payload) notFound();
+  if (!payload) {
+    const country = countryCode.toUpperCase();
+    const label = labelFromSlug(slug);
+
+    return (
+      <main className="min-h-screen bg-[#0a0d14] px-4 py-16 text-gray-100">
+        <section className="mx-auto max-w-4xl">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-amber-300">Country Glossary Term</p>
+          <h1 className="mt-3 text-4xl font-black tracking-tight text-white">{label} in {country}</h1>
+          <p className="mt-4 max-w-3xl text-lg leading-8 text-gray-300">
+            This country-specific term page is tracked, but the local overlay is not verified enough to index. Haul
+            Command keeps the path live so operators, authorities, and providers can submit corrections and build the
+            local terminology record.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href={`/glossary/${slug}`} className="rounded-xl bg-amber-500 px-5 py-3 text-sm font-black text-black hover:bg-amber-400">
+              View base term
+            </Link>
+            <Link href={`/glossary/country/${country.toLowerCase()}`} className="rounded-xl border border-white/15 px-5 py-3 text-sm font-bold text-white hover:border-amber-400/50">
+              Browse {country} glossary
+            </Link>
+            <Link href="/claim" className="rounded-xl border border-white/15 px-5 py-3 text-sm font-bold text-white hover:border-amber-400/50">
+              Submit correction
+            </Link>
+          </div>
+        </section>
+      </main>
+    );
+  }
 
   const links = payload.links ?? [];
   const labelFor = (value: string) => value.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());

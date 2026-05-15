@@ -1,9 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 
 import { getGlossaryCountryPayload } from "@/lib/glossary/queries";
 import { glossaryCountryMetadata } from "@/lib/glossary/seo";
+
+const SITE_URL = "https://www.haulcommand.com";
 
 export async function generateMetadata({
   params,
@@ -14,8 +15,10 @@ export async function generateMetadata({
   const payload = await getGlossaryCountryPayload(countryCode);
 
   if (!payload) {
+    const country = countryCode.toUpperCase();
     return {
-      title: `${countryCode.toUpperCase()} Heavy Haul Glossary | Haul Command`,
+      title: `${country} Heavy Haul Glossary | Haul Command`,
+      alternates: { canonical: `${SITE_URL}/glossary/country/${country.toLowerCase()}` },
       robots: { index: false, follow: true },
     };
   }
@@ -30,7 +33,40 @@ export default async function GlossaryCountryPage({
 }) {
   const { countryCode } = await params;
   const payload = await getGlossaryCountryPayload(countryCode);
-  if (!payload) notFound();
+  if (!payload) {
+    const country = countryCode.toUpperCase();
+
+    return (
+      <main className="min-h-screen bg-[#0a0d14] px-4 py-16 text-gray-100">
+        <section className="mx-auto max-w-4xl">
+          <nav className="mb-8 text-sm font-semibold text-gray-500" aria-label="Breadcrumb">
+            <Link href="/" className="hover:text-white">Home</Link>
+            <span className="mx-2">/</span>
+            <Link href="/glossary" className="hover:text-white">Glossary</Link>
+            <span className="mx-2">/</span>
+            <span className="text-gray-300">{country}</span>
+          </nav>
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-amber-300">Country Terminology</p>
+          <h1 className="mt-3 text-4xl font-black tracking-tight text-white">{country} Heavy Haul Glossary</h1>
+          <p className="mt-4 max-w-3xl text-lg leading-8 text-gray-300">
+            Haul Command is tracking this country glossary, but the local terminology overlay is not deep enough to
+            index yet. The page stays useful through request, correction, and claim paths while the local source work is completed.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/glossary" className="rounded-xl bg-amber-500 px-5 py-3 text-sm font-black text-black hover:bg-amber-400">
+              Browse glossary
+            </Link>
+            <Link href={`/directory?country=${country.toLowerCase()}`} className="rounded-xl border border-white/15 px-5 py-3 text-sm font-bold text-white hover:border-amber-400/50">
+              Browse country directory
+            </Link>
+            <Link href="/claim" className="rounded-xl border border-white/15 px-5 py-3 text-sm font-bold text-white hover:border-amber-400/50">
+              Submit correction
+            </Link>
+          </div>
+        </section>
+      </main>
+    );
+  }
 
   const country = payload.country_code.toUpperCase();
 
