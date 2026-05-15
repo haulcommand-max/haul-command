@@ -23,24 +23,24 @@ export const dynamic = 'force-dynamic';
 
 const proofStates = [
     {
-        label: 'Live marketplace',
-        description: 'Providers, load demand, contact paths, and market signals are available for active discovery.',
+        label: 'Indexed',
+        description: 'A company, service, or infrastructure record is searchable as part of the support graph.',
     },
     {
-        label: 'Claimable directory',
-        description: 'Profiles or company records are listed and can be claimed or improved by the provider.',
+        label: 'Claimable',
+        description: 'The record can be claimed or improved by the operator, owner, or support provider.',
     },
     {
-        label: 'Source-backed market',
-        description: 'Market data is seeded from approved public or operational sources and labeled by confidence.',
+        label: 'Contact Confirmed',
+        description: 'A phone, website, or contact path is present without inventing live availability.',
     },
     {
-        label: 'Regulation intelligence live',
-        description: 'Requirement, terminology, or permit intelligence is available even when provider density is still building.',
+        label: 'Document Verified',
+        description: 'Verification evidence exists for the profile, claim, or support record.',
     },
     {
-        label: 'Developing market',
-        description: 'Coverage is being built and should not be treated as a complete live provider marketplace.',
+        label: 'Performance Verified',
+        description: 'Verified job or performance evidence is attached when the data supports it.',
     },
 ];
 
@@ -55,8 +55,55 @@ const roleCoverage = [
     'Mobile mechanics',
     'Staging yards',
     'Oversize-friendly parking',
+    'Truck stops',
+    'Fuel stops',
+    'Weigh stations',
     'Port and border support',
     'Heavy haul equipment support',
+    'Line lift support',
+    'Utility coordination',
+    'Bucket truck support',
+    'Police escort coordination',
+    'Crane and rigging support',
+    'Bridge and route engineering',
+    'Pilot car training',
+    'Compliance support',
+    'Broker and dispatcher support',
+    'Carrier support',
+    'Shipper project cargo support',
+    'Yard and property owners',
+    'Repair shops',
+    'Tire service',
+    'Tow and recovery',
+    'Hotel and motel parking',
+    'Customs and cross-border support',
+    'Escort equipment suppliers',
+    'Installer and upfitter support',
+    'Emergency route support',
+    'Credentialed access labor',
+];
+
+const roleCategoryLinks = [
+    { label: 'Pilot car operators', category: 'pilot-car' },
+    { label: 'Escort vehicles', category: 'escort' },
+    { label: 'High-pole escorts', category: 'high-pole' },
+    { label: 'Permit support', category: 'permit' },
+    { label: 'Route survey', category: 'route-survey' },
+    { label: 'Traffic control', category: 'traffic-control' },
+    { label: 'Staging yards', category: 'staging' },
+    { label: 'Truck stops', category: 'truck-stop' },
+    { label: 'Oversize parking', category: 'parking' },
+    { label: 'Mobile mechanics', category: 'repair' },
+    { label: 'Port support', category: 'port' },
+    { label: 'Weigh stations', category: 'weigh-station' },
+];
+
+const countryTiers = [
+    { title: 'Tier A Gold', codes: [['US','United States'],['CA','Canada'],['AU','Australia'],['GB','United Kingdom'],['NZ','New Zealand'],['ZA','South Africa'],['DE','Germany'],['NL','Netherlands'],['AE','United Arab Emirates'],['BR','Brazil']] },
+    { title: 'Tier B Blue', codes: [['IE','Ireland'],['SE','Sweden'],['NO','Norway'],['DK','Denmark'],['FI','Finland'],['BE','Belgium'],['AT','Austria'],['CH','Switzerland'],['ES','Spain'],['FR','France'],['IT','Italy'],['PT','Portugal'],['SA','Saudi Arabia'],['QA','Qatar'],['MX','Mexico'],['IN','India'],['ID','Indonesia'],['TH','Thailand']] },
+    { title: 'Tier C Silver', codes: [['PL','Poland'],['CZ','Czech Republic'],['SK','Slovakia'],['HU','Hungary'],['SI','Slovenia'],['EE','Estonia'],['LV','Latvia'],['LT','Lithuania'],['HR','Croatia'],['RO','Romania'],['BG','Bulgaria'],['GR','Greece'],['TR','Turkey'],['KW','Kuwait'],['OM','Oman'],['BH','Bahrain'],['SG','Singapore'],['MY','Malaysia'],['JP','Japan'],['KR','South Korea'],['CL','Chile'],['AR','Argentina'],['CO','Colombia'],['PE','Peru'],['VN','Vietnam'],['PH','Philippines']] },
+    { title: 'Tier D Slate', codes: [['UY','Uruguay'],['PA','Panama'],['CR','Costa Rica'],['IL','Israel'],['NG','Nigeria'],['EG','Egypt'],['KE','Kenya'],['MA','Morocco'],['RS','Serbia'],['UA','Ukraine'],['KZ','Kazakhstan'],['TW','Taiwan'],['PK','Pakistan'],['BD','Bangladesh'],['MN','Mongolia'],['TT','Trinidad and Tobago'],['JO','Jordan'],['GH','Ghana'],['TZ','Tanzania'],['GE','Georgia'],['AZ','Azerbaijan'],['CY','Cyprus'],['IS','Iceland'],['LU','Luxembourg'],['EC','Ecuador']] },
+    { title: 'Tier E Copper', codes: [['BO','Bolivia'],['PY','Paraguay'],['GT','Guatemala'],['DO','Dominican Republic'],['HN','Honduras'],['SV','El Salvador'],['NI','Nicaragua'],['JM','Jamaica'],['GY','Guyana'],['SR','Suriname'],['BA','Bosnia and Herzegovina'],['ME','Montenegro'],['MK','North Macedonia'],['AL','Albania'],['MD','Moldova'],['IQ','Iraq'],['NA','Namibia'],['AO','Angola'],['MZ','Mozambique'],['ET','Ethiopia'],['CI','Côte d’Ivoire'],['SN','Senegal'],['BW','Botswana'],['ZM','Zambia'],['UG','Uganda'],['CM','Cameroon'],['KH','Cambodia'],['LK','Sri Lanka'],['UZ','Uzbekistan'],['LA','Laos'],['NP','Nepal'],['DZ','Algeria'],['TN','Tunisia'],['MT','Malta'],['BN','Brunei'],['RW','Rwanda'],['MG','Madagascar'],['PG','Papua New Guinea'],['TM','Turkmenistan'],['KG','Kyrgyzstan'],['MW','Malawi']] },
 ];
 
 const userGroups = [
@@ -113,11 +160,11 @@ const internalLinkGroups = [
 const faqs = [
     {
         question: 'What is Haul Command used for?',
-        answer: 'Haul Command is used to find pilot cars, escort vehicles, permit support, route intelligence, and heavy haul support providers for oversize and overweight loads.',
+        answer: 'Haul Command is used to find pilot cars, escort vehicles, permit support, route intelligence, infrastructure, and heavy haul support providers for oversize and overweight loads.',
     },
     {
         question: 'Is Haul Command only for pilot car operators?',
-        answer: 'No. Haul Command includes pilot car operators, escort vehicle companies, permit support, route survey providers, traffic control, mobile repair, staging locations, and other heavy haul support roles.',
+        answer: 'No. Haul Command includes pilot car operators, escort vehicle companies, permit support, route survey providers, traffic control, mobile repair, staging locations, parking, suppliers, and other heavy haul support roles.',
     },
     {
         question: 'Can pilot car operators claim a Haul Command profile?',
@@ -161,8 +208,8 @@ function buildDirectoryJsonLd(providerCount: number) {
                 '@type': 'CollectionPage',
                 '@id': `${absoluteUrl('/directory')}#collection`,
                 url: absoluteUrl('/directory'),
-                name: 'Pilot Car & Escort Vehicle Directory for Heavy Haul Support',
-                description: 'Search Haul Command for pilot cars, escort vehicles, permit support, route survey help, and heavy haul support providers by location, service type, and profile status.',
+                name: 'Heavy Haul Support Directory',
+                description: 'Search Haul Command for pilot cars, escort vehicles, permit support, route survey help, infrastructure, and heavy haul support providers by location, service type, and proof state.',
                 isPartOf: { '@id': `${SITE_URL}/#website` },
                 about: roleCoverage,
                 numberOfItems: providerCount,
@@ -190,21 +237,21 @@ function buildDirectoryJsonLd(providerCount: number) {
 
 export async function generateMetadata(): Promise<Metadata> {
     return {
-        title: "Pilot Car & Escort Vehicle Directory | Heavy Haul Support Providers | Haul Command",
-        description: "Search Haul Command's heavy haul directory to find pilot car operators, escort vehicles, permit support, route survey help, and oversize load support providers by location, service type, and profile status.",
+        title: "Heavy Haul Support Directory | Pilot Cars, Permits, Parking & Route Support | Haul Command",
+        description: "Search Haul Command's heavy haul support directory for pilot cars, escort vehicles, permit support, route survey help, truck stops, parking, repair, staging, and oversize load support providers across a 120-country model.",
         alternates: {
             canonical: absoluteUrl('/directory'),
         },
         openGraph: {
-            title: "Pilot Car & Escort Vehicle Directory for Heavy Haul Support",
-            description: "Find and compare pilot cars, escort vehicles, permit support, route intelligence, and heavy haul support providers across Haul Command's 120-country coverage model.",
+            title: "Heavy Haul Support Directory | Haul Command",
+            description: "Find and compare pilot cars, escort vehicles, permit support, route intelligence, infrastructure, and heavy haul support providers across Haul Command's 120-country coverage model.",
             url: absoluteUrl('/directory'),
             images: [getPageFamilyOgImage('directory')],
         },
         twitter: {
             card: "summary_large_image",
-            title: "Pilot Car & Escort Vehicle Directory for Heavy Haul Support",
-            description: "Find pilot cars, escort vehicles, permit support, route survey help, and oversize load support providers by location, service type, and profile status.",
+            title: "Heavy Haul Support Directory | Haul Command",
+            description: "Find pilot cars, escorts, permits, truck stops, parking, repair, staging, and oversize load support by location, role, route need, and proof state.",
             images: [getPageFamilyOgImage('directory')],
         }
     };
@@ -222,10 +269,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
     const queryLocation = resolvedParams.q || '';
     const queryCategory = resolvedParams.category || '';
 
-    // Fetch operators
     let providers: any[] = [];
-    
-    // 1. Try Typesense if a search query exists
     let usedTypesense = false;
     const searchQuery = [queryLocation, queryCategory].filter(Boolean).join(' ').trim();
     
@@ -246,7 +290,6 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                 query_by: 'company_name,city,state,role_subtypes,service_categories',
                 filter_by: filterBy,
                 per_page: 50,
-                // Simple typo tolerance for city names
                 num_typos: 1
             });
             
@@ -262,7 +305,6 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
         }
     }
 
-    // 2. Fallback to Supabase
     if (!usedTypesense) {
         try {
             const plan = buildDirectoryFallbackFilterPlan({
@@ -275,16 +317,13 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                 .select('*');
 
             if (plan.countryCode) {
-                query = query.eq('country_code', plan.countryCode);
+                query = query.eq('country_code_inferred', plan.countryCode);
             }
 
-            if (plan.category) {
-                query = query
-                    .eq('entity_family', plan.category.entityFamily)
-                    .in('entity_subtype', plan.category.entitySubtypes);
-            }
-
-            const locationOrFilter = buildDirectoryLocationOrFilter(plan.locationSearch);
+            const locationOrFilter = buildDirectoryLocationOrFilter(
+                plan.locationSearch,
+                plan.category?.searchTerms ?? []
+            );
             if (locationOrFilter) {
                 query = query.or(locationOrFilter);
             }
@@ -296,7 +335,8 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                 });
             }
 
-            const { data } = await query.limit(plan.limit);
+            const { data, error } = await query.limit(plan.limit);
+            if (error) throw error;
             providers = data ?? [];
         } catch (e) {
             console.warn('[directory] Supabase query failed:', e);
@@ -310,46 +350,48 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                 suppressHydrationWarning
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(buildDirectoryJsonLd(providers.length)) }}
             />
-            {/* YP Style Clean Header */}
             <div className="w-full bg-[#f8f9fa] border-b border-gray-200 py-12 px-4 shadow-sm">
                 <div className="max-w-7xl mx-auto">
-                    <div className="text-xs font-bold text-[#C6923A] uppercase tracking-widest mb-2">Heavy Haul Provider Intelligence</div>
-                    <h1 className="text-3xl md:text-5xl font-black text-gray-900 mb-4 tracking-tight">Pilot Car & Escort Vehicle Directory for Heavy Haul Support</h1>
-                    <p className="max-w-3xl text-base md:text-lg leading-7 text-gray-700">
-                        Find pilot car operators, escort vehicles, permit support, route survey help, and oversize load support providers by location, service type, route need, and profile status.
+                    <div className="text-xs font-bold text-[#C6923A] uppercase tracking-widest mb-2">Heavy Haul Support Graph</div>
+                    <h1 className="text-3xl md:text-5xl font-black text-gray-900 mb-4 tracking-tight">Find the support that keeps an oversize load moving.</h1>
+                    <p className="max-w-4xl text-base md:text-lg leading-7 text-gray-700">
+                        Search operators, companies, infrastructure, permit help, brokers, suppliers, route survey teams, parking, repair, staging, and escort support by location, role, route need, and proof state.
                     </p>
                     
-                    <div className="flex flex-wrap items-center gap-4 lg:gap-6 mt-6 text-sm font-bold uppercase tracking-wider text-gray-400">
-                        <Link href="/directory?country=US" className={targetCountry === 'US' ? "text-[#C6923A]" : "hover:text-gray-900 transition-colors"}>United States</Link>
-                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-                        <Link href="/directory?country=CA" className={targetCountry === 'CA' ? "text-[#C6923A]" : "hover:text-gray-900 transition-colors"}>Canada</Link>
-                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-                        <Link href="/directory?country=AU" className={targetCountry === 'AU' ? "text-[#C6923A]" : "hover:text-gray-900 transition-colors"}>Australia</Link>
+                    <div className="mt-6 flex flex-wrap items-center gap-3 text-sm font-bold uppercase tracking-wider">
+                        {countryTiers[0].codes.map(([code, name]) => (
+                            <Link
+                                key={code}
+                                href={`/directory?country=${code}`}
+                                className={`rounded-lg border px-3 py-1.5 transition-all ${targetCountry === code ? 'border-[#C6923A] bg-[#C6923A] text-black' : 'border-gray-200 bg-white text-gray-500 hover:border-[#C6923A] hover:text-gray-900'}`}
+                            >
+                                {name}
+                            </Link>
+                        ))}
                     </div>
                 </div>
             </div>
 
             <HCContentSection pad="section_balanced_pad">
                 <div className="max-w-7xl mx-auto">
-                    {/* HC Ask — intelligence strip */}
                     <div className="mb-6"><HCAskStrip context="directory" /></div>
 
                     <section aria-labelledby="what-is-haul-command" className="mb-8 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
                         <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr]">
                             <div className="p-5 md:p-7">
-                                <div className="text-xs font-black uppercase tracking-[0.18em] text-[#C6923A]">Answer-first directory layer</div>
+                                <div className="text-xs font-black uppercase tracking-[0.18em] text-[#C6923A]">Answer-first support layer</div>
                                 <h2 id="what-is-haul-command" className="mt-3 text-2xl md:text-3xl font-black tracking-tight text-gray-950">
                                     What is Haul Command?
                                 </h2>
                                 <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm md:text-base font-semibold leading-7 text-gray-900">
-                                    Haul Command is a heavy haul directory and operating system for finding pilot cars, escort vehicles, permit support, route intelligence, and support providers for oversize and overweight loads. It helps brokers, carriers, shippers, dispatchers, and pilot car operators search by role, location, service area, route need, and profile status across a 120-country coverage model.
+                                    Haul Command is a heavy haul support graph and operating system for finding pilot cars, escort vehicles, permit support, route intelligence, infrastructure, and field support for oversize and overweight loads. It helps brokers, carriers, shippers, dispatchers, and support providers search by role, location, service area, route need, and proof state across a 120-country coverage model.
                                 </p>
                                 <div className="mt-5 space-y-4 text-sm md:text-base leading-7 text-gray-700">
                                     <p>
-                                        Haul Command is built for the real heavy haul workflow: finding the right escort support, understanding route and permit requirements, comparing providers, checking service areas, and giving operators a profile they can claim and improve.
+                                        Haul Command is built for the real heavy haul workflow: finding the right escort support, understanding route and permit requirements, comparing route-support records, checking service areas, and giving operators or infrastructure partners a profile they can claim and improve.
                                     </p>
                                     <p>
-                                        Some markets are live, some are source-backed, some are claimable, and some are still developing. Each market should show its current status so users understand what is available now without mistaking seeded or historical intelligence for complete live coverage.
+                                        Proof states are intentionally conservative. Indexed, claimable, contact confirmed, document verified, and performance verified mean different things, and the page should not imply live availability unless the underlying data supports it.
                                     </p>
                                 </div>
                             </div>
@@ -367,33 +409,78 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                         </div>
                     </section>
 
-                    {/* Searchable operator grid */}
                     <DirectoryGrid providers={providers} targetCountry={targetCountry ?? 'GLOBAL'} />
                 </div>
             </HCContentSection>
 
-            {/* AdGrid Sponsor Zone & Activity Feed — directory landing */}
             <HCContentSection pad="section_balanced_pad">
                 <div className="max-w-7xl mx-auto space-y-8">
                     <section aria-labelledby="directory-role-coverage" className="rounded-2xl border border-gray-200 bg-white p-5 md:p-7 shadow-sm">
                         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                             <div>
                                 <div className="text-xs font-black uppercase tracking-[0.18em] text-[#C6923A]">Role-rich discovery</div>
-                                <h2 id="directory-role-coverage" className="mt-2 text-2xl md:text-3xl font-black tracking-tight text-gray-950">Find support by role, job intent, and market status</h2>
+                                <h2 id="directory-role-coverage" className="mt-2 text-2xl md:text-3xl font-black tracking-tight text-gray-950">Find support by role, job intent, and proof state</h2>
+                                <p className="mt-3 max-w-3xl text-sm leading-6 text-gray-600">
+                                    These are role families and support categories, not fake live availability claims. Each click should either return matching records or create a useful demand signal and claim path.
+                                </p>
                             </div>
                             <Link href="/claim" className="inline-flex w-fit items-center rounded-lg bg-gray-950 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-gray-800">
-                                Claim or improve a profile
+                                Build or improve a profile
                             </Link>
                         </div>
                         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                            {roleCoverage.map((role) => (
+                            {roleCategoryLinks.map((role) => (
                                 <Link
-                                    key={role}
-                                    href={`/directory?q=${encodeURIComponent(role)}`}
+                                    key={role.label}
+                                    href={`/directory?category=${encodeURIComponent(role.category)}&q=${encodeURIComponent(role.label)}`}
                                     className="rounded-xl border border-gray-200 bg-gray-50 px-3 py-3 text-sm font-bold text-gray-800 transition-colors hover:border-[#C6923A] hover:bg-amber-50"
                                 >
-                                    {role}
+                                    {role.label}
                                 </Link>
+                            ))}
+                        </div>
+                    </section>
+
+                    <section aria-labelledby="country-coverage" className="rounded-2xl border border-gray-200 bg-white p-5 md:p-7 shadow-sm">
+                        <div className="text-xs font-black uppercase tracking-[0.18em] text-[#C6923A]">Global coverage model</div>
+                        <h2 id="country-coverage" className="mt-2 text-2xl md:text-3xl font-black tracking-tight text-gray-950">Browse the 120-country heavy haul support graph</h2>
+                        <p className="mt-3 max-w-4xl text-sm leading-6 text-gray-600">
+                            Haul Command should show all target countries while labeling market maturity honestly. A country link can still be useful even when coverage is developing because it captures demand, corrections, provider suggestions, sponsor interest, and partner applications.
+                        </p>
+                        <div className="mt-6 space-y-5">
+                            {countryTiers.map((tier) => (
+                                <div key={tier.title} className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                                    <h3 className="text-sm font-black uppercase tracking-wide text-gray-700">{tier.title}</h3>
+                                    <div className="mt-3 flex flex-wrap gap-2">
+                                        {tier.codes.map(([code, name]) => (
+                                            <Link
+                                                key={code}
+                                                href={`/directory?country=${code}`}
+                                                className={`rounded-full border px-3 py-1 text-xs font-bold transition-colors ${targetCountry === code ? 'border-[#C6923A] bg-[#C6923A] text-black' : 'border-gray-200 bg-white text-gray-700 hover:border-[#C6923A] hover:bg-amber-50'}`}
+                                            >
+                                                {name} <span className="text-gray-400">{code}</span>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    <section aria-labelledby="sponsor-moments" className="rounded-2xl border border-gray-200 bg-white p-5 md:p-7 shadow-sm">
+                        <div className="text-xs font-black uppercase tracking-[0.18em] text-[#C6923A]">AdGrid inventory</div>
+                        <h2 id="sponsor-moments" className="mt-2 text-2xl md:text-3xl font-black tracking-tight text-gray-950">Sponsor the exact support moment buyers are searching</h2>
+                        <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-4">
+                            {[
+                                ['Market sponsor', 'City, state, province, or country visibility when buyers are comparing local support density.'],
+                                ['Role sponsor', 'Native placement beside searches for escort, repair, parking, permit, broker, or supplier support.'],
+                                ['Route sponsor', 'Corridor and move-planning visibility before a broker builds the support packet.'],
+                                ['Emergency support sponsor', 'Labeled inventory for urgent repair, staging, parking, and field-support moments.'],
+                            ].map(([title, body]) => (
+                                <div key={title} className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                                    <h3 className="text-sm font-black text-gray-950">{title}</h3>
+                                    <p className="mt-2 text-xs leading-5 text-gray-600">{body}</p>
+                                </div>
                             ))}
                         </div>
                     </section>
