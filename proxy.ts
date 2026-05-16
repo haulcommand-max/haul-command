@@ -3,6 +3,7 @@ import type { NextFetchEvent, NextRequest } from 'next/server'
 import { supabaseMiddleware } from './lib/supabase/middleware'
 import { getStripeCheckoutBlockReason, isProductionRuntime } from './lib/launch/production-guards'
 import { scheduleRequestLog } from './lib/observability/request-log'
+import { resolveLegacyCityServiceRedirect } from './lib/seo/legacy-city-service-redirect'
 
 const sensitiveApiPrefixes = [
   '/api/search',
@@ -85,6 +86,11 @@ function strictFallbackRateLimit(request: NextRequest) {
 
 export async function proxy(request: NextRequest, event: NextFetchEvent) {
   scheduleRequestLog(request, event);
+
+  const cityServiceRedirect = resolveLegacyCityServiceRedirect(request.nextUrl.pathname);
+  if (cityServiceRedirect) {
+    return NextResponse.redirect(new URL(cityServiceRedirect, request.url), 308);
+  }
 
   if (isSensitiveApi(request.nextUrl.pathname)) {
     const stripeBlockReason = getStripeCheckoutBlockReason();
