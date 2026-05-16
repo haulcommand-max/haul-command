@@ -125,12 +125,6 @@ const nextConfig: NextConfig = {
             { source: '/directory/united_states/:state', destination: '/directory/us/:state', permanent: true },
         ];
 
-        // Corridor URL corrections
-        const CORRIDOR_REDIRECTS = [
-            { source: '/corridors', destination: '/corridor', permanent: true },
-            { source: '/corridors/:slug', destination: '/corridor/:slug', permanent: true },
-        ];
-
         return [
             // §34 Command-OS — /hq is the canonical board-grade URL
             {
@@ -208,7 +202,6 @@ const nextConfig: NextConfig = {
             },
             ...US_STATE_REDIRECTS,
             ...COUNTRY_REDIRECTS,
-            ...CORRIDOR_REDIRECTS,
             // NOTE: www → apex redirect is handled by Vercel domain settings at the CDN edge.
             // DO NOT add a www redirect here — it conflicts with Vercel and causes redirect loops.
         ];
