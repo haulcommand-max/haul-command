@@ -3,6 +3,24 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { AlertTriangle, TrendingUp, MapPin, Zap, Radio, ArrowRight, BarChart3 } from 'lucide-react';
 
+type CorridorShortageRow = {
+  id: string | number;
+  name: string | null;
+  slug: string | null;
+  state_from: string | null;
+  state_to: string | null;
+  demand_score: number | null;
+  operator_count: number | null;
+};
+
+type StateShortageRow = {
+  state_code: string;
+  state_name: string;
+  supply_score: number | null;
+  demand_score: number | null;
+  shortage_index: number | null;
+};
+
 export const metadata: Metadata = {
   title: 'Escort Shortage Index 2026 — Where Pilot Cars Are Scarce | Haul Command',
   description: 'Pilot car and escort shortage signals by corridor and region where Haul Command has verified data. Sparse markets are labeled instead of filled with fake scarcity.',
@@ -17,15 +35,11 @@ export const metadata: Metadata = {
 async function getShortageData() {
   const supabase = await createClient();
 
-  const [corridors, scarcity, states] = await Promise.all([
+  const [corridors, states] = await Promise.all([
     supabase
       .from('hc_corridors')
       .select('id, name, slug, state_from, state_to, demand_score, operator_count')
       .order('demand_score', { ascending: false })
-      .limit(20),
-    supabase
-      .from('hc_corridor_scarcity')
-      .select('corridor_id, scarcity_score, shortage_level')
       .limit(20),
     supabase
       .from('hc_rm_radar_us_states')
@@ -35,9 +49,8 @@ async function getShortageData() {
   ]);
 
   return {
-    corridors: corridors.data || [],
-    scarcity: scarcity.data || [],
-    states: states.data || [],
+    corridors: corridors.error ? [] : (corridors.data || []),
+    states: states.error ? [] : (states.data || []),
   };
 }
 
@@ -59,8 +72,16 @@ function getShortageLevel(demand: number, supply: number): keyof typeof SHORTAGE
 export default async function ShortageIndexPage() {
   const { corridors, states } = await getShortageData();
 
-  const topCorridors = corridors;
-  const topStates = states;
+  const topCorridors = (corridors as CorridorShortageRow[]).filter((corridor) => (
+    typeof corridor.demand_score === 'number'
+    && typeof corridor.operator_count === 'number'
+    && corridor.operator_count > 0
+  ));
+  const topStates = (states as StateShortageRow[]).filter((state) => (
+    typeof state.demand_score === 'number'
+    && typeof state.supply_score === 'number'
+    && typeof state.shortage_index === 'number'
+  ));
 
   return (
     <div className="min-h-screen text-white">
