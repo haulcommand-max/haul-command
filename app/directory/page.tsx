@@ -23,6 +23,10 @@ import {
     normalizeDirectoryCountry,
     type DirectorySurfaceView,
 } from '@/lib/directory/server-query';
+import {
+    fallbackRowMatchesCategory,
+    normalizeDirectoryFallbackRow,
+} from '@/lib/directory/fallback-normalization';
 import { absoluteUrl, SITE_URL } from '@/lib/site-url';
 
 export const dynamic = 'force-dynamic';
@@ -37,35 +41,6 @@ function createDirectoryServiceClient(cookieStore: Awaited<ReturnType<typeof coo
         process.env.SUPABASE_SERVICE_ROLE_KEY,
         { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } },
     );
-}
-
-function asRecord(value: unknown): Record<string, any> {
-    return value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, any> : {};
-}
-
-function normalizeDirectoryFallbackRow(row: any, sourceView: string) {
-    const metadata = asRecord(row.metadata);
-    return {
-        ...row,
-        id: row.contact_id ?? row.id ?? row.entity_id,
-        contact_id: row.contact_id ?? row.id ?? row.entity_id,
-        entity_id: row.entity_id ?? row.id,
-        company: row.company ?? row.name ?? row.display_name,
-        name: row.name ?? row.company ?? row.display_name,
-        country_code: row.country_code ?? row.country_code_inferred,
-        country_code_inferred: row.country_code_inferred ?? row.country_code,
-        state: row.state_inferred ?? row.state_code ?? row.admin1_code,
-        state_inferred: row.state_inferred ?? row.state_code ?? row.admin1_code,
-        admin1_code: row.admin1_code ?? row.state_code ?? row.state_inferred,
-        entity_family: row.entity_family ?? metadata.entity_family,
-        entity_subtype: row.entity_subtype ?? metadata.entity_subtype,
-        services: row.services ?? metadata.services ?? metadata.service_categories,
-        specialties: row.specialties ?? metadata.specialties,
-        equipment_types: row.equipment_types ?? metadata.equipment_types,
-        primary_service_area: row.primary_service_area ?? metadata.primary_service_area,
-        claim_status: row.claim_status ?? 'claimable',
-        source_view: sourceView,
-    };
 }
 
 const proofStates = [
@@ -439,7 +414,9 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
             if (error) {
                 console.warn('[directory] publishable fallback failed:', error.message);
             } else {
-                providers = (data ?? []).map((row: any) => normalizeDirectoryFallbackRow(row, 'v_directory_publishable'));
+                providers = (data ?? [])
+                    .map((row: any) => normalizeDirectoryFallbackRow(row, 'v_directory_publishable'))
+                    .filter((row: any) => fallbackRowMatchesCategory(row, fallbackPlan.category));
             }
         } catch (e) {
             console.warn('[directory] publishable fallback exception:', e);
@@ -454,17 +431,22 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                 let entityQuery = serviceSupabase
                     .from('directory_entities')
                     .select('id,name,display_name,country_code,admin1_code,city,entity_type,entity_subtype,visibility_status,claim_status')
-                    .not('name', 'is', null)
-                    .limit(fallbackPlan.limit);
+                    .not('name', 'is', null);
 
                 if (fallbackPlan.countryCode) {
                     entityQuery = entityQuery.eq('country_code', fallbackPlan.countryCode);
+                }
+
+                if (fallbackPlan.category) {
+                    entityQuery = entityQuery.in('entity_subtype', fallbackPlan.category.entitySubtypes);
                 }
 
                 if (queryLocation) {
                     const escaped = queryLocation.replace(/[%_,]/g, (char) => `\\${char}`);
                     entityQuery = entityQuery.ilike('name', `%${escaped}%`);
                 }
+
+                entityQuery = entityQuery.limit(fallbackPlan.limit);
 
                 const { data, error } = await entityQuery;
 
