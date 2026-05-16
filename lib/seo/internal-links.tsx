@@ -6,6 +6,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { buildDirectoryMarketHref } from '@/lib/directory/routes';
 import { PRIORITY_CITIES, getCitiesInState, STATE_NAMES_US, PROVINCE_NAMES_CA } from './city-data';
 
 // ─── Hub Links (appear on every money page) ─────────────────
@@ -13,7 +14,7 @@ const HUB_LINKS = [
     { label: 'Pilot Car Services', href: '/directory/us', desc: 'Browse verified pilots' },
     { label: 'Pilot Car Jobs', href: '/jobs', desc: 'Find work near you' },
     { label: 'Pilot Car Directory', href: '/directory', desc: 'Full network directory' },
-    { label: 'Load Board', href: '/loads', desc: 'Active loads now' },
+    { label: 'Load Board', href: '/load-board', desc: 'Active loads now' },
     { label: 'Requirements by State', href: '/tools/state-requirements', desc: 'Compliance cheatsheet' },
 ];
 
@@ -51,7 +52,7 @@ export function NearbyCities({ currentCity, state }: { currentCity: string; stat
             <h3 style={{ fontSize: 11, fontWeight: 700, color: '#4b5563', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 10 }}>Nearby Cities</h3>
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                 {nearby.map(c => (
-                    <Link key={c.slug} href={`/directory/${country}/${state.toLowerCase()}/${c.slug}`} style={{ padding: '4px 12px', borderRadius: 8, fontSize: 11, fontWeight: 600, textDecoration: 'none', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', color: '#6b7280' }}>{c.city}</Link>
+                    <Link key={c.slug} href={buildDirectoryMarketHref({ country, slug: c.slug })} style={{ padding: '4px 12px', borderRadius: 8, fontSize: 11, fontWeight: 600, textDecoration: 'none', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', color: '#6b7280' }}>{c.city}</Link>
                 ))}
             </div>
         </section>
@@ -69,7 +70,7 @@ export function TopCitiesInState({ state, country = 'us' }: { state: string; cou
             <h3 style={{ fontSize: 11, fontWeight: 700, color: '#4b5563', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 10 }}>Top Cities in {STATE_NAMES_US[stName] || PROVINCE_NAMES_CA[stName] || stName}</h3>
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                 {cities.map(c => (
-                    <Link key={c.slug} href={`/directory/${country}/${state.toLowerCase()}/${c.slug}`} style={{ padding: '4px 12px', borderRadius: 8, fontSize: 11, fontWeight: 700, textDecoration: 'none', background: 'rgba(241,169,27,0.06)', border: '1px solid rgba(241,169,27,0.15)', color: '#F1A91B' }}>{c.city}</Link>
+                    <Link key={c.slug} href={buildDirectoryMarketHref({ country, slug: c.slug })} style={{ padding: '4px 12px', borderRadius: 8, fontSize: 11, fontWeight: 700, textDecoration: 'none', background: 'rgba(241,169,27,0.06)', border: '1px solid rgba(241,169,27,0.15)', color: '#F1A91B' }}>{c.city}</Link>
                 ))}
             </div>
         </section>
@@ -85,10 +86,10 @@ export function RuralSatellites({ satellites, state, country = 'us' }: { satelli
             <h3 style={{ fontSize: 11, fontWeight: 700, color: '#4b5563', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>Also Serving Nearby Areas</h3>
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                 {satellites.map((s, i) => {
-                    const [satelliteCity, satelliteState] = s.split(' ');
+                    const [satelliteCity] = s.split(' ');
                     const slug = satelliteCity.toLowerCase().replace(/\s+/g, '-');
                     return (
-                        <Link key={i} href={`/directory/${country}/${(satelliteState || state).toLowerCase()}/${slug}`} style={{ padding: '3px 10px', borderRadius: 6, fontSize: 10, fontWeight: 600, textDecoration: 'none', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)', color: '#4b5563' }}>{s}</Link>
+                        <Link key={i} href={buildDirectoryMarketHref({ country, slug })} style={{ padding: '3px 10px', borderRadius: 6, fontSize: 10, fontWeight: 600, textDecoration: 'none', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)', color: '#4b5563' }}>{s}</Link>
                     );
                 })}
             </div>
@@ -105,10 +106,10 @@ export function AuthorityLinks({ type }: { type: 'money' | 'rules' | 'directory'
         ],
         rules: [
             { label: 'Find Pilot Car Services', href: '/directory' },
-            { label: 'Browse Available Escorts', href: '/loads' },
+            { label: 'Browse Available Escorts', href: '/load-board' },
         ],
         directory: [
-            { label: 'Find Loads Near You', href: '/loads' },
+            { label: 'Find Loads Near You', href: '/load-board' },
             { label: 'Pilot Car Jobs', href: '/jobs' },
         ],
         loadboard: [

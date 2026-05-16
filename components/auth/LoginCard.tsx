@@ -59,6 +59,19 @@ function getLoginOrder(appleFirst: boolean): LoginBlock[] {
     : ['facebook', 'google', 'linkedin_oidc', 'apple', 'phone', 'email']
 }
 
+function normalizeAuthReturnPath(value: string | null) {
+  if (!value || !value.startsWith('/') || value.startsWith('//')) {
+    return '/app'
+  }
+
+  try {
+    const url = new URL(value, 'https://haulcommand.local')
+    return `${url.pathname}${url.search}${url.hash}` || '/app'
+  } catch {
+    return '/app'
+  }
+}
+
 export default function LoginCard() {
   const supabase = createClient()
   const router = useRouter()
@@ -133,6 +146,11 @@ export default function LoginCard() {
     b !== 'phone' && b !== 'email'
   ).slice(4)
 
+  const returnUrl = useMemo(
+    () => normalizeAuthReturnPath(searchParams.get('next') || searchParams.get('return')),
+    [searchParams]
+  )
+
   function resetFeedback() {
     setMessage(null)
     setError(null)
@@ -143,7 +161,6 @@ export default function LoginCard() {
       resetFeedback()
       setLoading(provider)
 
-      const returnUrl = searchParams.get('return') || '/app'
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
@@ -199,7 +216,6 @@ export default function LoginCard() {
 
       if (error) throw error
 
-      const returnUrl = searchParams.get('return') || '/app'
       setMessage('Phone verified. Signing you in...')
       router.refresh()
       window.location.href = returnUrl
@@ -217,7 +233,6 @@ export default function LoginCard() {
       resetFeedback()
       setLoading('email')
 
-      const returnUrl = searchParams.get('return') || '/app'
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { requireInternalRequest } from '@/lib/security/internal-request-auth';
 import { GoogleGenAI } from '@google/genai';
 
 export const runtime = 'edge';
@@ -12,6 +13,9 @@ export const runtime = 'edge';
 // ══════════════════════════════════════════════════════════════
 
 export async function POST(req: Request) {
+    const authFailure = requireInternalRequest(req);
+    if (authFailure) return authFailure;
+
     try {
         // Parse Supabase Webhook Payload
         // Expected payload format for inserts: { type: 'INSERT', table: 'hc_operator_images', record: { id, url, operator_id, alt_text: null } }

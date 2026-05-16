@@ -22,6 +22,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { getStripeClient } from '@/lib/stripe/client';
+import { resolvePayoutReadyConnectAccount } from '@/lib/stripe/connect-readiness';
 
 const QUICKPAY_FEE_PERCENTAGE = 2.50;
 const MAX_QUICKPAY_CENTS = 1_000_000; // $10,000 cap
@@ -66,20 +67,17 @@ export async function POST(request: NextRequest) {
         }
 
         // ── 1. Get operator's Stripe Connect account ──
-        const { data: profile } = await supabase
-            .from('profiles')
-            .select('stripe_connect_account_id, display_name')
-            .eq('id', user.id)
-            .single();
+        const connectAccount = await resolvePayoutReadyConnectAccount(user.id);
 
-        if (!profile?.stripe_connect_account_id) {
+        if (!connectAccount.ok) {
             return NextResponse.json(
                 {
-                    error: 'No Stripe Connect account linked. Complete onboarding first.',
-                    action: 'connect_onboarding',
-                    redirect: '/operator/connect-stripe',
+                    error: connectAccount.error,
+                    action: connectAccount.action,
+                    redirect: connectAccount.redirect,
+                    requirements_due: connectAccount.requirementsDue ?? [],
                 },
-                { status: 400 },
+                { status: connectAccount.status },
             );
         }
 
@@ -113,7 +111,7 @@ export async function POST(request: NextRequest) {
                 risk_flags: riskData?.risk_flags || [],
                 broker_payment_history_ok: false,
                 broker_dispute_count: riskData?.dispute_count || 0,
-                stripe_connect_account: profile.stripe_connect_account_id,
+                stripe_connect_account: connectAccount.accountId,
             });
 
             return NextResponse.json(
@@ -139,7 +137,7 @@ export async function POST(request: NextRequest) {
             transfer = await stripe.transfers.create({
                 amount: netPayoutCents,
                 currency,
-                destination: profile.stripe_connect_account_id,
+                destination: connectAccount.accountId,
                 description: `QuickPay: Booking ${booking_id}`,
                 metadata: {
                     booking_id,
@@ -148,6 +146,7 @@ export async function POST(request: NextRequest) {
                     fee_cents: feeCents.toString(),
                     gross_cents: gross_amount_cents.toString(),
                     type: 'quickpay',
+                    connect_source: connectAccount.source,
                 },
             });
         } catch (stripeError: any) {
@@ -166,7 +165,7 @@ export async function POST(request: NextRequest) {
                 risk_score: riskData?.risk_score || 0,
                 risk_flags: riskData?.risk_flags || [],
                 broker_payment_history_ok: true,
-                stripe_connect_account: profile.stripe_connect_account_id,
+                stripe_connect_account: connectAccount.accountId,
                 failure_reason: stripeError.message,
                 failed_at: new Date().toISOString(),
             });
@@ -187,7 +186,7 @@ export async function POST(request: NextRequest) {
                     method: 'instant',
                     description: `QuickPay instant payout: ${booking_id}`,
                 },
-                { stripeAccount: profile.stripe_connect_account_id },
+                { stripeAccount: connectAccount.accountId },
             );
         } catch {
             // Instant payout not available — will use standard (1-2 business days)
@@ -207,7 +206,7 @@ export async function POST(request: NextRequest) {
             currency,
             stripe_transfer_id: transfer.id,
             stripe_payout_id: payout?.id || null,
-            stripe_connect_account: profile.stripe_connect_account_id,
+            stripe_connect_account: connectAccount.accountId,
             status: payout ? 'completed' : 'transferring',
             risk_score: riskData?.risk_score || 0,
             risk_flags: riskData?.risk_flags || [],

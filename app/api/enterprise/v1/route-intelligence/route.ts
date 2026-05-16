@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { evaluateRouteCompliance } from '@/lib/compliance/reciprocity-engine';
+import { enterpriseGate } from '@/lib/enterprise/auth-middleware';
 
 /* ═══════════════════════════════════════════════════════════════════
    ENTERPRISE DATA API: ROUTE INTELLIGENCE (v1)
@@ -9,13 +9,10 @@ import { evaluateRouteCompliance } from '@/lib/compliance/reciprocity-engine';
    Authentication via Bearer token representing an Enterprise account.
    ═══════════════════════════════════════════════════════════════════ */
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    // 1. Authenticate Enterprise Request (Mock auth for demo structure)
-    const authHeader = req.headers.get('authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer hc_ent_')) {
-      return NextResponse.json({ error: 'Unauthorized Enterprise Key' }, { status: 401 });
-    }
+    const gate = await enterpriseGate(req, 'operations_optimizer');
+    if (gate.error) return gate.error;
 
     const payload = await req.json();
     const { 
@@ -27,9 +24,6 @@ export async function POST(req: Request) {
     if (!Array.isArray(route_states) || route_states.length === 0) {
       return NextResponse.json({ error: 'Valid "route_states" array required (e.g. ["TX", "NM", "AZ"])' }, { status: 400 });
     }
-
-    // Initialize Supabase if DB calls are needed (e.g., checking specific state restrictions)
-    const supabase = createClient();
 
     // 2. Execute Reciprocity Engine Check
     const complianceProfile = evaluateRouteCompliance(
@@ -79,7 +73,12 @@ export async function POST(req: Request) {
         },
         active_restrictions: activeRestrictions
       },
-      cached_at: new Date().toISOString()
+      cached_at: new Date().toISOString(),
+      enterprise: {
+        api_key_id: gate.context?.apiKeyId,
+        tier: gate.context?.tier,
+        product: 'operations_optimizer'
+      }
     };
 
     return NextResponse.json(responseData, { status: 200 });

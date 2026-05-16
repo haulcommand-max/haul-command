@@ -89,8 +89,10 @@ export async function POST(req: Request) {
                 // sponsor_geo is the geographic scope (e.g. 'US-TX')
                 const zone  = session.metadata?.sponsor_zone;
                 const geo   = session.metadata?.sponsor_geo;
+                const productKey = session.metadata?.sponsor_product_key ?? zone;
+                const pendingOrderId = session.metadata?.sponsor_order_id;
 
-                if (!zone || !geo) {
+                if (!zone || !geo || !productKey) {
                     console.warn('[SponsorWebhook] Missing zone/geo metadata on session', session.id);
                     break;
                 }
@@ -106,21 +108,25 @@ export async function POST(req: Request) {
                     } catch { /* non-critical */ }
                 }
 
-                const { data: order, error: orderErr } = await supabaseAdmin
-                    .from('sponsorship_orders')
-                    .insert({
-                        user_id:                    userId,
-                        product_key:                zone,   // zone IS the product_key (e.g. 'corridor_primary')
-                        geo_key:                    geo,
-                        zone,
-                        geo,
-                        stripe_checkout_session_id: session.id,
-                        stripe_subscription_id:     session.subscription as string | null,
-                        stripe_customer_id:         session.customer as string | null,
-                        status:                     'active',
-                        active_from:                new Date().toISOString(),
-                        active_until:               thirtyDaysFromNow(),
-                    })
+                const orderPayload = {
+                    user_id:                    userId,
+                    product_key:                productKey,
+                    geo_key:                    geo,
+                    zone,
+                    geo,
+                    stripe_checkout_session_id: session.id,
+                    stripe_subscription_id:     session.subscription as string | null,
+                    stripe_customer_id:         session.customer as string | null,
+                    status:                     'active',
+                    active_from:                new Date().toISOString(),
+                    active_until:               thirtyDaysFromNow(),
+                };
+
+                const query = pendingOrderId
+                    ? supabaseAdmin.from('sponsorship_orders').update(orderPayload).eq('id', pendingOrderId)
+                    : supabaseAdmin.from('sponsorship_orders').insert(orderPayload);
+
+                const { data: order, error: orderErr } = await query
                     .select('id')
                     .single();
 

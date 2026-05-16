@@ -80,6 +80,7 @@ export async function GET(req: NextRequest) {
             .from('profile_boosts')
             .select('*')
             .eq('operator_id', operatorId)
+            .eq('status', 'active')
             .gte('expires_at', new Date().toISOString())
             .order('search_multiplier', { ascending: false });
 
@@ -133,6 +134,7 @@ export async function POST(req: NextRequest) {
             .from('profile_boosts')
             .select('id, tier, expires_at')
             .eq('operator_id', operatorId)
+            .eq('status', 'active')
             .gte('expires_at', new Date().toISOString())
             .single();
 
@@ -145,7 +147,7 @@ export async function POST(req: NextRequest) {
 
         const expiresAt = new Date(Date.now() + boostConfig.duration_days * 24 * 60 * 60 * 1000).toISOString();
 
-        // Create the boost record
+        // Create the boost record, but keep it inactive until Stripe confirms payment.
         const { data: boost, error: boostErr } = await serviceSupabase
             .from('profile_boosts')
             .upsert({
@@ -156,7 +158,7 @@ export async function POST(req: NextRequest) {
                 price_cents: boostConfig.price_cents,
                 purchased_at: new Date().toISOString(),
                 expires_at: expiresAt,
-                status: 'active',
+                status: 'pending_payment',
                 purchased_by: user.id,
             }, { onConflict: 'operator_id' })
             .select()
@@ -164,21 +166,6 @@ export async function POST(req: NextRequest) {
 
         if (boostErr) {
             return NextResponse.json({ error: boostErr.message }, { status: 500 });
-        }
-
-        // Grant badge
-        const { data: current } = await serviceSupabase
-            .from('operators')
-            .select('badges')
-            .eq('id', operatorId)
-            .single();
-
-        const badges = Array.isArray(current?.badges) ? current.badges : [];
-        if (!badges.includes(boostConfig.badge)) {
-            await serviceSupabase
-                .from('operators')
-                .update({ badges: [...badges, boostConfig.badge] })
-                .eq('id', operatorId);
         }
 
         // PostHog
@@ -190,7 +177,7 @@ export async function POST(req: NextRequest) {
                     body: JSON.stringify({
                         api_key: process.env.NEXT_PUBLIC_POSTHOG_KEY,
                         distinct_id: user.id,
-                        event: 'boost_purchased',
+                        event: 'boost_checkout_started',
                         properties: {
                             operator_id: operatorId,
                             tier,
@@ -204,7 +191,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({
             ok: true,
             boost,
-            message: `${boostConfig.name} boost activated. Expires ${new Date(expiresAt).toLocaleDateString()}.`,
+            message: `${boostConfig.name} boost reserved. It activates after Stripe confirms payment.`,
             checkoutUrl: `/api/subscriptions/checkout?boost=${tier}&operatorId=${operatorId}`,
         });
 

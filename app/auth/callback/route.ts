@@ -14,10 +14,23 @@ import type { NextRequest } from "next/server";
  * On web:
  *   Standard PKCE code exchange, then redirect to /dashboard or /app.
  */
+function normalizeAuthNextPath(value: string | null) {
+    if (!value || !value.startsWith("/") || value.startsWith("//")) {
+        return "/app";
+    }
+
+    try {
+        const url = new URL(value, "https://haulcommand.local");
+        return `${url.pathname}${url.search}${url.hash}` || "/app";
+    } catch {
+        return "/app";
+    }
+}
+
 export async function GET(request: NextRequest) {
     const requestUrl = new URL(request.url);
     const code = requestUrl.searchParams.get("code");
-    const next = requestUrl.searchParams.get("next") || "/app";
+    const next = normalizeAuthNextPath(requestUrl.searchParams.get("next"));
     const error = requestUrl.searchParams.get("error");
     const errorDescription = requestUrl.searchParams.get("error_description");
 

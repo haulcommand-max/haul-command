@@ -305,7 +305,7 @@ function TrustScoreBadge({ score }: { score: number }) {
 function ClaimListingBanner({ id }: { id: string }) {
     return (
         <Link aria-label="Navigation Link"
-            href={`/claim/${id}`}
+            href={`/claim?operator=${encodeURIComponent(id)}`}
             className="flex items-center gap-2 px-3 py-2 rounded-lg transition-all group"
             style={{
                 background: "rgba(241,169,27,0.04)",

@@ -19,6 +19,8 @@ export async function POST(req: NextRequest) {
     }
 
     const supabase = createClient();
+    const authFailure = await assertOperatorReportAccess(supabase, operator_id);
+    if (authFailure) return authFailure;
 
     // Determine if this is a clearance report or checkpoint report
     if (clearance_m != null) {
@@ -188,6 +190,8 @@ export async function PUT(req: NextRequest) {
     }
 
     const supabase = createClient();
+    const authFailure = await assertOperatorReportAccess(supabase, operator_id);
+    if (authFailure) return authFailure;
 
     const { data, error } = await supabase
       .from('route_intel_submissions')
@@ -219,4 +223,22 @@ export async function PUT(req: NextRequest) {
   } catch (err) {
     return NextResponse.json({ error: 'Submission failed', detail: String(err) }, { status: 500 });
   }
+}
+
+async function assertOperatorReportAccess(supabase: ReturnType<typeof createClient>, operatorId: string) {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (operatorId === user.id) return null;
+
+  const { data: operator } = await supabase
+    .from('operators')
+    .select('id, user_id')
+    .eq('id', operatorId)
+    .maybeSingle();
+
+  if (!operator || operator.user_id !== user.id) {
+    return NextResponse.json({ error: 'Forbidden: operator_id is not owned by the authenticated user' }, { status: 403 });
+  }
+
+  return null;
 }

@@ -9,10 +9,6 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Missing origin or destination' }, { status: 400 });
         }
 
-        // MOCK: Here is where the execution connects to the proprietary 'Custom GPS Engine'
-        // That engine applies heavy-haul logic (bridge heights, weight limits) to build a route
-        // We simulate returning a Mapbox-compatible FeatureCollection geometry (GeoJSON LineString)
-
         // Generate a slightly curved mock route between origin and destination
         const [origLng, origLat] = origin;
         const [destLng, destLat] = destination;
@@ -28,10 +24,14 @@ export async function POST(request: Request) {
                     type: "Feature",
                     properties: {
                         route_id: `custom_os_route_${Date.now()}`,
-                        restrictions_avoided: 3, // example of moat logic applied
-                        clearance_guaranteed: height > 13.0,
+                        source_basis: 'preview_geometry_only',
+                        confidence_label: 'unverified_preview',
+                        restrictions_avoided: null,
+                        clearance_guaranteed: false,
+                        requires_routeintel_verification: true,
                         load_specs: { width, height, weight },
-                        urgency: 'warm'
+                        urgency: 'warm',
+                        disclaimer: 'Preview geometry is not a permitted or clearance-verified route. Run RouteIntel or obtain jurisdiction approval before dispatch.',
                     },
                     geometry: {
                         type: "LineString",

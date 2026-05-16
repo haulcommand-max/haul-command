@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@/lib/supabase/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { resolveSponsorCheckoutOffer } from '@/lib/monetization/funnel-guards';
 
 // ══════════════════════════════════════════════════════════════
 // /api/monetization/sponsor-checkout — STRIPE CHECKOUT SESSION
@@ -18,11 +20,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: '2026-02-25.clover',
 });
 
-const ALLOWED_ZONES = [
-    'territory', 'corridor', 'port', 'country',
-    'empty_market', 'regulation', 'tool', 'glossary', 'blog',
-] as const;
-
 export async function POST(req: Request) {
     try {
         const body = await req.json();
@@ -35,22 +32,24 @@ export async function POST(req: Request) {
         };
 
         // ── Input validation ──
-        if (!zone || !geo || !priceMonthly || !label) {
-            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-        }
-        if (!ALLOWED_ZONES.includes(zone as any)) {
-            return NextResponse.json({ error: 'Invalid sponsor zone' }, { status: 400 });
-        }
-        if (priceMonthly < 49 || priceMonthly > 2000) {
-            return NextResponse.json({ error: 'Invalid price range' }, { status: 400 });
+        const offer = resolveSponsorCheckoutOffer({
+            zone,
+            geo,
+            label,
+            requestedPriceMonthly: priceMonthly,
+        });
+        if (!offer.ok) {
+            return NextResponse.json({ error: offer.error }, { status: offer.status });
         }
 
         // ── Auth: get user_id if signed in (optional — sponsors can buy as guest) ──
         const supabase = createClient();
         let customerId: string | undefined;
+        let userId: string | null = null;
         try {
             const { data: { user } } = await supabase.auth.getUser();
             if (user?.email) {
+                userId = user.id;
                 // Look up or create Stripe customer
                 const existing = await stripe.customers.list({ email: user.email, limit: 1 });
                 if (existing.data.length > 0) {
@@ -69,13 +68,31 @@ export async function POST(req: Request) {
 
         // ── Create Stripe Price (inline, one-off per session) ──
         // In production, create a Price catalog in Stripe and look up by lookup_key
+        const admin = getSupabaseAdmin();
+        const { data: pendingOrder, error: pendingOrderError } = await admin
+            .from('sponsorship_orders' as never)
+            .insert({
+                user_id: userId,
+                product_key: offer.productKey,
+                geo_key: offer.geo,
+                zone: offer.zone,
+                geo: offer.geo,
+                status: 'pending',
+            } as never)
+            .select('id')
+            .single();
+
+        if (pendingOrderError || !(pendingOrder as any)?.id) {
+            return NextResponse.json({ error: pendingOrderError?.message ?? 'Unable to reserve sponsor order' }, { status: 500 });
+        }
+
         const price = await stripe.prices.create({
             currency: 'usd',
-            unit_amount: Math.round(priceMonthly * 100),
+            unit_amount: Math.round(offer.priceMonthly * 100),
             recurring: { interval: 'month' },
             product_data: {
-                name: `Haul Command Sponsor: ${label}`,
-                metadata: { zone, geo },
+                name: `Haul Command Sponsor: ${offer.label}`,
+                metadata: { zone: offer.zone, geo: offer.geo, product_key: offer.productKey },
             },
         });
 
@@ -88,25 +105,38 @@ export async function POST(req: Request) {
             mode: 'subscription',
             line_items: [{ price: price.id, quantity: 1 }],
             ...(customerId ? { customer: customerId } : {}),
-            success_url: `${origin}/advertise?checkout=success&zone=${zone}&geo=${encodeURIComponent(geo)}`,
+            success_url: `${origin}/advertise?checkout=success&zone=${offer.zone}&geo=${encodeURIComponent(offer.geo)}`,
             cancel_url: `${origin}/advertise?checkout=cancelled`,
             subscription_data: {
                 metadata: {
-                    sponsor_zone: zone,
-                    sponsor_geo: geo,
-                    sponsor_label: label,
+                    sponsor_order_id: (pendingOrder as any).id,
+                    sponsor_zone: offer.zone,
+                    sponsor_geo: offer.geo,
+                    sponsor_label: offer.label,
+                    sponsor_product_key: offer.productKey,
                 },
             },
             metadata: {
-                sponsor_zone: zone,
-                sponsor_geo: geo,
-                sponsor_label: label,
+                sponsor_order_id: (pendingOrder as any).id,
+                sponsor_zone: offer.zone,
+                sponsor_geo: offer.geo,
+                sponsor_label: offer.label,
+                sponsor_product_key: offer.productKey,
+                ignored_client_price: String(offer.ignoredClientPrice),
             },
             allow_promotion_codes: true,
             billing_address_collection: 'auto',
         });
 
-        return NextResponse.json({ sessionUrl: session.url });
+        await admin
+            .from('sponsorship_orders' as never)
+            .update({
+                stripe_checkout_session_id: session.id,
+                stripe_customer_id: (session.customer as string | null) ?? customerId ?? null,
+            } as never)
+            .eq('id' as never, (pendingOrder as any).id);
+
+        return NextResponse.json({ sessionUrl: session.url, orderId: (pendingOrder as any).id });
     } catch (err: any) {
         console.error('[Sponsor Checkout] Error:', err.message);
         return NextResponse.json({ error: err.message }, { status: 500 });

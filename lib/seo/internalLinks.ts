@@ -7,6 +7,7 @@
  */
 
 import { createClient } from "@supabase/supabase-js";
+import { buildDirectoryMarketHref } from "@/lib/directory/routes";
 import { applyDiversityGuard } from "@/lib/seo/diversity";
 
 // ── Supabase admin client (server-side only) ──────────────────────────────────
@@ -195,20 +196,20 @@ export function buildInternalLinks(opts: {
     nearbyCities: string[];
     corridors?: string[];
 }): InternalLinkSet {
-    const { country, state, city, slug, nearbyCities, corridors = [] } = opts;
+    const { country, state, city, nearbyCities, corridors = [] } = opts;
 
     const parentState = {
-        href: `/${country}/${state}`,
+        href: buildDirectoryMarketHref({ country, slug: state }),
         label: `Pilot Car Services in ${state.toUpperCase()}`,
     };
 
     const nearbyCityLinks = nearbyCities.slice(0, 4).map((c) => ({
-        href: `/${country}/${state}/${c}`,
+        href: buildDirectoryMarketHref({ country, slug: c }),
         label: `Escort Services near ${c.split("-").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ")}`,
     }));
 
     const corridorLinks = (corridors.length ? corridors : Object.keys(CORRIDOR_SLUGS).slice(0, 3)).map((name) => ({
-        href: `/corridor/${CORRIDOR_SLUGS[name] ?? name.toLowerCase().replace(/[^a-z0-9]/g, "-")}`,
+        href: `/corridors/${CORRIDOR_SLUGS[name] ?? name.toLowerCase().replace(/[^a-z0-9]/g, "-")}`,
         label: `${name} Corridor Escorts`,
     }));
 

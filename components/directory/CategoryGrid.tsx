@@ -2,11 +2,12 @@
  * CategoryGrid — The 6-category navigation panel shown on state/province pages.
  * This is the FIRST PLACE users see categories (not the root directory).
  *
- * Links route to /directory/{country}/{region}/{category-slug}
+ * Links route to /directory/category/{category-slug} with country/region context.
  */
 "use client";
 import React from "react";
 import Link from "next/link";
+import { buildDirectoryCategoryHref } from "@/lib/directory/routes";
 import {
     Car, FileText, Wrench, BedDouble, HeartHandshake, Map
 } from "lucide-react";
@@ -124,7 +125,7 @@ export function CategoryGrid({ country, region, regionName, counts }: CategoryGr
                     return (
                         <Link aria-label="Navigation Link"
                             key={slug}
-                            href={`/directory/${country}/${region}/${slug}`}
+                            href={buildDirectoryCategoryHref(slug, { country, region })}
                             className="group relative flex flex-col gap-3 p-4 rounded-2xl transition-all duration-200 hover:-translate-y-0.5"
                             style={{
                                 background: hot

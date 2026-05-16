@@ -195,7 +195,7 @@ export default async function ClaimPage({ searchParams }: { searchParams: ClaimS
             <div className="flex flex-col gap-3">
               {!user ? (
                 <>
-                  <Link href={`/auth/register?next=${nextParam}`}
+                  <Link href={`/auth/register?intent=claim&next=${nextParam}`}
                     className="relative group bg-gradient-to-r from-[#d4950e] to-[#c4850e] text-white font-black uppercase tracking-widest py-4 rounded-xl text-sm text-center transition-all shadow-[0_0_20px_rgba(212,149,14,0.3)] hover:shadow-[0_0_30px_rgba(212,149,14,0.5)] overflow-hidden">
                     <span className="relative z-10">Claim My Profile - Free</span>
                     <div className="absolute inset-0 bg-white/20 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300" />
@@ -217,7 +217,6 @@ export default async function ClaimPage({ searchParams }: { searchParams: ClaimS
                   {claimTarget?.countryCode && <input type="hidden" name="country_code" value={claimTarget.countryCode} />}
                   {claimTarget?.claimType && <input type="hidden" name="claim_type" value={claimTarget.claimType} />}
                   {claimTarget?.acceptedClaimActor && <input type="hidden" name="accepted_claim_actor" value={claimTarget.acceptedClaimActor} />}
-                  <input type="hidden" name="user_id" value={user.id}/>
 
                   <InstantAIVerificationCard hcid={claimParams.hcid} companyName={operator?.company_name} />
 

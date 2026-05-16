@@ -18,21 +18,21 @@ export default function CheckoutContent() {
   const handleStripeActivation = async () => {
     setLoading(true);
     try {
-      // In production, this calls the Stripe API route to generate a checkout session
-      const res = await fetch("/api/adgrid/bid", {
+      const res = await fetch("/api/monetization/sponsor-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
-          territory_id: territoryId,
-          amount: price * 100, // cents
-          type: 'territory_sponsor' 
+          zone: "territory",
+          geo: territoryId,
+          priceMonthly: price,
+          label: `Territory Sponsor: ${territoryId}`,
         })
       });
 
       const data = await res.json();
 
-      if (data.url) {
-        window.location.href = data.url; // Redirect to Stripe
+      if (data.sessionUrl) {
+        window.location.href = data.sessionUrl; // Redirect to Stripe
       } else {
         // Fallback or demo mode if Stripe keys are not fully initialized
         setTimeout(() => {
@@ -51,11 +51,11 @@ export default function CheckoutContent() {
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
           <h1 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tight mb-4">
-            Secure Your Territory
+            Reserve Territory Review
           </h1>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            You are about to lock the exclusive AdGrid Sponsor slot for <strong className="text-hc-gold-400">{territoryId}</strong>. 
-            This grants you 100% Share-of-Voice for all broker routing searches in this market.
+            You are requesting review for the AdGrid territory placement for <strong className="text-hc-gold-400">{territoryId}</strong>.
+            Inventory, creative, and category conflicts are checked before any placement is approved.
           </p>
         </div>
 
@@ -72,7 +72,7 @@ export default function CheckoutContent() {
                <div className="space-y-4">
                  <div className="flex justify-between items-center p-4 border border-slate-800 rounded-lg bg-slate-950/50">
                     <div>
-                      <h3 className="font-bold text-slate-200">AdGrid: Territory Mastery</h3>
+                        <h3 className="font-bold text-slate-200">AdGrid: Territory Review</h3>
                       <p className="text-sm text-slate-500">Region: {territoryId}</p>
                     </div>
                     <div className="text-right">
@@ -85,8 +85,8 @@ export default function CheckoutContent() {
                     <div className="flex items-center gap-3">
                       <ShieldCheck className="h-5 w-5 text-emerald-500" />
                       <div>
-                        <h3 className="font-bold text-emerald-400 text-sm">Competitor Lockout Active</h3>
-                        <p className="text-xs text-emerald-500/70">No other agencies can buy this space while active.</p>
+                        <h3 className="font-bold text-emerald-400 text-sm">Inventory Review Required</h3>
+                        <p className="text-xs text-emerald-500/70">Category conflicts and placement rules are checked before approval.</p>
                       </div>
                     </div>
                  </div>
@@ -128,7 +128,7 @@ export default function CheckoutContent() {
                 <ul className="space-y-4 text-sm text-slate-400">
                   <li className="flex items-start gap-3">
                      <span className="flex-shrink-0 h-6 w-6 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold text-white">1</span>
-                     <p>Your payment is processed securely via Stripe. Your AdGrid wallet is instantly credited.</p>
+                      <p>Your payment or reservation request is processed securely via Stripe when checkout is available.</p>
                   </li>
                   <li className="flex items-start gap-3">
                      <span className="flex-shrink-0 h-6 w-6 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold text-white">2</span>
@@ -136,7 +136,7 @@ export default function CheckoutContent() {
                   </li>
                   <li className="flex items-start gap-3">
                      <span className="flex-shrink-0 h-6 w-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold">3</span>
-                     <p><strong className="text-slate-200">Instant Visibility.</strong> Your agency appears on every {territoryId} permit guide, route calculation, and broker dashboard query.</p>
+                      <p><strong className="text-slate-200">Placement Review.</strong> Your agency appears only after the slot, creative, destination, and tracking pass review.</p>
                   </li>
                 </ul>
              </div>

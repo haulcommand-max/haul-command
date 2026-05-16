@@ -74,7 +74,7 @@ export class EntitlementEngine {
                     const session = event.data.object as Stripe.Checkout.Session;
                     // Legacy type-keyed routes
                     if (session.metadata?.type === 'ad_boost') await this.activateAdGrid(session);
-                    if (session.metadata?.type === 'data_purchase') await this.activateDataProduct(session);
+                    if (session.metadata?.type === 'data_purchase' || session.metadata?.type === 'data_product_purchase') await this.activateDataProduct(session);
                     if (session.metadata?.type === 'tier2_claim') await this.activateProfileClaim(session);
                     // New creative factory campaigns (/api/ads/campaigns)
                     if (session.metadata?.campaign_id) await this.activateCampaign(session);
@@ -145,6 +145,7 @@ export class EntitlementEngine {
         const { data: purchase, error } = await this.supabase.from('data_purchases').select('*')
             .eq('user_id', session.metadata.user_id)
             .eq('product_id', session.metadata.product_id)
+            .eq('stripe_session_id', session.id)
             .eq('status', 'pending')
             .maybeSingle();
 

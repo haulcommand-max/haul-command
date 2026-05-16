@@ -11,6 +11,7 @@ import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { getOrCreateWallet, writeLedgerEntry, recordRevenue } from '@/lib/hc-pay/ledger';
 import { calcQuickPayFee } from '@/lib/hc-pay/fees';
 import { stripe } from '@/lib/stripe/client';
+import { resolvePayoutReadyConnectAccount } from '@/lib/stripe/connect-readiness';
 
 export const runtime = 'nodejs';
 
@@ -42,30 +43,23 @@ export async function POST(req: NextRequest) {
             ? calcQuickPayFee(amountUsd)
             : { fee: 0, net: amountUsd };
 
-        // Get operator's Stripe Connect account
         const admin = getSupabaseAdmin();
-        const { data: profile } = await admin
-            .from('profiles')
-            .select('stripe_connect_account_id')
-            .eq('id', user.id)
-            .single();
-
-        if (!profile?.stripe_connect_account_id) {
-            return NextResponse.json({
-                error: 'No payout account. Complete Stripe onboarding at /api/payments/connect/onboarding first.',
-            }, { status: 400 });
+        const connectAccount = await resolvePayoutReadyConnectAccount(user.id);
+        if (!connectAccount.ok) {
+            return NextResponse.json(connectAccount, { status: connectAccount.status });
         }
 
         // Create Stripe transfer
         const transfer = await stripe.transfers.create({
             amount: Math.round(net * 100),
             currency: 'usd',
-            destination: profile.stripe_connect_account_id,
+            destination: connectAccount.accountId,
             metadata: {
                 user_id: user.id,
                 payout_type: payoutType,
                 type: 'hc_pay_payout',
                 wallet_id: wallet.id,
+                connect_source: connectAccount.source,
             },
         });
 

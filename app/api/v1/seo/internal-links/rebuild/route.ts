@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { requireInternalRequest } from '@/lib/security/internal-request-auth';
 
 // ============================================================================
 // POST /v1/seo/internal-links/rebuild — Rebuild internal links for a surface
@@ -9,6 +10,9 @@ const supabase = () =>
     createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
 export async function POST(req: NextRequest) {
+    const authFailure = requireInternalRequest(req);
+    if (authFailure) return authFailure;
+
     try {
         const db = supabase();
         const body = await req.json();

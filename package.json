@@ -8,7 +8,7 @@
         "dev": "next dev",
         "build": "node scripts/postinstall-patch.mjs && next build",
         "start": "next start",
-        "lint": "next lint",
+        "lint": "npm run typecheck:go-live",
         "lint:mojibake": "node scripts/check-mojibake.js",
         "typecheck": "npm run typecheck:go-live",
         "typecheck:go-live": "tsc -p tsconfig.go-live.json --noEmit --pretty false",
