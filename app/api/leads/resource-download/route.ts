@@ -23,6 +23,17 @@ export const dynamic = 'force-dynamic';
 // hc-listmonk.fly.dev → Lists → New List
 const LISTMONK_RESOURCE_LIST_ID = parseInt(process.env.LISTMONK_RESOURCE_LIST_ID || '2', 10);
 
+function getSupabaseAdminConfig() {
+  const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!url || !serviceRoleKey) {
+    throw new Error('Supabase lead capture configuration is missing');
+  }
+
+  return { url, serviceRoleKey };
+}
+
 export async function POST(req: NextRequest) {
   try {
     // Handle both JSON and form submissions
@@ -54,13 +65,14 @@ export async function POST(req: NextRequest) {
     const referrer = req.headers.get('referer') ?? null;
 
     // ── Step 1: Upsert into Supabase lead_captures ──────────────────────────
+    const { url, serviceRoleKey } = getSupabaseAdminConfig();
     const supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      url,
+      serviceRoleKey,
       { auth: { persistSession: false } }
     );
 
-    await supabase.from('lead_captures').upsert(
+    const { error: captureError } = await supabase.from('lead_captures').upsert(
       {
         email,
         name: name || null,
@@ -74,6 +86,10 @@ export async function POST(req: NextRequest) {
       },
       { onConflict: 'email,source', ignoreDuplicates: true }
     );
+
+    if (captureError) {
+      throw new Error(`Lead capture failed: ${captureError.message}`);
+    }
 
     // ── Step 2: Subscribe to Listmonk ───────────────────────────────────────
     let listmonkId: number | null = null;
@@ -92,11 +108,15 @@ export async function POST(req: NextRequest) {
 
       // Update lead record with Listmonk subscriber ID
       if (listmonkId) {
-        await supabase
+        const { error: listmonkUpdateError } = await supabase
           .from('lead_captures')
           .update({ listmonk_id: listmonkId, status: 'subscribed' })
           .eq('email', email)
           .eq('source', source);
+
+        if (listmonkUpdateError) {
+          console.warn('[resource-download] Listmonk status update failed:', listmonkUpdateError.message);
+        }
       }
     } catch (emailErr: any) {
       // Email failure is non-fatal — lead is still captured in Supabase
