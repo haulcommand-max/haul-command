@@ -44,7 +44,8 @@ describe("locale-first city service helpers", () => {
       hasInternalLinks: true,
     });
 
-    expect(shouldIndexCityServicePage(thinScore)).toBe(true);
-    expect(shouldIndexCityServicePage(usefulScore)).toBe(true);
+    expect(thinScore).toBeGreaterThanOrEqual(3);
+    expect(shouldIndexCityServicePage(thinScore, 0)).toBe(false);
+    expect(shouldIndexCityServicePage(usefulScore, 4)).toBe(true);
   });
 });

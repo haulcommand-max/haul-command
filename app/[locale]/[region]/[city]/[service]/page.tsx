@@ -80,7 +80,7 @@ function buildPageFacts(params: CityServiceRouteParams, providerCount: number) {
     hasInternalLinks: true,
   });
 
-  return { service, city, region, countryCode, canonical, score, shouldIndex: shouldIndexCityServicePage(score) };
+  return { service, city, region, countryCode, canonical, score, shouldIndex: shouldIndexCityServicePage(score, providerCount) };
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

@@ -110,6 +110,6 @@ export function cityServiceIndexabilityScore(input: {
   ].filter(Boolean).length;
 }
 
-export function shouldIndexCityServicePage(score: number) {
-  return score >= 3;
+export function shouldIndexCityServicePage(score: number, providerCount = 0) {
+  return providerCount >= 3 && score >= 3;
 }
