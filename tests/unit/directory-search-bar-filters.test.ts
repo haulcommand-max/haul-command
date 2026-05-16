@@ -75,4 +75,34 @@ describe("DirectorySearchBar deterministic filters", () => {
       "Alpha Pilot Cars",
     ]);
   });
+
+  it("keeps publishable fallback rows when category signals are stored in metadata", () => {
+    const result = applyDirectoryFilters(
+      [
+        {
+          company: "Fallback Pilot Car Record",
+          country_code_inferred: "US",
+          state_code: "FL",
+          metadata: {
+            entity_family: "operator",
+            entity_subtype: "pilot_car_operator",
+            service_categories: ["pilot car", "high pole"],
+          },
+          claim_status: "claimable",
+          rank_score: 12,
+        },
+      ],
+      {
+        query: "",
+        country: "US",
+        category: "pilot-car",
+        state: "FL",
+        proof: "all",
+        claim: "all",
+        sort: "score",
+      },
+    );
+
+    expect(result.map((record) => record.company)).toEqual(["Fallback Pilot Car Record"]);
+  });
 });

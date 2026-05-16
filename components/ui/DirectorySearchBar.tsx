@@ -121,16 +121,26 @@ function recordHasProofState(item: any, proof: DirectoryProofFilter): boolean {
 function recordMatchesCategory(item: any, category: string): boolean {
   const normalized = normalizeFilterValue(category);
   if (!normalized || normalized === 'support') return true;
+  const metadata = item.metadata && typeof item.metadata === 'object' ? item.metadata : {};
 
   const haystack = [
     item.entity_family,
     item.entity_subtype,
+    metadata.entity_family,
+    metadata.entity_subtype,
+    metadata.primary_service,
+    metadata.primary_category,
     item.category,
     item.category_slug,
     item.service_type,
     item.primary_service,
     item.primary_category,
     item.equipment_types,
+    metadata.equipment_types,
+    metadata.service_categories,
+    metadata.services,
+    metadata.specialties,
+    metadata.tags,
     item.services,
     item.specialties,
     item.tags,

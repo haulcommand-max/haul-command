@@ -184,20 +184,44 @@ export function glossaryTermMetadata(
   availableCountryCodes?: string[]
 ): Metadata {
   const term = payload.term;
+  const title = `${term.canonical_term} Meaning | Haul Command Glossary`;
+  const description =
+    term.short_definition ||
+    term.plain_english ||
+    `Learn what ${term.canonical_term} means in heavy haul and oversize transport.`;
+  const url = `${SITE_URL}/glossary/${term.slug}`;
 
   const alternates = availableCountryCodes && availableCountryCodes.length > 0
     ? buildHreflangAlternates(`/glossary/${term.slug}`, availableCountryCodes)
     : {
-        canonical: `${SITE_URL}/glossary/${term.slug}`,
+        canonical: url,
       };
 
   return {
-    title: `${term.canonical_term} Meaning | Haul Command Glossary`,
-    description:
-      term.short_definition ||
-      term.plain_english ||
-      `Learn what ${term.canonical_term} means in heavy haul and oversize transport.`,
+    title,
+    description,
     alternates,
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: "Haul Command",
+      type: "article",
+      images: [
+        {
+          url: `${SITE_URL}/brand/generated/og-1200x630.png`,
+          width: 1200,
+          height: 630,
+          alt: `${term.canonical_term} heavy haul glossary definition`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [`${SITE_URL}/brand/generated/og-1200x630.png`],
+    },
   };
 }
 

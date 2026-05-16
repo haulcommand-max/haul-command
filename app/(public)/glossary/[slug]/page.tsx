@@ -33,11 +33,34 @@ export async function generateMetadata({
 
   const page = getEscGlossaryPage(slug);
   if (!page) return {};
+  const title = `${page.title} | Heavy Haul Glossary | Haul Command`;
+  const url = `https://www.haulcommand.com/glossary/${slug}`;
 
   return {
-    title: `${page.title} | Heavy Haul Glossary | Haul Command`,
+    title,
     description: page.description,
-    alternates: { canonical: `https://www.haulcommand.com/glossary/${slug}` },
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description: page.description,
+      url,
+      siteName: "Haul Command",
+      type: "article",
+      images: [
+        {
+          url: "https://www.haulcommand.com/brand/generated/og-1200x630.png",
+          width: 1200,
+          height: 630,
+          alt: `${page.title} heavy haul glossary definition`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: page.description,
+      images: ["https://www.haulcommand.com/brand/generated/og-1200x630.png"],
+    },
   };
 }
 
