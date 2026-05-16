@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  buildCorridorSeoJsonLd,
   buildCorridorSeoPageModel,
   hasUsefulCorridorSeoContent,
   normalizeCorridorSeoSlug,
@@ -52,6 +53,22 @@ describe("corridor SEO page adapter", () => {
     expect(page.sourceConfidenceLabel).toBe("Seeded corridor page");
     expect(page.sourceConfidenceDetail).toContain("content blocks are still empty");
     expect(page.canonicalPath).toBe("/corridors/us-tx-houston-to-tx-dallas-heavy-haul");
+  });
+
+  it("uses fallback WebPage JSON-LD when seeded rows only have an empty object", () => {
+    const page = buildCorridorSeoPageModel(baseRow);
+    const jsonLd = buildCorridorSeoJsonLd(page);
+
+    expect(jsonLd).toMatchObject({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: "Houston to Dallas Heavy Haul | Haul Command",
+      url: "https://www.haulcommand.com/corridors/us-tx-houston-to-tx-dallas-heavy-haul",
+      about: {
+        "@type": "Service",
+        name: "Heavy haul route support",
+      },
+    });
   });
 
   it("requires published index state and useful content before indexing", () => {

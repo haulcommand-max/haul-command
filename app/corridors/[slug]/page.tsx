@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 import {
+  buildCorridorSeoJsonLd,
   getCorridorSeoPageBySlug,
   type CorridorSeoPageModel,
 } from '@/lib/corridors/corridor-seo-page';
@@ -48,20 +49,7 @@ export async function generateMetadata({ params }: PageProps) {
 }
 
 function CorridorSeoSeedPage({ page }: { page: CorridorSeoPageModel }) {
-  const jsonLd = page.jsonld && typeof page.jsonld === 'object'
-    ? page.jsonld
-    : {
-        '@context': 'https://schema.org',
-        '@type': 'WebPage',
-        name: page.h1,
-        description: page.description,
-        url: `https://www.haulcommand.com${page.canonicalPath}`,
-        isPartOf: {
-          '@type': 'WebSite',
-          name: 'Haul Command',
-          url: 'https://www.haulcommand.com',
-        },
-      };
+  const jsonLd = buildCorridorSeoJsonLd(page);
 
   return (
     <main className="hc-page-shell hc-surface-site-dark pb-20">

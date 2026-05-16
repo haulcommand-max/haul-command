@@ -99,7 +99,7 @@ const nextConfig: NextConfig = {
     // ── Redirects (SEO) ──────────────────────────────────────────────────────────
     async redirects() {
         // US state full-name → abbreviation redirects for /directory/us/[state]
-        const US_STATE_REDIRECTS = [
+        const US_STATE_TOKENS = [
             ['alabama','al'],['alaska','ak'],['arizona','az'],['arkansas','ar'],
             ['california','ca'],['colorado','co'],['connecticut','ct'],['delaware','de'],
             ['florida','fl'],['georgia','ga'],['hawaii','hi'],['idaho','id'],
@@ -113,17 +113,20 @@ const nextConfig: NextConfig = {
             ['south-dakota','sd'],['tennessee','tn'],['texas','tx'],['utah','ut'],
             ['vermont','vt'],['virginia','va'],['washington','wa'],['west-virginia','wv'],
             ['wisconsin','wi'],['wyoming','wy'],
-        ].map(([full, abbr]) => ({
+        ];
+        const US_STATE_REDIRECTS = US_STATE_TOKENS.map(([full, abbr]) => ({
             source: `/directory/us/${full}`,
             destination: `/directory/us/${abbr}`,
             permanent: true,
         }));
 
-        // Also redirect /directory/united-states/:state → /directory/us/:state
-        const COUNTRY_REDIRECTS = [
-            { source: '/directory/united-states/:state', destination: '/directory/us/:state', permanent: true },
-            { source: '/directory/united_states/:state', destination: '/directory/us/:state', permanent: true },
-        ];
+        // Country alias redirects stay limited to real state tokens so operator/market slugs are not hijacked.
+        const COUNTRY_REDIRECTS = US_STATE_TOKENS.flatMap(([full, abbr]) => [
+            { source: `/directory/united-states/${full}`, destination: `/directory/us/${abbr}`, permanent: true },
+            { source: `/directory/united-states/${abbr}`, destination: `/directory/us/${abbr}`, permanent: true },
+            { source: `/directory/united_states/${full}`, destination: `/directory/us/${abbr}`, permanent: true },
+            { source: `/directory/united_states/${abbr}`, destination: `/directory/us/${abbr}`, permanent: true },
+        ]);
 
         return [
             // §34 Command-OS — /hq is the canonical board-grade URL
@@ -156,7 +159,7 @@ const nextConfig: NextConfig = {
             },
             {
                 source: "/escort/corridor/:path*",
-                destination: "/corridor/:path*",
+                destination: "/corridors/:path*",
                 permanent: true,
             },
             {

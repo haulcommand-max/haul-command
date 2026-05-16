@@ -185,6 +185,30 @@ export function buildCorridorSeoPageModel(row: CorridorSeoPageRow): CorridorSeoP
   };
 }
 
+export function buildCorridorSeoJsonLd(page: CorridorSeoPageModel) {
+  if (isRecord(page.jsonld) && Object.keys(page.jsonld).length > 0) {
+    return page.jsonld;
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: page.h1,
+    description: page.description,
+    url: `https://www.haulcommand.com${page.canonicalPath}`,
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Haul Command",
+      url: "https://www.haulcommand.com",
+    },
+    about: {
+      "@type": "Service",
+      name: page.serviceLabel,
+      areaServed: page.countryCode,
+    },
+  };
+}
+
 export async function getCorridorSeoPageBySlug(supabase: SupabaseClient, slug: string) {
   const normalized = normalizeCorridorSeoSlug(slug);
   if (!normalized) return null;
