@@ -23,9 +23,20 @@ type Snapshot = {
   lastVerifiedAt: string | null;
 };
 
-async function countRows(table: string, filters: Record<string, unknown> = {}) {
+async function countRows(table: string, filters: Record<string, unknown> = {}, selectColumn = "source_id") {
   const supabase = getSupabaseAdmin();
-  let query = supabase.from(table).select("id", { count: "exact", head: true });
+  let query = supabase.from(table).select(selectColumn, { count: "exact", head: true });
+  for (const [key, value] of Object.entries(filters)) {
+    query = query.eq(key, value as never);
+  }
+  const { count, error } = await query;
+  if (error) throw error;
+  return count ?? 0;
+}
+
+async function countAvOperatorRows(filters: Record<string, unknown> = {}) {
+  const supabase = getSupabaseAdmin();
+  let query = supabase.rpc("read_av_operator_universe").select("operator_id", { count: "exact", head: true });
   for (const [key, value] of Object.entries(filters)) {
     query = query.eq(key, value as never);
   }
@@ -46,9 +57,9 @@ async function getAutonomousSnapshot(): Promise<Snapshot> {
       policyResult,
       lastVerifiedResult,
     ] = await Promise.all([
-      countRows("v_av_operator_universe"),
-      countRows("v_av_operator_universe", { av_ready: true }),
-      countRows("v_av_operator_universe", { drone_survey_capable: true }),
+      countAvOperatorRows(),
+      countAvOperatorRows({ av_ready: true }),
+      countAvOperatorRows({ drone_survey_capable: true }),
       countRows("v_av_corridor_readiness_unified"),
       countRows("v_av_corridor_readiness_unified", { av_confidence_label: "verified" }),
       supabase.from("hc_policy").select("value").eq("key", "av.disclaimer.required_on_all_public_surfaces").maybeSingle(),
@@ -142,7 +153,7 @@ export default async function AutonomousEnterprisePage() {
             <h2 style={{ margin: 0, fontSize: 24, color: "#111713" }}>What enterprise buyers can verify</h2>
             <div style={{ display: "grid", gap: 16, marginTop: 20 }}>
               {[
-                ["Unified operator data", "Reads from v_av_operator_universe so the UI does not mistake the US/Canada future-capability layer for a global table."],
+                ["Unified operator data", "Reads through read_av_operator_universe, preferring mv_av_operator_universe when present and falling back to v_av_operator_universe."],
                 ["Unified corridor data", "Reads from v_av_corridor_readiness_unified until the corridor canonical is resolved."],
                 ["Trust trio", "Every readiness claim should show confidence label, source basis, and last verified date before operational use."],
                 ["No named-partner shortcut", "This page no longer claims coverage for specific AV companies unless there is signed, source-backed evidence."],

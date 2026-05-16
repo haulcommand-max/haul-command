@@ -1,4 +1,5 @@
 import React from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
@@ -15,6 +16,11 @@ import {
   proofStateBadgeClass, proofStateLabel,
   type ProofState
 } from '@/lib/geo/country-packs';
+import {
+  buildDirectoryOperatorCanonicalUrl,
+  buildDirectoryOperatorJsonLd,
+  buildDirectoryOperatorMetadata,
+} from '@/lib/directory/operator-profile-seo';
 
 export const dynamic = 'force-dynamic';
 
@@ -41,6 +47,44 @@ function normalizeDossierRecord(record: any) {
     entity_family: record.entity_family,
     entity_subtype: record.entity_subtype,
   };
+}
+
+async function createDirectorySupabaseClient() {
+  const cookieStore = await cookies();
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
+  );
+}
+
+async function getDossierOperator(id: string) {
+  const supabase = await createDirectorySupabaseClient();
+  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+
+  for (const surface of DIRECTORY_DOSSIER_SURFACES) {
+    let query = supabase.from(surface).select('*').limit(1);
+    query = isUuid ? query.eq('id', id) : query.eq('slug', id);
+
+    const { data, error } = await query.maybeSingle();
+    if (error) {
+      console.warn(`[dossier] ${surface} query failed for id:`, id, error.message);
+      continue;
+    }
+    if (data) return normalizeDossierRecord(data);
+  }
+
+  return null;
+}
+
+async function resolveDossierParams(params: { id: string } | Promise<{ id: string }>) {
+  return params;
+}
+
+export async function generateMetadata({ params }: { params: { id: string } | Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await resolveDossierParams(params);
+  const operator = await getDossierOperator(id);
+  return buildDirectoryOperatorMetadata(operator, id);
 }
 
 function ratingText(value: number | null | undefined) {
@@ -99,34 +143,8 @@ function ScoreRing({ score, label, color = '#F1A91B' }: { score: number | null; 
 
 export default async function DossierPage({ params }: { params: { id: string } }) {
   const { id } = await params;
-  const cookieStore = await cookies();
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
-  );
-
-  let operator: any = null;
-  try {
-    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
-
-    for (const surface of DIRECTORY_DOSSIER_SURFACES) {
-      let query = supabase.from(surface).select('*').limit(1);
-      query = isUuid ? query.eq('id', id) : query.eq('slug', id);
-
-      const { data, error } = await query.maybeSingle();
-      if (error) {
-        console.warn(`[dossier] ${surface} query failed for id:`, id, error.message);
-        continue;
-      }
-      if (data) {
-        operator = normalizeDossierRecord(data);
-        break;
-      }
-    }
-  } catch (e) {
-    console.warn('[dossier] Query failed for id:', id, e);
-  }
+  const supabase = await createDirectorySupabaseClient();
+  const operator = await getDossierOperator(id);
 
   if (!operator) {
     return (
@@ -142,6 +160,9 @@ export default async function DossierPage({ params }: { params: { id: string } }
       </HCContentPageShell>
     );
   }
+
+  const canonicalUrl = buildDirectoryOperatorCanonicalUrl(operator, id);
+  const jsonLd = buildDirectoryOperatorJsonLd(operator, canonicalUrl);
 
   let infrastructureReadiness: any = null;
   if (operator.entity_family === 'infrastructure' || ['rest_area', 'weigh_station', 'truck_parking', 'port', 'rail_intermodal', 'border_crossing', 'tunnel', 'tunnel_authority'].includes(operator.entity_subtype)) {
@@ -229,6 +250,10 @@ export default async function DossierPage({ params }: { params: { id: string } }
 
   return (
     <HCContentPageShell>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* ── HEADER ── */}
       <div className="border-b border-[#F1A91B]/10"
         style={{ background: 'linear-gradient(135deg, #0B0F14 0%, #111827 50%, #0f1a24 100%)' }}>

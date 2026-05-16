@@ -4,14 +4,41 @@ import { generatePageMetadata } from '@/lib/seo/metadataFactory';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
-import { MapPin, TrendingUp, Truck, Clock, ChevronRight, Shield, DollarSign } from 'lucide-react';
+import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
+import {
+  getCorridorSeoPageBySlug,
+  type CorridorSeoPageModel,
+} from '@/lib/corridors/corridor-seo-page';
+import { MapPin, TrendingUp, Truck, ChevronRight, Shield, DollarSign, FileText } from 'lucide-react';
 
 interface PageProps { params: Promise<{ slug: string }>; }
 
+function createCorridorPageClient() {
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+  }
+
+  return createClient();
+}
+
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
-  const supabase = createClient();
+  const supabase = createCorridorPageClient();
   const { data } = await supabase.from('hc_corridors').select('name,start_state,end_state,country_code').eq('corridor_key', slug).maybeSingle();
+  if (!data) {
+    const seoPage = await getCorridorSeoPageBySlug(supabase as any, slug);
+    if (seoPage) {
+      return generatePageMetadata({
+        title: seoPage.title.replace(/\s+\|\s+Haul Command$/i, ''),
+        description: seoPage.description,
+        canonicalPath: seoPage.canonicalPath,
+        countryCode: seoPage.countryCode,
+        noIndex: !seoPage.shouldIndex,
+        hreflang: false,
+      });
+    }
+  }
+
   const name = data?.name || slug.split('-').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   return generatePageMetadata({
     title: `${name} Heavy Haul Corridor — Escort Requirements & Rates`,
@@ -20,9 +47,141 @@ export async function generateMetadata({ params }: PageProps) {
   });
 }
 
+function CorridorSeoSeedPage({ page }: { page: CorridorSeoPageModel }) {
+  const jsonLd = page.jsonld && typeof page.jsonld === 'object'
+    ? page.jsonld
+    : {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: page.h1,
+        description: page.description,
+        url: `https://www.haulcommand.com${page.canonicalPath}`,
+        isPartOf: {
+          '@type': 'WebSite',
+          name: 'Haul Command',
+          url: 'https://www.haulcommand.com',
+        },
+      };
+
+  return (
+    <main className="hc-page-shell hc-surface-site-dark pb-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
+      <div className="bg-[#0B0F14] text-white border-b border-white/[0.06]">
+        <div className="max-w-6xl mx-auto px-4 pt-6 pb-2 flex items-center gap-1.5 text-xs text-gray-500">
+          <Link href="/" className="hover:text-[#C6923A]">Home</Link>
+          <ChevronRight className="w-3 h-3" />
+          <Link href="/corridors" className="hover:text-[#C6923A]">Corridors</Link>
+          <ChevronRight className="w-3 h-3" />
+          <span className="text-gray-400 truncate">{page.originLabel} to {page.destinationLabel}</span>
+        </div>
+        <div className="max-w-6xl mx-auto px-4 pt-4 pb-10">
+          <div className="flex flex-wrap items-center gap-3 mb-4">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-full border border-[#C6923A]/30 bg-[#C6923A]/10 text-[#f6d36f]">
+              <FileText className="w-3 h-3" /> {page.sourceConfidenceLabel}
+            </span>
+            <span className="px-3 py-1 bg-white/5 border border-white/10 text-gray-300 text-xs font-medium rounded-full">
+              {page.shouldIndex ? 'Indexable' : 'Noindex until content is verified'}
+            </span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-black text-white mb-3">{page.h1}</h1>
+          <p className="max-w-3xl text-gray-300 text-base leading-7">{page.description}</p>
+          <div className="mt-6 flex flex-wrap items-center gap-6 text-gray-400 text-sm">
+            <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-[#C6923A]" />{page.originLabel} to {page.destinationLabel}</span>
+            <span className="flex items-center gap-1.5"><Truck className="w-4 h-4" />{page.serviceLabel}</span>
+            <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-[#C6923A]" />{page.countryCode}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="lg:col-span-8 space-y-8">
+          <section className="hc-surface-glass-panel rounded-2xl p-6">
+            <p className="text-xs font-bold uppercase tracking-widest text-[#C6923A] mb-2">Direct answer</p>
+            <h2 className="text-2xl font-black text-white mb-3">Route support is being assembled for this corridor pair.</h2>
+            <p className="text-gray-300 leading-7">
+              Haul Command has a canonical SEO row for this corridor-service route, but it is still marked as
+              {page.published ? ' published with limited content' : ' unpublished'} and does not yet contain source-backed content blocks.
+              The page stays useful by routing brokers, carriers, escorts, and advertisers to actions that capture demand without inventing rates,
+              operator counts, permit rules, or verified local coverage.
+            </p>
+          </section>
+
+          <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {[
+              { label: 'Origin', value: page.originLabel },
+              { label: 'Destination', value: page.destinationLabel },
+              { label: 'Source state', value: page.publishStatus },
+            ].map((item) => (
+              <div key={item.label} className="p-4 bg-gray-50 border border-gray-200 rounded-xl">
+                <p className="text-xs text-gray-500 uppercase tracking-widest mb-1">{item.label}</p>
+                <p className="text-lg font-black text-gray-900">{item.value}</p>
+              </div>
+            ))}
+          </section>
+
+          <section className="hc-surface-glass-panel rounded-2xl p-6">
+            <h2 className="text-xl font-black text-white mb-3">Source confidence</h2>
+            <p className="text-gray-300 leading-7">{page.sourceConfidenceDetail}</p>
+            <ul className="mt-4 space-y-2 text-sm text-gray-300">
+              <li className="flex gap-2"><Shield className="w-4 h-4 text-[#C6923A] shrink-0 mt-0.5" /> No route-specific pricing is shown until supported by real observations.</li>
+              <li className="flex gap-2"><Shield className="w-4 h-4 text-[#C6923A] shrink-0 mt-0.5" /> No operator or escort supply is claimed without directory records or verification signals.</li>
+              <li className="flex gap-2"><Shield className="w-4 h-4 text-[#C6923A] shrink-0 mt-0.5" /> Permit and escort requirements link to source-backed requirement pages instead of being guessed here.</li>
+            </ul>
+          </section>
+        </div>
+
+        <aside className="lg:col-span-4 space-y-5">
+          <div className="bg-[#0B0F14] text-white rounded-2xl p-5 sticky top-20 border border-white/10">
+            <p className="text-xs font-bold uppercase tracking-widest text-[#C6923A] mb-1">Need this lane covered?</p>
+            <p className="text-sm text-gray-300 mb-4">Post demand or claim supply for {page.originLabel} to {page.destinationLabel}.</p>
+            <Link href={`/loads/post?corridor=${page.slug}`} className="block w-full text-center px-4 py-2.5 bg-[#F1A91B] hover:bg-[#D4951A] text-black font-bold text-sm rounded-lg mb-2 transition-colors">
+              Post a Load
+            </Link>
+            <Link href={`/directory?where=${encodeURIComponent(`${page.originLabel} to ${page.destinationLabel}`)}`} className="block w-full text-center px-4 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-sm rounded-lg transition-colors">
+              Find Route Support
+            </Link>
+          </div>
+
+          <AdGridSlot zone="corridor_sponsor" />
+
+          <div className="hc-surface-glass-panel rounded-2xl p-5">
+            <h3 className="font-bold text-white mb-3 text-sm">Related Resources</h3>
+            <div className="space-y-2">
+              {[
+                { href: '/escort-requirements', label: 'Escort Requirements' },
+                { href: '/tools/permit-cost-calculator', label: 'Permit Calculator' },
+                { href: '/directory', label: 'Find Support Records' },
+                { href: '/claim', label: 'Claim Profile' },
+                { href: '/advertise/buy', label: 'Sponsor This Corridor' },
+              ].map(({ href, label }) => (
+                <Link key={href} href={href} className="flex items-center justify-between text-sm text-gray-300 hover:text-[#C6923A] py-1 transition-colors">
+                  <span>{label}</span><ChevronRight className="w-4 h-4" />
+                </Link>
+              ))}
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <NoDeadEndBlock
+        heading="Next route action"
+        moves={[
+          { href: '/directory', icon: 'FIND', title: 'Find Support Records', desc: 'Search claimable and verified route support', primary: true, color: '#D4A844' },
+          { href: '/loads/post', icon: 'LOAD', title: 'Post a Load', desc: 'Create real corridor demand' },
+          { href: '/claim', icon: 'OK', title: 'Claim Supply', desc: 'Add service areas and proof' },
+          { href: '/escort-requirements', icon: 'LAW', title: 'Check Rules', desc: 'Source-backed escort requirements' },
+          { href: '/advertise/buy?zone=corridor_sponsor', icon: 'AD', title: 'Sponsor Corridor', desc: 'Labeled AdGrid placement' },
+        ]}
+        style={{ maxWidth: 1152, marginTop: 32 }}
+      />
+    </main>
+  );
+}
+
 export default async function CorridorPage({ params }: PageProps) {
   const { slug } = await params;
-  const supabase = createClient();
+  const supabase = createCorridorPageClient();
 
   const { data: corridor } = await supabase
     .from('hc_corridors')
@@ -30,7 +189,11 @@ export default async function CorridorPage({ params }: PageProps) {
     .eq('corridor_key', slug)
     .maybeSingle();
 
-  if (!corridor) notFound();
+  if (!corridor) {
+    const seoPage = await getCorridorSeoPageBySlug(supabase as any, slug);
+    if (seoPage) return <CorridorSeoSeedPage page={seoPage} />;
+    notFound();
+  }
 
   const name = corridor.name;
   const origin = [corridor.start_city, corridor.start_state].filter(Boolean).join(', ') || corridor.start_state || 'Origin';
@@ -67,7 +230,7 @@ export default async function CorridorPage({ params }: PageProps) {
   };
 
   return (
-    <main className="min-h-screen bg-white pb-20">
+    <main className="hc-page-shell hc-surface-site-dark pb-20">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* Header */}
@@ -123,7 +286,7 @@ export default async function CorridorPage({ params }: PageProps) {
           {/* Operators */}
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-black text-gray-900">Escort Operators Near {corridor.start_state}</h2>
+              <h2 className="text-xl font-black text-white">Escort Operators Near {corridor.start_state}</h2>
               <Link href={`/directory/us/${(corridor.start_state || 'tx').toLowerCase()}`} className="text-sm font-semibold text-[#C6923A] hover:underline">
                 See all →
               </Link>
@@ -131,7 +294,7 @@ export default async function CorridorPage({ params }: PageProps) {
             {(operators?.length ?? 0) > 0 ? (
               <div className="space-y-3">
                 {operators!.map((op: any) => (
-                  <Link key={op.id} href={`/directory/profile/${op.slug || op.id}`} className="flex items-center justify-between p-4 bg-gray-50 hover:bg-[#F1A91B]/5 border border-gray-200 hover:border-[#F1A91B]/30 rounded-xl transition-all group">
+                  <Link key={op.id} href={`/directory/dossier/${op.slug || op.id}`} className="flex items-center justify-between p-4 bg-gray-50 hover:bg-[#F1A91B]/5 border border-gray-200 hover:border-[#F1A91B]/30 rounded-xl transition-all group">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-[#0B0F14] flex items-center justify-center shrink-0">
                         <Truck className="w-5 h-5 text-[#C6923A]" />
@@ -160,7 +323,7 @@ export default async function CorridorPage({ params }: PageProps) {
           {/* Related Corridors */}
           {(related?.length ?? 0) > 0 && (
             <div>
-              <h2 className="text-xl font-black text-gray-900 mb-4">Related Corridors</h2>
+              <h2 className="text-xl font-black text-white mb-4">Related Corridors</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {related!.filter((r: any) => r.corridor_key).map((r: any) => (
                   <Link key={r.id} href={`/corridors/${r.corridor_key}`} className="flex items-center justify-between p-4 bg-gray-50 hover:bg-[#F1A91B]/5 border border-gray-200 hover:border-[#F1A91B]/30 rounded-xl transition-all group">
@@ -194,8 +357,8 @@ export default async function CorridorPage({ params }: PageProps) {
           <AdGridSlot zone="corridor_sponsor" />
 
           {/* Quick Links */}
-          <div className="border border-gray-200 rounded-2xl p-5">
-            <h3 className="font-bold text-gray-900 mb-3 text-sm">Related Resources</h3>
+          <div className="hc-surface-glass-panel rounded-2xl p-5">
+            <h3 className="font-bold text-white mb-3 text-sm">Related Resources</h3>
             <div className="space-y-2">
               {[
                 { href: '/escort-requirements', label: 'Escort Requirements' },
@@ -208,7 +371,7 @@ export default async function CorridorPage({ params }: PageProps) {
                 { href: '/claim', label: 'Claim Profile' },
                 { href: '/advertise/buy', label: 'Sponsor This Corridor' },
               ].map(({ href, label }) => (
-                <Link key={href} href={href} className="flex items-center justify-between text-sm text-gray-600 hover:text-[#C6923A] py-1 transition-colors">
+                <Link key={href} href={href} className="flex items-center justify-between text-sm text-gray-300 hover:text-[#C6923A] py-1 transition-colors">
                   <span>{label}</span><ChevronRight className="w-4 h-4" />
                 </Link>
               ))}

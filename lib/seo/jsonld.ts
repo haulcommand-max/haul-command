@@ -29,11 +29,30 @@ function breadcrumbList(items: Array<{ name: string; url: string }>) {
     };
 }
 
-function faqBlock(pairs: Array<{ question: string; answer: string }>) {
-    if (!pairs.length) return null;
+export type VisibleQaInput = {
+    question?: string | null;
+    answer?: string | null;
+    q?: string | null;
+    a?: string | null;
+    visible?: boolean;
+};
+
+export function normalizeVisibleQaItems(items: VisibleQaInput[] = []) {
+    return items
+        .filter((item) => item.visible !== false)
+        .map((item) => ({
+            question: String(item.question ?? item.q ?? '').trim(),
+            answer: String(item.answer ?? item.a ?? '').trim(),
+        }))
+        .filter((item) => item.question.length > 0 && item.answer.length > 0);
+}
+
+function faqBlock(pairs: VisibleQaInput[]) {
+    const visiblePairs = normalizeVisibleQaItems(pairs);
+    if (!visiblePairs.length) return null;
     return {
         '@type': 'FAQPage',
-        mainEntity: pairs.map(p => ({
+        mainEntity: visiblePairs.map(p => ({
             '@type': 'Question',
             name: p.question,
             acceptedAnswer: { '@type': 'Answer', text: p.answer },
@@ -62,6 +81,7 @@ export type PageType =
     | 'directory_city'
     | 'escort_requirements'
     | 'corridor'
+    | 'pricing'
     | 'answer'
     | 'rules';
 
@@ -125,7 +145,7 @@ function operatorProfileSchema(data: OperatorProfileData) {
     const graph: object[] = [
         {
             '@type': 'ProfessionalService',
-            '@id': `${SITE_URL}/directory/profile/${data.slug}`,
+            '@id': `${SITE_URL}/directory/dossier/${data.slug}`,
             name: data.name,
             description: data.description || `${data.name} — verified pilot car and escort vehicle operator on Haul Command.`,
             provider: orgReference(),
@@ -463,32 +483,97 @@ export function buildGlossaryTermJsonLd(params: {
     url: string;
     term: string;
     definition: string;
-    faq?: Array<{ q: string; a: string }>;
+    aliases?: string[];
+    faq?: VisibleQaInput[];
 }) {
-    const definedTerm: JsonLd = {
+    const definedTerm = buildDefinedTermJsonLd({
+        url: params.url,
+        term: params.term,
+        definition: params.definition,
+        aliases: params.aliases,
+    });
+
+    const faqJson = buildFAQPageJsonLd({
+        url: params.url,
+        faqs: params.faq,
+    });
+
+    if (!faqJson) return definedTerm;
+
+    return { definedTerm, faqPage: faqJson };
+}
+
+export function buildDefinedTermJsonLd(params: {
+    url: string;
+    term: string;
+    definition: string;
+    slug?: string;
+    aliases?: string[];
+    definedTermSetName?: string;
+    definedTermSetUrl?: string;
+}) {
+    const aliases = (params.aliases ?? []).map((alias) => alias.trim()).filter(Boolean);
+    const json: JsonLd = {
         '@context': 'https://schema.org',
         '@type': 'DefinedTerm',
         '@id': params.url,
         url: params.url,
         name: params.term,
         description: params.definition,
+        ...(params.slug ? { termCode: params.slug } : {}),
+        ...(aliases.length ? { alternateName: aliases } : {}),
+        inDefinedTermSet: {
+            '@type': 'DefinedTermSet',
+            name: params.definedTermSetName ?? 'Haul Command Heavy Haul Glossary',
+            url: params.definedTermSetUrl ?? `${SITE_URL}/glossary`,
+        },
     };
 
-    if (!params.faq?.length) return definedTerm;
+    return json;
+}
 
+export function buildFAQPageJsonLd(params: {
+    url?: string;
+    faqs?: VisibleQaInput[];
+}) {
+    const visibleFaqs = normalizeVisibleQaItems(params.faqs);
+    if (!visibleFaqs.length) return null;
     const faqJson: JsonLd = {
         '@context': 'https://schema.org',
         '@type': 'FAQPage',
-        '@id': `${params.url}#faq`,
-        url: params.url,
-        mainEntity: params.faq.map(({ q, a }) => ({
+        ...(params.url ? { '@id': `${params.url}#faq`, url: params.url } : {}),
+        mainEntity: visibleFaqs.map(({ question, answer }) => ({
             '@type': 'Question',
-            name: q,
-            acceptedAnswer: { '@type': 'Answer', text: a },
+            name: question,
+            acceptedAnswer: { '@type': 'Answer', text: answer },
         })),
     };
 
-    return { definedTerm, faqPage: faqJson };
+    return faqJson;
+}
+
+export function buildQAPageJsonLd(params: {
+    url: string;
+    question: string;
+    answer: string;
+    visible?: boolean;
+}) {
+    const [qa] = normalizeVisibleQaItems([params]);
+    if (!qa) return null;
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'QAPage',
+        '@id': `${params.url}#qa`,
+        url: params.url,
+        mainEntity: {
+            '@type': 'Question',
+            name: qa.question,
+            acceptedAnswer: {
+                '@type': 'Answer',
+                text: qa.answer,
+            },
+        },
+    };
 }
 
 /**

@@ -1,3 +1,6 @@
+import { getCountry } from "@/lib/config/country-registry";
+import { AU_STATES, CA_PROVINCES, US_STATES } from "@/lib/geo/state-names";
+
 export type DirectoryCategoryFilter = {
   entityFamily: string;
   entitySubtypes: string[];
@@ -7,10 +10,42 @@ export type DirectoryCategoryFilter = {
 export type DirectoryFallbackFilterPlan = {
   countryCode: string | null;
   category: DirectoryCategoryFilter | null;
+  surfaceViews: DirectorySurfaceView[];
   locationSearch: string;
   order: Array<{ column: string; ascending: boolean }>;
   limit: number;
 };
+
+export type DirectoryMarketScope =
+  | { type: "region"; code: string; name: string }
+  | { type: "metro"; name: string }
+  | { type: "city"; name: string };
+
+export type DirectoryMarketFilterPlan = DirectoryFallbackFilterPlan & {
+  marketName: string;
+  scope: DirectoryMarketScope;
+  locationOrFilter: string;
+  noIndexWhenEmpty: boolean;
+};
+
+export type DirectorySurfaceView =
+  | "v_directory_operators"
+  | "v_directory_support_locations"
+  | "v_directory_services"
+  | "v_directory_brokers"
+  | "v_directory_carriers"
+  | "v_directory_infrastructure"
+  | "v_directory_authorities";
+
+const DEFAULT_SURFACE_VIEWS: DirectorySurfaceView[] = [
+  "v_directory_operators",
+  "v_directory_support_locations",
+  "v_directory_services",
+  "v_directory_brokers",
+  "v_directory_carriers",
+  "v_directory_infrastructure",
+  "v_directory_authorities",
+];
 
 const PILOT_ESCORT_SUBTYPES = [
   "pilot_car_operator",
@@ -72,22 +107,83 @@ const CATEGORY_FILTERS: Record<string, DirectoryCategoryFilter> = {
   },
 };
 
+const CATEGORY_SURFACE_VIEWS: Record<string, DirectorySurfaceView[]> = {
+  "pilot-car": ["v_directory_operators"],
+  "escort-vehicle": ["v_directory_operators"],
+  "lead-chase": ["v_directory_operators"],
+  oversize: ["v_directory_operators"],
+  "height-pole": ["v_directory_operators"],
+  "route-survey": ["v_directory_operators", "v_directory_services"],
+  "mobile-mechanic": ["v_directory_services", "v_directory_infrastructure"],
+  "freight-broker": ["v_directory_brokers"],
+  carrier: ["v_directory_carriers"],
+  "heavy-haul-carrier": ["v_directory_carriers"],
+  "permit-service": ["v_directory_authorities", "v_directory_services"],
+  "truck-parking": ["v_directory_support_locations", "v_directory_infrastructure"],
+};
+
+const CATEGORY_ALIASES: Record<string, string> = {
+  escort: "escort-vehicle",
+  "escort-service": "escort-vehicle",
+  "escort-services": "escort-vehicle",
+  "pilot-car-operator": "pilot-car",
+  "pilot-car-operators": "pilot-car",
+  "high-pole": "height-pole",
+  "high-pole-escort": "height-pole",
+  "high-pole-escorts": "height-pole",
+  "permit-support": "permit-service",
+  "permit-services": "permit-service",
+  "route-survey-provider": "route-survey",
+  "route-survey-providers": "route-survey",
+  "staging-yard": "truck-parking",
+  "staging-yards": "truck-parking",
+  "oversize-parking": "truck-parking",
+};
+
+const REGION_MAP_BY_COUNTRY: Record<string, Record<string, string>> = {
+  US: US_STATES,
+  CA: CA_PROVINCES,
+  AU: AU_STATES,
+};
+
 export function normalizeDirectoryCategory(category?: string | null): string {
-  return String(category ?? "")
+  const normalized = String(category ?? "")
     .trim()
     .toLowerCase()
     .replace(/_/g, "-");
+  return CATEGORY_ALIASES[normalized] ?? normalized;
 }
 
 export function normalizeDirectoryCountry(country?: string | null): string | null {
-  if (country == null || country.trim() === "") return "US";
+  if (country == null || country.trim() === "") return null;
   const normalized = country.trim().toUpperCase();
   return /^[A-Z]{2}$/.test(normalized) ? normalized : null;
+}
+
+export function slugifyDirectoryMarket(value: string): string {
+  return String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+export function directoryMarketNameFromSlug(slug: string): string {
+  return String(slug ?? "")
+    .split("-")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
 }
 
 export function resolveDirectoryCategoryFilter(category?: string | null): DirectoryCategoryFilter | null {
   const normalized = normalizeDirectoryCategory(category);
   return CATEGORY_FILTERS[normalized] ?? null;
+}
+
+export function resolveDirectorySurfaceViews(category?: string | null): DirectorySurfaceView[] {
+  const normalized = normalizeDirectoryCategory(category);
+  return CATEGORY_SURFACE_VIEWS[normalized] ?? DEFAULT_SURFACE_VIEWS;
 }
 
 export function buildDirectoryFallbackFilterPlan(params: {
@@ -98,6 +194,7 @@ export function buildDirectoryFallbackFilterPlan(params: {
   return {
     countryCode: normalizeDirectoryCountry(params.country),
     category: resolveDirectoryCategoryFilter(params.category),
+    surfaceViews: resolveDirectorySurfaceViews(params.category),
     locationSearch: String(params.q ?? "").trim(),
     order: [
       { column: "rank_score", ascending: false },
@@ -118,4 +215,75 @@ export function buildDirectoryLocationOrFilter(locationSearch: string): string |
     `company.ilike.%${escaped}%`,
     `name.ilike.%${escaped}%`,
   ].join(",");
+}
+
+function escapePostgrestLike(value: string) {
+  return value.replace(/[%_,]/g, (char) => `\\${char}`);
+}
+
+export function buildDirectoryMarketLocationOrFilter(scope: DirectoryMarketScope): string {
+  if (scope.type === "region") {
+    const escapedName = escapePostgrestLike(scope.name);
+    return [
+      `state_inferred.eq.${scope.code}`,
+      `admin1_code.eq.${scope.code}`,
+      `state.eq.${scope.code}`,
+      `state_inferred.ilike.%${escapedName}%`,
+      `admin1_code.ilike.%${escapedName}%`,
+    ].join(",");
+  }
+
+  const escapedName = escapePostgrestLike(scope.name);
+  return [
+    `city_inferred.ilike.%${escapedName}%`,
+    `city.ilike.%${escapedName}%`,
+    `state_inferred.ilike.%${escapedName}%`,
+    `admin1_code.ilike.%${escapedName}%`,
+    `company.ilike.%${escapedName}%`,
+    `name.ilike.%${escapedName}%`,
+  ].join(",");
+}
+
+export function resolveDirectoryMarketScope(country?: string | null, slug?: string | null): DirectoryMarketScope {
+  const countryCode = normalizeDirectoryCountry(country) ?? "US";
+  const normalizedSlug = slugifyDirectoryMarket(String(slug ?? ""));
+  const regions = REGION_MAP_BY_COUNTRY[countryCode] ?? {};
+
+  for (const [code, name] of Object.entries(regions)) {
+    if (normalizedSlug === code.toLowerCase() || normalizedSlug === slugifyDirectoryMarket(name)) {
+      return { type: "region", code, name };
+    }
+  }
+
+  const registryCountry = getCountry(countryCode);
+  const registryMetro = registryCountry?.topMetros.find(
+    (metro) => slugifyDirectoryMarket(metro) === normalizedSlug,
+  );
+
+  if (registryMetro) {
+    return { type: "metro", name: registryMetro };
+  }
+
+  return { type: "city", name: directoryMarketNameFromSlug(String(slug ?? "")) };
+}
+
+export function buildDirectoryMarketFilterPlan(params: {
+  country?: string | null;
+  slug?: string | null;
+  category?: string | null;
+}): DirectoryMarketFilterPlan {
+  const fallbackPlan = buildDirectoryFallbackFilterPlan({
+    country: params.country,
+    category: params.category,
+    q: null,
+  });
+  const scope = resolveDirectoryMarketScope(params.country, params.slug);
+
+  return {
+    ...fallbackPlan,
+    scope,
+    marketName: scope.name,
+    locationOrFilter: buildDirectoryMarketLocationOrFilter(scope),
+    noIndexWhenEmpty: true,
+  };
 }
