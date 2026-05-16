@@ -27,6 +27,18 @@ import { absoluteUrl, SITE_URL } from '@/lib/site-url';
 
 export const dynamic = 'force-dynamic';
 
+function createDirectoryServiceClient(cookieStore: Awaited<ReturnType<typeof cookies>>) {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        return null;
+    }
+
+    return createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL,
+        process.env.SUPABASE_SERVICE_ROLE_KEY,
+        { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } },
+    );
+}
+
 const proofStates = [
     {
         label: 'Indexed',
@@ -412,6 +424,49 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
             }
         } catch (e) {
             console.warn('[directory] publishable fallback exception:', e);
+        }
+    }
+
+    if (providers.length === 0) {
+        try {
+            const serviceSupabase = createDirectoryServiceClient(cookieStore);
+
+            if (serviceSupabase) {
+                let entityQuery = serviceSupabase
+                    .from('directory_entities')
+                    .select('id,name,country_code')
+                    .not('name', 'is', null)
+                    .limit(fallbackPlan.limit);
+
+                if (fallbackPlan.countryCode) {
+                    entityQuery = entityQuery.eq('country_code', fallbackPlan.countryCode);
+                }
+
+                if (queryLocation) {
+                    const escaped = queryLocation.replace(/[%_,]/g, (char) => `\\${char}`);
+                    entityQuery = entityQuery.ilike('name', `%${escaped}%`);
+                }
+
+                const { data, error } = await entityQuery;
+
+                if (error) {
+                    console.warn('[directory] directory_entities fallback failed:', error.message);
+                } else {
+                    providers = (data ?? []).map((row: any) => ({
+                        id: row.id,
+                        contact_id: row.id,
+                        entity_id: row.id,
+                        company: row.name,
+                        name: row.name,
+                        country_code: row.country_code,
+                        country_code_inferred: row.country_code,
+                        claim_status: 'claimable',
+                        source_view: 'directory_entities',
+                    }));
+                }
+            }
+        } catch (e) {
+            console.warn('[directory] directory_entities fallback exception:', e);
         }
     }
 
