@@ -7,6 +7,7 @@ import {
   shouldIndexCityServicePage,
 } from "@/lib/seo/locale-city-service";
 import { resolveLegacyCityServiceRedirect } from "@/lib/seo/legacy-city-service-redirect";
+import { parseCityStateSlug } from "@/lib/directory/city-state-slug";
 
 describe("locale-first city service helpers", () => {
   it("normalizes locale country and service definitions", () => {
@@ -54,5 +55,21 @@ describe("locale-first city service helpers", () => {
     expect(resolveLegacyCityServiceRedirect("/us-tx-houston-pilot-car")).toBe("/en-us/tx/houston/pilot-car");
     expect(resolveLegacyCityServiceRedirect("/us-tx-san-antonio-permit-support")).toBe("/en-us/tx/san-antonio/permit-support");
     expect(resolveLegacyCityServiceRedirect("/us-tx")).toBeNull();
+  });
+
+  it("parses city-state compatibility slugs without flattening hyphenated cities", () => {
+    expect(parseCityStateSlug("houston-tx", "US")).toMatchObject({
+      city: "Houston",
+      citySlug: "houston",
+      regionCode: "TX",
+      displayName: "Houston, TX",
+    });
+    expect(parseCityStateSlug("san-antonio-tx", "US")).toMatchObject({
+      city: "San Antonio",
+      citySlug: "san-antonio",
+      regionCode: "TX",
+      displayName: "San Antonio, TX",
+    });
+    expect(parseCityStateSlug("london-uk", "US")).toBeNull();
   });
 });
