@@ -5,11 +5,12 @@ import { AlertTriangle, TrendingUp, MapPin, Zap, Radio, ArrowRight, BarChart3 } 
 
 export const metadata: Metadata = {
   title: 'Escort Shortage Index 2026 — Where Pilot Cars Are Scarce | Haul Command',
-  description: 'Live pilot car and escort shortage data by corridor and region. Updated daily from Haul Command operator availability signals across 120 countries.',
-  alternates: { canonical: 'https://haulcommand.com/shortage-index' },
+  description: 'Pilot car and escort shortage signals by corridor and region where Haul Command has verified data. Sparse markets are labeled instead of filled with fake scarcity.',
+  alternates: { canonical: 'https://www.haulcommand.com/shortage-index' },
+  robots: { index: false, follow: true },
   openGraph: {
     title: 'Escort Shortage Index — Haul Command',
-    description: 'Which corridors have the most demand and fewest available escorts right now.',
+    description: 'Which corridors have verified demand and available escort context right now.',
   },
 };
 
@@ -58,32 +59,8 @@ function getShortageLevel(demand: number, supply: number): keyof typeof SHORTAGE
 export default async function ShortageIndexPage() {
   const { corridors, states } = await getShortageData();
 
-  // Build display data with seeded fallbacks if DB is sparse
-  const topCorridors = corridors.length >= 8 ? corridors : [
-    { name: 'I-10 Gulf Coast', slug: 'i-10-gulf-coast', state_from: 'TX', state_to: 'FL', demand_score: 94, operator_count: 23 },
-    { name: 'I-35 Texas NAFTA', slug: 'i-35-texas-nafta', state_from: 'TX', state_to: 'TX', demand_score: 88, operator_count: 31 },
-    { name: 'I-95 East Coast', slug: 'i-95-east-coast', state_from: 'FL', state_to: 'ME', demand_score: 82, operator_count: 44 },
-    { name: 'I-5 West Coast', slug: 'i-5-west-coast', state_from: 'CA', state_to: 'WA', demand_score: 79, operator_count: 38 },
-    { name: 'I-90 Northern Tier', slug: 'i-90-northern-tier', state_from: 'WA', state_to: 'MA', demand_score: 76, operator_count: 19 },
-    { name: 'I-80 Transcontinental', slug: 'i-80-transcontinental', state_from: 'CA', state_to: 'NJ', demand_score: 73, operator_count: 26 },
-    { name: 'US-287 Wind Corridor', slug: 'us-287-wind-corridor', state_from: 'TX', state_to: 'WY', demand_score: 91, operator_count: 12 },
-    { name: 'Permian Basin Circuit', slug: 'permian-basin', state_from: 'TX', state_to: 'NM', demand_score: 96, operator_count: 18 },
-    { name: 'I-70 Midwest', slug: 'i-70-midwest', state_from: 'UT', state_to: 'MD', demand_score: 68, operator_count: 29 },
-    { name: 'Gulf-to-Plains', slug: 'gulf-to-plains', state_from: 'TX', state_to: 'CO', demand_score: 85, operator_count: 15 },
-  ];
-
-  const topStates = states.length >= 5 ? states : [
-    { state_code: 'TX', state_name: 'Texas', demand_score: 98, supply_score: 42, shortage_index: 56 },
-    { state_code: 'WY', state_name: 'Wyoming', demand_score: 89, supply_score: 31, shortage_index: 58 },
-    { state_code: 'ND', state_name: 'North Dakota', demand_score: 84, supply_score: 28, shortage_index: 56 },
-    { state_code: 'MT', state_name: 'Montana', demand_score: 76, supply_score: 24, shortage_index: 52 },
-    { state_code: 'NM', state_name: 'New Mexico', demand_score: 81, supply_score: 33, shortage_index: 48 },
-    { state_code: 'ID', state_name: 'Idaho', demand_score: 72, supply_score: 29, shortage_index: 43 },
-    { state_code: 'OK', state_name: 'Oklahoma', demand_score: 79, supply_score: 38, shortage_index: 41 },
-    { state_code: 'KS', state_name: 'Kansas', demand_score: 74, supply_score: 35, shortage_index: 39 },
-    { state_code: 'CO', state_name: 'Colorado', demand_score: 78, supply_score: 41, shortage_index: 37 },
-    { state_code: 'SD', state_name: 'South Dakota', demand_score: 65, supply_score: 28, shortage_index: 37 },
-  ];
+  const topCorridors = corridors;
+  const topStates = states;
 
   return (
     <div className="min-h-screen text-white">
@@ -102,7 +79,7 @@ export default async function ShortageIndexPage() {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C6923A] to-[#F1A91B]">2026 Live Data</span>
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mb-8">
-            Which corridors have the highest demand and fewest available pilot cars right now. Updated daily from Haul Command operator availability signals across 120 countries.
+            Which corridors have verified demand and available pilot car context right now. Sparse markets are labeled conservatively instead of filled with fake scarcity.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link href="/available-now" className="flex items-center gap-2 px-5 py-2.5 bg-[#F1A91B] text-black font-black rounded-xl hover:bg-[#D4951A] transition-all text-sm">
@@ -134,9 +111,9 @@ export default async function ShortageIndexPage() {
         </div>
 
         <div className="space-y-3">
-          {topCorridors.slice(0, 10).map((corridor, i) => {
-            const demand = corridor.demand_score || Math.floor(60 + Math.random() * 35);
-            const supply = corridor.operator_count || Math.floor(10 + Math.random() * 40);
+          {topCorridors.length > 0 ? topCorridors.slice(0, 10).map((corridor, i) => {
+            const demand = Number(corridor.demand_score ?? 0);
+            const supply = Number(corridor.operator_count ?? 0);
             const level = getShortageLevel(demand, supply);
             const colors = SHORTAGE_COLORS[level];
             const ratio = supply > 0 ? (demand / supply).toFixed(1) : '∞';
@@ -169,7 +146,14 @@ export default async function ShortageIndexPage() {
                 </div>
               </div>
             );
-          })}
+          }) : (
+            <div className="rounded-xl border border-amber-300/30 bg-amber-300/10 p-6">
+              <h3 className="text-xl font-black text-white">No verified corridor shortage rows are ready yet</h3>
+              <p className="mt-2 text-sm leading-6 text-[#fff7e8]">
+                Haul Command is still collecting enough corridor demand, availability, and operator signals to publish a ranked shortage list. Use the actions below to search supply or broadcast availability without inventing demand.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -191,7 +175,7 @@ export default async function ShortageIndexPage() {
               </tr>
             </thead>
             <tbody>
-              {topStates.map((state, i) => {
+              {topStates.length > 0 ? topStates.map((state, i) => {
                 const level = getShortageLevel(state.demand_score, state.supply_score);
                 const colors = SHORTAGE_COLORS[level];
                 return (
@@ -207,9 +191,9 @@ export default async function ShortageIndexPage() {
                       <div className="inline-flex items-center gap-1">
                         <div className="w-24 h-2 rounded-full bg-white/10 overflow-hidden">
                           <div className={`h-full rounded-full ${level === 'critical' ? 'bg-red-500' : level === 'high' ? 'bg-orange-500' : level === 'moderate' ? 'bg-yellow-500' : 'bg-green-500'}`}
-                            style={{ width: `${Math.min(100, state.shortage_index || 50)}%` }} />
+                            style={{ width: `${Math.min(100, Number(state.shortage_index ?? 0))}%` }} />
                         </div>
-                        <span className={`text-xs font-bold ${colors.text}`}>{state.shortage_index || 45}</span>
+                        <span className={`text-xs font-bold ${colors.text}`}>{state.shortage_index ?? 'n/a'}</span>
                       </div>
                     </td>
                     <td className="py-3 px-4 text-center">
@@ -217,7 +201,13 @@ export default async function ShortageIndexPage() {
                     </td>
                   </tr>
                 );
-              })}
+              }) : (
+                <tr>
+                  <td colSpan={5} className="py-6 px-4 text-center text-sm text-gray-400">
+                    State-level shortage signals are not verified yet. This table stays empty until real supply and demand rows exist.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
