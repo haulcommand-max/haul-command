@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/server';
 
 export const metadata: Metadata = {
   title: 'Haul Command vs HeavyHaulers.com — Full Comparison 2026',
-  description: 'Haul Command vs HeavyHaulers.com: global coverage, real-time tools, AI dispatch, and operator intelligence. See why heavy haul professionals switch.',
+  description: 'Haul Command vs HeavyHaulers.com: compare source-backed directory workflows, route tools, and operator intelligence.',
   alternates: { canonical: 'https://www.haulcommand.com/vs/heavyhaulers' },
 };
 
@@ -16,20 +16,20 @@ const CROSS = <XCircle className="w-4 h-4 text-red-400 shrink-0" />;
 const PARTIAL = <MinusCircle className="w-4 h-4 text-yellow-500 shrink-0" />;
 
 const ROWS = [
-  { feature: 'Global coverage', hc: ['120 countries', CHECK], hh: ['US only', CROSS] },
-  { feature: 'Live operator directory', hc: ['7,711+ verified', CHECK], hh: ['Limited', PARTIAL] },
-  { feature: 'Real-time availability', hc: ['Live feed', CHECK], hh: ['No', CROSS] },
+  { feature: 'International market pages', hc: ['Coverage varies', CHECK], hh: ['Broker network', PARTIAL] },
+  { feature: 'Operator directory', hc: ['Source-backed records', CHECK], hh: ['Limited', PARTIAL] },
+  { feature: 'Availability signals', hc: ['Operator-declared where active', CHECK], hh: ['Broker-mediated', PARTIAL] },
   { feature: 'Route intelligence', hc: ['51+ corridors', CHECK], hh: ['No', CROSS] },
   { feature: 'Permit cost calculator', hc: ['Free, all states', CHECK], hh: ['No', CROSS] },
-  { feature: 'Escort requirements', hc: ['All 50 states + 120 countries', CHECK], hh: ['Partial', PARTIAL] },
-  { feature: 'AI dispatch matching', hc: ['VAPI + ElevenLabs', CHECK], hh: ['No', CROSS] },
+  { feature: 'Escort requirements', hc: ['Published rules where sourced', CHECK], hh: ['Partial', PARTIAL] },
+  { feature: 'Dispatch workflows', hc: ['Request and match tooling', CHECK], hh: ['Broker-mediated', PARTIAL] },
   { feature: 'Load board', hc: ['Integrated', CHECK], hh: ['Basic', PARTIAL] },
-  { feature: 'Operator certification', hc: ['HC Certified, 120 countries', CHECK], hh: ['No', CROSS] },
-  { feature: 'Rate intelligence', hc: ['Live market rates', CHECK], hh: ['No', CROSS] },
+  { feature: 'Operator certification', hc: ['Credential signals where present', CHECK], hh: ['Not public', PARTIAL] },
+  { feature: 'Rate intelligence', hc: ['Benchmarks where sourced', CHECK], hh: ['Not public', PARTIAL] },
   { feature: 'Geocoded locations', hc: ['23,530+', CHECK], hh: ['No', CROSS] },
-  { feature: 'Standing Orders (escrow)', hc: ['Full escrow', CHECK], hh: ['No', CROSS] },
+  { feature: 'Standing Orders / payment rails', hc: ['Enabled by job status', CHECK], hh: ['Broker-mediated', PARTIAL] },
   { feature: 'Free to list', hc: ['Yes', CHECK], hh: ['Yes', CHECK] },
-  { feature: 'Claim profile', hc: ['Free + verified', CHECK], hh: ['Limited', PARTIAL] },
+  { feature: 'Claim profile', hc: ['Free claim workflow', CHECK], hh: ['Limited', PARTIAL] },
   { feature: 'Mobile app', hc: ['iOS + Android', CHECK], hh: ['No', CROSS] },
 ];
 
@@ -45,8 +45,8 @@ export default async function VsHeavyHaulersPage() {
         <div className="text-xs text-[#F1A91B] font-bold uppercase tracking-widest mb-4">Comparison · 2026</div>
         <h1 className="text-4xl font-black mb-3">Haul Command vs HeavyHaulers.com</h1>
         <p className="text-gray-400 mb-10 max-w-xl">
-          Both platforms serve the oversize load industry. Only one operates across 120 countries
-          with real-time tools, AI dispatch, and {(opCount ?? 7711).toLocaleString()}+ verified operators.
+          Both platforms serve the oversize load industry. Haul Command adds source-backed directory records,
+          route tools, and request workflows. Current indexed operator count: {opCount?.toLocaleString() ?? 'source-dependent'}.
         </p>
 
         <div className="overflow-x-auto rounded-2xl border border-white/[0.08]">
@@ -82,7 +82,7 @@ export default async function VsHeavyHaulersPage() {
 
         <div className="mt-10 text-center">
           <Link href="/directory" className="inline-flex items-center gap-2 px-8 py-4 bg-[#F1A91B] hover:bg-[#D4951A] text-black font-black rounded-xl transition-colors text-sm">
-            Explore {(opCount ?? 7711).toLocaleString()}+ Operators Free →
+            Explore Source-backed Operator Records
           </Link>
           <p className="text-xs text-gray-500 mt-3">No credit card. Free forever for operators.</p>
         </div>

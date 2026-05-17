@@ -7,7 +7,7 @@ import { FreshnessBadge } from '@/components/ui/FreshnessBadge';
 
 export const metadata: Metadata = {
     title: 'Haul Command Data Marketplace | Heavy Haul Intelligence & Market Reports',
-    description: 'Access corridor demand snapshots, rate benchmarks, operator density maps, and market intelligence reports. Powered by real platform data across 50+ countries. Self-serve purchase from $9.',
+    description: 'Access corridor demand snapshots, rate benchmarks, operator density maps, and market intelligence reports where source coverage exists. Self-serve purchase from $9.',
     alternates: {
         canonical: 'https://www.haulcommand.com/data',
     },
@@ -30,7 +30,7 @@ const faqSchema = {
             name: 'What data does Haul Command sell?',
             acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'Haul Command sells corridor demand snapshots, rate benchmark reports, operator density maps, market intelligence reports, competitor tracking, export CSVs, and enterprise API access. All data is sourced from real platform activity across 50+ countries.',
+                text: 'Haul Command sells corridor demand snapshots, rate benchmark reports, operator density maps, market intelligence reports, competitor tracking, export CSVs, and enterprise API access. Each dataset should be evaluated by source coverage, freshness, and confidence metadata.',
             },
         },
         {
@@ -38,7 +38,7 @@ const faqSchema = {
             name: 'How accurate is Haul Command market data?',
             acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'Haul Command data is sourced directly from platform activity — live operator availability, real escort requests, verified claim data, and search demand signals. Rates and benchmarks are updated daily for US corridors and weekly for global markets.',
+                text: 'Haul Command data is sourced from available platform signals such as directory records, claim events, route requests, and search demand. Freshness and coverage vary by dataset and market.',
             },
         },
         {
@@ -54,8 +54,8 @@ const faqSchema = {
 
 // Product type icons and colors
 const PRODUCT_UI: Record<string, { icon: string; color: string; badge?: string }> = {
-    corridor_snapshot:      { icon: 'ðŸ›£ï¸', color: 'from-blue-500/10',    badge: 'Real-time' },
-    market_report:          { icon: 'ðŸ“Š', color: 'from-purple-500/10',  badge: 'Daily refresh' },
+    corridor_snapshot:      { icon: 'ðŸ›£ï¸', color: 'from-blue-500/10',    badge: 'Source-gated' },
+    market_report:          { icon: 'ðŸ“Š', color: 'from-purple-500/10',  badge: 'Freshness varies' },
     rate_benchmark:         { icon: 'ðŸ’°', color: 'from-green-500/10',   badge: 'Best value' },
     competitor_tracking:    { icon: 'ðŸ”', color: 'from-orange-500/10',  badge: 'Subscription' },
     claim_gap_report:       { icon: 'ðŸ“', color: 'from-cyan-500/10',    badge: '$9 one-time' },
@@ -104,13 +104,13 @@ export default function DataMarketplacePage() {
                                 </span>
                             </h1>
                             <p className="text-lg text-gray-300 mb-6 leading-relaxed">
-                                Corridor demand data, rate benchmarks, operator density maps, and market intelligence across 50+ countries.
-                                Powered by real platform activity — not surveys, not estimates.
+                                Corridor demand data, rate benchmarks, operator density maps, and market intelligence where source coverage exists.
+                                Check market scope, sample size, and freshness before operational use.
                             </p>
                             <div className="flex flex-wrap gap-4 text-sm text-gray-400">
-                                <span className="flex items-center gap-1.5"><span className="text-blue-400">â—</span> Real platform data</span>
-                                <span className="flex items-center gap-1.5"><span className="text-blue-400">â—</span> 50+ countries</span>
-                                <span className="flex items-center gap-1.5"><span className="text-blue-400">â—</span> Updated daily</span>
+                                <span className="flex items-center gap-1.5"><span className="text-blue-400">â—</span> Source-gated datasets</span>
+                                <span className="flex items-center gap-1.5"><span className="text-blue-400">â—</span> Scope shown per product</span>
+                                <span className="flex items-center gap-1.5"><span className="text-blue-400">â—</span> Freshness varies by feed</span>
                                 <span className="flex items-center gap-1.5"><span className="text-blue-400">â—</span> Self-serve from $9</span>
                             </div>
                         </div>
@@ -236,19 +236,19 @@ export default function DataMarketplacePage() {
                         {[
                             {
                                 q: 'What data does Haul Command sell?',
-                                a: 'Corridor demand snapshots, rate benchmark reports, operator density maps, market intelligence reports, competitor tracking, export CSVs, and enterprise API access. All sourced from real platform activity across 50+ countries.',
+                                a: 'Corridor demand snapshots, rate benchmark reports, operator density maps, market intelligence reports, competitor tracking, export CSVs, and enterprise API access. Each product should be checked for source coverage, freshness, and confidence.',
                             },
                             {
                                 q: 'How accurate is Haul Command market data?',
-                                a: 'Data is sourced from real platform activity — live operator availability, verified escort requests, claim events, and search demand signals. Rates and benchmarks are updated daily for US corridors, weekly for global markets.',
+                                a: 'Data is sourced from available platform signals, including directory records, claim events, route requests, and search demand. Accuracy depends on coverage, source confidence, and freshness for the specific market.',
                             },
                             {
                                 q: 'Can I get data via API?',
-                                a: 'Yes. Sandbox access is free (100 calls/day). Developer tier ($99/mo) gives 10K calls/day and all read endpoints. Enterprise tier includes custom SLAs, real-time feeds, and white-label options.',
+                                a: 'Yes. Sandbox access is available for approved developers. Paid tiers can include higher limits, support, and source-gated feeds where coverage exists.',
                             },
                             {
                                 q: 'What is the corridor intelligence enterprise feed?',
-                                a: 'A weekly CSV or live API feed with corridor liquidity scores, shortage zone flags, rate benchmarks by state, and operator density data. Sold to logistics planners, fleet managers, and insurance underwriters.',
+                                a: 'A source-gated export or API feed with corridor liquidity signals, rate benchmarks, and operator-density data where coverage exists. Use freshness and confidence fields before operational decisions.',
                             },
                         ].map(({ q, a }) => (
                             <div key={q} className="border border-white/10 rounded-xl p-5">

@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from 'react-simple-maps';
-import { Globe, Users, Activity, Crosshair, AlertTriangle, BadgeAlert } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 
 // Open-source GeoJSON map downloaded via GitHub topography repository
 const geoUrl = "https://unpkg.com/world-atlas@2.0.2/countries-110m.json";
@@ -15,27 +15,17 @@ const TARGET_COUNTRIES = [
   // ... representing the major logistics hubs
 ];
 
-// Mocking some live global intelligence data
 const markers = [
-  { markerOffset: -15, name: "Houston Hub (TX)", coordinates: [-95.3698, 29.7604], status: "Critical Shortage", count: 42 },
-  { markerOffset: -15, name: "Alberta Superload Corridor", coordinates: [-113.4909, 53.5444], status: "Active", count: 18 },
-  { markerOffset: 25, name: "Hamburg Port (DE)", coordinates: [9.9937, 53.5511], status: "High Demand", count: 120 },
-  { markerOffset: 25, name: "Melbourne Routes (AU)", coordinates: [144.9631, -37.8136], status: "Active", count: 85 },
-  { markerOffset: -15, name: "Sao Paulo Freight (BR)", coordinates: [-46.6333, -23.5505], status: "Surplus", count: 215 },
-  { markerOffset: -15, name: "Dubai Logistics City (UAE)", coordinates: [55.2708, 25.2048], status: "Active", count: 44 },
+  { markerOffset: -15, name: "Houston Hub (TX)", coordinates: [-95.3698, 29.7604], status: "Reference Market" },
+  { markerOffset: -15, name: "Alberta Superload Corridor", coordinates: [-113.4909, 53.5444], status: "Reference Market" },
+  { markerOffset: 25, name: "Hamburg Port (DE)", coordinates: [9.9937, 53.5511], status: "Reference Market" },
+  { markerOffset: 25, name: "Melbourne Routes (AU)", coordinates: [144.9631, -37.8136], status: "Reference Market" },
+  { markerOffset: -15, name: "Sao Paulo Freight (BR)", coordinates: [-46.6333, -23.5505], status: "Reference Market" },
+  { markerOffset: -15, name: "Dubai Logistics City (UAE)", coordinates: [55.2708, 25.2048], status: "Reference Market" },
 ];
 
 export default function GlobalCommandMap() {
   const [tooltipContent, setTooltipContent] = useState('');
-  const [activeUsers, setActiveUsers] = useState(1450230);
-  
-  // Real-time jitter simulator for 1,000x live presence
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveUsers(prev => prev + Math.floor(Math.random() * 5) - 2);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div className=" bg-[#020617] text-white font-mono flex flex-col pt-[80px]">
@@ -49,22 +39,22 @@ export default function GlobalCommandMap() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
               </span>
-              GLOBAL LIVE C2 (COMMAND & CONTROL)
+              GLOBAL COVERAGE PREVIEW
             </div>
             <h1 className="text-3xl font-black uppercase text-white tracking-widest">
-              Live Market Command Map
+              Global Command Map
             </h1>
           </div>
           <div className="flex gap-4">
             <div className="bg-slate-800 border border-slate-700 rounded-lg p-3 px-5 text-right">
-              <div className="text-[10px] text-slate-400 uppercase tracking-widest">Active Global Fleet</div>
+              <div className="text-[10px] text-slate-400 uppercase tracking-widest">Target country set</div>
               <div className="text-2xl font-black text-amber-500 tabular-nums">
-                {activeUsers.toLocaleString()}
+                {TARGET_COUNTRIES.length}
               </div>
             </div>
             <div className="bg-slate-800 border border-slate-700 rounded-lg p-3 px-5 text-right">
-              <div className="text-[10px] text-slate-400 uppercase tracking-widest">Live Hot Lanes</div>
-              <div className="text-2xl font-black text-cyan-400 tabular-nums">2,491</div>
+              <div className="text-[10px] text-slate-400 uppercase tracking-widest">Reference markets</div>
+              <div className="text-2xl font-black text-cyan-400 tabular-nums">{markers.length}</div>
             </div>
           </div>
         </div>
@@ -93,7 +83,7 @@ export default function GlobalCommandMap() {
                       key={geo.rsmKey}
                       geography={geo}
                       onMouseEnter={() => {
-                        if (isTarget) setTooltipContent(`Jurisdiction: ${geo.properties.name} - Network Active`);
+                         if (isTarget) setTooltipContent(`Jurisdiction: ${geo.properties.name} - target market`);
                       }}
                       onMouseLeave={() => setTooltipContent('')}
                       style={{
@@ -115,17 +105,17 @@ export default function GlobalCommandMap() {
               }
             </Geographies>
 
-            {/* Rendering Real-Time Ping Markers */}
-            {markers.map(({ name, coordinates, markerOffset, status, count }) => (
+            {/* Rendering reference market markers */}
+            {markers.map(({ name, coordinates, markerOffset, status }) => (
               <Marker key={name} coordinates={coordinates as [number, number]}>
-                <circle r={4} fill={status === 'Critical Shortage' ? '#ef4444' : '#10b981'} className="animate-pulse" />
+                <circle r={4} fill="#10b981" className="animate-pulse" />
                 <circle r={2} fill="#ffffff" />
                 <text
                   textAnchor="middle"
                   y={markerOffset}
                   style={{ fontFamily: "monospace", fill: "#94a3b8", fontSize: "6px", fontWeight: "bold" }}
                 >
-                  {name} ({count} Online)
+                  {name} ({status})
                 </text>
               </Marker>
             ))}
@@ -137,17 +127,17 @@ export default function GlobalCommandMap() {
           <div className="/80 border border-slate-700 p-4 rounded-xl backdrop-blur-md pointer-events-auto">
              <h3 className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-3 border-b border-slate-700 pb-2 flex items-center gap-2">
                <AlertTriangle className="w-3 h-3 text-red-500" />
-               Critical Deficits (SLA Breach)
+                Coverage Notes
              </h3>
              <ul className="space-y-2 text-xs">
                <li className="flex justify-between text-slate-300">
-                 <span>TX-NM Border</span> <span className="text-red-400">-42 escorts</span>
+                  <span>Live supply counts</span> <span className="text-red-400">disabled</span>
                </li>
                <li className="flex justify-between text-slate-300">
-                 <span>AB High Load</span> <span className="text-red-400">-15 escorts</span>
+                  <span>Shortage claims</span> <span className="text-red-400">source-gated</span>
                </li>
                <li className="flex justify-between text-slate-300">
-                 <span>UK M6 Corridor</span> <span className="text-red-400">-8 escorts</span>
+                  <span>Dispatch capacity</span> <span className="text-red-400">request-based</span>
                </li>
              </ul>
           </div>

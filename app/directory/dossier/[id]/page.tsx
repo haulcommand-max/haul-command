@@ -664,9 +664,9 @@ export default async function DossierPage({ params }: { params: { id: string } }
           {/* Escrow */}
           <div className="hc-card rounded-2xl p-5 text-center">
             <Shield className="w-7 h-7 text-[#C6923A] mx-auto mb-2" />
-            <h3 className="text-xs font-black text-white uppercase tracking-wider mb-1">Escrow Protected</h3>
+            <h3 className="text-xs font-black text-white uppercase tracking-wider mb-1">Payment Protection Available</h3>
             <p className="text-xs text-amber-100/60 leading-relaxed">
-              All dispatches routed through Haul Command are secured via escrow. Zero risk of non-payment.
+              Payment protection depends on the actual job workflow, payment status, and enabled escrow or QuickPay rail. Never dispatch on a profile claim alone.
             </p>
           </div>
 

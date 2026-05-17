@@ -4,27 +4,27 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Haul Command vs ODS North America — Full Comparison 2026 | Haul Command',
-  description: 'Haul Command vs ODS North America: Compare features, pricing, global coverage, and dispatch tools. See how Haul Command replaces the ODS model.',
+  description: 'Haul Command vs ODS North America: compare directory workflows, pricing, market coverage, and dispatch tools.',
   alternates: { canonical: 'https://www.haulcommand.com/vs/ods-north-america' },
 }
 
 const COMPARISON = [
-  { feature:'Online operator directory',  hc:true,  hc_note:'50+ countries, live, verified',  comp:true,  comp_note:'North America focus, limited' },
-  { feature:'Real-time availability broadcast', hc:true, hc_note:'Operator-controlled, instant', comp:false, comp_note:'Manual / phone-based' },
+  { feature:'Online operator directory',  hc:true,  hc_note:'Source-backed records',  comp:true,  comp_note:'North America focus' },
+  { feature:'Availability signals', hc:true, hc_note:'Operator-declared where active', comp:false, comp_note:'Different model' },
   { feature:'Online load posting',        hc:true,  hc_note:'Self-serve load board',         comp:false, comp_note:'Agent-mediated only' },
-  { feature:'Instant permit cost quotes', hc:true,  hc_note:'Free calculator, 50 states',    comp:false, comp_note:'Quote request model' },
+  { feature:'Permit cost estimates', hc:true,  hc_note:'Free calculator, state-scoped',    comp:false, comp_note:'Quote request model' },
   { feature:'Consolidated invoicing',     hc:true,  hc_note:'Auto-generated per job',        comp:true,  comp_note:'ODS core service' },
-  { feature:'Payment processing',         hc:true,  hc_note:'Stripe Connect, instant payouts',comp:false,comp_note:'Invoice/check based' },
-  { feature:'Operator trust scores',      hc:true,  hc_note:'Verified, public, on profiles', comp:false, comp_note:'Not available' },
-  { feature:'Standing orders / escrow',   hc:true,  hc_note:'Pre-funded, recurring',         comp:false, comp_note:'Not available' },
-  { feature:'Training & certification',   hc:true,  hc_note:'50+ courses, 6 tiers',          comp:false, comp_note:'Not available' },
+  { feature:'Payment processing',         hc:true,  hc_note:'Enabled by account/job state', comp:false,comp_note:'Invoice/check based' },
+  { feature:'Operator trust scores',      hc:true,  hc_note:'Evidence-backed where present', comp:false, comp_note:'Different model' },
+  { feature:'Standing orders / payment rails', hc:true, hc_note:'Enabled by payment status', comp:false, comp_note:'Different model' },
+  { feature:'Training & certification',   hc:true,  hc_note:'50+ courses, 6 tiers',          comp:false, comp_note:'Different model' },
   { feature:'Route intelligence',         hc:true,  hc_note:'AI + human surveyor marketplace',comp:true, comp_note:'Human surveyor network' },
-  { feature:'Self-serve booking',         hc:true,  hc_note:'Broker posts, operator accepts', comp:false,comp_note:'ODS agent books for you' },
-  { feature:'Global coverage',            hc:true,  hc_note:'50+ countries',                  comp:false,comp_note:'US + Canada primarily' },
+  { feature:'Self-serve request flow',    hc:true,  hc_note:'Broker posts, operator responds', comp:false,comp_note:'Agent-mediated model' },
+  { feature:'International market pages', hc:true,  hc_note:'Coverage varies by country',     comp:false,comp_note:'US + Canada primarily' },
   { feature:'Mobile app',                 hc:true,  hc_note:'iOS + Android',                 comp:false, comp_note:'Web only' },
   { feature:'Free tools',                 hc:true,  hc_note:'All tools free, no login',      comp:false, comp_note:'Tools not publicly available' },
   { feature:'No agent dependency',        hc:true,  hc_note:'Platform-native self-serve',    comp:false, comp_note:'ODS model requires agent' },
-  { feature:'Data products',              hc:true,  hc_note:'Corridor rates, API, reports',  comp:false, comp_note:'Not available' },
+  { feature:'Data products',              hc:true,  hc_note:'Corridor rates, API, reports',  comp:false, comp_note:'Different model' },
 ]
 
 const schema = { '@context':'https://schema.org','@type':'WebPage', name:'Haul Command vs ODS North America', description:'Feature-by-feature comparison of Haul Command and ODS North America for heavy haul logistics dispatch.', url:'https://www.haulcommand.com/vs/ods-north-america' }
@@ -42,7 +42,7 @@ export default function VsODSPage() {
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
             <p className="text-[11px] tracking-[0.2em] text-[#d4950e] font-semibold mb-3">COMPARISON · 2026</p>
             <h1 className="text-2xl lg:text-4xl font-extrabold text-[#f0f2f5] mb-4">Haul Command vs ODS North America</h1>
-            <p className="text-sm text-[#8a9ab0] max-w-2xl">ODS North America built a dispatch and invoicing model on phone-based agent relationships. Haul Command replaces that model with a self-serve platform, instant payouts, verified trust, and global coverage.</p>
+            <p className="text-sm text-[#8a9ab0] max-w-2xl">ODS North America built a dispatch and invoicing model on phone-based agent relationships. Haul Command adds source-backed records, request workflows, payment rails where enabled, and international market pages with coverage labels.</p>
           </div>
         </div>
         <div className="px-4 lg:px-10 py-10 max-w-4xl mx-auto">
@@ -92,10 +92,10 @@ export default function VsODSPage() {
           <div className="bg-[#0f1a24] border border-[#1e3048] rounded-2xl p-6 mb-8">
             <h2 className="text-sm font-bold text-[#f0f2f5] mb-4">From Agent Model to Platform Model</h2>
             {[
-              {title:'Self-serve replaces agent dependency', body:'ODS requires you to contact a human agent to book escorts. Haul Command\'s load board, capacity feed, and instant booking let operators and brokers transact directly — 24/7, globally.'},
-              {title:'Instant payouts replace invoice delays', body:'ODS uses traditional invoice and check payment cycles. Haul Command\'s HC Pay issues instant or next-day payouts via Stripe Connect to verified operators in 50+ countries.'},
-              {title:'Trust scores replace word-of-mouth', body:'ODS has no public verification layer. Haul Command\'s trust score, badge system, and report card make every operator\'s reputation visible before a broker makes contact.'},
-              {title:'50+ countries replace North America', body:'ODS concentrates on US and Canada. Haul Command operates across 50+ countries with country-specific regulation data, local certifications, and hyperlocal pages in every market.'},
+              {title:'Self-serve reduces agent dependency', body:'Haul Command supports load posting, operator responses, and support-packet workflows where enabled.'},
+              {title:'Payment rails depend on job state', body:'HC Pay, escrow, and payout workflows depend on account setup, job status, and payment rail availability.'},
+              {title:'Trust signals replace word-of-mouth', body:'Haul Command can show claim state, report-card evidence, and freshness where those signals exist.'},
+              {title:'International pages extend North America', body:'Haul Command publishes market pages beyond the US and Canada, with coverage and confidence varying by country.'},
             ].map((item,i)=>(
               <div key={i} className={`${i<3?'border-b border-[#131c28] pb-4 mb-4':''}`}>
                 <p className="text-xs font-bold text-[#22c55e] mb-1">âœ" {item.title}</p>

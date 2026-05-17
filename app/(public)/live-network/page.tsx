@@ -1,18 +1,19 @@
 import React from "react";
 import Link from "next/link";
-import { createClient } from "@supabase/supabase-js";
+import type { Metadata } from "next";
 
-// Haul Command: Live Availability Broadcast (Broker Dopamine Feed)
+export const metadata: Metadata = {
+  title: "Operator Availability Broadcasts | Haul Command",
+  description: "View operator-declared availability broadcasts and post route support needs without treating sparse markets as live supply.",
+  robots: { index: false, follow: true },
+};
+
+// Haul Command: Availability Broadcast intake
 // Route: /live-network
-// Purpose: Brokers check this 20x a day to see who just dropped a load and is empty.
+// Purpose: show only declared availability records when a verified feed is wired.
 
 const getLiveOperators = async () => {
-   // Simulated edge-fetch representing real-time PostGIS data
-   return [
-     { id: "1", name: "Apex Heavy Haul", role: "Pilot Car", location: "Houston, TX", status: "EMPTY_NOW", lastActive: "2 mins ago", rating: 4.9, vehicle: "F-250 High Pole" },
-     { id: "2", name: "Titan Escorts", role: "Route Surveyor", location: "Denver, CO", status: "AVAILABLE_TOMORROW", lastActive: "14 mins ago", rating: 4.7, vehicle: "Dodge Ram 3500" },
-     { id: "3", name: "Alpha Corridor", role: "Bucket Truck", location: "Alberta, CA", status: "EMPTY_NOW", lastActive: "1 hr ago", rating: 5.0, vehicle: "Altec 55ft" },
-   ];
+   return [];
 };
 
 export default async function LiveNetworkFeed() {
@@ -30,22 +31,22 @@ export default async function LiveNetworkFeed() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span>
               </span>
-              <span className="text-red-500 font-mono text-sm tracking-widest uppercase font-bold">Network Live</span>
+              <span className="text-red-500 font-mono text-sm tracking-widest uppercase font-bold">Operator-declared board</span>
             </div>
-            <h1 className="text-4xl font-black uppercase tracking-tighter">Live Availability Broadcast</h1>
-            <p className="text-gray-400 mt-2">Real-time capacity tracking. Zero latency. Secure your escorts before competitors do.</p>
+            <h1 className="text-4xl font-black uppercase tracking-tighter">Availability Broadcasts</h1>
+            <p className="text-gray-400 mt-2">Operator-declared capacity appears here when records are active. Sparse markets stay empty instead of showing simulated supply.</p>
           </div>
 
           <div className="text-right">
              <div className="bg-gray-900 border border-gray-700 px-4 py-2 rounded font-mono text-sm">
-                <span className="text-yellow-500 font-bold">142</span> Empty Now
+                <span className="text-yellow-500 font-bold">{operators.length}</span> Active broadcasts
              </div>
           </div>
         </div>
 
         {/* The Broadcast Feed */}
         <div className="space-y-4">
-          {operators.map((op) => (
+          {operators.length > 0 ? operators.map((op: any) => (
              <div key={op.id} className="group bg-gray-900 hover:bg-gray-800 border-l-4 border-l-yellow-500 border border-gray-800 rounded p-6 shadow-2xl transition-all flex justify-between items-center cursor-pointer">
                 
                 <div className="flex space-x-6 items-center">
@@ -77,13 +78,18 @@ export default async function LiveNetworkFeed() {
                 </div>
 
              </div>
-          ))}
+          )) : (
+            <div className="rounded-xl border border-amber-300/25 bg-amber-300/10 p-6 text-amber-100">
+              <h2 className="text-xl font-black">No active operator-declared broadcasts</h2>
+              <p className="mt-2 text-sm text-amber-100/75">Post the lane, timing, and dimensions so Haul Command can capture demand without inventing availability.</p>
+            </div>
+          )}
         </div>
 
         {/* The AdGrid SEO Sponsor Block */}
         <div className="mt-12 bg-gray-800/50 border border-dashed border-gray-600 p-8 rounded text-center">
             <h3 className="text-yellow-500 font-black uppercase text-xl mb-2">Backhauls & Empty Lanes</h3>
-            <p className="text-gray-400">Can't find availability in your corridor? Put a bounty on the lane and operators will come to you.</p>
+            <p className="text-gray-400">Can&apos;t find declared availability in your corridor? Post the lane so operators can respond from real signals.</p>
             <button className="mt-4 border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white font-black uppercase text-xs px-6 py-2 transition">
                Post Immediate Need
             </button>
