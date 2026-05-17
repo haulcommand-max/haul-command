@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { contractToMetadata } from '@/lib/seo/page-seo-contract';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { AeoAnswerCard } from '@/components/seo/AeoAnswerCard';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 import { ProofStrip } from '@/components/ui/ProofStrip';
@@ -15,7 +16,7 @@ import {
   type DirectorySurfaceView,
 } from '@/lib/directory/server-query';
 import { buildDirectoryMarketSeoContract } from '@/lib/directory/presentation';
-import { buildFAQPageJsonLd } from '@/lib/seo/jsonld';
+import { buildFAQPageJsonLd, buildQAPageJsonLd } from '@/lib/seo/jsonld';
 
 // ═══════════════════════════════════════════════════════════════
 // /directory/[country]/[slug] — City-level directory page
@@ -59,6 +60,31 @@ function cityClaimHref(country: string, slug: string, listing?: string) {
 
 function rankDirectoryRecord(record: any) {
   return Number(record.rank_score ?? record.confidence_score ?? record.directory_quality_score ?? 0);
+}
+
+function buildMarketDirectAnswer(input: {
+  cityName: string;
+  countryUpper: string;
+  marketKind: string;
+  opCount: number;
+  slug: string;
+}) {
+  const hasCoverage = input.opCount > 0;
+  const marketLabel = `${input.cityName}, ${input.countryUpper}`;
+  const question = `Who provides pilot car and heavy haul support in ${marketLabel}?`;
+
+  return {
+    question,
+    answer: hasCoverage
+      ? `Haul Command indexes ${input.opCount} source-backed support record${input.opCount === 1 ? '' : 's'} for the ${input.cityName} ${input.marketKind}. Use the proof, claim, contact, and freshness state on each record before dispatching a move.`
+      : `Haul Command does not yet have source-backed support records attached to the ${input.cityName} ${input.marketKind}. The market can still capture demand through claim and support-packet actions, but it should not be treated as verified supply.`,
+    confidenceLabel: hasCoverage ? 'Source-backed market records' : 'Sparse market - noindex',
+    sourceHref: `/directory?country=${input.countryUpper}&q=${encodeURIComponent(input.cityName)}`,
+    ctaHref: hasCoverage
+      ? `/loads/post?country=${input.countryUpper}&market=${encodeURIComponent(input.slug)}&intent=city-support`
+      : `/claim?country=${input.countryUpper}&market=${encodeURIComponent(input.slug)}&intent=city-market-claim&source=directory-city`,
+    ctaLabel: hasCoverage ? 'Build support packet' : 'Claim this market',
+  };
 }
 
 async function countDirectoryMarketRecords(
@@ -202,6 +228,7 @@ export default async function CityDirectoryPage({ params }: PageProps) {
     { question: `How do I book an escort in ${cityName}?`, answer: opCount > 0 ? `Browse the support records listed above, check proof state and availability where present, and build a support packet before dispatching.` : `Once more support records are claimed and improved in ${cityName}, you will be able to compare stronger options. Use our Escort Calculator for estimates in the meantime.` },
     { question: `What does a pilot car cost in ${cityName}?`, answer: `Rates vary by route, load dimensions, and escort requirements. Use our Escort Calculator for instant estimates based on your specific haul.` },
   ];
+  const directAnswer = buildMarketDirectAnswer({ cityName, countryUpper, marketKind, opCount, slug });
 
   // JSON-LD
   const jsonLd = {
@@ -224,10 +251,16 @@ export default async function CityDirectoryPage({ params }: PageProps) {
     url: `https://www.haulcommand.com/directory/${country}/${slug}`,
     faqs: visibleFaqs.map((faq) => ({ ...faq, visible: true })),
   });
+  const qaJsonLd = buildQAPageJsonLd({
+    url: `https://www.haulcommand.com/directory/${country}/${slug}`,
+    question: directAnswer.question,
+    answer: directAnswer.answer,
+    visible: true,
+  });
 
   return (
     <>
-      <JsonLd data={faqJsonLd ? [jsonLd, faqJsonLd] : jsonLd} />
+      <JsonLd data={[jsonLd, ...(qaJsonLd ? [qaJsonLd] : []), ...(faqJsonLd ? [faqJsonLd] : [])]} />
       <ProofStrip variant="bar" />
 
       <DirectoryBackgroundShell>
@@ -276,6 +309,22 @@ export default async function CityDirectoryPage({ params }: PageProps) {
 
           {/* Support record grid */}
           <div>
+            <div style={{ marginBottom: 16 }}>
+              <AeoAnswerCard
+                question={directAnswer.question}
+                answer={directAnswer.answer}
+                confidenceLabel={directAnswer.confidenceLabel}
+                sourceLabel="Haul Command directory facade"
+                sourceHref={directAnswer.sourceHref}
+                ctaLabel={directAnswer.ctaLabel}
+                ctaHref={directAnswer.ctaHref}
+                facts={[
+                  { label: 'Records', value: opCount },
+                  { label: 'Market', value: marketKind },
+                  { label: 'Country', value: countryUpper },
+                ]}
+              />
+            </div>
             {ops.length === 0 ? (
               <div style={{ background: '#FFFBEB', border: '1px solid #FEF08A', borderRadius: 16, padding: 40, textAlign: 'center' }}>
                 <MapPin style={{ width: 32, height: 32, color: '#C6923A', margin: '0 auto 12px' }} />
@@ -451,7 +500,7 @@ export default async function CityDirectoryPage({ params }: PageProps) {
             moves={[
               { href: '/directory', icon: '🔍', title: 'Full Directory', desc: 'Search all support records', primary: true, color: '#0a66c2' },
               { href: '/claim', icon: '✓', title: 'Claim / Fix Profile', desc: 'Improve a claimable record', primary: true, color: '#86198F' },
-              { href: '/available-now', icon: '📡', title: 'Available Now', desc: 'Live operator feed' },
+              { href: '/available-now', icon: '📡', title: 'Available Now', desc: 'Availability intake' },
               { href: '/corridors', icon: '🗺️', title: 'Corridors', desc: 'Route intelligence' },
               { href: '/escort-requirements', icon: '⚖️', title: 'Requirements', desc: 'State escort rules' },
               { href: '/training', icon: '🎓', title: 'Get Certified', desc: 'HC training program' },

@@ -2,9 +2,12 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
+import { AeoAnswerCard } from '@/components/seo/AeoAnswerCard';
+import { JsonLd } from '@/components/seo/JsonLd';
 import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { DirectoryBackgroundShell } from '@/components/directory/DirectoryBackgroundShell';
 import { SITE_URL } from '@/lib/site-url';
+import { buildQAPageJsonLd } from '@/lib/seo/jsonld';
 
 // ═══════════════════════════════════════════════════════════════
 // CATEGORY DIRECTORY PAGE — /directory/category/[slug]
@@ -129,6 +132,29 @@ function canIndexCategory(category: CategoryCoverage) {
   return category.computed_index_state === 'indexable_global';
 }
 
+function buildCategoryDirectAnswer(input: {
+  category: CategoryCoverage;
+  country: string;
+  state?: string;
+  total: number;
+  slug: string;
+}) {
+  const scope = input.state ? `${input.state}, ${input.country}` : input.country;
+  const hasCoverage = input.total > 0;
+  const question = `Where can I find ${input.category.public_label.toLowerCase()} in ${scope}?`;
+
+  return {
+    question,
+    answer: hasCoverage
+      ? `Haul Command lists ${input.total} source-backed ${input.category.public_label.toLowerCase()} record${input.total === 1 ? '' : 's'} for ${scope}. Use claim state, subtype, confidence, and profile detail before treating any listing as dispatch-ready.`
+      : `Haul Command does not yet have source-backed ${input.category.public_label.toLowerCase()} records for ${scope}. The category remains useful for claim, request, and sponsor intent, but sparse coverage should stay gated until real records exist.`,
+    confidenceLabel: hasCoverage ? 'Source-backed category coverage' : 'Sparse category coverage',
+    sourceHref: `/directory/category/${input.slug}?country=${input.country.toLowerCase()}${input.state ? `&state=${input.state}` : ''}`,
+    ctaHref: hasCoverage ? input.category.lead_route : input.category.claim_route,
+    ctaLabel: hasCoverage ? 'Request support' : 'Claim this category',
+  };
+}
+
 async function getCategoryCoverage(slug: string) {
   const supabase = createClient();
   const { data } = await supabase
@@ -251,6 +277,13 @@ export default async function CategoryDirectoryPage({ params, searchParams }: Pr
   }>;
 
   const totalPages = Math.ceil((total ?? 0) / PAGE_SIZE);
+  const directAnswer = buildCategoryDirectAnswer({ category, country, state, total, slug });
+  const qaJsonLd = buildQAPageJsonLd({
+    url: `${SITE_URL}/directory/category/${slug}`,
+    question: directAnswer.question,
+    answer: directAnswer.answer,
+    visible: true,
+  });
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -264,6 +297,7 @@ export default async function CategoryDirectoryPage({ params, searchParams }: Pr
   return (
     <DirectoryBackgroundShell>
       <SchemaGenerator type="BreadcrumbList" data={breadcrumbSchema} />
+      <JsonLd data={qaJsonLd} />
 
       {/* Header */}
       <section className="py-10 px-4 border-b border-white/5">
@@ -306,6 +340,22 @@ export default async function CategoryDirectoryPage({ params, searchParams }: Pr
       </section>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="mb-6">
+          <AeoAnswerCard
+            question={directAnswer.question}
+            answer={directAnswer.answer}
+            confidenceLabel={directAnswer.confidenceLabel}
+            sourceLabel="Haul Command category coverage"
+            sourceHref={directAnswer.sourceHref}
+            ctaLabel={directAnswer.ctaLabel}
+            ctaHref={directAnswer.ctaHref}
+            facts={[
+              { label: 'Listings', value: total },
+              { label: 'Index state', value: canIndexCategory(category) ? 'Indexable' : 'Noindex' },
+              { label: 'Scope', value: state ? `${state}, ${country}` : country },
+            ]}
+          />
+        </div>
         {/* Operator Grid */}
         {operators.length > 0 ? (
           <>

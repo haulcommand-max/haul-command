@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { AeoAnswerCard } from "@/components/seo/AeoAnswerCard";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { buildFAQPageJsonLd } from "@/lib/seo/jsonld";
+import { buildFAQPageJsonLd, buildQAPageJsonLd } from "@/lib/seo/jsonld";
 import {
   buildLocaleCityServiceCanonical,
   buildLocaleCityServicePath,
@@ -83,6 +84,25 @@ function buildPageFacts(params: CityServiceRouteParams, providerCount: number) {
   return { service, city, region, countryCode, canonical, score, shouldIndex: shouldIndexCityServicePage(score, providerCount) };
 }
 
+function buildDirectAnswer(facts: ReturnType<typeof buildPageFacts>, providerCount: number, relativePath: string) {
+  const question = `Who provides ${facts.service.shortLabel.toLowerCase()} in ${facts.city}, ${facts.region}?`;
+  const hasCoverage = providerCount > 0;
+
+  return {
+    question,
+    answer: hasCoverage
+      ? `Haul Command indexes ${providerCount} source-backed support record${providerCount === 1 ? "" : "s"} for ${facts.service.shortLabel.toLowerCase()} in ${facts.city}, ${facts.region}. Compare each record's proof, claim state, and freshness before dispatching a move.`
+      : `Haul Command does not yet have enough source-backed ${facts.service.shortLabel.toLowerCase()} records in ${facts.city}, ${facts.region}. This page stays noindex until useful local supply signals exist, while claim and post-load actions keep the market from becoming a dead end.`,
+    confidenceLabel: hasCoverage ? "Source-backed local coverage" : "Sparse market - noindex",
+    sourceLabel: "Haul Command directory facade",
+    sourceHref: `/directory?country=${facts.countryCode}&category=${facts.service.category}&q=${encodeURIComponent(facts.city)}`,
+    ctaLabel: hasCoverage ? "Build support packet" : "Post support request",
+    ctaHref: hasCoverage
+      ? `/loads/post?market=${encodeURIComponent(relativePath)}&service=${facts.service.slug}`
+      : `/loads/post?market=${encodeURIComponent(relativePath)}&service=${facts.service.slug}&intent=market-gap`,
+  };
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolved = await params;
   const records = await fetchCityServiceRecords(resolved);
@@ -112,6 +132,7 @@ export default async function LocaleCityServicePage({ params }: PageProps) {
   const records = await fetchCityServiceRecords(resolved);
   const facts = buildPageFacts(resolved, records.length);
   const relativePath = buildLocaleCityServicePath(resolved);
+  const directAnswer = buildDirectAnswer(facts, records.length, relativePath);
   const visibleFaqs = [
     {
       question: `How many ${facts.service.shortLabel.toLowerCase()} are indexed in ${facts.city}?`,
@@ -127,6 +148,12 @@ export default async function LocaleCityServicePage({ params }: PageProps) {
   const faqJsonLd = buildFAQPageJsonLd({
     url: facts.canonical,
     faqs: visibleFaqs.map((faq) => ({ ...faq, visible: true })),
+  });
+  const qaJsonLd = buildQAPageJsonLd({
+    url: facts.canonical,
+    question: directAnswer.question,
+    answer: directAnswer.answer,
+    visible: true,
   });
   const jsonLd = [
     {
@@ -158,6 +185,7 @@ export default async function LocaleCityServicePage({ params }: PageProps) {
         { "@type": "ListItem", position: 3, name: facts.city, item: facts.canonical },
       ],
     },
+    ...(qaJsonLd ? [qaJsonLd] : []),
     ...(faqJsonLd ? [faqJsonLd] : []),
   ];
 
@@ -185,6 +213,20 @@ export default async function LocaleCityServicePage({ params }: PageProps) {
 
       <section className="mx-auto grid max-w-6xl gap-5 px-5 py-8 lg:grid-cols-[1fr_320px]">
         <div className="space-y-4">
+          <AeoAnswerCard
+            question={directAnswer.question}
+            answer={directAnswer.answer}
+            confidenceLabel={directAnswer.confidenceLabel}
+            sourceLabel={directAnswer.sourceLabel}
+            sourceHref={directAnswer.sourceHref}
+            ctaLabel={directAnswer.ctaLabel}
+            ctaHref={directAnswer.ctaHref}
+            facts={[
+              { label: "Records", value: records.length },
+              { label: "Index gate", value: facts.shouldIndex ? "Indexable" : "Noindex" },
+              { label: "Service", value: facts.service.shortLabel },
+            ]}
+          />
           {records.length > 0 ? records.slice(0, 12).map((record: any) => (
             <article key={recordId(record)} className="rounded-xl border border-white/10 bg-white/[0.05] p-5">
               <div className="text-xs font-black uppercase tracking-[0.16em] text-[#C6923A]">Indexed support record</div>
