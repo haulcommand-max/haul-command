@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { REGULATIONS } from '@/lib/regulations/global-regulations-db';
 
 export const metadata: Metadata = {
-  title: 'Pilot Car & Escort Vehicle Near Me — 120 Countries | Haul Command',
-  description: 'Find verified pilot car operators and escort vehicles near you across 120 countries. Search by location, certifications, equipment, and real-time availability.',
+  title: 'Pilot Car & Escort Vehicle Near Me | Haul Command',
+  description: 'Find source-backed pilot car and escort vehicle directory markets across 120 countries. Search by location, local terminology, claim paths, and support-request actions.',
   keywords: [
     'pilot car near me',
     'escort vehicle near me',
@@ -70,7 +70,7 @@ export default function NearMeIndex() {
             lineHeight: 1.65,
           }}
         >
-          Search verified pilot car operators across 120 countries. GPS-dispatched, insured, certified — the world&apos;s largest oversize load escort directory.
+          Search source-backed pilot car and escort vehicle markets across 120 countries. Haul Command shows local terminology, claim paths, and support-request actions without inventing verification, GPS dispatch, or live availability.
         </p>
         <Link
           href="/directory"

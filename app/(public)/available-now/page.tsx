@@ -10,18 +10,17 @@ import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { stateFullName } from '@/lib/geo/state-names';
 
 // ===============================================================
-// /available-now — LIVE ESCORT AVAILABILITY FEED
-// The competitor-killing surface.
-// Shows all currently-available escorts nationwide, filterable by state.
-// Replaces "post in a Facebook group and hope someone sees it."
+// /available-now — escort availability broadcast surface.
+// Only real operator-declared broadcasts are shown here.
+// Directory records are never converted into synthetic availability.
 // ===============================================================
 
 export const revalidate = 10;
 
 export const metadata: Metadata = {
-  title: 'Pilot Cars Available Now — Live Escort Availability | Haul Command',
+  title: 'Pilot Car Availability Broadcasts | Haul Command',
   description:
-    'Find pilot car and escort vehicle operators available right now. Real-time availability status, trust scores, and instant booking for oversize load escorts across the US, Canada, and 120 countries.',
+    'Find pilot car and escort vehicle availability broadcasts where operators have actively declared availability. Sparse markets route to claim and support-request actions instead of fake live supply.',
   keywords: [
     'pilot car available now',
     'escort vehicle available',
@@ -34,8 +33,8 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: 'https://www.haulcommand.com/available-now' },
   openGraph: {
-    title: 'Available Now — Live Escort Availability | Haul Command',
-    description: 'Real-time pilot car and escort vehicle availability. Find verified operators ready for dispatch.',
+    title: 'Pilot Car Availability Broadcasts | Haul Command',
+    description: 'Operator-declared pilot car and escort vehicle availability where real broadcasts exist.',
     url: 'https://www.haulcommand.com/available-now',
     images: [{ url: '/og-image.png', width: 1200, height: 630 }],
   },
@@ -47,8 +46,8 @@ const AVAILABLE_NOW_JSONLD = {
     {
       '@type': 'WebPage',
       '@id': 'https://www.haulcommand.com/available-now',
-      name: 'Pilot Cars Available Now — Live Escort Availability | Haul Command',
-      description: 'Real-time directory of available pilot car and escort vehicle operators ready for oversize load dispatch across all 50 US states and 120 countries.',
+      name: 'Pilot Car Availability Broadcasts | Haul Command',
+      description: 'Operator-declared availability broadcasts for pilot car and escort vehicle support.',
       url: 'https://www.haulcommand.com/available-now',
       publisher: { '@type': 'Organization', name: 'Haul Command', url: 'https://www.haulcommand.com' },
     },
@@ -61,8 +60,8 @@ const AVAILABLE_NOW_JSONLD = {
     },
     {
       '@type': 'Service',
-      name: 'Pilot Car Available Now — Live Availability Feed',
-      description: 'Real-time directory of available pilot car and escort vehicle operators ready for oversize load dispatch.',
+      name: 'Pilot Car Availability Broadcasts',
+      description: 'Operator-declared availability broadcasts for pilot car and escort vehicle support.',
       url: 'https://www.haulcommand.com/available-now',
       provider: { '@type': 'Organization', name: 'Haul Command', url: 'https://www.haulcommand.com' },
       areaServed: { '@type': 'Country', name: 'United States' },
@@ -99,7 +98,7 @@ interface AvailableBroadcast {
 async function getAvailabilityData() {
   const supabase = createClient();
 
-  // Try the view first (if migration has run), fallback to directory_listings
+  // Use only real operator-declared availability broadcasts.
   const { data: broadcasts, error: viewError } = await supabase
     .from('v_available_escorts')
     .select('*')
@@ -109,34 +108,11 @@ async function getAvailabilityData() {
     return { broadcasts: broadcasts as AvailableBroadcast[], source: 'broadcasts' as const };
   }
 
-  // Fallback: query directory_listings for operators with recent activity
-  const { data: operators } = await supabase
-    .from('hc_global_operators')
-    .select('id, name, city, admin1_code, country_code, confidence_score, is_claimed, role_primary, slug')
-    .eq('country_code', 'US')
-    .order('confidence_score', { ascending: false, nullsFirst: false })
-    .limit(50);
+  if (viewError) {
+    console.warn('[available-now] v_available_escorts query failed:', viewError.message);
+  }
 
-  const fallbackBroadcasts: AvailableBroadcast[] = (operators || []).map((op: any) => ({
-    id: op.id,
-    city: op.city || '',
-    state_code: op.admin1_code || '',
-    country_code: op.country_code || 'US',
-    status: 'available_now',
-    service_types: [op.role_primary || 'escort'],
-    equipment_notes: null,
-    phone: null,
-    contact_note: null,
-    created_at: new Date().toISOString(),
-    expires_at: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString(),
-    operator_name: op.name,
-    operator_slug: op.slug,
-    trust_score: op.confidence_score || 0,
-    claim_status: op.is_claimed ? 'claimed' : 'unclaimed',
-    willing_to_deadhead_miles: 100,
-  }));
-
-  return { broadcasts: fallbackBroadcasts, source: 'directory' as const };
+  return { broadcasts: [] as AvailableBroadcast[], source: 'no_broadcasts' as const };
 }
 
 function getStatusConfig(status: string) {
@@ -149,7 +125,7 @@ function getStatusConfig(status: string) {
 }
 
 export default async function AvailableNowPage() {
-  const { broadcasts, source } = await getAvailabilityData();
+  const { broadcasts } = await getAvailabilityData();
 
   // Group by state for the state-selector UI
   const stateGroups: Record<string, AvailableBroadcast[]> = {};
@@ -192,15 +168,17 @@ export default async function AvailableNowPage() {
                 boxShadow: '0 0 8px rgba(34,197,94,0.5)',
                 animation: 'pulse 2s ease-in-out infinite',
               }} />
-              LIVE FEED
+              OPERATOR BROADCASTS
             </div>
 
             <h1 style={{ margin: '0 0 12px', fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', fontWeight: 900, color: '#f9fafb', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
               Escort Operators<br />
-              <span style={{ color: '#22c55e' }}>Available Now</span>
+              <span style={{ color: '#22c55e' }}>Availability Broadcasts</span>
             </h1>
             <p style={{ margin: '0 0 2rem', fontSize: '1.05rem', color: '#94a3b8', lineHeight: 1.65, maxWidth: 560 }}>
-              {totalAvailable} verified escort operators ready for dispatch. Real-time availability, trust scores, and instant booking — no scrolling through groups.
+              {totalAvailable > 0
+                ? `${totalAvailable} operator-declared availability broadcast${totalAvailable === 1 ? '' : 's'} active. Verify each operator's claim, contact path, and freshness before dispatch.`
+                : 'No operator-declared availability broadcasts are active right now. Post a support request or browse the directory instead of relying on fake live supply.'}
             </p>
 
             {/* Stats row */}
@@ -220,7 +198,7 @@ export default async function AvailableNowPage() {
                 <span style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b' }}>
                   {broadcasts.filter(b => b.claim_status === 'claimed').length}
                 </span>
-                <span style={{ fontSize: 12, color: '#64748b' }}>Verified</span>
+                <span style={{ fontSize: 12, color: '#64748b' }}>Claimed</span>
               </div>
             </div>
           </div>
@@ -386,7 +364,7 @@ export default async function AvailableNowPage() {
                 No Broadcasts Yet
               </h3>
               <p style={{ fontSize: 14, color: '#64748b', maxWidth: 400, margin: '0 auto 24px' }}>
-                As operators set their availability, they'll appear here in real time. Browse the directory to see all operators.
+                As operators set their availability, real broadcasts will appear here. Browse the directory or post a support request to keep the workflow moving.
               </p>
               <Link href="/directory" style={{
                 display: 'inline-flex', alignItems: 'center', gap: 8,
@@ -402,7 +380,7 @@ export default async function AvailableNowPage() {
           {/* State Grid — "Find by State" */}
           <section style={{ marginBottom: 48 }}>
             <h2 style={{ fontSize: 18, fontWeight: 800, color: '#f9fafb', marginBottom: 16 }}>
-              Available by State
+              Broadcasts by State
             </h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: 8 }}>
               {US_STATES.map(st => {
@@ -486,7 +464,7 @@ export default async function AvailableNowPage() {
           <NoDeadEndBlock
             heading="Need an Escort Operator Right Now?"
             moves={[
-              { href: '/directory', icon: '🔍', title: 'Browse Full Directory', desc: 'All verified operators', primary: true, color: '#D4A844' },
+              { href: '/directory', icon: '🔍', title: 'Browse Full Directory', desc: 'Source-backed records', primary: true, color: '#D4A844' },
               { href: '/claim', icon: '✓', title: 'Set Your Availability', desc: 'Operators — get found now', primary: true, color: '#22C55E' },
               { href: '/loads', icon: '📋', title: 'Load Board', desc: 'Post an urgent load' },
               { href: '/corridors', icon: '🗺️', title: 'Corridors', desc: 'Route intelligence' },
@@ -506,7 +484,7 @@ export default async function AvailableNowPage() {
                 <Zap style={{ width: 14, height: 14, color: '#22c55e' }} />
                 <span style={{ fontSize: 11, fontWeight: 800, color: '#22c55e', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Post Urgent Load</span>
               </div>
-              <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>Match with available escorts right now. No phone tag, no groups.</p>
+              <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>Post the route, dimensions, and timing so support can be matched from real signals.</p>
               <a href="/loads/post" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '10px 0', borderRadius: 10, width: '100%', background: 'linear-gradient(135deg, #22c55e, #16a34a)', color: '#000', fontSize: 12, fontWeight: 900, textDecoration: 'none' }}>
                 Post Load Now
               </a>
@@ -542,7 +520,7 @@ export default async function AvailableNowPage() {
                 <TrendingUp style={{ width: 14, height: 14, color: '#34d399' }} />
                 <span style={{ fontSize: 11, fontWeight: 800, color: '#34d399', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>Rate Benchmarks</span>
               </div>
-              <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>Real-time escort cost benchmarks by state and corridor.</p>
+              <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>Escort cost benchmarks by state and corridor where source data exists.</p>
               <a href="/tools/rate-advisor" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px 0', borderRadius: 10, width: '100%', background: 'rgba(52,211,153,0.07)', border: '1px solid rgba(52,211,153,0.18)', color: '#34d399', fontSize: 12, fontWeight: 800, textDecoration: 'none' }}>
                 View Rates →
               </a>
