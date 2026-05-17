@@ -4,8 +4,10 @@ import { notFound } from "next/navigation";
 import { ArrowRight, MapPin, Navigation, Shield, Star, Truck, Users } from "lucide-react";
 import { BreadcrumbRail } from "@/components/ui/breadcrumb-rail";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { AeoAnswerCard } from "@/components/seo/AeoAnswerCard";
 import { createClient } from "@/lib/supabase/server";
 import { parseCityStateSlug } from "@/lib/directory/city-state-slug";
+import { buildQAPageJsonLd } from "@/lib/seo/jsonld";
 
 interface NearPageProps {
   params: Promise<{ slug: string }>;
@@ -72,6 +74,10 @@ export default async function NearCityPage({ params }: NearPageProps) {
   const safeCorridors = corridors ?? [];
   const directoryHref = `/directory/us/${slug}`;
   const claimHref = `/claim?country=US&market=${encodeURIComponent(slug)}&source=near-city`;
+  const qaQuestion = `Who can support pilot car and escort vehicle moves near ${parsed.displayName}?`;
+  const qaAnswer = safeOperators.length > 0
+    ? `Haul Command currently has ${safeOperators.length} source-backed pilot car and escort vehicle records near ${parsed.displayName}. Use the canonical directory to compare proof state, claim status, and contact paths before dispatch.`
+    : `Haul Command does not currently show source-backed pilot car or escort vehicle records near ${parsed.displayName}. Submit or claim a listing so the market can mature without invented availability.`;
 
   const schema = {
     "@context": "https://schema.org",
@@ -99,9 +105,15 @@ export default async function NearCityPage({ params }: NearPageProps) {
     },
   };
 
+  const qaJsonLd = buildQAPageJsonLd({
+    url: `https://www.haulcommand.com${directoryHref}`,
+    question: qaQuestion,
+    answer: qaAnswer,
+  });
+
   return (
     <>
-      <JsonLd data={schema} />
+      <JsonLd data={[schema, ...(qaJsonLd ? [qaJsonLd] : [])]} />
       <div className="bg-hc-bg text-hc-text min-h-screen">
         <div className="max-w-7xl mx-auto px-4">
           <BreadcrumbRail
@@ -146,6 +158,25 @@ export default async function NearCityPage({ params }: NearPageProps) {
                 Claim or Correct Listing
               </Link>
             </div>
+          </div>
+        </section>
+
+        <section className="px-4 pb-6">
+          <div className="max-w-5xl mx-auto">
+            <AeoAnswerCard
+              question={qaQuestion}
+              answer={qaAnswer}
+              confidenceLabel={safeOperators.length > 0 ? "Source-backed market records" : "Sparse market"}
+              sourceLabel="Canonical directory"
+              sourceHref={directoryHref}
+              ctaLabel={safeOperators.length > 0 ? "Open directory" : "Claim or submit a record"}
+              ctaHref={safeOperators.length > 0 ? directoryHref : claimHref}
+              facts={[
+                { label: "Records", value: safeOperators.length },
+                { label: "Corridors", value: safeCorridors.length },
+                { label: "Index policy", value: "Noindex compatibility page" },
+              ]}
+            />
           </div>
         </section>
 
