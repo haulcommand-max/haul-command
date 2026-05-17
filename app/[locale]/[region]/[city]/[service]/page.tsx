@@ -110,7 +110,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: `${facts.service.label} in ${facts.city}, ${facts.region} | Haul Command`,
-    description: `Find ${facts.service.shortLabel.toLowerCase()} in ${facts.city}, ${facts.region}. Compare indexed support records, shortage signals, claim paths, and dispatch-ready next actions without fake availability claims.`,
+    description: `Find ${facts.service.shortLabel.toLowerCase()} in ${facts.city}, ${facts.region}. Compare indexed support records, coverage signals, claim paths, and dispatch-ready next actions without fake availability claims.`,
     alternates: {
       canonical: facts.canonical,
       languages: {
@@ -138,7 +138,7 @@ export default async function LocaleCityServicePage({ params }: PageProps) {
       question: `How many ${facts.service.shortLabel.toLowerCase()} are indexed in ${facts.city}?`,
       answer: records.length >= 1
         ? `Haul Command currently shows ${records.length} indexed support record${records.length === 1 ? "" : "s"} for ${facts.service.shortLabel.toLowerCase()} in ${facts.city}, ${facts.region}. Verify claim, contact, and freshness before dispatch.`
-        : `Haul Command is still building verified ${facts.service.shortLabel.toLowerCase()} coverage in ${facts.city}, ${facts.region}. Use the claim and post-load actions to create demand without inventing supply.`,
+        : `Haul Command is still building source-backed ${facts.service.shortLabel.toLowerCase()} coverage in ${facts.city}, ${facts.region}. Use the claim and post-load actions to create demand without inventing supply.`,
     },
     {
       question: `Can I book ${facts.service.shortLabel.toLowerCase()} from this page?`,
@@ -201,7 +201,7 @@ export default async function LocaleCityServicePage({ params }: PageProps) {
             {facts.service.label} in <span className="text-[#C6923A]">{facts.city}, {facts.region}</span>
           </h1>
           <p className="mt-4 max-w-3xl text-base leading-7 text-[#d8c6a3]">
-            Compare indexed support records, shortage context, claim paths, and dispatch next actions for {facts.service.shortLabel.toLowerCase()} in this market. Thin markets are labeled conservatively and kept out of the index until enough useful signals exist.
+            Compare indexed support records, coverage context, claim paths, and dispatch next actions for {facts.service.shortLabel.toLowerCase()} in this market. Thin markets are labeled conservatively and kept out of the index until enough useful signals exist.
           </p>
           <div className="mt-6 flex flex-wrap gap-3 text-sm">
             <span className="rounded-lg border border-white/10 bg-white/[0.06] px-3 py-2">{records.length} support records</span>
@@ -245,7 +245,7 @@ export default async function LocaleCityServicePage({ params }: PageProps) {
             </article>
           )) : (
             <div className="rounded-xl border border-amber-300/30 bg-amber-300/10 p-6">
-              <h2 className="text-2xl font-black">No verified supply shown yet for this market</h2>
+              <h2 className="text-2xl font-black">No source-backed supply shown yet for this market</h2>
               <p className="mt-3 text-sm leading-6 text-[#fff7e8]">
                 This page is still useful as a demand-capture surface, but it is noindexed until enough market signals exist. Providers can claim the market and brokers can post the load instead of seeing a dead end.
               </p>

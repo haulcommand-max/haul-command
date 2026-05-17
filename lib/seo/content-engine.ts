@@ -11,7 +11,7 @@ import { normalizeCity } from './slug-helper';
 const INTRO_PATTERNS = [
     (city: string, state: string, service: string) =>
         `Finding a reliable ${service} in ${city}, ${state} can be a logistical challenge. Whether you're moving modular homes or heavy construction equipment, ` +
-        `verified local providers are essential for safety and compliance.`,
+        `source-backed local records are essential for safer planning and compliance checks.`,
 
     (city: string, state: string, service: string) =>
         `${city} demands experienced ${service} operators. From navigating tight urban corners to managing highway escorts across ${state}, ` +
@@ -19,11 +19,11 @@ const INTRO_PATTERNS = [
 
     (city: string, state: string, service: string) =>
         `Need a ${service} in ${city}? Speed up your dispatch process. Haul Command tracks active, insured providers in ${state} ` +
-        `ready to support your oversize load permit requirements.`,
+        `when source records support that claim, and keeps sparse markets clearly labeled when they do not.`,
 
     (city: string, state: string, service: string) =>
-        `Don't let a missing ${service} delay your load in ${city}. We aggregate real-time availability from ${state}'s top-tier escort companies, ` +
-        `ensuring your heavy haul stays on schedule.`,
+        `Don't let a missing ${service} delay your load in ${city}. Use Haul Command to compare source-backed records, nearby markets, ` +
+        `and no-dead-end actions before treating local supply as available.`,
 ];
 
 // 2. Regional Context Injectors
@@ -94,9 +94,9 @@ export function determineCoverageAction(providerCount: number, nearbyCount: numb
 
 export function getGapPanelProps(city: string, service: string) {
     return {
-        badge: "High Demand Area",
+        badge: "Sparse Coverage Area",
         title: `${service} Needed in ${city}`,
-        description: `We have detected a shortage of verified ${service} providers in ${city}. Local rates may be higher due to demand.`,
+        description: `Haul Command does not yet have enough source-backed ${service} records in ${city} to publish a strong local supply claim. Claim the market or post a support request so demand is captured without inventing availability.`,
         cta: "Are you a provider? Claim this market.",
         ctaLink: "/auth/register?gap_claim=true"
     };

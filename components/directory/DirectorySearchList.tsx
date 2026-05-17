@@ -88,14 +88,14 @@ function LoginGateModal({ onClose }: { onClose: () => void }) {
         </div>
 
         <h2 style={{ margin: '0 0 10px', fontSize: 24, fontWeight: 900, color: '#fff', letterSpacing: '-0.02em' }}>
-          Login to View All 1.5M Operators
+          Login to View Full Contact Details
         </h2>
         <p style={{ margin: '0 0 24px', fontSize: 14, color: '#64748b', lineHeight: 1.6 }}>
-          Full phone numbers, emails, and addresses are hidden for anonymous visitors. Create a free account to unlock the complete Haul Command network.
+          Full phone numbers, emails, and addresses are hidden for anonymous visitors. Create a free account to view available contact details and source-backed directory records.
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 20 }}>
-          {['Direct phone + email for every operator', '1.5M+ verified pilots, carriers, brokers', 'Real-time availability + compliance scores', 'Post loads, get instant match alerts'].map(f => (
+          {['Available phone and email fields when present', 'Source-backed pilots, carriers, brokers, and support providers', 'Claim state, profile completeness, and compliance signals', 'Post loads and capture support demand'].map(f => (
             <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13, color: '#94a3b8' }}>
               <CheckCircle2 size={14} color="#34d399" />
               {f}
@@ -335,7 +335,7 @@ export function DirectorySearchList({ initialQ = '', initialState = '', isAuthen
                 Phone & email hidden for your protection
               </p>
               <p style={{ margin: '2px 0 0', fontSize: 12, color: '#78716c' }}>
-                Login to unlock direct contact details for all 1.5M+ operators
+                Login to unlock available contact fields for source-backed directory records
               </p>
             </div>
           </div>
@@ -343,7 +343,7 @@ export function DirectorySearchList({ initialQ = '', initialState = '', isAuthen
             onClick={() => setShowLoginModal(true)}
             style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)', border: 'none', borderRadius: 10, padding: '9px 18px', color: '#000', fontSize: 13, fontWeight: 800, cursor: 'pointer', whiteSpace: 'nowrap' }}
           >
-            Login to View All 1.5M Operators →
+            Login to View Contact Details
           </button>
         </div>
       )}

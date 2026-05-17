@@ -17,13 +17,21 @@ async function resolveCountryParam(params: PageProps['params']) {
     return String(country || 'us').toLowerCase();
 }
 
+const COUNTRY_REGIONS: Record<string, string[]> = {
+    us: ['Texas', 'Florida', 'California', 'Oklahoma', 'Louisiana'],
+    ca: ['Ontario', 'Alberta', 'British Columbia', 'Saskatchewan', 'Quebec'],
+    au: ['Queensland', 'Western Australia', 'New South Wales', 'Victoria', 'South Australia'],
+    gb: ['England', 'Scotland', 'Wales', 'Northern Ireland'],
+    de: ['North Rhine-Westphalia', 'Bavaria', 'Lower Saxony', 'Baden-Wurttemberg', 'Hesse'],
+};
+
 export async function generateMetadata({ params }: PageProps) {
     const country = await resolveCountryParam(params);
     const formattedCountry = country.toUpperCase();
     
     return generatePageMetadata({
         title: `${formattedCountry} Pilot Car Directory & Escort Network`,
-        description: `Access certified heavy haul pilot cars, state-level regulations, and live corridor intelligence in ${formattedCountry}. The global command OS for oversize routing.`,
+        description: `Access source-backed heavy haul pilot car records, region-level regulation paths, and corridor support actions in ${formattedCountry}. Sparse markets stay clearly labeled until evidence improves.`,
         canonicalPath: `/directory/${country.toLowerCase()}`,
         countryCode: country.toLowerCase()
     });
@@ -35,13 +43,10 @@ export async function generateMetadata({ params }: PageProps) {
  */
 export default async function CountryDirectoryPage({ params }: PageProps) {
     const country = await resolveCountryParam(params);
-    const isUSA = country.toLowerCase() === 'us';
+    const countryKey = country.toLowerCase();
+    const isUSA = countryKey === 'us';
     const formattedName = isUSA ? 'United States' : country.toUpperCase();
-
-    // Mock regional data array that would normally pull from h3_corridor_intelligence / seo_taxonomies
-    const subRegions = isUSA 
-        ? ['Texas', 'Florida', 'California', 'Oklahoma', 'Louisiana']
-        : ['Alpha Region', 'Beta Region', 'Gamma Region'];
+    const subRegions = COUNTRY_REGIONS[countryKey] ?? [];
 
     return (
         <main className="min-h-screen bg-[#050608] pb-24">
@@ -59,14 +64,14 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
                     <div className="max-w-4xl mt-6">
                         <div className="flex items-center gap-3 mb-4">
                             <span className="bg-[#00FF66]/10 text-[#00FF66] text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
-                                Country Matrix Live
+                                Source-backed country hub
                             </span>
                         </div>
                         <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight mb-6">
                             {formattedName} Heavy Haul Network
                         </h1>
                         <p className="text-xl text-[#8FA3B8] leading-relaxed max-w-2xl">
-                            The centralized intelligence layer for specialized freight routing, certified escort vehicle discovery, and official permit constraints across {formattedName}.
+                            The country-level directory layer for specialized freight routing, source-backed escort discovery, and permit-constraint paths across {formattedName}. Markets stay conservative when local supply data is sparse.
                         </p>
                     </div>
                 </div>
@@ -80,33 +85,39 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
                     {/* Region Expansion Hub (HC-W3-01 Downflow) */}
                     <div className="bg-[#0A0D14] border border-white/[0.04] rounded-2xl p-8">
                         <h3 className="text-lg font-bold text-white mb-6">Select Operating State / Province</h3>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                            {subRegions.map(region => (
+                        {subRegions.length > 0 ? (
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                {subRegions.map(region => (
                                 <a 
                                     key={region} 
-                                    href={`/directory/${country.toLowerCase()}/${region.toLowerCase().replace(' ', '-')}`}
+                                    href={`/directory/${countryKey}/${region.toLowerCase().replace(/\s+/g, '-')}`}
                                     className="px-4 py-3 bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.03] hover:border-white/[0.1] rounded-lg text-sm text-[#8FA3B8] hover:text-white transition-all text-center truncate"
                                 >
                                     {region}
                                 </a>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="rounded-xl border border-amber-300/25 bg-amber-300/10 p-4 text-sm leading-6 text-[#f7ddb3]">
+                                Region pages for {formattedName} are not published yet. Use the claim and post-load actions to create demand while the local source set is being verified.
+                            </div>
+                        )}
                     </div>
 
                     <MarketClusterGrid 
                         marketName={formattedName}
                         parentStateName="Federal Jurisdiction"
                         nearbyMarkets={[
-                            { name: 'Border Crossings', url: `/tools/borders/${country.toLowerCase()}` },
-                            { name: 'Major Ports', url: `/tools/ports/${country.toLowerCase()}` }
+                            { name: 'Border Crossings', url: `/tools/borders/${countryKey}` },
+                            { name: 'Major Ports', url: `/tools/ports/${countryKey}` }
                         ]}
                         hotCorridors={[
-                            { name: 'Trans-National Route A', url: '/corridors/national-a' },
-                            { name: 'Trans-National Route B', url: '/corridors/national-b' }
+                            { name: 'Published corridor pages', url: `/directory/${countryKey}?surface=corridors` },
+                            { name: 'Route support requests', url: `/loads/post?country=${countryKey}` }
                         ]}
-                        stateRegulationsUrl={`/regulations/${country.toLowerCase()}`}
+                        stateRegulationsUrl={`/regulations/${countryKey}`}
                         localTools={[
-                            { name: 'National Compliance Hub', url: `/tools/compliance/${country.toLowerCase()}` }
+                            { name: 'National Compliance Hub', url: `/tools/compliance/${countryKey}` }
                         ]}
                     />
 
@@ -114,7 +125,7 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
                     <CompetitorAbsorptionCard 
                         targetAudience="brokers"
                         competitorType="Static Directory"
-                        valueProp="Stop waiting on callbacks from outdated PDFs. Access a live, escrow-backed booking layer equipped with GPS verification."
+                        valueProp="Stop relying on stale PDFs. Build a source-backed support packet with claim state, route context, and dispatch actions before a broker commits the move."
                     />
 
                 </div>
@@ -130,8 +141,8 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
                     {/* HC-W3-02: Authority Source Map */}
                     <AuthoritySourceMap 
                         region={formattedName}
-                        lastVerified="Today"
-                        confidenceSignals={['FMCSA Registry Sync', 'Local DOT Webhook', 'Network Consensus']}
+                        lastVerified="Source-dependent"
+                        confidenceSignals={['Directory source records', 'Permit authority references', 'Claim-state evidence']}
                     />
 
                     <IntentMatrix 
