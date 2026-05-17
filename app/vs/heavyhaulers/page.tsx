@@ -30,7 +30,7 @@ const ROWS = [
   { feature: 'Standing Orders / payment rails', hc: ['Enabled by job status', CHECK], hh: ['Broker-mediated', PARTIAL] },
   { feature: 'Free to list', hc: ['Yes', CHECK], hh: ['Yes', CHECK] },
   { feature: 'Claim profile', hc: ['Free claim workflow', CHECK], hh: ['Limited', PARTIAL] },
-  { feature: 'Mobile app', hc: ['iOS + Android', CHECK], hh: ['No', CROSS] },
+  { feature: 'Mobile app', hc: ['Mobile workflows where enabled', CHECK], hh: ['No', CROSS] },
 ];
 
 export default async function VsHeavyHaulersPage() {

@@ -50,7 +50,7 @@ const COMPETITORS: Record<string, Competitor> = {
       { feature: 'Trust score / verification',  hc: true, hcNote: 'Visible on all profiles',  comp: false, compNote: 'Different model' },
       { feature: 'Push notifications',          hc: true, hcNote: 'Load match, claims, alerts', comp: false, compNote: 'Different model' },
       { feature: 'International market pages',  hc: true, hcNote: 'Coverage varies by country', comp: false, compNote: 'Different scope' },
-      { feature: 'Mobile app',                  hc: true, hcNote: 'iOS + Android',             comp: true,  compNote: 'iOS + Android' },
+      { feature: 'Mobile app',                  hc: true, hcNote: 'Mobile workflows where enabled', comp: true,  compNote: 'iOS + Android' },
       { feature: 'Free tier',                   hc: true, hcNote: 'Most tools free, no wall',  comp: false, compNote: 'Login wall on most tools' },
     ],
     whySwitchReasons: [
@@ -75,7 +75,7 @@ const COMPETITORS: Record<string, Competitor> = {
       { feature: 'Availability signals',        hc: true, hcNote: 'Operator-declared where active', comp: false, compNote: 'Different model' },
       { feature: 'Payment workflows',           hc: true, hcNote: 'Enabled by job/payment state', comp: false, compNote: 'Different model' },
       { feature: 'International market pages',  hc: true, hcNote: 'Coverage varies by country', comp: false, compNote: 'North America focus' },
-      { feature: 'Mobile app',                  hc: true, hcNote: 'iOS + Android',              comp: false, compNote: 'Limited mobile' },
+      { feature: 'Mobile app',                  hc: true, hcNote: 'Mobile workflows where enabled', comp: false, compNote: 'Limited mobile' },
       { feature: 'Free tier',                   hc: true, hcNote: 'Most features free',        comp: false, compNote: 'Enterprise pricing only' },
     ],
     whySwitchReasons: [
@@ -98,7 +98,7 @@ const COMPETITORS: Record<string, Competitor> = {
       { feature: 'Load board',                  hc: true, hcNote: 'Two-sided marketplace',     comp: false, compNote: 'Different model' },
       { feature: 'Payment workflows',           hc: true, hcNote: 'Enabled by job/payment state', comp: false, compNote: 'Different model' },
       { feature: 'Training academy',            hc: true, hcNote: '50+ courses',                comp: false, compNote: 'Different model' },
-      { feature: 'Mobile app',                  hc: true, hcNote: 'iOS + Android native',       comp: false, compNote: 'No mobile app' },
+      { feature: 'Mobile app',                  hc: true, hcNote: 'Mobile workflows where enabled', comp: false, compNote: 'No mobile app' },
       { feature: 'Regulation database',         hc: true, hcNote: 'State-by-state requirements', comp: false, compNote: 'Different model' },
     ],
     whySwitchReasons: [
@@ -125,7 +125,7 @@ const COMPETITORS: Record<string, Competitor> = {
       { feature: 'International market pages',  hc: true, hcNote: 'Coverage varies by country',  comp: false, compNote: 'US-focused' },
     ],
     whySwitchReasons: [
-      { title: 'No middleman markup', body: 'HeavyHaulers is a broker — they add margin. Haul Command connects you directly to operators with transparent pricing.' },
+      { title: 'More transparent request workflows', body: 'Haul Command can expose source-backed records, profile evidence, and request workflows directly where coverage exists.' },
       { title: 'Open marketplace', body: 'Search and compare source-backed records, claim state, freshness, and trust signals before you commit.' },
       { title: 'Full operating system', body: 'Beyond freight brokerage: permits, training, compliance, route planning, analytics — all in one platform.' },
     ],

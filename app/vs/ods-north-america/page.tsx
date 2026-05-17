@@ -21,7 +21,7 @@ const COMPARISON = [
   { feature:'Route intelligence',         hc:true,  hc_note:'AI + human surveyor marketplace',comp:true, comp_note:'Human surveyor network' },
   { feature:'Self-serve request flow',    hc:true,  hc_note:'Broker posts, operator responds', comp:false,comp_note:'Agent-mediated model' },
   { feature:'International market pages', hc:true,  hc_note:'Coverage varies by country',     comp:false,comp_note:'US + Canada primarily' },
-  { feature:'Mobile app',                 hc:true,  hc_note:'iOS + Android',                 comp:false, comp_note:'Web only' },
+  { feature:'Mobile app',                 hc:true,  hc_note:'Mobile workflows where enabled', comp:false, comp_note:'Web only' },
   { feature:'Free tools',                 hc:true,  hc_note:'All tools free, no login',      comp:false, comp_note:'Tools not publicly available' },
   { feature:'No agent dependency',        hc:true,  hc_note:'Platform-native self-serve',    comp:false, comp_note:'ODS model requires agent' },
   { feature:'Data products',              hc:true,  hc_note:'Corridor rates, API, reports',  comp:false, comp_note:'Different model' },
@@ -108,7 +108,7 @@ export default function VsODSPage() {
             <h2 className="text-lg font-bold text-[#f0f2f5] mb-3">Try Haul Command — Free</h2>
             <div className="flex flex-wrap gap-3 justify-center">
               <Link href="/find-capacity" className="bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold px-5 py-2.5 rounded-xl text-sm">Find Capacity Now →</Link>
-              <Link href="/register" className="border border-[#d4950e] text-[#d4950e] hover:bg-[#d4950e20] font-semibold px-5 py-2.5 rounded-xl text-sm">Create Free Account</Link>
+              <Link href="/auth/register" className="border border-[#d4950e] text-[#d4950e] hover:bg-[#d4950e20] font-semibold px-5 py-2.5 rounded-xl text-sm">Create Free Account</Link>
             </div>
           </div>
 

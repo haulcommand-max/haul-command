@@ -20,7 +20,7 @@ const COMPARISON = [
   { feature:'Verified credentials',        hc:true,  hc_note:'ID, insurance, state permits',        comp:false, comp_note:'Self-reported only' },
   { feature:'Training & certification',    hc:true,  hc_note:'50+ courses, 6-tier ladder',          comp:false, comp_note:'Not available' },
   { feature:'Push notifications',          hc:true,  hc_note:'Load match, requests, claim alerts',  comp:false, comp_note:'Not available' },
-  { feature:'Mobile app',                  hc:true,  hc_note:'iOS + Android',                       comp:false, comp_note:'Mobile web only' },
+  { feature:'Mobile app',                  hc:true,  hc_note:'Mobile workflows where enabled',       comp:false, comp_note:'Mobile web only' },
   { feature:'Stripe Connect payouts',      hc:true,  hc_note:'Instant/next-day to operators',       comp:false, comp_note:'Not available' },
   { feature:'AdGrid advertising',          hc:true,  hc_note:'Self-serve, 8 zones',                 comp:false, comp_note:'Not available' },
   { feature:'Global coverage',             hc:true,  hc_note:'priority markets',                       comp:false, comp_note:'Primarily US' },
