@@ -6,8 +6,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/input";
 
-// Minimal mock rates for demonstration
-const mockIftaRates: Record<string, number> = {
+// Sample rates for planning. Verify current IFTA tables before filing.
+const sampleIftaRates: Record<string, number> = {
   "TX": 0.20,
   "CA": 0.88,
   "PA": 0.74,
@@ -49,7 +49,7 @@ export default function IftaCalculatorPage() {
     return entries.map(entry => {
       const fuelConsumed = entry.miles / mpg;
       const taxableGallons = fuelConsumed - entry.gallonsPurchased;
-      const rate = mockIftaRates[entry.state] || 0.40; // Default fallback rate
+      const rate = sampleIftaRates[entry.state] || 0.40;
       const tax = taxableGallons * rate;
       return { ...entry, tax, taxableGallons, rate };
     });
@@ -71,17 +71,17 @@ export default function IftaCalculatorPage() {
             Free IFTA Fuel Tax Calculator
           </h1>
           <p className="text-lg text-slate-400 max-w-2xl mb-8">
-            Instantly calculate your International Fuel Tax Agreement (IFTA) total amounts owed. Up-to-date state rates for 2026.
+            Estimate your International Fuel Tax Agreement (IFTA) exposure with sample rates. Verify current jurisdiction rates before filing.
           </p>
           
           <div className="grid sm:grid-cols-3 gap-4">
             <div className=" border border-slate-800 rounded-lg p-4 flex items-center gap-3">
               <CheckCircle2 className="h-5 w-5 text-emerald-400" />
-              <span className="text-sm text-slate-300">2026 Q1 Rates Loaded</span>
+              <span className="text-sm text-slate-300">Sample Rate Table</span>
             </div>
             <div className=" border border-slate-800 rounded-lg p-4 flex items-center gap-3">
               <CheckCircle2 className="h-5 w-5 text-emerald-400" />
-              <span className="text-sm text-slate-300">Fast & Accurate</span>
+              <span className="text-sm text-slate-300">Planning Estimate</span>
             </div>
             <div className=" border border-slate-800 rounded-lg p-4 flex items-center gap-3">
               <CheckCircle2 className="h-5 w-5 text-emerald-400" />
@@ -132,7 +132,7 @@ export default function IftaCalculatorPage() {
                         onChange={(e) => updateEntry(idx, 'state', e.target.value)}
                         className="w-full bg-slate-800 border border-slate-700 rounded-md py-2 px-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
                       >
-                        {Object.keys(mockIftaRates).map(st => (
+                        {Object.keys(sampleIftaRates).map(st => (
                           <option key={st} value={st}>{st}</option>
                         ))}
                       </select>
@@ -176,7 +176,7 @@ export default function IftaCalculatorPage() {
             <div className="prose prose-invert max-w-none">
               <h3>How does the IFTA calculator work?</h3>
               <p className="text-sm text-slate-400">
-                The International Fuel Tax Agreement (IFTA) ensures that fuel taxes are distributed proportionally to the states where a commercial vehicle actually drives, rather than just where the fuel is purchased. This tool calculates your fuel consumed by state (miles &divide; MPG), compares it against the tax-paid fuel you purchased in that state, and multipliers the remainder by the current state IFTA tax rate.
+                The International Fuel Tax Agreement (IFTA) distributes fuel taxes to the jurisdictions where a commercial vehicle actually drives, rather than only where fuel is purchased. This worksheet estimates fuel consumed by state (miles &divide; MPG), compares it against tax-paid gallons entered by the user, and applies a sample jurisdiction rate. Use official IFTA rate tables and your filing records before submitting a return.
               </p>
             </div>
           </div>
@@ -188,7 +188,7 @@ export default function IftaCalculatorPage() {
             <div className=" border border-indigo-500/30 rounded-xl overflow-hidden shadow-2xl shadow-indigo-900/20">
               <div className=" border-b border-slate-800 p-6 text-center relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
-                <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-2">Estimated IFTA {totalOwed >= 0 ? "Owed" : "Credit"}</h3>
+                <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-2">Planning IFTA {totalOwed >= 0 ? "Owed" : "Credit"}</h3>
                 <div className="text-4xl font-black text-white">
                   {totalOwed < 0 ? "-" : ""}${Math.abs(totalOwed).toFixed(2)}
                 </div>
@@ -196,6 +196,9 @@ export default function IftaCalculatorPage() {
               
               <div className=" p-6 space-y-4">
                 <div className="text-sm font-medium text-slate-300 border-b border-slate-800 pb-2">Breakdown</div>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  Sample rates only. Do not file from this estimate without checking current official rates and apportioned fuel records.
+                </p>
                 {results.map((r, i) => (
                   <div key={i} className="flex justify-between items-center text-sm">
                     <span className="text-slate-400">{r.state} <span className="text-xs text-slate-600">(${r.rate}/gal)</span></span>

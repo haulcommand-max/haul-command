@@ -1,24 +1,66 @@
 import { NextResponse } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
 
 // Haul Command OS
 // Task 36: Provide a search endpoint for the training school marketplace.
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const q = searchParams.get('q')?.toLowerCase() || '';
+  const q = (searchParams.get('q') || '').trim();
 
-  // In production, this queries hc_training_providers
-  const mockDatabase = [
-    { id: '1', name: 'Evergreen Safety Council', region: 'WA', certified: true, courses: ['PEVO'] },
-    { id: '2', name: 'Florida Pilot Training', region: 'FL', certified: true, courses: ['Defensive Driving', 'FL Certification'] },
-    { id: '3', name: 'NHVR National Escorts', region: 'AU-NSW', certified: true, courses: ['Level 1', 'Level 2'] }
-  ];
+  if (q.length < 2) {
+    return NextResponse.json({
+      query: q,
+      results_found: 0,
+      providers: [],
+      source: 'query_too_short',
+    });
+  }
 
-  const results = mockDatabase.filter(p => p.name.toLowerCase().includes(q) || p.region.toLowerCase().includes(q));
+  const safeQuery = q.replace(/[%,()]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80);
+  if (safeQuery.length < 2) {
+    return NextResponse.json({
+      query: q,
+      results_found: 0,
+      providers: [],
+      source: 'query_too_short',
+    });
+  }
+
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('hc_provider_search_index')
+    .select('provider_id, provider_slug, title, subtitle, location_label, badges_json, organic_rank_score, quality_guardrail_pass, last_updated_at')
+    .or(`title.ilike.%${safeQuery}%,location_label.ilike.%${safeQuery}%`)
+    .eq('quality_guardrail_pass', true)
+    .order('organic_rank_score', { ascending: false })
+    .limit(20);
+
+  if (error) {
+    return NextResponse.json({
+      query: q,
+      results_found: 0,
+      providers: [],
+      source: 'hc_provider_search_index_unavailable',
+      error: 'provider_search_not_configured',
+    });
+  }
+
+  const providers = (data ?? []).map((provider) => ({
+    id: provider.provider_id,
+    slug: provider.provider_slug,
+    name: provider.title,
+    region: provider.location_label,
+    subtitle: provider.subtitle,
+    badges: provider.badges_json,
+    quality_guardrail_pass: provider.quality_guardrail_pass,
+    last_updated_at: provider.last_updated_at,
+  }));
 
   return NextResponse.json({
     query: q,
-    results_found: results.length,
-    providers: results
+    results_found: providers.length,
+    providers,
+    source: 'hc_provider_search_index',
   });
 }

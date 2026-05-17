@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Share2, FileWarning, ShieldAlert, BadgeCheck, Globe, Truck, Map, Calculator, ArrowRight, Zap, Download } from 'lucide-react';
+import { Share2, FileWarning, ShieldAlert, BadgeCheck, Globe, Truck, Map, Calculator, ArrowRight, ClipboardList, Download } from 'lucide-react';
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   CROSS-BORDER COMMAND CENTER & PERMIT WIZARD
-   High-fidelity interactive tool for calculating cross-jurisdictional
-   compliance requirements (US-Canada, State-to-State).
+   CROSS-BORDER PLANNING WORKSHEET
+   Sample worksheet for cross-jurisdictional permit planning. It must not be
+   presented as an official permit, customs, or legal determination.
    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 export default function CrossBorderCommandCenter() {
@@ -17,7 +17,8 @@ export default function CrossBorderCommandCenter() {
   const [weight, setWeight] = useState('110000');
   const [activeTab, setActiveTab] = useState<'overview' | 'permits' | 'reciprocity'>('overview');
 
-  // Hardcoded mockup data for visual presentation
+  // Sample worksheet data. Official permit, customs, and route determinations
+  // must be verified with each jurisdiction before dispatch.
   const routeCrossings = [
     { from: 'TX', to: 'NM', type: 'State Line', requirements: ['NM Oversize Permit', 'Port of Entry Clearance'] },
     { from: 'NM', to: 'CO', type: 'State Line', requirements: ['CO Oversize Permit', 'Chains Required (Winter)'] },
@@ -45,9 +46,9 @@ export default function CrossBorderCommandCenter() {
           </div>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <h1 className="text-4xl font-black text-white uppercase tracking-[-0.02em] mb-2">Cross-Border Command Center</h1>
+              <h1 className="text-4xl font-black text-white uppercase tracking-[-0.02em] mb-2">Cross-Border Planning Worksheet</h1>
               <p className="text-hc-muted text-lg max-w-2xl">
-                Multi-jurisdictional permit wizard and reciprocity calculator.
+                Sample multi-jurisdiction route worksheet with source-check prompts for permits, border documents, and escort reciprocity.
               </p>
             </div>
             <div className="flex gap-3">
@@ -55,9 +56,12 @@ export default function CrossBorderCommandCenter() {
                 <Share2 className="w-4 h-4" /> Share Route
               </button>
               <button className="px-5 py-2.5 bg-hc-success text-white rounded-xl text-sm font-black uppercase tracking-wider flex items-center gap-2 hover:bg-emerald-500 transition-colors">
-                <Download className="w-4 h-4" /> Export Itinerary
+                <Download className="w-4 h-4" /> Export Worksheet
               </button>
             </div>
+          </div>
+          <div className="mt-5 rounded-xl border border-hc-gold-500/30 bg-hc-gold-500/10 px-4 py-3 text-sm text-hc-muted">
+            <strong className="text-white">Planning estimate only.</strong> This page does not file permits, clear customs, or certify escort reciprocity. Verify every jurisdiction, route restriction, and border requirement with the issuing authority before dispatch.
           </div>
         </div>
       </div>
@@ -137,7 +141,7 @@ export default function CrossBorderCommandCenter() {
               </div>
 
               <button className="w-full py-4 bg-hc-gold-500 hover:bg-hc-gold-400 text-white font-black uppercase tracking-wider rounded-xl transition-colors flex items-center justify-center gap-2 mt-4" data-tool-interact="generate-itinerary">
-                <Zap className="w-4 h-4" /> Calculate Compliance
+                <ClipboardList className="w-4 h-4" /> Preview Planning Worksheet
               </button>
             </div>
           </div>
@@ -145,7 +149,7 @@ export default function CrossBorderCommandCenter() {
           {/* Intelligence Snapshot */}
           <div className="bg-hc-danger/10 border border-hc-danger/20 rounded-2xl p-6">
             <h3 className="text-sm font-bold text-hc-danger uppercase flex items-center gap-2 mb-3">
-              <FileWarning className="w-4 h-4" /> Critical Warnings
+              <FileWarning className="w-4 h-4" /> Sample Warnings To Verify
             </h3>
             <ul className="space-y-3 text-sm text-hc-muted leading-relaxed">
               <li><strong className="text-white">Alberta:</strong> Height exceeds 4.15m (13'7"). High Load Corridor clearances required.</li>
@@ -175,7 +179,7 @@ export default function CrossBorderCommandCenter() {
           {activeTab === 'overview' && (
             <div className="space-y-4">
               <h2 className="text-xl font-bold text-white uppercase mb-4 flex items-center gap-2">
-                <Map className="w-5 h-5 text-hc-success" /> Trajectory Matrix
+                <Map className="w-5 h-5 text-hc-success" /> Sample Route Matrix
               </h2>
               
               <div className="relative pl-6 space-y-8 border-l-2 border-hc-border/50 ml-3">
@@ -215,10 +219,10 @@ export default function CrossBorderCommandCenter() {
             <div className="space-y-4">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold text-white uppercase flex items-center gap-2">
-                  <FileWarning className="w-5 h-5 text-hc-gold-500" /> State / Provincial Permits
+                  <FileWarning className="w-5 h-5 text-hc-gold-500" /> Sample State / Provincial Permits
                 </h2>
                 <div className="text-right">
-                  <div className="text-sm text-hc-muted uppercase font-bold tracking-wider">Estimated Cost</div>
+                  <div className="text-sm text-hc-muted uppercase font-bold tracking-wider">Sample Cost</div>
                   <div className="text-2xl font-black text-hc-gold-500">$390.00 <span className="text-sm text-hc-muted">+ $120 CAD</span></div>
                 </div>
               </div>
@@ -247,18 +251,18 @@ export default function CrossBorderCommandCenter() {
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-hc-subtle text-right mt-2">* Costs are estimates for routine oversize issuing fees only. Excludes municipal or engineering fees.</p>
+              <p className="text-xs text-hc-subtle text-right mt-2">* Costs are planning samples for routine oversize issuing fees only. Excludes municipal, engineering, route survey, customs broker, and authority-specific charges.</p>
             </div>
           )}
 
           {/* Tab Content: RECIPROCITY ENGINE */}
           {activeTab === 'reciprocity' && (
             <div className="space-y-4">
-               <h2 className="text-xl font-bold text-white uppercase mb-4 flex items-center gap-2">
-                <BadgeCheck className="w-5 h-5 text-hc-success" /> Reciprocity Engine
+              <h2 className="text-xl font-bold text-white uppercase mb-4 flex items-center gap-2">
+                <BadgeCheck className="w-5 h-5 text-hc-success" /> Reciprocity Checks
               </h2>
               <p className="text-hc-muted mb-6 leading-relaxed">
-                The Reciprocity Engine analyzes {routeCrossings.length} jurisdictions to determine pilot car certification validity across the entire corridor.
+                This worksheet highlights {routeCrossings.length} jurisdictions where escort certification validity must be verified before dispatch.
               </p>
 
               <div className="bg-hc-surface/50 border border-hc-border rounded-xl p-6 space-y-6">
@@ -266,13 +270,13 @@ export default function CrossBorderCommandCenter() {
                   <Truck className="w-6 h-6 text-hc-gold-500 mt-1" />
                   <div>
                     <h4 className="text-white font-bold mb-1">Lead Pilot Car Certification</h4>
-                    <p className="text-sm text-hc-muted">Your selected pilot car holds a <strong>Washington State (WA)</strong> Certification.</p>
+                    <p className="text-sm text-hc-muted">Example scenario: the selected pilot car holds a <strong>Washington State (WA)</strong> certification.</p>
                     
                     <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
-                      <div className="bg-hc-success/10 border border-hc-success/20 rounded p-2 text-center text-hc-success font-bold text-xs uppercase">TX Valid</div>
-                      <div className="bg-hc-success/10 border border-hc-success/20 rounded p-2 text-center text-hc-success font-bold text-xs uppercase">NM Valid</div>
-                      <div className="bg-hc-success/10 border border-hc-success/20 rounded p-2 text-center text-hc-success font-bold text-xs uppercase">CO Valid</div>
-                      <div className="bg-hc-danger/10 border border-hc-danger/20 rounded p-2 text-center text-hc-danger font-bold text-xs uppercase">AB Invalid</div>
+                      <div className="bg-hc-success/10 border border-hc-success/20 rounded p-2 text-center text-hc-success font-bold text-xs uppercase">TX likely valid</div>
+                      <div className="bg-hc-success/10 border border-hc-success/20 rounded p-2 text-center text-hc-success font-bold text-xs uppercase">NM likely valid</div>
+                      <div className="bg-hc-success/10 border border-hc-success/20 rounded p-2 text-center text-hc-success font-bold text-xs uppercase">CO likely valid</div>
+                      <div className="bg-hc-danger/10 border border-hc-danger/20 rounded p-2 text-center text-hc-danger font-bold text-xs uppercase">AB verify</div>
                     </div>
                   </div>
                 </div>
