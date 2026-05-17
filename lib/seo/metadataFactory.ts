@@ -19,6 +19,7 @@ const DOMAIN = 'https://www.haulcommand.com';
  */
 export function generatePageMetadata(config: SeoConfig): Metadata {
     const canonicalUrl = `${DOMAIN}${config.canonicalPath}`;
+    const country = (config.countryCode || 'us').toLowerCase();
     
     // Wire the full 120-country hreflang engine
     const hreflang = getGlobalHreflangTags(config.canonicalPath);
@@ -32,10 +33,10 @@ export function generatePageMetadata(config: SeoConfig): Metadata {
         },
         robots: {
             index: !config.noIndex,
-            follow: !config.noIndex,
+            follow: true,
             googleBot: {
                 index: !config.noIndex,
-                follow: !config.noIndex,
+                follow: true,
                 'max-video-preview': -1,
                 'max-image-preview': 'large',
                 'max-snippet': -1,

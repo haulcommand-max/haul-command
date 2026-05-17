@@ -28,12 +28,15 @@ const COUNTRY_REGIONS: Record<string, string[]> = {
 export async function generateMetadata({ params }: PageProps) {
     const country = await resolveCountryParam(params);
     const formattedCountry = country.toUpperCase();
+    const countryKey = country.toLowerCase();
+    const hasPublishedRegionSet = Boolean(COUNTRY_REGIONS[countryKey]?.length);
     
     return generatePageMetadata({
         title: `${formattedCountry} Pilot Car Directory & Escort Network`,
         description: `Access source-backed heavy haul pilot car records, region-level regulation paths, and corridor support actions in ${formattedCountry}. Sparse markets stay clearly labeled until evidence improves.`,
-        canonicalPath: `/directory/${country.toLowerCase()}`,
-        countryCode: country.toLowerCase()
+        canonicalPath: `/directory/${countryKey}`,
+        countryCode: countryKey,
+        noIndex: !hasPublishedRegionSet,
     });
 }
 
@@ -150,7 +153,7 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
                         intents={[
                             { label: 'Oversize Enterprise API', url: '/enterprise/data', searchVolumeEstimate: 'high' },
                             { label: 'Local Pack Conquer', url: '/tools/growth', searchVolumeEstimate: 'medium' },
-                            { label: 'Mobile App Sync', url: '/app', searchVolumeEstimate: 'long-tail' }
+                            { label: 'Mobile workflow setup', url: '/app', searchVolumeEstimate: 'long-tail' }
                         ]}
                     />
                 </div>
