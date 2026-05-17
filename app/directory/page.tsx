@@ -471,9 +471,9 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
         countryScope: targetCountry ?? undefined,
         statCards: [
             { value: providers.length, label: 'Visible on this view' },
-            { value: '7,468+', label: 'Industry records' },
+            { value: 'Source-backed', label: 'Record posture' },
             { value: targetCountry ?? 'GLOBAL', label: 'Country scope' },
-            { value: '120', label: 'Country framework' },
+            { value: 'Coverage varies', label: 'Country framework' },
         ],
         quickChips: roleCoverage.slice(0, 8).map((role) => ({
             label: role,
@@ -490,7 +490,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
             { label: 'Build move support packet', href: '/loads/post?intent=support-packet', intent: 'load_post_intent' },
             { label: 'Claim your listing', href: '/claim', intent: 'claim_intent' },
             { label: 'Check escort requirements', href: '/regulations', intent: 'regulation_intent' },
-            { label: 'Find available providers', href: '/available-now', intent: 'provider_intent' },
+            { label: 'Review availability broadcasts', href: '/available-now', intent: 'provider_intent' },
             { label: 'Sponsor directory demand', href: '/advertise?placement=directory-market', intent: 'sponsor_intent' },
             { label: 'View training paths', href: '/training', intent: 'training_intent' },
         ],
@@ -518,7 +518,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                                     What is Haul Command?
                                 </h2>
                                 <p className="mt-4 rounded-xl border border-[#C6923A]/35 bg-[#C6923A]/10 p-4 text-sm md:text-base font-semibold leading-7 text-[#fff7e8]">
-                                    Haul Command is a heavy haul support graph and operating system for finding pilot cars, escort vehicles, permit support, route intelligence, infrastructure, and field support for oversize and overweight loads. It helps brokers, carriers, shippers, dispatchers, and support providers search by role, location, service area, route need, and proof state across a 120-country coverage model.
+                                    Haul Command is a heavy haul support graph and operating system for finding pilot cars, escort vehicles, permit support, route intelligence, infrastructure, and field support for oversize and overweight loads. It helps brokers, carriers, shippers, dispatchers, and support providers search by role, location, service area, route need, and proof state across priority markets where source coverage exists.
                                 </p>
                                 <div className="mt-5 space-y-4 text-sm md:text-base leading-7 text-[#d8c6a3]">
                                     <p>
