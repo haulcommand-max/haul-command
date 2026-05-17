@@ -16,15 +16,19 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
         }
 
-        const { data, error } = await supabaseAdmin
+        const { error } = await supabaseAdmin
             .from('hc_ad_campaigns')
             .select('advertiser_id')
             .limit(0);
 
+        if (error) {
+            return NextResponse.json({ error: 'AdGrid campaign storage unavailable' }, { status: 503 });
+        }
+
         // Insert into existing advertisers table or create campaign-level entry
         const affiliateCode = `HC-${company_name.replace(/\s+/g, '').substring(0, 6).toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
 
-        // For now, create a campaign placeholder that acts as the partner record
+        // Create a draft campaign intake record; do not treat it as an approved advertiser account.
         const { data: campaign, error: campError } = await supabaseAdmin
             .from('hc_ad_campaigns')
             .insert({
@@ -53,9 +57,10 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({
             success: true,
-            partner_id: campaign?.campaign_id,
+            campaign_id: campaign?.campaign_id,
+            advertiser_status: 'pending_review',
             affiliate_code: affiliateCode,
-            message: 'Partner account created. Pending review.',
+            message: 'Draft campaign intake created. Advertiser account is pending review.',
         });
     } catch (error) {
         return NextResponse.json({ error: 'Registration failed' }, { status: 500 });
