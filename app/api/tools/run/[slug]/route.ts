@@ -64,6 +64,23 @@ export async function POST(
       gap_detected: (output.gaps || []).length > 0,
     });
 
+    if (!output.executable) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: {
+            code: "tool_handler_not_implemented",
+            message: `Tool handler is not implemented for ${toolSlug}.`,
+          },
+          data: {
+            tool_run_id: toolRun.id,
+            gaps: output.gaps,
+          },
+        },
+        { status: 501 }
+      );
+    }
+
     return NextResponse.json({
       ok: true,
       data: {
@@ -96,6 +113,7 @@ function executeToolLogic(slug: string, input: any) {
         extractedGeo: input.origin_state ? { region: input.origin_state } : null,
         recommendedEntities: [],
         gaps: [],
+        executable: true,
       };
 
     case "staging-yard-finder":
@@ -105,15 +123,17 @@ function executeToolLogic(slug: string, input: any) {
         extractedGeo: input.city ? { city: input.city } : null,
         recommendedEntities: [],
         gaps: input.city ? [{ gap_type: "missing_support_asset", context: input.city }] : [],
+        executable: true,
       };
 
     default:
       return {
-        result: { message: "Tool executed." },
+        result: { message: "Tool handler is not implemented; no planning result was generated." },
         extractedAttributes: [],
         extractedGeo: null,
         recommendedEntities: [],
-        gaps: [],
+        gaps: [{ gap_type: "missing_tool_handler", context: slug }],
+        executable: false,
       };
   }
 }

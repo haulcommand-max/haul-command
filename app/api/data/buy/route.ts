@@ -52,63 +52,58 @@ export async function POST(req: NextRequest) {
         ).catch(() => {});
 
         // ── Stripe Checkout Session ──
-        // STRIPE_SECRET_KEY is in .env.local — sk_test_ is live
         const origin = req.headers.get('origin') ?? 'https://www.haulcommand.com';
 
         try {
-            const stripe = await import('stripe').then(m => new m.default(process.env.STRIPE_SECRET_KEY!)).catch(() => null);
-
-            if (stripe) {
-                const mode = product.purchase_type === 'subscription' ? 'subscription' : 'payment';
-                const session = await stripe.checkout.sessions.create({
-                    mode,
-                    line_items: [{
-                        price_data: {
-                            currency: 'usd' as const,
-                            product_data: {
-                                name: product.name,
-                                description: product.description,
-                                metadata: { product_id: product.id, geo: geo ?? 'US' },
-                            },
-                            unit_amount: Math.round(product.price_usd * 100),
-                            ...(mode === 'subscription' ? { recurring: { interval: 'month' as const } } : {}),
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        } as any,
-                        quantity: 1,
-                    }],
-
-                    customer_email: user?.email,
-                    client_reference_id: user?.id ?? `anon-${Date.now()}`,
-                    metadata: { product_id: product.id, geo: geo ?? 'US', user_id: user?.id ?? '' },
-                    success_url: `${origin}/data/purchase-success?product=${productId}&session_id={CHECKOUT_SESSION_ID}`,
-                    cancel_url: `${origin}/data?cancelled=1`,
-                    allow_promotion_codes: true,
-                });
-
+            if (!process.env.STRIPE_SECRET_KEY) {
                 return NextResponse.json({
-                    ok: true,
-                    product: { id: product.id, name: product.name, price_usd: product.price_usd },
-                    checkout_url: session.url,
-                    session_id: session.id,
-                    mode,
-                });
+                    error: 'stripe_not_configured',
+                    message: 'Data product checkout is unavailable until Stripe is configured.',
+                }, { status: 503 });
             }
+
+            const stripe = await import('stripe').then(m => new m.default(process.env.STRIPE_SECRET_KEY!));
+
+            const mode = product.purchase_type === 'subscription' ? 'subscription' : 'payment';
+            const session = await stripe.checkout.sessions.create({
+                mode,
+                line_items: [{
+                    price_data: {
+                        currency: 'usd' as const,
+                        product_data: {
+                            name: product.name,
+                            description: product.description,
+                            metadata: { product_id: product.id, geo: geo ?? 'US' },
+                        },
+                        unit_amount: Math.round(product.price_usd * 100),
+                        ...(mode === 'subscription' ? { recurring: { interval: 'month' as const } } : {}),
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    } as any,
+                    quantity: 1,
+                }],
+
+                customer_email: user?.email,
+                client_reference_id: user?.id ?? `anon-${Date.now()}`,
+                metadata: { product_id: product.id, geo: geo ?? 'US', user_id: user?.id ?? '' },
+                success_url: `${origin}/data/purchase-success?product=${productId}&session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `${origin}/data?cancelled=1`,
+                allow_promotion_codes: true,
+            });
+
+            return NextResponse.json({
+                ok: true,
+                product: { id: product.id, name: product.name, price_usd: product.price_usd },
+                checkout_url: session.url,
+                session_id: session.id,
+                mode,
+            });
         } catch (stripeErr) {
             console.error('[/api/data/buy] Stripe error:', stripeErr);
-            // Fall through to stub response
+            return NextResponse.json({
+                error: 'stripe_checkout_failed',
+                message: 'Data product checkout could not be created.',
+            }, { status: 502 });
         }
-
-        // Fallback: Stripe package not installed — return stub + install instructions
-        // Run: npm install stripe
-        return NextResponse.json({
-            ok: true,
-            product: { id: product.id, name: product.name, price_usd: product.price_usd },
-            checkout_url: `/checkout?product=${productId}&price=${product.price_usd}`,
-            checkout_stub: true,
-            install_hint: 'Run: npm install stripe  (STRIPE_SECRET_KEY is already configured)',
-            user_id: user?.id ?? null,
-            geo: geo ?? 'US',
-        });
     } catch (err) {
         console.error('[/api/data/buy]', err);
         return NextResponse.json({ error: 'Internal error' }, { status: 500 });

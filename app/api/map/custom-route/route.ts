@@ -9,7 +9,7 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Missing origin or destination' }, { status: 400 });
         }
 
-        // Generate a slightly curved mock route between origin and destination
+        // Generate preview-only geometry between submitted coordinates.
         const [origLng, origLat] = origin;
         const [destLng, destLat] = destination;
         
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
                 {
                     type: "Feature",
                     properties: {
-                        route_id: `custom_os_route_${Date.now()}`,
+                        route_id: `preview_route_${Date.now()}`,
                         source_basis: 'preview_geometry_only',
                         confidence_label: 'unverified_preview',
                         restrictions_avoided: null,
