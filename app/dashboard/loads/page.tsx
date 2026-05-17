@@ -559,7 +559,7 @@ export default function LeadParserPage() {
                 { title: 'ðŸ"Š Rate Intelligence Feed', desc: `Rate data captured for corridor pricing analytics.`, value: '$99-299/mo per subscriber' },
                 { title: 'âš¡ Quick Pay Premium', desc: `${qp} loads flagged Quick Pay. Placement fee for priority.`, value: `${qp} QP loads this batch` },
                 { title: 'ðŸš— Operator Matching', desc: `${ops} operators identified. Match to broker loads.`, value: `${ops} operators ready` },
-                { title: 'ðŸŒ Global Expansion', desc: 'Same pipeline for 120 countries. Each market = new network.', value: 'priority markets, same system' },
+                { title: 'ðŸŒ Market Expansion', desc: 'Same pipeline for prioritized markets. Each market gets its own coverage checks.', value: 'priority markets, same system' },
               ].map((c, i) => (
                 <div key={i} style={{ background: '#1c2030', padding: 16, display: 'flex', flexDirection: 'column', gap: 6 }}>
                   <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 13, letterSpacing: 1, textTransform: 'uppercase', color: '#e2e8f0' }}>{c.title}</div>

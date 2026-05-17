@@ -178,8 +178,8 @@ export default async function CorridorCommandPage() {
             <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginBottom: 32 }}>
               {[
                 { val: `${corridorCount}+`, label: 'Corridors Monitored' },
-                { val: operatorCount.toLocaleString(), label: 'Verified Operators' },
-                { val: '10s', label: 'Data Refresh' },
+                { val: operatorCount.toLocaleString(), label: 'Operator Records' },
+                { val: 'Signals', label: 'Data Refresh' },
                 { val: '50', label: 'States Covered' },
               ].map(s => (
                 <div key={s.label} style={{ textAlign: 'center' }}>

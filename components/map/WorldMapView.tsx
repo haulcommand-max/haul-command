@@ -380,7 +380,7 @@ export function WorldMapView() {
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
-              placeholder="Search 120 countries…"
+              placeholder="Search priority markets..."
               aria-label="Search countries"
               style={{
                 width: '100%', padding: '8px 10px 8px 30px', borderRadius: 10, fontSize: 11,

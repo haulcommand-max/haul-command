@@ -121,7 +121,7 @@ export function DispatchRequestWizard() {
         <div className="space-y-4 text-center animate-in fade-in">
           <div className="text-5xl mb-4">âœ…</div>
           <h3 className="text-xl font-bold">Dispatch Ready for Broadcast</h3>
-          <p className="text-hc-gray-400 text-sm">Targeting verified operators with active High-Pole capabilities in the TX/CO corridor.</p>
+          <p className="text-hc-gray-400 text-sm">Targeting operator profiles with High-Pole capability signals in the TX/CO corridor.</p>
           <div className="flex gap-4 mt-6">
             <button onClick={() => setStep(2)} className="w-1/3 bg-hc-gray-700 py-3 rounded font-bold">Back</button>
             <button className="w-2/3 bg-hc-yellow-400 text-white py-3 shadow-xl rounded font-bold uppercase hover:bg-yellow-500">Broadacst Request</button>
