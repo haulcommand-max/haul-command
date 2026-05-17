@@ -1,10 +1,8 @@
 /**
  * GET /api/weather/corridor?lat=&lon=&corridor=
- * 
- * Returns weather alerts for a corridor using OpenWeatherMap free API.
- * Flags: high winds (>35mph), heavy rain, ice/snow, extreme heat.
- * 
- * Used by: corridor pages, map overlay, push notifications
+ *
+ * Returns weather alerts for a corridor using OpenWeatherMap when configured.
+ * Without a live source, returns an empty unavailable result instead of fake alerts.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -30,54 +28,53 @@ function analyzeWeather(data: any): WeatherAlert[] {
     const temp = entry.main?.temp;
     const wind = entry.wind?.speed;
     const weather = entry.weather?.[0];
-    const dt = new Date(entry.dt * 1000).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    const dt = new Date(entry.dt * 1000).toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+    });
 
-    // High winds (>35 mph = ~15.6 m/s)
     if (wind && wind > 15.6) {
       alerts.push({
         type: 'wind',
         severity: wind > 22 ? 'high' : 'medium',
-        message: `⚠️ High winds ${Math.round(wind * 2.237)} mph on ${dt} — oversize loads may be restricted`,
+        message: `High winds ${Math.round(wind * 2.237)} mph on ${dt}; oversize loads may be restricted.`,
         windSpeed: Math.round(wind * 2.237),
       });
     }
 
-    // Ice / Snow
     if (weather?.main === 'Snow') {
       alerts.push({
         type: 'snow',
         severity: 'high',
-        message: `🌨 Snow expected on ${dt} — chain requirements likely, possible road closures`,
+        message: `Snow expected on ${dt}; chain requirements or road closures may apply.`,
         description: weather.description,
       });
     }
 
-    // Freezing temps
     if (temp && temp < 273.15) {
       alerts.push({
         type: 'ice',
         severity: 'high',
-        message: `🧊 Below freezing (${Math.round((temp - 273.15) * 9/5 + 32)}°F) on ${dt} — bridge ice risk`,
-        temp: Math.round((temp - 273.15) * 9/5 + 32),
+        message: `Below freezing (${Math.round((temp - 273.15) * 9 / 5 + 32)}F) on ${dt}; bridge ice risk.`,
+        temp: Math.round((temp - 273.15) * 9 / 5 + 32),
       });
     }
 
-    // Extreme heat
-    if (temp && temp > 311) { // 100°F
+    if (temp && temp > 311) {
       alerts.push({
         type: 'heat',
         severity: 'medium',
-        message: `🔥 Extreme heat ${Math.round((temp - 273.15) * 9/5 + 32)}°F on ${dt} — tire pressure risk, load integrity concerns`,
-        temp: Math.round((temp - 273.15) * 9/5 + 32),
+        message: `Extreme heat ${Math.round((temp - 273.15) * 9 / 5 + 32)}F on ${dt}; tire pressure and load integrity risk.`,
+        temp: Math.round((temp - 273.15) * 9 / 5 + 32),
       });
     }
 
-    // Heavy rain / thunderstorm
     if (weather?.main === 'Thunderstorm') {
       alerts.push({
         type: 'storm',
         severity: 'high',
-        message: `⛈ Thunderstorms expected on ${dt} — potential convoy delays`,
+        message: `Thunderstorms expected on ${dt}; convoy delays may occur.`,
         description: weather.description,
       });
     }
@@ -86,16 +83,15 @@ function analyzeWeather(data: any): WeatherAlert[] {
       alerts.push({
         type: 'rain',
         severity: 'medium',
-        message: `🌧 Heavy rain on ${dt} — reduced visibility, longer travel times`,
+        message: `Heavy rain on ${dt}; expect reduced visibility and longer travel times.`,
         description: weather.description,
       });
     }
   }
 
-  // Deduplicate by type
   const seen = new Set<string>();
-  return alerts.filter(a => {
-    const key = `${a.type}-${a.severity}`;
+  return alerts.filter((alert) => {
+    const key = `${alert.type}-${alert.severity}`;
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -104,27 +100,32 @@ function analyzeWeather(data: any): WeatherAlert[] {
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const lat = searchParams.get('lat') || '32.7767'; // Default: Dallas
-  const lon = searchParams.get('lon') || '-96.7970';
+  const lat = searchParams.get('lat');
+  const lon = searchParams.get('lon');
   const corridor = searchParams.get('corridor') || 'Unknown';
 
-  // Return mock data if no API key
+  if (!lat || !lon) {
+    return NextResponse.json(
+      { ok: false, error: 'lat and lon are required for corridor weather lookup' },
+      { status: 400 }
+    );
+  }
+
   if (!OWM_KEY) {
     return NextResponse.json({
       ok: true,
       corridor,
-      alerts: [
-        { type: 'wind', severity: 'medium', message: '⚠️ Moderate winds 28 mph expected Thursday — monitor oversize restrictions' },
-      ],
-      source: 'fallback',
-      note: 'Set OPENWEATHERMAP_API_KEY for live data (free at openweathermap.org)',
+      alerts: [],
+      source: 'unconfigured',
+      source_confidence: 'unavailable',
+      note: 'Weather alerts are unavailable until OPENWEATHERMAP_API_KEY or OWM_API_KEY is configured.',
     });
   }
 
   try {
     const res = await fetch(
       `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${OWM_KEY}&cnt=16`,
-      { next: { revalidate: 1800 } } // Cache 30 min
+      { next: { revalidate: 1800 } }
     );
 
     if (!res.ok) {
@@ -141,6 +142,7 @@ export async function GET(req: NextRequest) {
       alerts,
       forecastCount: data.list?.length || 0,
       source: 'openweathermap',
+      source_confidence: 'live_api',
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : 'Weather fetch failed';
