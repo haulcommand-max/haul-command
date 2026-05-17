@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Corridor Pricing History & Lane Rates | Haul Command',
-  description: 'Track heavy haul and pilot car lane rates, pricing history, and spot market volume indexes across major oversize routing corridors.',
+  description: 'Review heavy haul and pilot car lane rate planning ranges, pricing history, and spot market volume indexes across major oversize routing corridors.',
   alternates: { canonical: 'https://www.haulcommand.com/tools/corridor-pricing' }
 };
 
@@ -61,12 +61,12 @@ export default async function CorridorPricingHistoryPage() {
               <span style={{ color: '#10b981' }}>Pricing History</span>
             </h1>
             <p style={{ margin: '0 0 2rem', fontSize: '1.05rem', color: '#94a3b8', lineHeight: 1.65, maxWidth: 640 }}>
-              Stop guessing on spot rates. Track real-time and historical per-mile pricing for pilot cars across major industrial transit corridors. 
+              Compare stored and historical per-mile pricing signals for pilot cars across major industrial transit corridors. Confirm live quotes before booking.
             </p>
 
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 16px', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: 12, color: '#22c55e', fontSize: 13, fontWeight: 700 }}>
               <LineChart style={{ width: 16, height: 16 }} />
-              Live Operator Data Aggregation
+              Source-Backed Pricing Signals
             </div>
           </div>
         </div>
@@ -95,7 +95,7 @@ export default async function CorridorPricingHistoryPage() {
                            background: 'rgba(16,185,129,0.1)', color: '#10b981'
                         }}>
                            <Route style={{ width: 16, height: 16 }} />
-                           <span style={{ fontSize: 12, fontWeight: 700 }}>Active Lane</span>
+                           <span style={{ fontSize: 12, fontWeight: 700 }}>Indexed Lane</span>
                         </div>
                       </div>
 

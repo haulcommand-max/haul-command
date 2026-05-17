@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 
 export const metadata: Metadata = {
   title: 'Total Trip Cost Calculator — Oversize Load Move Budget | Haul Command',
-  description: 'Calculate the complete cost of an oversize load move: permits, pilot cars, fuel, tolls, overnight stops, and detention time. Free. Market coverage varies.',
+  description: 'Estimate the complete cost of an oversize load move: permits, pilot cars, fuel, tolls, overnight stops, and detention time. Free planning ranges. Market coverage varies.',
   alternates: { canonical: 'https://www.haulcommand.com/tools/total-trip-cost-calculator' },
 };
 
@@ -13,7 +13,7 @@ export const dynamic = 'force-dynamic';
 export default async function TotalTripCostPage() {
   const supabase = createClient();
   
-  // Pull live rate benchmarks for the calculator context
+  // Pull rate benchmarks for the calculator context when the source table is available.
   const { data: rates } = await supabase
     .from('hc_rates_public')
     .select('surface_key, jurisdiction_slug, rate_low, rate_mid, rate_high, currency_code')
@@ -37,7 +37,7 @@ export default async function TotalTripCostPage() {
           <h1 className="text-4xl font-black mb-3">Total Trip Cost Calculator</h1>
           <p className="text-gray-400 text-lg max-w-xl">Budget the full cost of an oversize load move — permits, escorts, fuel, tolls, overnight stops — using real market rate benchmarks from our network.</p>
           <div className="flex flex-wrap gap-4 mt-4 text-xs text-gray-500">
-            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-green-400" />Live rate data</span>
+            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-green-400" />Planning rate data</span>
             <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-blue-400" />Market coverage varies</span>
             <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[#F1A91B]" />No sign-up required</span>
           </div>
@@ -45,10 +45,10 @@ export default async function TotalTripCostPage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-10">
-        {/* Live rate benchmarks from DB */}
+        {/* Rate benchmarks from DB, with visible planning fallback ranges. */}
         <div className="bg-[#111827] border border-white/[0.08] rounded-2xl p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-black text-xl">Live US Market Rate Benchmarks</h2>
+            <h2 className="font-black text-xl">US Market Planning Benchmarks</h2>
             <Link href="/rates" className="text-xs text-[#C6923A] hover:underline font-semibold">Full rate index →</Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

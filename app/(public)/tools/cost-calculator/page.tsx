@@ -11,7 +11,7 @@ export default function CostCalculatorPage() {
                     <h1 style={{ fontSize: 32, fontWeight: 900, color: '#f9fafb', marginBottom: 16 }}>Cost Calculator</h1>
                     <p style={{ color: '#9ca3af', fontSize: 16, maxWidth: 500, margin: '0 auto' }}>
                         The advanced oversize load cost calculator is currently in development.
-                        It will feature real-time toll, permit, and escort cost estimations across all 50 states.
+                        It will provide planning ranges for tolls, permits, and escort costs where source coverage is available.
                     </p>
                     <div style={{ marginTop: 32 }}>
                         <a href="/tools" style={{ display: 'inline-block', padding: '12px 24px', background: '#F1A91B', color: '#000', fontWeight: 800, borderRadius: 8, textDecoration: 'none' }}>

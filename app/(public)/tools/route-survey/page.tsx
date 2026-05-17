@@ -181,7 +181,7 @@ export default function RouteSurveyApp() {
                         {/* Action Grid */}
                         <div className="grid grid-cols-2 gap-4">
                             <button aria-label="Interactive Button" data-tool-interact
-                                onClick={() => markObstacle('bridge', 204)} // Assume 17' standard height pole hit for demo
+                                onClick={() => markObstacle('bridge', 204)}
                                 className=" hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 transition-colors aspect-square touch-manipulation"
                             >
                                 <div className="w-16 h-16 bg-blue-500/10 rounded-full flex items-center justify-center">

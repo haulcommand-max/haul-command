@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'State Permit Processing SLAs | Haul Command',
-  description: 'Live tracker for oversize/overweight permit processing times across 50 US States and Canadian Provinces. Avoid delays with historical permit SLA averages.',
+  description: 'Planning tracker for oversize/overweight permit processing times across US states and Canadian provinces. Avoid delays with historical permit SLA averages.',
   alternates: { canonical: 'https://www.haulcommand.com/tools/permit-sla-tracker' }
 };
 
@@ -52,7 +52,7 @@ export default async function PermitSLATrackerPage() {
               <span style={{ color: '#a855f7' }}>SLA Tracker</span>
             </h1>
             <p style={{ margin: '0 0 2rem', fontSize: '1.05rem', color: '#94a3b8', lineHeight: 1.65, maxWidth: 640 }}>
-              Live visibility into state and provincial DOT permit processing times. Don't let your truck sit idle at the border waiting on a superload permit.
+              Planning visibility into state and provincial DOT permit processing times. Confirm current status with the issuing authority before dispatch.
             </p>
           </div>
         </div>
@@ -89,7 +89,7 @@ export default async function PermitSLATrackerPage() {
 
                       <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
                           <div style={{ flex: 1, padding: '16px', background: isCritical ? 'rgba(239,68,68,0.05)' : 'rgba(0,0,0,0.2)', borderRadius: 12, border: isCritical ? '1px solid rgba(239,68,68,0.2)' : '1px solid rgba(255,255,255,0.03)' }}>
-                              <div style={{ fontSize: 10, color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700, letterSpacing: 0.5, marginBottom: 4 }}>Current ETA</div>
+                              <div style={{ fontSize: 10, color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700, letterSpacing: 0.5, marginBottom: 4 }}>Planning ETA</div>
                               <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
                                   <span style={{ fontSize: 32, fontWeight: 900, color: isCritical ? '#ef4444' : '#f9fafb', lineHeight: 1 }}>{s.current_processing_time_hours}</span>
                                   <span style={{ fontSize: 12, color: '#64748b', fontWeight: 600 }}>HRS</span>

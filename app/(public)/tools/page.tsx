@@ -23,14 +23,14 @@ const FAMILIES: Record<string, { label: string; desc: string; icon: string; colo
   certification:  { label: 'Certification & Training', desc: 'Timelines, reciprocity, credential requirements, and training paths.',        icon: '\u{1F393}', color: '#a78bfa' },
   claim:          { label: 'Profile & Claims',         desc: 'Verification, readiness scores, and trust signal tools for operators.',         icon: '\u{1F464}', color: '#f472b6' },
   broker:         { label: 'Broker Operations',        desc: 'Quotes, matching, pipeline management, and coordination tools.',               icon: '\u{1F91D}', color: '#fb923c' },
-  enterprise:     { label: 'Enterprise & API',         desc: 'Fleet analytics, bulk exports, white-label solutions, and API demos.',          icon: '\u{1F3E2}', color: '#38bdf8' },
+  enterprise:     { label: 'Enterprise & API',         desc: 'Fleet analytics, bulk exports, white-label solutions, and API sandboxes.',      icon: '\u{1F3E2}', color: '#38bdf8' },
   localization:   { label: 'Localization',             desc: 'Country-specific rules, regional adapters, unit conversions.',                  icon: '\u{1F30D}', color: '#34d399' },
   infrastructure: { label: 'Infrastructure',           desc: 'Smart corridors, fuel stops, crane yards, and port access.',                   icon: '\u{1F3D7}', color: '#94a3b8' },
 };
 
 const STATUS_BADGE: Record<string, { label: string; bg: string; text: string; border: string }> = {
-  live_global:   { label: 'Live \u2014 120 Countries', bg: 'rgba(34,197,94,0.12)',  text: '#4ade80', border: 'rgba(34,197,94,0.3)' },
-  live_selected: { label: 'Live \u2014 Select Markets', bg: 'rgba(59,130,246,0.12)', text: '#60a5fa', border: 'rgba(59,130,246,0.3)' },
+  live_global:   { label: 'Available \u2014 120 Countries', bg: 'rgba(34,197,94,0.12)',  text: '#4ade80', border: 'rgba(34,197,94,0.3)' },
+  live_selected: { label: 'Available \u2014 Select Markets', bg: 'rgba(59,130,246,0.12)', text: '#60a5fa', border: 'rgba(59,130,246,0.3)' },
   beta:          { label: 'Beta',                   bg: 'rgba(245,158,11,0.12)', text: '#fbbf24', border: 'rgba(245,158,11,0.3)' },
   coming_soon:   { label: 'Coming Soon',            bg: 'rgba(148,163,184,0.08)', text: '#94a3b8', border: 'rgba(148,163,184,0.15)' },
 };
@@ -144,7 +144,7 @@ export default async function ToolsPage() {
           <div style={{ display: 'flex', gap: 24, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 40 }}>
             {[
               { val: totalTools, label: 'Total Tools' },
-              { val: `${liveCount + betaCount}`, label: 'Live & Beta' },
+              { val: `${liveCount + betaCount}`, label: 'Available & Beta' },
               { val: familyCount, label: 'Families' },
               { val: '120', label: 'Countries' },
             ].map(s => (
@@ -307,7 +307,7 @@ export default async function ToolsPage() {
           <StaticAnswerBlock
             question="What tools does Haul Command offer for heavy haul logistics?"
             answer={`Haul Command provides ${totalTools} tools across ${familyCount} families for heavy haul logistics, with ${liveCount} live globally and ${betaCount} in beta. Categories include: ${faqCatText}. Tool coverage varies by market and no login is required for public calculators.`}
-            confidence="verified_current"
+            confidence="partially_verified"
             ctaLabel="Browse All Tools"
             ctaUrl="/tools"
           />
