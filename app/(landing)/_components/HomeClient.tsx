@@ -13,6 +13,7 @@ import type { HeroPack } from "@/components/hero/heroPacks";
 import type { HomepageHeroChip } from "@/lib/homepage/role-chips";
 import { buildHeroRoleWindow } from "@/lib/homepage/hero-role-rotation";
 import type { UserSignals } from "@/lib/next-moves-engine";
+import { HouseAdSlot } from "@/components/ads/HouseAdSlot";
 
 /* ═══════════════════════════════════════
    ANIMATION VARIANTS
@@ -1527,8 +1528,16 @@ export default function HomeClient({
                                 </Link>
                             </div>
                         </div>
-                        <div className="flex h-24 w-24 flex-shrink-0 items-center justify-center rounded-2xl border border-[#F1A91B]/25 bg-black/50 shadow-[inset_0_1px_0_rgba(255,210,120,0.08)]">
-                            <Building2 className="w-10 h-10 text-[#F1A91B]" />
+                        <div className="w-full flex-1 md:max-w-md">
+                            <HouseAdSlot
+                                surface="homepage"
+                                placementId="homepage-adgrid-inventory"
+                                intent="advertise"
+                                pageType="home"
+                                slotType="in_house_ad"
+                                variant="card"
+                                className="h-full"
+                            />
                         </div>
                     </div>
                 </div>
