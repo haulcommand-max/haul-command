@@ -17,9 +17,14 @@ import {
   type ProofState
 } from '@/lib/geo/country-packs';
 import {
+  buildDirectoryOperatorFaqs,
   buildDirectoryOperatorCanonicalUrl,
   buildDirectoryOperatorJsonLd,
   buildDirectoryOperatorMetadata,
+  getDirectoryOperatorServices,
+  getDirectoryOperatorSourceConfidence,
+  getDirectoryOperatorVerificationStatus,
+  shouldIndexDirectoryOperator,
 } from '@/lib/directory/operator-profile-seo';
 
 export const dynamic = 'force-dynamic';
@@ -162,7 +167,12 @@ export default async function DossierPage({ params }: { params: { id: string } }
   }
 
   const canonicalUrl = buildDirectoryOperatorCanonicalUrl(operator, id);
-  const jsonLd = buildDirectoryOperatorJsonLd(operator, canonicalUrl);
+  const indexGate = shouldIndexDirectoryOperator(operator);
+  const profileFaqs = buildDirectoryOperatorFaqs(operator);
+  const jsonLd = buildDirectoryOperatorJsonLd(operator, canonicalUrl, {
+    includeFaq: indexGate.index,
+    faqs: profileFaqs,
+  });
 
   let infrastructureReadiness: any = null;
   if (operator.entity_family === 'infrastructure' || ['rest_area', 'weigh_station', 'truck_parking', 'port', 'rail_intermodal', 'border_crossing', 'tunnel', 'tunnel_authority'].includes(operator.entity_subtype)) {
@@ -247,6 +257,19 @@ export default async function DossierPage({ params }: { params: { id: string } }
   })();
 
   const overallProof: ProofState = isClaimed ? 'self-reported' : 'seeded';
+  const services = getDirectoryOperatorServices(operator);
+  const primaryService = (services[0] || pack.pilotCarTerm || 'heavy-haul support').replace(/_/g, ' ');
+  const sourceConfidence = getDirectoryOperatorSourceConfidence(operator).replace(/_/g, ' ');
+  const verificationStatus = getDirectoryOperatorVerificationStatus(operator).replace(/_/g, ' ');
+  const profileSummary = `${operator.company || operator.name || 'This operator'} is listed on Haul Command for ${primaryService} support in ${locationDisplay}. Review claim status, verification status, source confidence, coverage, equipment readiness, and request options before dispatch.`;
+  const relatedLinks = [
+    { href: `/directory?state=${operator.state_inferred || ''}&country=${countryCode}`, label: `${stateName || pack.regionTerm} provider directory` },
+    { href: '/tools/escort-calculator', label: 'Escort requirement calculator' },
+    { href: '/loads/post', label: 'Post an oversize support need' },
+    { href: '/glossary/high-pole', label: 'High pole escort glossary' },
+    { href: '/resources/legal/frost-law-guide', label: 'Frost law and route restriction guide' },
+    { href: '/advertise/buy', label: 'Sponsor this market on AdGrid' },
+  ];
 
   return (
     <HCContentPageShell>
@@ -304,6 +327,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
 
             <div className="flex gap-3 flex-shrink-0">
               <Link href={`/auth/register?intent=dispatch&target=${id}`}
+                data-profile-event="profile_request_started"
                 className="hc-btn-primary px-6 py-3 rounded-xl flex items-center gap-2">
                 <Navigation className="w-4 h-4" />
                 Request Dispatch
@@ -318,6 +342,41 @@ export default async function DossierPage({ params }: { params: { id: string } }
 
         {/* ── MAIN COLUMN ── */}
         <div className="md:col-span-2 flex flex-col gap-6">
+
+          {/* 0. Profile answer block */}
+          <div className="hc-card rounded-2xl p-6">
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <span className="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-amber-200/70">
+                {primaryService}
+              </span>
+              <span className="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-amber-200/70">
+                Source confidence: {sourceConfidence}
+              </span>
+              <span className="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-amber-200/70">
+                Verification: {verificationStatus}
+              </span>
+              {!indexGate.index && (
+                <span data-profile-event="profile_noindex_reason" className="px-2.5 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-[10px] font-bold uppercase tracking-widest text-orange-300">
+                  Noindex: {indexGate.reason.replace(/_/g, ' ')}
+                </span>
+              )}
+            </div>
+            <p className="text-sm md:text-base leading-7 text-amber-100/75">{profileSummary}</p>
+            <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-3">
+                <div className="text-amber-200/50 uppercase tracking-widest mb-1">Claim status</div>
+                <div className="font-black text-white">{isClaimed ? 'Claimed or source-backed' : 'Unclaimed'}</div>
+              </div>
+              <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-3">
+                <div className="text-amber-200/50 uppercase tracking-widest mb-1">Last updated</div>
+                <div className="font-black text-white">{freshnessText}</div>
+              </div>
+              <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-3">
+                <div className="text-amber-200/50 uppercase tracking-widest mb-1">Public safety</div>
+                <div className="font-black text-white">Private contact data hidden</div>
+              </div>
+            </div>
+          </div>
 
           {/* 1. Broker Confidence Snapshot */}
           <div className="hc-card rounded-2xl p-6">
@@ -602,6 +661,47 @@ export default async function DossierPage({ params }: { params: { id: string } }
               </div>
             )}
           </div>
+
+          {/* 7. Related authority links */}
+          <div className="hc-card rounded-2xl p-6">
+            <div className="flex items-center gap-2 mb-5">
+              <Navigation className="w-5 h-5 text-[#F1A91B]" />
+              <h2 className="text-sm font-black text-white uppercase tracking-wider">Related Haul Command Surfaces</h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {relatedLinks.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  data-profile-event="profile_related_link_clicked"
+                  className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm font-bold text-amber-100/75 hover:border-[#F1A91B]/35 hover:text-[#F1A91B] transition-colors"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* 8. Profile-specific FAQ */}
+          {profileFaqs.length > 0 && (
+            <div className="hc-card rounded-2xl p-6" data-profile-event={indexGate.index ? 'profile_schema_rendered' : undefined}>
+              <div className="flex items-center gap-2 mb-5">
+                <MessageSquare className="w-5 h-5 text-[#F1A91B]" />
+                <h2 className="text-sm font-black text-white uppercase tracking-wider">Profile FAQ</h2>
+                <span className="ml-auto text-[10px] text-amber-200/60">
+                  {indexGate.index ? 'FAQPage schema enabled' : 'Visible FAQ only'}
+                </span>
+              </div>
+              <div className="space-y-3">
+                {profileFaqs.map((faq) => (
+                  <details key={faq.question} className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-4" data-profile-event="profile_faq_opened">
+                    <summary className="cursor-pointer text-sm font-black text-white">{faq.question}</summary>
+                    <p className="mt-3 text-sm leading-6 text-amber-100/70">{faq.answer}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* ── SIDEBAR ── */}
@@ -613,16 +713,19 @@ export default async function DossierPage({ params }: { params: { id: string } }
             <div className="flex flex-col gap-3">
               {isClaimed ? (
                 <Link href={`/auth/register?intent=dispatch&target=${id}`}
+                  data-profile-event="profile_request_started"
                   className="hc-btn-primary w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm">
                   <Zap className="w-4 h-4" /> Request Dispatch
                 </Link>
               ) : (
                 <>
                   <Link href={`/claim?entity=${operator.contact_id || id}&operator=${id}`}
+                    data-profile-event="profile_claim_clicked"
                     className="hc-btn-primary w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm">
                     <Shield className="w-4 h-4" /> Claim This Profile
                   </Link>
                   <Link href={`/auth/register?intent=dispatch&target=${id}`}
+                    data-profile-event="profile_request_started"
                     className="hc-btn-secondary w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm">
                     <MessageSquare className="w-4 h-4" /> Request Quote
                   </Link>
@@ -686,11 +789,22 @@ export default async function DossierPage({ params }: { params: { id: string } }
               <AlertTriangle className="w-5 h-5 text-amber-400 mb-2" />
               <p className="text-xs font-bold text-amber-300 mb-1">Is this your listing?</p>
               <p className="text-xs text-amber-100/60 mb-3">Claim it free in 60 seconds to unlock trust scores, broker leads, and verified badges.</p>
-              <Link href={`/claim?entity=${operator.contact_id || id}&operator=${id}`} className="hc-btn-primary w-full py-2 rounded-lg flex items-center justify-center gap-2 text-xs">
+              <Link href={`/claim?entity=${operator.contact_id || id}&operator=${id}`} data-profile-event="profile_claim_clicked" className="hc-btn-primary w-full py-2 rounded-lg flex items-center justify-center gap-2 text-xs">
                 Claim Free →
               </Link>
             </div>
           )}
+          <Link
+            href={`/directory/report?entity=${operator.contact_id || id}&slug=${encodeURIComponent(id)}&type=profile_correction`}
+            data-profile-event="profile_correction_clicked"
+            className="hc-card rounded-2xl p-4 flex items-center gap-3 hover:border-orange-400/30 transition-all group"
+          >
+            <AlertTriangle className="w-5 h-5 text-orange-300 flex-shrink-0" />
+            <div>
+              <div className="text-xs font-bold text-white group-hover:text-orange-300 transition-colors">Report or correct this profile</div>
+              <div className="text-[10px] text-amber-200/60">Flag stale, private, duplicate, or inaccurate public data.</div>
+            </div>
+          </Link>
         </div>
       </div>
 
@@ -712,6 +826,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
             </div>
           </div>
           <Link href={`/auth/register?intent=dispatch&target=${id}`}
+            data-profile-event="profile_request_started"
             className="hc-btn-primary px-6 py-2.5 rounded-xl flex items-center gap-2 text-sm whitespace-nowrap">
             <MessageSquare className="w-4 h-4" />
             Request Live Quote

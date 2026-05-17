@@ -26,7 +26,7 @@ describe("directory operator profile SEO", () => {
     ).toBe(precomputed);
   });
 
-  it("builds fallback Organization and LocalBusiness schema from real dossier fields only", () => {
+  it("builds fallback profile graph schema from real dossier fields only", () => {
     const jsonLd = buildDirectoryOperatorJsonLd(
       {
         slug: "delta-steerman-service",
@@ -45,9 +45,14 @@ describe("directory operator profile SEO", () => {
       "https://www.haulcommand.com/directory/dossier/delta-steerman-service",
     );
 
-    expect(jsonLd).toMatchObject({
-      "@context": "https://schema.org",
-      "@type": ["Organization", "LocalBusiness"],
+    expect(jsonLd).toMatchObject({ "@context": "https://schema.org" });
+    const graph = (jsonLd as { "@graph": Record<string, unknown>[] })["@graph"];
+    expect(graph.find((item) => item["@type"] === "WebPage")).toMatchObject({
+      "@id": "https://www.haulcommand.com/directory/dossier/delta-steerman-service#profile",
+    });
+    expect(graph.find((item) => Array.isArray(item["@type"]))).toMatchObject({
+      "@type": ["Organization", "LocalBusiness", "ProfessionalService"],
+      "@id": "https://www.haulcommand.com/directory/dossier/delta-steerman-service#business",
       name: "Delta Steerman Service",
       address: {
         "@type": "PostalAddress",
@@ -61,9 +66,30 @@ describe("directory operator profile SEO", () => {
         reviewCount: 12,
       },
     });
+    expect(graph.find((item) => item["@type"] === "BreadcrumbList")).toBeTruthy();
     expect(JSON.stringify(jsonLd)).toContain("height_pole");
     expect(JSON.stringify(jsonLd)).not.toContain("555-1212");
     expect(JSON.stringify(jsonLd)).not.toContain("ops@example.com");
+  });
+
+  it("adds FAQPage JSON-LD only when requested for visible profile FAQs", () => {
+    const jsonLd = buildDirectoryOperatorJsonLd(
+      {
+        slug: "delta-steerman-service",
+        company: "Delta Steerman Service",
+        city: "Tulsa",
+        admin1_code: "OK",
+        country_code: "US",
+        metadata: { services: ["height_pole"] },
+      },
+      "https://www.haulcommand.com/directory/dossier/delta-steerman-service",
+      { includeFaq: true },
+    );
+
+    const graph = (jsonLd as { "@graph": Record<string, unknown>[] })["@graph"];
+    expect(graph.find((item) => item["@type"] === "FAQPage")).toMatchObject({
+      "@id": "https://www.haulcommand.com/directory/dossier/delta-steerman-service#faq",
+    });
   });
 
   it("noindexes thin directory operator records while preserving canonical and follow", () => {
