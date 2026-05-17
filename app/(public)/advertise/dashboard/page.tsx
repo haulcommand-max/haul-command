@@ -126,7 +126,7 @@ export default function AdvertiserDashboard() {
         {/* Upsell */}
         <div className="bg-gradient-to-r from-yellow-900/20 to-black border border-yellow-500/20 rounded-xl p-8 text-center">
           <h3 className="text-xl font-black text-white mb-2">Want Higher Placement?</h3>
-          <p className="text-sm text-gray-400 mb-4">Upgrade from CPC to Corridor or Territory Sponsorship for guaranteed top-slot visibility.</p>
+          <p className="text-sm text-gray-400 mb-4">Upgrade from CPC to Corridor or Territory Sponsorship for contracted placement rules and measured visibility.</p>
           <Link href="/advertise/buy" className="bg-[#F1A91B] text-white font-bold text-sm px-8 py-3 rounded hover:bg-[#D4951A] transition uppercase">
             Explore Sponsorships
           </Link>

@@ -139,7 +139,7 @@ export default function PermitFilingPage() {
                   style={{width: 16,height: 16 }} />
                 <div>
                   <div style={{fontSize: 14,fontWeight: 600 }}>Rush processing (+$20)</div>
-                  <div style={{fontSize: 12,color: '#6a6a7a' }}>Same-day filing, typically processed within 4 business hours</div>
+                  <div style={{fontSize: 12,color: '#6a6a7a' }}>Rush filing is queued for faster handling where jurisdiction processing allows</div>
                 </div>
               </label>
             </div>

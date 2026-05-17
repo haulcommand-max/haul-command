@@ -20,8 +20,8 @@ const TIERS = [
         id: 'premium', name: 'Premium', price: '$79', period: '/month',
         multiplier: '3×', color: '#8b5cf6', grad: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
         icon: 'âš¡',
-        features: ['Guaranteed top-3', '3× ranking boost', 'Premium badge everywhere', 'Priority dispatch', 'Corridor features', 'Performance report', '30-day duration'],
-        best: 'Dominate your territory',
+        features: ['Premium placement rules', '3× ranking boost', 'Premium badge everywhere', 'Enhanced request visibility', 'Corridor features', 'Performance report', '30-day duration'],
+        best: 'Strongest visibility package',
     },
 ];
 
@@ -48,7 +48,7 @@ export default function BoostPage() {
             <div style={{ textAlign: 'center', padding: '60px 20px 40px', background: 'linear-gradient(180deg,#111118,#0a0a0f)' }}>
                 <div style={{ fontSize: 14, color: '#00ff88', fontWeight: 600, marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.15em' }}>Profile Boost</div>
                 <h1 style={{ fontSize: 42, fontWeight: 800, margin: 0, letterSpacing: '-1px' }}>Get Found <span style={{ color: '#00ff88' }}>First</span></h1>
-                <p style={{ fontSize: 18, color: '#888', maxWidth: 560, margin: '16px auto 0' }}>Boost your profile to the top. More visibility = more calls, loads, revenue.</p>
+                <p style={{ fontSize: 18, color: '#888', maxWidth: 560, margin: '16px auto 0' }}>Boost your profile visibility. Results depend on market demand, profile evidence, and buyer activity.</p>
             </div>
 
             <div style={{ maxWidth: 800, margin: '0 auto', padding: '0 20px' }}>

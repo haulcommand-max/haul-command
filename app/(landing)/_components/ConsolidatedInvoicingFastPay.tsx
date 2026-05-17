@@ -94,22 +94,21 @@ export function ConsolidatedInvoicingFastPay() {
                 <div>
                   <div className="text-[10px] font-bold text-emerald-400 uppercase tracking-[0.15em]">For Operators</div>
                   <div className="text-base font-black text-white" style={{ fontFamily: 'var(--font-display)' }}>
-                    Same-Day & Instant Pay
+                    FastPay Options
                   </div>
                 </div>
               </div>
 
               <p className="text-[#8fa3b8] text-xs sm:text-sm leading-relaxed mb-5">
-                Complete the job, confirm delivery, get paid. Same day payout to your bank account, 
-                or instant payout through Stripe. No invoicing required — the platform handles everything.
+                Complete the job and confirm delivery. Faster payout options are shown only when the job, escrow state, and payment account are eligible.
               </p>
 
               <div className="space-y-2 mb-5">
                 {[
-                  "Same-day direct deposit standard on all jobs",
-                  "Instant payout option (funds in minutes, not days)",
-                  "Escrow-protected — your money is never at risk",
-                  "No paperwork, no invoicing — automatic settlement",
+                  "Fast payout options shown where eligible",
+                  "Processor-dependent payout timing disclosed before confirmation",
+                  "Escrow-backed where funds and release rules are confirmed",
+                  "Settlement documentation generated where workflows are enabled",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-2 text-xs text-[#b0bac9]">
                     <CheckCircle className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" />

@@ -120,8 +120,8 @@ function CorridorDetailPanel({ corridor, onClose }: { corridor: CorridorStressDa
     const BandIcon = band.icon;
 
     const tierBadge: Record<string, { label: string; color: string }> = {
-        guaranteed_coverage: { label: "Guaranteed Coverage", color: "#ef4444" },
-        priority: { label: "Priority Dispatch", color: "#f97316" },
+        guaranteed_coverage: { label: "Coverage Escalation", color: "#ef4444" },
+        priority: { label: "Priority Review", color: "#f97316" },
         standard: { label: "Standard", color: "#22c55e" },
     };
     const tier = tierBadge[corridor.broker_tier] ?? tierBadge.standard;
