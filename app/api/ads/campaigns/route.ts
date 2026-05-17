@@ -96,8 +96,12 @@ export async function POST(req: NextRequest) {
         }).select('id').single();
 
         if (dbErr) {
-            // Demo mode: return mock campaign if table doesn't exist yet
-            return NextResponse.json({ ok: true, campaign_id: `draft-${Date.now()}`, status: 'pending_payment', reach_estimate: reach, checkout_url: '/advertise?demo=1' });
+            return NextResponse.json({
+                ok: false,
+                error: 'campaign_storage_unavailable',
+                status: 'not_created',
+                reach_estimate: reach,
+            }, { status: 503 });
         }
 
         // Stripe checkout for budget deposit

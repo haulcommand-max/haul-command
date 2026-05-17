@@ -31,8 +31,8 @@ export async function POST(req: NextRequest) {
       route_states
     );
 
-    // 3. Draft Minimum Escort Requirements via Dimensions
-    // Simple placeholder logic for the API
+    // 3. Draft minimum escort requirements via dimensions.
+    // This is a conservative planning heuristic until jurisdiction rule rows are joined in.
     let escortRequirements = '1 Front, 1 Rear';
     let heightPoleRequired = false;
     let policeEscortRequired = false;
@@ -50,8 +50,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 4. Determine Curfews or active restrictions across the corridor
-    // In production, query the `regulation_pages` or active notices table
+    // 4. Determine seeded restrictions across the corridor. This is not a live notice feed.
     const activeRestrictions = [];
     if (route_states.includes('CO')) {
       activeRestrictions.push({ state: 'CO', warning: 'Winter Chain Laws in Effect. All escorts require chains.' });
@@ -72,6 +71,13 @@ export async function POST(req: NextRequest) {
           law_enforcement_mandatory: policeEscortRequired,
         },
         active_restrictions: activeRestrictions
+      },
+      source: {
+        compliance: 'reciprocity_engine',
+        escort_requirements: 'dimension_planning_heuristic',
+        active_restrictions: 'seeded_static_rules',
+        confidence_label: 'planning_estimate',
+        disclaimer: 'RouteIntel output is not a permit, legal opinion, or authority approval. Confirm live restrictions, permits, escort requirements, and route clearances before dispatch.'
       },
       cached_at: new Date().toISOString(),
       enterprise: {

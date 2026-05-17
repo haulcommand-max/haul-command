@@ -12,20 +12,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing dispatch configuration parameters.' }, { status: 400 });
     }
 
-    // In production, this fires off Supabase RPC 'create_dispatch_request'
-    // and triggers LiveKit voice or push notifications to match vendors.
     console.log(`[Dispatch] Received new load from ${customerId} | Origin: ${routeOrigin.state} -> Dest: ${routeDestination.state}`);
 
-    // Mock response simulating a database insert.
     return NextResponse.json({
-      status: 'queued_for_matching',
-      dispatch_id: 'mock-uuid-9428-abcd',
+      error: 'dispatch_intake_not_connected',
+      status: 'not_queued',
       diagnostics: {
         analyzed_corridor: `${routeOrigin.state}-${routeDestination.state}`,
         dimension_flags: loadDimensions.width > 12 ? ['overwidth'] : [],
-        recommended_action: 'Searching vendor pool for capable matches'
-      }
-    });
+        recommended_action: 'Use the canonical load creation or route request flow until dispatch intake persistence is wired.'
+      },
+      source: 'truthful_stub',
+      disclaimer: 'No dispatch request was created and no operators were notified.'
+    }, { status: 501 });
 
   } catch (error) {
     return NextResponse.json({ error: 'Failed to process dispatch payload.' }, { status: 500 });

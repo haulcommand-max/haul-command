@@ -38,27 +38,26 @@ export async function POST(req: NextRequest) {
     const platformFee = Math.round(bidAmountBase * ESCROW_FEE_MULTIPLIER * 100);
     const totalAmountToCharge = Math.round(bidAmountBase * 100) + platformFee;
 
-    let clientSecret = "mock_client_secret_for_local_development";
-    let paymentIntentId = "mock_pi_" + Date.now();
-
-    if (stripe) {
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount: totalAmountToCharge,
-        currency: "usd",
-        capture_method: "manual",
-        metadata: { load_id, bid_id, broker_id, type: "haul_command_escrow" },
-        description: `Haul Command Escrow: Load #${load_id.substring(0,6)}`
-      });
-      if (!paymentIntent.client_secret) throw new Error("Stripe Failed to generate secret");
-      clientSecret = paymentIntent.client_secret;
-      paymentIntentId = paymentIntent.id;
-    } else {
-      console.warn("[/api/escrow/accept-bid] STRIPE_SECRET_KEY missing. Returning mock secret.");
+    if (!stripe) {
+      return NextResponse.json({
+        error: "stripe_not_configured",
+        message: "Escrow payment intent was not created because STRIPE_SECRET_KEY is not configured.",
+      }, { status: 503 });
     }
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: totalAmountToCharge,
+      currency: "usd",
+      capture_method: "manual",
+      metadata: { load_id, bid_id, broker_id, type: "haul_command_escrow" },
+      description: `Haul Command Escrow: Load #${load_id.substring(0,6)}`
+    });
+    if (!paymentIntent.client_secret) throw new Error("Stripe failed to generate a client secret");
 
     // Provide the client with the secret
     return NextResponse.json({
-      clientSecret,
+      clientSecret: paymentIntent.client_secret,
+      paymentIntentId: paymentIntent.id,
       escrowSummary: {
         bidTotal: bidAmountBase,
         platformFee: platformFee / 100,
