@@ -7,7 +7,7 @@ import {
 
 export const metadata: Metadata = {
   title: 'Risk & Liability Mitigation for Oversize Transport | Haul Command',
-  description: 'Minimize risk on every heavy haul move. Insurance verification, route risk scoring, compliance automation, and real-time GPS oversight across 50+ countries.',
+  description: 'Minimize risk on every heavy haul move. Insurance verification, route risk scoring, compliance automation, and route risk review, compliance evidence, and connected GPS oversight where enabled.',
   keywords: ['risk mitigation heavy haul', 'liability oversize load', 'escort insurance', 'pilot car liability', 'heavy haul compliance', 'transport risk management'],
   openGraph: {
     title: 'Risk & Liability Mitigation for Oversize Transport | Haul Command',
@@ -36,7 +36,7 @@ const RISK_LAYERS = [
   {
     icon: Eye,
     title: "GPS Oversight",
-    desc: "Real-time position tracking on every active escort through our Traccar-integrated GPS system. Know exactly where your escorts are, every mile of the haul.",
+    desc: "Position tracking is available only when a job has connected telemetry or operator updates. Missing GPS evidence remains visible in the risk packet.",
   },
   {
     icon: Lock,

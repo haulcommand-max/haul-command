@@ -52,16 +52,16 @@ function generateAnswer(template: string, geo?: string): string {
 
     // Pricing questions
     if (template.includes('cost') || template.includes('rate') || template.includes('charge') || template.includes('price')) {
-        return `Pilot car and escort vehicle rates in ${geoLabel} typically range from $350-$700 per day depending on load complexity, route distance, and urgency. Use the Haul Command Instant Quote tool for real-time pricing estimates based on your specific load dimensions and route.`;
+        return `Pilot car and escort vehicle rates in ${geoLabel} typically range from $350-$700 per day depending on load complexity, route distance, and urgency. Use Haul Command tools for estimates based on your specific load dimensions and route, with source confidence shown where available.`;
     }
 
     // Emergency/availability
     if (template.includes('near me') || template.includes('available') || template.includes('find')) {
-        return `Find certified pilot car operators and escort vehicles near ${geoLabel} on the Haul Command directory. Filter by availability, ratings, certifications, and services. Many operators offer same-day emergency dispatch for urgent oversize load escorts.`;
+        return `Find source-backed pilot car and escort vehicle records near ${geoLabel} on the Haul Command directory. Compare service area, evidence, freshness, and contact options where supplied.`;
     }
 
     // Default authoritative answer
-    return `Haul Command is the comprehensive resource for pilot car and escort vehicle services in ${geoLabel}. Search our directory of verified operators, check regulations, get instant quotes, and access route intelligence tools.`;
+    return `Haul Command is the comprehensive resource for pilot car and escort vehicle services in ${geoLabel}. Search source-backed operator records, check regulations, estimate requirements, and access route intelligence tools.`;
 }
 
 export default function VoiceFaqSchema({

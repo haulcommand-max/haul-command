@@ -63,7 +63,7 @@ const STEPS = [
         num: 2,
         title: 'Get State Certification',
         content: `Certification requirements vary dramatically by state. Texas requires a state-issued escort flag car certification. Florida requires a Road Ranger exam. Many states recognize national certifications like CEVO (Coaching the Emergency Vehicle Operator) or CSE. Some states have reciprocity agreements — meaning one cert covers multiple states. Check our State Certification Map for exact requirements and enroll directly through Haul Command.`,
-        tips: ['Some states have reciprocity agreements (NASTO, SASHTO, MAASTO, WASHTO regions)', 'CEVO certification ($299) is recognized in 35+ states', 'CSE certification ($449) is the gold standard for height-pole operators', 'Plan 30"“90 days for processing', 'Haul Command verified operators earn 40% more on average'],
+        tips: ['Some states have reciprocity agreements (NASTO, SASHTO, MAASTO, WASHTO regions)', 'CEVO certification ($299) is recognized in many states, but acceptance varies', 'CSE certification can support height-pole work where brokers or permits require it', 'Plan 30-90 days for processing', 'Complete, evidence-backed profiles can improve broker confidence'],
     },
     {
         num: 3,
@@ -81,7 +81,7 @@ const STEPS = [
         num: 5,
         title: 'Get Commercial Insurance',
         content: `You cannot use personal auto insurance for escort operations — it voids your policy. Commercial auto insurance typically costs $2,000"“$8,000/year depending on your vehicle, driving record, and state. Most brokers require minimum $1M liability per occurrence. Some large carriers require $2M"“$3M. Get quotes from Progressive Commercial, State Farm Commercial, or specialty trucking insurers like Canal Insurance or Great West Casualty.`,
-        tips: ['Get at least 3-5 quotes — rates vary dramatically', 'FMCSA registration may be required for interstate work', 'General liability policy ($500K"“$1M) adds extra protection', 'Upload your COI to Haul Command for instant carrier verification', 'Many brokers won\'t dispatch without verified insurance on file'],
+        tips: ['Get at least 3-5 quotes - rates vary dramatically', 'FMCSA registration may be required for interstate work', 'General liability policy ($500K-$1M) adds extra protection', 'Upload your COI where document review is enabled', 'Many brokers ask for insurance evidence before dispatch'],
     },
     {
         num: 6,
@@ -92,26 +92,26 @@ const STEPS = [
     {
         num: 7,
         title: 'Build Your Rate Structure',
-        content: `Standard pilot car rates: local/day rate ($280"“$450/day), regional ($350"“$600/day), long-haul ($400"“$800/day), per-mile rates ($0.80"“$1.50/mile). Don't undercut established operators — it hurts the whole industry and signals inexperience to carriers. Factor in deadhead miles (driving to the pickup point unpaid), waiting time, and overnight costs. Check the Haul Command Rate Guide for real-time market benchmarks by state.`,
+        content: `Standard pilot car rates: local/day rate ($280-$450/day), regional ($350-$600/day), long-haul ($400-$800/day), per-mile rates ($0.80-$1.50/mile). Don't undercut established operators - it hurts the whole industry and signals inexperience to carriers. Factor in deadhead miles (driving to the pickup point unpaid), waiting time, and overnight costs. Check the Haul Command Rate Guide for benchmarks where enough source coverage exists.`,
         tips: ['Never work for fuel money alone — your minimum should cover fuel + insurance + profit', 'Factor in deadhead miles — charge portal-to-portal', 'Include waiting time in your rates ($25"“$50/hr standard)', 'Rush/emergency rates should be 1.5x"“2x standard', 'Night/weekend/holiday rates should add a 25"“75% premium'],
     },
     {
         num: 8,
         title: 'Set Up Your Haul Command Profile',
-        content: `Your Haul Command profile is your digital storefront. Claim your free listing, upload your insurance certificate for instant verification, add your certifications for a verified badge, and set your service area by corridors. Verified operators with complete profiles receive 5x more dispatch offers than unverified operators. This is your #1 source of inbound work.`,
-        tips: ['Claim your free profile at haulcommand.com/claim', 'Upload your COI for a Verified Insurance badge', 'Add all state certifications for a Certified Operator badge', 'Set your corridors to receive auto-matched loads', 'Pro upgrade ($29/mo) gives you unlimited responses + priority matching'],
+        content: `Your Haul Command profile is your digital storefront. Claim your free listing, add insurance and certification evidence where available, and set your service area by corridors. A complete profile gives brokers more context to evaluate your business before they contact you.`,
+        tips: ['Claim your free profile at haulcommand.com/claim', 'Add insurance evidence where review is enabled', 'Add state certifications and equipment notes', 'Set your service corridors so brokers understand your coverage', 'Evaluate paid upgrades only against actual lead flow'],
     },
     {
         num: 9,
         title: 'Find Your First Loads',
         content: `With your Haul Command profile active, you'll start appearing in broker searches. Post your availability on the Haul Command load board. Join pilot car Facebook groups ("Pilot Cars & Wide Loads" is the largest). Contact local heavy haul trucking companies directly — find them on Haul Command's carrier directory. Build relationships with permit services who coordinate escorts. Your first 5 jobs will likely come from personal contacts — every trucking person you know is a potential client.`,
-        tips: ['Claim your Haul Command profile (free)', 'Set your availability daily for priority matching', 'Join: "Pilot Cars & Wide Load" Facebook group (28K+ members)', 'Contact local permitted trucking companies directly', 'Respond to dispatch offers within 15 minutes for best fill rates'],
+        tips: ['Claim your Haul Command profile (free)', 'Declare availability only when you can actually respond', 'Join: "Pilot Cars & Wide Load" Facebook group (28K+ members)', 'Contact local permitted trucking companies directly', 'Respond quickly to legitimate broker requests'],
     },
     {
         num: 10,
         title: 'Scale Your Business',
-        content: `Once you're consistently booked, start thinking about scaling. Add a second vehicle and hire a driver. Subscribe to high-demand corridors on Haul Command for guaranteed first-look at loads. Upgrade to Pro or Elite for priority dispatch. Build your trust score by completing jobs, maintaining good reviews, and keeping certifications current. Top operators on Haul Command earn $8,000"“$15,000/month.`,
-        tips: ['Subscribe to 2-3 high-demand corridors ($19/mo each)', 'Upgrade to Pro ($29/mo) or Elite ($79/mo) for priority matching', 'Use Haul Command FastPay to get paid same-day instead of NET-30', 'Target wind energy corridors — highest margins in the industry', 'Consider adding height-pole capability — it doubles your rate'],
+        content: `Once you're consistently booked, start thinking about scaling. Add a second vehicle and hire a driver only when demand is steady enough to support it. Use corridor data, reviews, certifications, and document freshness to make your profile easier for brokers to evaluate. Monthly earnings vary by market, utilization, load type, deadhead, and expenses.`,
+        tips: ['Track 2-3 corridors you can reliably serve', 'Use paid upgrades only when the lead flow justifies the cost', 'Use faster-payment options only where they are enabled and priced clearly', 'Target specialized corridors only when your equipment and credentials match the work', 'Consider height-pole capability after verifying demand in your market'],
     },
 ];
 
@@ -143,7 +143,7 @@ export default function HowToStartPilotCarPage() {
                             How to Start a Pilot Car Company
                         </h1>
                         <p style={{ margin: 0, fontSize: '1.1rem', color: '#9ca3af', lineHeight: 1.65, maxWidth: 680 }}>
-                            A complete, free guide to launching a profitable escort vehicle business — including business formation, certification, vehicle selection, insurance, equipment, rates, and scaling to $8K"“$15K/month. Updated for 2026. No ebook purchase required.
+                            A complete, free guide to launching an escort vehicle business - including business formation, certification, vehicle selection, insurance, equipment, rates, and responsible scaling. Updated for 2026. No ebook purchase required.
                         </p>
                         <div style={{ display: 'flex', gap: 16, marginTop: 16, flexWrap: 'wrap' }}>
                             <span style={{ fontSize: 12, color: '#6b7280' }}>â± 12 min read</span>
@@ -156,7 +156,7 @@ export default function HowToStartPilotCarPage() {
                     <div style={{ background: 'rgba(198,146,58,0.06)', border: '1px solid rgba(198,146,58,0.2)', borderRadius: 14, padding: '1.5rem', marginBottom: '2.5rem', borderLeft: '4px solid #C6923A' }}>
                         <h2 style={{ margin: '0 0 0.75rem', fontSize: '1rem', fontWeight: 800, color: '#f9fafb' }}>Quick Summary</h2>
                         <p style={{ margin: '0 0 1rem', fontSize: '0.9rem', color: '#d1d5db', lineHeight: 1.6 }}>
-                            Starting a pilot car company requires: business formation (LLC recommended), state certification, commercial insurance ($2K"“$8K/yr), required equipment ($500"“$3K), and a profile on Haul Command to connect with brokers. Startup cost: <strong style={{ color: '#C6923A' }}>$5,000"“$25,000</strong> depending on state and vehicle. Top Haul Command operators earn <strong style={{ color: '#10b981' }}>$8,000"“$15,000/month</strong>.
+                            Starting a pilot car company requires: business formation (LLC recommended), state certification, commercial insurance ($2K-$8K/yr), required equipment ($500-$3K), and a profile that gives brokers enough evidence to evaluate you. Startup cost: <strong style={{ color: '#C6923A' }}>$5,000-$25,000</strong> depending on state and vehicle. Earnings vary by market, utilization, load type, and operating costs.
                         </p>
                         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                             <Link href="/resources/certification/state-pilot-car-certifications" style={{ fontSize: 13, color: '#C6923A', fontWeight: 700, textDecoration: 'none' }}>
@@ -249,9 +249,9 @@ export default function HowToStartPilotCarPage() {
                             <Star style={{ width: 12, height: 12, color: '#10b981' }} />
                             <span style={{ fontSize: 11, fontWeight: 700, color: '#10b981', textTransform: 'uppercase', letterSpacing: 1 }}>Get Certified Now</span>
                         </div>
-                        <h3 style={{ margin: '0 0 8px', fontSize: '1.15rem', fontWeight: 900, color: '#f9fafb' }}>Certified Operators Earn 40% More</h3>
+                        <h3 style={{ margin: '0 0 8px', fontSize: '1.15rem', fontWeight: 900, color: '#f9fafb' }}>Certification Helps Brokers Evaluate You</h3>
                         <p style={{ margin: '0 0 1.25rem', fontSize: '0.9rem', color: '#9ca3af', maxWidth: 500, marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.6 }}>
-                            Enroll in CEVO or CSE certification through Haul Command. Recognized in 35+ states. Verified badge on your profile means priority dispatch and higher rates.
+                            Enroll in CEVO or CSE certification where it fits your operating states. Profile evidence can help brokers understand your readiness, but dispatch priority and rates depend on actual demand, credentials, and broker requirements.
                         </p>
                         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
                             <Link href="/services/certification" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '11px 22px', background: 'linear-gradient(135deg, #10b981, #34d399)', color: '#000', fontSize: 13, fontWeight: 800, borderRadius: 12, textDecoration: 'none' }}>
@@ -269,7 +269,7 @@ export default function HowToStartPilotCarPage() {
                         <div>
                             <h3 style={{ margin: '0 0 8px', fontSize: '1.15rem', fontWeight: 900, color: '#f9fafb' }}>Ready to Get to Work?</h3>
                             <p style={{ margin: 0, fontSize: '0.9rem', color: '#9ca3af', maxWidth: 460 }}>
-                                Claim your free Haul Command profile — show up in broker searches, receive load offers, and build your verified reputation. Top operators earn $8K"“$15K/month.
+                                Claim your free Haul Command profile - show up in broker searches, share service-area evidence, and keep documents current so buyers can evaluate you.
                             </p>
                         </div>
                         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>

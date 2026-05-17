@@ -68,7 +68,7 @@ export const RegulatoryMoat: React.FC<RegulatoryMoatProps> = ({
             <div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between">
                 <div className="flex items-center gap-2 text-[10px] text-slate-500">
                     <AlertTriangle className="w-3 h-3 text-amber-500/50" />
-                    <span>Real-time signals verified by Haul Command. Always check your permit.</span>
+                    <span>Source signals tracked by Haul Command. Always check your permit.</span>
                 </div>
                 <button aria-label="Interactive Button" className="text-[10px] font-bold text-amber-500 hover:text-amber-400 uppercase tracking-widest transition-colors flex items-center gap-1 group">
                     View Detailed State FAC 14-26 Code

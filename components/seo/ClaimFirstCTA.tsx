@@ -17,7 +17,7 @@ export function ClaimFirstCTA({ mode, marketLabel, headline }: ClaimFirstCTAProp
                 return {
                     icon: UserPlus,
                     title: headline || `Leave no money on the table in ${marketLabel}`,
-                    text: `Ensure dispatchers and brokers find you instantly. Claim your official operator presence and dominate this market.`,
+                    text: `Help dispatchers and brokers evaluate your profile. Claim your operator presence and keep service-area evidence current.`,
                     ctaLabel: "Claim Your Listing",
                     ctaHref: "/claim",
                     accentCode: "border-[#C6923A]"
@@ -26,7 +26,7 @@ export function ClaimFirstCTA({ mode, marketLabel, headline }: ClaimFirstCTAProp
                 return {
                     icon: MapPin,
                     title: headline || `Urgent coverage needed near ${marketLabel}?`,
-                    text: `Instantly match with certified lead cars, chase cars, and high-pole operators already validated for this region.`,
+                    text: `Request lead cars, chase cars, and high-pole operators with credentials and regional evidence shown where supplied.`,
                     ctaLabel: "Request Available Operators",
                     ctaHref: "/loads",
                     accentCode: "border-[#00FF66]"

@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { Bot, Zap, ShieldCheck, Map, ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
-    title: 'How Haul Command Works | The 15X Logistics Engine',
-    description: 'Stop waiting for quotes. See how Haul Command uses algorithmic dispatch, instant trust verification, and live hazard intel to match you with top-rated escort operators instantly.',
+    title: 'How Haul Command Works | Heavy Haul Support Workflow',
+    description: 'See how Haul Command helps brokers and operators post requests, compare source-backed records, review trust signals, and build support packets without inventing supply.',
 };
 
 export default function HowItWorksPage() {
@@ -18,20 +18,20 @@ export default function HowItWorksPage() {
                 <div className="max-w-5xl mx-auto text-center relative z-10">
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full mb-8">
                         <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                        <span className="text-xs font-black text-amber-500 uppercase tracking-widest">Outdated Directories vs Algorithms</span>
+                        <span className="text-xs font-black text-amber-500 uppercase tracking-widest">Directories vs source-backed workflows</span>
                     </div>
                     
                     <h1 className="text-5xl md:text-7xl font-black text-white italic tracking-tighter mb-6 leading-[0.9]">
-                        STOP WAITING FOR QUOTES.<br />
-                        <span className="text-amber-500 underline decoration-8 underline-offset-8">START DISPATCHING.</span>
+                        STOP CHASING STALE LISTS.<br />
+                        <span className="text-amber-500 underline decoration-8 underline-offset-8">BUILD A SUPPORT PACKET.</span>
                     </h1>
                     
                     <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-12">
-                        Old pilot car directories make you fill out a form, wait hours for quotes, and pray the operator is compliant. Haul Command is an intelligence engine that dispatches the closest verified operator in milliseconds.
+                        Old pilot car directories make you fill out a form and hope the listing is current. Haul Command helps you post the route, compare source-backed records, and review claim and freshness signals before dispatch.
                     </p>
                     
                     <Link href="/loads/new" className="inline-flex items-center gap-3 px-8 py-4 bg-amber-500 hover:bg-amber-400 text-white font-black text-lg tracking-wide uppercase rounded-xl transition-all group shadow-[0_0_40px_-10px_rgba(245,158,11,0.5)]">
-                        Dispatch a Load Now
+                        Post a Support Request
                         <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </Link>
                 </div>
@@ -87,7 +87,7 @@ export default function HowItWorksPage() {
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-white mb-1">AI Compliance Copilot</h4>
-                                        <p className="text-sm text-amber-500/70">Type in your dimensions. The engine instantly maps state laws, flags high poles, and configs escorts.</p>
+                                        <p className="text-sm text-amber-500/70">Enter dimensions and route context. The system surfaces rules, high-pole considerations, and next actions where data is available.</p>
                                     </div>
                                 </li>
                                 <li className="flex gap-4">
@@ -95,8 +95,8 @@ export default function HowItWorksPage() {
                                         <Zap className="w-4 h-4" />
                                     </div>
                                     <div>
-                                        <h4 className="font-bold text-white mb-1">Live Match Dispatch</h4>
-                                        <p className="text-sm text-amber-500/70">Push the load. Pre-auth the live median rate. Escorts in a 50-mile radius are pinged. Matched in 3 mins.</p>
+                                        <h4 className="font-bold text-white mb-1">Request-driven Matching</h4>
+                                        <p className="text-sm text-amber-500/70">Post the load and timing. Operators can respond from real records and declared availability instead of a simulated instant match.</p>
                                     </div>
                                 </li>
                                 <li className="flex gap-4">
@@ -104,8 +104,8 @@ export default function HowItWorksPage() {
                                         <ShieldCheck className="w-4 h-4" />
                                     </div>
                                     <div>
-                                        <h4 className="font-bold text-white mb-1">Algorithmic Trust Scores</h4>
-                                        <p className="text-sm text-amber-500/70">Drivers are tracked. We verify their insurance, FMCSA records, and measure their GPS clean-run percentages.</p>
+                                        <h4 className="font-bold text-white mb-1">Evidence-backed Trust Signals</h4>
+                                        <p className="text-sm text-amber-500/70">Profiles can show claim state, documents, report cards, and freshness when evidence exists. Missing evidence stays visible.</p>
                                     </div>
                                 </li>
                             </ul>
@@ -119,7 +119,7 @@ export default function HowItWorksPage() {
                 <div className="max-w-5xl mx-auto px-4">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl md:text-5xl font-black text-white italic tracking-tighter mb-4">THE OPERATING SYSTEM</h2>
-                        <p className="text-gray-400 max-w-xl mx-auto">Connecting realtime intelligence with physical logistics.</p>
+                        <p className="text-gray-400 max-w-xl mx-auto">Connecting source-backed records, request workflows, and physical logistics.</p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -128,12 +128,12 @@ export default function HowItWorksPage() {
                             <div className="bg-white/5 border border-white/10 p-6 rounded-2xl hover:border-amber-500/50 transition-colors">
                                 <Map className="w-8 h-8 text-amber-500 mb-4" />
                                 <h4 className="text-xl font-bold text-white mb-2">Crowdsourced Hazard Intel</h4>
-                                <p className="text-gray-400 text-sm">Why pay $999 for a static route survey? Haul Command aggregates live driver reports on choke points, low bridges, and scales directly into your route map.</p>
+                                <p className="text-gray-400 text-sm">Use route reports and field signals where they exist, and treat missing source coverage as a reason to request survey support.</p>
                             </div>
                             <div className="bg-white/5 border border-white/10 p-6 rounded-2xl hover:border-amber-500/50 transition-colors">
                                 <Zap className="w-8 h-8 text-amber-500 mb-4" />
-                                <h4 className="text-xl font-bold text-white mb-2">Live Rate Index</h4>
-                                <p className="text-gray-400 text-sm">See exactly what the market is paying (P25/P50/P75). Eliminate negotiation friction by clearing loads at the true median price.</p>
+                                <h4 className="text-xl font-bold text-white mb-2">Rate Benchmarks</h4>
+                                <p className="text-gray-400 text-sm">Use rate benchmarks where sample coverage exists. Treat sparse markets as estimates, not guaranteed clearing prices.</p>
                             </div>
                         </div>
 

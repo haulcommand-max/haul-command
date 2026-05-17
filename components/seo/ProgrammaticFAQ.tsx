@@ -22,15 +22,15 @@ export function getCityFAQs(city: string, state: string): FAQItem[] {
         },
         {
             question: `How much does a pilot car cost in ${city}, ${state}?`,
-            answer: `Pilot car rates in ${city}, ${state} typically range from $280–$600/day for local moves and $400–$900+ for long-haul work. Per-mile rates average $1.50–$2.20. Use the Haul Command Rate Lookup for real-time market data.`,
+            answer: `Pilot car rates in ${city}, ${state} typically range from $280–$600/day for local moves and $400–$900+ for long-haul work. Per-mile rates average $1.50–$2.20. Use the Haul Command Rate Lookup for benchmarks where source coverage is available.`,
         },
         {
             question: `How do I find a certified escort vehicle operator in ${city}?`,
-            answer: `Haul Command's verified directory lists certified escort operators in ${city}, ${state} with verified credentials, equipment lists, and real-time availability. Filter by certification status, equipment type, and distance.`,
+            answer: `Haul Command lists source-backed escort records in ${city}, ${state} where coverage exists. Compare claim state, equipment notes, credentials when supplied, and freshness before dispatch.`,
         },
         {
             question: `Are there pilot car jobs available in ${city}, ${state}?`,
-            answer: `Yes. Haul Command matches independent pilot car drivers with brokers and carriers in the ${city} area. Create a free driver profile to receive load notifications and direct booking requests.`,
+            answer: `Haul Command can route requests and surface operator profiles in the ${city} area where workflows are enabled. Create a profile so brokers can evaluate your service area and contact details.`,
         },
         {
             question: `What equipment does a pilot car driver need in ${state}?`,
@@ -60,7 +60,7 @@ export function getCountyFAQs(countyName: string, state: string): FAQItem[] {
     return [
         {
             question: `Is there a pilot car driver shortage in ${countyName}, ${state}?`,
-            answer: `${countyName} is flagged as a high-opportunity zone by Haul Command's supply gap model. Demand from heavy haul activity significantly outpaces the available certified escort driver supply, creating above-market rates for qualified operators.`,
+            answer: `${countyName} may have sparse source-backed pilot car coverage in Haul Command. Treat any shortage claim as source-gated until demand, supply, and freshness signals are visible.`,
         },
         {
             question: `What kind of loads need escort vehicles in ${countyName}?`,
@@ -68,7 +68,7 @@ export function getCountyFAQs(countyName: string, state: string): FAQItem[] {
         },
         {
             question: `How do escort drivers get work in ${countyName}, ${state}?`,
-            answer: `Create a Haul Command driver profile to receive real-time load notifications in ${countyName}. The platform connects you directly with carriers and brokers dispatching in this high-demand corridor.`,
+            answer: `Create a Haul Command driver profile so brokers can evaluate your service area, equipment, and documents. Requests and alerts depend on actual demand signals and enabled workflows in ${countyName}.`,
         },
     ];
 }
@@ -85,7 +85,7 @@ export function getGenericFAQs(topic: 'cost' | 'rules' | 'jobs' | 'certification
             { question: 'Do pilot car rules differ by state?', answer: 'Yes significantly. Width, height, and weight triggers for escort requirements vary across all 50 states. Use the Haul Command State Requirements Cheatsheet for a state-by-state breakdown.' },
         ],
         jobs: [
-            { question: 'How do I get pilot car jobs?', answer: 'Join the Haul Command network for free. Create a driver profile, verify your credentials, and receive direct load notifications. Many drivers earn $500–$1,200/day on heavy haul corridors.' },
+            { question: 'How do I get pilot car jobs?', answer: 'Join the Haul Command network for free. Create a driver profile, add credential evidence, and respond to requests where workflows are enabled. Earnings vary by market, utilization, load type, and operating costs.' },
             { question: 'What qualifications do I need to work as a pilot car driver?', answer: 'Requirements vary by state, but typically: valid driver\'s license, clean driving record, liability insurance ($300K+), oversize load equipment, and state certification where required.' },
         ],
         certification: [

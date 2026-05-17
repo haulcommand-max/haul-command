@@ -132,7 +132,7 @@ function LoginModal({ onClose }: { onClose: () => void }) {
             Unlock Contact Info
           </h2>
           <p style={{ color: '#64748b', fontSize: 14, lineHeight: 1.6, margin: '0 0 24px' }}>
-            Sign in to see phone numbers, emails, and direct booking links for all 1.5M+ verified operators.
+            Sign in to see eligible phone numbers, emails, and request actions for source-backed operator records.
           </p>
         </div>
 

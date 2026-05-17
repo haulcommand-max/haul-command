@@ -28,7 +28,7 @@ export default function HeavyHaulInsurancePage() {
             Heavy Haul Insurance <br className="hidden md:block"/> Formulated for Clean Operators
           </h1>
           <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-10">
-            Stop paying flat-rate premiums that subsidize sloppy carriers. Haul Command connects your live Trust Score with our underwriting partners to instantly lower your BIPD and cargo liability premiums.
+            Stop paying flat-rate premiums that subsidize sloppy carriers. Haul Command helps organize trust and safety evidence for underwriting partner review. Any rate change depends on carrier appetite, loss history, jurisdiction, and submitted documents.
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
@@ -56,7 +56,7 @@ export default function HeavyHaulInsurancePage() {
              <div className="bg-indigo-500/10 w-12 h-12 flex items-center justify-center rounded-xl mb-6">
                 <Activity className="text-indigo-400 h-6 w-6" />
              </div>
-             <h3 className="text-xl font-bold text-white mb-3">Instant Automated COIs</h3>
+             <h3 className="text-xl font-bold text-white mb-3">COI Document Workflow</h3>
              <p className="text-slate-400">Generate and attach Certificates of Insurance directly inside the Haul Command dispatch dashboard. No more emailing agents on weekends to lock in the load.</p>
           </div>
           <div className=" border border-slate-800 p-8 rounded-2xl">
@@ -72,7 +72,7 @@ export default function HeavyHaulInsurancePage() {
         <div className="bg-gradient-to-br from-indigo-900/40 to-slate-900 border border-indigo-900/50 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-12">
            <div className="max-w-xl">
               <h2 className="text-3xl font-bold text-white mb-4">Start by linking your USDOT</h2>
-              <p className="text-lg text-slate-300 mb-6">If you have a Trust Score over 80 and zero out-of-service violations in the past 12 months, you are guaranteed a better rate than standard market tables. Find out exactly how much.</p>
+              <p className="text-lg text-slate-300 mb-6">If you have a Trust Score over 80 and zero out-of-service violations in the past 12 months, you may qualify for partner review beyond standard market tables. Find out exactly how much.</p>
               
               <form onSubmit={async (e) => {
                 e.preventDefault();

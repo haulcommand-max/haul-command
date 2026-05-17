@@ -15,12 +15,12 @@ const PROBLEMS = [
 ];
 
 const SOLUTIONS = [
-  { icon: '\u26a1', text: 'Post a load in 90 seconds \u2014 matched escorts respond instantly' },
-  { icon: '\u2713', text: 'Every operator verified, insured, and rated by previous brokers' },
-  { icon: '\ud83e\udd16', text: 'HC AV-Ready certified operators for autonomous truck corridors' },
-  { icon: '\ud83d\udd12', text: 'Escrow payment \u2014 funds release on completion, never before' },
-  { icon: '\u23f1\ufe0f', text: 'Median fill time: 47 minutes' },
-  { icon: '\ud83c\udf0d', text: '50+ countries, 219+ corridors covered' },
+  { icon: '\u26a1', text: 'Post a load request quickly - eligible escorts can respond through supported workflows' },
+  { icon: '\u2713', text: 'Operator profiles can include claim state, insurance evidence, and broker feedback where supplied' },
+  { icon: '\ud83e\udd16', text: 'AV-readiness signals for autonomous truck corridors where evidence exists' },
+  { icon: '\ud83d\udd12', text: 'Escrow payment workflows where enabled - release rules are explicit before dispatch' },
+  { icon: '\u23f1\ufe0f', text: 'Fill-time visibility depends on active market data' },
+  { icon: '\ud83c\udf0d', text: 'Coverage varies by country, corridor, and source depth' },
 ];
 
 const USE_CASES = [
@@ -36,7 +36,7 @@ const USE_CASES = [
     id: 'oilfield',
     icon: '\ud83d\udee2\ufe0f',
     headline: 'For Oilfield Operations',
-    body: 'The Permian Basin alone generates 500+ new drilling permits every month. Each rig move needs multiple escorts across FM roads that Google Maps doesn\u2019t know exist. Haul Command has operators in Midland, Odessa, Andrews, and Pecos \u2014 verified, insured, and familiar with oilfield protocols.',
+    body: 'Oilfield moves often need escorts across FM roads, staging areas, and corridors that generic maps miss. Haul Command can surface operator records, service areas, and evidence where coverage exists in Midland, Odessa, Andrews, Pecos, and nearby markets.',
     cta: 'Permian Basin Network',
     href: '/partners/oilfield',
   },
@@ -44,7 +44,7 @@ const USE_CASES = [
     id: 'carriers',
     icon: '\ud83d\ude9b',
     headline: 'For Carriers and Logistics Companies',
-    body: 'Post once, fill fast. Your dispatchers stop making calls. Operators get matched by corridor, equipment, and certification level. Standing Orders handle recurring routes automatically. Escrow handles payment.',
+    body: 'Post once and compare eligible operators by corridor, equipment, and certification evidence. Standing-order and escrow workflows are surfaced when they are enabled for the move.',
     cta: 'See Broker Features',
     href: '/loads',
   },
@@ -72,8 +72,7 @@ export default function PartnersPage() {
           </h1>
           <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
             Whether you\u2019re running autonomous freight corridors, oilfield equipment moves, or wind farm construction \u2014
-            Haul Command gives your operations team verified, insured, certified escorts. Dispatched in minutes.
-            Paid through escrow. No calls. No paperwork.
+            Haul Command gives your operations team source-backed operator records, document evidence, and request workflows. Payment and dispatch features are shown with their current enabled status.
           </p>
           <div className="flex justify-center gap-4">
             <a
@@ -142,10 +141,10 @@ export default function PartnersPage() {
       <section className="max-w-4xl mx-auto px-4 py-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {[
-            { val: '1.5M+', label: 'Operators tracked' },
-            { val: '120', label: 'Countries' },
-            { val: '219+', label: 'Corridors' },
-            { val: '47 min', label: 'Median fill time' },
+            { val: 'Source-backed', label: 'Operator records' },
+            { val: 'Global', label: 'Country framework' },
+            { val: 'Corridor', label: 'Coverage signals' },
+            { val: 'Freshness', label: 'Shown where known' },
           ].map((s) => (
             <div key={s.label}>
               <p className="text-3xl font-bold text-amber-400">{s.val}</p>

@@ -111,10 +111,10 @@ export function generateNearMeMetadata(
     ].filter(Boolean).join(' ');
 
     const description = [
-        `Find verified ${term} operators`,
+        `Find source-backed ${term} records`,
         mod?.label ? ` ${mod.label.toLowerCase()}` : ' near your location',
         location ? ` in ${location}` : '',
-        '. Real-time availability, reviews, and instant dispatch.',
+        '. Compare availability signals, profile details, and request-routing options.',
     ].join('');
 
     const keywords = [

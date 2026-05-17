@@ -44,7 +44,7 @@ const PROGRAMS = [
   },
   {
     title: "Haul Command Verified Badge",
-    desc: "Complete our verification process to earn the Haul Command Verified badge. Verified operators get priority dispatch, higher visibility, and carrier trust.",
+    desc: "Complete our verification process to earn the Haul Command Verified badge. Reviewed documents and profile evidence can improve visibility and carrier confidence where those workflows are enabled.",
     price: "Free",
     duration: "Background check + docs",
     features: ["Priority dispatch queue", "Directory visibility boost", "Carrier trust signal", "Premium load access"],
@@ -72,7 +72,7 @@ export default function CertificationPage() {
           </h1>
           <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto mb-8">
             CEVO, CSE, and state-specific certifications — all available through Haul Command. 
-            Certified operators earn 40% more and get dispatched 3x faster.
+            Certifications and complete profile evidence help brokers evaluate readiness before dispatch.
           </p>
           <Link
             href="/training"
@@ -116,7 +116,7 @@ export default function CertificationPage() {
       <section className="max-w-4xl mx-auto px-4 py-16 text-center">
         <h2 className="text-2xl font-bold mb-4">Start Your Certification Today</h2>
         <p className="text-gray-400 mb-6 max-w-xl mx-auto">
-          Self-paced training. Industry-recognized certifications. Unlock better jobs and higher pay.
+          Self-paced training. Industry-recognized certifications. Build stronger evidence for better-fit work.
         </p>
         <Link
           href="/training"

@@ -67,7 +67,7 @@ export default function QuickPayPage() {
         <div className="text-center mb-10">
           <div className="text-4xl mb-3">âš¡</div>
           <h1 className="text-2xl sm:text-3xl font-black tracking-tight mb-2">QuickPay</h1>
-          <p className="text-sm text-[#8fa3b8]">Get paid now instead of waiting net-30. 97% of your invoice, instantly.</p>
+          <p className="text-sm text-[#8fa3b8]">Request faster payout on eligible completed jobs instead of waiting net-30. Fees and availability are shown before confirmation.</p>
         </div>
 
         {/* Comparison */}
@@ -80,7 +80,7 @@ export default function QuickPayPage() {
           <div className="qp-highlight text-center">
             <div className="text-[10px] font-bold text-emerald-400 uppercase mb-2">QuickPay</div>
             <div className="text-2xl font-black text-emerald-400" style={{ fontFamily: 'var(--font-mono, monospace)' }}>97%</div>
-            <div className="text-[10px] text-emerald-400/60 mt-1">Instant (3% fee)</div>
+            <div className="text-[10px] text-emerald-400/60 mt-1">Fast payout (3% fee)</div>
           </div>
         </div>
 
@@ -111,7 +111,7 @@ export default function QuickPayPage() {
             <button aria-label="Interactive Button" onClick={() => setShowConfirm(true)} disabled={!jobId || amount <= 0}
               className="w-full mt-6 py-4 rounded-xl font-black text-sm transition-all"
               style={{ background: amount > 0 ? 'linear-gradient(135deg,#10b981,#34d399)' : 'rgba(255,255,255,0.04)', color: amount > 0 ? '#0a0a0f' : '#5A6577' }}>
-              Get Paid Now â†’
+              Request QuickPay â†’
             </button>
           ) : (
             <div className="mt-6 space-y-3">
@@ -127,7 +127,7 @@ export default function QuickPayPage() {
         </div>
 
         <div className="text-center mt-8">
-          <p className="text-[10px] text-[#5A6577]">QuickPay is only available for jobs with pre-funded escrow. Zero risk — funds are already held.</p>
+          <p className="text-[10px] text-[#5A6577]">QuickPay is only available for eligible jobs with pre-funded escrow. Payout timing, fees, and release conditions are confirmed before processing.</p>
         </div>
       </main>
     </div>

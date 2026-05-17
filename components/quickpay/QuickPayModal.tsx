@@ -53,7 +53,7 @@ export function QuickPayModal({ jobId, invoiceAmount, onClose }: QuickPayModalPr
         ) : (
           <>
             <h2 style={{ fontSize: 22, fontWeight: 800, color: '#fff', margin: '0 0 4px' }}>⚡ QuickPay</h2>
-            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, marginBottom: 24 }}>Get paid now instead of waiting Net 30</p>
+            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13, marginBottom: 24 }}>Request faster payout on eligible jobs instead of waiting Net 30</p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 24 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 16px', background: 'rgba(255,255,255,0.04)', borderRadius: 8 }}>
@@ -65,14 +65,14 @@ export function QuickPayModal({ jobId, invoiceAmount, onClose }: QuickPayModalPr
                 <span style={{ color: '#ff3b30', fontWeight: 700 }}>-${feeAmount.toFixed(2)}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '14px 16px', background: 'rgba(0,255,136,0.08)', borderRadius: 8, border: '1px solid rgba(0,255,136,0.2)' }}>
-                <span style={{ color: '#00ff88', fontSize: 15, fontWeight: 700 }}>You Receive Now</span>
+                <span style={{ color: '#00ff88', fontSize: 15, fontWeight: 700 }}>Estimated Fast Payout</span>
                 <span style={{ color: '#00ff88', fontSize: 18, fontWeight: 800 }}>${advanceAmount.toFixed(2)}</span>
               </div>
             </div>
 
             <div style={{ padding: 12, background: 'rgba(255,255,255,0.03)', borderRadius: 8, marginBottom: 24, fontSize: 12, color: 'rgba(255,255,255,0.5)', lineHeight: 1.5 }}>
-              • Funds deposited within 1 business day<br />
-              • Escrow-backed — zero risk to you<br />
+              • Payout timing depends on account eligibility and processor status<br />
+              • Escrow-backed where funds and release rules are confirmed<br />
               • Alternative: wait for broker payment (Net 30)
             </div>
 
@@ -80,7 +80,7 @@ export function QuickPayModal({ jobId, invoiceAmount, onClose }: QuickPayModalPr
 
             <div style={{ display: 'flex', gap: 10 }}>
               <button aria-label="Interactive Button" onClick={onClose} style={{ flex: 1, padding: '12px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: 14 }}>Wait for Net 30</button>
-              <button aria-label="Interactive Button" onClick={handleQuickPay} disabled={processing} style={{ flex: 1, padding: '12px', borderRadius: 8, border: 'none', background: 'linear-gradient(135deg, #00ff88, #00d4ff)', color: '#000', cursor: 'pointer', fontSize: 14, fontWeight: 700 }}>{processing ? 'Processing...' : `Get $${advanceAmount.toFixed(2)} Now`}</button>
+              <button aria-label="Interactive Button" onClick={handleQuickPay} disabled={processing} style={{ flex: 1, padding: '12px', borderRadius: 8, border: 'none', background: 'linear-gradient(135deg, #00ff88, #00d4ff)', color: '#000', cursor: 'pointer', fontSize: 14, fontWeight: 700 }}>{processing ? 'Processing...' : `Request $${advanceAmount.toFixed(2)}`}</button>
             </div>
           </>
         )}

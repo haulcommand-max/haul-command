@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const AV_FEATURES = [
   {
-    title: 'HC AV-Ready Certified Operators',
+    title: 'AV-Readiness Operator Evidence',
     desc: 'Our operators complete AV proximity training, understanding sensor field clearances, communication protocols when there\u2019s no driver, and emergency stop procedures for specific AV platforms.',
   },
   {

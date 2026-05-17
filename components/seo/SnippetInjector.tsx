@@ -195,7 +195,7 @@ function SnippetBlockRenderer({ type, term, geo, country }: { type: SnippetBlock
                         </div>
                     </div>
                     <p style={{ fontSize: 12, color: '#9CA3AF', marginTop: 10, fontStyle: 'italic' }}>
-                        Rates vary by load type, distance, and jurisdiction. Get accurate quotes from verified operators.
+                        Rates vary by load type, distance, and jurisdiction. Request quotes from source-backed operator records where contact paths are available.
                     </p>
                 </div>
             );

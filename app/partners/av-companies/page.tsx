@@ -15,17 +15,17 @@ export const metadata: Metadata = {
 };
 
 const STATS = [
-  { val: '1.5M+', label: 'Verified operators tracked globally' },
-  { val: '120', label: 'Countries covered' },
-  { val: '219', label: 'Active corridors' },
-  { val: '47 min', label: 'Median fill time' },
+  { val: 'Source-backed', label: 'Operator records' },
+  { val: 'Global', label: 'Country framework' },
+  { val: 'Corridor', label: 'Readiness signals' },
+  { val: 'Freshness', label: 'Shown where known' },
 ];
 
 const PITCH_PAGES = [
   {
     num: '01',
     headline: 'Your trucks are autonomous. Your escorts shouldn\'t be random.',
-    body: 'When your oversize loads hit Texas highways, you need certified escorts who understand how the Aurora Driver behaves. No CB radio. Different merge patterns. Different emergency protocols. Haul Command has them — verified, AV-Ready certified, on your corridors.',
+    body: 'When your oversize loads hit Texas highways, you need certified escorts who understand how the Aurora Driver behaves. No CB radio. Different merge patterns. Different emergency protocols. Haul Command surfaces AV-readiness evidence and corridor coverage where those records exist.',
     accent: '#ff9500',
   },
   {
@@ -37,7 +37,7 @@ const PITCH_PAGES = [
       'Logistics partners (Uber Freight, Hirschbach) scramble for escorts last-minute',
       'No existing certification standard exists for AV-adjacent escort work',
       'Random escorts don\'t understand AV behavior patterns = safety risk',
-      'No single platform aggregates verified AV-Ready operators by corridor',
+      'AV-ready operator evidence is fragmented by corridor',
     ],
     accent: '#ef4444',
   },
@@ -46,11 +46,11 @@ const PITCH_PAGES = [
     headline: 'The Haul Command solution',
     body: null,
     bullets: [
-      'AV-Ready Certified operator network — trained on your truck\'s specific protocols',
-      'Pre-vetted operators on your specific corridors, available within 47 minutes',
-      'Single API call or dashboard to dispatch a certified escort',
-      'Escrow-protected payment — automatic on job completion, no disputes',
-      'Real-time tracking — your ops team sees the escort live alongside your truck',
+      'AV-readiness evidence by corridor - training and protocol status shown where supplied',
+      'Operator records on your specific corridors, with freshness shown where known',
+      'API or dashboard workflows for requesting eligible escorts',
+      'Escrow-protected payment rules where enabled',
+      'Route and status visibility where telemetry or operator updates are connected',
     ],
     accent: '#00ff88',
   },

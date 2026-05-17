@@ -46,7 +46,7 @@ const SCENARIOS = [
   {
     icon: Shield,
     title: "Asset-Based Fleet",
-    desc: "In critical corridors, we maintain our own fleet of backup vehicles for guaranteed coverage when independent operators aren't available.",
+    desc: "In critical corridors, we maintain our own fleet of backup vehicles for backup coverage options where fleet assets are actually assigned.",
   },
 ];
 
@@ -130,7 +130,7 @@ export default function FleetBackupPage() {
       <section className="max-w-4xl mx-auto px-4 py-16 text-center">
         <h2 className="text-2xl font-bold mb-4">Never Get Stranded Again</h2>
         <p className="text-gray-400 mb-6 max-w-xl mx-auto">
-          Add fleet backup coverage to any move. Enterprise carriers get dedicated priority dispatch.
+          Add fleet backup coverage to any move. Enterprise carriers can configure dedicated escalation rules where enabled.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           <Link
@@ -155,7 +155,7 @@ export default function FleetBackupPage() {
           "@type": "Service",
           "name": "Fleet Backup & Emergency Escort Dispatch",
           "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://haulcommand.com" },
-          "description": "24/7 emergency escort dispatch with under 15 minute response time. Escort no-shows, cancellations, and breakdowns resolved instantly.",
+          "description": "24/7 emergency escort dispatch with under 15 minute response time. Escort no-shows, cancellations, and breakdowns handled through documented escalation workflows.",
           "areaServed": { "@type": "Place", "name": "Worldwide" },
           "serviceType": "Emergency Escort Dispatch",
           "availableChannel": { "@type": "ServiceChannel", "serviceUrl": "https://haulcommand.com/emergency", "availableLanguage": ["en", "fr", "es"] },

@@ -58,7 +58,7 @@ export function buildDirectoryMetadata(params: {
 
   return {
     title: `${serviceType.charAt(0).toUpperCase() + serviceType.slice(1)} in ${location} | Haul Command`,
-    description: `Find verified ${serviceType} in ${location}. Certified heavy haul escort professionals with real-time availability. Browse ${serviceType} near you on Haul Command.`,
+    description: `Find source-backed ${serviceType} records in ${location}. Compare claim state, profile freshness, and operator-declared availability where available on Haul Command.`,
     keywords: [
       `${serviceType} ${location}`,
       `pilot car near me${city ? ` ${city}` : ''}`,
@@ -74,7 +74,7 @@ export function buildToolMetadata(toolName: string, description: string, jurisdi
   const geo = jurisdiction ? ` — ${jurisdiction}` : '';
   return {
     title: `${toolName}${geo} | Free Heavy Haul Tool | Haul Command`,
-    description: `${description} Free tool for heavy haul operators, brokers, and dispatchers. All 50 US states and 120 countries.`,
+    description: `${description} Free tool for heavy haul operators, brokers, and dispatchers. Coverage varies by country, state, and source depth.`,
     keywords: [
       toolName.toLowerCase(),
       `oversize load ${toolName.toLowerCase()}`,

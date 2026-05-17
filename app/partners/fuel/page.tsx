@@ -27,7 +27,7 @@ export default function HeavyHaulFuelPartnerPage() {
             The Heavy Haul <br className="hidden md:block"/> Fuel Discount Network
           </h1>
           <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-10">
-            Escorting heavy haul loads burns fuel, fast. Haul Command connects verified operators with corporate fleet-level discounts. Stop paying retail pump prices.
+            Escorting heavy haul loads burns fuel, fast. Haul Command connects eligible operators with partner fuel programs where available. Stop paying retail pump prices.
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
@@ -73,7 +73,7 @@ export default function HeavyHaulFuelPartnerPage() {
               </div>
               <Wallet2 className="h-10 w-10 text-blue-400 mb-6" />
               <h3 className="text-xl font-bold text-white mb-2">Check Network Eligibility</h3>
-              <p className="text-slate-400 text-sm mb-8">Enter your MC or USDOT number to see if your operating authority instantly qualifies for Tier 1 fleet pricing.</p>
+              <p className="text-slate-400 text-sm mb-8">Enter your MC or USDOT number to see if your operating authority qualifies for partner pricing review.</p>
               
               <form onSubmit={async (e) => {
                 e.preventDefault();

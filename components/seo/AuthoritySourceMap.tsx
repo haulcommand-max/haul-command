@@ -30,7 +30,7 @@ export function AuthoritySourceMap({ region, lastVerified, confidenceSignals }: 
                 <div>
                     <h5 className="text-[11px] font-bold text-[#5A6577] uppercase tracking-wider mb-2">Primary Ingestion</h5>
                     <p className="text-sm text-white/80 leading-relaxed">
-                        Data payload for <span className="text-white font-medium">{region}</span> is actively governed by real-time regulatory ingestion loops and multi-point entity reconciliation.
+                        Data payload for <span className="text-white font-medium">{region}</span> is governed by source refresh rules and multi-point entity reconciliation.
                     </p>
                 </div>
 

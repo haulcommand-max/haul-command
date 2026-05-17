@@ -100,7 +100,7 @@ const SERVICES = [
     slug: 'certification',
     title: 'Certification & Training',
     description: 'CEVO, CSE, and state-specific pilot car certifications. Get certified, get more jobs.',
-    longDescription: 'Industry-recognized certification programs. Certified operators earn 40% more and get dispatched 3x faster on the Haul Command platform.',
+    longDescription: 'Industry-recognized certification programs. Complete profiles and credentials help brokers evaluate operator readiness on the Haul Command platform.',
     features: ['CEVO certification', 'CSE certification', 'State-specific modules', 'Haul Command Verified badge', 'Self-paced training'],
     icon: Award,
     accent: '#C6923A',
@@ -109,8 +109,8 @@ const SERVICES = [
     slug: 'autonomous-escort',
     title: 'Autonomous Vehicle Escort',
     description: 'Certified escort services for autonomous and self-driving vehicle testing convoys.',
-    longDescription: 'SAE-certified AV escort operators trained in autonomous vehicle convoy management, real-time telemetry, and safety perimeter protocols.',
-    features: ['SAE-certified operators', 'Real-time telemetry', 'Convoy management', 'Safety perimeter vehicles', 'Incident reporting'],
+    longDescription: 'AV escort operators with protocol, telemetry, and safety-perimeter evidence shown where supplied.',
+    features: ['Protocol evidence', 'Telemetry where connected', 'Convoy management', 'Safety perimeter vehicles', 'Incident reporting'],
     icon: Bot,
     accent: '#6366f1',
   },
@@ -127,7 +127,7 @@ const SERVICES = [
     slug: 'insurance-verification',
     title: 'Insurance & COI Vault',
     description: 'Automated insurance verification, COI storage, and expiry alerting for operators and carriers.',
-    longDescription: 'Upload COIs once, share with every carrier via secure link. Auto-alerts 30/7/1 days before expiry. Carrier-facing verification portal for instant compliance checks.',
+    longDescription: 'Upload COIs once, share with every carrier via secure link. Auto-alerts 30/7/1 days before expiry. Carrier-facing portal for document review and compliance checks where enabled.',
     features: ['COI document vault', 'Auto-expiry alerts', 'Carrier verification links', 'Coverage amount tracking', 'Workers comp verification'],
     icon: ShieldCheck,
     accent: '#f43f5e',
@@ -224,7 +224,7 @@ export default function ServicesPage() {
       <section className="max-w-4xl mx-auto px-4 py-16 text-center">
         <h2 className="text-2xl font-bold mb-4">Need an Escort Operator?</h2>
         <p className="text-gray-400 mb-6">
-          Post your load on the Haul Command load board and receive responses from verified operators in minutes — or get a quote for managed, end-to-end logistics.
+          Post your load on the Haul Command load board so eligible operators can respond through supported workflows, or request managed logistics support.
         </p>
         <div className="flex justify-center gap-4 flex-wrap">
           <Link

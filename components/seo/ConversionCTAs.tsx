@@ -143,7 +143,7 @@ export function PostLoadCTA({
                     <Truck className="w-5 h-5 text-blue-400" />
                     <div>
                         <div className="text-sm font-bold text-white">Need an escort{corridorName ? ` on ${corridorName}` : ""}?</div>
-                        <div className="text-xs text-white/40">Post a load and get matched with verified operators instantly</div>
+                        <div className="text-xs text-white/40">Post a load request and let eligible operators respond through supported workflows</div>
                     </div>
                 </div>
                 <a

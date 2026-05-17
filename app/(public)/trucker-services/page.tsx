@@ -117,7 +117,7 @@ const TRUST_STATS = [
   { value: '46', label: 'Service Categories' },
   { value: '50+', label: 'States Covered' },
   { value: '120', label: 'Countries' },
-  { value: '1.5M+', label: 'Operator Network' },
+  { value: 'Source-backed', label: 'Records' },
 ];
 
 export default async function TruckerServicesPage() {
@@ -164,7 +164,7 @@ export default async function TruckerServicesPage() {
                 <span style={{ color: gold }}>Directory</span>
               </h1>
               <p style={{ margin: 0, fontSize: 15, color: muted, lineHeight: 1.7, maxWidth: 540 }}>
-                Find repair shops, truck stops, towing, scales, parts, and every service a heavy haul operation needs — powered by the world&apos;s largest oversize load logistics platform.
+                Find repair shops, truck stops, towing, scales, parts, and every service a heavy haul operation needs — powered by a source-backed heavy-haul directory and role/corridor data layer.
               </p>
             </div>
 
@@ -184,7 +184,7 @@ export default async function TruckerServicesPage() {
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem 1.5rem 0' }}>
         <StaticAnswerBlock
           question="What trucker services does Haul Command cover?"
-          answer="Haul Command's Trucker Services Directory covers 46+ categories including truck stops, towing and wrecker services, truck and trailer repair, tire shops, CAT scale locations, weigh stations, mobile fueling, truck wash facilities, transportation brokers, and specialized services like pilot car operators, reefer repair, and hazmat spill response. Coverage spans 50+ US states and 120 countries."
+          answer="Haul Command's Trucker Services Directory covers 46+ categories including truck stops, towing and wrecker services, truck and trailer repair, tire shops, CAT scale locations, weigh stations, mobile fueling, truck wash facilities, transportation brokers, and specialized services like pilot car operators, reefer repair, and hazmat spill response. Coverage depth varies by region, service category, and available source data."
           source="Haul Command"
           sourceUrl="https://www.haulcommand.com/trucker-services"
           lastVerified="2026-04-03"
@@ -295,7 +295,7 @@ export default async function TruckerServicesPage() {
             List Your Business on Haul Command
           </h3>
           <p style={{ margin: '0 0 20px', fontSize: 14, color: muted, maxWidth: 500, marginLeft: 'auto', marginRight: 'auto' }}>
-            Join the world&apos;s largest oversize load logistics platform. Reach operators and carriers across 120 countries.
+            List your business where heavy-haul operators and carriers can evaluate source-backed service categories and regional coverage.
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href="/claim" style={{

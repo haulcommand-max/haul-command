@@ -113,7 +113,7 @@ export default function ConsolidatedInvoicingPage() {
         <div className="space-y-6">
           {[
             { step: 1, title: "Dispatch Your Escorts", desc: "Book multiple escorts across any number of states through Haul Command's dispatch system." },
-            { step: 2, title: "Jobs Complete & Confirm", desc: "Each escort confirms completion with GPS verification. All documentation auto-captured." },
+            { step: 2, title: "Jobs Complete & Confirm", desc: "Each escort confirms completion with available documentation. GPS evidence is shown only when connected and captured." },
             { step: 3, title: "Receive One Invoice", desc: "We consolidate all escort charges, compliance docs, and completion records into a single invoice." },
             { step: 4, title: "Pay & Close", desc: "Pay via ACH, wire, or card. Funds release through escrow to operators. Clean, done." },
           ].map(({ step, title, desc }) => (
