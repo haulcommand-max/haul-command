@@ -125,7 +125,7 @@ export default function EscortCalculator() {
           '@context': 'https://schema.org',
           '@type': 'SoftwareApplication',
           name: 'Haul Command Escort Cost Calculator',
-          description: 'Calculate heavy haul escort vehicle costs by country, region, service type, distance, and timing using Haul Command rate benchmarks.',
+          description: 'Estimate heavy haul escort vehicle costs by country, region, service type, distance, and timing using Haul Command planning benchmarks.',
           url: 'https://haulcommand.com/tools/escort-calculator',
           applicationCategory: 'BusinessApplication',
           operatingSystem: 'Web',
@@ -139,7 +139,7 @@ export default function EscortCalculator() {
             Global Rate Benchmarks
           </div>
           <h1 className="text-4xl md:text-5xl font-black mb-4">
-            Live Quote <span className="text-amber-500">System</span>
+            Planning Quote <span className="text-amber-500">Worksheet</span>
           </h1>
           <p className="text-gray-400 max-w-2xl text-lg">
             Estimate oversize load support rates by country, region, service type, distance, timing, and wait time. Built for 120-country expansion instead of a U.S.-only quote flow.
@@ -286,12 +286,13 @@ export default function EscortCalculator() {
         </div>
 
         <div className="mt-12">
-          <h2 className="text-xl font-bold mb-4">Equipment Marketplace</h2>
+          <h2 className="text-xl font-bold mb-2">Sample Equipment Marketplace</h2>
+          <p className="text-xs text-gray-500 mb-4">Preview listings only. Seller verification and availability must be confirmed before purchase.</p>
           <AdGridClassifiedsFeed
             items={[
-              { id: 'cl-1', title: 'Pilot Car Setup — Full Kit', price: 42500, location: 'Houston, TX', images: [], seller_name: 'Verified Seller', seller_verified: true, posted_ago: 'recently', category: 'pilot_truck', condition: 'like_new', featured: true },
-              { id: 'cl-2', title: 'Telescoping Height Pole — 18ft Max', price: 1200, location: 'Oklahoma City, OK', images: [], seller_name: 'Escort Supply Partner', seller_verified: true, posted_ago: 'recently', category: 'height_pole', condition: 'new', featured: false },
-              { id: 'cl-3', title: 'LED Amber Beacon Kit — DOT Approved', price: 349, location: 'Jacksonville, FL', images: [], seller_name: 'Parts Supplier', seller_verified: true, posted_ago: 'recently', category: 'beacon', condition: 'new', featured: false },
+              { id: 'cl-1', title: 'Pilot Car Setup — Full Kit', price: 42500, location: 'Houston, TX', images: [], seller_name: 'Sample Seller', seller_verified: false, posted_ago: 'preview', category: 'pilot_truck', condition: 'like_new', featured: true },
+              { id: 'cl-2', title: 'Telescoping Height Pole — 18ft Max', price: 1200, location: 'Oklahoma City, OK', images: [], seller_name: 'Sample Supplier', seller_verified: false, posted_ago: 'preview', category: 'height_pole', condition: 'new', featured: false },
+              { id: 'cl-3', title: 'LED Amber Beacon Kit — DOT Approved', price: 349, location: 'Jacksonville, FL', images: [], seller_name: 'Sample Parts Supplier', seller_verified: false, posted_ago: 'preview', category: 'beacon', condition: 'new', featured: false },
               { id: 'cl-4', title: 'OVERSIZE LOAD Sign Kit + Flags', price: 189, location: 'Dallas, TX', images: [], seller_name: 'Pilot Gear Seller', seller_verified: false, posted_ago: 'recently', category: 'sign_kit', condition: 'good', featured: false },
             ]}
           />
@@ -300,8 +301,8 @@ export default function EscortCalculator() {
         <StaticAnswerBlock
           question="How much does a pilot car or escort vehicle cost?"
           answer={answer}
-          confidence="verified_current"
-          source="Haul Command global rate benchmark model"
+          confidence="partially_verified"
+          source="Haul Command planning benchmark model"
           ctaLabel="Find Local Providers"
           ctaUrl={directoryHref}
         />

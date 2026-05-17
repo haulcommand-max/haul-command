@@ -5,8 +5,8 @@ import Link from 'next/link'
 import { AdGridSponsorSlot } from '@/app/_components/directory/AdGridSponsorSlot'
 
 export const metadata: Metadata = {
-  title: 'Frost Law Tracker — Live US & Canada Spring Weight Restrictions | Haul Command',
-  description: 'Real-time frost law and spring road restriction tracker for all 50 US states and Canadian provinces. Email and push alerts when frost laws activate or lift.',
+  title: 'Frost Law Tracker — US & Canada Spring Weight Restriction Planning | Haul Command',
+  description: 'Frost law and spring road restriction planning tracker for selected US states and Canadian provinces. Verify active restrictions with each authority before dispatch.',
   keywords: [
     'frost law tracker', 'spring weight restrictions', 'seasonal weight limits', 'heavy haul frost bands', 
     'spring road bans canada', 'US DOT frost laws', 'oversize load weight reduction', 'frost law map 2026'
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export const revalidate = 3600
 
-// Static reference data — replaced by DB when frost_law_status table is live
+// Static reference data — planning-only until frost_law_status is connected.
 const FROST_REFERENCE = [
   { state:'MN', name:'Minnesota',      typical_start:'Mar 1',  typical_end:'May 15', reduction:'50%', status:'watch',   note:'Early spring thaw expected March 2026.' },
   { state:'WI', name:'Wisconsin',      typical_start:'Mar 1',  typical_end:'May 1',  reduction:'50%', status:'watch',   note:'Statewide frost map updated weekly.' },
@@ -38,7 +38,7 @@ const FROST_REFERENCE = [
 
 const STATUS_MAP = { active:{ label:'ACTIVE', color:'#ef4444', bg:'#2a0000' }, watch:{ label:'WATCH', color:'#d4950e', bg:'#2a1200' }, normal:{ label:'CLEAR', color:'#22c55e', bg:'#0d2000' } }
 
-const schema = { '@context':'https://schema.org','@type':'WebApplication', name:'Frost Law Tracker — Spring Weight Restrictions', url:'https://www.haulcommand.com/tools/frost-law-tracker', description:'Real-time frost law and spring road restriction tracker for US and Canada.', applicationCategory:'BusinessApplication', isAccessibleForFree:true, offers:{"@type":'Offer',price:'0',priceCurrency:'USD'} }
+const schema = { '@context':'https://schema.org','@type':'WebApplication', name:'Frost Law Tracker — Spring Weight Restrictions', url:'https://www.haulcommand.com/tools/frost-law-tracker', description:'Frost law and spring road restriction planning tracker for US and Canada.', applicationCategory:'BusinessApplication', isAccessibleForFree:true, offers:{"@type":'Offer',price:'0',priceCurrency:'USD'} }
 const faq = { '@context':'https://schema.org','@type':'FAQPage', mainEntity:[
   {"@type":'Question', name:'What is a frost law?', acceptedAnswer:{"@type":'Answer', text:'Frost laws (also called spring weight restrictions or spring road bans) are seasonal weight limits imposed on roads when the ground is thawing after winter. As the frost leaves the ground, road base becomes weakened and heavy loads can cause severe pavement damage. Weight limits are typically reduced 20"“50% during frost law periods.'}},
   {"@type":'Question', name:'When do frost laws start and end?', acceptedAnswer:{"@type":'Answer', text:'Frost laws typically begin in February"“March and lift by April"“May, depending on latitude and weather. Northern states like Minnesota and Michigan have the longest frost law seasons. The exact dates vary year to year based on temperature and soil conditions.'}},
@@ -53,10 +53,10 @@ export default function FrostLawTrackerPage() {
       <div className=" bg-[#07090d] text-[#f0f2f5]">
         <div className="border-b border-[#131c28] bg-gradient-to-r from-[#0a1020] to-[#07090d]">
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
-            <p className="text-[11px] tracking-[0.2em] text-[#3b82f6] font-semibold mb-3">FREE TOOL · REAL-TIME TRACKING</p>
+            <p className="text-[11px] tracking-[0.2em] text-[#3b82f6] font-semibold mb-3">FREE TOOL · PLANNING TRACKER</p>
             <h1 className="text-2xl lg:text-4xl font-extrabold text-[#f0f2f5] mb-4">Frost Law Tracker</h1>
             <p data-speakable="true" className="text-sm text-[#d0dce8] max-w-2xl mb-2 leading-relaxed">Frost laws are seasonal weight restrictions imposed on roads during spring thaw. They typically reduce legal weight limits by 20"“50% from February through May across the northern US and Canada. Use this tracker to monitor active restrictions and get alerts when frost laws activate or lift in your corridors.</p>
-            <p className="text-sm text-[#8a9ab0] max-w-2xl">Live spring weight restriction status for US states and Canadian provinces. Get push alerts when frost laws activate or lift in your corridors.</p>
+            <p className="text-sm text-[#8a9ab0] max-w-2xl">Reference spring weight restriction status for selected US states and Canadian provinces. Verify active restrictions with the current DOT or provincial source before dispatch.</p>
           </div>
         </div>
         <div className="px-4 lg:px-10 py-10 max-w-4xl mx-auto">
@@ -85,7 +85,7 @@ export default function FrostLawTrackerPage() {
                 <span className="text-xs text-[#8a9ab0]">{v.label}</span>
               </div>
             ))}
-            <span className="text-xs text-[#566880]">· Updated hourly from state DOT sources</span>
+            <span className="text-xs text-[#566880]">· Static planning reference; live DOT feed not connected</span>
           </div>
 
           {/* STATE GRID */}
@@ -134,7 +134,7 @@ export default function FrostLawTrackerPage() {
 
           {/* VISIBLE LAST UPDATED — AI engines cross-validate schema against visible page content */}
           <div className="mt-10 pt-4 border-t border-[#131c28] text-center">
-            <p className="text-[10px] text-[#3a5068]">Content last updated: April 2026 · Data verified against state DOT sources · Updated hourly during active frost law season</p>
+            <p className="text-[10px] text-[#3a5068]">Reference last updated: April 2026 · Static planning data · Confirm with current DOT/provincial sources before dispatch</p>
           </div>
         </div>
       </div>

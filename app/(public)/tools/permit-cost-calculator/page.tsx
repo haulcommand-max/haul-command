@@ -5,14 +5,14 @@ import { AdGridSponsorSlot } from '@/app/_components/directory/AdGridSponsorSlot
 
 export const metadata: Metadata = {
   title: 'Free Oversize Load Permit Cost Calculator — All 50 States | Haul Command',
-  description: 'Calculate oversize load permit costs by state instantly. Enter origin, destination, dimensions and weight. Free, public, no login required.',
+  description: 'Estimate oversize load permit costs by state. Enter origin, destination, dimensions and weight for a planning worksheet. Free, public, no login required.',
   alternates: { canonical: 'https://www.haulcommand.com/tools/permit-cost-calculator' },
 }
 
 export default function PermitCostCalculatorPage() {
-  const schema = { '@context':'https://schema.org','@type':'WebApplication', name:'Oversize Permit Cost Calculator', url:'https://www.haulcommand.com/tools/permit-cost-calculator', description:'Free oversize load permit cost calculator for all 50 US states. No login required.', applicationCategory:'BusinessApplication', isAccessibleForFree:true, offers:{"@type":'Offer',price:'0',priceCurrency:'USD'} }
+  const schema = { '@context':'https://schema.org','@type':'WebApplication', name:'Oversize Permit Cost Calculator', url:'https://www.haulcommand.com/tools/permit-cost-calculator', description:'Free oversize load permit planning calculator for US state reference data. No login required.', applicationCategory:'BusinessApplication', isAccessibleForFree:true, offers:{"@type":'Offer',price:'0',priceCurrency:'USD'} }
   const faq = { '@context':'https://schema.org','@type':'FAQPage', mainEntity:[
-    {"@type":'Question', name:'How much does an oversize load permit cost?', acceptedAnswer:{"@type":'Answer', text:'Oversize permit costs vary by state. Base fees range from $15 to $100+, plus per-mile charges of $0.10"“$0.50 and per-ton-over fees. Use the calculator above for an accurate estimate for your specific route.'}},
+    {"@type":'Question', name:'How much does an oversize load permit cost?', acceptedAnswer:{"@type":'Answer', text:'Oversize permit costs vary by state. Base fees range from $15 to $100+, plus per-mile charges of $0.10"“$0.50 and per-ton-over fees. Use the calculator above for a planning estimate, then verify with each issuing authority.'}},
     {"@type":'Question', name:'Do I need a permit for every state my load travels through?', acceptedAnswer:{"@type":'Answer', text:'Yes. You need a separate oversize load permit for each state your route passes through. Some states offer trip permits, annual permits, or multi-trip permits depending on load frequency.'}},
     {"@type":'Question', name:'How long does it take to get an oversize permit?', acceptedAnswer:{"@type":'Answer', text:'Standard permits are typically issued one to three business days in many markets. Superloads may require 5"“10 business days. Some states offer online issuance for standard loads.'}},
   ]}
@@ -26,8 +26,8 @@ export default function PermitCostCalculatorPage() {
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
             <p className="text-[11px] tracking-[0.2em] text-[#22c55e] font-semibold mb-3">FREE TOOL · NO LOGIN REQUIRED</p>
             <h1 className="text-2xl lg:text-4xl font-extrabold text-[#f0f2f5] mb-4">Oversize Load Permit Cost Calculator</h1>
-            <p data-speakable="true" className="text-sm text-[#d0dce8] max-w-2xl mb-2 leading-relaxed">Oversize load permit costs vary by state, typically ranging from $15 to $100+ in base fees plus per-mile charges of $0.10"“$0.50. A multi-state route may total $200"“$600 in permit fees alone. Enter your load dimensions and route below for an instant estimate covering all states along your corridor.</p>
-            <p className="text-sm text-[#8a9ab0] mb-2 max-w-2xl">Enter your load dimensions and route. Get instant permit cost estimates for every state along your route — including pilot car requirements, escort rules, and superload thresholds.</p>
+            <p data-speakable="true" className="text-sm text-[#d0dce8] max-w-2xl mb-2 leading-relaxed">Oversize load permit costs vary by state, typically ranging from $15 to $100+ in base fees plus per-mile charges of $0.10"“$0.50. A multi-state route may total $200"“$600 in permit fees alone. Enter your load dimensions and route below for a planning estimate covering states along your corridor.</p>
+            <p className="text-sm text-[#8a9ab0] mb-2 max-w-2xl">Enter your load dimensions and route. Get permit planning estimates by state, including pilot car considerations, escort rules, and superload thresholds that must be verified before filing.</p>
             <p className="text-xs text-[#22c55e]">Free · All 50 US States · No account needed</p>
           </div>
         </div>
@@ -50,7 +50,7 @@ export default function PermitCostCalculatorPage() {
                 </div>
               ))}
             </div>
-            <button className="w-full bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold py-3.5 rounded-xl text-sm transition-colors">Calculate Permit Costs â†’</button>
+            <button className="w-full bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold py-3.5 rounded-xl text-sm transition-colors">Preview Permit Costs â†’</button>
             <p className="text-[10px] text-[#3a5068] text-center mt-3">Full dynamic calculation engine coming Q2 2026. Contact us for manual quotes: <a href="mailto:permits@haulcommand.com" className="text-[#d4950e]">permits@haulcommand.com</a></p>
           </div>
 
@@ -92,7 +92,7 @@ export default function PermitCostCalculatorPage() {
                 </tbody>
               </table>
             </div>
-            <p className="text-[10px] text-[#3a5068] mt-3">Reference data. Rates verified Q1 2026 — confirm with state DOT before filing. Confidence: <span className="text-[#d4950e]">partially_verified</span>.</p>
+            <p className="text-[10px] text-[#3a5068] mt-3">Reference data. Fee rows are planning references from prior source collection; confirm current amounts with state DOT before filing. Confidence: <span className="text-[#d4950e]">partially_verified</span>.</p>
           </div>
 
           {/* FAQ */}
@@ -132,7 +132,7 @@ export default function PermitCostCalculatorPage() {
 
           {/* VISIBLE LAST UPDATED — AI engines cross-validate schema against visible page content */}
           <div className="mt-10 pt-4 border-t border-[#131c28] text-center">
-            <p className="text-[10px] text-[#3a5068]">Permit data last updated: Q1 2026 · Verified against state DOT fee schedules · Confirm with issuing authority before filing</p>
+            <p className="text-[10px] text-[#3a5068]">Permit reference last updated: Q1 2026 · Partially verified planning data · Confirm with issuing authority before filing</p>
           </div>
         </div>
       </div>

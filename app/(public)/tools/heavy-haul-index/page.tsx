@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Heavy Haul National Demand Index | Haul Command',
-    description: 'Download the latest monthly Heavy Haul Index report. Gain insights into pilot car supply gaps, national average rates per mile, and the hottest oversize corridors in the US & Canada.',
+    description: 'Download the Heavy Haul Index planning report. Review pilot car supply gaps, planning rate signals, and oversize corridor pressure across supported US and Canada markets.',
 };
 
 export default function HeavyHaulIndexPage() {
@@ -20,13 +20,13 @@ export default function HeavyHaulIndexPage() {
                     <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6">
                         <div>
                             <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 rounded-full text-emerald-400 text-xs font-bold uppercase tracking-widest mb-4">
-                                <BarChart3 className="w-4 h-4" /> Live Industry Data
+                                <BarChart3 className="w-4 h-4" /> Planning Index
                             </div>
                             <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight mb-4">
                                 National <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-600">Heavy Haul Index</span>
                             </h1>
                             <p className="text-lg text-slate-400 max-w-2xl">
-                                The most accurate measure of pilot car supply elasticity, oversize load demand, and prevailing rates across North American corridors.
+                                A planning index for pilot car supply elasticity, oversize load demand, and rate pressure across supported North American corridors.
                             </p>
                         </div>
 
@@ -136,7 +136,7 @@ export default function HeavyHaulIndexPage() {
                         />
 
                         <div className="p-6 bg-gradient-to-br from-emerald-900/40 to-[#0a0a0f] border border-emerald-500/20 rounded-2xl">
-                            <h3 className="font-black text-white text-lg mb-2">Need Real-Time Data?</h3>
+                            <h3 className="font-black text-white text-lg mb-2">Need a Data Feed?</h3>
                             <p className="text-sm text-slate-400 mb-6">
                                 Integrate the Heavy Haul Index directly into your TMS or Brokerage dashboard using our enterprise API.
                             </p>

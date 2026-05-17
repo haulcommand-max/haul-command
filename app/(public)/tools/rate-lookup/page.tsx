@@ -48,7 +48,7 @@ export default function RateLookupPage() {
                     </div>
                     <h1 style={{ margin: 0, fontSize: 36, fontWeight: 900, color: '#f9fafb', letterSpacing: -1, lineHeight: 1.1 }}>Lane Rate Lookup</h1>
                     <p style={{ margin: '12px auto 0', maxWidth: 500, fontSize: 15, color: '#6b7280', lineHeight: 1.6 }}>
-                        See what pilot car services typically cost by corridor type and service. Market intelligence, free.
+                        See planning ranges for pilot car services by corridor type and service. Confirm live pricing with operators before quoting.
                     </p>
                 </div>
 
@@ -144,14 +144,14 @@ export default function RateLookupPage() {
                                     <div style={{ fontSize: 11, fontWeight: 700, color: '#10b981', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>ðŸ’¡ Market Context</div>
                                     <div style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.7 }}>
                                         Rates vary based on: time of year, urban density, permit complexity, day of week (weekend premiums common), and driver availability.
-                                        Posting at the median rate typically fills in under 2 hours. Posting at 75th percentile attracts premium, experienced escorts faster.
+                                        Higher offers can improve response rates, but fill time depends on live availability, route complexity, seasonality, and operator participation.
                                     </div>
                                 </div>
 
                                 {/* CTA */}
                                 <div style={{ background: 'rgba(241,169,27,0.06)', border: '1px solid rgba(241,169,27,0.2)', borderRadius: 16, padding: '1.5rem', textAlign: 'center' }}>
                                     <h3 style={{ margin: '0 0 8px', fontSize: 16, fontWeight: 800, color: '#f9fafb' }}>Ready to Post at the Right Rate?</h3>
-                                    <p style={{ margin: '0 0 16px', fontSize: 13, color: '#6b7280' }}>Haul Command's intelligence engine adjusts rate recommendations in real-time.</p>
+                                    <p style={{ margin: '0 0 16px', fontSize: 13, color: '#6b7280' }}>Use this as a planning range, then confirm availability and pricing with live operators.</p>
                                     <a href="/onboarding/start?role=broker" style={{
                                         display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 28px',
                                         background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000',

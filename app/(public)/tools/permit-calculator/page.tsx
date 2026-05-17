@@ -180,8 +180,8 @@ export default function PermitCalculatorPage() {
                         Oversize Load <span style={{color: T.gold }}>Permit Matrix</span>
                     </h1>
                     <p style={{fontSize: 16,color: T.muted,maxWidth: 640,margin: '0 auto' }}>
-                        Calculate escort configurations, police triggers, night movement restrictions,
-                        and estimated costs for any multi-state route — instantly.
+                        Estimate escort configurations, police triggers, night movement restrictions,
+                        and planning costs for supported state routes. Verify with each state DOT before filing or dispatch.
                     </p>
                 </div>
 
@@ -269,7 +269,7 @@ export default function PermitCalculatorPage() {
                             disabled={selectedStates.length === 0}
                             style={{width: '100%',marginTop: 20,padding: 16,borderRadius: 14,background: selectedStates.length === 0 ? T.border : `linear-gradient(135deg, ${T.gold}, #d97706)`,color: '#000',fontWeight: 900,fontSize: 14,textTransform: 'uppercase',letterSpacing: '0.06em',border: 'none',cursor: selectedStates.length === 0 ? 'not-allowed' : 'pointer',boxShadow: selectedStates.length > 0 ? '0 0 24px rgba(245,185,66,0.25)' : 'none',transition: 'all 0.2s'}}
                         >
-                            Run Compliance Check â†’
+                            Run Planning Check â†’
                         </button>
                     </div>
                 </div>
@@ -336,8 +336,8 @@ export default function PermitCalculatorPage() {
                         <div style={{marginTop: 24,padding: 24,borderRadius: 20,background: 'rgba(245,185,66,0.06)',border: '1px solid rgba(245,185,66,0.2)',display: 'flex',flexDirection: 'column',gap: 12 }}>
                             <div style={{fontSize: 16,fontWeight: 900,color: T.gold }}>Need these escorts right now?</div>
                             <p style={{margin: 0,fontSize: 13,color: T.muted,lineHeight: 1.6 }}>
-                                Post to the Haul Command network — 847 certified escort operators across{' '}
-                                {results.map(r => r.state).join(', ')} and beyond. Average fill time: <strong style={{color: T.text }}>8 minutes</strong> for active loads.
+                                Post to the Haul Command network and route the request to operator records across{' '}
+                                {results.map(r => r.state).join(', ')} and nearby markets. Availability and response time depend on live operator participation.
                             </p>
                             <div style={{display: 'flex',gap: 10,flexWrap: 'wrap' }}>
                                 <Link aria-label="Navigation Link" href="/loads/new" style={{padding: '12px 24px',borderRadius: 12,background: `linear-gradient(135deg, ${T.gold}, #d97706)`,color: '#000',fontWeight: 900,fontSize: 13,textDecoration: 'none',textTransform: 'uppercase',letterSpacing: '0.05em' }}>
