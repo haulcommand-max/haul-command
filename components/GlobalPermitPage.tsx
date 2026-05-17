@@ -21,7 +21,7 @@ export default function GlobalPermitPage({ countries }: { countries: CountryPerm
           </span>
           <h1 style={{ fontSize: 48, fontWeight: 800, margin: '0 0 16px' }}>120-Country <span style={{ background: 'linear-gradient(90deg, #00ff88, #00d4ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Permit Database</span></h1>
           <p style={{ fontSize: 18, color: 'rgba(255,255,255,0.6)', maxWidth: 600, margin: '0 auto' }}>
-            Instant access to oversize/overweight permit regulations, escort requirements, and direct filing portals for 120 countries.
+            Access oversize/overweight permit regulations, escort requirements, and filing portals where source data is available.
           </p>
         </div>
 

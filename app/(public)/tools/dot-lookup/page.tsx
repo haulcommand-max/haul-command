@@ -95,7 +95,7 @@ export default function DotLookupLandingPage() {
             </div>
             <h2 className="text-3xl font-bold text-white mb-4 leading-tight">Need to lower your commercial truck insurance?</h2>
             <p className="text-slate-300 text-lg">
-              Haul Command partners with top heavy-haul insurance underwriters to offer exclusive rates for operators with clean DOT scores. Get a free quote to see how much you could save over your current policy.
+              Haul Command partners with top heavy-haul insurance underwriters to offer partner quote options for operators with clean DOT scores. Get a free quote to see how much you could save over your current policy.
             </p>
           </div>
           <div className="relative z-10 w-full md:w-auto flex-shrink-0">

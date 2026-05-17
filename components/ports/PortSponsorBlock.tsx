@@ -52,10 +52,10 @@ const TIERS = [
         name: "Domination",
         price: 799,
         badge: "🔥",
-        tag: "Exclusive",
+        tag: "Sponsor",
         tagColor: "text-red-400 bg-red-500/10 border-red-500/25",
         includes: [
-            "Exclusive port ownership (1 buyer)",
+            "Sponsor port ownership (1 buyer)",
             "Outbound corridor co-sponsorship",
             "Priority lead routing",
         ],

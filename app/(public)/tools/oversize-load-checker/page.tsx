@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Oversize Load Checker — Is My Load Oversize? | Haul Command',
-  description: 'Check instantly if your load is legally oversize in any US state or 120 countries. Enter width, height, length and get permit and escort requirements.',
+  description: 'Check whether your load may be legally oversize in supported markets. Enter width, height, length and get permit and escort requirements.',
   alternates: { canonical: 'https://www.haulcommand.com/tools/oversize-load-checker' },
 };
 
@@ -33,7 +33,7 @@ export default function OversizeLoadCheckerPage() {
             <span>Load Classification</span>
           </div>
           <h1 className="text-4xl font-black mb-3">Oversize Load Checker</h1>
-          <p className="text-gray-400 text-lg max-w-xl">Enter your load dimensions to instantly know if you need oversize permits, pilot cars, or special routing — in any US state or 120 countries.</p>
+          <p className="text-gray-400 text-lg max-w-xl">Enter your load dimensions to review if you need oversize permits, pilot cars, or special routing — in supported markets.</p>
         </div>
       </div>
 

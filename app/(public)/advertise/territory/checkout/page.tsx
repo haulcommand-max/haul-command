@@ -4,7 +4,7 @@ import CheckoutContent from './CheckoutContent';
 
 export const metadata = {
   title: 'Secure Your Territory | AdGrid Checkout | Haul Command',
-  description: 'Lock the exclusive AdGrid Sponsor slot for your market territory. 100% Share-of-Voice for all broker routing searches.',
+  description: 'Reserve an AdGrid sponsor placement for your market territory. Placement rules are confirmed before launch.',
 };
 
 export default function AdGridCheckoutPage() {

@@ -51,7 +51,7 @@ export function RouteIntelHero() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-lg md:text-xl text-gray-400 max-w-2xl mb-12 font-light leading-relaxed"
         >
-          Bypass hours of manual research. Ask the Haul Command engine any question about oversize regulations, pilot cars, or permits across 120 countries.
+          Bypass hours of manual research. Ask the Haul Command engine any question about oversize regulations, pilot cars, or permits across priority markets.
         </motion.p>
 
         <motion.div 
@@ -61,7 +61,7 @@ export function RouteIntelHero() {
           className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-3xl"
         >
           {[
-            { icon: Map, title: '120 countries', desc: 'Real-time routing data' },
+            { icon: Map, title: 'Priority markets', desc: 'Source-backed routing data' },
             { icon: ShieldAlert, title: 'Permit Rules', desc: 'State-by-state laws' },
             { icon: Zap, title: 'Instant Answers', desc: 'Powered by Gemini AI' }
           ].map((feature, idx) => (

@@ -122,7 +122,7 @@ export function NearbyNowModule({
                     }
                     if (data.verified_operators > 0) {
                         nearbyItems.push({
-                            id: 'ops', label: `${data.verified_operators} Verified Operators`, detail: 'Ready to work',
+                            id: 'ops', label: `${data.verified_operators} Operator Records`, detail: 'Profile signals',
                             type: 'operator', color: '#3B82F6', icon: '🚘',
                         });
                     }

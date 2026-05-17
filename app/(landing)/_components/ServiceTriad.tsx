@@ -35,7 +35,7 @@ const TRIAD = [
   {
     icon: Search,
     title: "Find Escorts",
-    desc: "Search 15,000+ verified pilot car operators across 120 countries. Filter by location, equipment, certification, rating, and availability.",
+    desc: "Search pilot car and escort vehicle records by market. Filter by location, equipment, certification signals, and profile details.",
     href: "/directory",
     cta: "Search Directory",
     accent: "#3b82f6",
@@ -44,7 +44,7 @@ const TRIAD = [
   {
     icon: Radio,
     title: "Share Availability",
-    desc: "Toggle available, set your territory, and receive instant push offers matched to your equipment. Get paid same day.",
+    desc: "Set your territory, maintain your profile, and receive request notifications matched to your equipment where dispatch workflows are active.",
     href: "/onboarding/start?role=operator",
     cta: "Go Available",
     accent: "#22c55e",

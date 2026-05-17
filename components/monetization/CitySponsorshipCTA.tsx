@@ -24,7 +24,7 @@ export function CitySponsorshipCTA({ cityName, regionName, pricePerMonth }: City
                 <div>
                     <div className="flex items-center gap-2 mb-4">
                         <Crown className="w-5 h-5 text-[#F1A91B]" />
-                        <span className="text-xs font-bold uppercase tracking-widest text-[#F1A91B]">Exclusive Placement</span>
+                        <span className="text-xs font-bold uppercase tracking-widest text-[#F1A91B]">Sponsor Placement</span>
                     </div>
 
                     <h3 className="text-3xl font-black text-white tracking-tight mb-2">

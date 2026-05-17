@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Trucker Services Directory — Repair, Towing, Scales, Stops & More | Haul Command',
-  description: 'Find truck repair shops, towing services, weigh stations, truck stops, parts suppliers, pilot car companies, and 46+ service categories. The most comprehensive trucker services directory for oversize load and heavy haul operations across 120 countries.',
+  description: 'Find truck repair shops, towing services, weigh stations, truck stops, parts suppliers, pilot car companies, and 46+ service categories. A trucker services directory for oversize load and heavy haul operations across priority markets.',
   keywords: [
     'trucker services directory',
     'truck stop directory',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'Trucker Services Directory — 46+ Categories | Haul Command',
-    description: 'Find every service a heavy haul operation needs — repair, towing, scales, stops, parts, and pilot car companies across 120 countries.',
+    description: 'Find every service a heavy haul operation needs — repair, towing, scales, stops, parts, and pilot car companies across priority markets.',
     type: 'website',
   },
 };

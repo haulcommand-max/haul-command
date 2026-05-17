@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: 'Live Dispatch Control — Haul Command',
   description:
-    'Real-time dispatch control center. Match available operators to active loads with intelligent geo-filtering, trust scoring, and capability matching.',
+    'Dispatch control center for matching operator records to load requirements with geo-filtering, trust signals, and capability context.',
   robots: { index: false, follow: false },
 };
 
@@ -22,7 +22,7 @@ export default async function LiveDispatchPage() {
         <PaywallGateBanner
           surfaceName="Dispatch Control"
           tier="Business"
-          description="Unlock unlimited dispatch operations, supply chain analytics, and priority operator matching across 50+ countries."
+          description="Unlock unlimited dispatch operations, supply chain analytics, and priority operator matching across priority markets."
         />
       </div>
       <DispatchDashboard stats={stats} />

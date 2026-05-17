@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 
 export const metadata: Metadata = {
   title: 'Total Trip Cost Calculator — Oversize Load Move Budget | Haul Command',
-  description: 'Calculate the complete cost of an oversize load move: permits, pilot cars, fuel, tolls, overnight stops, and detention time. Free. 120 countries.',
+  description: 'Calculate the complete cost of an oversize load move: permits, pilot cars, fuel, tolls, overnight stops, and detention time. Free. Market coverage varies.',
   alternates: { canonical: 'https://www.haulcommand.com/tools/total-trip-cost-calculator' },
 };
 
@@ -38,7 +38,7 @@ export default async function TotalTripCostPage() {
           <p className="text-gray-400 text-lg max-w-xl">Budget the full cost of an oversize load move — permits, escorts, fuel, tolls, overnight stops — using real market rate benchmarks from our network.</p>
           <div className="flex flex-wrap gap-4 mt-4 text-xs text-gray-500">
             <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-green-400" />Live rate data</span>
-            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-blue-400" />120 countries</span>
+            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-blue-400" />Market coverage varies</span>
             <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[#F1A91B]" />No sign-up required</span>
           </div>
         </div>
@@ -120,7 +120,7 @@ export default async function TotalTripCostPage() {
           <Link href="/directory" className="flex items-center justify-between p-5 bg-[#111827] hover:bg-[#F1A91B]/5 border border-[#F1A91B]/20 rounded-2xl transition-all group">
             <div>
               <div className="font-black text-white">Find Escort Operators</div>
-              <div className="text-xs text-gray-400 mt-1">7,711+ verified operators in network</div>
+              <div className="text-xs text-gray-400 mt-1">Browse operator records by market</div>
             </div>
             <span className="text-[#F1A91B] group-hover:translate-x-1 transition-transform">→</span>
           </Link>

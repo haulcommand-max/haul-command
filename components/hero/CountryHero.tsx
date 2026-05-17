@@ -233,7 +233,7 @@ export default function CountryHero({
                             {totalOperators > 0 && (
                                 <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-white/50">
                                     <Users className="w-3 h-3 text-emerald-400" />
-                                    {totalOperators.toLocaleString()} Verified Operators
+                                    {totalOperators.toLocaleString()} Operator Records
                                 </span>
                             )}
                             {totalCorridors > 0 && (

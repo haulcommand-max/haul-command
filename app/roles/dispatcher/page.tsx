@@ -8,7 +8,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: 'Heavy Haul Dispatchers — Dispatch Tools, Load Board & Escort Coordination | Haul Command',
   description:
-    'The complete platform for heavy haul dispatchers. Manage loads, coordinate pilot car escorts, track permits, and connect with verified operators across 50+ countries. Real-time load board, dispatch map, and corridor intelligence.',
+    'The complete platform for heavy haul dispatchers. Manage loads, coordinate pilot car escorts, track permits, and review operator records across priority markets with load-board, map, and corridor-intelligence workflows.',
   keywords: [
     'heavy haul dispatcher', 'oversize load dispatch', 'pilot car dispatch',
     'escort vehicle coordinator', 'oversize load coordinator', 'heavy haul load board',
@@ -55,10 +55,10 @@ const PAGE_SCHEMA = {
 
 const ACTIONS = [
   { href: '/loads', icon: 'ðŸ“¡', label: 'Open Load Board', desc: 'See all active oversize loads needing dispatch coverage', cta: 'View Loads â†’', primary: true },
-  { href: '/directory', icon: 'ðŸ”', label: 'Find Escort Operators', desc: 'Locate verified pilot cars available in any state or country', cta: 'Find Escorts â†’', primary: false },
+  { href: '/directory', icon: 'ðŸ”', label: 'Find Escort Operators', desc: 'Locate pilot car records by market', cta: 'Find Escorts â†’', primary: false },
   { href: '/escort-requirements', icon: 'âš–ï¸', label: 'State Escort Rules', desc: 'Look up escort and permit requirements for any US state', cta: 'Check State Rules â†’', primary: false },
   { href: '/tools/escort-calculator', icon: 'ðŸ§®', label: 'Escort Vehicle Calculator', desc: 'Calculate how many pilot cars your load requires', cta: 'Calculate Escorts â†’', primary: false },
-  { href: '/available-now', icon: 'ðŸŸ¢', label: 'Available Right Now', desc: 'Operators broadcasting live availability for immediate dispatch', cta: 'See Who\'s Available â†’', primary: false },
+  { href: '/available-now', icon: 'ðŸŸ¢', label: 'Available Right Now', desc: 'Operators sharing availability signals where supported', cta: 'See Who\'s Available â†’', primary: false },
   { href: '/map', icon: 'ðŸ—ºï¸', label: 'Live Dispatch Map', desc: 'Track active loads, corridors, and operator positions in real time', cta: 'Open Map â†’', primary: false },
 ];
 

@@ -200,7 +200,7 @@ export default async function SupportTypeRatePage({ params }: Props) {
         {/* CTAs */}
         <div className="bg-[#0B0F14] text-white rounded-2xl p-8">
           <h3 className="text-xl font-black mb-2">Find Verified {info.localTerm}s</h3>
-          <p className="text-gray-400 text-sm mb-6">7,700+ verified operators in the Haul Command network. Claim your listing to appear in specialty searches.</p>
+          <p className="text-gray-400 text-sm mb-6">Claim your listing to appear in specialty searches.</p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link href={info.directoryHref} className="px-6 py-3 bg-[#F1A91B] hover:bg-[#D4951A] text-black font-bold rounded-lg text-center transition-colors">
               {info.relatedLabel}

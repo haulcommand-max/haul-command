@@ -124,7 +124,7 @@ export default function SponsorCheckoutClient() {
                         Own Your Territory
                     </h1>
                     <p className="text-slate-400 mt-4 max-w-lg mx-auto">
-                        Get exclusive placement on Haul Command's highest-traffic pages. Brokers and carriers see you <strong className="text-white">first</strong>.
+                        Get contracted placement on Haul Command's highest-traffic pages. Brokers and carriers see approved placements.
                     </p>
                 </div>
 

@@ -9,7 +9,7 @@ import {
 
 export const metadata: Metadata = {
   title: 'Heavy Haul Role Guide — Pilot Cars, Brokers, Carriers, Permits | Haul Command',
-  description: 'Start here for your heavy haul role. Complete guides for pilot car operators, brokers, carriers, permit agents, route surveyors, height pole operators, and every other oversize load professional — across 120 countries.',
+  description: 'Start here for your heavy haul role. Complete guides for pilot car operators, brokers, carriers, permit agents, route surveyors, height pole operators, and every other oversize load professional — across priority markets.',
   alternates: { canonical: 'https://www.haulcommand.com/roles' },
 };
 
@@ -119,7 +119,7 @@ const ROLES = [
     color: '#ec4899',
     what: 'You obtain oversize/overweight permits from state DOTs and other authorities. You interpret regulations, calculate legal routes, and ensure loads move with proper authorization.',
     pay: '$75–$200+ per permit. Volume-based packages with carriers.',
-    needs: ['State permit system access', 'Regulation knowledge (50 US states + 120 countries)', 'Bridge formula expertise', 'FMCSA / DOT knowledge', 'Professional liability insurance'],
+    needs: ['State permit system access', 'Regulation knowledge (50 US states + priority markets)', 'Bridge formula expertise', 'FMCSA / DOT knowledge', 'Professional liability insurance'],
     steps: ['Build state-by-state permit knowledge', 'Get credentialed with state systems', 'List on Haul Command permit directory', 'Connect with carriers needing permit services', 'Automate with our permit tools'],
     tools: [
       { label: 'Permit Cost Calculator', href: '/tools/permit-calculator' },
@@ -342,7 +342,7 @@ export default function RolesPage() {
               <span className="text-[#F1A91B]">Heavy Haul Role</span>
             </h1>
             <p className="text-base text-amber-100/70 leading-relaxed mb-8 max-w-2xl">
-              Every role in heavy haul transportation — pilot car operator, broker, carrier, permit agent, route surveyor, and more. What you do, what you earn, what you need, and how Haul Command gets you there. Available across 120 countries.
+              Every role in heavy haul transportation — pilot car operator, broker, carrier, permit agent, route surveyor, and more. What you do, what you earn, what you need, and how Haul Command gets you there. Available across priority markets.
             </p>
             <div className="flex flex-wrap gap-3">
               {ROLES.slice(0, 6).map(r => (
@@ -385,7 +385,7 @@ export default function RolesPage() {
           <Award className="w-10 h-10 text-[#F1A91B] mx-auto mb-4" />
           <h2 className="text-2xl font-black text-white mb-3">Don't See Your Role?</h2>
           <p className="text-sm text-amber-100/70 mb-6 max-w-lg mx-auto">
-            Haul Command covers every role in the oversize load ecosystem across 120 countries. If you work in heavy haul, we have a place for you.
+            Haul Command covers every role in the oversize load ecosystem across priority markets. If you work in heavy haul, we have a place for you.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <Link href="/directory" className="hc-btn-primary px-6 py-3 rounded-xl flex items-center gap-2 text-sm">

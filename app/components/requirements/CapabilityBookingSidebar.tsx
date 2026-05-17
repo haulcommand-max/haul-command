@@ -57,7 +57,7 @@ export default function CapabilityBookingSidebar({
 
         <div className="pt-4">
           <button type="button" className="w-full bg-hc-yellow-400 hover:bg-yellow-500 text-hc-gray-900 font-extrabold py-3 rounded uppercase tracking-wide transition-all shadow-md">
-            Find Verified Operators
+            Find Operator Records
           </button>
           <p className="text-center text-xs text-hc-gray-500 mt-3">
             Only matches operators with active, verified credential wallets valid in {regionCode.toUpperCase()}.

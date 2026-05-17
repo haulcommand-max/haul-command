@@ -39,7 +39,7 @@ const LANES: RoleLane[] = [
     icon: '📋',
     title: 'Broker / Dispatcher',
     subtitle: 'Post loads · Find coverage · Fill fast',
-    description: 'Post loads, find verified operators, and fill escort slots in any corridor.',
+    description: 'Post loads, find operator records, and fill escort slots in any corridor.',
     color: '#3B82F6',
   },
   {

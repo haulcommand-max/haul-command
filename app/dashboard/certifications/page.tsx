@@ -263,7 +263,7 @@ export default function CertificationsDashboard() {
             <div style={{ fontSize: 36, marginBottom: 12 }}>ðŸ…</div>
             <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 8 }}>No active certifications yet</h3>
             <p style={{ color: '#6a6a7a', marginBottom: 20, fontSize: 14, lineHeight: 1.6 }}>
-              Certified operators get 3x more load offers and priority placement in AV corridor searches.<br />
+              Complete certification profiles give brokers more evidence to review in AV corridor searches.<br />
               Module 1 is completely free.
             </p>
             <Link aria-label="Navigation Link" href="/training/platform-fundamentals" style={{

@@ -143,7 +143,7 @@ export function GlossaryTermPage({ payload }: { payload: GlossaryTermPayload }) 
             <div className="relative z-10">
               <span className="text-[10px] font-black tracking-widest uppercase text-amber-500 mb-2 block">Premium Sponsor</span>
               <h3 className="text-xl font-black text-white mb-3">Own this Term.</h3>
-              <p className="text-sm text-gray-400 font-medium mb-6">Secure exclusive AdGrid placement entirely surrounding the '{term.canonical_term}' cluster.</p>
+              <p className="text-sm text-gray-400 font-medium mb-6">Request AdGrid placement around the '{term.canonical_term}' cluster.</p>
               <button className="w-full bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-amber-500 text-black py-3 rounded-xl font-black uppercase text-[11px] tracking-widest transition-transform hover:-translate-y-0.5">
                 Lock Placement
               </button>

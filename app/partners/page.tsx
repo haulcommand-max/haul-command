@@ -106,7 +106,7 @@ export default function PartnersPage() {
 
       {/* Solution */}
       <section id="how-it-works" className="max-w-5xl mx-auto px-4 py-16">
-        <h2 className="text-2xl font-bold mb-8 text-center">One platform. Every corridor. 50+ countries.</h2>
+        <h2 className="text-2xl font-bold mb-8 text-center">One platform. Priority corridors. Market coverage varies.</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {SOLUTIONS.map((s) => (
             <div key={s.text} className="flex items-start gap-3 p-5 bg-white/5 border border-white/10 rounded-xl">

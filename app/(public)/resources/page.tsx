@@ -434,7 +434,7 @@ export default function ResourceHubPage() {
                         <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#f9fafb', marginBottom: '1.25rem' }}>Explore Haul Command</h2>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
                             {[
-                                { href: '/directory', icon: Users, label: 'Pilot Car Directory', desc: 'Find verified operators near you', color: '#C6923A' },
+                                { href: '/directory', icon: Users, label: 'Pilot Car Directory', desc: 'Find operator records near you', color: '#C6923A' },
                                 { href: '/glossary', icon: BookOpen, label: 'Industry Glossary', desc: '3,000+ terms defined', color: '#38bdf8' },
                                 { href: '/escort-requirements', icon: Shield, label: 'Escort Requirements', desc: 'State-by-state rules', color: '#10b981' },
                                 { href: '/rates', icon: Star, label: 'Rate Guide', desc: 'Market rates by state', color: '#f59e0b' },

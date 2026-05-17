@@ -39,7 +39,7 @@ export async function GET() {
   <channel>
     <title>Haul Command | Heavy Haul Intelligence</title>
     <link>https://www.haulcommand.com</link>
-    <description>Pilot car regulations, corridor intelligence, and heavy haul operator news across 120 countries.</description>
+    <description>Pilot car regulations, corridor intelligence, and heavy haul operator news across priority markets.</description>
     <language>en-us</language>
     <copyright>2026 Haul Command</copyright>
     <atom:link href="https://www.haulcommand.com/feed.xml" rel="self" type="application/rss+xml"/>

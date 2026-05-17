@@ -211,7 +211,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                     Find verified {primaryTerm} operators
                     {equipment ? ` specializing in ${equipment.label.toLowerCase()} transport` : ''}
                     {' '}in {geo}.
-                    {modifier?.nearMeBoosted ? ' Available now with real-time dispatch.' : ''}
+                    {modifier?.nearMeBoosted ? ' Request status review.' : ''}
                     {' '}Compare rates, reviews, and availability on Haul Command.
                 </p>
 
@@ -377,7 +377,7 @@ export default async function LongTailPage({ params }: { params: Promise<{ slug:
                         Need a {titleize(primaryTerm)} in {geo}?
                     </h2>
                     <p style={{ fontSize: 16, color: T.textSecondary, marginBottom: 20, maxWidth: 480, margin: '0 auto 20px' }}>
-                        Haul Command connects you with verified operators in minutes, not hours.
+                        Haul Command helps you review operator records and contact paths.
                     </p>
                     <Link aria-label="Navigation Link" href="/directory" style={{
                         display: 'inline-block', padding: '16px 36px', borderRadius: 12,

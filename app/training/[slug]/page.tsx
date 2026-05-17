@@ -540,7 +540,7 @@ export default async function TrainingCoursePage({ params }: { params: Promise<{
             moves={[
               { href: '/training', icon: '🎓', title: 'All Programs', desc: 'Full training catalog', primary: true, color: '#F5A623' },
               { href: '/training/report-card', icon: '📋', title: 'Your Report Card', desc: 'Track your credentials' },
-              { href: '/directory', icon: '🔍', title: 'Operator Directory', desc: 'See verified operators' },
+              { href: '/directory', icon: '🔍', title: 'Operator Directory', desc: 'See operator records' },
               { href: '/tools/escort-calculator', icon: '🧮', title: 'Rate Calculator', desc: 'What to charge' },
               { href: '/available-now', icon: '🟢', title: 'Available Now', desc: 'Start taking jobs' },
               { href: '/blog', icon: '📰', title: 'Intelligence', desc: 'Industry insights' },

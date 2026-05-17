@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ country: 
   
   return {
     title: `${corridorName} Heavy Haul Directory & Route Intelligence | Haul Command`,
-    description: `Real-time heavy haul route clearance, verified pilot cars, and carrier density along ${corridorName}. Unlock rate API data and secure local AdGrid placement.`,
+    description: `Heavy haul route context, directory records, and carrier-density signals along ${corridorName}. Review source confidence before planning or buying local AdGrid placement.`,
   };
 }
 
@@ -57,7 +57,7 @@ export default async function CorridorHub({ params }: { params: Promise<{ countr
                     {corridorName} Intelligence
                 </h1>
                 <p className="max-w-2xl mx-auto text-lg text-slate-400">
-                    Real-time operational density, restriction monitoring, and verified operator capacity for the {corridorName} routing network.
+                    Operational density, restriction context, and directory coverage signals for the {corridorName} routing network.
                 </p>
             </div>
 
@@ -70,7 +70,7 @@ export default async function CorridorHub({ params }: { params: Promise<{ countr
                     </div>
                     <h3 className="text-xl font-bold text-white mb-2">Are you running this route?</h3>
                     <p className="text-slate-400 text-sm mb-6">
-                        Claim your authority on the {corridorName}. When brokers search this exact lane, your verified profile will rank first.
+                        Claim your profile on the {corridorName}. Complete, evidence-backed listings can be considered for stronger broker-facing placement.
                     </p>
                     <Link href="/claim" className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-bold rounded text-black bg-gradient-to-r from-[#F8DFB0] to-[#C6923A] uppercase">
                         Claim Route Authority
@@ -87,7 +87,7 @@ export default async function CorridorHub({ params }: { params: Promise<{ countr
                         <span className="px-1.5 py-0.5 rounded text-[8px] font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/20">SELF-SERVE</span>
                     </div>
                     <p className="text-slate-400 text-sm mb-6">
-                        Dominate broker searches exclusively for the {corridorName} lane. Lock out local competitors instantly.
+                        Buy measured visibility against high-intent searches for the {corridorName} lane. Placement rules and availability are shown before checkout.
                     </p>
                     <Link href={`/advertise/corridor?lane=${resolvedParams.corridor}`} className="w-full inline-flex items-center justify-center px-4 py-2 border border-emerald-500/50 text-sm font-bold rounded text-emerald-400 hover:bg-emerald-500/10 uppercase">
                         Buy Slot — $149/mo
@@ -104,7 +104,7 @@ export default async function CorridorHub({ params }: { params: Promise<{ countr
                         <span className="px-1.5 py-0.5 rounded text-[8px] font-mono bg-blue-500/20 text-blue-400 border border-blue-500/20">ENTERPRISE</span>
                     </div>
                     <p className="text-slate-400 text-sm mb-6">
-                        Export live quote averages and carrier density bottlenecks specific to the {corridorName}.
+                        Export corridor benchmark data and carrier-density signals specific to the {corridorName}.
                     </p>
                     <Link href={`/data-products?lane=${resolvedParams.corridor}`} className="w-full inline-flex items-center gap-2 justify-center px-4 py-2 border border-blue-500/50 text-sm font-bold rounded text-blue-400 hover:bg-blue-500/10 uppercase">
                         <Lock className="h-3 w-3" /> Unlock API — $49/mo
@@ -115,8 +115,8 @@ export default async function CorridorHub({ params }: { params: Promise<{ countr
             {/* Hyperlocal Directory Fallback View */}
             <div className="pt-16 border-t border-white/5">
                 <div className="flex items-center gap-4 mb-8">
-                    <h2 className="text-xl font-bold text-slate-100">Live Operator Hub</h2>
-                    <span className="px-2 py-1 rounded text-xs font-mono bg-amber-500/10 text-amber-500 border border-amber-500/20"><AlertTriangle className="h-3 w-3 inline mr-1" /> ACTIVE RESTRICTION WARNINGS</span>
+                    <h2 className="text-xl font-bold text-slate-100">Operator Directory Hub</h2>
+                    <span className="px-2 py-1 rounded text-xs font-mono bg-amber-500/10 text-amber-500 border border-amber-500/20"><AlertTriangle className="h-3 w-3 inline mr-1" /> SOURCE CHECK REQUIRED</span>
                 </div>
                 
                 {/* SSG Directory Grid Preview */}
@@ -127,10 +127,10 @@ export default async function CorridorHub({ params }: { params: Promise<{ countr
                             <div className="flex flex-col gap-1 w-full">
                                 <div className="flex justify-between items-start">
                                     <div>
-                                        <h4 className="text-slate-100 font-bold">Verified Operator {i}X</h4>
-                                        <p className="text-xs text-slate-500">Level 2 Pilot Car • Route Authority</p>
+                                        <h4 className="text-slate-100 font-bold">Directory Operator {i}X</h4>
+                                        <p className="text-xs text-slate-500">Pilot car profile - Route coverage signal</p>
                                     </div>
-                                    <span className="text-xs font-mono bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded border border-emerald-500/20">AVAILABLE</span>
+                                    <span className="text-xs font-mono bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded border border-emerald-500/20">CHECK STATUS</span>
                                 </div>
                             </div>
                         </div>

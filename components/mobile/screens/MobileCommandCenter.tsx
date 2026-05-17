@@ -856,7 +856,7 @@ function SponsoredIntelligenceCell({ variant = 'default', topCorridor }: {
     : {
         label: 'Sponsored Insight',
         headline: 'Coverage gap: escort shortage growing on I-10 Gulf Coast',
-        body: 'Operators listing on this corridor see 3x more job requests. Claim your profile to get noticed by brokers.',
+        body: 'Complete corridor profiles give brokers more evidence to review. Claim your profile to improve broker-facing context.',
         ctaText: 'Claim Your Profile',
         ctaHref: '/claim',
         accentColor: 'var(--hc-gold-400, #D4A844)',
@@ -1049,7 +1049,7 @@ function LiveActivityProof({ signals }: { signals: HomeSignals }) {
         Happening Right Now
       </div>
       <div style={{ fontSize: 12, color: 'var(--m-text-muted)', marginBottom: 14 }}>
-        Real market activity from live loads and verified operators.
+        Market activity from load and operator records.
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {signals.corridorPressure.slice(0, 2).map(c => (

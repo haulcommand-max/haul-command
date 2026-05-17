@@ -152,7 +152,7 @@ export default function ConsolidatedInvoicingPage() {
           "@type": "Service",
           "name": "Consolidated Invoicing for Heavy Haul",
           "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://haulcommand.com" },
-          "description": "One invoice per project for multi-escort, multi-state heavy haul moves. Streamline escort billing across 50+ countries.",
+          "description": "One invoice per project for multi-escort, multi-state heavy haul moves. Streamline escort billing across priority markets.",
           "areaServed": { "@type": "Place", "name": "Worldwide" },
           "serviceType": "Consolidated Invoicing",
         }),

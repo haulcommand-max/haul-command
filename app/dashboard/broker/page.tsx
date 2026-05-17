@@ -234,8 +234,8 @@ export default async function BrokerDashboardPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               { label: 'Avg Response Time', val: '8 min', note: 'Network avg · last 30d' },
-              { label: 'Coverage', val: '120 countries', note: 'Global operator network' },
-              { label: 'Verified Operators', val: '14,000+', note: 'Trust-scored profiles' },
+              { label: 'Coverage', val: 'priority markets', note: 'Global operator network' },
+              { label: 'Operator Records', val: 'Directory', note: 'Trust-scored profiles' },
               { label: 'Avg Completion Rate', val: '97.2%', note: 'Platform-wide metric' },
             ].map(m => (
               <div key={m.label}>

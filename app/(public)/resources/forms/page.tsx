@@ -380,7 +380,7 @@ export default function FormsHubPage() {
               { href: '/resources', icon: BookOpen, label: 'Resource Hub', desc: '40+ guides & references', color: '#C6923A' },
               { href: '/directory', icon: Truck, label: 'Operator Directory', desc: 'Find verified escorts', color: '#22c55e' },
               { href: '/claim', icon: Shield, label: 'Claim Profile', desc: 'Get found by brokers', color: '#3b82f6' },
-              { href: '/available-now', icon: Star, label: 'Available Now', desc: 'Live availability feed', color: '#f59e0b' },
+              { href: '/available-now', icon: Star, label: 'Available Now', desc: 'Availability request feed', color: '#f59e0b' },
             ].map(card => {
               const Icon = card.icon;
               return (

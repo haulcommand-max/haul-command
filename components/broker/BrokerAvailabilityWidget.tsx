@@ -137,7 +137,7 @@ export function BrokerAvailabilityWidget({
                 padding: "20px 24px",
             }}>
                 <p style={{ color: "#f87171", fontSize: 13, margin: 0 }}>
-                    Could not load live availability. <button onClick={fetch} style={{ color: "#C6923A", background: "none", border: "none", cursor: "pointer", fontSize: 13 }}>Retry</button>
+                    Could not load availability signals. <button onClick={fetch} style={{ color: "#C6923A", background: "none", border: "none", cursor: "pointer", fontSize: 13 }}>Retry</button>
                 </p>
             </div>
         );

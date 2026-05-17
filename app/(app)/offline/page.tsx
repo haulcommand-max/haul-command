@@ -85,7 +85,7 @@ export default function OfflinePage() {
                 marginBottom: '0.5rem',
             }}>
                 HAUL COMMAND needs an internet connection to load
-                real-time dispatch data and corridor intelligence.
+                dispatch data and corridor intelligence.
             </p>
 
             {/* Tips */}

@@ -32,9 +32,9 @@ function getPlaybookMode(mode: string): { title: string; desc: string; color: st
         waitlist: { title: 'Waitlist â†’ Seeding', color: '#6B7280', desc: 'Get first operators and loads into this market.',
             steps: ['Seed 5+ operator profiles', 'Post first load or attract first broker', 'Identify founder operators', 'Set up corridor connections'] },
         demand_capture: { title: 'Demand Capture â†’ Live', color: '#8B5CF6', desc: 'Loads flowing but supply is thin. Priority: verified supply.',
-            steps: ['Recruit 3+ verified operators', 'Enable rescue actions for aging posts', 'Deploy claim pressure on profiles', 'Activate corridor heartbeat'] },
+            steps: ['Recruit 3+ operator records', 'Enable rescue actions for aging posts', 'Deploy claim pressure on profiles', 'Activate corridor heartbeat'] },
         seeding: { title: 'Seeding â†’ Live', color: '#F59E0B', desc: 'Operators claiming, activity building. Priority: real matches.',
-            steps: ['Hit 5 verified operators', 'Get first real load fill', 'Activate infrastructure support', 'Deploy outcome proof blocks'] },
+            steps: ['Hit 5 operator records', 'Get first real load fill', 'Activate infrastructure support', 'Deploy outcome proof blocks'] },
         live: { title: 'Live â†’ Consolidating', color: '#22C55E', desc: 'Market is active. Priority: dominance signals and fill rate.',
             steps: ['Maintain 80%+ post visibility', 'Grow claim penetration above 40%', 'Show outcome proof on all surfaces', 'Enable sponsor slots'] },
     };

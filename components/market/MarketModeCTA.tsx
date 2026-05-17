@@ -55,7 +55,7 @@ export default function MarketModeCTA({
             Need a {localTerm} in {countryName}?
           </h3>
           <p style={{ fontSize: '0.875rem', color: '#9CA3AF', margin: 0 }}>
-            Find verified operators in our directory — instant availability, reviews, and dispatch.
+            Find operator records in our directory with profile details, reviews where available, and contact paths.
           </p>
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>

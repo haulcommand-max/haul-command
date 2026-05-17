@@ -208,7 +208,7 @@ export default function WhenDoYouNeedPilotCarPage() {
           <h2 className="text-2xl font-black text-white mb-2 flex items-center gap-2">
             <Globe className="w-6 h-6 text-blue-400" /> International Pilot Car Requirements
           </h2>
-          <p className="text-sm text-amber-100/70 mb-6">Haul Command covers 120 countries. Here are the rules in major markets:</p>
+          <p className="text-sm text-amber-100/70 mb-6">Haul Command tracks priority markets. Here are the rules in major markets:</p>
           <div className="space-y-4">
             {INTERNATIONAL.map(country => (
               <div key={country.country} className="hc-card rounded-xl p-5">

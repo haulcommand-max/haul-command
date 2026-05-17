@@ -275,7 +275,7 @@ export function OutcomeProofBlock({
                 </div>
             </div>
             {[
-                { without: 'Cold-call directories', with: `${data?.verified_operators || '—'} verified operators`, icon: '✓' },
+                { without: 'Cold-call directories', with: `${data?.verified_operators || '—'} operator records`, icon: '✓' },
                 { without: 'Unknown market conditions', with: data?.market_mode === 'live' ? 'Live market truth' : 'Real-time mode detection', icon: '📡' },
                 { without: 'No rate intelligence', with: 'Lane rate bands & rescue actions', icon: '💰' },
                 { without: 'Manual operator vetting', with: 'Trust scores & verification', icon: '🛡' },

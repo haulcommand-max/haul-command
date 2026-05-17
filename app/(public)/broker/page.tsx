@@ -44,7 +44,7 @@ const BROKER_SCHEMA = { '@context': 'https://schema.org', '@graph': [
     { '@type': 'FAQPage', mainEntity: [
         { '@type': 'Question', name: 'How do I find a verified pilot car operator for my load?', acceptedAnswer: { '@type': 'Answer', text: 'Use the Haul Command directory to search for verified pilot car operators by state. You can also post your load on the load board and receive quotes from certified escorts in your area.' } },
         { '@type': 'Question', name: 'How do I post an escort need on Haul Command?', acceptedAnswer: { '@type': 'Answer', text: 'Go to the load board and post your escort requirement — include route, load dimensions, timing, and state requirements. Verified operators will be notified and can respond with availability.' } },
-        { '@type': 'Question', name: 'Are pilot car operators on Haul Command verified?', acceptedAnswer: { '@type': 'Answer', text: 'Verified operators have submitted certifications, insurance documentation, and passed the Haul Command compliance checklist. They receive 3x more contact requests from brokers.' } },
+        { '@type': 'Question', name: 'Are pilot car operators on Haul Command verified?', acceptedAnswer: { '@type': 'Answer', text: 'Profiles can show submitted certifications, insurance documentation, and claim status when evidence exists. Complete profiles give brokers more context before they call.' } },
     ]},
 ] };
 

@@ -101,7 +101,7 @@ function MotiveConnectCTA() {
         <svg className="w-6 h-6 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
       </div>
       <h4 className="text-white font-semibold mb-1">Connect Your ELD</h4>
-      <p className="text-gray-400 text-sm mb-4">Operators with ELD verification get 3× more load offers</p>
+      <p className="text-gray-400 text-sm mb-4">Operators with ELD verification give brokers more complete operational context</p>
       <a href="/api/motive/connect" className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-lg text-sm transition-colors">
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101" /></svg>
         Connect Motive

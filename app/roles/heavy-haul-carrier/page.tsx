@@ -59,7 +59,7 @@ const ACTIONS = [
   { href: '/escort-requirements', icon: 'âš–ï¸', label: 'Permit & Escort Rules', desc: 'State-by-state oversize permit thresholds and escort requirements', cta: 'Check Requirements â†’', primary: false },
   { href: '/tools/escort-calculator', icon: 'ðŸ§®', label: 'Escort Calculator', desc: 'Calculate how many pilot cars your load requires by state', cta: 'Calculate â†’', primary: false },
   { href: '/claim', icon: 'ðŸš›', label: 'List Your Operation', desc: 'Add your carrier company to the Haul Command directory — free', cta: 'Get Listed Free â†’', primary: false },
-  { href: '/available-now', icon: 'ðŸŸ¢', label: 'Available Right Now', desc: 'Carriers and escort operators broadcasting live availability', cta: 'See Who\'s Available â†’', primary: false },
+  { href: '/available-now', icon: 'ðŸŸ¢', label: 'Available Right Now', desc: 'Carriers and escort operators sharing availability signals', cta: 'See Who\'s Available â†’', primary: false },
 ];
 
 const gold = '#D4A844';

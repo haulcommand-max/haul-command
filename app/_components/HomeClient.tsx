@@ -84,7 +84,7 @@ const HOW_IT_WORKS = [
         steps: [
             "Post load with dimensions, route & rate",
             "Intelligence engine scores fill probability in real time",
-            "Matched escorts accept in one tap — you see it instantly",
+            "Matched escorts accept in one tap — you see status updates",
         ],
     },
     {
@@ -182,7 +182,7 @@ export default function HomeClient({
                         transition={{ delay: 0.2, duration: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                         className="text-lg sm:text-xl text-[#8fa3b8] max-w-2xl mx-auto mb-12 leading-relaxed font-medium"
                     >
-                        Match oversize loads with verified escorts in minutes.
+                        Match oversize loads with escort records with evidence.
                         Stage-based fill probability. One-tap accept.
                         Built for the corridor — not the general freight crowd.
                     </motion.p>
@@ -257,7 +257,7 @@ export default function HomeClient({
                     >
                         {[
                             {
-                                label: "Verified Operators",
+                                label: "Operator Records",
                                 value: directoryCount,
                                 suffix: "",
                                 icon: Users,
@@ -302,7 +302,7 @@ export default function HomeClient({
                                 )}
                                 <div className="flex items-center gap-2 mb-1 relative z-10">
                                     <Icon className="w-3.5 h-3.5" style={{ color }} />
-                                    {label === "Verified Operators" && (
+                                    {label === "Operator Records" && (
                                         <span className="relative flex h-1.5 w-1.5">
                                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: color }} />
                                             <span className="relative inline-flex rounded-full h-1.5 w-1.5" style={{ background: color }} />
@@ -324,7 +324,7 @@ export default function HomeClient({
                 <div className="hc-container max-w-3xl">
                     <div className="liquidity-strip flex-wrap">
                         {[
-                            { label: `${directoryCount.toLocaleString()} Verified Operators`, color: "#22c55e" },
+                            { label: `${directoryCount.toLocaleString()} Operator Records`, color: "#22c55e" },
                             { label: "Escrow Protected", color: "#C6923A" },
                             { label: `${medianFillMin}m Median Fill`, color: "#a855f7" },
                             { label: "North America + Global", color: "#3b82f6" },
@@ -346,7 +346,7 @@ export default function HomeClient({
                 <section className="relative z-10 py-20">
                     <div className="hc-container max-w-5xl">
                         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-12">
-                            <div className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.3em] mb-4">Live Corridors</div>
+                            <div className="text-[10px] font-bold text-[#C6923A] uppercase tracking-[0.3em] mb-4">Corridor Signals</div>
                             <h2 className="text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
                                 Hottest Routes Right Now
                             </h2>
@@ -386,7 +386,7 @@ export default function HomeClient({
                         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-12">
                             <div className="text-[10px] font-bold text-[#22c55e] uppercase tracking-[0.3em] mb-4">Directory</div>
                             <h2 className="text-3xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
-                                {directoryCount.toLocaleString()} Verified Operators
+                                {directoryCount.toLocaleString()} Operator Records
                             </h2>
                             <p className="text-[#8fa3b8] mt-3 text-sm">Pilot car services, escort operators, and trucking companies across the US &amp; Canada</p>
                         </motion.div>

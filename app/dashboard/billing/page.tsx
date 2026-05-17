@@ -48,7 +48,7 @@ export default async function BillingDashboardPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="border border-white/5 rounded-lg p-5">
                 <h3 className="text-lg font-bold text-white mb-2">Escort Pro</h3>
-                <p className="text-sm text-slate-400 mb-4 h-10">Maximize visibility in the operator directory and receive instant dispatch alerts.</p>
+                <p className="text-sm text-slate-400 mb-4 h-10">Maximize visibility in the operator directory and receive request notifications.</p>
                 <div className="text-2xl font-bold text-white mb-4">$49<span className="text-sm text-slate-500 font-normal">/mo</span></div>
                 <form action="/api/hc-pay/checkout" method="POST">
                    <input type="hidden" name="tier" value="escort_pro" />

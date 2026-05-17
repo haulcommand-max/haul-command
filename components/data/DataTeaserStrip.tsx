@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 /**
- * DataTeaserStrip — Live market intelligence teaser
+ * DataTeaserStrip - Market intelligence teaser
  *
  * Fetches real data from /api/market/snapshot on mount.
  * Falls back to static defaults if fetch fails (never breaks UI).
@@ -26,11 +26,11 @@ interface Props {
 }
 
 const STATIC_FALLBACK: TeaserCard[] = [
-  { label: 'Avg Escort Rate', value: '$3.80–$5.50/mi', subtext: 'US Median • Updated daily', trend: 'up' },
-  { label: 'Operator Density', value: '14K+', subtext: 'Verified operators', trend: 'up' },
-  { label: 'Corridor Fill Time', value: '< 4 hours', subtext: 'Median time-to-fill', trend: 'down' },
+  { label: 'Avg Escort Rate', value: '$3.80–$5.50/mi', subtext: 'US benchmark - source-backed', trend: 'up' },
+  { label: 'Operator Density', value: 'Directory', subtext: 'Coverage varies by market', trend: 'up' },
+  { label: 'Corridor Fill Time', value: 'Measured', subtext: 'Where dispatch data exists', trend: 'down' },
   { label: 'Claim Pressure', value: '68%', subtext: 'Listings unclaimed', blurred: true },
-  { label: 'Market Readiness', value: 'Live', subtext: '120 countries active', trend: 'flat' },
+  { label: 'Market Readiness', value: 'Tracked', subtext: 'Coverage varies by country', trend: 'flat' },
   { label: 'Rate Trend (30d)', value: '+4.2%', subtext: 'Month-over-month', blurred: true },
 ];
 
@@ -42,25 +42,25 @@ function buildLiveCards(snapshot: Record<string, unknown>, geo?: string): Teaser
     {
       label: 'Avg Escort Rate',
       value: String(snapshot.avg_rate_per_mile_range ?? '$3.50–$5.50/mi'),
-      subtext: `${geo ?? 'US'} • Updated live`,
+      subtext: `${geo ?? 'US'} • source-backed`,
       trend: 'up',
     },
     {
-      label: 'Verified Operators',
-      value: snapshot.operator_count ? `${(snapshot.operator_count as number).toLocaleString()}` : '14K+',
+      label: 'Operator Records',
+      value: snapshot.operator_count ? `${(snapshot.operator_count as number).toLocaleString()}` : 'Directory',
       subtext: 'In directory',
       trend: 'up',
     },
     {
       label: 'Claimed Listings',
       value: snapshot.claim_rate ? `${snapshot.claim_rate}% claimed` : 'Growing',
-      subtext: snapshot.claimed_count ? `${snapshot.claimed_count} verified` : 'Join them',
+      subtext: snapshot.claimed_count ? `${snapshot.claimed_count} claimed` : 'Join them',
       trend: 'flat',
     },
     {
       label: 'Fill Time',
-      value: String(snapshot.avg_response_time_h ?? '< 4 hours'),
-      subtext: 'Median to accept',
+      value: String(snapshot.avg_response_time_h ?? 'Measured'),
+      subtext: 'Where data exists',
       trend: 'down',
     },
     {
@@ -71,7 +71,7 @@ function buildLiveCards(snapshot: Record<string, unknown>, geo?: string): Teaser
     },
     {
       label: 'Market Mode',
-      value: String(snapshot.mode ?? 'live').charAt(0).toUpperCase() + String(snapshot.mode ?? 'live').slice(1),
+      value: String(snapshot.mode ?? 'tracked').charAt(0).toUpperCase() + String(snapshot.mode ?? 'tracked').slice(1),
       subtext: 'Current status',
       trend: 'flat',
     },

@@ -52,12 +52,12 @@ interface Tool {
 
 export const metadata: Metadata = {
   title: 'Heavy Haul Tools & Calculators | Haul Command',
-  description: 'Free heavy haul calculators and intelligence tools across 13 families: route compliance, escort requirements, permit costs, load analysis, market intelligence, and more. Covering 120 countries.',
+  description: 'Free heavy haul calculators and intelligence tools across 13 families: route compliance, escort requirements, permit costs, load analysis, market intelligence, and more. Coverage varies by market.',
   keywords: 'heavy haul tools, oversize load calculator, escort cost estimator, permit cost calculator, route compliance checker, pilot car requirements, axle weight calculator, bridge formula, load dimension checker',
   alternates: { canonical: 'https://www.haulcommand.com/tools' },
   openGraph: {
     title: 'Heavy Haul Tools & Calculators | Haul Command',
-    description: 'Free heavy haul intelligence tools across 13 families. Route compliance, escort requirements, permit planning, load analysis, market intelligence. Covering 120 countries.',
+    description: 'Free heavy haul intelligence tools across 13 families. Route compliance, escort requirements, permit planning, load analysis, market intelligence. Coverage varies by market.',
     url: 'https://www.haulcommand.com/tools',
     siteName: 'Haul Command',
     type: 'website',
@@ -137,7 +137,7 @@ export default async function ToolsPage() {
           </h1>
           <p style={{ fontSize: 16, color: '#94a3b8', maxWidth: 680, margin: '0 auto 32px', lineHeight: 1.7 }}>
             Route compliance, cost estimation, permit calculation, market intelligence,
-            and regulation monitoring across 120 countries.
+            and regulation monitoring across priority markets.
           </p>
 
           {/* Stats */}
@@ -209,7 +209,7 @@ export default async function ToolsPage() {
                               {badge.label}
                             </span>
                             {tool.coverage_scope === '120_countries' && (
-                              <span style={{ fontSize: 10, color: '#64748b' }}>120 countries</span>
+                              <span style={{ fontSize: 10, color: '#64748b' }}>Market coverage varies</span>
                             )}
                           </div>
                           <h3 style={{ fontSize: 16, fontWeight: 800, color: '#F5F5F0', margin: '0 0 8px' }}>{tool.name}</h3>
@@ -277,7 +277,7 @@ export default async function ToolsPage() {
             </h2>
             <p style={{ fontSize: 14, color: '#94a3b8', marginBottom: 24, lineHeight: 1.6 }}>
               Enterprise buyers can access Haul Command data via API, bulk exports,
-              and white-glove intelligence reports across all 120 countries.
+              and white-glove intelligence reports across priority markets.
             </p>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
               <Link href="/data-products" style={{
@@ -306,7 +306,7 @@ export default async function ToolsPage() {
         <section style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 24px' }}>
           <StaticAnswerBlock
             question="What tools does Haul Command offer for heavy haul logistics?"
-            answer={`Haul Command provides ${totalTools} tools across ${familyCount} families for heavy haul logistics, with ${liveCount} live globally and ${betaCount} in beta. Categories include: ${faqCatText}. All tools cover up to 120 countries with no login required.`}
+            answer={`Haul Command provides ${totalTools} tools across ${familyCount} families for heavy haul logistics, with ${liveCount} live globally and ${betaCount} in beta. Categories include: ${faqCatText}. Tool coverage varies by market and no login is required for public calculators.`}
             confidence="verified_current"
             ctaLabel="Browse All Tools"
             ctaUrl="/tools"

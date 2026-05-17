@@ -66,7 +66,7 @@ export function GatedCTA({ mode, providerKey, className = "", headline }: GatedC
                 <div style={iconStyle}>⚡</div>
                 <h3 style={headingStyle}>{headline ?? "Complete Your Profile to Get Matched"}</h3>
                 <p style={subtitleStyle}>
-                    Verified providers get 3× more load offers. Add your certifications, coverage area, and equipment.
+                    Complete profiles give brokers more evidence to review. Add your certifications, coverage area, and equipment.
                 </p>
                 <a href={providerKey ? `/profile/edit?key=${providerKey}` : "/profile/edit"} style={primaryBtnStyle}>
                     Complete Profile →
@@ -81,7 +81,7 @@ export function GatedCTA({ mode, providerKey, className = "", headline }: GatedC
             <div style={iconStyle}>🏆</div>
             <h3 style={headingStyle}>{headline ?? "Join the #1 Heavy Haul Network"}</h3>
             <p style={subtitleStyle}>
-                Access verified broker loads, build your trust score, and get matched with high-paying corridors.
+                Access broker-facing tools, build your profile evidence, and improve visibility on relevant corridors.
             </p>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
                 <a href="/onboarding" style={primaryBtnStyle}>

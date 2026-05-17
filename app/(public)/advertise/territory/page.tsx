@@ -5,7 +5,7 @@ import { getTerritoryPrice, type USMarketTier, US_STATE_MARKET_TIER, US_MARKET_T
 
 export const metadata: Metadata = {
     title: 'Territory Sponsor Availability | Haul Command',
-    description: 'Check availability for exclusive territory sponsorships on Haul Command. Own a US state or country — your business appears first in all directory, near-me, and corridor searches.',
+    description: 'Check availability for territory sponsorships on Haul Command. Own a US state or country — your business appears first in all directory, near-me, and corridor searches.',
     alternates: { canonical: 'https://www.haulcommand.com/advertise/territory' },
 };
 
@@ -156,7 +156,7 @@ export default async function TerritoryAvailabilityPage() {
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                         {[
-                            { icon: 'ðŸ†', title: 'Exclusive placement', sub: 'One sponsor per territory' },
+                            { icon: 'ðŸ†', title: 'Contracted placement', sub: 'One sponsor per territory' },
                             { icon: 'ðŸ“', title: 'All near-me pages', sub: 'Every city in your state' },
                             { icon: 'ðŸ”', title: 'Search priority', sub: 'First in all results' },
                             { icon: 'ðŸ“Š', title: 'Monthly report', sub: 'Impressions, clicks, leads' },
@@ -332,7 +332,7 @@ export default async function TerritoryAvailabilityPage() {
                         </div>
 
                         <p className="mt-6 text-sm text-gray-500 text-center">
-                            120 countries in our network. More tiers launching soon.{' '}
+                            priority markets in our network. More tiers launching soon.{' '}
                             <Link href="/advertise/enterprise" className="text-hc-gold-400 hover:text-hc-gold-300 underline transition-colors">
                                 Inquire for your country â†’
                             </Link>

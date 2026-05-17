@@ -24,7 +24,7 @@ export default function CommunityLandingPage() {
           <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-[-0.03em] leading-tight max-w-2xl mx-auto">
             Stop Guessing.<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-hc-success to-emerald-600">
-              Only Verified Operators Here.
+              Operator-focused community.
             </span>
           </h1>
           

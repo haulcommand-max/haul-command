@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     alternates: { canonical: 'https://www.haulcommand.com/developers' },
     openGraph: {
         title: 'Haul Command Developer API',
-        description: 'Programmatic access to heavy haul intelligence data across 120 countries.',
+        description: 'Programmatic access to heavy haul intelligence data across priority markets.',
         url: 'https://www.haulcommand.com/developers',
     },
 };
@@ -110,7 +110,7 @@ const API_TIERS = [
 ];
 
 const ENDPOINT_CATALOG = [
-    { method: 'GET', path: '/v1/operators/search', tier: 'Sandbox+', desc: 'Search verified operators by geo, equipment, or corridor' },
+    { method: 'GET', path: '/v1/operators/search', tier: 'Sandbox+', desc: 'Search operator records by geo, equipment, or corridor' },
     { method: 'GET', path: '/v1/operators/:id', tier: 'Sandbox+', desc: 'Fetch a single operator profile (limited fields on sandbox)' },
     { method: 'GET', path: '/v1/corridors/:slug', tier: 'Developer+', desc: 'Corridor demand, supply, and rate intelligence' },
     { method: 'GET', path: '/v1/rates/:corridor', tier: 'Developer+', desc: 'Rate benchmarks (p25/p50/p75/p90) for a corridor' },
@@ -144,7 +144,7 @@ export default function DevelopersPage() {
                             </h1>
                             <p className="text-lg text-gray-300 mb-6 leading-relaxed">
                                 Programmatic access to 50,000+ verified operator profiles, corridor demand data,
-                                escort rate benchmarks, and coverage confidence scores across 120 countries.
+                                escort rate benchmarks, and coverage confidence scores across priority markets.
                                 Sandbox keys are free — no credit card required.
                             </p>
                             <div className="flex flex-col sm:flex-row gap-3">

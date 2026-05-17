@@ -198,7 +198,7 @@ export default function MarketIndexPage() {
 
             <div style={{ background: 'rgba(198,146,58,0.04)', border: '1px dashed rgba(198,146,58,0.18)', borderRadius: 16, padding: 16, textAlign: 'center' }}>
               <p style={{ fontSize: 10, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 5px' }}>Sponsor a Market</p>
-              <p style={{ fontSize: 11, color: '#475569', margin: '0 0 10px', lineHeight: 1.4 }}>Exclusive placement in hot state market pages.</p>
+              <p style={{ fontSize: 11, color: '#475569', margin: '0 0 10px', lineHeight: 1.4 }}>Sponsor placement in hot state market pages.</p>
               <Link href="/advertise" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '7px 14px', borderRadius: 8, background: 'rgba(198,146,58,0.1)', border: '1px solid rgba(198,146,58,0.22)', color: '#C6923A', fontSize: 11, fontWeight: 800, textDecoration: 'none' }}>
                 View Packages →
               </Link>
@@ -212,12 +212,12 @@ export default function MarketIndexPage() {
         <NoDeadEndBlock
           heading="Next Move"
           moves={[
-            { href: '/directory', icon: '🔍', title: 'Find Escorts', desc: 'Search verified operators', primary: true, color: '#D4A844' },
+            { href: '/directory', icon: '🔍', title: 'Find Escorts', desc: 'Search operator records', primary: true, color: '#D4A844' },
             { href: '/claim', icon: '✓', title: 'Claim Your Profile', desc: 'Get market visibility', primary: true, color: '#22C55E' },
             { href: '/available-now', icon: '🟢', title: 'Available Now', desc: 'Live operator feed' },
             { href: '/tools/rate-advisor', icon: '💰', title: 'Rate Benchmarks', desc: 'Current market rates' },
             { href: '/escort-requirements', icon: '⚖️', title: 'State Rules', desc: 'Escort requirements' },
-            { href: '/regulations', icon: '🌍', title: 'Regulations', desc: '120 countries' },
+            { href: '/regulations', icon: '🌍', title: 'Regulations', desc: 'Priority markets' },
             { href: '/corridors', icon: '🛣️', title: 'Corridors', desc: 'Route intelligence' },
             { href: '/advertise', icon: '📣', title: 'Sponsor', desc: 'Own a market page' },
           ]}

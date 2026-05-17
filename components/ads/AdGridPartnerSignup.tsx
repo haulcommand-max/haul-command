@@ -24,7 +24,7 @@ const BILLING_METHODS: { value: BillingMethod; label: string; desc: string }[] =
     { value: 'cpc', label: 'Cost Per Click', desc: 'Pay only when someone clicks your ad' },
     { value: 'cpm', label: 'Cost Per 1K Views', desc: 'Pay per 1,000 impressions shown' },
     { value: 'cpa', label: 'Cost Per Action', desc: 'Pay only when a conversion happens' },
-    { value: 'flat_monthly', label: 'Flat Monthly', desc: 'Fixed monthly rate for guaranteed placement' },
+    { value: 'flat_monthly', label: 'Flat Monthly', desc: 'Fixed monthly rate for contracted placement' },
 ];
 
 export default function AdGridPartnerSignup({ onComplete }: AdGridPartnerSignupProps) {
@@ -77,7 +77,7 @@ export default function AdGridPartnerSignup({ onComplete }: AdGridPartnerSignupP
             {step === 1 && (
                 <div className="step-content">
                     <h2>Partner with <span className="brand">HAUL COMMAND</span></h2>
-                    <p className="step-desc">Reach 358,000+ pilot car & escort operators across 120 countries</p>
+                    <p className="step-desc">Reach heavy-haul buyers, operators, and partners across active Haul Command surfaces</p>
 
                     <div className="form-group">
                         <label>Company Name</label>

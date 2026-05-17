@@ -31,7 +31,7 @@ const TIERS = [
   {
     id: 'global',
     name: 'Crown Jewel',
-    desc: 'Sitewide branding across all 120 countries.',
+    desc: 'Sitewide branding across eligible Haul Command surfaces.',
     price: '$2,500',
     cycle: '/mo',
     features: ['Global Visibility', 'Homepage Takeover Slot', '250,000+ Impressions', 'Brand Lift Dashboard'],
@@ -57,7 +57,7 @@ export default function SelfServeAdBuyer() {
           Command The Market
         </h2>
         <p className="text-[#8fa3b8] text-base sm:text-lg max-w-2xl mx-auto">
-          Deploy premium sponsorships across the Haul Command network. Capture hyper-local intent instantly with our self-serve AdGrid OS.
+          Deploy premium sponsorships across the Haul Command network. Capture hyper-local intent with our self-serve AdGrid OS.
         </p>
       </div>
 

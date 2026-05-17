@@ -155,7 +155,7 @@ export default async function CountryRatesPage({ params }: Props) {
         {/* CTA */}
         <div className="bg-[#0B0F14] text-white rounded-2xl p-8 text-center">
           <h3 className="text-xl font-black mb-2">Find Verified Escorts in {meta.name}</h3>
-          <p className="text-gray-400 text-sm mb-6">7,700+ verified operators. Claim your listing to appear in rate-based searches.</p>
+          <p className="text-gray-400 text-sm mb-6">Claim your listing to appear in rate-based searches.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href={`/directory/${cc}`} className="px-6 py-3 bg-[#F1A91B] hover:bg-[#D4951A] text-black font-bold rounded-lg transition-colors">
               Find Escorts in {meta.name}

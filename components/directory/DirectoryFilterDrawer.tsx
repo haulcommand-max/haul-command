@@ -358,7 +358,7 @@ function FilterPanel({ filters, onChange }: {
                                 )}>
                                     <div>
                                         <p className="text-[11px] font-bold text-hc-text">✅ Verified Listings Only</p>
-                                        <p className="text-[10px] text-hc-subtle">Haul Command verified operators</p>
+                                        <p className="text-[10px] text-hc-subtle">Haul Command operator records</p>
                                     </div>
                                     <input
                                         type="checkbox"

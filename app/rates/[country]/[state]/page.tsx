@@ -154,7 +154,7 @@ export default async function StateRatesPage({ params }: Props) {
         {(operators?.length ?? 0) > 0 && (
           <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-black text-gray-900">Verified Operators in {stateName}</h2>
+              <h2 className="text-xl font-black text-gray-900">Operator Records in {stateName}</h2>
               <Link href={`/directory/${cc}/${sc}`} className="text-sm font-semibold text-[#C6923A] hover:underline">See all →</Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

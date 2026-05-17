@@ -52,7 +52,7 @@ const FAQS = [
   },
   {
     q: 'Are pilot car rates different in other countries?',
-    a: 'Yes. In Australia, rates are in AUD per km. In Canada, in CAD per km. In the UK, escort vehicle costs follow different structures tied to STGO categories. Haul Command covers 120 countries — use our global directory to find local rates in your jurisdiction.'
+    a: 'Yes. In Australia, rates are in AUD per km. In Canada, in CAD per km. In the UK, escort vehicle costs follow different structures tied to STGO categories. Haul Command tracks priority markets — use our global directory to find local rates in your jurisdiction.'
   },
 ];
 
@@ -166,7 +166,7 @@ export default function PilotCarCostPage() {
               { title: 'Load Dimensions', desc: 'Wider, taller, and longer loads often require more pilots or specialty equipment like height poles — all of which add cost.' },
               { title: 'State Requirements', desc: 'California requires state-specific PCO certification. That scarcity drives up CA rates versus states with fewer requirements.' },
               { title: 'Market Supply', desc: 'Corridors with escort shortages (see our Shortage Index) command premium rates. Permian Basin and some Midwest wind corridors run 20–40% above typical rates.' },
-              { title: 'Time of Day/Week', desc: 'Night moves, weekend moves, and holiday moves all carry premiums. Emergency same-day dispatch adds a flat fee on top.' },
+              { title: 'Time of Day/Week', desc: 'Night moves, weekend moves, and holiday moves all carry premiums. Emergency rush dispatch adds a flat fee on top.' },
               { title: 'Route Complexity', desc: 'Urban moves, bridge-heavy routes, rail crossings, and complex turning moves cost more due to time and expertise required.' },
               { title: 'Distance and Deadhead', desc: 'Very long moves (500+ miles) may require multiple operators and handoffs. Remote origin points add deadhead costs.' },
             ].map(item => (

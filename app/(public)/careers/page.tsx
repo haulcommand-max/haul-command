@@ -14,7 +14,7 @@ export default function CareersPage() {
         <div className="text-xs text-[#F1A91B] font-bold uppercase tracking-widest mb-4">Careers</div>
         <h1 className="text-4xl font-black mb-4">Build the Operating System for Heavy Haul</h1>
         <p className="text-gray-400 text-lg max-w-xl mb-10">
-          Haul Command is a small, fast-moving team building the global intelligence layer for the oversize load industry across 120 countries.
+          Haul Command is a small, fast-moving team building the global intelligence layer for the oversize load industry across priority markets.
         </p>
 
         <div className="bg-[#111827] border border-white/[0.08] rounded-2xl p-8 mb-10">

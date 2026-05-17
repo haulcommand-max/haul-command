@@ -218,7 +218,7 @@ export default async function PilotCarRateGuidePage() {
       <section className="max-w-5xl mx-auto px-4 py-12 border-t border-white/[0.06]">
         <div className="text-center">
           <h3 className="text-2xl font-black text-white mb-3">Ready to Get Properly Paid?</h3>
-          <p className="text-gray-400 mb-6">Claim your free listing, set your rates, and get found by brokers across 120 countries.</p>
+          <p className="text-gray-400 mb-6">Claim your free listing, set your rates, and get found by brokers across priority markets.</p>
           <div className="flex flex-wrap gap-3 justify-center">
             <Link href="/claim" className="px-8 py-3 bg-[#F1A91B] text-black font-black rounded-xl hover:bg-[#D4951A] transition-all">Claim Your Free Listing</Link>
             <Link href="/directory" className="px-8 py-3 border border-white/10 text-white font-semibold rounded-xl hover:border-white/20 hover:bg-white/5 transition-all">Browse Directory</Link>

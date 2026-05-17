@@ -18,7 +18,7 @@ export function ProofStrip({
     variant = 'bar',
 }: ProofStripProps) {
     const items = [
-        ...(operatorCount ? [{ emoji: '🟢', stat: `${operatorCount.toLocaleString()}`, label: 'verified operators', color: '#22C55E' }] : []),
+        ...(operatorCount ? [{ emoji: '🟢', stat: `${operatorCount.toLocaleString()}`, label: 'operator records', color: '#22C55E' }] : []),
         { emoji: '🌍', stat: `${countryCount}`, label: 'countries active', color: '#3B82F6' },
         { emoji: '🔒', stat: 'Escrow', label: 'protected payments', color: '#8B5CF6' },
     ];

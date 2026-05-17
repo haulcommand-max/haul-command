@@ -222,7 +222,7 @@ export default async function OversizeSuportRateGuidePage() {
       <section className="max-w-5xl mx-auto px-4 py-12 border-t border-white/[0.06]">
         <div className="text-center">
           <h3 className="text-2xl font-black text-white mb-3">Need a Route Survey or Bucket Truck Escort?</h3>
-          <p className="text-gray-400 mb-6">Find verified specialists across 120 countries in the Haul Command directory.</p>
+          <p className="text-gray-400 mb-6">Find specialist records across priority markets in the Haul Command directory.</p>
           <div className="flex flex-wrap gap-3 justify-center">
             <Link href="/directory" className="px-8 py-3 bg-[#F1A91B] text-black font-black rounded-xl hover:bg-[#D4951A] transition-all">Find Specialists</Link>
             <Link href="/tools/route-survey" className="px-8 py-3 border border-white/10 text-white font-semibold rounded-xl hover:border-white/20 hover:bg-white/5 transition-all">Route Survey Tool</Link>

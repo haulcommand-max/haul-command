@@ -15,7 +15,7 @@ import { HCContentEmptyState } from "@/components/content-system/states/HCConten
 
 export const metadata: Metadata = {
   title: 'Heavy Haul Intelligence & Escort Regulations | Haul Command',
-  description: 'Verified heavy haul routing intelligence, escort vehicle compliance data, and operational deep-dives across 50 US states and 120 countries.',
+  description: 'Heavy haul routing intelligence, escort vehicle compliance data, and operational deep-dives with source-confidence context.',
   alternates: {
     canonical: 'https://www.haulcommand.com/blog',
   },
@@ -229,7 +229,7 @@ export default async function BlogHub() {
          <HCContentContainer>
             <div className="text-center mb-20">
                  <h2 className="text-[28px] lg:text-[36px] font-bold text-[#F3F4F6] mb-5 tracking-[-0.02em]">Explore Haul Command</h2>
-                 <p className="text-[#6B7280] max-w-2xl mx-auto text-[17px] leading-[1.7]">Connect intelligence directly to operational tools and verified operators.</p>
+                 <p className="text-[#6B7280] max-w-2xl mx-auto text-[17px] leading-[1.7]">Connect intelligence directly to operational tools and operator records.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                  {[

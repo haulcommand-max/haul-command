@@ -7,7 +7,7 @@ import Link from 'next/link';
  * TakeoverSponsorBanner — Premium geo-territory ad surface
  * 
  * For country, state/province, and city-level takeover sponsors.
- * One exclusive sponsor per territory.
+ * Contracted sponsor placement per territory.
  * Premium native placement with scarcity signal.
  */
 
@@ -33,10 +33,10 @@ export function TakeoverSponsorBanner({ level, territory, sponsor, pricePerMonth
       <div className="tsb tsb--available">
         <div className="tsb-avail-content">
           <div className="tsb-avail-badge">
-            {level === 'country' ? '🌍' : level === 'state' ? '🗺️' : '📍'} EXCLUSIVE SPONSORSHIP AVAILABLE
+            {level === 'country' ? '🌍' : level === 'state' ? '🗺️' : '📍'} SPONSORSHIP AVAILABLE
           </div>
           <h4 className="tsb-avail-title">
-            Own {territory} — Be the exclusive {level} sponsor
+            Sponsor {territory} with a contracted {level} placement
           </h4>
           <p className="tsb-avail-sub">
             Your business appears first on every search, directory listing, and page in {territory}.
@@ -91,7 +91,7 @@ export function TakeoverSponsorBanner({ level, territory, sponsor, pricePerMonth
         <div className="tsb-sponsor-row">
           {sponsor.logo_url && <img src={sponsor.logo_url} alt="" className="tsb-logo" />}
           <div>
-            <div className="tsb-tag">⚡ {territory} Exclusive Sponsor</div>
+            <div className="tsb-tag">⚡ {territory} Sponsor Placement</div>
             <h4 className="tsb-name">{sponsor.sponsor_name}</h4>
             <p className="tsb-tagline">{sponsor.tagline}</p>
           </div>

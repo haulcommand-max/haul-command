@@ -1512,10 +1512,10 @@ export default function HomeClient({
                                 placements in directory, corridors, and tool pages.
                             </p>
                             <p className="mb-4 rounded-lg border border-[#F1A91B]/35 bg-black/55 px-3 py-2 text-xs font-black text-[#F1A91B] shadow-[inset_0_1px_0_rgba(255,210,120,0.08)]">
-                                3 of 12 Texas corridor spots remaining - featured in 7,711 operator profile views/month
+                                Corridor sponsor placements are reviewed for fit before launch
                             </p>
                             <div className="flex flex-wrap gap-2 text-xs font-bold text-white mb-5">
-                                <span className="flex items-center gap-1">📊 Real-time analytics</span>
+                                <span className="flex items-center gap-1">📊 Campaign analytics</span>
                                 <span className="flex items-center gap-1">🎯 Geo-targeted placements</span>
                                 <span className="flex items-center gap-1">💎 Featured in search results</span>
                             </div>
@@ -1575,7 +1575,7 @@ export default function HomeClient({
                         <Link href="/directory" className="bg-black/35 border border-white/10 hover:border-[#F1A91B]/50 rounded-xl p-5 transition-all group flex flex-col gap-2">
                             <div className="w-9 h-9 rounded-lg bg-[#F1A91B]/10 flex items-center justify-center"><Zap className="w-5 h-5 text-[#F1A91B]" /></div>
                             <h3 className="font-bold text-white text-sm">I Need an Escort</h3>
-                            <p className="text-xs text-white/55 flex-1">Find a verified pilot car or escort vehicle near your load's origin. Real-time availability, trust scores, and instant dispatch matching.</p>
+                            <p className="text-xs text-white/55 flex-1">Find pilot car and escort vehicle records near your load's origin. Review coverage, profile details, and contact paths.</p>
                             <span className="text-xs font-bold text-[#C6923A] flex items-center gap-1 mt-1">Find Escorts <ChevronRight className="w-3 h-3" /></span>
                         </Link>
                         <Link href="/claim" className="bg-black/35 border border-white/10 hover:border-[#3B82F6]/40 rounded-xl p-5 transition-all group flex flex-col gap-2">

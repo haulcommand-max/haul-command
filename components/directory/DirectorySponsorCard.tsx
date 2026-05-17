@@ -19,12 +19,12 @@ interface DirectorySponsorCardProps {
 const COPY: Record<string, { headline: string; body: string; cta: string }> = {
   upper: {
     headline: 'Your Business Here',
-    body: 'Reach operators and brokers searching in this territory. Exclusive sponsor placement with verified audience — not general traffic.',
+    body: 'Reach operators and brokers searching in this territory. Sponsor sponsor placement with verified audience — not general traffic.',
     cta: 'Become a Territory Sponsor',
   },
   lower: {
     headline: 'Want more visibility?',
-    body: 'Self-serve CPC campaigns start at $0.75/click. Or claim an exclusive corridor sponsorship. Industry-only traffic.',
+    body: 'Self-serve CPC campaigns start at $0.75/click. Or claim an corridor sponsorship. Industry-only traffic.',
     cta: 'Launch a Campaign',
   },
 };

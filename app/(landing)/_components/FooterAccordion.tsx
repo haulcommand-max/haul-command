@@ -99,7 +99,7 @@ export function FooterAccordion() {
                 <p className="text-amber-200/50 text-xs leading-relaxed max-w-3xl mx-auto">
                     Haul Command is the world&apos;s premier logistics infrastructure for oversize load transportation —
                     a verified pilot car directory, oversize load board, permit compliance tools, route corridor
-                    intelligence, and trust verification network covering 120 countries. Built for operators, brokers,
+                    intelligence, and trust verification network covering priority markets. Built for operators, brokers,
                     carriers, permit agents, staging yards, equipment suppliers, route surveyors, and heavy-haul
                     authorities worldwide.
                 </p>

@@ -9,7 +9,7 @@ import { Home, Search, MapPin, BookOpen, Phone, Truck, Shield } from 'lucide-rea
 // ══════════════════════════════════════════════════════════════
 
 const RECOVERY_LINKS = [
-    { href: '/directory', label: 'Browse Directory', description: 'Find verified pilot cars and escort operators', icon: Search },
+    { href: '/directory', label: 'Browse Directory', description: 'Find pilot car and escort operator records', icon: Search },
     { href: '/loads', label: 'Load Board', description: 'Post or browse oversize load jobs', icon: Truck },
     { href: '/near', label: 'Operators Near Me', description: 'Find available escorts nearby', icon: MapPin },
     { href: '/tools', label: 'Tools & Calculators', description: 'Rate calculators, route survey, DOT lookup', icon: Shield },

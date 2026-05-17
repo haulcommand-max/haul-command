@@ -133,7 +133,7 @@ export function ReadinessState({
     const configs: Record<string, { color: string; label: string; desc: string; cta: { label: string; href: string } }> = {
         live: {
             color: '#22C55E', label: 'LIVE MARKET',
-            desc: `Active loads and verified operators in ${stateName}. Take action now.`,
+            desc: `Load and operator records in ${stateName}. Take action now.`,
             cta: { label: 'Browse Loads', href: '/loads' },
         },
         seeding: {

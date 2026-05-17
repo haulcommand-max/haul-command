@@ -18,8 +18,8 @@ const SERVICES = [
   {
     slug: 'pilot-car',
     title: 'Pilot Car Services',
-    description: 'Certified pilot car operators for oversize and overweight loads across 50+ countries.',
-    longDescription: 'Professional lead and follow escort services across every major corridor in all 50+ countries we serve. Verified operators with $1M+ insurance on file.',
+    description: 'Certified pilot car operators for oversize and overweight loads across priority markets.',
+    longDescription: 'Professional lead and follow escort services across major corridors where operator records and insurance evidence are available.',
     features: ['Lead vehicle escort', 'Follow vehicle escort', 'Route surveying', 'Height pole operation', 'Communication relay'],
     icon: Truck,
     accent: '#F59E0B',
@@ -72,8 +72,8 @@ const SERVICES = [
   {
     slug: 'fleet-backup',
     title: 'Fleet Backup & Rescue',
-    description: '24/7 emergency escort dispatch. No-shows, cancellations, breakdowns — resolved in under 15 minutes.',
-    longDescription: 'Our rescue dispatch layer activates in under 15 minutes when escorts no-show, cancel, or break down. 6,900+ operator network, 50+ countries.',
+    description: '24/7 emergency escort dispatch. No-shows, cancellations, breakdowns — resolved in as quickly as the market allows.',
+    longDescription: 'Our rescue dispatch layer activates in as quickly as the market allows when escorts no-show, cancel, or break down. operator directory and priority-market coverage.',
     features: ['< 15 min response SLA', '24/7/365 availability', 'Surge dispatch', 'Asset-based fleet backup', 'Mid-route replacement'],
     icon: Siren,
     accent: '#ef4444',
@@ -208,7 +208,7 @@ export default function ServicesPage() {
       <section className="max-w-6xl mx-auto px-4 pb-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { value: '6,900+', label: 'Verified Operators' },
+            { value: 'Directory', label: 'Operator Records' },
             { value: '120', label: 'Countries' },
             { value: '14', label: 'Service Categories' },
             { value: '<15 min', label: 'Rescue Response' },
@@ -254,7 +254,7 @@ export default function ServicesPage() {
           "@context": "https://schema.org",
           "@type": "ItemList",
           "name": "Heavy Haul Escort Services",
-          "description": "Professional escort services across 50+ countries",
+          "description": "Professional escort services across priority markets",
           "numberOfItems": SERVICES.length,
           "itemListElement": SERVICES.map((s, i) => ({
             "@type": "ListItem",

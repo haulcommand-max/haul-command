@@ -87,7 +87,7 @@ export default async function CountryHub({ params }: { params: Promise<{ country
                         <div>
                             <h3 className="text-2xl font-bold text-white mb-2">Are you operating in {market.name}?</h3>
                             <p className="text-slate-400 mb-6 text-sm">
-                                83% of high-value freight in {market.name} routes through verified operators. Claim your profile to access Level 2 KYC status and bypass standard broker onboarding.
+                                Complete your profile for {market.name} so brokers can review your coverage, documents, and contact path before they call.
                             </p>
                             <Link href="/claim" className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-lg text-black bg-gradient-to-r from-[#F8DFB0] via-[#C6923A] to-[#8A6428] hover:shadow-gold-md transition-all uppercase tracking-wide">
                                 Claim Local Profile
@@ -110,7 +110,7 @@ export default async function CountryHub({ params }: { params: Promise<{ country
                                 <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 uppercase">AdGrid Spot</span>
                             </div>
                             <p className="text-slate-400 mb-6 text-sm">
-                                Secure the primary enterprise visibility slot for {term.toLowerCase()} routing across {market.name}. Outbid competitors for high-intent traffic matching $5,000+ freight intent.
+                                Secure measured enterprise visibility for {term.toLowerCase()} routing across {market.name}. Placement details and campaign fit are reviewed before launch.
                             </p>
                             <Link href="/advertise/corridor" className="inline-flex items-center justify-center px-6 py-3 border border-emerald-500/50 text-sm font-bold rounded-lg text-emerald-400 hover:bg-emerald-500/10 transition-all uppercase tracking-wide">
                                 Sponsor This Market

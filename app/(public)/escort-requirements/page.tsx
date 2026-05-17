@@ -17,7 +17,7 @@ import { Globe, MapPin, Shield, ChevronRight, BookOpen, Zap, TrendingUp, Award }
 export const metadata: Metadata = {
   title: 'Escort Vehicle Requirements by Country & State | Haul Command',
   description:
-    'Pilot car and escort vehicle requirements for oversize loads across 120+ countries and all 50 US states. Width, height, length, and weight thresholds — updated real time. Find certified escorts near you.',
+    'Pilot car and escort vehicle requirements for oversize loads across priority countries and all 50 US states. Width, height, length, and weight thresholds with source-confidence context.',
   keywords: [
     'escort vehicle requirements by country',
     'pilot car requirements by state',
@@ -31,12 +31,12 @@ export const metadata: Metadata = {
     'oversize load permit escort',
   ],
   openGraph: {
-    title: 'Escort Vehicle Requirements — 120 Countries | Haul Command',
-    description: 'Pilot car and escort vehicle requirements for oversize loads across 120+ countries. Width, height, weight thresholds. Find certified escorts instantly.',
+    title: 'Escort Vehicle Requirements by Market | Haul Command',
+    description: 'Pilot car and escort vehicle requirements for oversize loads by market. Width, height, weight thresholds with source-confidence context.',
     url: 'https://www.haulcommand.com/escort-requirements',
     images: [{ url: 'https://www.haulcommand.com/og/escort-requirements.jpg', width: 1200, height: 630 }],
   },
-  twitter: { card: 'summary_large_image', title: 'Escort Requirements — 120 Countries | Haul Command' },
+  twitter: { card: 'summary_large_image', title: 'Escort Requirements by Market | Haul Command' },
   alternates: {
     canonical: 'https://www.haulcommand.com/escort-requirements',
     languages: {

@@ -37,7 +37,7 @@ const statusConfig: Record<ActionStatus, { color: string; icon: string; defaultT
 
 const actionMessages: Record<ActionType, Record<ActionStatus, { title: string; detail: string }>> = {
     post_load: {
-        success: { title: 'Load Live & Routing', detail: 'Your load is visible to verified operators. Watch for responses in your inbox.' },
+        success: { title: 'Load Live & Routing', detail: 'Your load is visible to relevant operator records. Watch for responses in your inbox.' },
         partial: { title: 'Load Saved', detail: 'Some fields need attention before routing begins.' },
         pending: { title: 'Publishing...', detail: 'Your load is being distributed to matching operators.' },
         failed: { title: 'Post Failed', detail: 'We couldn\'t publish this load. Check your connection and try again.' },

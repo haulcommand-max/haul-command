@@ -75,7 +75,7 @@ export default function GlobalCommandMap() {
             <Geographies geography={geoUrl}>
               {({ geographies }) =>
                 geographies.map((geo) => {
-                  // If it's one of the 50+ countries we support, light it up
+                  // If it's one of the priority markets we track, light it up
                   const isTarget = TARGET_COUNTRIES.includes(geo.properties.name);
                   
                   return (

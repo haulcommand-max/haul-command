@@ -29,7 +29,7 @@ export default function MotiveOnboardingPrompt({ profileId, onSkip }: Props) {
       </h2>
       <p style={{ color: '#8b949e', fontSize: 14, lineHeight: 1.6, margin: '0 0 24px' }}>
         Operators with ELD verification get{' '}
-        <span style={{ color: '#00ff88', fontWeight: 700 }}>3x more load offers</span>.
+        <span style={{ color: '#00ff88', fontWeight: 700 }}>more complete broker context</span>.
         Your real-time location and hours of service are automatically verified — no manual updates needed.
       </p>
 

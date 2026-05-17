@@ -15,7 +15,7 @@ export default function AdvertiserDashboardPage() {
         <div className="mb-8 border-b border-white/5 pb-6">
           <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Advertiser Command Center</h1>
           <p className="text-slate-400 text-sm">
-            Deploy hyper-local creatives across 120 countries. Control your budget and view real-time ROI across the complete heavy-haul operator network.
+            Deploy hyper-local creatives across priority markets. Control your budget and view campaign ROI across the heavy-haul operator surfaces.
           </p>
         </div>
 

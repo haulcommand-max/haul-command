@@ -19,7 +19,7 @@ export default function RegisterClient() {
 
   // Determine contextual heading
   let heading = 'Create Your Free Account'
-  let subheading = 'Sign up to access the world\'s largest heavy haul network — 50+ countries, escrow-protected payments, verified operators.'
+  let subheading = 'Sign up to access Haul Command heavy haul workflows, directory records, payments tooling, and operator profile features.'
 
   if (intent === 'claim') {
     heading = 'Sign Up to Claim Your Listing'

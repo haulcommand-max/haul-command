@@ -61,9 +61,9 @@ const pricingSchema = {
 
 
 const SPONSOR_HIGHLIGHTS = [
-    { name: 'Territory Sponsor', price: '$299/mo', note: 'Exclusive per state', href: '/advertise/territory' },
-    { name: 'Corridor Sponsor', price: '$199/mo', note: 'Exclusive per corridor', href: '/advertise/corridor' },
-    { name: 'Port Sponsor', price: '$499/mo', note: 'Exclusive per port', href: '/advertise/enterprise' },
+    { name: 'Territory Sponsor', price: '$299/mo', note: 'Contracted per state', href: '/advertise/territory' },
+    { name: 'Corridor Sponsor', price: '$199/mo', note: 'Contracted per corridor', href: '/advertise/corridor' },
+    { name: 'Port Sponsor', price: '$499/mo', note: 'Contracted per port', href: '/advertise/enterprise' },
     { name: 'Self-Serve CPC', price: '$0.75+/click', note: 'No minimum budget', href: '/advertise/buy' },
 ];
 

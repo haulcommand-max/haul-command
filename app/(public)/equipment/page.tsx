@@ -13,7 +13,7 @@ export default function EquipmentPage() {
       name: 'Safety Warning Systems',
       category: 'Lightbars & LED Signage',
       description: 'DOT compliant ultra-bright roof LED lightbars and rigid folding signs for extreme weather and night transport.',
-      offerText: '10% off for verified operators',
+      offerText: '10% off for claimed operators',
       link: '#',
       isFeatured: true
     },
@@ -28,7 +28,7 @@ export default function EquipmentPage() {
       name: 'Baofeng / Motorola Solutions',
       category: 'Two-Way Comms',
       description: 'Reliable VHF/UHF two-way comms essential for front-to-rear load coordination in rural dead zones.',
-      offerText: 'Exclusive radio bundles',
+      offerText: 'Partner radio bundles',
       link: '#'
     }
   ];

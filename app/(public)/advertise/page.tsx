@@ -26,7 +26,7 @@ import {
 //   - Territory sponsorship (50 US states, tiered pricing)
 //   - Corridor sponsorship (12 major corridors)
 //   - Port sponsorship (10 major ports)
-//   - Country sponsorship (120 countries, PPP-adjusted)
+//   - Country sponsorship (priority markets, PPP-adjusted)
 //
 // Role+Intent: sponsor + acquire_territory + geo
 // AdGrid: Every surface on this page IS the product
@@ -233,7 +233,7 @@ export default function AdvertisePage() {
                 "@type": "WebPage",
                 "name": "Advertise on Haul Command — Sponsor Territory, Corridor, or Port",
                 "url": "https://haulcommand.com/advertise",
-                "description": "Sponsor a territory, corridor, or port on the #1 heavy haul logistics platform. Tiered pricing from $149/mo. 50 US states, 12 corridors, 10 ports, 120 countries.",
+                "description": "Sponsor a territory, corridor, or port on the #1 heavy haul logistics platform. Tiered pricing from $149/mo. 50 US states, 12 corridors, 10 ports, priority markets.",
             }) }} />
 
             {/* Hero */}
@@ -384,7 +384,7 @@ export default function AdvertisePage() {
                                         'Sponsor badge on all state pages',
                                         'Featured in email alerts for this territory',
                                         'Priority support + analytics dashboard',
-                                        s.tier === 'mega' ? 'Exclusive: max 2 sponsors per state' : 'Limited slots available',
+                                        s.tier === 'mega' ? 'Limited: max 2 sponsors per state' : 'Limited slots available',
                                     ]}
                                     cta={`Own ${s.code} — $${s.priceMonthly}/mo`}
                                 />

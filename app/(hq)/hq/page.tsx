@@ -266,7 +266,7 @@ export default async function HQDashboard() {
           <div className=" border border-slate-800 rounded-lg p-5 flex flex-col justify-center gap-4">
              <div>
                <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Intent Lock</p>
-               <p className="text-sm text-slate-300">Targeting <strong>$5,000+ Load Intent</strong> + KYC Level 2 Verified Operators.</p>
+               <p className="text-sm text-slate-300">Targeting <strong>$5,000+ Load Intent</strong> + operators with profile evidence.</p>
              </div>
              <div className="pt-2 border-t border-slate-800/50">
                <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Estimated Lead Value</p>

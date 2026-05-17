@@ -59,7 +59,7 @@ export function FleetBackupRescue() {
             <p className="text-[#8fa3b8] text-xs sm:text-sm leading-relaxed mb-6 max-w-2xl">
               Escort no-shows. Last-minute cancellations. Emergency re-routes. When a move goes wrong, 
               our rescue dispatch layer activates in under 15 minutes — finding the nearest available, 
-              qualified replacement from our 15,000+ operator network.
+              qualified replacement from our operator directory network.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">

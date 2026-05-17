@@ -112,7 +112,7 @@ export default function BetaWaitlistModal() {
                 </h3>
                 
                 <p className="text-gray-300 text-sm sm:text-base font-medium mb-8 leading-relaxed max-w-md">
-                  Haul Command is currently operating in exclusive beta. Join the private command waitlist to secure elite operator status and global dispatch priority before public rollout.
+                  Haul Command is currently operating in private beta. Join the private command waitlist to request early operator access before public rollout before public rollout.
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">

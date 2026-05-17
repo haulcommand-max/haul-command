@@ -295,8 +295,8 @@ export default async function RepositionPage() {
           {/* Cross-links */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
             {[
-              { href: '/available-now', icon: Clock, label: 'Available Now', desc: 'Live availability feed', color: '#22c55e' },
-              { href: '/directory', icon: Truck, label: 'Directory', desc: 'All verified operators', color: '#C6923A' },
+              { href: '/available-now', icon: Clock, label: 'Available Now', desc: 'Availability request feed', color: '#22c55e' },
+              { href: '/directory', icon: Truck, label: 'Directory', desc: 'Operator records', color: '#C6923A' },
               { href: '/loads', icon: MapPin, label: 'Load Board', desc: 'Active oversize loads', color: '#a78bfa' },
               { href: '/claim', icon: Shield, label: 'Claim Profile', desc: 'Get found by brokers', color: '#3b82f6' },
             ].map(card => {

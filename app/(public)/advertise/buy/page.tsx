@@ -47,7 +47,7 @@ const CAMPAIGN_TYPES = [
         period: 'Monthly or annual (15% off)',
         color: '#D4A843',
         features: [
-            'Exclusive placement on a named corridor page',
+            'Contracted placement on a named corridor page',
             'Your brand shown on every search touching that corridor',
             'Priority listing in corridor-related directory results',
             'Branded "Corridor Sponsor" badge on your profile',
@@ -66,7 +66,7 @@ const CAMPAIGN_TYPES = [
         color: '#22c55e',
         features: [
             'Own all sponsor slots in a state or country',
-            'Exclusive placement in /near-me and directory results',
+            'Contracted placement in /near-me and directory results',
             'Branded "Territory Sponsor" badge visible on all listings',
             'Priority matching for loads in your territory',
             'Monthly territory report: search volume, operator density, lead flow',

@@ -118,7 +118,7 @@ export default function RiskMitigationPage() {
           "@type": "Service",
           "name": "Risk & Liability Mitigation for Oversize Transport",
           "provider": { "@type": "Organization", "name": "Haul Command", "url": "https://haulcommand.com" },
-          "description": "Insurance verification, route risk scoring, compliance automation, and GPS oversight for heavy haul transport across 50+ countries.",
+          "description": "Insurance verification, route risk scoring, compliance automation, and GPS oversight for heavy haul transport across priority markets.",
           "areaServed": { "@type": "Place", "name": "Worldwide" },
           "serviceType": "Risk Mitigation",
         }),

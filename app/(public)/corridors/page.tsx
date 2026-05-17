@@ -266,7 +266,7 @@ export default function CorridorsPage() {
         <NoDeadEndBlock
           heading="Next Move"
           moves={[
-            { href: '/directory', icon: '🔍', title: 'Find Corridor Escorts', desc: 'Search verified operators by lane', primary: true, color: '#D4A844' },
+            { href: '/directory', icon: '🔍', title: 'Find Corridor Escorts', desc: 'Search operator records by lane', primary: true, color: '#D4A844' },
             { href: '/claim', icon: '✓', title: 'Claim Your Profile', desc: 'Get placed in corridor results', primary: true, color: '#22C55E' },
             { href: '/tools/corridor-pricing', icon: '📈', title: 'Rate Benchmarks', desc: 'Historical lane rates' },
             { href: '/regulations', icon: '⚖️', title: 'Permit Complexity', desc: 'Multi-state requirements' },

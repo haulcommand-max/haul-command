@@ -15,7 +15,7 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: 'Backhaul & Repositioning Broadcasts | Haul Command',
   description:
-    'Find pilot car and escort operators deadheading or repositioning across the country. Book partials or return-trip loads with verified operators.',
+    'Find pilot car and escort operators deadheading or repositioning across the country. Book partials or return-trip loads with operator records and direct contact paths.',
   keywords: [
     'pilot car backhaul',
     'escort vehicle repositioning',
@@ -87,7 +87,7 @@ export default async function BackhaulsPage() {
               <span style={{ color: '#8b5cf6' }}>Repositioning Feed</span>
             </h1>
             <p style={{ margin: '0 0 2rem', fontSize: '1.05rem', color: '#94a3b8', lineHeight: 1.65, maxWidth: 560 }}>
-              {activeBroadcasts.length} verified operators currently deadheading or repositioning. Book partials or escort teams along their return paths to lower costs and ensure coverage without paying premium mileage.
+              {activeBroadcasts.length} operators with repositioning signals. Book partials or escort teams along their return paths to lower costs and ensure coverage without paying premium mileage.
             </p>
 
             {/* Stats row */}
@@ -102,7 +102,7 @@ export default async function BackhaulsPage() {
                 <span style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b' }}>
                   {activeBroadcasts.filter(b => b.claim_status === 'claimed').length}
                 </span>
-                <span style={{ fontSize: 12, color: '#64748b' }}>Verified Operators</span>
+                <span style={{ fontSize: 12, color: '#64748b' }}>Operator Records</span>
               </div>
             </div>
           </div>

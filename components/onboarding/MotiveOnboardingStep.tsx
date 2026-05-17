@@ -17,7 +17,7 @@ export function MotiveOnboardingStep() {
 
       <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg px-4 py-3 mb-6">
         <p className="text-amber-400 text-sm font-semibold">
-          📈 Operators with ELD verification get 3× more load offers
+          📈 Operators with ELD verification add stronger operational evidence
         </p>
       </div>
 

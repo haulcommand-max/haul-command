@@ -4,7 +4,7 @@ import { REGULATIONS } from '@/lib/regulations/global-regulations-db';
 
 export const metadata: Metadata = {
   title: 'Pilot Car & Escort Vehicle Near Me | Haul Command',
-  description: 'Find source-backed pilot car and escort vehicle directory markets across 120 countries. Search by location, local terminology, claim paths, and support-request actions.',
+  description: 'Find source-backed pilot car and escort vehicle directory markets across priority markets. Search by location, local terminology, claim paths, and support-request actions.',
   keywords: [
     'pilot car near me',
     'escort vehicle near me',
@@ -70,7 +70,7 @@ export default function NearMeIndex() {
             lineHeight: 1.65,
           }}
         >
-          Search source-backed pilot car and escort vehicle markets across 120 countries. Haul Command shows local terminology, claim paths, and support-request actions without inventing verification, GPS dispatch, or live availability.
+          Search source-backed pilot car and escort vehicle markets across priority markets. Haul Command shows local terminology, claim paths, and support-request actions without inventing verification, GPS dispatch, or live availability.
         </p>
         <Link
           href="/directory"

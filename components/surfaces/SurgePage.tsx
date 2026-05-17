@@ -44,7 +44,7 @@ export default function SurgePage({
                             Live Market Status
                         </h3>
                         <p className="text-red-700 font-medium text-sm mt-1">
-                            {liveOperators.length} verified operators active in {marketContext.locality_name} right now.
+                            {liveOperators.length} operator records for {marketContext.locality_name}.
                         </p>
                     </div>
                     <div className="text-right hidden sm:block">

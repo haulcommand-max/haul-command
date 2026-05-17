@@ -546,7 +546,7 @@ export default function RegulationsIndexPage() {
         <NoDeadEndBlock
           heading="What Would You Like to Do Next?"
           moves={[
-            { href: '/directory', icon: '🔍', title: 'Find Verified Escorts', desc: 'Operators across 120 countries', primary: true, color: '#D4A844' },
+            { href: '/directory', icon: '🔍', title: 'Find Escort Records', desc: 'Operators across priority markets', primary: true, color: '#D4A844' },
             { href: '/claim', icon: '✓', title: 'Claim Your Profile', desc: 'List your operation free', primary: true, color: '#22C55E' },
             { href: '/tools/escort-calculator', icon: '🧮', title: 'Route Calculator', desc: 'Enter route, get requirements' },
             { href: '/escort-requirements', icon: '⚖️', title: 'Escort Thresholds', desc: 'Dimension-based rules by state' },

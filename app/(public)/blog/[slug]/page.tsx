@@ -181,7 +181,7 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps) 
             <div className="bg-gradient-to-br from-[#0f1318] to-[#1a1f28] border border-[#C6923A]/20 rounded-2xl p-6 md:p-8">
               <p className="text-xs font-bold uppercase tracking-widest text-[#C6923A] mb-3">Take Action</p>
               <h3 className="text-xl font-black text-white mb-2">Put This Intelligence to Work</h3>
-              <p className="text-[#9CA3AF] text-sm mb-6">Find verified operators, check regulations, or get your operation listed on Haul Command.</p>
+              <p className="text-[#9CA3AF] text-sm mb-6">Find operator records, check regulations, or get your operation listed on Haul Command.</p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <Link href="/directory" className="flex items-center justify-center gap-2 px-4 py-3 bg-[#C6923A] hover:bg-[#E0B05C] text-black font-bold text-sm rounded-xl transition-all">
                   Find Operators →

@@ -14,7 +14,7 @@ export default function PermitCostCalculatorPage() {
   const faq = { '@context':'https://schema.org','@type':'FAQPage', mainEntity:[
     {"@type":'Question', name:'How much does an oversize load permit cost?', acceptedAnswer:{"@type":'Answer', text:'Oversize permit costs vary by state. Base fees range from $15 to $100+, plus per-mile charges of $0.10"“$0.50 and per-ton-over fees. Use the calculator above for an accurate estimate for your specific route.'}},
     {"@type":'Question', name:'Do I need a permit for every state my load travels through?', acceptedAnswer:{"@type":'Answer', text:'Yes. You need a separate oversize load permit for each state your route passes through. Some states offer trip permits, annual permits, or multi-trip permits depending on load frequency.'}},
-    {"@type":'Question', name:'How long does it take to get an oversize permit?', acceptedAnswer:{"@type":'Answer', text:'Standard permits are typically issued same-day to 3 business days. Superloads may require 5"“10 business days. Some states offer online instant issuance for standard loads.'}},
+    {"@type":'Question', name:'How long does it take to get an oversize permit?', acceptedAnswer:{"@type":'Answer', text:'Standard permits are typically issued one to three business days in many markets. Superloads may require 5"“10 business days. Some states offer online issuance for standard loads.'}},
   ]}
 
   return (
@@ -102,7 +102,7 @@ export default function PermitCostCalculatorPage() {
               {[
                 {q:'How much does an oversize load permit cost?',a:'Permit costs vary significantly by state. Base fees range from $15 in some states to $100+ in others. Most states also charge per-mile fees ($0.10"“$0.50) and per-ton-over fees for overweight loads. A multi-state route from Texas to Ohio might total $200"“$600 in permit fees alone, plus escort costs.'},
                 {q:'Do I need a permit for every state my load travels through?',a:'Yes. Each state your route passes through requires its own permit. Some states offer annual or multi-trip permits for operators with frequent corridor use.'},
-                {q:'How long does it take to get an oversize permit?',a:'Standard permits are typically issued same-day to 3 business days. Superloads requiring engineering review may take 5"“10 business days. Several states now offer online instant issuance.'},
+                {q:'How long does it take to get an oversize permit?',a:'Standard permits are typically issued one to three business days in many markets. Superloads requiring engineering review may take 5"“10 business days. Several states now offer online issuance.'},
                 {q:'What dimensions trigger a pilot car requirement?',a:'Pilot car requirements vary by state. In most US states, loads exceeding 12&apos; wide require at least one escort. At 14&apos;+ wide, two escorts plus a high pole are typically required. Some states have lower thresholds.'},
                 {q:'Can I use an annual permit instead of trip permits?',a:'Some states offer annual or blanket permits for operators with recurring loads in specific corridors. These are cost-effective for carriers with regular routes.'},
               ].map((item,i)=>(

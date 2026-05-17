@@ -11,7 +11,7 @@ import {
 /* =•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•
    WHY OPERATORS JOIN HAUL COMMAND
    =”€ Direct counter to ODS "Join Our Network" page.
-     ODS says: "free to join, guaranteed pay, paid fast, 
+     ODS says: "free to join, payment tooling, paid fast,
      more miles, minimize deadhead."
      HC says the same + 12 money-making surfaces they can't match.
    =•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=•=• */
@@ -92,7 +92,7 @@ const OPERATOR_HOOKS = [
   {
     icon: BarChart3,
     title: "Availability Heatmap",
-    desc: "Your live availability broadcasts to every carrier and broker searching your territory. More visibility = more jobs.",
+    desc: "Your availability signal can appear to carriers and brokers searching your territory where workflows are active.",
     accent: "#10b981",
     badge: null,
   },
@@ -186,7 +186,7 @@ export function WhyOperatorsJoin() {
             <div className="text-center sm:text-left">
               <div className="text-sm font-bold text-white mb-0.5">Ready to earn more?</div>
               <div className="text-[11px] text-[#8fa3b8]">
-                Join 15,000+ operators already on the platform. Free forever.
+                Join the Haul Command operator directory. Free to start.
               </div>
             </div>
             <Link

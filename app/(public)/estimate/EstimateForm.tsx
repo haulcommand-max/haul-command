@@ -314,7 +314,7 @@ export default function EstimateForm() {
                 <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 20, fontSize: 12, color: T.subtle }}>
                     <span>âœ… Free — no sign-up</span>
                     <span>ðŸ”’ Data not stored</span>
-                    <span>ðŸŒ 120 countries</span>
+                    <span>ðŸŒ Market coverage varies</span>
                     <span>âš¡ 30 second results</span>
                 </div>
             </div>

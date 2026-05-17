@@ -75,7 +75,7 @@ export default function FleetIntelligencePanel({ profileId }: { profileId: strin
           <div>
             <h3 style={{ margin: 0, fontSize: 16, color: '#e0e0e6' }}>Connect Your ELD</h3>
             <p style={{ margin: '4px 0 0', fontSize: 13, color: '#8b949e' }}>
-              Operators with ELD verification get <span style={{ color: '#00ff88', fontWeight: 600 }}>3x more load offers</span>
+              Operators with ELD verification add stronger operational evidence to their profile
             </p>
           </div>
         </div>

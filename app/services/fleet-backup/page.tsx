@@ -7,11 +7,11 @@ import {
 
 export const metadata: Metadata = {
   title: 'Fleet Backup & Emergency Escort Dispatch | Haul Command',
-  description: '24/7 emergency escort dispatch. Escort no-shows, last-minute cancellations, route changes — our rescue layer activates in under 15 minutes across 50+ countries.',
+  description: '24/7 emergency escort dispatch. Escort no-shows, last-minute cancellations, route changes — our rescue layer activates in as quickly as market coverage allows.',
   keywords: ['emergency escort', 'fleet backup', 'urgent pilot car', 'escort no show', 'emergency dispatch', 'last minute escort', 'rescue escort'],
   openGraph: {
     title: 'Fleet Backup & Emergency Escort Dispatch | Haul Command',
-    description: '24/7 emergency escort dispatch with under 15 minute response time across 50+ countries.',
+    description: '24/7 emergency escort dispatch with response workflows where market coverage exists.',
     url: 'https://haulcommand.com/services/fleet-backup',
   },
   alternates: { canonical: 'https://haulcommand.com/services/fleet-backup' },
@@ -36,7 +36,7 @@ const SCENARIOS = [
   {
     icon: Truck,
     title: "Multi-Escort Shortage",
-    desc: "Need 4 escorts but can only find 2? Our fleet backup layer fills the remaining positions from our 6,900+ operator network.",
+    desc: "Need 4 escorts but can only find 2? Our fleet backup layer fills the remaining positions from available operator records.",
   },
   {
     icon: Radio,
@@ -74,7 +74,7 @@ export default function FleetBackupPage() {
           </h1>
           <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto mb-8">
             When escorts no-show, cancel, or break down — our rescue dispatch layer activates in under 
-            15 minutes. 6,900+ operators. 50+ countries. No move left stranded.
+            Market coverage, operator records, and escalation paths vary by route.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link
@@ -98,7 +98,7 @@ export default function FleetBackupPage() {
               { value: "< 15 min", label: "Response SLA" },
               { value: "24/7/365", label: "Availability" },
               { value: "120", label: "Countries" },
-              { value: "6,900+", label: "Operators" },
+              { value: "Directory", label: "Operators" },
             ].map(({ value, label }) => (
               <div key={label}>
                 <div className="text-xl font-black text-red-400">{value}</div>

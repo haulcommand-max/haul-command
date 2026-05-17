@@ -3,7 +3,7 @@ import LiveMapClient from './LiveMapClient';
 
 export const metadata: Metadata = {
   title: 'Live Dispatch Map — Heavy Haul Operations | Haul Command',
-  description: 'Real-time dispatch map showing all active oversize loads, escort positions, permit routes, and clearance intelligence across 50+ countries.',
+  description: 'Operational map for oversize load context, escort coverage signals, permit routes, and clearance intelligence where source data is available.',
 };
 
 export default function LiveMapPage() {
@@ -21,7 +21,7 @@ export default function LiveMapPage() {
                 "name": "How often is the live dispatch map updated?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Our live map aggregates data in near real-time from active oversize loads and escort vehicles."
+                  "text": "The map aggregates available route, directory, and operational signals. Live position data appears only when an authorized source is connected."
                 }
               },
               {

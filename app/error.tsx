@@ -64,7 +64,7 @@ export default function GlobalError({
                     marginBottom: 32, maxWidth: 360, margin: '0 auto 32px',
                 }}>
                     This content is being updated or is temporarily offline. 
-                    We&apos;re actively expanding coverage across all 50 states and 120 countries.
+                    We&apos;re actively expanding coverage across all 50 states and priority markets.
                 </p>
 
                 {/* Actions */}

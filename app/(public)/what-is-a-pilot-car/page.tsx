@@ -11,7 +11,7 @@ export default function WhatIsAPilotCarPage() {
   const faqs = [
     { q: 'What is a pilot car?', a: 'A pilot car (also called an escort vehicle or PEVO — Pilot Escort Vehicle Operator) is a vehicle that travels ahead of, alongside, or behind an oversize load on public roads. The pilot car alerts other drivers, clears the route, and communicates with the oversize load driver to ensure safe passage.' },
     { q: 'When is a pilot car required?', a: 'Requirements vary by state, province, and country. In the US, most states require a pilot car when a load exceeds 14 feet wide, 14.5 feet tall, or 100 feet long. Some states add weight thresholds. Always check state-specific requirements before moving an oversize load.' },
-    { q: 'What certification does a pilot car operator need?', a: 'Requirements vary by state. Some states require no certification; others require a Pilot Car Certification (like PCSA or state-specific licenses), a valid CDL endorsement, or completion of a state-approved training program. Haul Command Certification is recognized across 120 countries.' },
+    { q: 'What certification does a pilot car operator need?', a: 'Requirements vary by state. Some states require no certification; others require a Pilot Car Certification (like PCSA or state-specific licenses), a valid CDL endorsement, or completion of a state-approved training program. Haul Command training is designed for market-specific requirements and should be checked against local rules.' },
     { q: 'How much does a pilot car cost?', a: 'US pilot car rates typically range from $300–$700 per day for a lead or chase car, depending on state, route complexity, and certifications required. Height poles add $450–$850/day. Route surveys add $500–$1,200/day. Night moves carry a 20–50% premium.' },
     { q: 'How much do pilot car operators earn?', a: 'Experienced pilot car operators in high-demand markets earn $60,000–$120,000+ annually. Earnings depend on certification level, specialty services offered, geographic coverage, and whether you work independently or through a broker network.' },
   ];
@@ -28,7 +28,7 @@ export default function WhatIsAPilotCarPage() {
           </div>
           <h1 className="text-4xl sm:text-5xl font-black mb-4 tracking-tight">What Is a Pilot Car?</h1>
           <p className="text-gray-300 text-lg max-w-2xl leading-relaxed">
-            A complete guide to pilot cars, escort vehicles, PEVO certification, requirements by state, and earnings — across 120 countries.
+            A complete guide to pilot cars, escort vehicles, PEVO certification, requirements by state, and earnings — with market-specific rule context.
           </p>
         </div>
       </div>
@@ -77,7 +77,7 @@ export default function WhatIsAPilotCarPage() {
         {/* Internal links — no dead ends */}
         <div className="bg-[#0B0F14] text-white rounded-2xl p-8">
           <h3 className="font-black text-lg mb-2">Find Verified Pilot Cars Now</h3>
-          <p className="text-gray-400 text-sm mb-6">7,711+ operators in 120 countries. Check rates, verify certifications, and find available escorts near your route.</p>
+          <p className="text-gray-400 text-sm mb-6">Browse operator records, check rate context, and review certification requirements near your route.</p>
           <div className="flex flex-wrap gap-3">
             <Link href="/directory" className="px-4 py-2 bg-[#F1A91B] text-black font-bold rounded-lg text-sm">Find Escorts →</Link>
             <Link href="/rates" className="px-4 py-2 bg-white/10 border border-white/20 text-white font-semibold rounded-lg text-sm">Rate Index</Link>

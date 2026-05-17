@@ -39,7 +39,7 @@ function getGapPrompts(data: DensityData): string[] {
     const prompts: string[] = [];
     if (data.verified_operators < 5) {
         const needed = 5 - data.verified_operators;
-        prompts.push(`${needed} more verified operators unlock stronger corridor coverage`);
+        prompts.push(`${needed} more operator records improve corridor context`);
     }
     if (data.total_operators > 0 && data.claimed_operators / data.total_operators < 0.3) {
         prompts.push(`${Math.round((1 - data.claimed_operators / data.total_operators) * 100)}% of operators are unclaimed — early advantage available`);

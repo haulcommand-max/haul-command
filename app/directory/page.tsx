@@ -661,7 +661,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                     <LiveActivityFeed fallbackStats={[
                         { label: 'visible on this view', value: providers.length.toLocaleString() },
                         { label: 'country scope', value: targetCountry ?? 'GLOBAL' },
-                        { label: 'coverage model', value: '120 countries' },
+                        { label: 'coverage model', value: 'priority markets' },
                     ]} />
                   </div>
                 </div>

@@ -3,10 +3,10 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Global Coverage Map — 120 Countries | Haul Command',
   description:
-    'Explore Haul Command\'s global heavy haul and oversize load directory covering 120 countries. Find pilot car operators, escort vehicles, and permit information by country.',
+    'Explore Haul Command\'s global heavy haul and oversize load directory covering priority markets. Find pilot car operators, escort vehicles, and permit information by country.',
   openGraph: {
     title: 'Global Coverage Map — 120 Countries | Haul Command',
-    description: 'Find heavy haul operators, escort services, and oversize load intelligence across 120 countries worldwide.',
+    description: 'Find heavy haul operators, escort services, and oversize load intelligence across priority markets worldwide.',
     url: 'https://haulcommand.com/map',
   },
   alternates: { canonical: 'https://haulcommand.com/map' },
@@ -21,7 +21,7 @@ const FAQ_SCHEMA = {
       name: 'How many countries does Haul Command cover?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Haul Command covers 120 countries across 4 tiers: Tier A (live directory with verified operators), Tier B (coming soon), Tier C (planned), and Tier D (future expansion). Tier A markets include the US, Canada, Australia, UK, Germany, Netherlands, UAE, Brazil, South Africa, and New Zealand.',
+        text: 'Haul Command tracks priority markets across maturity tiers: source-backed directory markets, expanding markets, planned markets, and future expansion markets. Tier A markets include the US, Canada, Australia, UK, Germany, Netherlands, UAE, Brazil, South Africa, and New Zealand.',
       },
     },
     {

@@ -119,7 +119,7 @@ export default function SuccessContent() {
                                     <Zap className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
                                     <div>
                                         <p className="text-sm font-bold text-white">Corridor Sponsorship — $199/mo</p>
-                                        <p className="text-xs text-gray-400">Exclusive placement on your most active route. Shown to every broker searching that corridor.</p>
+                                        <p className="text-xs text-gray-400">Placement options on your most active route can be reviewed after profile setup.</p>
                                     </div>
                                 </div>
                                 <UpgradeButton priceKey="corridor_sponsor_monthly" label="Sponsor a Corridor →" color="#3B82F6" />

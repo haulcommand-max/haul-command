@@ -115,14 +115,14 @@ export default function InstantQuotePage() {
         "url": "https://haulcommand.com/tools/instant-quote",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web",
-        "description": "Get instant pilot car and escort vehicle pricing. Enter load dimensions, route, and urgency for competitive rate quotes across 50+ countries.",
+        "description": "Get pilot car and escort vehicle pricing context. Enter load dimensions, route, and urgency for benchmark estimates where data is available.",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
         "breadcrumb": {
           "@type": "BreadcrumbList",
           "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://haulcommand.com" },
             { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://haulcommand.com/tools" },
-            { "@type": "ListItem", "position": 3, "name": "Instant Quote", "item": "https://haulcommand.com/tools/instant-quote" },
+            { "@type": "ListItem", "position": 3, "name": "Quote Estimate", "item": "https://haulcommand.com/tools/instant-quote" },
           ]
         }
       }) }} />
@@ -131,7 +131,7 @@ export default function InstantQuotePage() {
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
-          { "@type": "Question", "name": "How much does a pilot car cost?", "acceptedAnswer": { "@type": "Answer", "text": "Pilot car costs typically range from $400-$800 per day in the United States, $450-$900 CAD per day in Canada, and $350-$700 GBP per day in the UK. Costs vary by load width, route complexity, number of escorts needed, urgency, and seasonal demand. Use the Haul Command Instant Quote tool for a specific estimate." }},
+          { "@type": "Question", "name": "How much does a pilot car cost?", "acceptedAnswer": { "@type": "Answer", "text": "Pilot car costs typically range from $400-$800 per day in the United States, $450-$900 CAD per day in Canada, and $350-$700 GBP per day in the UK. Costs vary by load width, route complexity, number of escorts needed, urgency, and seasonal demand. Use the Haul Command Quote Estimate tool for a specific estimate." }},
           { "@type": "Question", "name": "How many escort vehicles do I need?", "acceptedAnswer": { "@type": "Answer", "text": "For loads wider than 12 feet (3.66m), most states require at least 1 escort vehicle. Loads wider than 14 feet (4.27m) typically require 2 escorts. Superloads wider than 16 feet (4.88m) may require police escorts in addition to civil escorts." }},
           { "@type": "Question", "name": "What affects pilot car pricing?", "acceptedAnswer": { "@type": "Answer", "text": "Key factors include: load dimensions (wider loads need more escorts), route length, number of states crossed (each requires separate permits), urgency (emergency moves cost 1.5x), time of year (peak season surcharges), and availability of certified operators in the corridor." }},
         ]
@@ -144,19 +144,19 @@ export default function InstantQuotePage() {
           <span>"º</span>
           <Link href="/tools" style={{ color: T.muted, textDecoration: 'none' }}>Tools</Link>
           <span>"º</span>
-          <span style={{ color: T.gold }}>Instant Quote</span>
+          <span style={{ color: T.gold }}>Quote Estimate</span>
         </nav>
 
         {/* Header */}
         <header style={{ textAlign: 'center', marginBottom: 40 }}>
           <div style={{ display: 'inline-flex', gap: 6, padding: '4px 14px', background: 'rgba(34,211,238,0.08)', border: '1px solid rgba(34,211,238,0.2)', borderRadius: 20, marginBottom: 16 }}>
-            <span style={{ fontSize: 10, fontWeight: 800, color: T.cyan, textTransform: 'uppercase', letterSpacing: 2 }}>âš¡ Instant Quote</span>
+            <span style={{ fontSize: 10, fontWeight: 800, color: T.cyan, textTransform: 'uppercase', letterSpacing: 2 }}>âš¡ Quote Estimate</span>
           </div>
           <h1 style={{ margin: 0, fontSize: 32, fontWeight: 900, color: T.text, letterSpacing: -1 }}>
             How Much Does a <span style={{ color: T.gold }}>Pilot Car</span> Cost?
           </h1>
           <p style={{ margin: '12px auto 0', fontSize: 14, color: T.muted, maxWidth: 520, lineHeight: 1.6 }}>
-            Get an instant escort vehicle pricing estimate. Enter your load dimensions, route, and urgency for real-time market rates across 50+ countries.
+            Get an escort vehicle pricing estimate. Enter your load dimensions, route, and urgency for market-rate context where benchmark data is available.
           </p>
         </header>
 
@@ -208,7 +208,7 @@ export default function InstantQuotePage() {
               <select style={{ ...inputStyle, cursor: 'pointer' }} value={urgency} onChange={e => setUrgency(e.target.value as any)}>
                 <option value="planned">Planned (5+ days out)</option>
                 <option value="standard">Standard (1-5 days)</option>
-                <option value="emergency">Emergency (same day)</option>
+                <option value="emergency">Emergency/rush</option>
               </select>
             </InputField>
           </div>
@@ -222,7 +222,7 @@ export default function InstantQuotePage() {
               letterSpacing: '0.02em',
             }}
           >
-            Get Instant Quote â†’
+            Get Quote Estimate â†’
           </button>
         </div>
 
