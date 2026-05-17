@@ -29,8 +29,28 @@ export async function POST(
             return NextResponse.json({ error: 'No messages to summarize' }, { status: 400 });
         }
 
-        // Create a placeholder summary (AI generation would be wired here)
-        const summaryText = `Conversation with ${messages.length} messages. Topics discussed include the content of the exchange between participants.`;
+        if (!process.env.OPENAI_API_KEY && !process.env.GEMINI_API_KEY) {
+            return NextResponse.json(
+                {
+                    error: 'summary_model_not_configured',
+                    message: 'Conversation summary generation is unavailable until an approved model provider is configured.',
+                    message_count: messages.length,
+                },
+                { status: 501 },
+            );
+        }
+
+        return NextResponse.json(
+            {
+                error: 'summary_handler_not_implemented',
+                message: 'Conversation summary storage is ready, but the model-backed summarizer has not been implemented.',
+                message_count: messages.length,
+            },
+            { status: 501 },
+        );
+
+        /*
+        const summaryText = await generateConversationSummary(messages, include_action_items);
 
         const { data: summary, error } = await db
             .from('hc_conversation_summaries')
@@ -39,7 +59,7 @@ export async function POST(
                 summary_text: summaryText,
                 key_topics: [],
                 next_steps: [],
-                model_used: 'placeholder',
+                model_used: 'configured_model',
             })
             .select('id')
             .single();
@@ -68,6 +88,7 @@ export async function POST(
             summary_id: summary.id,
             action_items_created: actionItemsCreated,
         }, { status: 201 });
+        */
     } catch (err: any) {
         return NextResponse.json({ error: err.message }, { status: 500 });
     }

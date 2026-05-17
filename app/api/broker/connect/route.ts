@@ -2,7 +2,7 @@
  * POST /api/broker/connect
  * Broker Connect — Revenue Leak #4
  * Brokers pay $29/month to see full contact info, DM operators,
- * and get guaranteed response within 2 hours.
+ * and get priority access to broker coordination tools.
  *
  * GET: Check broker's subscription status
  * POST: Create Stripe checkout for Broker Connect
@@ -37,13 +37,13 @@ export async function GET(req: NextRequest) {
       ? {
           fullContactInfo: true,
           directMessage: true,
-          responseGuarantee: '2 hours',
+          priorityResponseWindow: 'subject_to_operator_availability',
           emergencyFillPriority: true,
         }
       : {
           fullContactInfo: false,
           directMessage: false,
-          responseGuarantee: null,
+          priorityResponseWindow: null,
           emergencyFillPriority: false,
         },
   });
@@ -58,9 +58,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'brokerId and brokerEmail required' }, { status: 400 });
     }
 
+    if (!process.env.STRIPE_SECRET_KEY || !BROKER_CONNECT_PRICE_ID) {
+      return NextResponse.json(
+        { error: 'stripe_not_configured', message: 'Broker Connect checkout is unavailable until Stripe price configuration is complete.' },
+        { status: 503 }
+      );
+    }
+
     // Create Stripe checkout session
     const stripe = (await import('stripe')).default;
-    const stripeClient = new stripe(process.env.STRIPE_SECRET_KEY || '', {
+    const stripeClient = new stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: '2024-06-20' as any,
     });
 

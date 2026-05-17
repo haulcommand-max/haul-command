@@ -54,7 +54,7 @@ export async function GET() {
                 timestamp_bucket: nowBucket.toISOString(),
                 supply_count: onCorridor.length,
                 available_count: available.length,
-                acceptance_velocity_24h: available.length * 0.7, // stub; real: query match_outcomes
+                acceptance_velocity_24h: 0,
                 demand_pressure: demandPressure,
             };
         });

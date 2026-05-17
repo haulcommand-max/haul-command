@@ -1,13 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-// ============================================================================
-// POST /v1/community/threads/{thread_id}/posts — Add post to thread
-// ============================================================================
-
 const supabase = () =>
     createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
+// POST /v1/community/threads/{thread_id}/posts - Add post to thread.
 export async function POST(
     req: NextRequest,
     { params }: { params: { thread_id: string } },
@@ -35,15 +32,16 @@ export async function POST(
 
         if (error) throw error;
 
-        // Update thread metrics
-        await db.rpc('', {});  // placeholder — would increment reply_count
-        await db
+        const { error: updateError } = await db
             .from('soc_threads')
             .update({ last_activity_at: new Date().toISOString() })
             .eq('id', params.thread_id);
 
+        if (updateError) throw updateError;
+
         return NextResponse.json({ post_id: data.id }, { status: 201 });
-    } catch (err: any) {
-        return NextResponse.json({ error: err.message }, { status: 500 });
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Failed to create post';
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }
