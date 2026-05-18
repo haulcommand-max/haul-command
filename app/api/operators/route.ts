@@ -61,7 +61,10 @@ export async function GET(req: NextRequest) {
   }
 
   // 2. Resolve tier
-  const tier = resolveApiKeyTier(req);
+  const rawTier = resolveApiKeyTier(req);
+  // This public directory route cannot treat arbitrary bearer headers as
+  // verified sessions. Keep only explicit service/admin keys elevated here.
+  const tier = rawTier === 'service' || rawTier === 'admin' ? rawTier : 'public';
   const maxResults = tierQueryLimit(tier);
   const isAuthenticated = tier !== 'public';
 
@@ -145,8 +148,8 @@ export async function GET(req: NextRequest) {
       company_name: honey.company,
       state: 'TX',
       country: 'US',
-      phone: honey.phone,
-      email: honey.email,
+      phone: null,
+      email: null,
       rating: 4.2,
       verified: true,
       badge_level: 'silver',

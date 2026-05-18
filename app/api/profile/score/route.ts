@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     // 1. Fetch entity + profile
     const { data: entity } = await supabaseAdmin
       .from("hc_entities")
-      .select("*")
+      .select("id,canonical_name,entity_type,country_code,currency_code,canonical_language,claim_status")
       .eq("id", entityId)
       .single();
 
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
 
     const { data: profile } = await supabaseAdmin
       .from("hc_entity_profiles")
-      .select("*")
+      .select("entity_id,service_summary,sectors_summary,hours_json,updated_at")
       .eq("entity_id", entityId)
       .maybeSingle();
 
@@ -67,7 +67,7 @@ export async function GET(request: NextRequest) {
       attributeCount: attrCount || 0,
       hasGeoCoverage: !!entity.country_code,
       hasHours: !!profile?.hours_json && Object.keys(profile.hours_json).length > 0,
-      hasContactFields: !!profile?.contact_json && Object.keys(profile.contact_json).length > 0,
+      hasContactFields: false,
       proofCount: proofCount || 0,
       faqCount: 0,
       photoCount: 0,
@@ -139,7 +139,7 @@ export async function GET(request: NextRequest) {
       language_fit_score: entity.canonical_language ? 60 : 20,
       internal_link_score: (surfaceCount || 0) > 0 ? 50 : 10,
       query_coverage_score: 30,
-      conversion_readiness_score: profile?.contact_json ? 50 : 10,
+      conversion_readiness_score: 10,
     });
 
     // 5. Write score snapshot
@@ -155,7 +155,7 @@ export async function GET(request: NextRequest) {
       language_fit_score: entity.canonical_language ? 60 : 20,
       internal_link_score: (surfaceCount || 0) > 0 ? 50 : 10,
       query_coverage_score: 30,
-      conversion_readiness_score: profile?.contact_json ? 50 : 10,
+      conversion_readiness_score: 10,
       entity_consistency_score: consistency.score,
       overall_ai_readiness_score: overall.overall_score,
       score_payload_json: {
@@ -188,7 +188,7 @@ export async function GET(request: NextRequest) {
     });
   } catch (e: any) {
     return NextResponse.json(
-      { ok: false, error: { code: "score_failed", message: e.message || "Score calculation failed." } },
+      { ok: false, error: { code: "score_failed", message: "Score calculation failed." } },
       { status: 500 }
     );
   }

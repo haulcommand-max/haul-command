@@ -8,7 +8,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ profile
 
     const { data, error } = await getSupabaseAdmin()
         .from("trust_profile_view")
-        .select("*")
+        .select("profile_id,role,trust_tier,confidence_band,trend_band")
         .eq("profile_id", profileId)
         .single();
 

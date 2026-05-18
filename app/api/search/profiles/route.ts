@@ -28,7 +28,10 @@ export async function GET(req: Request) {
     }
 
     const { data, error } = await query;
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    if (error) {
+        console.error('[search/profiles] public profile search failed:', error.message);
+        return NextResponse.json({ error: 'Profile search unavailable' }, { status: 503 });
+    }
 
     return NextResponse.json({ results: data ?? [], total: data?.length ?? 0 });
 }

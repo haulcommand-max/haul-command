@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
     // Count
     let hcCountQ = supabase
       .from('hc_places')
-      .select('*', { count: 'exact', head: true })
+      .select('id', { count: 'exact', head: true })
       .eq('status', 'published')
       .eq('is_search_indexable', true);
 
@@ -68,7 +68,7 @@ export async function GET(req: NextRequest) {
     // Data
     let hcQuery = supabase
       .from('hc_places')
-      .select('id, name, locality, admin1_code, country_code, surface_category_key, slug, claim_status, description, phone, website, demand_score, seo_score')
+      .select('id, name, locality, admin1_code, country_code, surface_category_key, slug, claim_status, description, website, demand_score, seo_score')
       .eq('status', 'published')
       .eq('is_search_indexable', true);
 
@@ -106,8 +106,8 @@ export async function GET(req: NextRequest) {
       claim_status: row.claim_status ?? 'unclaimed',
       services: [row.surface_category_key].filter(Boolean),
       rank_score: (row.demand_score ?? 0) + (row.seo_score ?? 0),
-      profile_completeness: row.phone ? 0.5 : 0.2,
-      completeness: row.phone ? 0.5 : 0.2,
+      profile_completeness: row.seo_score ? Math.min(0.9, Math.max(0.2, row.seo_score / 100)) : 0.2,
+      completeness: row.seo_score ? Math.min(0.9, Math.max(0.2, row.seo_score / 100)) : 0.2,
       is_sponsored: boostedIds.has(row.id),
       is_featured: false,
       source: 'hc_places',
@@ -125,7 +125,7 @@ export async function GET(req: NextRequest) {
   if (source !== 'hc_places') {
     let countQ = supabase
       .from('listings')
-      .select('*', { count: 'exact', head: true })
+      .select('id', { count: 'exact', head: true })
       .eq('active', true);
 
     if (state) countQ = countQ.eq('state', state);

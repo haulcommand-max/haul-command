@@ -8,7 +8,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ profile
 
     const { data, error } = await getSupabaseAdmin()
         .from("trust_profile_corridor_view")
-        .select("*")
+        .select("profile_id,role,corridor_id,corridor_name,corridor_type,trust_tier,confidence_band,trend_band")
         .eq("profile_id", profileId)
         .order("confidence", { ascending: false })
         .order("trust_score", { ascending: false })

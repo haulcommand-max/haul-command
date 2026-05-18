@@ -1,7 +1,7 @@
 /**
  * GET /api/supply/snapshot
  *
- * Returns live supply data from corridor_supply_snapshot.
+ * Returns cached supply data from corridor_supply_snapshot.
  * Powers: radar supply level, pressure index, availability scores.
  *
  * Response:
@@ -26,11 +26,12 @@ export async function GET() {
 
     const { data, error } = await supabase
         .from('corridor_supply_snapshot')
-        .select('*')
+        .select('corridor_slug,supply_count,available_count,demand_pressure,timestamp_bucket,created_at')
         .order('supply_count', { ascending: false });
 
     if (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        console.error('[supply/snapshot] corridor supply snapshot query failed:', error.message);
+        return NextResponse.json({ error: 'snapshot_unavailable' }, { status: 503 });
     }
 
     const corridors = (data ?? []).map((row: any) => {
