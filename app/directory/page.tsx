@@ -158,7 +158,7 @@ const faqs = [
     },
     {
         question: 'Does Haul Command cover multiple countries?',
-        answer: 'Yes. Haul Command is structured around a 120-country coverage model. Each market should show whether it is live, claimable, source-backed, regulation-intelligence live, or still developing.',
+        answer: 'Yes. Haul Command is structured around a 120-country coverage model, but each market should tell the truth about what is actually available: source-backed records, claim paths, regulation context, or a developing-market request path.',
     },
     {
         question: 'How does Haul Command help brokers and carriers?',

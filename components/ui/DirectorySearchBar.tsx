@@ -413,8 +413,8 @@ export function DirectorySearchBar({
           }}
           aria-label="Filter by verification"
         >
-          <option value="all">All Proof</option>
-          <option value="verified">Verified</option>
+          <option value="all">All proof states</option>
+          <option value="verified">Document/performance proof</option>
           <option value="contact_confirmed">Contact Confirmed</option>
         </select>
       </div>

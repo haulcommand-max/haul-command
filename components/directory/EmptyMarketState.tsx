@@ -10,7 +10,8 @@ interface EmptyMarketStateProps {
 
 export function EmptyMarketState({ country, region, city }: EmptyMarketStateProps) {
     const locationName = city ? `${city}, ${region || country}` : region ? `${region}, ${country}` : country;
-    
+    const locationQuery = encodeURIComponent(locationName);
+
     return (
         <div style={{
             background: '#111114',
@@ -42,7 +43,7 @@ export function EmptyMarketState({ country, region, city }: EmptyMarketStateProp
                     color: '#F9FAFB',
                     marginBottom: 12
                 }}>
-                    Be the first in {locationName}
+                    Source-backed supply is thin in {locationName}
                 </h2>
                 
                 <p style={{
@@ -51,15 +52,16 @@ export function EmptyMarketState({ country, region, city }: EmptyMarketStateProp
                     lineHeight: 1.6,
                     marginBottom: 24
                 }}>
-                    We don't have any verified pilot car operators listed in this area yet. 
-                    Claim this territory to receive all incoming load volume and heavy haul requests for {locationName}.
+                    Haul Command does not have enough source-backed directory coverage for this market yet.
+                    Submit the need, claim your profile, or sponsor the gap so this becomes a routing,
+                    recruitment, and market-demand signal.
                 </p>
 
-                <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 32 }}>
-                    <Link href="/advertise/buy" style={{ textDecoration: 'none' }}>
-                        <Button 
-                            style={{ 
-                                background: '#C6923A', 
+                <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 28 }}>
+                    <Link href={`/loads/post?source=no-result&market=${locationQuery}`} style={{ textDecoration: 'none' }}>
+                        <Button
+                            style={{
+                                background: '#C6923A',
                                 color: '#0B0B0C',
                                 fontWeight: 700,
                                 padding: '12px 24px',
@@ -67,14 +69,14 @@ export function EmptyMarketState({ country, region, city }: EmptyMarketStateProp
                                 borderRadius: 8
                             }}
                         >
-                            Claim this Territory →
+                            Request Route Support
                         </Button>
                     </Link>
-                    <Link href="/join" style={{ textDecoration: 'none' }}>
-                        <Button 
+                    <Link href={`/claim?source=no-result&market=${locationQuery}`} style={{ textDecoration: 'none' }}>
+                        <Button
                             variant="outline"
-                            style={{ 
-                                borderColor: 'rgba(255,255,255,0.1)', 
+                            style={{
+                                borderColor: 'rgba(255,255,255,0.1)',
                                 color: '#F0F0F2',
                                 fontWeight: 600,
                                 padding: '12px 24px',
@@ -83,10 +85,31 @@ export function EmptyMarketState({ country, region, city }: EmptyMarketStateProp
                                 borderRadius: 8
                             }}
                         >
-                            List your business free
+                            Claim Your Profile
+                        </Button>
+                    </Link>
+                    <Link href={`/sponsor?package=market-gap&market=${locationQuery}`} style={{ textDecoration: 'none' }}>
+                        <Button
+                            variant="outline"
+                            style={{
+                                borderColor: 'rgba(198,146,58,0.24)',
+                                color: '#C6923A',
+                                fontWeight: 600,
+                                padding: '12px 24px',
+                                height: 'auto',
+                                background: 'rgba(198,146,58,0.06)',
+                                borderRadius: 8
+                            }}
+                        >
+                            Sponsor This Gap
                         </Button>
                     </Link>
                 </div>
+
+                <p style={{ color: '#6B7280', fontSize: 12, lineHeight: 1.5, margin: 0 }}>
+                    No-result searches guide provider recruitment, AdGrid audiences,
+                    country maturity, and future corridor expansion.
+                </p>
                 
                 {/* Sponsor card is rendered externally by the parent page via AdGrid */}
             </div>

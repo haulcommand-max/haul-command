@@ -348,7 +348,7 @@ function FilterPanel({ filters, onChange }: {
                             className="overflow-hidden"
                         >
                             <div className="pt-2 space-y-2">
-                                {/* Verified Only toggle */}
+                                {/* Source-backed proof toggle */}
                                 <label className={cn(
                                     "flex items-center justify-between px-3 py-2.5 rounded-xl",
                                     "border cursor-pointer transition-all duration-150",
@@ -357,8 +357,8 @@ function FilterPanel({ filters, onChange }: {
                                         : "bg-hc-elevated border-hc-border"
                                 )}>
                                     <div>
-                                        <p className="text-[11px] font-bold text-hc-text">✅ Verified Listings Only</p>
-                                        <p className="text-[10px] text-hc-subtle">Haul Command operator records</p>
+                                        <p className="text-[11px] font-bold text-hc-text">Source-backed records only</p>
+                                        <p className="text-[10px] text-hc-subtle">Proof/contact signals, not fake availability</p>
                                     </div>
                                     <input
                                         type="checkbox"
