@@ -12,6 +12,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { generateNickname, getTierFromScore } from '@/lib/nickname';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -52,7 +53,11 @@ function calculateScore(entry: any): number {
   );
 }
 
-export async function GET() {
+export async function GET(req: Request) {
+  if (!isInternalRequest(req.headers)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     // 1. Pull all leaderboard entries
     const { data: entries, error } = await supabase
@@ -113,6 +118,6 @@ export async function GET() {
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : 'Unknown error';
     console.error('[ranking-worker]', msg);
-    return NextResponse.json({ ok: false, error: msg }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Ranking recalculation failed' }, { status: 500 });
   }
 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { sendNativePush, type PushPayload } from '@/lib/push-send';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 /**
  * GET /api/cron/notif-jobs
@@ -10,13 +11,11 @@ import { sendNativePush, type PushPayload } from '@/lib/push-send';
  * segmented operators over Firebase Native Push or VAPID Web Push, and marks the job as done.
  * 
  * Runs via Vercel Cron or external scheduler.
- * Backend-only, service-role.
+ * Backend-only, CRON_SECRET or INTERNAL_API_KEY.
  */
 export async function GET(req: NextRequest) {
     // ── Auth Check ────────────────────────────────────────────────────
-    const authHeader = req.headers.get('authorization');
-    const expectedKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.CRON_SECRET;
-    if (authHeader !== `Bearer ${expectedKey}`) {
+    if (!isInternalRequest(req.headers)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -97,6 +96,7 @@ export async function GET(req: NextRequest) {
 
         return NextResponse.json({ ok: true, processed: successCount, failed: failCount });
     } catch (err: any) {
-        return NextResponse.json({ error: err.message }, { status: 500 });
+        console.error('[notif-jobs] Worker failed:', err);
+        return NextResponse.json({ error: 'Notification job worker failed' }, { status: 500 });
     }
 }

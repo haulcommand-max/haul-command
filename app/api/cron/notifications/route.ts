@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { emitBatch, NOVU_EVENT_NAMES, type NovuEventName, type NovuPayload, type EmitOptions } from '@/lib/novu';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 import {
     decideNotification,
     NOVU_WORKFLOWS,
@@ -15,7 +16,7 @@ import {
  * expiring/renewal/digest notification triggers.
  * 
  * Runs via Vercel Cron or external scheduler.
- * Backend-only, service-role.
+ * Backend-only, CRON_SECRET or INTERNAL_API_KEY.
  * 
  * NOW WIRED: notification-brain decideNotification() for channel
  * routing, quiet hours, anti-fatigue rate limiting.
@@ -25,9 +26,7 @@ import {
 
 export async function GET(req: NextRequest) {
     // ── Auth Check ────────────────────────────────────────────────────
-    const authHeader = req.headers.get('authorization');
-    const expectedKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.CRON_SECRET;
-    if (authHeader !== `Bearer ${expectedKey}`) {
+    if (!isInternalRequest(req.headers)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

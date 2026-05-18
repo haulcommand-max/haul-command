@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { sendPushToUser, broadcastPush } from '@/lib/notifications/push-service';
 import type { NotifEventType } from '@/lib/notifications/push-service';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -22,8 +23,8 @@ const supabase = createClient(
  */
 export async function POST(req: NextRequest) {
   const adminKey = req.headers.get('x-admin-key');
-  const isCron = req.headers.get('x-vercel-cron') === '1';
-  if (!isCron && adminKey !== process.env.ADMIN_API_KEY) {
+  const isAdminKey = Boolean(process.env.ADMIN_API_KEY && adminKey === process.env.ADMIN_API_KEY);
+  if (!isInternalRequest(req.headers) && !isAdminKey) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -39,7 +40,10 @@ export async function POST(req: NextRequest) {
     .order('scheduled_at')
     .limit(BATCH_SIZE);
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) {
+    console.error('[notifications/drain-jobs] Fetch failed:', error);
+    return NextResponse.json({ error: 'Notification job fetch failed' }, { status: 500 });
+  }
   if (!jobs?.length) return NextResponse.json({ ok: true, processed: 0 });
 
   // Mark as processing

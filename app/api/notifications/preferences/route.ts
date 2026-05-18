@@ -23,7 +23,10 @@ export async function GET(req: NextRequest) {
     .eq('user_id', user.id)
     .maybeSingle();
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) {
+    console.error('[notifications/preferences] Read failed:', error);
+    return NextResponse.json({ error: 'Notification preferences read failed' }, { status: 500 });
+  }
   return NextResponse.json({ preferences: data });
 }
 
@@ -47,7 +50,10 @@ export async function PATCH(req: NextRequest) {
     .upsert({ user_id: user.id, ...safe, updated_at: new Date().toISOString() },
             { onConflict: 'user_id' });
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) {
+    console.error('[notifications/preferences] Update failed:', error);
+    return NextResponse.json({ error: 'Notification preferences update failed' }, { status: 500 });
+  }
   return NextResponse.json({ ok: true });
 }
 

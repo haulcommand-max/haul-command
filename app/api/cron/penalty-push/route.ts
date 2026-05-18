@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { sendPush } from '@/lib/push-admin';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 // Task 10: Impending Penalty Push Engine
 // Runs daily. Finds all hc_global_training_authority records exactly 7 days from expiration.
@@ -12,13 +13,8 @@ const supabaseAdmin = createClient(
 );
 
 export async function GET(req: Request) {
-  // Check authorization via chron header or bearer token
-  const authHeader = req.headers.get('authorization');
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-      // Allow bypass for internal test environments but not production
-      if (process.env.NODE_ENV === 'production') {
-        return NextResponse.json({ error: 'Unauthorized CRON execution' }, { status: 401 });
-      }
+  if (!isInternalRequest(req.headers)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const results = {
@@ -114,7 +110,17 @@ export async function GET(req: Request) {
     return NextResponse.json({ success: true, results });
 
   } catch (err: any) {
-    results.errors.push(err.message);
-    return NextResponse.json({ success: false, results }, { status: 500 });
+    console.error('[penalty-push] Worker failed:', err);
+    return NextResponse.json(
+      {
+        success: false,
+        results: {
+          penalty_warnings_sent: results.penalty_warnings_sent,
+          ghosted_drivers_purged: results.ghosted_drivers_purged,
+          errors: ['Penalty push worker failed'],
+        },
+      },
+      { status: 500 },
+    );
   }
 }

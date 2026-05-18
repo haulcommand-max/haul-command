@@ -47,7 +47,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ok: true });
   } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    console.error('[notifications/register-token] Register failed:', err);
+    return NextResponse.json({ error: 'Device token registration failed' }, { status: 500 });
   }
 }
 
@@ -57,16 +58,30 @@ export async function POST(req: NextRequest) {
  */
 export async function DELETE(req: NextRequest) {
   try {
+    const user = await getUser(req);
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
     const { fcmToken } = await req.json();
     if (!fcmToken) return NextResponse.json({ error: 'fcmToken required' }, { status: 400 });
 
     await supabase
       .from('hc_device_tokens')
       .update({ is_active: false })
+      .eq('user_id', user.id)
       .eq('token', fcmToken);
 
     return NextResponse.json({ ok: true });
   } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    console.error('[notifications/register-token] Deactivate failed:', err);
+    return NextResponse.json({ error: 'Device token deactivation failed' }, { status: 500 });
   }
+}
+
+async function getUser(req: NextRequest) {
+  const authHeader = req.headers.get('authorization');
+  if (!authHeader) return null;
+
+  const token = authHeader.replace('Bearer ', '');
+  const { data: { user }, error } = await supabase.auth.getUser(token);
+  return error ? null : user;
 }
