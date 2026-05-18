@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 export async function POST(req: Request) {
   // Catch Postgres pg_notify trigger payloads configured in 20260402_global_os_master_upgrades.sql
   const authHeader = req.headers.get('authorization');
-  if (authHeader !== `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`) {
+  const webhookSecret = process.env.TYPESENSE_SYNC_SECRET || process.env.SUPABASE_WEBHOOK_SECRET;
+  const isWebhook = Boolean(webhookSecret && authHeader === `Bearer ${webhookSecret}`);
+
+  if (!isInternalRequest(req.headers) && !isWebhook) {
     return NextResponse.json({ error: 'Unauthorized system hook' }, { status: 401 });
   }
 
@@ -62,7 +66,8 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ success: true, synced: record.id });
-  } catch (e: any) {
-    return NextResponse.json({ error: `Sync Failed: ${e.message}` }, { status: 500 });
+  } catch (e) {
+    console.error('[typesense-sync] sync failed:', e);
+    return NextResponse.json({ error: 'Typesense sync failed' }, { status: 500 });
   }
 }

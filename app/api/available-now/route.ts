@@ -7,12 +7,15 @@ export const dynamic = 'force-dynamic'
 // Non-blocking: we don't await this, so operator response latency is unaffected
 function fireBrokerAlertAsync(record: Record<string, unknown>, requestUrl: string) {
   try {
+    const internalToken = process.env.INTERNAL_API_KEY || process.env.CRON_SECRET
+    if (!internalToken) return
+
     const base = new URL(requestUrl).origin
     fetch(`${base}/api/push/available-now-alert`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY ?? ''}`,
+        'x-api-key': internalToken,
       },
       body: JSON.stringify({ broadcast: record }),
     }).catch(() => null) // swallow — this is best-effort
@@ -125,7 +128,7 @@ export async function GET(req: NextRequest) {
   } catch (err: any) {
     console.error('[available-now] unhandled error:', err)
     return NextResponse.json(
-      { operators: [], total: 0, error: err.message },
+      { operators: [], total: 0, error: 'Available-now feed failed' },
       { status: 500 }
     )
   }
@@ -206,7 +209,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ok: true, id: data?.id })
   } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 })
+    console.error('[available-now] broadcast upsert failed:', err)
+    return NextResponse.json({ error: 'Availability update failed' }, { status: 500 })
   }
 }
 
@@ -229,6 +233,7 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json({ ok: true })
   } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 })
+    console.error('[available-now] broadcast clear failed:', err)
+    return NextResponse.json({ error: 'Availability update failed' }, { status: 500 })
   }
 }

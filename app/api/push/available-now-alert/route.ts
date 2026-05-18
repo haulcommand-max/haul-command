@@ -11,12 +11,13 @@
  *   3. For each match, fires a targeted FCM push via push-service
  *      — dedup, throttle, quiet-hours all respected automatically
  *
- * Auth: service-role key (internal only, no public access)
+ * Auth: internal token or configured Supabase webhook secret.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { sendPushToUser } from '@/lib/notifications/push-service';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 const supa = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -64,9 +65,8 @@ const SERVICE_LABEL: Record<string, string> = {
 // ── Auth guard ────────────────────────────────────────────────────────────────
 function authorized(req: NextRequest): boolean {
   const auth = req.headers.get('authorization') ?? '';
-  const svcKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
   const secret = process.env.SUPABASE_WEBHOOK_SECRET ?? '';
-  return auth === `Bearer ${svcKey}` || auth === `Bearer ${secret}`;
+  return isInternalRequest(req.headers) || Boolean(secret && auth === `Bearer ${secret}`);
 }
 
 // ── Handler ───────────────────────────────────────────────────────────────────

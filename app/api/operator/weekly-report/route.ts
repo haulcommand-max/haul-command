@@ -7,6 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { HabitEngine } from '@/core/engagement/habit_engine';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,6 +17,15 @@ export async function GET(req: NextRequest) {
     if (!userId) return NextResponse.json({ error: 'userId required' }, { status: 400 });
 
     const admin = getSupabaseAdmin();
+    const authHeader = req.headers.get('authorization');
+    const token = authHeader?.replace(/^Bearer\s+/i, '').trim();
+    const { data: { user } } = token
+        ? await admin.auth.getUser(token)
+        : { data: { user: null } as { user: null } };
+
+    if (!isInternalRequest(req.headers) && user?.id !== userId) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
     const engine = new HabitEngine(admin);
     const report = await engine.generateWeeklyReport(userId);
@@ -25,9 +35,8 @@ export async function GET(req: NextRequest) {
 
 // Batch: generate and queue reports for all active operators
 export async function POST(req: NextRequest) {
-    // Auth: service key only
-    const authHeader = req.headers.get('authorization');
-    if (authHeader !== `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`) {
+    // Auth: backend-only batch worker.
+    if (!isInternalRequest(req.headers)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

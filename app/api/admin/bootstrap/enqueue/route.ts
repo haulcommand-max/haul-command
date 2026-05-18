@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 /**
  * POST /api/admin/bootstrap/enqueue?limit=500
@@ -9,18 +10,13 @@ import { getSupabaseAdmin } from '@/lib/supabase/admin';
  * Manual bootstrap endpoint — enqueues content jobs without waiting for
  * Vercel cron to fire. Idempotent (unique constraint prevents duplicates).
  *
- * Auth: CRON_SECRET or SUPABASE_SERVICE_ROLE_KEY
+ * Auth: backend-only, CRON_SECRET or INTERNAL_API_KEY
  * Use from: curl, admin panel, or first-deploy ignition script
  */
 
 
 export async function POST(req: NextRequest) {
-    // Auth: accept CRON_SECRET or service-role key
-    const authHeader = req.headers.get('authorization');
-    const cronOk = authHeader === `Bearer ${process.env.CRON_SECRET}`;
-    const serviceOk = authHeader === `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`;
-
-    if (!cronOk && !serviceOk) {
+    if (!isInternalRequest(req.headers)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -53,11 +49,14 @@ export async function POST(req: NextRequest) {
                     onConflict: 'job_type,key',
                     ignoreDuplicates: true,
                 });
-                if (error) stats.errors.push(`counties: ${error.message}`);
+                if (error) stats.errors.push('counties: enqueue failed');
                 else stats.counties += batch.length;
             }
         }
-    } catch (e: any) { stats.errors.push(`counties: ${e.message}`); }
+    } catch (e) {
+        console.error('[bootstrap-enqueue] county enqueue failed:', e);
+        stats.errors.push('counties: enqueue failed');
+    }
 
     // 2. Enqueue city pages from cities table (our seeded data)
     try {
@@ -81,11 +80,14 @@ export async function POST(req: NextRequest) {
                     onConflict: 'job_type,key',
                     ignoreDuplicates: true,
                 });
-                if (error) stats.errors.push(`cities: ${error.message}`);
+                if (error) stats.errors.push('cities: enqueue failed');
                 else stats.cities += batch.length;
             }
         }
-    } catch (e: any) { stats.errors.push(`cities: ${e.message}`); }
+    } catch (e) {
+        console.error('[bootstrap-enqueue] city enqueue failed:', e);
+        stats.errors.push('cities: enqueue failed');
+    }
 
     // 3. Enqueue from places table (if separate)
     try {
@@ -108,11 +110,14 @@ export async function POST(req: NextRequest) {
                     onConflict: 'job_type,key',
                     ignoreDuplicates: true,
                 });
-                if (error) stats.errors.push(`places: ${error.message}`);
+                if (error) stats.errors.push('places: enqueue failed');
                 else stats.places += batch.length;
             }
         }
-    } catch (e: any) { stats.errors.push(`places: ${e.message}`); }
+    } catch (e) {
+        console.error('[bootstrap-enqueue] place enqueue failed:', e);
+        stats.errors.push('places: enqueue failed');
+    }
 
     stats.total = stats.counties + stats.cities + stats.places;
 
