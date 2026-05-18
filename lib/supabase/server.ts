@@ -47,6 +47,25 @@ export function createClient(url?: string, key?: string, options?: Record<string
 /**
  * supabaseServer() — original named export, same underlying logic.
  */
+/**
+ * createPublicClient() - anon-key client for public API routes that should
+ * stay inside RLS/public-view boundaries instead of bypassing them.
+ */
+export function createPublicClient() {
+    const envUrl =
+        process.env.NEXT_PUBLIC_SUPABASE_URL ||
+        process.env.SUPABASE_URL!;
+    const envKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+    return _createClient<Database>(envUrl, envKey, {
+        auth: { persistSession: false, autoRefreshToken: false },
+        global: {
+            headers: {
+                "x-client-info": "haul-command-public/1.0",
+            },
+        },
+    });
+}
+
 export function supabaseServer() {
     return createClient();
 }

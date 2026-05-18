@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/server';
 
 // Haul Command OS
 // Task 36: Provide a search endpoint for the training school marketplace.
@@ -27,7 +27,7 @@ export async function GET(request: Request) {
     });
   }
 
-  const supabase = createClient();
+  const supabase = createPublicClient();
   const { data, error } = await supabase
     .from('hc_provider_search_index')
     .select('provider_id, provider_slug, title, subtitle, location_label, badges_json, organic_rank_score, quality_guardrail_pass, last_updated_at')

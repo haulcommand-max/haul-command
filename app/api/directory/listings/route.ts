@@ -10,10 +10,10 @@
 export const dynamic = 'force-dynamic';
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/server';
 
 export async function GET(req: NextRequest) {
-  const supabase = createClient();
+  const supabase = createPublicClient();
   const sp = req.nextUrl.searchParams;
 
   // Pagination

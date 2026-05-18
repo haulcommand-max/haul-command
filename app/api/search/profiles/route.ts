@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
-import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { createPublicClient } from '@/lib/supabase/server';
 
 
 export async function GET(req: Request) {
@@ -11,7 +11,7 @@ export async function GET(req: Request) {
     const availability = (searchParams.get("availability") ?? "").trim();
     const limit = Math.min(Number(searchParams.get("limit") ?? 50), 200);
 
-    let query = getSupabaseAdmin()
+    let query = createPublicClient()
         .from("profiles")
         .select("id,slug,display_name,city,state,type,availability,verified,compliance_score")
         .order("compliance_score", { ascending: false })
