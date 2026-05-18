@@ -14,14 +14,7 @@ export async function GET(request: NextRequest) {
   const { data: livePositions } = await supabase
     .from('operator_locations')
     .select(`
-      operator_id,
-      lat,
-      lng,
-      accuracy,
-      heading,
-      speed,
-      source,
-      updated_at
+      operator_id
     `)
     .gte('updated_at', fiveMinAgo);
 
@@ -29,45 +22,20 @@ export async function GET(request: NextRequest) {
   const { data: motivePositions } = await supabase
     .from('motive_locations')
     .select(`
-      vehicle_motive_id,
-      lat,
-      lon,
-      speed,
-      bearing,
-      located_at,
-      connection_id
+      vehicle_motive_id
     `)
     .gte('located_at', fiveMinAgo);
 
-  // Merge both sources (deduplicate by operator — prefer Motive for connected ops)
-  const positions = [
-    ...(livePositions || []).map((p: any) => ({
-      operator_id: p.operator_id,
-      lat: p.lat,
-      lng: p.lng,
-      accuracy: p.accuracy || 100,
-      heading: p.heading,
-      speed: p.speed,
-      source: p.source || 'phone_gps',
-      updated_at: p.updated_at,
-      eld_verified: false,
-    })),
-    ...(motivePositions || []).map((p: any) => ({
-      operator_id: `motive_${p.vehicle_motive_id}`,
-      lat: p.lat,
-      lng: p.lon,
-      accuracy: 10,
-      heading: p.bearing,
-      speed: p.speed,
-      source: 'motive' as const,
-      updated_at: p.located_at,
-      eld_verified: true,
-    })),
-  ];
+  const positionCount = (livePositions?.length || 0) + (motivePositions?.length || 0);
 
   return NextResponse.json({
-    positions,
-    count: positions.length,
+    positions: [],
+    count: positionCount,
+    sources: {
+      phone_gps: livePositions?.length || 0,
+      motive: motivePositions?.length || 0,
+    },
+    privacy: 'raw_live_coordinates_suppressed',
     timestamp: new Date().toISOString(),
   });
 }

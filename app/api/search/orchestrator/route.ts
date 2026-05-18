@@ -7,6 +7,32 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+const PRIVATE_RESULT_KEYS = new Set([
+  'phone',
+  'phone_e164',
+  'phone_normalized',
+  'sms_e164',
+  'email',
+  'contact_email',
+  'contact_phone',
+  'stripe_account_id',
+  'user_id',
+  'source_payload',
+  'provenance_json',
+]);
+
+function sanitizePublicSearchResult(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(sanitizePublicSearchResult);
+  if (!value || typeof value !== 'object') return value;
+
+  const sanitized: Record<string, unknown> = {};
+  for (const [key, nestedValue] of Object.entries(value as Record<string, unknown>)) {
+    if (PRIVATE_RESULT_KEYS.has(key)) continue;
+    sanitized[key] = sanitizePublicSearchResult(nestedValue);
+  }
+  return sanitized;
+}
+
 const TYPESENSE_COLLECTIONS: Record<string, string> = {
   profiles: OPERATORS_COLLECTION,
   operators: OPERATORS_COLLECTION,
@@ -81,7 +107,7 @@ async function searchTypesense(options: {
 
     return {
       source: 'typesense',
-      results: (response.hits ?? []).map(hit => hit.document),
+      results: (response.hits ?? []).map(hit => sanitizePublicSearchResult(hit.document)),
       found: response.found ?? 0,
       error: null as string | null,
     };
@@ -111,13 +137,13 @@ async function searchSupabaseVector(options: {
 
   const { data, error } = await vectorQuery;
   if (error) throw error;
-  return data || [];
+  return (data || []).map((row) => sanitizePublicSearchResult(row));
 }
 
 async function searchOperatorsFallback(query: string, countryCode?: string) {
   let operatorQuery = supabase
     .from('hc_operators')
-    .select('id, company_name, state, city, phone, trust_score, profile_completeness, country_code')
+    .select('id, company_name, state, city, trust_score, profile_completeness, country_code')
     .or(`company_name.ilike.%${query}%,city.ilike.%${query}%,state.ilike.%${query}%`)
     .eq('is_active', true)
     .limit(5);

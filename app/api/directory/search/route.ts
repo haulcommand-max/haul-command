@@ -40,10 +40,9 @@ export async function GET(req: NextRequest) {
     const endRange = startRange + limit - 1;
     const sortBy = searchParams.get('sort') ?? 'rank';
 
-    // Auth check for censorship
-    const authHeader = req.headers.get('authorization');
-    const isAuthenticated = !!authHeader;
-    const isCensored = !isAuthenticated;
+    // Public directory search never exposes raw phone values. A prior version
+    // treated any Authorization header as trusted and uncensored contact data.
+    const isCensored = true;
 
     // ═════════════════════════════════════════
     // TYPESENSE FAST-PATH EXECUTION
@@ -79,7 +78,6 @@ export async function GET(req: NextRequest) {
               score: doc.reputation_score || doc.trust_score || 50,
               is_featured: (doc.reputation_score || doc.trust_score) > 80,
               profile_completeness: doc.completion_pct || 40,
-              phone: (isCensored && index >= 2) ? '(XXX) XXX-XXXX' : (doc.phone_e164 || ''),
               source: 'typesense',
             };
           });
@@ -108,7 +106,7 @@ export async function GET(req: NextRequest) {
     let hcQuery = supabase
       .from('hc_places')
       .select(
-        'id, name, locality, admin1_code, country_code, phone, surface_category_key, slug, claim_status, demand_score, twic_certified, hazmat_endorsed, high_pole_certified, superload_rated, av_escort_certified, gps_tracked, hc_verified, equipment_tags',
+        'id, name, locality, admin1_code, country_code, surface_category_key, slug, claim_status, demand_score, twic_certified, hazmat_endorsed, high_pole_certified, superload_rated, av_escort_certified, gps_tracked, hc_verified, equipment_tags',
         { count: 'exact' }
       )
       .eq('status', 'published')
@@ -177,8 +175,7 @@ export async function GET(req: NextRequest) {
       rank_score: row.demand_score ?? 0,
       score: row.demand_score ?? 50,
       is_featured: false,
-      profile_completeness: row.phone ? 50 : 20,
-      phone: (isCensored && index >= 2) ? '(XXX) XXX-XXXX' : (row.phone || ''),
+      profile_completeness: 20,
       source: 'hc_places',
       // Certification badges (new)
       badges: {
@@ -213,7 +210,7 @@ export async function GET(req: NextRequest) {
       let opQuery = supabase
         .from('hc_global_operators')
         .select(
-          'id, name, city, admin1_code, country_code, phone_normalized, is_claimed, role_primary, confidence_score, slug',
+          'id, name, city, admin1_code, country_code, is_claimed, role_primary, confidence_score, slug',
           { count: 'exact' }
         )
         .not('admin1_code', 'is', null)
@@ -256,7 +253,6 @@ export async function GET(req: NextRequest) {
         score: op.confidence_score ?? 50,
         is_featured: (op.confidence_score ?? 0) > 80,
         profile_completeness: 40,
-        phone: (isCensored && index >= 2) ? '(XXX) XXX-XXXX' : (op.phone_normalized || ''),
         source: 'operators',
         badges: {},
         equipment_tags: [],
