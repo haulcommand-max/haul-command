@@ -37,22 +37,23 @@ export async function POST(req: NextRequest) {
     const { action } = body;
 
     if (action === 'track') {
-        const { experiment_id, variant_id, operator_id, event_type, metadata } = body;
-        if (!experiment_id || !variant_id || !operator_id || !event_type) {
-            return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
-        }
-
-        const engine = new PresenceExperimentEngine(getAdmin());
-        await engine.trackEvent({
-            experiment_id, variant_id, operator_id, event_type, metadata,
-        });
-        return NextResponse.json({ ok: true });
+        return NextResponse.json(
+            {
+                error: 'experiment_tracking_not_available',
+                status: 'requires_authenticated_event_contract',
+                message: 'Public experiment tracking is held until events are bound to an authenticated operator session.',
+            },
+            { status: 501 },
+        );
     }
 
     if (action === 'evaluate') {
         const auth = req.headers.get('authorization');
-        if (auth !== `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}` &&
-            auth !== `Bearer ${process.env.INTERNAL_API_KEY}`) {
+        const allowedTokens = [process.env.CRON_SECRET, process.env.INTERNAL_API_KEY]
+            .filter(Boolean)
+            .map((token) => `Bearer ${token}`);
+
+        if (!auth || !allowedTokens.includes(auth)) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
