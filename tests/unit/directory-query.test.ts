@@ -21,8 +21,8 @@ describe("directory fallback query planning", () => {
     });
   });
 
-  it("normalizes supported country codes without turning invalid countries into US", () => {
-    expect(normalizeDirectoryCountry(undefined)).toBe("US");
+  it("normalizes supported country codes without turning missing or invalid countries into US", () => {
+    expect(normalizeDirectoryCountry(undefined)).toBeNull();
     expect(normalizeDirectoryCountry("ca")).toBe("CA");
     expect(normalizeDirectoryCountry("AU")).toBe("AU");
     expect(normalizeDirectoryCountry("washington")).toBeNull();

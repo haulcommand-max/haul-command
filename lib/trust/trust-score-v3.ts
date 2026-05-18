@@ -7,8 +7,6 @@
 // Leaderboard score (0-1000) with anti-gaming caps and penalties.
 // Feeds into: coverage_confidence, map overlays, operator profiles.
 
-import { getSupabaseAdmin } from "@/lib/enterprise/supabase/admin";
-
 // ============================================================
 // TYPES
 // ============================================================
@@ -325,6 +323,7 @@ export function applyInactivityDecay(
 // ============================================================
 
 export async function persistTrustScore(result: TrustResult, countryIso2: string, admin1?: string): Promise<void> {
+    const { getSupabaseAdmin } = await import("@/lib/enterprise/supabase/admin");
     const supabase = getSupabaseAdmin();
 
     await supabase.from('trust_score_snapshots').insert({
@@ -349,6 +348,7 @@ export async function persistLeaderboardSnapshot(
     scopeKey: string,
     rank: number
 ): Promise<void> {
+    const { getSupabaseAdmin } = await import("@/lib/enterprise/supabase/admin");
     const supabase = getSupabaseAdmin();
 
     await supabase.from('leaderboard_snapshots').insert({
