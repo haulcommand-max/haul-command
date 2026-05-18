@@ -83,7 +83,8 @@ export async function POST(req: Request) {
             .single();
 
         if (pendingOrderError || !(pendingOrder as any)?.id) {
-            return NextResponse.json({ error: pendingOrderError?.message ?? 'Unable to reserve sponsor order' }, { status: 500 });
+            if (pendingOrderError) console.error('[Sponsor Checkout] order reservation failed:', pendingOrderError.message);
+            return NextResponse.json({ error: 'sponsor_order_reservation_failed' }, { status: 503 });
         }
 
         const price = await stripe.prices.create({
@@ -138,7 +139,7 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ sessionUrl: session.url, orderId: (pendingOrder as any).id });
     } catch (err: any) {
-        console.error('[Sponsor Checkout] Error:', err.message);
-        return NextResponse.json({ error: err.message }, { status: 500 });
+        console.error('[Sponsor Checkout] Error:', err?.message ?? err);
+        return NextResponse.json({ error: 'sponsor_checkout_failed' }, { status: 503 });
     }
 }

@@ -33,7 +33,8 @@ export async function POST(req: Request) {
     .single();
 
   if (advErr || !advertiser) {
-    return NextResponse.json({ error: advErr?.message || 'Could not create advertiser' }, { status: 500 });
+    if (advErr) console.error('[adgrid/campaign-create] advertiser upsert failed:', advErr.message);
+    return NextResponse.json({ error: 'advertiser_request_failed' }, { status: 503 });
   }
 
   // Create campaign
@@ -56,7 +57,8 @@ export async function POST(req: Request) {
     .single();
 
   if (campErr || !campaign) {
-    return NextResponse.json({ error: campErr?.message || 'Could not create campaign' }, { status: 500 });
+    if (campErr) console.error('[adgrid/campaign-create] campaign request failed:', campErr.message);
+    return NextResponse.json({ error: 'campaign_request_failed' }, { status: 503 });
   }
 
   // Create creative

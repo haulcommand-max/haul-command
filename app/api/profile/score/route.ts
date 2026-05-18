@@ -142,39 +142,13 @@ export async function GET(request: NextRequest) {
       conversion_readiness_score: 10,
     });
 
-    // 5. Write score snapshot
-    await supabaseAdmin.from("hc_ai_scores").insert({
-      target_type: "entity",
-      target_id: entityId,
-      completeness_score: completeness.score,
-      attribute_coverage_score: attrCoverage.score,
-      proof_density_score: proofDensity.score,
-      freshness_score: freshness.score,
-      review_specificity_score: reviewSpec.score,
-      geo_fit_score: entity.country_code ? 70 : 20,
-      language_fit_score: entity.canonical_language ? 60 : 20,
-      internal_link_score: (surfaceCount || 0) > 0 ? 50 : 10,
-      query_coverage_score: 30,
-      conversion_readiness_score: 10,
-      entity_consistency_score: consistency.score,
-      overall_ai_readiness_score: overall.overall_score,
-      score_payload_json: {
-        completeness,
-        attrCoverage,
-        proofDensity,
-        freshness,
-        reviewSpec,
-        consistency,
-        overall,
-      },
-    });
-
     return NextResponse.json({
       ok: true,
       data: {
         overall_score: overall.overall_score,
         band: overall.band,
         top_actions: overall.top_actions,
+        score_mode: "public_preview_no_snapshot_written",
         breakdown: {
           completeness,
           attribute_coverage: attrCoverage,

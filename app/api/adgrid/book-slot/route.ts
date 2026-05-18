@@ -82,7 +82,10 @@ export async function POST(req: NextRequest) {
       .select('id')
       .single();
 
-    if (insertErr) throw new Error(insertErr.message);
+    if (insertErr) {
+      console.error('[adgrid/book-slot] slot reservation failed:', insertErr.message);
+      return NextResponse.json({ error: 'slot_reservation_failed' }, { status: 503 });
+    }
 
     // If Stripe price ID exists, create checkout
     if (priceId) {
@@ -103,7 +106,7 @@ export async function POST(req: NextRequest) {
       message: 'Slot reserved — our team will contact you to finalize payment.',
     });
   } catch (err: any) {
-    console.error('[adgrid/book-slot]', err);
-    return NextResponse.json({ error: err.message ?? 'Server error' }, { status: 500 });
+    console.error('[adgrid/book-slot]', err?.message ?? err);
+    return NextResponse.json({ error: 'slot_checkout_failed' }, { status: 503 });
   }
 }

@@ -78,7 +78,7 @@ export async function GET(req: NextRequest) {
         const serviceSupabase = getServiceSupabase();
         const { data: activeBoosts } = await serviceSupabase
             .from('profile_boosts')
-            .select('*')
+            .select('id, operator_id, tier, search_multiplier, badge, expires_at, status')
             .eq('operator_id', operatorId)
             .eq('status', 'active')
             .gte('expires_at', new Date().toISOString())
@@ -165,7 +165,8 @@ export async function POST(req: NextRequest) {
             .single();
 
         if (boostErr) {
-            return NextResponse.json({ error: boostErr.message }, { status: 500 });
+            console.error('[boost/purchase] boost reservation failed:', boostErr.message);
+            return NextResponse.json({ error: 'boost_reservation_failed' }, { status: 503 });
         }
 
         // PostHog
@@ -197,6 +198,7 @@ export async function POST(req: NextRequest) {
 
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : 'Internal error';
-        return NextResponse.json({ error: message }, { status: 500 });
+        console.error('[boost/purchase] request failed:', message);
+        return NextResponse.json({ error: 'boost_purchase_failed' }, { status: 503 });
     }
 }
