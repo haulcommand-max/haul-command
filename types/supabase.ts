@@ -23956,6 +23956,9 @@ export type Database = {
           country_code: string | null
           term_id: string | null
           status: string | null
+          noindex: boolean
+          index_state: string
+          noindex_reason: string | null
           generated_at: string | null
           created_at: string | null
           updated_at: string | null
@@ -23968,6 +23971,9 @@ export type Database = {
           country_code?: string | null
           term_id?: string | null
           status?: string | null
+          noindex?: boolean
+          index_state?: string
+          noindex_reason?: string | null
           generated_at?: string | null
           created_at?: string | null
           updated_at?: string | null
@@ -23980,6 +23986,9 @@ export type Database = {
           country_code?: string | null
           term_id?: string | null
           status?: string | null
+          noindex?: boolean
+          index_state?: string
+          noindex_reason?: string | null
           generated_at?: string | null
           created_at?: string | null
           updated_at?: string | null

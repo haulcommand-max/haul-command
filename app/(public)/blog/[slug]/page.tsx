@@ -31,6 +31,10 @@ async function getArticle(slug: string) {
   return article;
 }
 
+function shouldNoindexArticle(article: any): boolean {
+  return article.noindex === true || article.index_state === "noindex" || article.index_status === "noindex";
+}
+
 export async function generateMetadata({ params }: BlogArticlePageProps): Promise<Metadata> {
   const { slug } = await params;
   const article = await getArticle(slug);
@@ -39,9 +43,15 @@ export async function generateMetadata({ params }: BlogArticlePageProps): Promis
     return { title: "Article Not Found | Haul Command" };
   }
 
+  const noindexArticle = shouldNoindexArticle(article);
+
   return {
     title: `${article.title} | Haul Command Intelligence`,
     description: article.excerpt || article.title,
+    robots: {
+      index: !noindexArticle,
+      follow: true,
+    },
     alternates: {
       canonical: `https://www.haulcommand.com/blog/${slug}`,
     },
@@ -72,6 +82,7 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps) 
     notFound();
   }
 
+  const noindexArticle = shouldNoindexArticle(article);
   const publishedDate = new Date(article.created_at || article.updated_at || Date.now()).toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
@@ -118,7 +129,9 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps) 
 
   return (
     <HCContentPageShell>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      {!noindexArticle && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      )}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
       {/* Breadcrumb navigation */}
