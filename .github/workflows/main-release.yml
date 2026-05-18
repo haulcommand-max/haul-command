@@ -11,6 +11,9 @@ concurrency:
 env:
   # Flip to "true" after first clean Lighthouse run
   ENFORCE_LIGHTHOUSE: "false"
+  NEXT_TELEMETRY_DISABLED: "1"
+  VERCEL_GIT_COMMIT_SHA: ${{ github.sha }}
+  VERCEL_GIT_COMMIT_REF: ${{ github.ref_name }}
 
 jobs:
   ci:
@@ -26,13 +29,18 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test --if-present
-      - run: npm run build
+      - name: Build
+        run: |
+          export SUPABASE_URL="${SUPABASE_URL:-$NEXT_PUBLIC_SUPABASE_URL}"
+          export SUPABASE_SERVICE_ROLE_KEY="${SUPABASE_SERVICE_ROLE_KEY:-ci-placeholder-service-role}"
+          export STRIPE_SECRET_KEY="${STRIPE_SECRET_KEY:-sk_test_ci_placeholder}"
+          npm run build
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL || secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY || 'ci-placeholder-service-role' }}
-          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY || 'sk_test_ci_placeholder' }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
 
   deploy_prod:
     name: Deploy Production
