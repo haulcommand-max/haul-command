@@ -10,21 +10,17 @@ const optional = (value: string | undefined, fallback: string = ""): string => {
 };
 
 export const env = {
-  NEXT_PUBLIC_SUPABASE_URL: required(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    "NEXT_PUBLIC_SUPABASE_URL",
-  ),
-  SUPABASE_SERVICE_ROLE_KEY: required(
-    process.env.SUPABASE_SERVICE_ROLE_KEY,
-    "SUPABASE_SERVICE_ROLE_KEY",
-  ),
-  INTERNAL_WORKER_TOKEN: optional(
-    process.env.INTERNAL_WORKER_TOKEN,
-    "dev-worker-token",
-  ),
-  INTERNAL_APP_BASE_URL: optional(
-    process.env.INTERNAL_APP_BASE_URL,
-    SITE_URL,
-  ),
+  get NEXT_PUBLIC_SUPABASE_URL() {
+    return required(process.env.NEXT_PUBLIC_SUPABASE_URL, "NEXT_PUBLIC_SUPABASE_URL");
+  },
+  get SUPABASE_SERVICE_ROLE_KEY() {
+    return required(process.env.SUPABASE_SERVICE_ROLE_KEY, "SUPABASE_SERVICE_ROLE_KEY");
+  },
+  get INTERNAL_WORKER_TOKEN() {
+    return optional(process.env.INTERNAL_WORKER_TOKEN, "dev-worker-token");
+  },
+  get INTERNAL_APP_BASE_URL() {
+    return optional(process.env.INTERNAL_APP_BASE_URL, SITE_URL);
+  },
 };
 

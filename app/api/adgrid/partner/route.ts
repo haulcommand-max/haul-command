@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-const supabaseAdmin = getSupabaseAdmin();
-
 /**
  * POST /api/adgrid/partner — Register new ad partner
  * GET  /api/adgrid/partner?id=xxx — Get partner dashboard data
  */
 export async function POST(req: NextRequest) {
     try {
+        const supabaseAdmin = getSupabaseAdmin();
         const body = await req.json();
         const { company_name, contact_email, contact_phone, website_url, partner_type, billing_method, monthly_budget_usd } = body;
 
@@ -74,6 +73,7 @@ export async function GET(req: NextRequest) {
     }
 
     try {
+        const supabaseAdmin = getSupabaseAdmin();
         const { data, error } = await supabaseAdmin.rpc('get_partner_dashboard', {
             p_advertiser_id: advertiserId,
         });

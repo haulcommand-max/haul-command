@@ -1,9 +1,17 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize Supabase Client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-const supabase = createClient(supabaseUrl, supabaseKey);
+type SupabaseClient = ReturnType<typeof createClient>;
+
+let supabase: SupabaseClient | null = null;
+
+function getContentEngineSupabase() {
+    if (supabase) return supabase;
+
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+    supabase = createClient(supabaseUrl, supabaseKey);
+    return supabase;
+}
 
 // ==========================================
 // 🧠 MASTER PROMPTS FOR AI AUTONOMY
@@ -66,7 +74,7 @@ export class AutonomousContentEngine {
         };
 
         // Insert into Database
-        const { data, error } = await supabase.from('hc_training_lessons').insert({
+        const { data, error } = await getContentEngineSupabase().from('hc_training_lessons').insert({
             track_slug: trackSlug,
             module_slug: moduleSlug,
             lesson_slug: topic.toLowerCase().replace(/ /g, '-'),

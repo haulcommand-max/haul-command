@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { generateCreatives, type CreativeRequest } from '@/lib/ai/gemini-ad-factory';
 
-const supabaseAdmin = getSupabaseAdmin();
-
 /**
  * POST /api/adgrid/generate
  * Generate hyper-local ads using Gemini (primary) with template fallback.
@@ -13,6 +11,7 @@ const supabaseAdmin = getSupabaseAdmin();
  */
 export async function POST(req: NextRequest) {
     try {
+        const supabaseAdmin = getSupabaseAdmin();
         const body = await req.json();
         const {
             country_code,

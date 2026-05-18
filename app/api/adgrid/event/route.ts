@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
-const supabaseAdmin = getSupabaseAdmin();
-
 /**
  * POST /api/adgrid/event
  * Track ad impressions, clicks, conversions
  */
 export async function POST(req: NextRequest) {
     try {
+        const supabaseAdmin = getSupabaseAdmin();
         const body = await req.json();
         const { creative_id, campaign_id, advertiser_id, event_type, surface, corridor_code, country_code, operator_id, session_id, revenue_usd } = body;
 
@@ -63,6 +62,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: 'campaign_id required' }, { status: 400 });
     }
 
+    const supabaseAdmin = getSupabaseAdmin();
     const { data, error } = await supabaseAdmin
         .from('hc_ad_events')
         .select('event_type, revenue_usd, created_at')
