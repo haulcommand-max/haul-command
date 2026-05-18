@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { createPublicClient } from '@/lib/supabase/server';
 import { pickHouseAd } from '@/lib/ads/house-ads';
 
 export const dynamic = 'force-dynamic';
@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     const country = req.nextUrl.searchParams.get('country') || 'US';
     const role = req.nextUrl.searchParams.get('role');
 
-    const supabaseAdmin = getSupabaseAdmin();
+    const supabase = createPublicClient();
     const fallback = () =>
         NextResponse.json({
             ad: pickHouseAd({
@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
 
     try {
         if (surface) {
-            const { data, error } = await supabaseAdmin.rpc('serve_adgrid_ad', {
+            const { data, error } = await supabase.rpc('serve_adgrid_ad', {
                 p_surface: surface,
                 p_corridor: corridor,
                 p_country: country,
@@ -44,7 +44,7 @@ export async function GET(req: NextRequest) {
             }
         }
 
-        const { data: ads } = await supabaseAdmin
+        const { data: ads } = await supabase
             .from('hc_ad_creatives')
             .select(
                 'campaign_id, creative_id, headline, description, body, cta_text, cta_label, cta_url, image_url, image_landscape_url, image_square_url, sponsor_label, advertiser_name, page_types, country_slugs, corridor_slugs, service_slugs, ab_variant',

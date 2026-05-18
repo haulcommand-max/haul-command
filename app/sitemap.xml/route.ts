@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { createPublicClient } from '@/lib/supabase/server';
 
 /**
  * WAVE-7 S7-02: Dynamic XML Sitemap Generator
@@ -13,10 +13,7 @@ import { createClient } from '@supabase/supabase-js';
 export const revalidate = 21600; // 6 hours
 
 export async function GET() {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
+  const supabase = createPublicClient();
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com';
   const now = new Date().toISOString().split('T')[0];

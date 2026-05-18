@@ -31,18 +31,6 @@ import { absoluteUrl, SITE_URL } from '@/lib/site-url';
 
 export const dynamic = 'force-dynamic';
 
-function createDirectoryServiceClient(cookieStore: Awaited<ReturnType<typeof cookies>>) {
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-        return null;
-    }
-
-    return createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL,
-        process.env.SUPABASE_SERVICE_ROLE_KEY,
-        { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } },
-    );
-}
-
 const proofStates = [
     {
         label: 'Indexed',
@@ -425,41 +413,37 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
 
     if (providers.length === 0) {
         try {
-            const serviceSupabase = createDirectoryServiceClient(cookieStore);
+            let entityQuery = supabase
+                .from('directory_entities')
+                .select('id,name,display_name,country_code,admin1_code,city,entity_type,entity_subtype,visibility_status,claim_status')
+                .not('name', 'is', null);
 
-            if (serviceSupabase) {
-                let entityQuery = serviceSupabase
-                    .from('directory_entities')
-                    .select('id,name,display_name,country_code,admin1_code,city,entity_type,entity_subtype,visibility_status,claim_status')
-                    .not('name', 'is', null);
+            if (fallbackPlan.countryCode) {
+                entityQuery = entityQuery.eq('country_code', fallbackPlan.countryCode);
+            }
 
-                if (fallbackPlan.countryCode) {
-                    entityQuery = entityQuery.eq('country_code', fallbackPlan.countryCode);
-                }
+            if (fallbackPlan.category) {
+                entityQuery = entityQuery.in('entity_subtype', fallbackPlan.category.entitySubtypes);
+            }
 
-                if (fallbackPlan.category) {
-                    entityQuery = entityQuery.in('entity_subtype', fallbackPlan.category.entitySubtypes);
-                }
+            if (queryLocation) {
+                const escaped = queryLocation.replace(/[%_,]/g, (char) => `\\${char}`);
+                entityQuery = entityQuery.ilike('name', `%${escaped}%`);
+            }
 
-                if (queryLocation) {
-                    const escaped = queryLocation.replace(/[%_,]/g, (char) => `\\${char}`);
-                    entityQuery = entityQuery.ilike('name', `%${escaped}%`);
-                }
+            entityQuery = entityQuery.limit(fallbackPlan.limit);
 
-                entityQuery = entityQuery.limit(fallbackPlan.limit);
+            const { data, error } = await entityQuery;
 
-                const { data, error } = await entityQuery;
-
-                if (error) {
-                    console.warn('[directory] directory_entities fallback failed:', error.message);
-                } else {
-                    providers = (data ?? [])
-                        .filter((row: any) => {
-                            if (!fallbackPlan.category) return true;
-                            return fallbackPlan.category.entitySubtypes.includes(row.entity_subtype);
-                        })
-                        .map((row: any) => normalizeDirectoryFallbackRow(row, 'directory_entities'));
-                }
+            if (error) {
+                console.warn('[directory] directory_entities fallback failed:', error.message);
+            } else {
+                providers = (data ?? [])
+                    .filter((row: any) => {
+                        if (!fallbackPlan.category) return true;
+                        return fallbackPlan.category.entitySubtypes.includes(row.entity_subtype);
+                    })
+                    .map((row: any) => normalizeDirectoryFallbackRow(row, 'directory_entities'));
             }
         } catch (e) {
             console.warn('[directory] directory_entities fallback exception:', e);
