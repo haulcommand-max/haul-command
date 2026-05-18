@@ -129,7 +129,7 @@ export async function POST(req: NextRequest) {
 
         if (updateErr) {
             console.error('[PROFILE_UPDATE] Error:', updateErr);
-            return NextResponse.json({ error: updateErr.message }, { status: 500 });
+            return NextResponse.json({ error: 'Profile update failed' }, { status: 500 });
         }
 
         // Compute completion after update
@@ -183,6 +183,6 @@ export async function POST(req: NextRequest) {
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : 'Internal error';
         console.error('[PROFILE_UPDATE] Error:', message);
-        return NextResponse.json({ error: message }, { status: 500 });
+        return NextResponse.json({ error: 'Profile update failed' }, { status: 500 });
     }
 }

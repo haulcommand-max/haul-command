@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
 
         if (uploadError) {
             console.error('[UPLOAD] Storage error:', uploadError);
-            return NextResponse.json({ error: uploadError.message }, { status: 500 });
+            return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
         }
 
         // Get public URL
@@ -159,6 +159,6 @@ export async function POST(req: NextRequest) {
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : 'Internal error';
         console.error('[UPLOAD] Error:', message);
-        return NextResponse.json({ error: message }, { status: 500 });
+        return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
     }
 }
