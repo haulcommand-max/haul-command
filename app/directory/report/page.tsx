@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { AlertTriangle, MapPin, CheckCircle } from 'lucide-react';
 import { ReportForm } from './ReportForm';
+import { DirectoryBackgroundShell } from '@/components/directory/DirectoryBackgroundShell';
 
 export const metadata: Metadata = {
   title: 'Report Incorrect Listing Data | Haul Command',
@@ -12,7 +13,7 @@ export default function ReportIncorrectDataPage({ searchParams }: { searchParams
   const { slug } = searchParams;
 
   return (
-    <div className=" bg-[#0a0a0a] text-white flex flex-col items-center justify-center p-4">
+    <DirectoryBackgroundShell className="flex flex-col items-center justify-center p-4">
       <div className="max-w-xl w-full bg-white/5 border border-white/10 rounded-2xl p-8">
         <div className="flex justify-center mb-6">
           <div className="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center">
@@ -39,6 +40,6 @@ export default function ReportIncorrectDataPage({ searchParams }: { searchParams
            <Link href={`/claim${slug ? `?claim_id=${slug}` : ''}`} className="text-amber-500 hover:text-amber-400 text-sm font-bold mt-1">Claim Profile Now â†’</Link>
         </div>
       </div>
-    </div>
+    </DirectoryBackgroundShell>
   );
 }

@@ -4,8 +4,17 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { DirectorySearchBar } from '@/components/ui/DirectorySearchBar';
 import { FreshnessBadge } from '@/components/ui/FreshnessBadge';
+import EmptyMarketState from '@/components/directory/EmptyMarketState';
 import { stateFullName } from '@/lib/geo/state-names';
-import { Shield, MapPin, Star } from 'lucide-react';
+import {
+  buildDirectoryIntentLanes,
+  getDirectoryEntityLabel,
+  getDirectoryProofState,
+  getDirectorySupportAttributes,
+} from '@/lib/directory/presentation';
+import { track } from '@/lib/analytics/track';
+import { ClipboardList, MapPin, Route, Shield, Star } from 'lucide-react';
+import type { DirectoryFilterState } from '@/components/ui/DirectorySearchBar';
 
 /**
  * DirectoryGrid — Client component that wraps operator cards with search/filter.
@@ -15,6 +24,7 @@ import { Shield, MapPin, Star } from 'lucide-react';
 interface DirectoryGridProps {
   providers: any[];
   targetCountry: string;
+  initialFilters?: Partial<DirectoryFilterState>;
 }
 
 // Common US states for filter dropdown
@@ -25,76 +35,117 @@ const STATE_OPTIONS = [
   'VA','WA','WV','WI','WY',
 ].map(code => ({ code, name: stateFullName(code) || code }));
 
-export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) {
+export function DirectoryGrid({ providers, targetCountry, initialFilters }: DirectoryGridProps) {
   const [filtered, setFiltered] = useState<any[] | null>(null);
   const displayItems = filtered ?? providers;
+  const intentLanes = buildDirectoryIntentLanes(targetCountry);
+
+  function getRecordId(record: any): string {
+    return String(record.contact_id || record.id || record.entity_id || record.slug || record.company || record.name || '');
+  }
+
+  function getDisplayName(record: any): string {
+    return record.company_name || record.company || record.display_name || record.name || record.full_name || 'Indexed support record';
+  }
 
   return (
     <>
+      <div className="mb-5 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
+        {intentLanes.map((lane) => (
+          <Link
+            key={lane.label}
+            href={lane.href}
+            onClick={() => track.event('directory_intent_lane_click', { lane: lane.label, country_code: targetCountry })}
+            className="group rounded-xl border border-white/10 bg-black/35 p-4 text-left shadow-[0_18px_50px_rgba(0,0,0,0.22)] backdrop-blur-[2px] transition-colors hover:border-[#C6923A]/60 hover:bg-[#C6923A]/10"
+          >
+            <div className="flex items-center gap-2 text-sm font-black text-white">
+              <Route className="h-4 w-4 text-[#C6923A]" />
+              {lane.label}
+            </div>
+            <p className="mt-2 text-xs leading-5 text-[#d8c6a3]">{lane.body}</p>
+          </Link>
+        ))}
+      </div>
+
       <DirectorySearchBar
         items={providers}
         onFilter={setFiltered}
-        placeholder="Search by provider name, city, or state..."
+        placeholder="Search company, city, parking, repair, permit, route support..."
         stateOptions={STATE_OPTIONS}
+        surface="command"
+        initialFilters={initialFilters}
       />
 
-      {/* Results count */}
-      <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        marginBottom: 16, padding: '0 4px',
-      }}>
-        <span style={{ fontSize: 12, color: '#64748b', fontWeight: 600 }}>
-          {displayItems.length} listed provider{displayItems.length !== 1 ? 's' : ''} shown
+      <div className="mb-4 flex items-center justify-between px-1">
+        <span className="text-xs font-bold uppercase tracking-[0.12em] text-[#d8c6a3]">
+          {displayItems.length} support record{displayItems.length !== 1 ? 's' : ''} shown
           {filtered !== null && filtered.length !== providers.length && (
-            <span style={{ color: '#C6923A' }}> (filtered from {providers.length})</span>
+            <span className="text-[#C6923A]"> (filtered from {providers.length})</span>
           )}
         </span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {displayItems.length > 0 ? displayItems.map((p: any) => {
-          const state = stateFullName(p.state_inferred, true);
-          const profileSignal = p.confidence_score || 0;
+          const recordId = getRecordId(p);
+          const state = stateFullName(p.state_inferred || p.state, true) || p.state_inferred || p.state || '';
+          const city = p.city_inferred || p.city || p.home_base_city || '';
+          const profileSignal = Math.round(Number(p.rank_score ?? p.trust_score ?? p.confidence_score ?? 0));
           const hasHighSignal = profileSignal > 80;
+          const entityLabel = getDirectoryEntityLabel(p);
+          const proof = getDirectoryProofState(p);
+          const attributes = getDirectorySupportAttributes(p);
+          const displayName = getDisplayName(p);
+          const profileHref = recordId ? `/directory/dossier/${encodeURIComponent(recordId)}` : '/directory';
+          const packetHref = recordId
+            ? `/loads/post?support=${encodeURIComponent(recordId)}&country=${encodeURIComponent(targetCountry)}`
+            : `/loads/post?country=${encodeURIComponent(targetCountry)}`;
+          const claimHref = recordId
+            ? `/claim?operator=${encodeURIComponent(recordId)}`
+            : `/claim?country=${encodeURIComponent(targetCountry)}`;
 
           return (
             <div
-              key={p.contact_id}
-              style={{
-                background: '#ffffff',
-                border: '1px solid #E5E7EB',
-                borderRadius: 12, padding: '20px 20px 16px',
-                display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-                transition: 'all 0.2s ease',
-                position: 'relative', overflow: 'hidden',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-              }}
-              className="hover:border-gray-300 hover:shadow-md group"
+              key={recordId || displayName}
+              className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-black/45 p-5 shadow-[0_20px_70px_rgba(0,0,0,0.28)] backdrop-blur-[2px] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#C6923A]/55 hover:shadow-[0_24px_80px_rgba(0,0,0,0.36)]"
             >
               {hasHighSignal && (
-                <div style={{
-                  position: 'absolute', top: 0, right: 0, width: 80, height: 80,
-                  background: '#FACC15', opacity: 0.15, borderRadius: '50%', filter: 'blur(24px)',
-                  pointerEvents: 'none',
-                }} />
+                <div className="pointer-events-none absolute right-0 top-0 h-24 w-24 rounded-full bg-[#C6923A]/20 blur-3xl" />
               )}
 
               <div>
-                {/* Header */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12, gap: 12 }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 8 }}>
+                      <span style={{
+                        fontSize: 10, fontWeight: 800, padding: '3px 8px', borderRadius: 6,
+                        background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)',
+                        color: '#d8c6a3', textTransform: 'uppercase', letterSpacing: '0.06em',
+                      }}>
+                        {entityLabel}
+                      </span>
+                      <span style={{
+                        fontSize: 10, fontWeight: 800, padding: '3px 8px', borderRadius: 6,
+                        background: proof.strength >= 4 ? 'rgba(34,197,94,0.12)' : proof.strength >= 2 ? 'rgba(198,146,58,0.13)' : 'rgba(255,255,255,0.05)',
+                        border: `1px solid ${proof.strength >= 4 ? 'rgba(34,197,94,0.34)' : proof.strength >= 2 ? 'rgba(198,146,58,0.36)' : 'rgba(255,255,255,0.10)'}`,
+                        color: proof.strength >= 4 ? '#86EFAC' : proof.strength >= 2 ? '#F8DFB0' : '#d8c6a3',
+                        textTransform: 'uppercase', letterSpacing: '0.06em',
+                      }}>
+                        {proof.label}
+                      </span>
+                    </div>
                     <h3 style={{
-                      fontSize: 18, fontWeight: 800, color: '#0056B3', // YP style blue header
+                      fontSize: 18, fontWeight: 800, color: '#FFFFFF',
                       letterSpacing: '-0.01em',
                       overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                       margin: '0 0 4px',
                     }}>
-                      {p.company || p.name || 'Listed Provider'}
+                      {displayName}
                     </h3>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <MapPin style={{ width: 14, height: 14, color: '#6B7280' }} />
-                      <span style={{ fontSize: 13, color: '#4B5563', fontWeight: 500 }}>
-                        {p.city ? `${p.city}, ` : ''}{state}
+                      <MapPin style={{ width: 14, height: 14, color: '#C6923A' }} />
+                      <span style={{ fontSize: 13, color: '#d8c6a3', fontWeight: 500 }}>
+                        {city ? `${city}${state ? ', ' : ''}` : ''}{state || p.country_code || targetCountry}
                       </span>
                       {p.last_seen_at && <FreshnessBadge lastSeenAt={p.last_seen_at} />}
                     </div>
@@ -105,13 +156,13 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
                     <div style={{
                       display: 'flex', flexDirection: 'column', alignItems: 'center',
                       padding: '6px 10px', borderRadius: 8, flexShrink: 0,
-                      background: hasHighSignal ? '#FEF9C3' : '#F3F4F6', // light yellow or gray
-                      border: `1px solid ${hasHighSignal ? '#FDE047' : '#E5E7EB'}`,
+                      background: hasHighSignal ? 'rgba(198,146,58,0.15)' : 'rgba(255,255,255,0.05)',
+                      border: `1px solid ${hasHighSignal ? 'rgba(198,146,58,0.34)' : 'rgba(255,255,255,0.10)'}`,
                     }}>
-                      <span style={{ fontSize: 18, fontWeight: 900, color: hasHighSignal ? '#854D0E' : '#4B5563' }}>
+                      <span style={{ fontSize: 18, fontWeight: 900, color: hasHighSignal ? '#F8DFB0' : '#fff7e8' }}>
                         {profileSignal}
                       </span>
-                      <span style={{ fontSize: 9, fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                      <span style={{ fontSize: 9, fontWeight: 700, color: '#d8c6a3', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                         Signal
                       </span>
                     </div>
@@ -120,29 +171,41 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
 
                 {/* Meta row */}
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
-                  {p.equipment_types && (
+                  {attributes.map((attribute) => (
+                    <span
+                      key={attribute}
+                      style={{
+                        fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 6,
+                        background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)',
+                        color: '#d8c6a3', textTransform: 'capitalize',
+                      }}
+                    >
+                      {attribute}
+                    </span>
+                  ))}
+                  {attributes.length === 0 && p.equipment_types && (
                     <span style={{
-                      fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 100,
-                      background: '#EFF6FF', border: '1px solid #BFDBFE',
-                      color: '#1D4ED8', textTransform: 'capitalize',
+                      fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 6,
+                      background: 'rgba(198,146,58,0.10)', border: '1px solid rgba(198,146,58,0.28)',
+                      color: '#F8DFB0', textTransform: 'capitalize',
                     }}>
                       {typeof p.equipment_types === 'string' ? p.equipment_types.split(',')[0]?.trim() : 'Escort'}
                     </span>
                   )}
                   {p.verification_status === 'verified' && (
                     <span style={{
-                      fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 100,
-                      background: '#F0FDF4', border: '1px solid #BBF7D0',
-                      color: '#15803D', display: 'flex', alignItems: 'center', gap: 4,
+                      fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 6,
+                      background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.34)',
+                      color: '#86EFAC', display: 'flex', alignItems: 'center', gap: 4,
                     }}>
                       <Shield style={{ width: 12, height: 12 }} /> Verified
                     </span>
                   )}
                   {p.rating_avg && Number(p.rating_avg) > 0 && (
                     <span style={{
-                      fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 100,
-                      background: '#F9FAFB', border: '1px solid #E5E7EB',
-                      color: '#374151', display: 'flex', alignItems: 'center', gap: 4,
+                      fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 6,
+                      background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)',
+                      color: '#fff7e8', display: 'flex', alignItems: 'center', gap: 4,
                     }}>
                       <Star style={{ width: 12, height: 12, color: '#EAB308' }} /> {Number(p.rating_avg).toFixed(1)}
                     </span>
@@ -151,47 +214,73 @@ export function DirectoryGrid({ providers, targetCountry }: DirectoryGridProps) 
               </div>
 
               {/* Actions */}
-              <div style={{ display: 'flex', gap: 8 }}>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 <Link
-                  href={`/directory/dossier/${p.contact_id}`}
+                  href={profileHref}
+                  onClick={() => track.event('directory_profile_click', { entity_id: recordId, entity_family: p.entity_family, country_code: targetCountry })}
                   style={{
-                    flex: 1, padding: '10px 0', borderRadius: 8, textAlign: 'center',
-                    background: '#F3F4F6', border: '1px solid #D1D5DB',
-                    color: '#374151', fontSize: 13, fontWeight: 600,
+                    flex: '1 1 130px', padding: '10px 12px', borderRadius: 8, textAlign: 'center',
+                    background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)',
+                    color: '#fff7e8', fontSize: 13, fontWeight: 600,
                     textDecoration: 'none', transition: 'all 0.15s',
+                    minWidth: 0,
                   }}
-                  className="hover:bg-gray-200"
+                  className="hover:bg-white/10"
                 >
                   View Profile
                 </Link>
                 <Link
-                  href={`/auth/signup?intent=dispatch&target=${p.contact_id}`}
+                  href={packetHref}
+                  onClick={() => track.event('directory_support_packet_click', { entity_id: recordId, entity_family: p.entity_family, country_code: targetCountry })}
                   style={{
-                    flex: 1.2, padding: '10px 0', borderRadius: 8, textAlign: 'center',
-                    background: '#0F52BA', // Strong YP CTA Blue
-                    color: '#ffffff', fontSize: 13, fontWeight: 600,
+                    flex: '1.2 1 150px', padding: '10px 12px', borderRadius: 8, textAlign: 'center',
+                    background: 'linear-gradient(135deg, #C6923A 0%, #8A6428 100%)',
+                    color: '#0B0B0C', fontSize: 13, fontWeight: 800,
                     textDecoration: 'none', transition: 'all 0.15s',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                    minWidth: 0,
                   }}
-                  className="hover:bg-[#0c4296]"
+                  className="hover:shadow-[0_0_24px_rgba(198,146,58,0.28)]"
                 >
-                  <MapPin style={{ width: 14, height: 14 }} />
-                  Request Match
+                  <ClipboardList style={{ width: 14, height: 14 }} />
+                  Build Packet
+                </Link>
+                <Link
+                  href={claimHref}
+                  onClick={() => track.event('directory_claim_profile_click', { entity_id: recordId, entity_family: p.entity_family, country_code: targetCountry })}
+                  style={{
+                    flex: '1 1 100%', padding: '9px 12px', borderRadius: 8, textAlign: 'center',
+                    background: 'rgba(198,146,58,0.08)', border: '1px solid rgba(198,146,58,0.28)',
+                    color: '#F8DFB0', fontSize: 12, fontWeight: 700,
+                    textDecoration: 'none', transition: 'all 0.15s',
+                  }}
+                  className="hover:bg-[#C6923A]/14"
+                >
+                  Claim / Fix Profile
                 </Link>
               </div>
             </div>
           );
         }) : (
-          <div className="col-span-full" style={{
-            padding: 48, border: '1px solid #E5E7EB',
-            borderRadius: 20, textAlign: 'center', background: '#F9FAFB',
-          }}>
-            <p style={{ color: '#6B7280', fontWeight: 700, fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-              No listed providers match your search.
-            </p>
-            <p style={{ color: '#9CA3AF', fontSize: 13, marginTop: 8 }}>
-              Try broadening your search or clearing filters.
-            </p>
+          <div className="col-span-full">
+            <EmptyMarketState country={targetCountry} />
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+              {filtered !== null && (
+                <button
+                  type="button"
+                  onClick={() => setFiltered(null)}
+                  className="rounded-lg border border-white/15 bg-white/5 px-4 py-2 text-sm font-bold text-white hover:bg-white/10"
+                >
+                  Clear filters
+                </button>
+              )}
+              <Link href={`/loads/post?country=${encodeURIComponent(targetCountry)}`} className="rounded-lg bg-[#C6923A] px-4 py-2 text-sm font-black text-[#0B0B0C] hover:bg-[#E0B05C]">
+                Build support packet
+              </Link>
+              <Link href="/claim" className="rounded-lg border border-[#C6923A]/35 bg-[#C6923A]/10 px-4 py-2 text-sm font-bold text-[#F8DFB0] hover:bg-[#C6923A]/16">
+                Claim a profile
+              </Link>
+            </div>
           </div>
         )}
       </div>

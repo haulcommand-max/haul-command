@@ -7,7 +7,7 @@ import AvailabilityQuickSet from '@/components/capture/AvailabilityQuickSet';
 export interface OperatorProfile {
   id: string;
   companyName: string;
-  phoneNumber: string;
+  contactAvailable?: boolean;
   slug: string;
   cityCounty: string;
   stateCode: string;
@@ -27,6 +27,7 @@ export default function BrokerProfileCard({ profile }: { profile: OperatorProfil
   const rating = profile.googleRating || 4.5;
   const isClaimed = profile.claimStatus === 'verified';
   const isFeatured = rating > 4.7;
+  const contactPath = `/load-board/post?intent=provider-contact&operator=${encodeURIComponent(profile.slug || profile.id)}`;
 
   return (
     <div className={`relative p-5 border rounded-xl transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-amber-500/10 flex flex-col gap-3 ${
@@ -84,10 +85,10 @@ export default function BrokerProfileCard({ profile }: { profile: OperatorProfil
 
       {/* Action Row */}
       <div className="mt-auto pt-4 flex gap-2 relative z-20">
-        <a href={`tel:${profile.phoneNumber || '+18005550000'}`} 
+        <Link href={contactPath}
            className="flex-1 text-center bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black py-2.5 rounded-lg font-black text-xs tracking-wider uppercase transition-all shadow-lg shadow-amber-500/20">
-          Call Dispatch
-        </a>
+          Request Contact
+        </Link>
         <div className="flex-1 flex justify-center items-center bg-white/5 border border-white/10 py-2.5 rounded-lg font-bold text-white text-xs tracking-wider hover:bg-white/10 transition-colors">
           <AvailabilityQuickSet operatorId={profile.id} currentStatus={profile.status as any} compact />
         </div>

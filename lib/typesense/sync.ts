@@ -3,35 +3,64 @@
 // Full + incremental sync from Supabase → Typesense
 // ============================================================
 
-import { getTypesenseAdmin, OPERATORS_COLLECTION, OPERATORS_SCHEMA, operatorToDocument } from '@/lib/typesense/client';
+import {
+    DIRECTORY_SURFACE_SCHEMAS,
+    DIRECTORY_TYPESENSE_QUERY_BY,
+    getDirectorySurfaceCollection,
+    getTypesenseAdmin,
+    OPERATORS_COLLECTION,
+    surfaceRowToDocument,
+} from '@/lib/typesense/client';
+import {
+    buildDirectoryFallbackFilterPlan,
+} from '@/lib/directory/server-query';
 import { getSupabaseAdmin } from '@/lib/enterprise/supabase/admin';
 import { isEnabled } from '@/lib/feature-flags';
 
 const BATCH_SIZE = 250;
 
 /**
- * Ensure the operators collection exists with the correct schema.
+ * Ensure the directory surface collections exist with the correct schema.
  */
 export async function ensureCollection(): Promise<boolean> {
     if (!isEnabled('TYPESENSE')) return false;
     const client = getTypesenseAdmin();
-    try {
-        await client.collections(OPERATORS_COLLECTION).retrieve();
-        return true;
-    } catch {
+    let ready = true;
+
+    for (const schema of DIRECTORY_SURFACE_SCHEMAS) {
+        let existing: any = null;
         try {
-            await client.collections().create(OPERATORS_SCHEMA);
-            console.log('[Typesense] Created operators collection');
-            return true;
-        } catch (err) {
-            console.error('[Typesense] Failed to create collection:', err);
-            return false;
+            existing = await client.collections(schema.name).retrieve();
+        } catch {
+            try {
+                await client.collections().create(schema);
+                console.log(`[Typesense] Created directory collection: ${schema.name}`);
+                continue;
+            } catch (err) {
+                console.error(`[Typesense] Failed to create collection ${schema.name}:`, err);
+                ready = false;
+                continue;
+            }
+        }
+
+        const existingFields = new Set((existing.fields ?? []).map((field: any) => field.name));
+        const missingFields = schema.fields.filter((field) => !existingFields.has(field.name));
+        if (missingFields.length > 0) {
+            try {
+                await client.collections(schema.name).update({ fields: missingFields });
+                console.log(`[Typesense] Updated ${schema.name} with ${missingFields.length} missing field(s)`);
+            } catch (err) {
+                console.error(`[Typesense] Failed to update collection ${schema.name}:`, err);
+                ready = false;
+            }
         }
     }
+
+    return ready;
 }
 
 /**
- * Full sync: pull all operators from Supabase and index them.
+ * Full sync: pull all public directory surfaces from Supabase and index them.
  */
 export async function fullSync(): Promise<{ indexed: number; errors: number }> {
     if (!isEnabled('TYPESENSE')) return { indexed: 0, errors: 0 };
@@ -42,40 +71,47 @@ export async function fullSync(): Promise<{ indexed: number; errors: number }> {
 
     let indexed = 0;
     let errors = 0;
-    let offset = 0;
-    let hasMore = true;
+    for (const surface of buildDirectoryFallbackFilterPlan({}).surfaceViews) {
+        const collection = getDirectorySurfaceCollection(surface);
+        let offset = 0;
+        let hasMore = true;
 
-    while (hasMore) {
-        const { data: operators, error } = await supabase
-            .from('operator_profiles')
-            .select('*')
-            .range(offset, offset + BATCH_SIZE - 1)
-            .order('updated_at', { ascending: false });
+        while (hasMore) {
+            const { data: rows, error } = await supabase
+                .from(surface)
+                .select('*')
+                .range(offset, offset + BATCH_SIZE - 1)
+                .order('updated_at', { ascending: false });
 
-        if (error || !operators?.length) {
-            hasMore = false;
-            break;
+            if (error || !rows?.length) {
+                if (error) {
+                    console.error(`[Typesense] Supabase ${surface} sync query failed:`, error.message);
+                    errors += BATCH_SIZE;
+                }
+                hasMore = false;
+                break;
+            }
+
+            const docs = rows.map((row) => surfaceRowToDocument(row, surface)).filter((doc) => doc.id);
+
+            try {
+                const results = await client
+                    .collections(collection)
+                    .documents()
+                    .import(docs, { action: 'upsert' });
+
+                const successes = results.filter((r: any) => r.success).length;
+                const fails = results.filter((r: any) => !r.success).length;
+                indexed += successes;
+                errors += fails;
+            } catch (err) {
+                console.error(`[Typesense] ${collection} batch import error:`, err);
+                errors += docs.length;
+            }
+
+            offset += BATCH_SIZE;
+            hasMore = rows.length === BATCH_SIZE;
         }
-
-        const docs = operators.map(operatorToDocument);
-
-        try {
-            const results = await client
-                .collections(OPERATORS_COLLECTION)
-                .documents()
-                .import(docs, { action: 'upsert' });
-
-            const successes = results.filter((r: any) => r.success).length;
-            const fails = results.filter((r: any) => !r.success).length;
-            indexed += successes;
-            errors += fails;
-        } catch (err) {
-            console.error('[Typesense] Batch import error:', err);
-            errors += docs.length;
-        }
-
-        offset += BATCH_SIZE;
-        hasMore = operators.length === BATCH_SIZE;
     }
 
     console.log(`[Typesense] Full sync complete: ${indexed} indexed, ${errors} errors`);
@@ -83,7 +119,7 @@ export async function fullSync(): Promise<{ indexed: number; errors: number }> {
 }
 
 /**
- * Incremental sync: index operators updated since a given timestamp.
+ * Incremental sync: index directory surface rows updated since a given timestamp.
  */
 export async function incrementalSync(since: string): Promise<{ indexed: number; errors: number }> {
     if (!isEnabled('TYPESENSE')) return { indexed: 0, errors: 0 };
@@ -92,34 +128,41 @@ export async function incrementalSync(since: string): Promise<{ indexed: number;
     const client = getTypesenseAdmin();
     await ensureCollection();
 
-    const { data: operators, error } = await supabase
-        .from('operator_profiles')
-        .select('*')
-        .gte('updated_at', since)
-        .order('updated_at', { ascending: false })
-        .limit(1000);
+    let indexed = 0;
+    let errors = 0;
 
-    if (error || !operators?.length) {
-        return { indexed: 0, errors: 0 };
+    for (const surface of buildDirectoryFallbackFilterPlan({}).surfaceViews) {
+        const collection = getDirectorySurfaceCollection(surface);
+        const { data: rows, error } = await supabase
+            .from(surface)
+            .select('*')
+            .gte('updated_at', since)
+            .order('updated_at', { ascending: false })
+            .limit(1000);
+
+        if (error || !rows?.length) {
+            if (error) console.error(`[Typesense] ${surface} incremental query failed:`, error.message);
+            continue;
+        }
+
+        const docs = rows.map((row) => surfaceRowToDocument(row, surface)).filter((doc) => doc.id);
+
+        try {
+            const results = await client
+                .collections(collection)
+                .documents()
+                .import(docs, { action: 'upsert' });
+
+            indexed += results.filter((r: any) => r.success).length;
+            errors += results.filter((r: any) => !r.success).length;
+        } catch (err) {
+            console.error(`[Typesense] ${collection} incremental sync error:`, err);
+            errors += docs.length;
+        }
     }
 
-    const docs = operators.map(operatorToDocument);
-
-    try {
-        const results = await client
-            .collections(OPERATORS_COLLECTION)
-            .documents()
-            .import(docs, { action: 'upsert' });
-
-        const indexed = results.filter((r: any) => r.success).length;
-        const errors = results.filter((r: any) => !r.success).length;
-
-        console.log(`[Typesense] Incremental sync: ${indexed} indexed, ${errors} errors`);
-        return { indexed, errors };
-    } catch (err) {
-        console.error('[Typesense] Incremental sync error:', err);
-        return { indexed: 0, errors: docs.length };
-    }
+    console.log(`[Typesense] Incremental sync: ${indexed} indexed, ${errors} errors`);
+    return { indexed, errors };
 }
 
 /**
@@ -143,7 +186,7 @@ export async function indexOperator(operator: Record<string, unknown>): Promise<
     if (!isEnabled('TYPESENSE')) return false;
     const client = getTypesenseAdmin();
     try {
-        const doc = operatorToDocument(operator);
+        const doc = surfaceRowToDocument(operator, 'v_directory_operators');
         await client.collections(OPERATORS_COLLECTION).documents().upsert(doc);
         return true;
     } catch (err) {
@@ -170,12 +213,12 @@ export async function searchOperators(query: string, options?: {
 
     const filterParts: string[] = [];
     if (options?.country) filterParts.push(`country_code:=${options.country}`);
-    if (options?.state) filterParts.push(`service_states:=${options.state}`);
-    if (options?.category) filterParts.push(`service_categories:=${options.category}`);
+    if (options?.state) filterParts.push(`state:=${options.state}`);
+    if (options?.category) filterParts.push(`entity_subtype:=${options.category}`);
 
     const searchParams: any = {
         q: query || '*',
-        query_by: 'company_name,bio,city,state',
+        query_by: DIRECTORY_TYPESENSE_QUERY_BY,
         filter_by: filterParts.join(' && ') || undefined,
         sort_by: options?.geoLat && options?.geoLng
             ? `location(${options.geoLat},${options.geoLng}):asc`

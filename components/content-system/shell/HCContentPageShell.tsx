@@ -1,11 +1,12 @@
 import React from 'react';
 import { ContentLayout } from '../config/content-system.tokens';
+import { DirectoryBackgroundShell } from '@/components/directory/DirectoryBackgroundShell';
 
 export function HCContentPageShell({ children, className = '' }: { children: React.ReactNode, className?: string }) {
     return (
-        <main className={`min-h-screen hc-surface-c font-body selection:bg-[#F1A91B]/30 w-full overflow-x-hidden ${className}`}>
+        <DirectoryBackgroundShell className={`font-body w-full overflow-x-hidden ${className}`}>
             {children}
-        </main>
+        </DirectoryBackgroundShell>
     );
 }
 

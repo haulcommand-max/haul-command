@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js"
 import { Shield, Truck, MapPin, Search } from "lucide-react"
+import { DirectoryBackgroundShell } from "@/components/directory/DirectoryBackgroundShell"
 
 export default async function RepositioningFeed() {
     const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
@@ -12,7 +13,7 @@ export default async function RepositioningFeed() {
         .limit(50)
 
     return (
-        <div className=" bg-transparent pt-24 pb-32">
+        <DirectoryBackgroundShell className="pt-24 pb-32">
             <div className="max-w-7xl mx-auto px-4 md:px-6">
                 
                 {/* Header */}
@@ -83,8 +84,8 @@ export default async function RepositioningFeed() {
                                     <div className="text-xs text-white/30 font-medium uppercase tracking-widest">
                                         Until {new Date(hauls.available_to).toLocaleDateString()}
                                     </div>
-                                    <a 
-                                        href={`/directory/profile/${hauls.operator_slug}`} 
+                                    <a
+                                        href={`/directory/dossier/${hauls.operator_slug}`}
                                         className="px-6 py-2.5 bg-[#C6923A] hover:bg-[#C6923A]/90 text-black font-black uppercase text-xs tracking-wider rounded-lg transition"
                                     >
                                         Intercept Load â†’
@@ -101,6 +102,6 @@ export default async function RepositioningFeed() {
                     )}
                 </div>
             </div>
-        </div>
+        </DirectoryBackgroundShell>
     )
 }

@@ -3,6 +3,12 @@ import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { notFound } from 'next/navigation';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
+import { DirectoryBackgroundShell } from '@/components/directory/DirectoryBackgroundShell';
+import {
+  buildDirectoryOperatorCanonicalUrl,
+  buildDirectoryOperatorJsonLd,
+  buildDirectoryOperatorMetadata,
+} from '@/lib/directory/operator-profile-seo';
 
 export const revalidate = 3600;
 
@@ -30,11 +36,31 @@ const SERVICE_LABELS: Record<string, { label: string; icon: string }> = {
   bucket_truck: { label: 'Bucket Truck', icon: '🪣' },
 };
 
+const CONTACT_METADATA_KEYS = [
+  'phone',
+  'phone_number',
+  'phone_normalized',
+  'contact_phone',
+  'email',
+  'contact_email',
+  'exact_address',
+  'address',
+];
+
+function redactContactMetadata(metadata: Record<string, any> | null | undefined) {
+  if (!metadata || typeof metadata !== 'object') return {};
+  const redacted = { ...metadata };
+  CONTACT_METADATA_KEYS.forEach((key) => {
+    delete redacted[key];
+  });
+  return redacted;
+}
+
 async function getOperator(slug: string) {
   const supabase = createClient();
   const { data } = await supabase
     .from('hc_global_operators')
-    .select('*')
+    .select('id, slug, name, city, admin1_code, country_code, claim_status, trust_score, metadata')
     .eq('slug', slug)
     .maybeSingle();
   return data;
@@ -54,14 +80,7 @@ async function getSimilar(state: string, excludeId: string) {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const op = await getOperator(slug);
-  if (!op) return { title: 'Operator Not Found | Haul Command' };
-  const name = op.name || 'Operator';
-  const region = op.city ? `${op.city}, ${op.admin1_code}` : op.admin1_code || 'US';
-  return {
-    title: `${name} — Pilot Car & Escort Operator in ${region} | Haul Command`,
-    description: `View the verified profile, trust score, services, and contact info for ${name}. Request a quote for escort services in ${region}.`,
-    alternates: { canonical: `https://www.haulcommand.com/directory/profile/${slug}` },
-  };
+  return buildDirectoryOperatorMetadata(op, slug);
 }
 
 function TrustGauge({ score }: { score: number }) {
@@ -93,25 +112,31 @@ export default async function OperatorProfilePage({ params }: { params: Promise<
   const name = op.name || 'Operator';
   const region = op.city ? `${op.city}, ${op.admin1_code}` : op.admin1_code || '';
   const verified = op.claim_status === 'claimed' || op.claim_status === 'verified';
-  const trustScore = op.trust_score ?? op.metadata?.trust_score ?? 0;
-  const services: string[] = op.metadata?.services || ['pilot_car'];
-  const corridors: string[] = op.metadata?.corridors || [];
-  const rate = op.metadata?.hourly_rate;
-  const avgResponse = op.metadata?.avg_response_minutes;
-  const jobCount = op.metadata?.total_jobs;
-  const avReady = op.metadata?.av_certified || false;
-  const escrow = op.metadata?.escrow_enabled || false;
-  const reviewCount = op.metadata?.review_count || 0;
-  const avgRating = op.metadata?.avg_rating || 0;
-  const reliabilityScore = op.metadata?.reliability_score || 0;
-  const completionRate = op.metadata?.completion_rate || 0;
-  const phone = op.metadata?.phone;
+  const metadata = redactContactMetadata(op.metadata);
+  const trustScore = op.trust_score ?? metadata.trust_score ?? 0;
+  const services: string[] = metadata.services || ['pilot_car'];
+  const corridors: string[] = metadata.corridors || [];
+  const rate = metadata.hourly_rate;
+  const avgResponse = metadata.avg_response_minutes;
+  const jobCount = metadata.total_jobs;
+  const avReady = metadata.av_certified || false;
+  const escrow = metadata.escrow_enabled || false;
+  const reviewCount = metadata.review_count || 0;
+  const avgRating = metadata.avg_rating || 0;
+  const reliabilityScore = metadata.reliability_score || 0;
+  const completionRate = metadata.completion_rate || 0;
   const initials = name.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase();
+  const canonicalUrl = buildDirectoryOperatorCanonicalUrl(op, slug);
+  const jsonLd = buildDirectoryOperatorJsonLd(op, canonicalUrl);
 
   const similar = await getSimilar(op.admin1_code || '', op.id);
 
   return (
-    <main style={{ minHeight: '100vh', background: T.bg, color: T.text, fontFamily: "'Inter', system-ui" }}>
+    <DirectoryBackgroundShell style={{ color: T.text, fontFamily: "'Inter', system-ui" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" style={{ maxWidth: 1100, margin: '0 auto', padding: '20px 20px 0', fontSize: 11, color: T.muted, display: 'flex', gap: 6, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
         <Link href="/" style={{ color: T.muted, textDecoration: 'none' }}>Home</Link>
@@ -173,14 +198,12 @@ export default async function OperatorProfilePage({ params }: { params: Promise<
               background: `linear-gradient(135deg, ${gold}, ${T.goldLight})`,
               color: '#000', fontSize: 14, fontWeight: 900, textDecoration: 'none',
             }}>📨 Request Quote</Link>
-            {phone && (
-              <a href={`tel:${phone}`} style={{
-                display: 'inline-flex', alignItems: 'center', gap: 8,
-                padding: '14px 24px', borderRadius: 12,
-                background: T.greenDim, border: '1px solid rgba(34,197,94,0.25)',
-                color: T.green, fontSize: 14, fontWeight: 800, textDecoration: 'none',
-              }}>📞 Call Now</a>
-            )}
+            <Link href={`/load-board/post?intent=provider-contact&operator=${encodeURIComponent(slug)}`} style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              padding: '14px 24px', borderRadius: 12,
+              background: T.greenDim, border: '1px solid rgba(34,197,94,0.25)',
+              color: T.green, fontSize: 14, fontWeight: 800, textDecoration: 'none',
+            }}>Request Contact</Link>
             <Link href="/claim" style={{
               display: 'inline-flex', alignItems: 'center', gap: 8,
               padding: '14px 20px', borderRadius: 12,
@@ -258,7 +281,7 @@ export default async function OperatorProfilePage({ params }: { params: Promise<
             <h2 style={{ fontSize: 17, fontWeight: 800, margin: '0 0 14px' }}>Similar Operators in {op.admin1_code}</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 14 }}>
               {similar.map((s: any) => (
-                <Link key={s.id} href={`/directory/profile/${s.slug || s.id}`} style={{
+                <Link key={s.id} href={`/directory/dossier/${s.slug || s.id}`} style={{
                   display: 'block', padding: 18, borderRadius: 14, textDecoration: 'none',
                   background: T.bgCard, border: `1px solid ${T.border}`,
                 }}>
@@ -281,6 +304,6 @@ export default async function OperatorProfilePage({ params }: { params: Promise<
           { href: '/tools/escort-calculator', icon: '🧮', title: 'Escort Calculator', desc: 'How many pilot cars?' },
         ]}
       />
-    </main>
+    </DirectoryBackgroundShell>
   );
 }

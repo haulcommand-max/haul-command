@@ -4,14 +4,15 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import {
   Search, MapPin, ShieldCheck, Star, Filter, X,
-  ChevronDown, Users, ArrowRight, Clock, DollarSign,
+  ChevronDown, Users, Clock, DollarSign,
   Zap, CheckCircle, Award, Truck, Globe, Shield,
-  TrendingUp, Bot, Phone, Navigation, AlertTriangle,
+  TrendingUp, Bot, Phone, Navigation, AlertTriangle, Car, ClipboardList,
 } from 'lucide-react';
 import { getEscortTerm, getCountry, COUNTRIES } from '@/lib/countries';
 import { SponsoredBadge } from '@/components/directory/SponsoredBadge';
 import DirectorySponsorCard from '@/components/directory/DirectorySponsorCard';
 import TrustBadge from '@/components/trust/TrustBadge';
+import { HouseAdSlot } from '@/components/ads/HouseAdSlot';
 
 /* ═══════════════════════════════════════════════════════════════════
    PUBLIC DIRECTORY — Haul Command v2
@@ -105,37 +106,16 @@ function CorridorBadge({ heat }: { heat: CorridorHeat }) {
 // ═══════════════════════════════════════════════════════════════
 // ADGRID SLOT — Position 7 in the grid
 // ═══════════════════════════════════════════════════════════════
-function AdGridSlot() {
-  return (
-    <div className="ag-sponsored-glow ag-slide-up" style={{background: `linear-gradient(135deg, rgba(198,146,58,0.06), rgba(198,146,58,0.02))`,border: `1px solid ${T.goldBorder}`,borderRadius: 16,padding: '20px',display: 'flex',flexDirection: 'column',gap: 14,position: 'relative',overflow: 'hidden'}}>
-      {/* Gold top accent bar */}
-      <div style={{position: 'absolute',top: 0,left: 0,right: 0,height: 3,background: `linear-gradient(90deg, ${T.gold}, ${T.goldLight}, ${T.gold})`}} />
-      <div style={{position: 'absolute',top: 10,right: 12,fontSize: 8,fontWeight: 800,color: T.gold,textTransform: 'uppercase',letterSpacing: '0.12em',background: T.goldDim,padding: '2px 8px',borderRadius: 4}}>Sponsored</div>
-      <div style={{display: 'flex',gap: 12,alignItems: 'flex-start',paddingTop: 6 }}>
-        <div style={{width: 44,height: 44,borderRadius: 10,background: T.goldDim,border: `1px solid ${T.goldBorder}`,display: 'flex',alignItems: 'center',justifyContent: 'center',fontSize: 20,flexShrink: 0}}>🛡️</div>
-        <div style={{flex: 1,minWidth: 0 }}>
-          <div style={{fontSize: 14,fontWeight: 800,color: T.gold }}>
-            Fleet Insurance Solutions
-          </div>
-          <div style={{fontSize: 12,color: T.textSecondary,marginTop: 3 }}>
-            Specialized oversize load coverage starting at $89/mo
-          </div>
-        </div>
-      </div>
-      <div style={{fontSize: 11,color: T.muted,lineHeight: 1.6 }}>
-        Get instant quotes for pilot car liability, cargo coverage, and fleet policies. Trusted by operators nationwide.
-      </div>
-      <Link aria-label="Navigation Link" href="/sponsor" style={{display: 'inline-flex',alignItems: 'center',gap: 6,padding: '10px 18px',borderRadius: 10,background: `linear-gradient(135deg, ${T.gold}, ${T.goldLight})`,color: '#000',fontSize: 12,fontWeight: 800,textDecoration: 'none',width: 'fit-content',transition: 'transform 0.15s ease'}} className="ag-press">
-        Get Quote <ArrowRight size={12} />
-      </Link>
-    </div>
-  );
-}
-
 // ═══════════════════════════════════════════════════════════════
 // OPERATOR CARD — Full design with metrics row + badges
 // ═══════════════════════════════════════════════════════════════
 function OperatorCard({ op, position }: { op: Operator; position: number }) {
+  const operatorKey = op.slug || op.id;
+  const encodedOperator = encodeURIComponent(operatorKey);
+  const profileHref = `/directory/dossier/${encodedOperator}`;
+  const requestHref = `/loads/post?support=${encodedOperator}`;
+  const claimHref = `/claim?operator=${encodedOperator}`;
+
   return (
     <div className="ag-card-hover ag-slide-up" data-directory-result style={{background: op.sponsored
         ? `linear-gradient(135deg, rgba(198,146,58,0.05), rgba(198,146,58,0.02))`
@@ -146,7 +126,7 @@ function OperatorCard({ op, position }: { op: Operator; position: number }) {
 
       {/* Header: Avatar + Name + Location */}
       <div style={{display: 'flex',gap: 12,alignItems: 'flex-start' }}>
-        <div style={{width: 44,height: 44,borderRadius: 10,flexShrink: 0,background: T.bgElevated,border: `1px solid ${T.border}`,display: 'flex',alignItems: 'center',justifyContent: 'center',fontSize: 18}}>🚗</div>
+        <div style={{width: 44,height: 44,borderRadius: 10,flexShrink: 0,background: T.bgElevated,border: `1px solid ${T.border}`,display: 'flex',alignItems: 'center',justifyContent: 'center',color: T.muted}}><Car size={18} /></div>
         <div style={{flex: 1,minWidth: 0 }}>
           <div style={{display: 'flex',alignItems: 'center',gap: 5,flexWrap: 'wrap' }}>
             <span style={{fontSize: 14,fontWeight: 800,color: T.text }}>{op.name}</span>
@@ -194,7 +174,7 @@ function OperatorCard({ op, position }: { op: Operator; position: number }) {
         <div style={{display: 'flex',alignItems: 'center',gap: 10,flexWrap: 'wrap' }}>
           {op.avgRating != null && (
             <div style={{display: 'flex',alignItems: 'center',gap: 3 }}>
-              <span style={{fontSize: 13,color: '#fbbf24' }}>{'★'.repeat(Math.floor(op.avgRating))}{op.avgRating % 1 >= 0.5 ? '½' : ''}</span>
+              <Star size={13} fill="#fbbf24" style={{color: '#fbbf24' }} />
               <span style={{fontSize: 11,fontWeight: 800,color: T.text }}>{op.avgRating.toFixed(1)}</span>
             </div>
           )}
@@ -209,19 +189,19 @@ function OperatorCard({ op, position }: { op: Operator; position: number }) {
       <div style={{display: 'grid',gridTemplateColumns: 'repeat(3, 1fr)',gap: 8,padding: '10px 0',borderTop: `1px solid ${T.border}`,borderBottom: `1px solid ${T.border}`}}>
         <div style={{textAlign: 'center' }}>
           <div style={{fontSize: 15,fontWeight: 800,color: T.text,fontVariantNumeric: 'tabular-nums' }}>
-            {op.avgResponse != null ? `${op.avgResponse}m` : '—'}
+            {op.avgResponse != null ? `${op.avgResponse}m` : '-'}
           </div>
           <div style={{fontSize: 9,fontWeight: 600,color: T.muted,textTransform: 'uppercase',letterSpacing: '0.08em',marginTop: 2 }}>Response</div>
         </div>
         <div style={{textAlign: 'center',borderLeft: `1px solid ${T.border}`,borderRight: `1px solid ${T.border}` }}>
           <div style={{fontSize: 15,fontWeight: 800,color: T.gold,fontVariantNumeric: 'tabular-nums' }}>
-            {op.rate != null ? `$${op.rate}` : '—'}
+            {op.rate != null ? `$${op.rate}` : '-'}
           </div>
           <div style={{fontSize: 9,fontWeight: 600,color: T.muted,textTransform: 'uppercase',letterSpacing: '0.08em',marginTop: 2 }}>Per Hour</div>
         </div>
         <div style={{textAlign: 'center' }}>
           <div style={{fontSize: 15,fontWeight: 800,color: T.text,fontVariantNumeric: 'tabular-nums' }}>
-            {op.jobCount != null ? op.jobCount.toLocaleString() : '—'}
+            {op.jobCount != null ? op.jobCount.toLocaleString() : '-'}
           </div>
           <div style={{fontSize: 9,fontWeight: 600,color: T.muted,textTransform: 'uppercase',letterSpacing: '0.08em',marginTop: 2 }}>Jobs</div>
         </div>
@@ -237,13 +217,14 @@ function OperatorCard({ op, position }: { op: Operator; position: number }) {
       )}
 
       {/* Action Row */}
-      <div style={{display: 'flex',gap: 8 }}>
+      <div style={{display: 'flex',gap: 8,flexWrap: 'wrap' }}>
         {op.isSeed ? (
-          <Link aria-label="Navigation Link" href="/claim" style={{flex: 1,padding: '10px 14px',borderRadius: 10,textAlign: 'center',background: T.goldDim,border: `1px solid ${T.goldBorder}`,color: T.gold,fontSize: 12,fontWeight: 800,textDecoration: 'none'}} className="ag-press">Claim This Listing</Link>
+          <Link aria-label="Claim this listing" href={claimHref} style={{flex: '1 1 160px',padding: '10px 14px',borderRadius: 10,textAlign: 'center',background: T.goldDim,border: `1px solid ${T.goldBorder}`,color: T.gold,fontSize: 12,fontWeight: 800,textDecoration: 'none'}} className="ag-press">Claim This Listing</Link>
         ) : (
           <>
-            <Link aria-label="Navigation Link" href={`/directory/profile/${op.slug || op.id}`} style={{flex: 1,padding: '10px 14px',borderRadius: 10,textAlign: 'center',background: T.bgElevated,border: `1px solid ${T.borderMid}`,color: T.text,fontSize: 12,fontWeight: 700,textDecoration: 'none'}} className="ag-press">View Profile</Link>
-            <button aria-label="Interactive Button" style={{padding: '10px 16px',borderRadius: 10,background: `linear-gradient(135deg, ${T.gold}, ${T.goldLight})`,border: 'none',color: '#000',fontSize: 12,fontWeight: 800,cursor: 'pointer'}} className="ag-press">Request</button>
+            <Link aria-label="View profile" href={profileHref} style={{flex: '1 1 120px',padding: '10px 14px',borderRadius: 10,textAlign: 'center',background: T.bgElevated,border: `1px solid ${T.borderMid}`,color: T.text,fontSize: 12,fontWeight: 700,textDecoration: 'none'}} className="ag-press">View Profile</Link>
+            <Link aria-label="Request support" href={requestHref} style={{display: 'inline-flex',alignItems: 'center',justifyContent: 'center',gap: 6,flex: '1 1 120px',padding: '10px 14px',borderRadius: 10,background: `linear-gradient(135deg, ${T.gold}, ${T.goldLight})`,border: 'none',color: '#000',fontSize: 12,fontWeight: 800,textDecoration: 'none'}} className="ag-press"><ClipboardList size={13} /> Request</Link>
+            <Link aria-label="Claim or fix profile" href={claimHref} style={{flex: '1 1 100%',padding: '9px 12px',borderRadius: 10,textAlign: 'center',background: 'transparent',border: `1px solid ${T.borderMid}`,color: T.textSecondary,fontSize: 11,fontWeight: 700,textDecoration: 'none'}} className="ag-press">Claim / Fix Profile</Link>
           </>
         )}
       </div>
@@ -389,12 +370,12 @@ export function PublicDirectory() {
           <div style={{maxWidth: 1400,margin: '0 auto',padding: '0 20px',display: 'flex',flexWrap: 'wrap',gap: '10px 24px',justifyContent: 'center',alignItems: 'center' }}>
             <div style={{display: 'flex',alignItems: 'center',gap: 6,fontSize: 12,color: T.muted }}>
               <span style={{width: 7,height: 7,borderRadius: '50%',background: T.green,boxShadow: `0 0 6px ${T.green}`,animation: 'pulse-gold 2s infinite' }} />
-              <span style={{fontWeight: 700,color: T.text }}>{total > 0 ? total.toLocaleString() : '—'}</span> escort vehicles staged
+              <span style={{fontWeight: 700,color: T.text }}>{total > 0 ? total.toLocaleString() : '-'}</span> escort vehicles staged
             </div>
             <div style={{width: 1,height: 14,background: T.border }} />
             <div style={{display: 'flex',alignItems: 'center',gap: 5,fontSize: 12,color: T.muted }}>
               <Clock size={12} style={{color: T.gold }} />
-              Avg dispatch <span style={{fontWeight: 700,color: T.gold,margin: '0 2px' }}>—</span>
+              Avg dispatch <span style={{fontWeight: 700,color: T.gold,margin: '0 2px' }}>-</span>
             </div>
             <div style={{width: 1,height: 14,background: T.border }} />
             <div style={{display: 'flex',alignItems: 'center',gap: 5,fontSize: 12,color: T.muted }}>
@@ -417,7 +398,7 @@ export function PublicDirectory() {
               Find a Pilot Car Near Your Route
             </h1>
             <p style={{fontSize: 13,color: T.textSecondary,margin: '0 0 24px' }}>
-              Search by city, state, corridor, or interstate — lead cars, chase cars, height poles, and route survey operators across the US
+              Search by city, state, corridor, or interstate - lead cars, chase cars, height poles, and route survey operators across the US
             </p>
 
             {/* Search + State + Filters */}
@@ -519,7 +500,18 @@ export function PublicDirectory() {
               ) : (
                 <div className="dir-grid ag-stagger">
                   {gridItems.map((item, i) => {
-                    if (item.type === 'ad') return <AdGridSlot key={`ad-${i}`} />;
+                    if (item.type === 'ad') {
+                      return (
+                        <HouseAdSlot
+                          key={`ad-${i}`}
+                          surface="directory.search.inline"
+                          placementId={`directory-grid-${i}`}
+                          intent="directory"
+                          variant="card"
+                          className="ag-sponsored-glow ag-slide-up"
+                        />
+                      );
+                    }
                     if (item.type === 'sponsor-upper') return (
                       <div key="sponsor-upper" style={{gridColumn: '1 / -1' }}>
                         <DirectorySponsorCard position="upper" stateCode={filters.state || undefined} />
@@ -538,13 +530,13 @@ export function PublicDirectory() {
               {/* Empty state when no operators */}
               {!loading && filteredOps.length === 0 && (
                 <div style={{textAlign: 'center',padding: '60px 20px',background: T.bgCard,border: `1px solid ${T.border}`,borderRadius: 20}}>
-                  <div style={{fontSize: 48,marginBottom: 16}}>🚗</div>
+                  <div style={{display: 'inline-flex',alignItems: 'center',justifyContent: 'center',width: 56,height: 56,borderRadius: 16,marginBottom: 16,background: T.bgElevated,border: `1px solid ${T.border}`}}><Car size={26} color={T.muted} /></div>
                   <div style={{fontSize: 22,fontWeight: 900,color: T.text,marginBottom: 8}}>No Operators Listed Yet</div>
                   <div style={{fontSize: 14,color: T.textSecondary,maxWidth: 420,margin: '0 auto 24px',lineHeight: 1.6}}>
                     Be the first pilot car operator in this area to claim your free listing and start receiving job requests.
                   </div>
                   <Link aria-label="Claim Your Listing" href="/claim" style={{display: 'inline-flex',alignItems: 'center',gap: 8,padding: '14px 28px',borderRadius: 12,background: `linear-gradient(135deg, ${T.gold}, ${T.goldLight})`,color: '#000',fontSize: 14,fontWeight: 900,textDecoration: 'none'}}>
-                    🚛 Get Listed Free
+                    Get Listed Free
                   </Link>
                 </div>
               )}

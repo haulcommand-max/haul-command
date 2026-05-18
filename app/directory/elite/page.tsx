@@ -1,11 +1,12 @@
 import React from 'react';
+import { DirectoryBackgroundShell } from '@/components/directory/DirectoryBackgroundShell';
 
 // Extracted from Supabase Plan: 20260220_directory_elite_and_store.sql
 // Renders the paid/premium directory storefront for Elite tier operators.
 
 export default function DirectoryEliteStore() {
   return (
-    <div className="bg-hc-gray-900  pt-20 pb-20">
+    <DirectoryBackgroundShell className="pt-20 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="mb-12 text-center">
           <h1 className="text-4xl font-extrabold text-white mb-4">
@@ -46,6 +47,6 @@ export default function DirectoryEliteStore() {
           {/* Repeated for other sponsors... */}
         </div>
       </div>
-    </div>
+    </DirectoryBackgroundShell>
   );
 }

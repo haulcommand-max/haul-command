@@ -9,15 +9,12 @@ import {
   Lock,
   ChevronRight,
   Users,
-  Phone,
-  Mail,
   CheckCircle2,
   Loader2,
   Filter,
   X,
 } from 'lucide-react';
 import { LiveKitDispatchButton } from '../dispatch/LiveKitDispatchButton';
-import { VAPIDispatchButton } from '../dispatch/VAPIDispatchButton';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 interface Operator {
@@ -34,9 +31,9 @@ interface Operator {
   rank_score: number;
   is_featured: boolean;
   profile_completeness: number;
+  contact_available?: boolean;
+  contact_locked?: boolean;
   metadata?: {
-    phone?: string;
-    email?: string;
     exact_address?: string;
     is_censored?: boolean;
   };
@@ -91,11 +88,11 @@ function LoginGateModal({ onClose }: { onClose: () => void }) {
           Login to View All 1.5M Operators
         </h2>
         <p style={{ margin: '0 0 24px', fontSize: 14, color: '#64748b', lineHeight: 1.6 }}>
-          Full phone numbers, emails, and addresses are hidden for anonymous visitors. Create a free account to unlock the complete Haul Command network.
+          Provider contact details stay private until a request or unlock is created. Use Haul Command to route the request, preserve consent, and keep a clean audit trail.
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 20 }}>
-          {['Direct phone + email for every operator', '1.5M+ verified pilots, carriers, brokers', 'Real-time availability + compliance scores', 'Post loads, get instant match alerts'].map(f => (
+          {['Consent-based contact requests', '1.5M+ pilots, carriers, brokers, and support providers', 'Real-time availability + compliance scores', 'Post loads, get instant match alerts'].map(f => (
             <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13, color: '#94a3b8' }}>
               <CheckCircle2 size={14} color="#34d399" />
               {f}
@@ -104,13 +101,13 @@ function LoginGateModal({ onClose }: { onClose: () => void }) {
         </div>
 
         <a
-          href="/auth/signup"
+          href="/auth/register"
           style={{ display: 'block', width: '100%', background: 'linear-gradient(135deg, #F59E0B, #D97706)', border: 'none', borderRadius: 14, padding: '15px 20px', color: '#000', fontSize: 15, fontWeight: 800, textAlign: 'center', textDecoration: 'none', boxSizing: 'border-box' }}
         >
-          Create Free Account →
+          Create Free Account
         </a>
         <a
-          href="/auth/login"
+          href="/login"
           style={{ display: 'block', textAlign: 'center', marginTop: 12, fontSize: 13, color: '#64748b', textDecoration: 'none' }}
         >
           Already have an account? <span style={{ color: '#94a3b8', fontWeight: 600 }}>Log in</span>
@@ -122,9 +119,11 @@ function LoginGateModal({ onClose }: { onClose: () => void }) {
 
 // ── Operator Card ─────────────────────────────────────────────────────────────
 function OperatorCard({ op, isAuthenticated, onUnlockClick }: { op: Operator; isAuthenticated: boolean; onUnlockClick: () => void }) {
-  const censored = op.metadata?.is_censored;
-  const phone = op.metadata?.phone;
-  const email = op.metadata?.email;
+  const operatorKey = op.slug || op.id;
+  const encodedOperator = encodeURIComponent(operatorKey);
+  const profileHref = `/directory/dossier/${encodedOperator}`;
+  const claimHref = `/claim?operator=${encodedOperator}`;
+  const contactHref = `/load-board/post?intent=provider-contact&operator=${encodedOperator}`;
 
   return (
     <div
@@ -162,7 +161,7 @@ function OperatorCard({ op, isAuthenticated, onUnlockClick }: { op: Operator; is
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4, color: '#64748b', fontSize: 12 }}>
             <MapPin size={11} />
-            {op.city}, {op.state} · {op.country_code}
+            {op.city}, {op.state} | {op.country_code}
           </div>
         </div>
       </div>
@@ -177,73 +176,52 @@ function OperatorCard({ op, isAuthenticated, onUnlockClick }: { op: Operator; is
       </div>
 
       {/* Contact info — censored or real */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-        {phone && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, position: 'relative' }}>
-            <Phone size={13} color="#64748b" />
-            {censored ? (
-              <div style={{ position: 'relative', flex: 1 }}>
-                <span style={{ filter: 'blur(5px)', color: '#94a3b8', userSelect: 'none', pointerEvents: 'none' }}>
-                  +1 (555) 000-0000
-                </span>
-                <button
-                  onClick={onUnlockClick}
-                  style={{ position: 'absolute', inset: 0, background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', borderRadius: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, fontSize: 10, fontWeight: 700, color: '#F59E0B' }}
-                >
-                  <Lock size={10} /> Login to view
-                </button>
-              </div>
-            ) : (
-              <a href={`tel:${phone}`} style={{ color: '#94a3b8', textDecoration: 'none' }}>{phone}</a>
-            )}
-          </div>
-        )}
-        {email && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, position: 'relative' }}>
-            <Mail size={13} color="#64748b" />
-            {censored ? (
-              <div style={{ position: 'relative', flex: 1 }}>
-                <span style={{ filter: 'blur(5px)', color: '#94a3b8', userSelect: 'none', pointerEvents: 'none' }}>
-                  operator@example.com
-                </span>
-                <button
-                  onClick={onUnlockClick}
-                  style={{ position: 'absolute', inset: 0, background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', borderRadius: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, fontSize: 10, fontWeight: 700, color: '#F59E0B' }}
-                >
-                  <Lock size={10} /> Login to view
-                </button>
-              </div>
-            ) : (
-              <a href={`mailto:${email}`} style={{ color: '#94a3b8', textDecoration: 'none' }}>{email}</a>
-            )}
-          </div>
-        )}
-      </div>
+      {op.contact_available && (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, marginTop: 12, padding: '10px 12px', background: 'rgba(245,158,11,0.07)', border: '1px solid rgba(245,158,11,0.18)', borderRadius: 12 }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 7, color: '#F59E0B', fontSize: 12, fontWeight: 700 }}>
+            <Lock size={12} /> Contact held by consent gate
+          </span>
+          {isAuthenticated ? (
+            <a href={contactHref} style={{ color: '#F59E0B', fontSize: 12, fontWeight: 800, textDecoration: 'none' }}>
+              Contact this provider
+            </a>
+          ) : (
+            <button onClick={onUnlockClick} style={{ background: 'none', border: 'none', color: '#F59E0B', fontSize: 12, fontWeight: 800, cursor: 'pointer', padding: 0 }}>
+              Contact this provider
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Footer */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 16, paddingTop: 14, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginTop: 16, paddingTop: 14, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: '#64748b' }}>
           <Star size={12} color="#F59E0B" />
           <span style={{ color: '#94a3b8', fontWeight: 600 }}>{op.rating.toFixed(1)}</span>
           {op.review_count > 0 && <span>({op.review_count})</span>}
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
           {isAuthenticated && (
             <>
               <LiveKitDispatchButton 
                 compact 
                 operatorId={op.id} 
                 operatorName={op.name} 
-                operatorPhone={phone} 
                 operatorLocation={op.country_code === 'US' ? op.state : op.country_code} 
               />
             </>
           )}
           <a
-            href={`/providers/${op.slug}`}
+            href={profileHref}
             style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: '#60a5fa', fontWeight: 600, textDecoration: 'none' }}
           >
             View Profile <ChevronRight size={12} />
+          </a>
+          <a
+            href={claimHref}
+            style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: '#F59E0B', fontWeight: 700, textDecoration: 'none' }}
+          >
+            Claim / Fix Profile <ChevronRight size={12} />
           </a>
         </div>
       </div>
@@ -285,7 +263,7 @@ export function DirectorySearchList({ initialQ = '', initialState = '', isAuthen
     search(q, stateFilter, 1);
   };
 
-  const hasCensored = results?.operators.some(o => o.metadata?.is_censored);
+  const hasContactGated = results?.operators.some(o => o.contact_available);
 
   return (
     <div style={{ fontFamily: "'Inter', system-ui, sans-serif", color: '#e2e8f0' }}>
@@ -323,8 +301,8 @@ export function DirectorySearchList({ initialQ = '', initialState = '', isAuthen
         </button>
       </form>
 
-      {/* Censored banner */}
-      {hasCensored && !isAuthenticated && (
+      {/* Consent-gated contact banner */}
+      {hasContactGated && !isAuthenticated && (
         <div
           style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', borderRadius: 14, padding: '14px 18px', marginBottom: 22, flexWrap: 'wrap', gap: 12 }}
         >
@@ -332,10 +310,10 @@ export function DirectorySearchList({ initialQ = '', initialState = '', isAuthen
             <Lock size={16} color="#F59E0B" />
             <div>
               <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: '#F59E0B' }}>
-                Phone & email hidden for your protection
+                Contact details are consent-gated
               </p>
               <p style={{ margin: '2px 0 0', fontSize: 12, color: '#78716c' }}>
-                Login to unlock direct contact details for all 1.5M+ operators
+                Route requests through Haul Command so providers choose what to share and every unlock leaves an audit trail.
               </p>
             </div>
           </div>
@@ -343,7 +321,7 @@ export function DirectorySearchList({ initialQ = '', initialState = '', isAuthen
             onClick={() => setShowLoginModal(true)}
             style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)', border: 'none', borderRadius: 10, padding: '9px 18px', color: '#000', fontSize: 13, fontWeight: 800, cursor: 'pointer', whiteSpace: 'nowrap' }}
           >
-            Login to View All 1.5M Operators →
+            Start Contact Request
           </button>
         </div>
       )}
@@ -355,7 +333,7 @@ export function DirectorySearchList({ initialQ = '', initialState = '', isAuthen
             <Users size={13} />
             <span><span style={{ color: '#f1f5f9', fontWeight: 700 }}>{results.total.toLocaleString()}</span> operators found</span>
           </div>
-          <span>·</span>
+          <span>|</span>
           <span>Page {results.page} of {results.total_pages}</span>
           {loading && <Loader2 size={13} style={{ animation: 'spin 1s linear infinite' }} />}
         </div>
@@ -367,7 +345,7 @@ export function DirectorySearchList({ initialQ = '', initialState = '', isAuthen
           <Loader2 size={32} color="#3b82f6" style={{ animation: 'spin 1s linear infinite' }} />
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(280px, 100%), 1fr))', gap: 16 }}>
           {results?.operators.map(op => (
             <OperatorCard
               key={op.id}
@@ -392,7 +370,7 @@ export function DirectorySearchList({ initialQ = '', initialState = '', isAuthen
             onClick={() => setPage(p => Math.max(1, p - 1))}
             style={{ padding: '9px 18px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, color: page <= 1 ? '#334155' : '#94a3b8', cursor: page <= 1 ? 'not-allowed' : 'pointer', fontSize: 13, fontWeight: 600 }}
           >
-            ← Prev
+            Prev
           </button>
           <span style={{ display: 'flex', alignItems: 'center', padding: '0 16px', fontSize: 13, color: '#64748b' }}>
             {page} / {results.total_pages}
@@ -402,7 +380,7 @@ export function DirectorySearchList({ initialQ = '', initialState = '', isAuthen
             onClick={() => setPage(p => p + 1)}
             style={{ padding: '9px 18px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, color: !results.has_more ? '#334155' : '#94a3b8', cursor: !results.has_more ? 'not-allowed' : 'pointer', fontSize: 13, fontWeight: 600 }}
           >
-            Next →
+            Next
           </button>
         </div>
       )}
