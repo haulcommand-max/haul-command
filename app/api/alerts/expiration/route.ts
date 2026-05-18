@@ -6,26 +6,22 @@ import { NextResponse } from 'next/server';
 // and drops trust score mathematically.
 
 export async function POST(request: Request) {
-  // Add authentication token check here so only cron runner can execute it
   const authHeader = request.headers.get('authorization');
-  if (authHeader !== 'Bearer CRON_SECRET_OVERRIDE') {
-      // return NextResponse.json({ error: 'Unauthorized cron trigger.' }, { status: 401 });
+  const allowedTokens = [process.env.CRON_SECRET, process.env.INTERNAL_API_KEY]
+    .filter(Boolean)
+    .map((token) => `Bearer ${token}`);
+
+  if (!authHeader || !allowedTokens.includes(authHeader)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // Simulated Database Operation
-  // UPDATE hc_credential_wallets SET verification_status = 'expired' 
-  // WHERE expiration_date < NOW() AND verification_status = 'verified';
-  
-  // This would inherently pop the `update_trust_on_expiration` DB Trigger from Part 3 schemas
-
-  return NextResponse.json({
-    status: 'success',
-    action: 'wallet_expiration_sweep',
-    metrics: {
-      wallets_scanned: 15420,
-      expired_count: 42,
-      trust_scores_downgraded: 42,
-      alert_emails_queued: 42
-    }
-  });
+  return NextResponse.json(
+    {
+      error: 'credential_expiration_sweep_not_available',
+      status: 'requires_live_wallet_sweep',
+      message:
+        'Credential expiration trust updates are held until the route writes real wallet rows and audit events instead of simulated metrics.',
+    },
+    { status: 501 },
+  );
 }

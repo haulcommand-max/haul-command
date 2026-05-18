@@ -13,22 +13,15 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
     try {
-        // Validate service key auth (this is a server-to-server call)
         const authHeader = req.headers.get('authorization');
-        const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+        const apiKey = req.headers.get('x-api-key');
+        const allowedBearerTokens = [process.env.CRON_SECRET, process.env.INTERNAL_API_KEY]
+            .filter(Boolean)
+            .map((token) => `Bearer ${token}`);
+        const apiKeyAllowed = Boolean(process.env.INTERNAL_API_KEY && apiKey === process.env.INTERNAL_API_KEY);
 
-        if (!serviceKey) {
-            return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 });
-        }
-
-        // Accept either service-role bearer or internal API key
-        const expectedKey = `Bearer ${serviceKey}`;
-        if (authHeader !== expectedKey) {
-            // Also check for internal API key
-            const apiKey = req.headers.get('x-api-key');
-            if (apiKey !== process.env.INTERNAL_API_KEY && authHeader !== expectedKey) {
-                return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-            }
+        if ((!authHeader || !allowedBearerTokens.includes(authHeader)) && !apiKeyAllowed) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
         const body = await req.json();
@@ -62,6 +55,6 @@ export async function POST(req: NextRequest) {
         });
     } catch (err) {
         console.error('[Smart Alerts] Evaluate error:', err);
-        return NextResponse.json({ error: 'Alert evaluation failed', detail: String(err) }, { status: 500 });
+        return NextResponse.json({ error: 'Alert evaluation failed' }, { status: 500 });
     }
 }
