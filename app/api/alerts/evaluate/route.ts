@@ -6,21 +6,14 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { SmartAlertsEngine } from '@/core/intelligence/smart_alerts_engine';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
     try {
-        const authHeader = req.headers.get('authorization');
-        const apiKey = req.headers.get('x-api-key');
-        const allowedBearerTokens = [process.env.CRON_SECRET, process.env.INTERNAL_API_KEY]
-            .filter(Boolean)
-            .map((token) => `Bearer ${token}`);
-        const apiKeyAllowed = Boolean(process.env.INTERNAL_API_KEY && apiKey === process.env.INTERNAL_API_KEY);
-
-        if ((!authHeader || !allowedBearerTokens.includes(authHeader)) && !apiKeyAllowed) {
+        if (!isInternalRequest(req.headers)) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 

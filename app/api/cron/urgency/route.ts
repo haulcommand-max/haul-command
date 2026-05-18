@@ -2,20 +2,19 @@
  * POST /api/cron/urgency — Run urgency engine batch jobs
  * Handles: reactivation sequence, profile attention push, idle reactor
  * Schedule: every 6 hours
- * Auth: service key only.
+ * Auth: CRON_SECRET or INTERNAL_API_KEY.
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { UrgencyEngine } from '@/core/social/urgency_engine';
 import { IdleOperatorReactor } from '@/core/social/idle_operator_reactor';
 import { runReactivationWithIntelligence } from '@/lib/platform/reactivation-bridge';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
-    const auth = req.headers.get('authorization');
-    if (auth !== `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}` &&
-        auth !== `Bearer ${process.env.INTERNAL_API_KEY}`) {
+    if (!isInternalRequest(req.headers)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

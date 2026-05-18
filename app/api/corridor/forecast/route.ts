@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { FloridaLocalAmplifier, FLORIDA_RECTANGLE } from '@/core/social/florida_local_amplifier';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,9 +27,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-    const auth = req.headers.get('authorization');
-    if (auth !== `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}` &&
-        auth !== `Bearer ${process.env.INTERNAL_API_KEY}`) {
+    if (!isInternalRequest(req.headers)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

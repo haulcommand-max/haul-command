@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 // Haul Command Trust Preservation Cron
 // Task 35: Endpoint triggered by pg_cron or Vercel crons.
@@ -6,12 +7,7 @@ import { NextResponse } from 'next/server';
 // and drops trust score mathematically.
 
 export async function POST(request: Request) {
-  const authHeader = request.headers.get('authorization');
-  const allowedTokens = [process.env.CRON_SECRET, process.env.INTERNAL_API_KEY]
-    .filter(Boolean)
-    .map((token) => `Bearer ${token}`);
-
-  if (!authHeader || !allowedTokens.includes(authHeader)) {
+  if (!isInternalRequest(request.headers)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

@@ -1,20 +1,19 @@
 /**
  * POST /api/watchlist/trigger — Evaluate a watchlist trigger
  * Called internally when corridor spikes, loads posted, etc.
- * Auth: service key only.
+ * Auth: CRON_SECRET or INTERNAL_API_KEY.
  *
  * Body: { trigger_type, target_type, target_id, event_data }
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { WatchlistEngine } from '@/core/social/watchlist_engine';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
-    const auth = req.headers.get('authorization');
-    if (auth !== `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}` &&
-        auth !== `Bearer ${process.env.INTERNAL_API_KEY}`) {
+    if (!isInternalRequest(req.headers)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
