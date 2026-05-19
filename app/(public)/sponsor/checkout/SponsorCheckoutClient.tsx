@@ -101,8 +101,7 @@ export default function SponsorCheckoutClient() {
             if (session?.checkout_url) {
                 window.location.href = session.checkout_url;
             } else {
-                // Fallback: go to success page (for demo without Stripe keys)
-                window.location.href = `/sponsor/success?order_id=${order.id}`;
+                setError('Checkout is pending payment configuration. Your sponsorship is not active yet; the reservation remains pending review.');
             }
         } catch (e: any) {
             setError(e.message || 'Something went wrong. Please try again.');
@@ -121,10 +120,10 @@ export default function SponsorCheckoutClient() {
                         <span className="text-xs font-bold uppercase tracking-widest text-amber-500">Sponsor a Market</span>
                     </div>
                     <h1 className="text-4xl md:text-5xl font-black tracking-tight">
-                        Own Your Territory
+                        Request Sponsored Placement
                     </h1>
                     <p className="text-slate-400 mt-4 max-w-lg mx-auto">
-                        Get contracted placement on Haul Command's highest-traffic pages. Brokers and carriers see approved placements.
+                        Request reviewed sponsor placement on eligible Haul Command surfaces. Inventory, creative, payment, and placement must be approved before anything goes live.
                     </p>
                 </div>
 
@@ -196,7 +195,7 @@ export default function SponsorCheckoutClient() {
                         {submitting ? (
                             <><Loader2 className="w-5 h-5 animate-spin" /> Processing...</>
                         ) : (
-                            <>Claim This Territory <ArrowRight className="w-5 h-5" /></>
+                            <>Request Placement <ArrowRight className="w-5 h-5" /></>
                         )}
                     </button>
                     <p className="text-xs text-slate-500 mt-3">Secure checkout via Stripe. Cancel anytime.</p>

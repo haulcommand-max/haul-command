@@ -13,11 +13,11 @@ export default function SponsorSuccessPage() {
                 </div>
 
                 <h1 className="text-4xl font-black tracking-tight mb-4">
-                    Territory Claimed! ðŸŽ‰
+                    Sponsorship Request Received
                 </h1>
 
                 <p className="text-slate-400 text-lg mb-8">
-                    Your sponsorship is now active. Your brand will appear on your sponsored city and corridor pages within minutes.
+                    Your request is pending payment, inventory, creative, and placement review. Nothing is live until the sponsorship is approved.
                 </p>
 
                 <div className="bg-[#0a0a0f] border border-white/10 rounded-2xl p-6 mb-8 text-left">
@@ -27,15 +27,15 @@ export default function SponsorSuccessPage() {
                     <ul className="space-y-3 text-sm text-slate-300">
                         <li className="flex items-start gap-2">
                             <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                            Your logo and CTA are now live on your sponsored pages
+                            We will confirm payment and available inventory
                         </li>
                         <li className="flex items-start gap-2">
                             <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                            You&apos;ll receive lead analytics in your dashboard
+                            Approved placements can receive dashboard analytics
                         </li>
                         <li className="flex items-start gap-2">
                             <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                            Priority placement is active for your territory
+                            Placement starts only after creative and surface review
                         </li>
                     </ul>
                 </div>

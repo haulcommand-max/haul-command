@@ -191,7 +191,7 @@ function PriceCard({ title, subtitle, monthly, annual, tier, features, cta, ctaH
                         width: '100%',
                     }}
                 >
-                    {loading ? 'Redirecting to checkout...' : (cta || 'Claim This Territory')}
+                    {loading ? 'Redirecting to checkout...' : (cta || 'Request Placement')}
                 </button>
             ) : (
                 <Link
@@ -203,7 +203,7 @@ function PriceCard({ title, subtitle, monthly, annual, tier, features, cta, ctaH
                         letterSpacing: '0.02em',
                     }}
                 >
-                    {cta || 'Claim This Territory'}
+                    {cta || 'Request Placement'}
                 </Link>
             )}
         </div>
@@ -233,7 +233,7 @@ export default function AdvertisePage() {
                 "@type": "WebPage",
                 "name": "Advertise on Haul Command — Sponsor Territory, Corridor, or Port",
                 "url": "https://haulcommand.com/advertise",
-                "description": "Sponsor a territory, corridor, or port on the #1 heavy haul logistics platform. Tiered pricing from $149/mo. 50 US states, 12 corridors, 10 ports, priority markets.",
+                "description": "Request labeled sponsor placement on eligible Haul Command territory, corridor, port, and country surfaces. Tiered pricing from $149/mo with review before activation.",
             }) }} />
 
             {/* Hero */}
@@ -255,18 +255,18 @@ export default function AdvertisePage() {
                         fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 900, lineHeight: 1.08,
                         letterSpacing: '-0.03em', marginBottom: 16, maxWidth: 700,
                     }}>
-                        Own the{' '}
+                        Request the{' '}
                         <span style={{
                             background: 'linear-gradient(135deg, #D4A843, #E4B872)',
                             WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
                         }}>
-                            #1 Position
+                            Right Sponsor Surface
                         </span>{' '}
                         in Heavy Haul
                     </h1>
                     <p style={{ fontSize: 16, color: T.dim, lineHeight: 1.6, maxWidth: 560, marginBottom: 32 }}>
-                        Sponsor a territory, corridor, or port. Your brand appears at the top of every relevant
-                        directory page, search result, and intelligence report. Limited to 2 sponsors per zone.
+                        Sponsor a territory, corridor, or port on eligible Haul Command surfaces. Placement is labeled,
+                        reviewed, and subject to inventory, creative approval, and surface rules.
                     </p>
 
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, fontSize: 13 }}>
@@ -324,29 +324,29 @@ export default function AdvertisePage() {
                     <div style={{ marginBottom: 40, padding: 32, borderRadius: 16, background: 'linear-gradient(145deg, #1D170A, #111118)', border: `1px solid ${T.goldBorder}` }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
                             <div>
-                                <h2 style={{ fontSize: 24, fontWeight: 900, color: T.gold, margin: '0 0 8px 0' }}>🔥 Dominance Packages</h2>
-                                <p style={{ fontSize: 13, color: T.dim, margin: 0 }}>Bundle inventory to guarantee the highest ROAS and local dominance.</p>
+                                <h2 style={{ fontSize: 24, fontWeight: 900, color: T.gold, margin: '0 0 8px 0' }}>Sponsor Bundles</h2>
+                                <p style={{ fontSize: 13, color: T.dim, margin: 0 }}>Bundle eligible inventory for reviewed market coverage and clearer reporting.</p>
                             </div>
                         </div>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 16 }}>
                             <div style={{ background: 'rgba(255,255,255,0.03)', padding: 24, borderRadius: 12, border: '1px solid rgba(255,255,255,0.1)' }}>
-                                <h3 style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginBottom: 4 }}>State Dominator</h3>
-                                <p style={{ fontSize: 11, color: T.muted, marginBottom: 16 }}>Top of state directory, 3 major corridors, and alert inclusion.</p>
+                                <h3 style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginBottom: 4 }}>State Sponsor Pack</h3>
+                                <p style={{ fontSize: 11, color: T.muted, marginBottom: 16 }}>Eligible state directory, corridor, and alert surfaces after review.</p>
                                 <div style={{ fontSize: 24, fontWeight: 900, color: T.gold, marginBottom: 16 }}>$899<span style={{fontSize: 12, color: T.muted, fontWeight: 400}}>/mo</span></div>
-                                <button style={{ width: '100%', padding: '10px 0', borderRadius: 8, background: '#fff', color: '#000', fontWeight: 800, border: 'none', cursor: 'pointer' }}>Claim Package</button>
+                                <button style={{ width: '100%', padding: '10px 0', borderRadius: 8, background: '#fff', color: '#000', fontWeight: 800, border: 'none', cursor: 'pointer' }}>Request Package</button>
                             </div>
                             <div style={{ background: 'rgba(212,168,67,0.1)', padding: 24, borderRadius: 12, border: `1px solid ${T.goldBorder}`, position: 'relative', overflow: 'hidden' }}>
                                 <div style={{ position: 'absolute', top: 12, right: -24, background: T.gold, color: '#000', fontSize: 9, fontWeight: 900, padding: '4px 24px', transform: 'rotate(45deg)' }}>POPULAR</div>
                                 <h3 style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginBottom: 4 }}>Corridor + Port Combo</h3>
-                                <p style={{ fontSize: 11, color: T.muted, marginBottom: 16 }}>Own the route from the port to the major industrial zone.</p>
+                                <p style={{ fontSize: 11, color: T.muted, marginBottom: 16 }}>Request reviewed route, port, and industrial-zone sponsor surfaces.</p>
                                 <div style={{ fontSize: 24, fontWeight: 900, color: T.gold, marginBottom: 16 }}>$1,299<span style={{fontSize: 12, color: T.muted, fontWeight: 400}}>/mo</span></div>
-                                <button style={{ width: '100%', padding: '10px 0', borderRadius: 8, background: T.gold, color: '#000', fontWeight: 800, border: 'none', cursor: 'pointer' }}>Claim Package</button>
+                                <button style={{ width: '100%', padding: '10px 0', borderRadius: 8, background: T.gold, color: '#000', fontWeight: 800, border: 'none', cursor: 'pointer' }}>Request Package</button>
                             </div>
                             <div style={{ background: 'rgba(255,255,255,0.03)', padding: 24, borderRadius: 12, border: '1px solid rgba(255,255,255,0.1)' }}>
                                 <h3 style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginBottom: 4 }}>Multi-State Launch</h3>
-                                <p style={{ fontSize: 11, color: T.muted, marginBottom: 16 }}>Dominate 3 adjacent states (+ all their corridors) instantly.</p>
+                                <p style={{ fontSize: 11, color: T.muted, marginBottom: 16 }}>Review eligible surfaces across 3 adjacent states and their corridors.</p>
                                 <div style={{ fontSize: 24, fontWeight: 900, color: T.gold, marginBottom: 16 }}>$1,999<span style={{fontSize: 12, color: T.muted, fontWeight: 400}}>/mo</span></div>
-                                <button style={{ width: '100%', padding: '10px 0', borderRadius: 8, background: '#fff', color: '#000', fontWeight: 800, border: 'none', cursor: 'pointer' }}>Claim Package</button>
+                                <button style={{ width: '100%', padding: '10px 0', borderRadius: 8, background: '#fff', color: '#000', fontWeight: 800, border: 'none', cursor: 'pointer' }}>Request Package</button>
                             </div>
                         </div>
                     </div>
@@ -380,13 +380,13 @@ export default function AdvertisePage() {
                                     zone="territory"
                                     geo={s.code}
                                     features={[
-                                        `Top placement in ${s.name} directory searches`,
-                                        'Sponsor badge on all state pages',
-                                        'Featured in email alerts for this territory',
-                                        'Priority support + analytics dashboard',
-                                        s.tier === 'mega' ? 'Limited: max 2 sponsors per state' : 'Limited slots available',
+                                        `Labeled placement in eligible ${s.name} directory searches`,
+                                        'Sponsor badge on approved state pages',
+                                        'Eligible alert surfaces after review',
+                                        'Support + analytics dashboard',
+                                        s.tier === 'mega' ? 'Inventory reviewed before approval' : 'Availability confirmed before checkout',
                                     ]}
-                                    cta={`Own ${s.code} — $${s.priceMonthly}/mo`}
+                                    cta={`Request ${s.code} - $${s.priceMonthly}/mo`}
                                 />
                             ))}
                         </div>
@@ -408,10 +408,10 @@ export default function AdvertisePage() {
                                 features={[
                                     `Sponsor badge on ${c.slug.toUpperCase()} corridor pages`,
                                     'Featured in corridor intelligence reports',
-                                    'Priority listing for all operators in this corridor',
+                                    'Labeled placement on eligible corridor surfaces',
                                     'Corridor activity alerts + analytics',
                                 ]}
-                                cta={`Own ${c.slug.toUpperCase()} — $${c.priceMonthly}/mo`}
+                                cta={`Request ${c.slug.toUpperCase()} - $${c.priceMonthly}/mo`}
                             />
                         ))}
                     </div>
@@ -430,12 +430,12 @@ export default function AdvertisePage() {
                                 zone="port"
                                 geo={p.slug}
                                 features={[
-                                    'Premium placement on port-adjacent pages',
+                                    'Reviewed placement on port-adjacent pages',
                                     'Featured in port logistics intelligence',
-                                    `Max ${p.maxSlots} sponsor slot${p.maxSlots > 1 ? 's' : ''} — exclusivity`,
+                                    `Inventory cap: ${p.maxSlots} sponsor slot${p.maxSlots > 1 ? 's' : ''}`,
                                     'Port activity alerts + demand data',
                                 ]}
-                                cta={`Claim Port — $${p.priceMonthly}/mo`}
+                                cta={`Request Port - $${p.priceMonthly}/mo`}
                             />
                         ))}
                     </div>
@@ -445,7 +445,7 @@ export default function AdvertisePage() {
                 {tab === 'country' && (
                     <div>
                         <p style={{ fontSize: 13, color: T.dim, marginBottom: 24, lineHeight: 1.6 }}>
-                            Sponsor a country to dominate heavy haul search results across that market.
+                            Sponsor a country to build reviewed heavy-haul visibility across that market.
                             Pricing is PPP-adjusted. Contact us for multi-country packages.
                         </p>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
@@ -477,12 +477,12 @@ export default function AdvertisePage() {
                                         zone="country"
                                         geo={c.code}
                                         features={[
-                                            `Top placement in ${c.name} directory`,
-                                            'Country-wide sponsor badge',
+                                            `Reviewed placement in ${c.name} directory`,
+                                            'Country sponsor badge after approval',
                                             `Max ${pricing.maxSlots} sponsor slot${pricing.maxSlots > 1 ? 's' : ''}`,
                                             'Featured in country intelligence reports',
                                         ]}
-                                        cta={`Own ${c.code} — $${pricing.priceMonthly}/mo`}
+                                        cta={`Request ${c.code} - $${pricing.priceMonthly}/mo`}
                                     />
                                 );
                             })}
@@ -499,8 +499,8 @@ export default function AdvertisePage() {
                         <span style={{ color: T.gold }}>Win</span>
                     </h2>
                     <p style={{ fontSize: 14, color: T.dim, marginBottom: 40, maxWidth: 520, margin: '0 auto 40px' }}>
-                        Haul Command is the #1 platform heavy haul operators use to find work,
-                        check regulations, and calculate rates. Your brand becomes the default.
+                        Haul Command connects sponsor messages to heavy-haul directory, regulation, rate, and corridor surfaces
+                        where placement is approved and clearly labeled.
                     </p>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 24 }}>
                         {[
@@ -522,7 +522,7 @@ export default function AdvertisePage() {
             <section style={{ borderTop: `1px solid ${T.border}` }}>
                 <div style={{ maxWidth: 700, margin: '0 auto', padding: '64px 24px', textAlign: 'center' }}>
                     <h2 style={{ fontSize: 28, fontWeight: 900, marginBottom: 12 }}>
-                        Ready to claim your territory?
+                        Ready to request placement?
                     </h2>
                     <p style={{ fontSize: 14, color: T.dim, marginBottom: 32, lineHeight: 1.6 }}>
                         Contact our partnerships team or start your sponsorship today. Annual plans save 15%.

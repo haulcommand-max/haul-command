@@ -5,7 +5,7 @@ import { getTerritoryPrice, type USMarketTier, US_STATE_MARKET_TIER, US_MARKET_T
 
 export const metadata: Metadata = {
     title: 'Territory Sponsor Availability | Haul Command',
-    description: 'Check availability for territory sponsorships on Haul Command. Own a US state or country — your business appears first in all directory, near-me, and corridor searches.',
+    description: 'Check reviewed territory sponsorship availability on Haul Command. Placement is subject to inventory, creative review, and surface rules.',
     alternates: { canonical: 'https://www.haulcommand.com/advertise/territory' },
 };
 
@@ -57,7 +57,7 @@ const STATUS_CONFIG: Record<SlotStatus, { label: string; dotClass: string; badge
 // These use the pricing from lib/monetization/sponsor-pricing.ts
 const FALLBACK_US_TERRITORIES: SponsorInventoryRow[] = [
     // MEGA ($499/mo)
-    { id: '1', sponsor_type: 'territory', geo_key: 'TX', geo_label: 'Texas',            geo_type: 'state', max_slots: 1, filled_slots: 0, price_monthly_cents: 49900, discovery_url: '/directory?state=TX', description: 'The #1 heavy haul market in America.', active: true },
+    { id: '1', sponsor_type: 'territory', geo_key: 'TX', geo_label: 'Texas',            geo_type: 'state', max_slots: 1, filled_slots: 0, price_monthly_cents: 49900, discovery_url: '/directory?state=TX', description: 'Large heavy haul and energy market.', active: true },
     { id: '2', sponsor_type: 'territory', geo_key: 'CA', geo_label: 'California',        geo_type: 'state', max_slots: 1, filled_slots: 0, price_monthly_cents: 49900, discovery_url: '/directory?state=CA', description: 'Largest US economy. Major port activity.', active: true },
     { id: '3', sponsor_type: 'territory', geo_key: 'FL', geo_label: 'Florida',           geo_type: 'state', max_slots: 1, filled_slots: 0, price_monthly_cents: 49900, discovery_url: '/directory?state=FL', description: 'High wind energy and industrial project traffic.', active: true },
     // MAJOR ($399/mo)
@@ -126,8 +126,8 @@ export default async function TerritoryAvailabilityPage() {
                         </span>
                     </h1>
                     <p className="text-lg text-gray-300 max-w-xl mx-auto mb-6 leading-relaxed">
-                        Own an entire state or country. Your business appears first across every directory page,
-                        near-me search, and corridor result in your territory. One sponsor per territory.
+                        Request reviewed sponsor placement across eligible state or country surfaces. Availability,
+                        creative, and placement rules are confirmed before a sponsorship goes live.
                     </p>
 
                     {/* Availability summary pills */}
@@ -156,10 +156,10 @@ export default async function TerritoryAvailabilityPage() {
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                         {[
-                            { icon: 'ðŸ†', title: 'Contracted placement', sub: 'One sponsor per territory' },
-                            { icon: 'ðŸ“', title: 'All near-me pages', sub: 'Every city in your state' },
-                            { icon: 'ðŸ”', title: 'Search priority', sub: 'First in all results' },
-                            { icon: 'ðŸ“Š', title: 'Monthly report', sub: 'Impressions, clicks, leads' },
+                            { icon: 'ðŸ†', title: 'Reviewed placement', sub: 'Eligible sponsor surfaces' },
+                            { icon: 'ðŸ“', title: 'Market coverage', sub: 'Approved pages in scope' },
+                            { icon: 'ðŸ”', title: 'Labeled visibility', sub: 'Subject to ranking rules' },
+                            { icon: 'ðŸ“Š', title: 'Monthly report', sub: 'Tracked metrics where available' },
                         ].map(({ icon, title, sub }) => (
                             <div key={title}>
                                 <div className="text-2xl mb-2">{icon}</div>
@@ -343,23 +343,23 @@ export default async function TerritoryAvailabilityPage() {
 
             {/* â”€â”€ Why territory sponsors win â”€â”€ */}
             <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-                <h2 className="text-xl font-bold text-white mb-8 text-center">Why Territory Sponsors Win</h2>
+                <h2 className="text-xl font-bold text-white mb-8 text-center">Why Territory Sponsors Convert</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {[
                         {
                             icon: 'ðŸŽ¯',
-                            title: 'Zero competition on your pages',
-                            body: 'You\'re the only sponsor shown in your territory. Every broker searching for an escort in your state sees your business first — always.',
+                            title: 'Labeled sponsor context',
+                            body: 'Approved sponsors can appear on eligible territory surfaces with clear labeling and review controls.',
                         },
                         {
                             icon: 'ðŸ“ˆ',
                             title: 'Compounds over time',
-                            body: 'Territory sponsorships appear on every new near-me page we publish for your state. As we add cities, your impressions grow automatically.',
+                            body: 'As new eligible surfaces are published, sponsorship coverage can be reviewed and expanded according to inventory rules.',
                         },
                         {
                             icon: 'ðŸ”’',
-                            title: 'Lock out competitors',
-                            body: 'While your slot is active, no competing escort service can hold a territory sponsor position in your state. Renewal keeps you protected.',
+                            title: 'Market plan before spend',
+                            body: 'Use sponsor inventory to plan where your brand should be visible before committing to broader market coverage.',
                         },
                     ].map(({ icon, title, body }) => (
                         <div key={title} className="space-y-2">
@@ -373,7 +373,7 @@ export default async function TerritoryAvailabilityPage() {
 
             {/* â”€â”€ Bottom CTA â”€â”€ */}
             <section className="border-t border-white/5 text-center py-14 px-4">
-                <h2 className="text-2xl font-bold text-white mb-3">Ready to own your market?</h2>
+                <h2 className="text-2xl font-bold text-white mb-3">Ready to request market placement?</h2>
                 <p className="text-gray-400 mb-6 text-sm max-w-md mx-auto">Select any available territory above, or contact us to reserve a territory not yet listed.</p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <Link href="/advertise/corridor"
