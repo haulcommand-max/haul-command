@@ -28,6 +28,7 @@ import {
     normalizeDirectoryFallbackRow,
 } from '@/lib/directory/fallback-normalization';
 import { absoluteUrl, SITE_URL } from '@/lib/site-url';
+import { getGlobalHreflangTags } from '@/lib/seo/hreflang';
 
 export const dynamic = 'force-dynamic';
 
@@ -227,6 +228,7 @@ export async function generateMetadata(): Promise<Metadata> {
         description: "Search Haul Command's heavy haul support graph to find pilot car operators, escort vehicles, permit support, route survey help, infrastructure, and oversize load support records by location, service type, and profile status.",
         alternates: {
             canonical: absoluteUrl('/directory'),
+            languages: getGlobalHreflangTags('/directory'),
         },
         openGraph: {
             title: "Heavy Haul Support Graph | Haul Command",

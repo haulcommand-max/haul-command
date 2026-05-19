@@ -8,6 +8,7 @@ import { SchemaGenerator } from '@/components/seo/SchemaGenerator';
 import { DirectoryBackgroundShell } from '@/components/directory/DirectoryBackgroundShell';
 import { SITE_URL } from '@/lib/site-url';
 import { buildQAPageJsonLd } from '@/lib/seo/jsonld';
+import { getGlobalHreflangTags } from '@/lib/seo/hreflang';
 
 // ═══════════════════════════════════════════════════════════════
 // CATEGORY DIRECTORY PAGE — /directory/category/[slug]
@@ -183,7 +184,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!category) {
     return {
       title: `${slug.replace(/-/g, ' ')} Directory | Haul Command`,
-      alternates: { canonical: `${SITE_URL}/directory/category/${slug}` },
+      alternates: { canonical: `${SITE_URL}/directory/category/${slug}`, languages: getGlobalHreflangTags(`/directory/category/${slug}`) },
       robots: { index: false, follow: true },
     };
   }
@@ -192,7 +193,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${category.public_label} Directory | Haul Command`,
     description: category.category_intent,
-    alternates: { canonical: `${SITE_URL}/directory/category/${slug}` },
+    alternates: { canonical: `${SITE_URL}/directory/category/${slug}`, languages: getGlobalHreflangTags(`/directory/category/${slug}`) },
     keywords: keywordsForCategory(category),
     robots: {
       index,

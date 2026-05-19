@@ -49,6 +49,13 @@ function isJsonLdPayload(value: unknown): value is Record<string, unknown> {
   return record["@context"] === "https://schema.org" || Array.isArray(record["@graph"]);
 }
 
+function jsonLdGraphEntries(value: unknown): Record<string, unknown>[] {
+  const graph = asRecord(value)["@graph"];
+  return Array.isArray(graph)
+    ? (graph.filter((entry) => entry && typeof entry === "object" && !Array.isArray(entry)) as Record<string, unknown>[])
+    : [];
+}
+
 export function getDirectoryOperatorName(record: DirectoryOperatorRecord) {
   return firstString(record.company, record.company_name, record.public_label, record.display_name, record.name);
 }
@@ -186,8 +193,6 @@ export function buildDirectoryOperatorJsonLd(
   options: { includeFaq?: boolean; faqs?: DirectoryOperatorFaq[] } = {},
 ) {
   const precomputed = getPrecomputedDirectoryOperatorJsonLd(record);
-  if (precomputed) return precomputed;
-
   const metadata = asRecord(record.metadata);
   const name = getDirectoryOperatorName(record);
   const { city, region, country } = getDirectoryOperatorLocation(record);
@@ -198,8 +203,11 @@ export function buildDirectoryOperatorJsonLd(
   const serviceType = services[0]?.replace(/_/g, " ") || "Heavy-haul support";
   const faqs = options.faqs ?? buildDirectoryOperatorFaqs(record);
 
+  const precomputedBusiness: Record<string, unknown> = precomputed && !Array.isArray(precomputed["@graph"]) ? precomputed : {};
+  const precomputedGraph = jsonLdGraphEntries(precomputed);
   const businessJsonLd: Record<string, unknown> = {
-    "@type": ["Organization", "LocalBusiness", "ProfessionalService"],
+    ...precomputedBusiness,
+    "@type": precomputedBusiness["@type"] ?? ["Organization", "LocalBusiness", "ProfessionalService"],
     "@id": `${canonicalUrl}#business`,
     url: canonicalUrl,
     name,
@@ -231,6 +239,10 @@ export function buildDirectoryOperatorJsonLd(
   }
 
   const graph: Record<string, unknown>[] = [
+    ...precomputedGraph.filter((entry) => {
+      const id = entry["@id"];
+      return id !== `${canonicalUrl}#profile` && id !== `${canonicalUrl}#business` && id !== `${canonicalUrl}#breadcrumbs` && id !== `${canonicalUrl}#faq`;
+    }),
     {
       "@type": "WebPage",
       "@id": `${canonicalUrl}#profile`,

@@ -4,6 +4,7 @@ import { contractToMetadata } from '@/lib/seo/page-seo-contract';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { AeoAnswerCard } from '@/components/seo/AeoAnswerCard';
 import { JsonLd } from '@/components/seo/JsonLd';
+import { PageSeoContractJsonLd } from '@/components/seo/PageSeoContractJsonLd';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 import { ProofStrip } from '@/components/ui/ProofStrip';
 import { Shield, MapPin, ArrowRight, ChevronRight, Users } from 'lucide-react';
@@ -17,6 +18,7 @@ import {
 } from '@/lib/directory/server-query';
 import { buildDirectoryMarketSeoContract } from '@/lib/directory/presentation';
 import { buildFAQPageJsonLd, buildQAPageJsonLd } from '@/lib/seo/jsonld';
+import { getPageSeoContract, metadataFromDbPageSeoContract } from '@/lib/seo/page-seo-contract-db';
 
 // ═══════════════════════════════════════════════════════════════
 // /directory/[country]/[slug] — City-level directory page
@@ -163,6 +165,10 @@ async function fetchDirectoryMarketRecords(
 
 export async function generateMetadata({ params }: PageProps) {
   const { country, slug } = await params;
+  const canonicalPath = `/directory/${country}/${slug}`;
+  const dbContract = await getPageSeoContract(canonicalPath);
+  if (dbContract) return metadataFromDbPageSeoContract(dbContract, canonicalPath);
+
   const plan = buildDirectoryMarketFilterPlan({ country, slug });
   const countryUpper = plan.countryCode ?? country.toUpperCase();
   const marketName = plan.marketName;
@@ -201,6 +207,7 @@ export default async function CityDirectoryPage({ params }: PageProps) {
       .from('v_directory_operators')
       .select('*')
       .eq('slug', slug)
+      .eq('country_code', countryUpper)
       .limit(1)
       .maybeSingle();
     operatorMatch = data;
@@ -260,6 +267,7 @@ export default async function CityDirectoryPage({ params }: PageProps) {
 
   return (
     <>
+      <PageSeoContractJsonLd path={`/directory/${country}/${slug}`} />
       <JsonLd data={[jsonLd, ...(qaJsonLd ? [qaJsonLd] : []), ...(faqJsonLd ? [faqJsonLd] : [])]} />
       <ProofStrip variant="bar" />
 

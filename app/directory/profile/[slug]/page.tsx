@@ -10,6 +10,9 @@ import {
   getDirectoryOperatorExpertise,
   buildDirectoryOperatorJsonLd,
   buildDirectoryOperatorMetadata,
+  shouldIndexDirectoryOperator,
+  getDirectoryOperatorSourceConfidence,
+  getDirectoryOperatorVerificationStatus,
 } from '@/lib/directory/operator-profile-seo';
 
 export const revalidate = 3600;
@@ -131,7 +134,10 @@ export default async function OperatorProfilePage({ params }: { params: Promise<
   const canonicalUrl = buildDirectoryOperatorCanonicalUrl(op, slug);
   const faqs = buildDirectoryOperatorFaqs(op);
   const expertiseKeywords = getDirectoryOperatorExpertise(op);
-  const jsonLd = buildDirectoryOperatorJsonLd(op, canonicalUrl, { includeFaq: faqs.length > 0, faqs });
+  const indexGate = shouldIndexDirectoryOperator(op);
+  const sourceConfidence = getDirectoryOperatorSourceConfidence(op).replace(/_/g, ' ');
+  const verificationStatus = getDirectoryOperatorVerificationStatus(op).replace(/_/g, ' ');
+  const jsonLd = buildDirectoryOperatorJsonLd(op, canonicalUrl, { includeFaq: indexGate.index && faqs.length > 0, faqs });
 
   const similar = await getSimilar(op.admin1_code || '', op.id);
 
@@ -196,24 +202,24 @@ export default async function OperatorProfilePage({ params }: { params: Promise<
 
           {/* CTA Row */}
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 24 }}>
-            <Link href={`/claim?operator=${slug}`} style={{
+            <Link href={`/loads/post?intent=provider-contact&operator=${encodeURIComponent(slug)}`} style={{
               display: 'inline-flex', alignItems: 'center', gap: 8,
               padding: '14px 28px', borderRadius: 12,
               background: `linear-gradient(135deg, ${gold}, ${T.goldLight})`,
               color: '#000', fontSize: 14, fontWeight: 900, textDecoration: 'none',
-            }}>📨 Request Quote</Link>
-            <Link href={`/load-board/post?intent=provider-contact&operator=${encodeURIComponent(slug)}`} style={{
+            }}>Request Support</Link>
+            <Link href={`/claim?operator=${encodeURIComponent(slug)}&source=profile`} style={{
               display: 'inline-flex', alignItems: 'center', gap: 8,
               padding: '14px 24px', borderRadius: 12,
               background: T.greenDim, border: '1px solid rgba(34,197,94,0.25)',
               color: T.green, fontSize: 14, fontWeight: 800, textDecoration: 'none',
-            }}>Request Contact</Link>
-            <Link href="/claim" style={{
+            }}>Claim This Profile</Link>
+            <Link href={`/directory/report?slug=${encodeURIComponent(slug)}&type=profile_correction`} style={{
               display: 'inline-flex', alignItems: 'center', gap: 8,
               padding: '14px 20px', borderRadius: 12,
               background: 'rgba(255,255,255,0.04)', border: `1px solid ${T.border}`,
               color: T.textSecondary, fontSize: 14, fontWeight: 700, textDecoration: 'none',
-            }}>Is this your listing? Claim it</Link>
+            }}>Report or Correct</Link>
           </div>
         </div>
       </section>
@@ -224,6 +230,26 @@ export default async function OperatorProfilePage({ params }: { params: Promise<
         <div className="profile-grid" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 20 }}>
           {/* Left Column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            <div style={{ background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24 }}>
+              <h2 style={{ fontSize: 15, fontWeight: 800, margin: '0 0 16px', textTransform: 'uppercase', letterSpacing: '0.06em', color: T.muted }}>Trust & Source Signals</h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 10 }}>
+                {[
+                  { label: 'Claim status', value: verified ? 'Claimed or verified' : 'Unclaimed' },
+                  { label: 'Verification', value: verificationStatus },
+                  { label: 'Source confidence', value: sourceConfidence },
+                  { label: 'Index gate', value: indexGate.index ? 'Indexable profile' : `Noindex: ${indexGate.reason.replace(/_/g, ' ')}` },
+                ].map((item) => (
+                  <div key={item.label} style={{ padding: '12px 14px', borderRadius: 12, background: T.bgSurface, border: `1px solid ${T.border}` }}>
+                    <div style={{ fontSize: 10, fontWeight: 800, color: T.muted, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 5 }}>{item.label}</div>
+                    <div style={{ fontSize: 13, fontWeight: 900, color: T.text, textTransform: 'capitalize' }}>{item.value}</div>
+                  </div>
+                ))}
+              </div>
+              <p style={{ margin: '14px 0 0', fontSize: 12, lineHeight: 1.6, color: T.textSecondary }}>
+                Haul Command separates public claim status, verification status, source confidence, and private contact data. Confirm fit, availability, equipment, and route requirements before dispatch.
+              </p>
+            </div>
+
             {/* Services */}
             <div style={{ background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24 }}>
               <h2 style={{ fontSize: 15, fontWeight: 800, margin: '0 0 16px', textTransform: 'uppercase', letterSpacing: '0.06em', color: T.muted }}>Services Offered</h2>
@@ -317,7 +343,12 @@ export default async function OperatorProfilePage({ params }: { params: Promise<
 
         {faqs.length > 0 && (
           <section style={{ marginTop: 20, background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24 }}>
-            <h2 style={{ fontSize: 18, fontWeight: 900, margin: '0 0 16px', color: T.text }}>Profile FAQ</h2>
+            <div style={{ display: 'flex', gap: 10, alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', marginBottom: 16 }}>
+              <h2 style={{ fontSize: 18, fontWeight: 900, margin: 0, color: T.text }}>Profile FAQ</h2>
+              <span style={{ fontSize: 10, fontWeight: 900, color: indexGate.index ? T.green : T.muted, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                {indexGate.index ? 'FAQPage schema enabled' : 'Visible FAQ only'}
+              </span>
+            </div>
             <div style={{ display: 'grid', gap: 12 }}>
               {faqs.map((faq) => (
                 <article key={faq.question} style={{ border: `1px solid ${T.border}`, borderRadius: 12, padding: 16, background: T.bgSurface }}>

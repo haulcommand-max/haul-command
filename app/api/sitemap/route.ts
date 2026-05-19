@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { shouldIndexDirectoryOperator } from '@/lib/directory/operator-profile-seo';
 
 const MAX_URLS_PER_SITEMAP = 50000;
 const BASE = 'https://www.haulcommand.com';
@@ -116,11 +117,13 @@ export async function GET(req: Request) {
 
         const { data: routeBlock } = await supabase
             .from('hc_global_operators')
-            .select('slug, country_code, updated_at')
+            .select('id, slug, name, city, admin1_code, country_code, claim_status, trust_score, metadata, updated_at')
             .range(startIndex, startIndex + MAX_URLS_PER_SITEMAP - 1);
 
         if (routeBlock) {
-            dynamicUrls = routeBlock.map((op) => `${BASE}/directory/profile/${op.slug}`);
+            dynamicUrls = routeBlock
+                .filter((op: any) => shouldIndexDirectoryOperator(op).index)
+                .map((op: any) => `${BASE}/directory/dossier/${encodeURIComponent(op.slug || op.id)}`);
         }
 
         // Add blog articles and trucker-services pages to chunk 0.

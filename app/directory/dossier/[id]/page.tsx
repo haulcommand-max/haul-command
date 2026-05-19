@@ -10,6 +10,7 @@ import {
   DollarSign, Eye, EyeOff, Phone, Globe
 } from 'lucide-react';
 import { HCContentPageShell } from "@/components/content-system/shell/HCContentPageShell";
+import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { stateFullName, countryFullName } from '@/lib/geo/state-names';
 import {
   resolveCountryCode, getCountryPack,
@@ -230,7 +231,8 @@ export default async function DossierPage({ params }: { params: { id: string } }
 
   // ── Trust signals ────────────────────────────────────────────────────────
   const trustScore = operator.confidence_score || operator.trust_score || null;
-  const isClaimed = (trustScore || 0) > 40 || operator.is_claimed;
+  const claimStatus = String(operator.claim_status || operator.claimed_status || '').toLowerCase();
+  const isClaimed = operator.is_claimed === true || claimStatus === 'claimed' || claimStatus === 'verified';
   const hasRating = operator.rating_avg && Number(operator.rating_avg) > 0;
   const ratingCount = operator.rating_count || 0;
 
@@ -736,6 +738,16 @@ export default async function DossierPage({ params }: { params: { id: string } }
                 <FileText className="w-4 h-4" /> Full Report Card
               </Link>
             </div>
+          </div>
+
+          <div className="hc-card rounded-2xl p-4">
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <p className="text-[10px] font-black uppercase tracking-widest text-amber-200/60">Profile sponsor node</p>
+              <Link href={`/advertise/buy?zone=directory_profile&target=${encodeURIComponent(id)}`} className="text-[10px] font-black uppercase tracking-widest text-[#F1A91B]">
+                Sponsor this profile
+              </Link>
+            </div>
+            <AdGridSlot zone="directory_profile" />
           </div>
 
           {/* Coverage */}
