@@ -8,15 +8,26 @@
 // =====================================================================
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+function hasCommandAccess(req: NextRequest) {
+  const adminSecret = req.headers.get('x-admin-secret');
+  const isAdmin = Boolean(process.env.HC_ADMIN_SECRET && adminSecret === process.env.HC_ADMIN_SECRET);
+  return isAdmin || isInternalRequest(req.headers);
+}
+
 // ─── GET: Full Board Dashboard ───────────────────────────────────────
 export async function GET(req: NextRequest) {
   try {
+    if (!hasCommandAccess(req)) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const now = new Date();
     const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
@@ -253,7 +264,7 @@ export async function GET(req: NextRequest) {
   } catch (error: any) {
     console.error('[command/board] GET error:', error);
     return NextResponse.json(
-      { error: 'Board query failed', details: error.message },
+      { error: 'Board query failed' },
       { status: 500 }
     );
   }
@@ -262,6 +273,10 @@ export async function GET(req: NextRequest) {
 // ─── POST: Board Actions ─────────────────────────────────────────────
 export async function POST(req: NextRequest) {
   try {
+    if (!hasCommandAccess(req)) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await req.json();
     const { action, target_id, payload } = body;
 
@@ -423,7 +438,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error('[command/board] POST error:', error);
     return NextResponse.json(
-      { error: 'Board action failed', details: error.message },
+      { error: 'Board action failed' },
       { status: 500 }
     );
   }

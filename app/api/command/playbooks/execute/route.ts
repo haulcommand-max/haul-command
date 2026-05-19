@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 // =====================================================================
 // Haul Command — Playbook Execution API (Maximized Paperclip Pattern)
@@ -15,8 +16,18 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+function hasPlaybookAccess(req: NextRequest) {
+  const adminSecret = req.headers.get('x-admin-secret');
+  const isAdmin = Boolean(process.env.HC_ADMIN_SECRET && adminSecret === process.env.HC_ADMIN_SECRET);
+  return isAdmin || isInternalRequest(req.headers);
+}
+
 export async function POST(req: NextRequest) {
   try {
+    if (!hasPlaybookAccess(req)) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await req.json();
     const { playbook_slug, market_context, initiated_by = 'william' } = body;
     // market_context = { country: 'AU', region: 'NSW', type: 'tier_a' }
@@ -133,6 +144,6 @@ export async function POST(req: NextRequest) {
 
   } catch (err: any) {
     console.error('[command/playbook/execute] failed:', err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json({ error: 'Playbook execution failed' }, { status: 500 });
   }
 }

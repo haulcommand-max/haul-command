@@ -3,11 +3,6 @@ import { createClient } from '@supabase/supabase-js';
 
 export const runtime = 'edge';
 
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 /**
  * HAUL COMMAND - UNIFIED COMMAND MIDDLEWARES (INTENT PARSER)
  * Intercepts text commands (e.g., "/lock corridor I-10") from the client,

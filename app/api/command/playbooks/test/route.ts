@@ -11,13 +11,24 @@
 
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+function hasPlaybookTestAccess(req: NextRequest) {
+  const adminSecret = req.headers.get('x-admin-secret');
+  const isAdmin = Boolean(process.env.HC_ADMIN_SECRET && adminSecret === process.env.HC_ADMIN_SECRET);
+  return isAdmin || isInternalRequest(req.headers);
+}
+
 export async function GET(req: NextRequest) {
+  if (!hasPlaybookTestAccess(req)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const market = req.nextUrl.searchParams.get('market') || 'AU';
   const dryRun = req.nextUrl.searchParams.get('dry_run') !== 'false';
 
@@ -272,7 +283,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(testResults, { status: failed === 0 ? 200 : 207 });
   } catch (err: any) {
-    testResults.error = err.message;
+    testResults.error = 'Playbook test failed';
     return NextResponse.json(testResults, { status: 500 });
   }
 }

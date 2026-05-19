@@ -14,6 +14,7 @@
 // =====================================================================
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -22,6 +23,10 @@ const supabase = createClient(
 
 export async function POST(req: NextRequest) {
   try {
+    if (!isInternalRequest(req.headers)) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await req.json();
     const {
       agent_slug,
@@ -282,7 +287,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error('[command/heartbeat] error:', error);
     return NextResponse.json(
-      { error: 'Heartbeat failed', details: error.message },
+      { error: 'Heartbeat failed' },
       { status: 500 }
     );
   }
