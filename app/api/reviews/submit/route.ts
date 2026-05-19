@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { createClient } from '@/utils/supabase/server';
 
 /**
  * POST /api/reviews/submit
@@ -7,9 +8,15 @@ import { getSupabaseAdmin } from '@/lib/supabase/admin';
  */
 export async function POST(req: NextRequest) {
     try {
-        const { reviewer_id, subject_id, subject_type, rating, summary } = await req.json();
+        const supabase = await createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
 
-        if (!reviewer_id || !subject_id || !subject_type || !rating) {
+        const { subject_id, subject_type, rating, summary } = await req.json();
+
+        if (!subject_id || !subject_type || !rating) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }
 
@@ -20,7 +27,7 @@ export async function POST(req: NextRequest) {
         const sb = getSupabaseAdmin();
 
         const { data, error } = await sb.rpc("hc_submit_review_v2", {
-            p_reviewer_id: reviewer_id,
+            p_reviewer_id: user.id,
             p_subject_id: subject_id,
             p_subject_type: subject_type,
             p_overall_rating: rating,
@@ -28,7 +35,8 @@ export async function POST(req: NextRequest) {
         });
 
         if (error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
+            console.error("[reviews-submit] review RPC failed:", error);
+            return NextResponse.json({ error: "Review submission failed" }, { status: 500 });
         }
 
         return NextResponse.json(data);

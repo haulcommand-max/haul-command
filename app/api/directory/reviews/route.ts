@@ -167,7 +167,7 @@ export async function POST(req: NextRequest) {
             );
         }
         console.error("[reviews POST]", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return NextResponse.json({ error: "Review submission failed" }, { status: 500 });
     }
 
     return NextResponse.json({ id: review!.id }, { status: 201 });
