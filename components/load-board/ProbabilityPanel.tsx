@@ -30,6 +30,7 @@ interface ProbabilityPanelProps {
  * - confidence >= 0.35: show exact % with bar
  * - confidence 0.20–0.35: show range (p_low–p_high) + "Low data"
  * - confidence < 0.20: show qualitative label + top factors only, NO exact %
+ * - stage probabilities follow the same exact-percent gate
  */
 export function ProbabilityPanel({
     p_fill_60m,
@@ -63,6 +64,22 @@ export function ProbabilityPanel({
         if (p_fill_60m >= 0.70) return 'bg-hc-success';
         if (p_fill_60m >= 0.45) return 'bg-hc-warning';
         return 'bg-hc-danger';
+    };
+
+    const getStageLabel = (value: number | null) => {
+        if (value == null) return null;
+        if (showExact) return `${Math.round(value * 100)}%`;
+        if (value >= 0.70) return 'Strong';
+        if (value >= 0.45) return 'Moderate';
+        return 'Weak';
+    };
+
+    const getStageWidth = (value: number | null) => {
+        if (value == null) return 0;
+        if (showExact) return Math.round(value * 100);
+        if (value >= 0.70) return 80;
+        if (value >= 0.45) return 55;
+        return 30;
     };
 
     return (
@@ -100,7 +117,7 @@ export function ProbabilityPanel({
                 </div>
             )}
 
-            {/* Stage bars: p_offer × p_view × p_accept */}
+            {/* Stage bars: p_offer x p_view x p_accept */}
             {(stage_probs.p_offer != null || stage_probs.p_view != null || stage_probs.p_accept != null) && (
                 <div className="space-y-1.5">
                     {[
@@ -111,18 +128,18 @@ export function ProbabilityPanel({
                         value != null && (
                             <div key={label} className="flex items-center gap-2">
                                 <span className="text-xs text-hc-charcoal-text w-20 flex-shrink-0">{label}</span>
-                                <div className="flex-1 h-1 bg-hc-industrial-charcoal rounded-full overflow-hidden">
-                                    <div
-                                        className="h-full bg-hc-command-gold/70 rounded-full"
-                                        style={{ width: `${Math.round(value * 100)}%` }}
-                                    />
-                                </div>
-                                <span className="text-xs text-hc-charcoal-text w-8 text-right">
-                                    {Math.round(value * 100)}%
-                                </span>
-                            </div>
-                        )
-                    ))}
+                                 <div className="flex-1 h-1 bg-hc-industrial-charcoal rounded-full overflow-hidden">
+                                     <div
+                                         className="h-full bg-hc-command-gold/70 rounded-full"
+                                        style={{ width: `${getStageWidth(value)}%` }}
+                                     />
+                                 </div>
+                                <span className="text-xs text-hc-charcoal-text w-14 text-right">
+                                    {getStageLabel(value)}
+                                 </span>
+                             </div>
+                         )
+                     ))}
                 </div>
             )}
 
@@ -144,6 +161,16 @@ export function ProbabilityPanel({
                                 {f.direction === 'up' ? '↑' : '↓'} {Math.round(f.value * 100)}%
                             </span>
                         </div>
+                    ))}
+                </div>
+            )}
+
+            {recommended_fixes.length > 0 && (
+                <div className="flex flex-wrap gap-2 pt-1">
+                    {recommended_fixes.slice(0, 3).map((fix) => (
+                        <span key={fix} className="px-2 py-1 rounded-lg bg-hc-command-gold/10 text-hc-command-gold text-xs font-semibold">
+                            {fix}
+                        </span>
                     ))}
                 </div>
             )}

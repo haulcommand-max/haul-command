@@ -95,24 +95,64 @@ interface AvailableBroadcast {
   willing_to_deadhead_miles: number;
 }
 
+interface SupplyAlert {
+  id: string;
+  city?: string | null;
+  state_code: string | null;
+  corridor_id: string | null;
+  alert_type: string;
+  available_count: number | null;
+  demand_rate: number | null;
+  message: string;
+  expires_at: string | null;
+}
+
 async function getAvailabilityData() {
   const supabase = createClient();
 
-  // Use only real operator-declared availability broadcasts.
-  const { data: broadcasts, error: viewError } = await supabase
-    .from('v_available_escorts')
-    .select('*')
-    .limit(50);
+  const [broadcastResult, alertResult] = await Promise.all([
+    // Use only real operator-declared availability broadcasts.
+    supabase
+      .from('v_available_escorts')
+      .select('*')
+      .limit(50),
+    supabase
+      .from('supply_alerts')
+      .select('id,state_code,corridor_id,alert_type,available_count,demand_rate,message,expires_at')
+      .eq('active', true)
+      .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`)
+      .order('created_at', { ascending: false })
+      .limit(3),
+  ]);
+
+  const { data: broadcasts, error: viewError } = broadcastResult;
+  const { data: supplyAlerts, error: alertError } = alertResult;
 
   if (!viewError && broadcasts && broadcasts.length > 0) {
-    return { broadcasts: broadcasts as AvailableBroadcast[], source: 'broadcasts' as const };
+    return {
+      broadcasts: broadcasts as AvailableBroadcast[],
+      supplyAlerts: (supplyAlerts ?? []) as SupplyAlert[],
+      source: 'broadcasts' as const,
+    };
   }
 
-  if (viewError) {
+  const optionalAvailabilityFetchFailed =
+    viewError?.message?.toLowerCase().includes('fetch failed') ||
+    viewError?.message?.toLowerCase().includes('failed to fetch');
+
+  if (viewError && !optionalAvailabilityFetchFailed) {
     console.warn('[available-now] v_available_escorts query failed:', viewError.message);
   }
 
-  return { broadcasts: [] as AvailableBroadcast[], source: 'no_broadcasts' as const };
+  if (alertError && !alertError.message?.toLowerCase().includes('fetch failed')) {
+    console.warn('[available-now] supply_alerts query failed:', alertError.message);
+  }
+
+  return {
+    broadcasts: [] as AvailableBroadcast[],
+    supplyAlerts: (supplyAlerts ?? []) as SupplyAlert[],
+    source: 'no_broadcasts' as const,
+  };
 }
 
 function getStatusConfig(status: string) {
@@ -125,7 +165,7 @@ function getStatusConfig(status: string) {
 }
 
 export default async function AvailableNowPage() {
-  const { broadcasts } = await getAvailabilityData();
+  const { broadcasts, supplyAlerts } = await getAvailabilityData();
 
   // Group by state for the state-selector UI
   const stateGroups: Record<string, AvailableBroadcast[]> = {};
@@ -180,6 +220,34 @@ export default async function AvailableNowPage() {
                 ? `${totalAvailable} operator-declared availability broadcast${totalAvailable === 1 ? '' : 's'} active. Verify each operator's claim, contact path, and freshness before dispatch.`
                 : 'No operator-declared availability broadcasts are active right now. Post a support request or browse the directory instead of relying on fake live supply.'}
             </p>
+
+            {supplyAlerts.length > 0 && (
+              <div style={{ display: 'grid', gap: 10, marginBottom: 24, maxWidth: 760 }}>
+                {supplyAlerts.map((alert) => (
+                  <div
+                    key={alert.id}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 12,
+                      padding: '12px 14px',
+                      borderRadius: 12,
+                      background: 'rgba(245,158,11,0.08)',
+                      border: '1px solid rgba(245,158,11,0.22)',
+                      color: '#fcd34d',
+                    }}
+                  >
+                    <Zap style={{ width: 16, height: 16, flexShrink: 0 }} />
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontSize: 13, fontWeight: 800, color: '#fde68a' }}>{alert.message}</div>
+                      <div style={{ fontSize: 11, color: '#d6a84f', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                        {[alert.state_code, alert.corridor_id, alert.alert_type.replace(/_/g, ' ')].filter(Boolean).join(' / ')}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Stats row */}
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
