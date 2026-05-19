@@ -148,6 +148,11 @@ const nextConfig: NextConfig = {
             },
             // Legacy URL patterns → canonical
             {
+                source: "/directory/profile/:slug",
+                destination: "/directory/dossier/:slug",
+                permanent: true,
+            },
+            {
                 source: "/operators/:path*",
                 destination: "/directory/:path*",
                 permanent: true,
