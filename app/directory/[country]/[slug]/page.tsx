@@ -334,10 +334,10 @@ export default async function CityDirectoryPage({ params }: PageProps) {
               />
             </div>
             {ops.length === 0 ? (
-              <div style={{ background: '#FFFBEB', border: '1px solid #FEF08A', borderRadius: 16, padding: 40, textAlign: 'center' }}>
+              <div style={{ background: '#111114', border: '1px solid rgba(241,169,27,0.22)', borderRadius: 16, padding: 40, textAlign: 'center' }}>
                 <MapPin style={{ width: 32, height: 32, color: '#C6923A', margin: '0 auto 12px' }} />
                 <h2 style={{ fontSize: 20, fontWeight: 900, color: '#f9fafb', marginBottom: 8 }}>Market Open: {cityName}</h2>
-                <p style={{ fontSize: 14, color: '#9ca3af', marginBottom: 24 }}>There are currently no source-backed support records listed in this territory. Claim or submit a listing to open the market with real proof.</p>
+                <p style={{ fontSize: 14, color: '#d1d5db', marginBottom: 24 }}>There are currently no source-backed support records listed in this territory. Claim or submit a listing to open the market with real proof.</p>
                 <Link href={cityClaimHref(countryUpper, slug)} style={{
                   display: 'inline-flex', alignItems: 'center', gap: 10, padding: '14px 28px',
                   borderRadius: 12, background: '#F1A91B',

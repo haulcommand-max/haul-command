@@ -1,4 +1,3 @@
-'use client';
 /**
  * DirectoryPopularSearches — Trending searches from the last 30 days.
  * Shows what operators/cities users are searching for most.
@@ -47,9 +46,13 @@ export default function DirectoryPopularSearches() {
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 {trending.slice(0, 12).map((t, i) => {
                     const label = [t.city, t.state].filter(Boolean).join(', ');
-                    const href = t.state
-                        ? `/directory/us/${t.state.toLowerCase()}/${t.city.toLowerCase().replace(/\s+/g, '-')}`
-                        : `/directory`;
+                    const citySlug = [t.city, t.state]
+                        .filter(Boolean)
+                        .join('-')
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/^-|-$/g, '');
+                    const href = citySlug ? `/directory/us/${citySlug}` : `/directory`;
                     return (
                         <Link aria-label="Navigation Link"
                             key={`${t.city}-${t.state}-${i}`}
