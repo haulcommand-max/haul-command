@@ -42,7 +42,7 @@ export function GlossaryTermPage({ payload }: { payload: GlossaryTermPayload }) 
           <span className="text-gray-600">/</span>
           {term.topic_primary_slug ? (
             <>
-              <Link href={`/glossary/topics/${term.topic_primary_slug}`} className="hover:text-amber-300 transition-colors">
+              <Link href={`/glossary/category/${term.topic_primary_slug}`} className="hover:text-amber-300 transition-colors">
                 {term.topic_primary_name || term.topic_primary_slug}
               </Link>
               <span className="text-gray-600">/</span>
@@ -161,8 +161,8 @@ export function GlossaryTermPage({ payload }: { payload: GlossaryTermPayload }) 
                 <div className="flex flex-col gap-2">
                   {relationships.related.map((item) => (
                     <Link
-                      key={`\${item.to_term_slug}-\${item.relationship_type}`}
-                      href={`/glossary/\${item.to_term_slug}`}
+                      key={`${item.to_term_slug}-${item.relationship_type}`}
+                      href={`/glossary/${item.to_term_slug}`}
                       className="text-sm font-medium text-gray-300 hover:text-[#C6923A] transition-colors py-1 flex items-center justify-between group"
                     >
                       <span>{item.to_term_name}</span>

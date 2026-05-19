@@ -158,7 +158,7 @@ export function GlossaryHub({ payload }: { payload: GlossaryHubPayload }) {
             {safePayload.topic_clusters.map((topic) => (
               <Link
                 key={topic.slug}
-                href={`/glossary/topics/${topic.slug}`}
+                href={`/glossary/category/${topic.slug}`}
                 className="group flex flex-col justify-between rounded-2xl border border-white/5 bg-[#11141D] hover:bg-[#1A1E2B] p-6 transition-colors hover:border-emerald-500/30"
               >
                 <div>
@@ -183,7 +183,7 @@ export function GlossaryHub({ payload }: { payload: GlossaryHubPayload }) {
             {safePayload.country_clusters.map((country) => (
               <Link
                 key={country.country_code}
-                href={`/glossary/${country.country_code.toLowerCase()}`}
+                href={`/glossary/country/${country.country_code.toLowerCase()}`}
                 className="flex items-center justify-between rounded-xl border border-white/5 bg-[#11141D] px-4 py-3 hover:bg-white/5 hover:border-white/20 transition-all group"
               >
                 <span className="text-lg font-black text-white">{country.country_code}</span>

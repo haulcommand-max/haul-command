@@ -31,6 +31,30 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value && typeof value === "object" && !Array.isArray(value));
 }
 
+let didWarnSeoContractLookup = false;
+
+function isOptionalLookupFailure(error: { message?: string; code?: string } | null | undefined) {
+  const message = String(error?.message ?? "").toLowerCase();
+  return (
+    message.includes("invalid api key") ||
+    message.includes("jwt") ||
+    message.includes("fetch failed") ||
+    message.includes("permission denied") ||
+    message.includes("relation") ||
+    message.includes("does not exist")
+  );
+}
+
+function warnSeoContractOnce(message: string, detail?: unknown) {
+  if (didWarnSeoContractLookup) return;
+  didWarnSeoContractLookup = true;
+  if (detail) {
+    console.warn(message, detail);
+  } else {
+    console.warn(message);
+  }
+}
+
 export function normalizeStructuredData(value: Json | null): Record<string, unknown> | Record<string, unknown>[] | null {
   if (!value) return null;
   if (typeof value === "string") {
@@ -63,13 +87,18 @@ export async function getPageSeoContract(path: string): Promise<DbPageSeoContrac
       .maybeSingle();
 
     if (error) {
-      console.warn("[seo-contract] lookup failed:", error.message);
+      if (!isOptionalLookupFailure(error)) {
+        warnSeoContractOnce("[seo-contract] lookup failed:", error.message);
+      }
       return null;
     }
 
     return (data as DbPageSeoContract | null) ?? null;
   } catch (error) {
-    console.warn("[seo-contract] lookup threw:", error);
+    const message = error instanceof Error ? error.message : String(error);
+    if (!message.toLowerCase().includes("fetch failed")) {
+      warnSeoContractOnce("[seo-contract] lookup threw:", error);
+    }
     return null;
   }
 }

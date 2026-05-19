@@ -14,6 +14,7 @@
 import { COUNTRY_REGISTRY } from '@/lib/config/country-registry';
 
 const BASE_URL = 'https://www.haulcommand.com';
+const ROOT_COUNTRY_HUBS = new Set(["US", "CA", "GB", "AU", "ZA", "MX"]);
 
 // Language primary override map for edge cases where registry lang differs
 // from BCP-47 expectations. Format: ISO2 → BCP-47 locale
@@ -122,7 +123,9 @@ function normalizePagePath(pagePath: string): string {
 
 function countryEquivalentPath(normalizedPath: string, countryCode: string): string | null {
   const cc = countryCode.toLowerCase();
-  if (!normalizedPath) return `/${cc}`;
+  if (!normalizedPath) {
+    return ROOT_COUNTRY_HUBS.has(countryCode) ? `/${cc}` : null;
+  }
 
   const countryHub = normalizedPath.match(/^\/[a-z]{2}$/i);
   if (countryHub) return `/${cc}`;

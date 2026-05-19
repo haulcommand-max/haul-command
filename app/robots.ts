@@ -65,6 +65,7 @@ export default function robots(): MetadataRoute.Robots {
     ],
     sitemap: [
       'https://www.haulcommand.com/sitemap.xml',
+      'https://www.haulcommand.com/sitemap-glossary.xml',
     ],
   };
 }

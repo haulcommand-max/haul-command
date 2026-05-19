@@ -6,6 +6,7 @@ import { resolveProfile, type NormalizedProfile, type ResolutionResult } from '@
 /* ── Rate limiting (graceful if Upstash not configured) ── */
 let apiRateLimit: any = null;
 const UPSTASH_CONFIGURED = !!(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
+let didWarnMissingUpstash = false;
 if (UPSTASH_CONFIGURED) {
     try {
         const { apiRateLimit: rl } = require('@/lib/upstash');
@@ -13,8 +14,6 @@ if (UPSTASH_CONFIGURED) {
     } catch (e) {
         console.warn('[resolve] Upstash rate limiter failed to initialize:', e);
     }
-} else {
-    console.warn('[resolve] UPSTASH_REDIS_REST_URL/TOKEN not set; proxy fallback rate limiting protects sensitive API paths');
 }
 
 /* ── Supabase (service role — bypasses RLS) ── */
@@ -104,6 +103,11 @@ function toPublicProfile(p: NormalizedProfile): PublicProfile {
  * - Cache headers: 60s s-maxage, 5min stale-while-revalidate
  */
 export async function GET(req: NextRequest) {
+    if (!apiRateLimit && !didWarnMissingUpstash) {
+        didWarnMissingUpstash = true;
+        console.info('[resolve] Upstash rate limiter not configured; proxy fallback still protects sensitive API paths');
+    }
+
     /* ── Rate limiting ── */
     if (apiRateLimit) {
         const ip = getClientIp(req);

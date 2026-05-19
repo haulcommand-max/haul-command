@@ -11,9 +11,9 @@ export async function POST(req: Request) {
 
     revalidatePath("/glossary");
 
-    if (term) revalidatePath(`/glossary/\${term}`);
-    if (topic) revalidatePath(`/glossary/topics/\${topic}`);
-    if (country) revalidatePath(`/glossary/\${country.toLowerCase()}`);
+    if (term) revalidatePath(`/glossary/${term}`);
+    if (topic) revalidatePath(`/glossary/category/${topic}`);
+    if (country) revalidatePath(`/glossary/country/${country.toLowerCase()}`);
 
     return NextResponse.json({ ok: true });
   } catch (error) {

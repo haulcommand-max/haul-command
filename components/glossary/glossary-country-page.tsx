@@ -25,13 +25,13 @@ export function GlossaryCountryPage({ payload }: { payload: GlossaryCountryPaylo
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
             {payload.aliases.map((alias) => (
               <article
-                key={`\${alias.term_slug}-\${alias.alias}`}
+                key={`${alias.term_slug}-${alias.alias}`}
                 className="rounded-2xl border p-4"
               >
                 <div className="font-medium">{alias.alias}</div>
                 <div className="text-sm text-muted-foreground mt-2">
                   Maps to{" "}
-                  <Link href={`/glossary/\${alias.term_slug}`} className="underline">
+                  <Link href={`/glossary/${alias.term_slug}`} className="underline">
                     {alias.term_name}
                   </Link>
                 </div>
@@ -47,7 +47,7 @@ export function GlossaryCountryPage({ payload }: { payload: GlossaryCountryPaylo
           {terms.map((term) => (
             <Link
               key={term.slug}
-              href={`/glossary/\${term.slug}`}
+              href={`/glossary/${term.slug}`}
               className="rounded-2xl border p-4 hover:bg-muted/40"
             >
               <div className="font-medium">{term.canonical_term}</div>

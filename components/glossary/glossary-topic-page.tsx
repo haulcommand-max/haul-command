@@ -22,7 +22,7 @@ export function GlossaryTopicPage({ payload }: { payload: GlossaryTopicPayload }
           {terms.map((term) => (
             <Link
               key={term.slug}
-              href={`/glossary/\${term.slug}`}
+              href={`/glossary/${term.slug}`}
               className="rounded-2xl border p-4 hover:bg-muted/40"
             >
               <div className="font-medium">{term.canonical_term}</div>
