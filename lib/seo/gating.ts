@@ -1,4 +1,5 @@
 // lib/seo/gating.ts
+import { getGlobalHreflangTags } from "@/lib/seo/hreflang";
 // ══════════════════════════════════════════════════════════════
 // Anti-thin Page Gating Algorithm — Haul Command
 //
@@ -110,14 +111,17 @@ export function decideIndexability(
 
 export function buildRobotsDirective(decision: GateDecision): {
     robots: { index: boolean; follow: boolean };
-    alternates: { canonical: string };
+    alternates: { canonical: string; languages: Record<string, string> };
 } {
+    const canonical = decision.indexable
+        ? hubPathToAbsolute(decision.canonicalTo ?? "")
+        : hubPathToAbsolute(decision.canonicalTo);
+
     return {
         robots: { index: decision.indexable, follow: true },
         alternates: {
-            canonical: decision.indexable
-                ? hubPathToAbsolute(decision.canonicalTo ?? "")  // self-canonical when indexable
-                : hubPathToAbsolute(decision.canonicalTo),
+            canonical,
+            languages: getGlobalHreflangTags(new URL(canonical).pathname),
         },
     };
 }

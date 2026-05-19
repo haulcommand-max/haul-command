@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { TrainingPagePayload, TrainingCountryPayload } from "./types";
 import { HC_PUBLISHER, HC_AUTHOR } from "@/lib/glossary/eeat";
+import { getGlobalHreflangTags } from "@/lib/seo/hreflang";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.haulcommand.com";
 
@@ -11,6 +12,7 @@ export function trainingHubMetadata(): Metadata {
       "Professional pilot car, escort vehicle, and heavy haul training programs. Earn credentials, improve your directory ranking, and meet jurisdiction requirements across 120 countries.",
     alternates: {
       canonical: `${SITE_URL}/training`,
+      languages: getGlobalHreflangTags("/training"),
     },
   };
 }
@@ -24,6 +26,7 @@ export function trainingPageMetadata(payload: TrainingPagePayload): Metadata {
       `${t.title} training program — ${t.module_count} modules, ${t.hours_total} hours.`,
     alternates: {
       canonical: `${SITE_URL}/training/${t.slug}`,
+      languages: getGlobalHreflangTags(`/training/${t.slug}`),
     },
   };
 }
@@ -34,6 +37,7 @@ export function trainingCountryMetadata(payload: TrainingCountryPayload): Metada
     description: `Training programs applicable to heavy haul and pilot car operations in ${payload.country_code}.`,
     alternates: {
       canonical: `${SITE_URL}/training/countries/${payload.country_code.toLowerCase()}`,
+      languages: getGlobalHreflangTags(`/training/countries/${payload.country_code.toLowerCase()}`),
     },
   };
 }

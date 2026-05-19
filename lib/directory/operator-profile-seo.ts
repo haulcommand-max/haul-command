@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getGlobalHreflangTags } from "@/lib/seo/hreflang";
 
 type DirectoryOperatorRecord = Record<string, any>;
 export type DirectoryOperatorFaq = { question: string; answer: string };
@@ -271,7 +272,10 @@ export function buildDirectoryOperatorMetadata(record: DirectoryOperatorRecord |
     return {
       title: "Operator Not Found | Haul Command",
       robots: { index: false, follow: true },
-      alternates: { canonical: `${SITE_URL}/directory` },
+      alternates: {
+        canonical: `${SITE_URL}/directory`,
+        languages: getGlobalHreflangTags("/directory"),
+      },
     };
   }
 
@@ -285,7 +289,10 @@ export function buildDirectoryOperatorMetadata(record: DirectoryOperatorRecord |
   return {
     title: `${name} | Directory Profile | Haul Command`,
     description: `View source-backed profile details, trust signals, service coverage, and request paths for ${name} in ${location}.`,
-    alternates: { canonical },
+    alternates: {
+      canonical,
+      languages: getGlobalHreflangTags(new URL(canonical).pathname),
+    },
     robots: {
       index: gate.index,
       follow: true,

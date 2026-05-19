@@ -14,6 +14,7 @@
  */
 
 import type { Metadata } from 'next';
+import { getGlobalHreflangTags } from '@/lib/seo/hreflang';
 
 const SITE_NAME = 'Haul Command';
 const SITE_URL = 'https://haulcommand.com';
@@ -49,7 +50,7 @@ export function buildMetadata<P extends Record<string, string>>(
       title,
       description,
       metadataBase: new URL(SITE_URL),
-      alternates: { canonical },
+      alternates: { canonical, languages: getGlobalHreflangTags(new URL(canonical).pathname) },
       openGraph: {
         title,
         description,
