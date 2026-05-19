@@ -6,6 +6,17 @@ import { ReportForm } from './ReportForm';
 export const metadata: Metadata = {
   title: 'Report Incorrect Listing Data | Haul Command',
   description: 'Submit a correction for outdated or inaccurate logistics data on Haul Command.',
+  alternates: {
+    canonical: 'https://www.haulcommand.com/directory/report',
+  },
+  robots: {
+    index: false,
+    follow: true,
+    googleBot: {
+      index: false,
+      follow: true,
+    },
+  },
 };
 
 export default function ReportIncorrectDataPage({ searchParams }: { searchParams: { slug?: string } }) {

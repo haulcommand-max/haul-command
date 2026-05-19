@@ -1,5 +1,22 @@
 import { createClient } from "@supabase/supabase-js"
 import { Shield, Truck, MapPin, Search } from "lucide-react"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+    title: "Repositioning Broadcasts | Haul Command",
+    description: "View source-backed repositioning and backhaul broadcasts from the Haul Command directory network. Availability and operator fit must be confirmed before dispatch.",
+    alternates: {
+        canonical: "https://www.haulcommand.com/directory/repositioning",
+    },
+    robots: {
+        index: false,
+        follow: true,
+        googleBot: {
+            index: false,
+            follow: true,
+        },
+    },
+}
 
 export default async function RepositioningFeed() {
     const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
@@ -19,13 +36,13 @@ export default async function RepositioningFeed() {
                 <div className="mb-12 border-b border-white/5 pb-8">
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#10B981]/10 border border-[#10B981]/20 rounded-full mb-4">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
-                        <span className="text-xs font-bold uppercase tracking-widest text-[#10B981]">Live Network</span>
+                        <span className="text-xs font-bold uppercase tracking-widest text-[#10B981]">Repositioning Signals</span>
                     </div>
                     <h1 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
                         Operator <span className="text-[#C6923A]">Backhauls</span>
                     </h1>
                     <p className="text-lg text-white/50 max-w-2xl leading-relaxed">
-                        Live repositioning broadcasts from verified heavy haul and escort operators. Catch them while they are empty and secure lower rates along these active corridors.
+                        Source-backed repositioning broadcasts from heavy haul and escort operators. Confirm availability, proof, rate, and corridor fit before dispatch.
                     </p>
                 </div>
 
@@ -51,7 +68,7 @@ export default async function RepositioningFeed() {
                                                 <span className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-md bg-[#C6923A]/10 text-[#C6923A] border border-[#C6923A]/30">
                                                     <Shield className="w-3 h-3 fill-[#C6923A]/20" /> 
                                                     <span className="text-white bg-[#C6923A] px-1.5 py-0.5 rounded text-[9px]">{hauls.trust_score} TP</span>
-                                                    {hauls.trust_score >= 80 ? 'Verified' : 'Claimed'}
+                                                    {hauls.trust_score >= 80 ? 'High signal' : 'Claimed'}
                                                 </span>
                                             ) : (
                                                 <span className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-md bg-neutral-800 text-neutral-400 border border-white/10">
@@ -84,7 +101,7 @@ export default async function RepositioningFeed() {
                                         Until {new Date(hauls.available_to).toLocaleDateString()}
                                     </div>
                                     <a 
-                                        href={`/directory/profile/${hauls.operator_slug}`} 
+                                        href={`/directory/dossier/${hauls.operator_slug}`} 
                                         className="px-6 py-2.5 bg-[#C6923A] hover:bg-[#C6923A]/90 text-black font-black uppercase text-xs tracking-wider rounded-lg transition"
                                     >
                                         Intercept Load â†’
