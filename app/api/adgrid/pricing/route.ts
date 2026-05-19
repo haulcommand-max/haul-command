@@ -4,8 +4,6 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
 
 export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
@@ -16,12 +14,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: "port_id required" }, { status: 400 });
     }
 
-    const cookieStore = await cookies();
-    const svc = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { cookies: { getAll: () => cookieStore.getAll() } }
-    );
+    const svc = getSupabaseAdmin();
 
     const { data, error } = await svc.rpc("compute_adgrid_suggested_price", {
         p_port_id: portId,
@@ -30,7 +23,7 @@ export async function GET(req: NextRequest) {
 
     if (error) {
         console.error("[adgrid/pricing GET]", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return NextResponse.json({ error: "Pricing lookup failed" }, { status: 500 });
     }
 
     const row = Array.isArray(data) ? data[0] : data;

@@ -61,6 +61,14 @@ export async function POST(req: NextRequest) {
     if (!surface || !headline || !cta_label || !cta_href) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
+    try {
+      const parsedUrl = new URL(cta_href);
+      if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+        return NextResponse.json({ error: 'Invalid CTA URL' }, { status: 400 });
+      }
+    } catch {
+      return NextResponse.json({ error: 'Invalid CTA URL' }, { status: 400 });
+    }
 
     const durationKey = String(duration_days ?? '30');
     const priceId = PRICE_MAP[surface]?.[durationKey];
@@ -99,8 +107,8 @@ export async function POST(req: NextRequest) {
         mode: 'payment',
         line_items: [{ price: priceId, quantity: 1 }],
         metadata: { adgrid_slot_id: slot.id, surface, corridor_slug: corridor_slug ?? '' },
-        success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/advertise/success?slot=${slot.id}`,
-        cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/advertise?surface=${surface}`,
+        success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.haulcommand.com'}/advertise/success?slot=${slot.id}`,
+        cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.haulcommand.com'}/advertise?surface=${surface}`,
       });
 
       return NextResponse.json({ checkout_url: session.url, slot_id: slot.id });

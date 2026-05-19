@@ -4,8 +4,6 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
 
 const VALID_CONVERSION_TYPES = new Set([
     "claim",
@@ -16,12 +14,7 @@ const VALID_CONVERSION_TYPES = new Set([
 ]);
 
 export async function POST(req: NextRequest) {
-    const cookieStore = await cookies();
-    const svc = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { cookies: { getAll: () => cookieStore.getAll() } }
-    );
+    const svc = getSupabaseAdmin();
 
     let body: Record<string, unknown>;
     try {
@@ -64,7 +57,7 @@ export async function POST(req: NextRequest) {
 
     if (error) {
         console.error("[adgrid/attribution POST]", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return NextResponse.json({ error: "Attribution recording failed" }, { status: 500 });
     }
 
     // Also fire an event for analytics joining
