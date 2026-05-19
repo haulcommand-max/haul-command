@@ -1,18 +1,4 @@
 'use client';
-/**
- * StickyClaimBar — Persistent "Claim this listing" CTA.
- *
- * On mobile: sticks to bottom of viewport.
- * On desktop: shows inline at top of listing/state page, plus a sticky header
- * version that appears after user scrolls past the fold.
- *
- * Props:
- *   context      — what surface this is on ("listing" | "state" | "category" | "root")
- *   regionName   — e.g. "Florida" (for copy personalization)
- *   claimedBy    — if set, shows claimed state instead of claim CTA
- *   suggestHref  — href for "Suggest an edit" secondary link
- */
-"use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -26,7 +12,7 @@ interface StickyClaimBarProps {
     claimedBy?: string | null;
     suggestHref?: string;
     claimHref?: string;
-    profileId?: string; // enables density-driven claim pressure
+    profileId?: string;
 }
 
 interface DensityPressure {
@@ -50,7 +36,6 @@ export function StickyClaimBar({
     const [dismissed, setDismissed] = useState(false);
     const [densityPressure, setDensityPressure] = useState<DensityPressure | null>(null);
 
-    // Show sticky bar after scrolling 300px
     useEffect(() => {
         const handler = () => setVisible(window.scrollY > 300);
         window.addEventListener("scroll", handler, { passive: true });
@@ -58,7 +43,6 @@ export function StickyClaimBar({
         return () => window.removeEventListener("scroll", handler);
     }, []);
 
-    // Fetch density-driven claim pressure if profileId provided
     useEffect(() => {
         if (!profileId) return;
         fetch(`/api/claim/pressure?profile_id=${profileId}`)
@@ -68,20 +52,18 @@ export function StickyClaimBar({
                     setDensityPressure(data.pressure);
                 }
             })
-            .catch(() => {}); // graceful fallback to static copy
+            .catch(() => {});
     }, [profileId]);
 
     if (dismissed) return null;
 
-    // Static copy (fallback)
     const staticCopy = {
-        listing: { headline: "Is this your business?", cta: "Claim this listing", tagline: "Free · Verified in 24 hrs" },
-        state: { headline: regionName ? `Operating in ${regionName}?` : "Are you an operator?", cta: "Claim your profile", tagline: "Free · Get matched with loads" },
-        category: { headline: "Are you in this space?", cta: "Add your listing", tagline: "Free · Verified in 24 hrs" },
-        root: { headline: "Are you a pilot car operator?", cta: "Claim your profile", tagline: "Free forever — no subscription" },
+        listing: { headline: "Is this your business?", cta: "Claim this listing", tagline: "Free claim. Verification follows proof review." },
+        state: { headline: regionName ? `Operating in ${regionName}?` : "Are you an operator?", cta: "Claim your profile", tagline: "Free claim. Add service areas and proof." },
+        category: { headline: "Are you in this space?", cta: "Add your listing", tagline: "Free claim. Proof review comes next." },
+        root: { headline: "Are you a pilot car operator?", cta: "Claim your profile", tagline: "Free claim path. No fake rank." },
     }[context];
 
-    // Use density pressure if available, else fall back to static
     const copy = densityPressure
         ? { headline: densityPressure.headline, cta: densityPressure.cta, tagline: densityPressure.subtext }
         : staticCopy;
@@ -95,7 +77,8 @@ export function StickyClaimBar({
                 <ShieldCheck className="w-4 h-4" />
                 Claimed by {claimedBy}
                 {suggestHref && (
-                    <Link aria-label="Navigation Link"
+                    <Link
+                        aria-label="Suggest edit"
                         href={suggestHref}
                         className="flex items-center gap-1 opacity-60 hover:opacity-100 transition-opacity ml-2 pl-2 text-white/50"
                         style={{ borderLeft: "1px solid rgba(255,255,255,0.1)" }}
@@ -110,7 +93,6 @@ export function StickyClaimBar({
 
     return (
         <>
-            {/*  Inline bar (always shown at top of section)  */}
             <div
                 className="flex items-center justify-between gap-4 rounded-2xl px-5 py-4"
                 style={{
@@ -123,7 +105,7 @@ export function StickyClaimBar({
                         style={{ background: "rgba(241,169,27,0.15)" }}>
                         <ShieldCheck className="w-4 h-4" style={{ color: "#F1A91B" }} />
                     </div>
-                <div className="min-w-0">
+                    <div className="min-w-0">
                         {densityPressure?.badge && (
                             <div className="text-[10px] font-black uppercase tracking-wider mb-1"
                                 style={{ color: densityPressure.urgency === 'critical' ? '#ef4444' : densityPressure.urgency === 'high' ? '#f59e0b' : '#22c55e' }}>
@@ -136,7 +118,8 @@ export function StickyClaimBar({
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
                     {suggestHref && (
-                        <Link aria-label="Navigation Link"
+                        <Link
+                            aria-label="Suggest edit"
                             href={suggestHref}
                             className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-white/50 transition-colors hover:text-white"
                             style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}
@@ -145,7 +128,8 @@ export function StickyClaimBar({
                             Suggest edit
                         </Link>
                     )}
-                    <Link aria-label="Navigation Link"
+                    <Link
+                        aria-label={copy.cta}
                         href={claimHref}
                         className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider text-black transition-all hover:scale-[1.02]"
                         style={{ background: "#F1A91B" }}
@@ -156,7 +140,6 @@ export function StickyClaimBar({
                 </div>
             </div>
 
-            {/*  Sticky bottom bar (mobile only, appears on scroll)  */}
             <div
                 className={`fixed bottom-0 left-0 right-0 z-50 md:hidden transition-all duration-300 ${visible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
                     }`}
@@ -175,7 +158,8 @@ export function StickyClaimBar({
                         <div className="text-[10px] text-white/40">{copy.tagline}</div>
                     </div>
                     <div className="flex items-center gap-2">
-                        <Link aria-label="Navigation Link"
+                        <Link
+                            aria-label={copy.cta}
                             href={claimHref}
                             className="px-5 py-2.5 rounded-xl text-sm font-black uppercase tracking-wider text-black"
                             style={{ background: "#F1A91B" }}
@@ -197,10 +181,6 @@ export function StickyClaimBar({
     );
 }
 
-/**
- * ClaimTopBadge — Compact always-visible badge for above-fold placement on listing pages.
- * Does not scroll-trigger — always present.
- */
 export function ClaimTopBadge({
     href = "/claim",
     label = "Claim this listing",
@@ -209,7 +189,8 @@ export function ClaimTopBadge({
     label?: string;
 }) {
     return (
-        <Link aria-label="Navigation Link"
+        <Link
+            aria-label={label}
             href={href}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-black uppercase tracking-wide text-black transition-all hover:scale-[1.02]"
             style={{ background: "#F1A91B", boxShadow: "0 2px 12px rgba(241,169,27,0.3)" }}

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
+import { buildEmptyMarketConversionCopy } from '@/lib/directory/conversion-copy';
 
 interface EmptyMarketStateProps {
     country: string;
@@ -12,6 +13,7 @@ export function EmptyMarketState({ country, region, city, dataIssue }: EmptyMark
     const locationName = city ? `${city}, ${region || country}` : region ? `${region}, ${country}` : country;
     const locationQuery = encodeURIComponent(locationName);
     const hasDataIssue = Boolean(dataIssue);
+    const copy = buildEmptyMarketConversionCopy(locationName, hasDataIssue);
 
     return (
         <div style={{
@@ -46,7 +48,7 @@ export function EmptyMarketState({ country, region, city, dataIssue }: EmptyMark
                     fontWeight: 900,
                     letterSpacing: '0.08em',
                 }}>
-                    {hasDataIssue ? 'DATA' : 'GAP'}
+                    {copy.label}
                 </div>
 
                 <h2 style={{
@@ -55,7 +57,7 @@ export function EmptyMarketState({ country, region, city, dataIssue }: EmptyMark
                     color: '#F9FAFB',
                     marginBottom: 12,
                 }}>
-                    {hasDataIssue ? 'Directory records are temporarily unavailable' : `Source-backed supply is thin in ${locationName}`}
+                    {copy.headline}
                 </h2>
 
                 <p style={{
@@ -64,18 +66,7 @@ export function EmptyMarketState({ country, region, city, dataIssue }: EmptyMark
                     lineHeight: 1.6,
                     marginBottom: 24,
                 }}>
-                    {hasDataIssue ? (
-                        <>
-                            Haul Command could not read the directory data source for this view. This is not a market-coverage signal.
-                            Refresh the Supabase connection before treating this search as empty.
-                        </>
-                    ) : (
-                        <>
-                            Haul Command does not have enough source-backed directory coverage for this market yet.
-                            Submit the need, claim your profile, suggest a provider, or sponsor the gap so the next
-                            broker, carrier, or shipper has a clearer path.
-                        </>
-                    )}
+                    {copy.body}
                 </p>
 
                 <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 28 }}>
@@ -90,7 +81,7 @@ export function EmptyMarketState({ country, region, city, dataIssue }: EmptyMark
                                 borderRadius: 8,
                             }}
                         >
-                            Request Route Support
+                            {copy.primaryCta}
                         </Button>
                     </Link>
 
@@ -107,7 +98,7 @@ export function EmptyMarketState({ country, region, city, dataIssue }: EmptyMark
                                 borderRadius: 8,
                             }}
                         >
-                            Claim Your Profile
+                            {copy.claimCta}
                         </Button>
                     </Link>
 
@@ -124,7 +115,7 @@ export function EmptyMarketState({ country, region, city, dataIssue }: EmptyMark
                                 borderRadius: 8,
                             }}
                         >
-                            Sponsor This Gap
+                            {copy.sponsorCta}
                         </Button>
                     </Link>
                 </div>
@@ -132,7 +123,7 @@ export function EmptyMarketState({ country, region, city, dataIssue }: EmptyMark
                 <p style={{ color: '#6B7280', fontSize: 12, lineHeight: 1.5, margin: 0 }}>
                     {hasDataIssue
                         ? dataIssue
-                        : 'Thin markets are labeled honestly. Haul Command will not pretend local coverage exists until source-backed records, claims, or request activity support it.'}
+                        : copy.footnote}
                 </p>
             </div>
         </div>

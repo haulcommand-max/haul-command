@@ -332,7 +332,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
                 data-profile-event="profile_request_started"
                 className="hc-btn-primary px-6 py-3 rounded-xl flex items-center gap-2">
                 <Navigation className="w-4 h-4" />
-                Request Dispatch
+                Check Route Fit
               </Link>
             </div>
           </div>
@@ -529,7 +529,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
               <div className="mt-4 p-3 rounded-lg bg-amber-500/5 border border-amber-500/20 flex items-start gap-2">
                 <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
                 <p className="text-xs text-amber-200/70">
-                  This profile is unseeded and not yet claimed. Compliance fields will populate when the operator claims their profile.
+                  This profile is unclaimed or source-limited. Compliance fields will populate when the operator claims the profile and adds proof assets.
                 </p>
               </div>
             )}
@@ -539,7 +539,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
           <div className="hc-card rounded-2xl p-6">
             <div className="flex items-center gap-2 mb-5">
               <Zap className="w-5 h-5 text-[#F1A91B]" />
-              <h2 className="text-sm font-black text-white uppercase tracking-wider">Capability Matrix</h2>
+              <h2 className="text-sm font-black text-white uppercase tracking-wider">Route-Fit Checklist</h2>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8">
@@ -705,7 +705,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
                 <Link href={`/auth/register?intent=dispatch&target=${id}`}
                   data-profile-event="profile_request_started"
                   className="hc-btn-primary w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm">
-                  <Zap className="w-4 h-4" /> Request Dispatch
+                  <Zap className="w-4 h-4" /> Check Route Fit
                 </Link>
               ) : (
                 <>
@@ -717,7 +717,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
                   <Link href={`/auth/register?intent=dispatch&target=${id}`}
                     data-profile-event="profile_request_started"
                     className="hc-btn-secondary w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm">
-                    <MessageSquare className="w-4 h-4" /> Request Quote
+                    <MessageSquare className="w-4 h-4" /> Start Support Request
                   </Link>
                 </>
               )}
@@ -788,9 +788,9 @@ export default async function DossierPage({ params }: { params: { id: string } }
             <div className="hc-card rounded-2xl p-5 border-amber-500/20 bg-amber-500/5">
               <AlertTriangle className="w-5 h-5 text-amber-400 mb-2" />
               <p className="text-xs font-bold text-amber-300 mb-1">Is this your listing?</p>
-              <p className="text-xs text-amber-100/60 mb-3">Claim it free in 60 seconds to unlock trust scores, broker leads, and verified badges.</p>
+              <p className="text-xs text-amber-100/60 mb-3">Start a free claim in 60 seconds. Add service areas, proof assets, and contact rules. Verified badges appear after review.</p>
               <Link href={`/claim?entity=${operator.contact_id || id}&operator=${id}`} data-profile-event="profile_claim_clicked" className="hc-btn-primary w-full py-2 rounded-lg flex items-center justify-center gap-2 text-xs">
-                Claim Free
+                Start Free Claim
               </Link>
             </div>
           )}
@@ -821,7 +821,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
               }`} />
             </div>
             <div>
-              <p className="text-sm font-bold text-white leading-tight">{operator.company || operator.name || 'Verified Operator'}</p>
+              <p className="text-sm font-bold text-white leading-tight">{operator.company || operator.name || 'Directory Record'}</p>
               <p className="text-xs text-amber-200/60">{locationDisplay} · {freshnessText}</p>
             </div>
           </div>
@@ -829,7 +829,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
             data-profile-event="profile_request_started"
             className="hc-btn-primary px-6 py-2.5 rounded-xl flex items-center gap-2 text-sm whitespace-nowrap">
             <MessageSquare className="w-4 h-4" />
-            Request Live Quote
+            Start Support Request
           </Link>
         </div>
       </div>

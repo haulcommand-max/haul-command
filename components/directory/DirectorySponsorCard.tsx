@@ -1,13 +1,9 @@
 import Link from 'next/link';
 
 //
-// DIRECTORY SPONSOR CARD — Injected between directory results
-//
-// Shows empty-market sponsor inventory or live sponsor creative.
-// Positions: After result #3 and #10 in the operator listing.
-//
-// Design: Distinguished from organic results with gold border +
-// "Sponsored" label for FTC compliance. Links to /advertise.
+// DIRECTORY SPONSOR CARD - Injected between directory results.
+// Keeps sponsor placement clearly labeled and avoids fake rank, availability,
+// or verification claims.
 //
 
 interface DirectorySponsorCardProps {
@@ -16,24 +12,30 @@ interface DirectorySponsorCardProps {
   countryCode?: string;
 }
 
-const COPY: Record<string, { headline: string; body: string; cta: string }> = {
+const COPY: Record<string, { headline: string; body: string; cta: string; marker: string }> = {
   upper: {
-    headline: 'Your Business Here',
-    body: 'Reach operators and brokers searching in this territory. Sponsor sponsor placement with verified audience — not general traffic.',
-    cta: 'Become a Territory Sponsor',
+    headline: 'Be the labeled sponsor beside this market search',
+    body: 'Reach buyers comparing pilot cars, permit help, staging, repair, and route support in this territory. Placement is labeled and cannot manufacture rank, availability, or verification.',
+    cta: 'Sponsor this market',
+    marker: 'AD',
   },
   lower: {
-    headline: 'Want more visibility?',
-    body: 'Self-serve CPC campaigns start at $0.75/click. Or claim an corridor sponsorship. Industry-only traffic.',
-    cta: 'Launch a Campaign',
+    headline: 'Put your offer next to real support intent',
+    body: 'Launch labeled directory placement for eligible searches instead of buying generic traffic. Buyers stay in a proof-aware workflow.',
+    cta: 'Launch placement',
+    marker: 'SP',
   },
 };
 
 export default function DirectorySponsorCard({ position, stateCode, countryCode }: DirectorySponsorCardProps) {
   const copy = COPY[position];
+  const marketQuery = new URLSearchParams();
+  if (stateCode) marketQuery.set('state', stateCode);
+  if (countryCode) marketQuery.set('country', countryCode);
+  const query = marketQuery.toString();
   const href = position === 'upper'
-    ? `/advertise/territory${stateCode ? `?state=${stateCode}` : ''}`
-    : '/advertise/buy';
+    ? `/advertise/territory${query ? `?${query}` : ''}`
+    : `/advertise/buy${query ? `?${query}` : ''}`;
 
   return (
     <div
@@ -48,7 +50,6 @@ export default function DirectorySponsorCard({ position, stateCode, countryCode 
         transition: 'all 0.2s ease',
       }}
     >
-      {/* Sponsor icon */}
       <div style={{
         width: 48,
         height: 48,
@@ -58,13 +59,15 @@ export default function DirectorySponsorCard({ position, stateCode, countryCode 
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: 24,
+        fontSize: 11,
+        fontWeight: 900,
+        color: '#D4A843',
         flexShrink: 0,
+        letterSpacing: '0.08em',
       }}>
-        {position === 'upper' ? '' : ''}
+        {copy.marker}
       </div>
 
-      {/* Copy */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
           <span style={{
@@ -89,7 +92,6 @@ export default function DirectorySponsorCard({ position, stateCode, countryCode 
         </p>
       </div>
 
-      {/* CTA */}
       <Link
         href={href}
         style={{

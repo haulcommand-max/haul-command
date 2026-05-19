@@ -173,7 +173,7 @@ export function DirectorySearchList({
     if (badges?.highPole) active.push({ key: 'highPole', label: 'Height Pole', color: 'bg-purple-500/10 text-purple-400 border-purple-500/20', icon: 'HP' });
     if (badges?.superload) active.push({ key: 'superload', label: 'Superload', color: 'bg-red-500/10 text-red-400 border-red-500/20', icon: 'SL' });
     if (badges?.avCertified) active.push({ key: 'av', label: 'AV Cert', color: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20', icon: 'AV' });
-    if (badges?.verified) active.push({ key: 'verified', label: 'Verified', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', icon: 'OK' });
+    if (badges?.verified) active.push({ key: 'verified', label: 'Proof checked', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', icon: 'OK' });
     if (active.length === 0) return null;
     return (
       <div className="flex flex-wrap gap-1 mt-1.5">
@@ -296,7 +296,7 @@ export function DirectorySearchList({
         <div className="rounded-2xl border border-dashed border-[#C6923A]/35 bg-[#0b0f14]/90 p-4">
           <div className="mb-3 text-center">
             <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#C6923A]">
-              Verified supply is thin for this search
+              Source-backed supply is thin for this search
             </p>
             <p className="mx-auto mt-2 max-w-2xl text-sm leading-6 text-slate-400">
               No matching support records are visible yet. Turn this search into a support packet,
@@ -368,14 +368,14 @@ export function DirectorySearchList({
                       <h3 className="text-white font-extrabold text-xl tracking-tight">{op.name}</h3>
                       {op.is_available_now && (
                         <span className="flex items-center gap-1 text-[10px] uppercase font-black tracking-widest px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                          <Zap className="w-3 h-3 fill-emerald-400" /> DISPATCH READY
+                          <Zap className="w-3 h-3 fill-emerald-400" /> LIVE PING
                         </span>
                       )}
                       {op.score >= 50 ? (
                         <span className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-md bg-[#C6923A]/10 text-[#C6923A] border border-[#C6923A]/30">
                           <Shield className="w-3 h-3 fill-[#C6923A]/20" />
                           <span className="text-white bg-[#C6923A] px-1.5 py-0.5 rounded text-[9px]">{op.score} TP</span>
-                          {op.score >= 80 ? 'Verified Authority' : 'Claimed'}
+                          {op.score >= 80 ? 'Strong proof signal' : 'Claimed/profile signal'}
                         </span>
                       ) : (
                         <span className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-md bg-neutral-800 text-neutral-400 border border-white/10">
@@ -400,7 +400,7 @@ export function DirectorySearchList({
                   <div className="flex flex-col md:items-end justify-center gap-4 relative z-10 border-t md:border-t-0 md:border-l border-white/10 pt-4 md:pt-0 md:pl-6 shrink-0 min-w-[200px]">
                     <div className="flex items-center justify-between md:justify-end gap-3 w-full">
                       <div className="text-left md:text-right">
-                        <span className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Command Score</span>
+                        <span className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Directory Score</span>
                         <div className="flex items-center gap-2">
                           <span className={`text-2xl font-black tracking-tighter ${op.score >= 80 ? 'text-emerald-400' : op.score >= 50 ? 'text-amber-400' : 'text-rose-400'}`}>
                             {op.score}
@@ -425,7 +425,7 @@ export function DirectorySearchList({
                       </Link>
                       {op.score < 50 && (
                         <Link href={`/claim?operator=${op.slug || op.id}`} className="flex-1 md:w-full items-center justify-center text-center px-4 py-2 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-400 text-[10px] uppercase tracking-widest font-bold rounded-xl transition-all">
-                          Is this your business? Claim it free -&gt;
+                          Is this your business? Start free claim -&gt;
                         </Link>
                       )}
                     </div>

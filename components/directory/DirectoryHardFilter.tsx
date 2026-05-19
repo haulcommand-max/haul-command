@@ -109,12 +109,12 @@ export function DirectoryHardFilter({ onFilterChange }: { onFilterChange?: (filt
             </h4>
             <div className="grid grid-cols-2 gap-2">
               {[
-                { key: 'highPole' as const, label: 'Height Pole Certified', icon: '', desc: 'Has height pole equipment' },
+                { key: 'highPole' as const, label: 'Listed height-pole capable', icon: '', desc: 'Equipment signal present' },
                 { key: 'twic' as const, label: 'TWIC Card', icon: '', desc: 'Port/maritime clearance' },
                 { key: 'hazmat' as const, label: 'HazMat Endorsed', icon: '', desc: 'Hazardous materials' },
-                { key: 'superload' as const, label: 'Superload Rated', icon: '', desc: '200,000+ lbs' },
-                { key: 'avCertified' as const, label: 'AV Escort Certified', icon: '', desc: 'Autonomous vehicle escort' },
-                { key: 'verified' as const, label: 'HC Verified', icon: '', desc: 'Identity confirmed' },
+                { key: 'superload' as const, label: 'Listed superload capable', icon: '', desc: 'Confirm before dispatch' },
+                { key: 'avCertified' as const, label: 'AV escort evidence', icon: '', desc: 'Source-backed where supplied' },
+                { key: 'verified' as const, label: 'Identity/proof checked', icon: '', desc: 'Verification evidence exists' },
               ].map(cert => (
                 <button
                   key={cert.key}
@@ -150,7 +150,7 @@ export function DirectoryHardFilter({ onFilterChange }: { onFilterChange?: (filt
             >
               <div className={`w-3 h-3 rounded-full ${filters.availableNow ? 'bg-[#22c55e] shadow-[0_0_10px_#22c55e]' : 'bg-neutral-700'}`} />
               <div className="text-left">
-                <div className="text-xs font-bold">Available Right Now</div>
+                <div className="text-xs font-bold">Live ping within 30 minutes</div>
                 <div className="text-[9px] text-neutral-600">Show only operators who pinged "Live" in the last 30 minutes</div>
               </div>
             </button>

@@ -401,7 +401,7 @@ export default async function CityDirectoryPage({ params }: PageProps) {
                         background: '#0a66c2', border: '1px solid #004182',
                         color: '#ffffff', fontSize: 12, fontWeight: 700, textDecoration: 'none',
                       }}>
-                        Contact
+                        Build support packet
                       </Link>
                     </div>
                   </div>
@@ -413,13 +413,13 @@ export default async function CityDirectoryPage({ params }: PageProps) {
             <div style={{ marginTop: 24, background: '#FDF4FF', border: '1px solid #F0ABFC', borderRadius: 14, padding: 20, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
               <div>
                 <h3 style={{ fontSize: 16, fontWeight: 800, color: '#86198F', marginBottom: 4 }}>Support {cityName}?</h3>
-                <p style={{ fontSize: 13, color: '#A21CAF', margin: 0 }}>Claim your free listing and appear in local heavy haul support searches.</p>
+                <p style={{ fontSize: 13, color: '#A21CAF', margin: 0 }}>Claim your listing, add proof, and make your service areas clearer before brokers compare options.</p>
               </div>
               <Link href={cityClaimHref(countryUpper, slug)} style={{
                 padding: '10px 20px', borderRadius: 8, background: '#86198F',
                 color: '#ffffff', fontSize: 13, fontWeight: 700, textDecoration: 'none', whiteSpace: 'nowrap',
               }}>
-                Claim Free
+                Start free claim
               </Link>
             </div>
           </div>

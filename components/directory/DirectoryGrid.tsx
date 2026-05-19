@@ -12,6 +12,7 @@ import {
   getDirectoryProofState,
   getDirectorySupportAttributes,
 } from '@/lib/directory/presentation';
+import { buildDirectoryCardCopy } from '@/lib/directory/conversion-copy';
 import { track } from '@/lib/analytics/track';
 import { ClipboardList, MapPin, Route, Shield, Star } from 'lucide-react';
 import type { DirectoryFilterState } from '@/components/ui/DirectorySearchBar';
@@ -53,18 +54,14 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters, dataIs
     return Boolean(record.contact_available || record.phone || record.phone_number || record.phone_e164 || record.phone_raw || record.website || record.email);
   }
 
-  function getClaimLine(record: any, proofLabel: string): string {
+  function getClaimLine(record: any, proofLabel: string, proofStrength: number): string {
     const status = String(record.claim_status || record.owner_claim_status || record.profile_claim_status || '').toLowerCase();
-    if (['claimed', 'approved', 'owner_verified'].includes(status) || record.claimed_at || record.owner_user_id) {
-      return 'Owned profile - use proof and service details before outreach.';
-    }
-    if (proofLabel === 'Contact Confirmed') {
-      return 'Contact path exists; request support through a consent-safe action.';
-    }
-    if (proofLabel === 'Claimable') {
-      return 'Unclaimed record - good target for claim, correction, or provider recruitment.';
-    }
-    return 'Listed record - verify fit before relying on it for a move.';
+    return buildDirectoryCardCopy({
+      proofLabel,
+      proofStrength,
+      isClaimed: ['claimed', 'approved', 'owner_verified'].includes(status) || Boolean(record.claimed_at || record.owner_user_id),
+      hasContactSignal: hasContactSignal(record),
+    }).proofLine;
   }
 
   return (
@@ -97,7 +94,7 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters, dataIs
 
       <div className="mb-4 flex items-center justify-between px-1">
         <span className="text-xs font-bold uppercase tracking-[0.12em] text-[#d8c6a3]">
-          {displayItems.length} support record{displayItems.length !== 1 ? 's' : ''} shown
+          {displayItems.length} source-backed record{displayItems.length !== 1 ? 's' : ''} found. Narrow by proof, contact path, or claim state
           {filtered !== null && filtered.length !== providers.length && (
             <span className="text-[#C6923A]"> (filtered from {providers.length})</span>
           )}
@@ -117,6 +114,12 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters, dataIs
           const displayName = getDisplayName(p);
           const contactSignal = hasContactSignal(p);
           const hasRealRating = Number(p.rating_avg) > 0 && Number(p.review_count ?? p.reviews_count ?? 0) > 0;
+          const cardCopy = buildDirectoryCardCopy({
+            proofLabel: proof.label,
+            proofStrength: proof.strength,
+            isClaimed: Boolean(p.claimed_at || p.owner_user_id || ['claimed', 'approved', 'owner_verified'].includes(String(p.claim_status || p.owner_claim_status || p.profile_claim_status || '').toLowerCase())),
+            hasContactSignal: contactSignal,
+          });
           const profileHref = recordId ? `/directory/dossier/${encodeURIComponent(recordId)}` : '/directory';
           const packetHref = recordId
             ? `/loads/post?support=${encodeURIComponent(recordId)}&country=${encodeURIComponent(targetCountry)}`
@@ -171,7 +174,7 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters, dataIs
                       {p.last_seen_at && <FreshnessBadge lastSeenAt={p.last_seen_at} />}
                     </div>
                     <p className="mt-2 text-xs leading-5 text-[#d8c6a3]">
-                      {getClaimLine(p, proof.label)}
+                      {getClaimLine(p, proof.label, proof.strength)}
                     </p>
                   </div>
 
@@ -247,7 +250,7 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters, dataIs
                     background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.10)',
                     color: '#d8c6a3',
                   }}>
-                    Source confidence: {proof.strength >= 4 ? 'high' : proof.strength >= 2 ? 'medium' : 'review needed'}
+                    Source confidence: {cardCopy.sourceConfidenceLabel}
                     </span>
                 </div>
               </div>
@@ -266,7 +269,7 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters, dataIs
                   }}
                   className="hover:bg-white/10"
                 >
-                  View Profile
+                  {cardCopy.profileCta}
                 </Link>
                 <Link
                   href={packetHref}
@@ -282,7 +285,7 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters, dataIs
                   className="hover:shadow-[0_0_24px_rgba(198,146,58,0.28)]"
                 >
                   <ClipboardList style={{ width: 14, height: 14 }} />
-                  Request Support
+                  {cardCopy.packetCta}
                 </Link>
                 <Link
                   href={claimHref}
@@ -295,7 +298,7 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters, dataIs
                   }}
                   className="hover:bg-[#C6923A]/14"
                 >
-                  Claim / Fix Profile
+                  {cardCopy.claimCta}
                 </Link>
               </div>
             </div>

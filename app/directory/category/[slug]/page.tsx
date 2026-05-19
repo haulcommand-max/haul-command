@@ -373,7 +373,7 @@ export default async function CategoryDirectoryPage({ params, searchParams }: Pr
                     </p>
                     {op.claimed ? (
                       <span className="shrink-0 px-1.5 py-0.5 bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[10px] font-bold rounded-md">
-                        Verified
+                        Claimed/proof signal
                       </span>
                     ) : (
                       <span className="shrink-0 px-1.5 py-0.5 bg-white/8 border border-white/10 text-white/30 text-[10px] font-bold rounded-md">
@@ -388,7 +388,7 @@ export default async function CategoryDirectoryPage({ params, searchParams }: Pr
                   {!op.claimed && (
                     <p className="text-xs text-amber-500/70 mt-1">
                       Operate or steward this listing?{' '}
-                      <span className="font-bold text-amber-500 group-hover:underline">Claim it free </span>
+                      <span className="font-bold text-amber-500 group-hover:underline">Start free claim </span>
                     </p>
                   )}
                 </Link>

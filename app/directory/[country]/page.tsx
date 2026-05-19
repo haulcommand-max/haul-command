@@ -155,14 +155,14 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
                     <div className="max-w-4xl mt-6">
                         <div className="flex items-center gap-3 mb-4">
                             <span className="bg-[#00FF66]/10 text-[#00FF66] text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
-                                Source-backed country hub
+                                Country directory and request hub
                             </span>
                         </div>
                         <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight mb-6">
-                            {formattedName} {serviceTerm} Network
+                            {formattedName} {serviceTerm} Directory
                         </h1>
                         <p className="text-xl text-[#8FA3B8] leading-relaxed max-w-2xl">
-                            The country-level directory layer for specialized freight routing, source-backed {serviceTerm.toLowerCase()} discovery, and permit-constraint paths across {formattedName}. Markets stay conservative when local supply data is sparse.
+                            Find the country-level starting point for {serviceTerm.toLowerCase()} discovery, permit-constraint paths, regional pages, and support requests across {formattedName}. When local supply data is sparse, Haul Command labels the gap instead of pretending the market is covered.
                         </p>
                     </div>
                 </div>
@@ -175,7 +175,7 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
 
                     {/* Region Expansion Hub (HC-W3-01 Downflow) */}
                     <div className="bg-[#0A0D14] border border-white/[0.04] rounded-2xl p-8">
-                        <h3 className="text-lg font-bold text-white mb-6">Select Operating State / Province</h3>
+                        <h2 className="text-lg font-bold text-white mb-6">Choose the operating region before you build the support stack</h2>
                         {subRegions.length > 0 ? (
                             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                                 {subRegions.map(region => (
@@ -190,16 +190,16 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
                             </div>
                         ) : (
                             <div className="rounded-xl border border-amber-300/25 bg-amber-300/10 p-4 text-sm leading-6 text-[#f7ddb3]">
-                                Region pages for {formattedName} are not published yet. Use the claim and post-load actions to create demand while the local source set is being verified.
+                                Region pages for {formattedName} are not published yet. Post a support request or claim/correct a listing so this market gets a traceable demand signal while the local source set is being verified.
                             </div>
                         )}
                     </div>
 
                     <div className="bg-[#0A0D14] border border-white/[0.04] rounded-2xl p-8">
-                        <div className="text-[10px] font-black uppercase tracking-[0.18em] text-[#C6923A]">Local operating vocabulary</div>
-                        <h2 className="mt-3 text-2xl font-black text-white">Search the way the market actually talks</h2>
+                        <div className="text-[10px] font-black uppercase tracking-[0.18em] text-[#C6923A]">Local terms buyers actually use</div>
+                        <h2 className="mt-3 text-2xl font-black text-white">Do not force a US pilot-car label onto every market</h2>
                         <p className="mt-3 text-sm leading-6 text-[#8FA3B8]">
-                            Haul Command localizes directory language from country-level operating data instead of forcing every market into a US-only pilot-car vocabulary.
+                            Haul Command uses country-level operating data, capability translations, measurement systems, currency, and phone context where sources exist. Missing fields stay source-dependent instead of being filled with guesses.
                         </p>
                         <div className="mt-5 grid gap-3 sm:grid-cols-2">
                             <Signal label="Primary term" value={serviceTerm} />
@@ -239,7 +239,7 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
                     <CompetitorAbsorptionCard
                         targetAudience="brokers"
                         competitorType="Static Directory"
-                        valueProp="Stop relying on stale PDFs. Build a source-backed support packet with claim state, route context, and dispatch actions before a broker commits the move."
+                        valueProp="When a static directory or PDF is all you have, the next step is still manual. Use Haul Command to move from country context to claim state, route context, and a support request before the broker commits the move."
                     />
 
                 </div>
@@ -249,7 +249,7 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
                     <ClaimFirstCTA
                         mode="claim"
                         marketLabel={formattedName}
-                        headline="Command this network."
+                        headline="Claim or correct this market profile."
                     />
 
                     {/* HC-W3-02: Authority Source Map */}
@@ -262,9 +262,9 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
                     <IntentMatrix
                         category={`${formattedName} Intelligence`}
                         intents={[
-                            { label: 'Oversize Enterprise API', url: '/enterprise/data', searchVolumeEstimate: 'high' },
-                            { label: 'Local Pack Conquer', url: '/tools/growth', searchVolumeEstimate: 'medium' },
-                            { label: 'Mobile workflow setup', url: '/app', searchVolumeEstimate: 'long-tail' }
+                            { label: 'Post a support request', url: `/loads/post?country=${countryKey}`, searchVolumeEstimate: 'high' },
+                            { label: 'Claim or correct a listing', url: `/claim?country=${countryKey}`, searchVolumeEstimate: 'medium' },
+                            { label: 'Sponsor a labeled market gap', url: `/advertise?placement=directory-market&country=${countryKey}`, searchVolumeEstimate: 'long-tail' }
                         ]}
                     />
                 </div>

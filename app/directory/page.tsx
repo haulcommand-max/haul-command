@@ -28,6 +28,10 @@ import {
     ROLE_EXPERIENCE_FAMILIES,
 } from '@/lib/role-experience/role-experience-engine';
 import { absoluteUrl, SITE_URL } from '@/lib/site-url';
+import {
+    directoryConversionCopy,
+    directorySearchPromiseCopy,
+} from '@/lib/directory/conversion-copy';
 
 export const dynamic = 'force-dynamic';
 
@@ -113,24 +117,7 @@ const userGroups = [
     },
 ];
 
-const directorySearchPromises = [
-    {
-        label: 'Find the right support',
-        body: 'Search for pilot cars, escort vehicles, permit help, route survey, yards, repair, equipment, brokers, carriers, and project-cargo specialists.',
-    },
-    {
-        label: 'Check the market',
-        body: 'Use country, state, province, city, corridor, and service-area signals. Thin markets show request and correction paths instead of fake coverage.',
-    },
-    {
-        label: 'Read the proof state',
-        body: 'Each listing shows whether it is listed, claimable, contact-confirmed, document-verified, or performance-backed.',
-    },
-    {
-        label: 'Take the next action',
-        body: 'Request help, claim or correct a listing, check requirements, build a support packet, or sponsor a real market gap.',
-    },
-];
+const directorySearchPromises = directorySearchPromiseCopy;
 
 const directoryRoleFamilyCopy: Record<string, { buyerLine: string; primaryAction: string }> = {
     operator: {
@@ -574,19 +561,19 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                     <section aria-labelledby="what-is-haul-command" className="mb-8 overflow-hidden rounded-2xl border border-[#C6923A]/25 bg-black/45 shadow-[0_20px_70px_rgba(0,0,0,0.28)] backdrop-blur-[2px]">
                         <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr]">
                             <div className="p-5 md:p-7">
-                                <div className="text-xs font-black uppercase tracking-[0.18em] text-[#C6923A]">Answer-first support layer</div>
+                                <div className="text-xs font-black uppercase tracking-[0.18em] text-[#C6923A]">{directoryConversionCopy.answerEyebrow}</div>
                                 <h2 id="what-is-haul-command" className="mt-3 text-2xl md:text-3xl font-black tracking-tight text-white">
-                                    What is Haul Command?
+                                    {directoryConversionCopy.answerHeadline}
                                 </h2>
                                 <p className="mt-4 rounded-xl border border-[#C6923A]/35 bg-[#C6923A]/10 p-4 text-sm md:text-base font-semibold leading-7 text-[#fff7e8]">
-                                    Haul Command helps heavy haul teams find pilot cars, escort vehicles, permit support, route survey help, yards, repair, parking, brokers, carriers, and field support for oversize and overweight loads. Search by role, location, service area, route need, and proof state before you call, request support, or build a move packet.
+                                    {directoryConversionCopy.answerSummary}
                                 </p>
                                 <div className="mt-5 space-y-4 text-sm md:text-base leading-7 text-[#d8c6a3]">
                                     <p>
-                                        Haul Command is built for the real heavy haul workflow: find the right escort support, understand route and permit requirements, compare support records, check service areas, and give operators or infrastructure partners a profile they can claim and improve.
+                                        {directoryConversionCopy.answerBody}
                                     </p>
                                     <p>
-                                        Proof states are intentionally conservative. Listed, claimable, contact confirmed, document verified, and performance verified mean different things, and the page should not imply live availability unless the underlying data supports it.
+                                        {directoryConversionCopy.trustRule}
                                     </p>
                                 </div>
                             </div>
@@ -607,12 +594,12 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                     <section aria-labelledby="directory-role-engine" className="mb-8 rounded-2xl border border-[#C6923A]/25 bg-black/45 p-5 shadow-[0_20px_70px_rgba(0,0,0,0.28)] backdrop-blur-[2px] md:p-7">
                         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
                             <div className="max-w-3xl">
-                                <div className="text-xs font-black uppercase tracking-[0.18em] text-[#C6923A]">Find support by role and market</div>
+                                <div className="text-xs font-black uppercase tracking-[0.18em] text-[#C6923A]">{directoryConversionCopy.roleEyebrow}</div>
                                 <h2 id="directory-role-engine" className="mt-2 text-2xl font-black tracking-tight text-white md:text-3xl">
-                                    Search heavy-haul support without guessing who is real, local, or claimable
+                                    {directoryConversionCopy.roleHeadline}
                                 </h2>
                                 <p className="mt-3 text-sm leading-6 text-[#d8c6a3] md:text-base">
-                                    Start with the role you need and the market where the load is moving. Haul Command shows public support records, claim paths, contact/proof signals, and next actions for pilot cars, escorts, permit support, route survey, yards, repair, suppliers, brokers, carriers, and project-cargo specialists.
+                                    {directoryConversionCopy.roleBody}
                                 </p>
                             </div>
                             <div className="flex flex-wrap gap-3">
@@ -726,7 +713,8 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
 
                     <section aria-labelledby="directory-sponsor-inventory" className="rounded-2xl border border-[#C6923A]/20 bg-black/45 p-5 md:p-7 shadow-[0_20px_70px_rgba(0,0,0,0.3)] backdrop-blur-[2px]">
                         <div className="text-xs font-black uppercase tracking-[0.18em] text-[#C6923A]">AdGrid inventory</div>
-                        <h2 id="directory-sponsor-inventory" className="mt-2 text-2xl md:text-3xl font-black tracking-tight text-white">Sponsor the exact support moment buyers are searching</h2>
+                        <h2 id="directory-sponsor-inventory" className="mt-2 text-2xl md:text-3xl font-black tracking-tight text-white">{directoryConversionCopy.sponsorHeadline}</h2>
+                        <p className="mt-3 max-w-3xl text-sm leading-6 text-[#d8c6a3]">{directoryConversionCopy.sponsorBody}</p>
                         <div className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
                             {sponsorInventory.map((slot) => (
                                 <Link key={slot.title} href={slot.href} className="rounded-lg border border-white/10 bg-white/[0.05] p-4 transition-colors hover:border-[#C6923A] hover:bg-[#C6923A]/10">
@@ -751,7 +739,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
 
                     <section aria-labelledby="directory-links" className="rounded-2xl border border-[#C6923A]/20 bg-black/45 p-5 md:p-7 shadow-[0_20px_70px_rgba(0,0,0,0.25)] backdrop-blur-[2px]">
                         <div className="text-xs font-black uppercase tracking-[0.18em] text-[#C6923A]">Connected heavy haul graph</div>
-                        <h2 id="directory-links" className="mt-2 text-2xl md:text-3xl font-black tracking-tight text-white">Keep moving from search to requirements, tools, and claim paths</h2>
+                        <h2 id="directory-links" className="mt-2 text-2xl md:text-3xl font-black tracking-tight text-white">{directoryConversionCopy.linkGraphHeadline}</h2>
                         <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
                             {internalLinkGroups.map((group) => (
                                 <div key={group.title} className="rounded-xl border border-white/10 bg-white/[0.05] p-4">
@@ -782,7 +770,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                     </section>
 
                     <section aria-label="Directory trust rule" className="rounded-2xl border border-dashed border-[#C6923A]/25 bg-black/35 p-5 text-sm leading-6 text-[#d8c6a3] backdrop-blur-[2px]">
-                        <strong className="text-white">Trust rule:</strong> Haul Command separates listed, claimable, contact-confirmed, document-verified, and performance-backed records. If a market is thin, use the request, claim, correction, or sponsor paths instead of assuming coverage is live.
+                        <strong className="text-white">Trust rule:</strong> {directoryConversionCopy.trustRule}
                     </section>
                 </div>
             </HCContentSection>

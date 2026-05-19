@@ -23,13 +23,13 @@ export default function ClaimValueContrast({ claimUrl }: ClaimValueContrastProps
                     </div>
                     <ul>
                         <li className="negative">Limited profile control</li>
-                        <li className="negative">No verified badge</li>
-                        <li className="negative">Low search visibility</li>
-                        <li className="negative">No Trust Report Card</li>
-                        <li className="negative">No availability status</li>
-                        <li className="negative">No dispatch eligibility</li>
-                        <li className="negative">No leaderboard position</li>
-                        <li className="negative">No competitor comparison</li>
+                        <li className="negative">Proof assets not attached</li>
+                        <li className="negative">Weaker placement signals</li>
+                        <li className="negative">Report card may stay incomplete</li>
+                        <li className="negative">Availability not operator-managed</li>
+                        <li className="negative">Dispatch fit still needs review</li>
+                        <li className="negative">Leaderboard signals limited</li>
+                        <li className="negative">Comparison surfaces use incomplete data</li>
                     </ul>
                 </div>
 
@@ -41,13 +41,13 @@ export default function ClaimValueContrast({ claimUrl }: ClaimValueContrastProps
                     </div>
                     <ul>
                         <li className="positive">Full profile control</li>
-                        <li className="positive">Verified trust badges</li>
-                        <li className="positive">Higher search ranking</li>
-                        <li className="positive">Active Trust Report Card</li>
-                        <li className="positive">Real-time availability</li>
-                        <li className="positive">Dispatch matching eligible</li>
-                        <li className="positive">Territory leaderboard</li>
-                        <li className="positive">Stronger in comparisons</li>
+                        <li className="positive">Can submit proof for review</li>
+                        <li className="positive">Eligible for stronger placement signals</li>
+                        <li className="positive">Report card can be completed</li>
+                        <li className="positive">Can manage availability signals</li>
+                        <li className="positive">Can qualify for dispatch matching after proof review</li>
+                        <li className="positive">Leaderboard signals can activate</li>
+                        <li className="positive">Comparison surfaces can use better data</li>
                     </ul>
                 </div>
             </div>

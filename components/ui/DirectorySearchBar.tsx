@@ -408,9 +408,9 @@ export function DirectorySearchBar({
           }}
           aria-label="Filter by verification"
         >
-          <option value="all">Any Proof State</option>
-          <option value="verified">Verified Records</option>
-          <option value="contact_confirmed">Contact Path</option>
+          <option value="all">Any source state</option>
+          <option value="verified">Document/performance verified</option>
+          <option value="contact_confirmed">Contact path present</option>
         </select>
       </div>
 
@@ -429,9 +429,9 @@ export function DirectorySearchBar({
         }}
         aria-label="Filter by claim status"
       >
-        <option value="all">Any Claim State</option>
-        <option value="claimed">Claimed Profiles</option>
-        <option value="unclaimed">Claimable / Unclaimed</option>
+        <option value="all">Any claim state</option>
+        <option value="claimed">Claimed profiles</option>
+        <option value="unclaimed">Open to claim/correction</option>
       </select>
 
       <div style={{ position: 'relative', flex: '0 0 auto' }}>
@@ -454,7 +454,7 @@ export function DirectorySearchBar({
           }}
           aria-label="Sort directory records"
         >
-          <option value="score">Best Fit</option>
+          <option value="score">Best proof fit</option>
           <option value="newest">Newest</option>
           <option value="name">Name</option>
         </select>
