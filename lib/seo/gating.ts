@@ -127,7 +127,7 @@ export function buildRobotsDirective(decision: GateDecision): {
 }
 
 function hubPathToAbsolute(path: string): string {
-    const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://haulcommand.com";
+    const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.haulcommand.com";
     return `${base}${path.startsWith("/") ? path : `/${path}`}`;
 }
 

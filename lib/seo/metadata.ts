@@ -17,7 +17,7 @@ import type { Metadata } from 'next';
 import { getGlobalHreflangTags } from '@/lib/seo/hreflang';
 
 const SITE_NAME = 'Haul Command';
-const SITE_URL = 'https://haulcommand.com';
+const SITE_URL = 'https://www.haulcommand.com';
 const DEFAULT_IMAGE = '/og/default.jpg';
 
 // ─── Core factory ─────────────────────────────────────────────────────────────

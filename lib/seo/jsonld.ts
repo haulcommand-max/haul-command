@@ -7,7 +7,7 @@
  * Additive only — never removes existing inline schemas.
  */
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.haulcommand.com';
 const ORG_NAME = 'Haul Command';
 const ORG_LOGO = `${SITE_URL}/logo.png`;
 

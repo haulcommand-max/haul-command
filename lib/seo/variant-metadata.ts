@@ -16,7 +16,7 @@ import { createClient } from '@supabase/supabase-js';
 import { getHreflangLinks } from './hreflang';
 import type { SeoPageVariant, PageKind } from './routes';
 
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com').replace(/\/+$/, '');
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.haulcommand.com').replace(/\/+$/, '');
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 

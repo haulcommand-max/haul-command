@@ -15,7 +15,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { getHreflangSetsForSitemap } from './hreflang';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.haulcommand.com';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

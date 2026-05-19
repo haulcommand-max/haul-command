@@ -12,7 +12,7 @@
  *   await pingSitemaps();
  */
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://haulcommand.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.haulcommand.com';
 
 // IndexNow key — generate a random key and place it as a static file at /{key}.txt
 const INDEXNOW_KEY = process.env.INDEXNOW_KEY;

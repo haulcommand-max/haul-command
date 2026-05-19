@@ -7,7 +7,7 @@ import { normalizeSlug, normalizeCity } from './slug-helper';
  * Prevents logic drift between sitemaps, frontend, and schema.
  */
 
-const DOMAIN = 'https://haulcommand.com';
+const DOMAIN = 'https://www.haulcommand.com';
 
 export const Canonical = {
     // Geo Hubs
