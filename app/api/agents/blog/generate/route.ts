@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { generateArticle, generateBatch } from '@/lib/ai/gemini'
 import { createClient } from '@supabase/supabase-js'
+import { isInternalRequest } from '@/lib/auth/internal-request'
 
 function getSupabase() {
   return createClient(
@@ -10,6 +11,10 @@ function getSupabase() {
 }
 
 export async function POST(req: NextRequest) {
+  if (!isInternalRequest(req.headers)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const supabase = getSupabase()
   const { count = 10, country } = await req.json()
 
@@ -22,7 +27,7 @@ export async function POST(req: NextRequest) {
   if (country) query = query.eq('country_code', country)
 
   const { data: articles, error } = await query
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return NextResponse.json({ error: 'Blog article lookup failed' }, { status: 500 })
   if (!articles?.length) return NextResponse.json({ processed: 0, message: 'No empty articles found' })
 
   const jobId = crypto.randomUUID()

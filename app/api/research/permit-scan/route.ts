@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { scrapePermitSite } from '@/lib/research/firecrawl'
 import { searchPermitChanges } from '@/lib/research/tavily'
 import { createClient } from '@supabase/supabase-js'
+import { isInternalRequest } from '@/lib/auth/internal-request'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -9,6 +10,10 @@ const supabase = createClient(
 )
 
 export async function POST(req: NextRequest) {
+  if (!isInternalRequest(req.headers)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const { state, url } = await req.json()
   if (!state) return NextResponse.json({ error: 'state required' }, { status: 400 })
 

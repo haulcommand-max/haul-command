@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { GoogleGenAI } from '@google/genai';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 // Requires service role to forcefully update any active operator SEO without RLS blocks
 const supabase = createClient(
@@ -17,6 +18,10 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
  */
 export async function POST(req: NextRequest) {
   try {
+    if (!isInternalRequest(req.headers)) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     // 1. Fetch operators missing a meta description.
     const { data: listings, error } = await supabase
       .from('listings')
@@ -87,6 +92,7 @@ Rules:
     });
 
   } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    console.error('[batch/generate-seo] failed:', err);
+    return NextResponse.json({ error: 'SEO batch generation failed' }, { status: 500 });
   }
 }

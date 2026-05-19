@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { generateSEOPage, generateBatch } from '@/lib/ai/gemini'
 import { createClient } from '@supabase/supabase-js'
+import { isInternalRequest } from '@/lib/auth/internal-request'
 
 function getSupabase() {
   return createClient(
@@ -10,6 +11,10 @@ function getSupabase() {
 }
 
 export async function POST(req: NextRequest) {
+  if (!isInternalRequest(req.headers)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const supabase = getSupabase()
   const { count = 25, country } = await req.json()
 
@@ -22,7 +27,7 @@ export async function POST(req: NextRequest) {
   if (country) query = query.eq('country', country)
 
   const { data: pages, error } = await query
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return NextResponse.json({ error: 'SEO page lookup failed' }, { status: 500 })
   if (!pages?.length) return NextResponse.json({ processed: 0, message: 'No empty SEO pages found' })
 
   const jobId = crypto.randomUUID()

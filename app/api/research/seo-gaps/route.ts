@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { searchIndustry } from '@/lib/research/tavily'
 import { createClient } from '@supabase/supabase-js'
+import { isInternalRequest } from '@/lib/auth/internal-request'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -8,6 +9,10 @@ const supabase = createClient(
 )
 
 export async function POST(req: NextRequest) {
+  if (!isInternalRequest(req.headers)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const { keyword, country = 'United States' } = await req.json()
   if (!keyword) return NextResponse.json({ error: 'keyword required' }, { status: 400 })
 

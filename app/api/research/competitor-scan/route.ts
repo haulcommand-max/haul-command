@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { crawlCompetitor } from '@/lib/research/firecrawl'
 import { searchCompetitors } from '@/lib/research/tavily'
 import { createClient } from '@supabase/supabase-js'
+import { isInternalRequest } from '@/lib/auth/internal-request'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -16,6 +17,10 @@ const DEFAULT_COMPETITORS = [
 ]
 
 export async function POST(req: NextRequest) {
+  if (!isInternalRequest(req.headers)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const { domains = DEFAULT_COMPETITORS } = await req.json()
 
   const [crawlResults, searchResults] = await Promise.allSettled([

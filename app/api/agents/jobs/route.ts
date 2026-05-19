@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { isInternalRequest } from '@/lib/auth/internal-request'
 
 function getSupabase() {
   return createClient(
@@ -8,7 +9,11 @@ function getSupabase() {
   )
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  if (!isInternalRequest(req.headers)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const supabase = getSupabase()
   const { data } = await supabase
     .from('hc_agent_jobs')
