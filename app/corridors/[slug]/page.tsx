@@ -10,6 +10,10 @@ import {
   getCorridorSeoPageBySlug,
   type CorridorSeoPageModel,
 } from '@/lib/corridors/corridor-seo-page';
+import {
+  getPageSeoContract,
+  metadataFromDbPageSeoContract,
+} from '@/lib/seo/page-seo-contract-db';
 import { MapPin, TrendingUp, Truck, ChevronRight, Shield, DollarSign, FileText } from 'lucide-react';
 
 interface PageProps { params: Promise<{ slug: string }>; }
@@ -24,6 +28,10 @@ function createCorridorPageClient() {
 
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
+  const canonicalPath = `/corridors/${slug}`;
+  const contract = await getPageSeoContract(canonicalPath);
+  if (contract) return metadataFromDbPageSeoContract(contract, canonicalPath);
+
   const supabase = createCorridorPageClient();
   const { data } = await supabase.from('hc_corridors').select('name,start_state,end_state,country_code').eq('corridor_key', slug).maybeSingle();
   if (!data) {
@@ -44,7 +52,7 @@ export async function generateMetadata({ params }: PageProps) {
   return generatePageMetadata({
     title: `${name} Heavy Haul Corridor — Escort Requirements & Rates`,
     description: `Live pilot car supply, permit requirements, and rate benchmarks for the ${name} heavy haul corridor. Find verified escort operators and post loads.`,
-    canonicalPath: `/corridors/${slug}`,
+    canonicalPath,
   });
 }
 

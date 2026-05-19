@@ -6,6 +6,10 @@ import { AuthoritySourceMap } from '@/components/seo/AuthoritySourceMap';
 import { IntentMatrix } from '@/components/seo/IntentMatrix';
 import { CompetitorAbsorptionCard } from '@/components/seo/CompetitorAbsorptionCard';
 import { ClaimFirstCTA } from '@/components/seo/ClaimFirstCTA';
+import {
+    getPageSeoContract,
+    metadataFromDbPageSeoContract,
+} from '@/lib/seo/page-seo-contract-db';
 
 interface PageProps {
     params: Promise<{ country?: string; countryCode?: string }> | { country?: string; countryCode?: string };
@@ -29,12 +33,16 @@ export async function generateMetadata({ params }: PageProps) {
     const country = await resolveCountryParam(params);
     const formattedCountry = country.toUpperCase();
     const countryKey = country.toLowerCase();
+    const canonicalPath = `/directory/${countryKey}`;
+    const contract = await getPageSeoContract(canonicalPath);
+    if (contract) return metadataFromDbPageSeoContract(contract, canonicalPath);
+
     const hasPublishedRegionSet = Boolean(COUNTRY_REGIONS[countryKey]?.length);
     
     return generatePageMetadata({
         title: `${formattedCountry} Pilot Car Directory & Escort Network`,
         description: `Access source-backed heavy haul pilot car records, region-level regulation paths, and corridor support actions in ${formattedCountry}. Sparse markets stay clearly labeled until evidence improves.`,
-        canonicalPath: `/directory/${countryKey}`,
+        canonicalPath,
         countryCode: countryKey,
         noIndex: !hasPublishedRegionSet,
     });

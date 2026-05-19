@@ -5,6 +5,10 @@ import { AeoAnswerCard } from "@/components/seo/AeoAnswerCard";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { buildFAQPageJsonLd, buildQAPageJsonLd } from "@/lib/seo/jsonld";
 import {
+  getPageSeoContract,
+  metadataFromDbPageSeoContract,
+} from "@/lib/seo/page-seo-contract-db";
+import {
   buildLocaleCityServiceCanonical,
   buildLocaleCityServicePath,
   cityServiceIndexabilityScore,
@@ -105,6 +109,10 @@ function buildDirectAnswer(facts: ReturnType<typeof buildPageFacts>, providerCou
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolved = await params;
+  const relativePath = buildLocaleCityServicePath(resolved);
+  const contract = await getPageSeoContract(relativePath);
+  if (contract) return metadataFromDbPageSeoContract(contract, relativePath);
+
   const records = await fetchCityServiceRecords(resolved);
   const facts = buildPageFacts(resolved, records.length);
 
