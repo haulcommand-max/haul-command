@@ -1,18 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase/admin';
-
-const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+import { createClient } from '@/utils/supabase/server';
 
 export async function POST(req: NextRequest) {
   try {
-    const { partner, userId, source, url } = await req.json();
+    const { partner, source, url } = await req.json();
     if (!partner) return NextResponse.json({ error: 'partner required' }, { status: 400 });
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
 
     const { data, error } = await supabaseAdmin
       .from('affiliate_clicks')
       .insert({
         partner,
-        user_id: userId && UUID_RE.test(userId) ? userId : null,
+        user_id: user?.id ?? null,
         source: source || 'direct',
         url: url || null,
       })

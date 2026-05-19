@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
         const {
             event_type, session_id, corridor_slug, port_slug,
-            operator_id, properties, geo_region,
+            properties, geo_region,
             corridor_liquidity_score, supply_pct, surface,
         } = body;
 
@@ -18,13 +18,14 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'event_type required' }, { status: 400 });
         }
 
-        const supabase = createClient();
+        const supabase = await createClient();
+        const { data: { user } } = await supabase.auth.getUser();
         const { error } = await supabase.from('hc_events').insert({
             event_type,
             session_id: session_id ?? null,
             corridor_slug: corridor_slug ?? null,
             port_slug: port_slug ?? null,
-            operator_id: operator_id ?? null,
+            operator_id: user?.id ?? null,
             properties: properties ?? {},
             geo_region: geo_region ?? null,
             corridor_liquidity_score: corridor_liquidity_score ?? null,

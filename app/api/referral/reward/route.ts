@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getStripeClient } from '@/lib/stripe/client';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 export const runtime = 'nodejs';
 
@@ -16,9 +17,8 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
         const { referred_user_id } = body;
 
-        // Accept from webhook or internal call (verify CRON_SECRET for security)
-        const secret = req.headers.get('x-ops-secret') || req.nextUrl.searchParams.get('secret');
-        if (!process.env.CRON_SECRET || secret !== process.env.CRON_SECRET) {
+        // Accept only from trusted internal jobs/webhooks.
+        if (!isInternalRequest(req.headers)) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
@@ -101,6 +101,6 @@ export async function POST(req: NextRequest) {
         });
     } catch (err: any) {
         console.error('[referral/reward] Error:', err);
-        return NextResponse.json({ error: err.message || 'Internal error' }, { status: 500 });
+        return NextResponse.json({ error: 'Referral reward failed' }, { status: 500 });
     }
 }

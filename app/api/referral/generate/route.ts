@@ -75,7 +75,7 @@ export async function GET(req: NextRequest) {
         });
     } catch (err: any) {
         console.error('[referral/generate GET] Error:', err);
-        return NextResponse.json({ error: err.message || 'Internal error' }, { status: 500 });
+        return NextResponse.json({ error: 'Referral code lookup failed' }, { status: 500 });
     }
 }
 
@@ -143,6 +143,6 @@ export async function POST(req: NextRequest) {
         });
     } catch (err: any) {
         console.error('[referral/generate POST] Error:', err);
-        return NextResponse.json({ error: err.message || 'Internal error' }, { status: 500 });
+        return NextResponse.json({ error: 'Referral code generation failed' }, { status: 500 });
     }
 }

@@ -4,16 +4,10 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+import { createClient } from '@/utils/supabase/server';
 
 export async function POST(req: NextRequest) {
-    const cookieStore = await cookies();
-    const svc = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { cookies: { getAll: () => cookieStore.getAll() } }
-    );
+    const svc = getSupabaseAdmin();
 
     let body: Record<string, unknown>;
     try { body = await req.json(); } catch {
@@ -34,12 +28,8 @@ export async function POST(req: NextRequest) {
     // Get reporter if logged in
     let reporter_id: string | null = null;
     try {
-        const anonClient = createServerClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-            { cookies: { getAll: () => cookieStore.getAll() } }
-        );
-        const { data: { user } } = await anonClient.auth.getUser();
+        const supabase = await createClient();
+        const { data: { user } } = await supabase.auth.getUser();
         reporter_id = user?.id ?? null;
     } catch { /* anon report OK */ }
 
@@ -67,7 +57,7 @@ export async function POST(req: NextRequest) {
 
     if (error) {
         console.error('[data-issues POST]', error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return NextResponse.json({ error: 'Report submission failed' }, { status: 500 });
     }
 
     return NextResponse.json({ ok: true, message: 'Report submitted' }, { status: 201 });

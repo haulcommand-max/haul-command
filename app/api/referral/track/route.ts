@@ -7,16 +7,23 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { createClient } from '@/utils/supabase/server';
 
 export const runtime = 'nodejs';
 
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const { ref_code, referred_user_id } = body;
+        const { ref_code } = body;
+        const supabase = await createClient();
+        const { data: { user } } = await supabase.auth.getUser();
 
-        if (!ref_code || !referred_user_id) {
-            return NextResponse.json({ error: 'ref_code and referred_user_id required' }, { status: 400 });
+        if (!user) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        if (!ref_code) {
+            return NextResponse.json({ error: 'ref_code required' }, { status: 400 });
         }
 
         const admin = getSupabaseAdmin();
@@ -34,7 +41,7 @@ export async function POST(req: NextRequest) {
         }
 
         // Don't allow self-referral
-        if (refCode.operator_id === referred_user_id) {
+        if (refCode.operator_id === user.id) {
             return NextResponse.json({ error: 'Cannot use your own referral code' }, { status: 400 });
         }
 
@@ -42,7 +49,7 @@ export async function POST(req: NextRequest) {
         const { data: existingReward } = await admin
             .from('referral_rewards')
             .select('id')
-            .eq('referred_id', referred_user_id)
+            .eq('referred_id', user.id)
             .maybeSingle();
 
         if (existingReward) {
@@ -58,7 +65,7 @@ export async function POST(req: NextRequest) {
             .from('referral_rewards')
             .insert({
                 referrer_id: refCode.operator_id,
-                referred_id: referred_user_id,
+                referred_id: user.id,
                 referral_code_id: refCode.id,
                 status: 'pending',
                 reward_amount_usd: 25.00,
@@ -80,6 +87,6 @@ export async function POST(req: NextRequest) {
         });
     } catch (err: any) {
         console.error('[referral/track] Error:', err);
-        return NextResponse.json({ error: err.message || 'Internal error' }, { status: 500 });
+        return NextResponse.json({ error: 'Referral tracking failed' }, { status: 500 });
     }
 }
