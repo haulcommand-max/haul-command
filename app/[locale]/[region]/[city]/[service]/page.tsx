@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { AeoAnswerCard } from "@/components/seo/AeoAnswerCard";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { PageSeoContractJsonLd } from "@/components/seo/PageSeoContractJsonLd";
 import { buildFAQPageJsonLd, buildQAPageJsonLd } from "@/lib/seo/jsonld";
 import {
   getPageSeoContract,
@@ -199,6 +200,7 @@ export default async function LocaleCityServicePage({ params }: PageProps) {
 
   return (
     <main className="min-h-screen bg-[#050505] text-white">
+      <PageSeoContractJsonLd path={relativePath} />
       <JsonLd data={jsonLd} />
       <section className="border-b border-[#C6923A]/25 bg-black px-5 py-10">
         <div className="mx-auto max-w-6xl">

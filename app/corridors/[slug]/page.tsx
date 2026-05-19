@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
+import { PageSeoContractJsonLd } from '@/components/seo/PageSeoContractJsonLd';
 import {
   buildCorridorSeoJsonLd,
   getCorridorSeoPageBySlug,
@@ -61,6 +62,7 @@ function CorridorSeoSeedPage({ page }: { page: CorridorSeoPageModel }) {
 
   return (
     <main className="hc-page-shell hc-surface-site-dark pb-20">
+      <PageSeoContractJsonLd path={page.canonicalPath} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <div className="bg-[#0B0F14] text-white border-b border-white/[0.06]">
@@ -227,6 +229,7 @@ export default async function CorridorPage({ params }: PageProps) {
 
   return (
     <main className="hc-page-shell hc-surface-site-dark pb-20">
+      <PageSeoContractJsonLd path={`/corridors/${slug}`} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* Header */}

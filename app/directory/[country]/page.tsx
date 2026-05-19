@@ -6,6 +6,7 @@ import { AuthoritySourceMap } from '@/components/seo/AuthoritySourceMap';
 import { IntentMatrix } from '@/components/seo/IntentMatrix';
 import { CompetitorAbsorptionCard } from '@/components/seo/CompetitorAbsorptionCard';
 import { ClaimFirstCTA } from '@/components/seo/ClaimFirstCTA';
+import { PageSeoContractJsonLd } from '@/components/seo/PageSeoContractJsonLd';
 import {
     getPageSeoContract,
     metadataFromDbPageSeoContract,
@@ -58,9 +59,11 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
     const isUSA = countryKey === 'us';
     const formattedName = isUSA ? 'United States' : country.toUpperCase();
     const subRegions = COUNTRY_REGIONS[countryKey] ?? [];
+    const canonicalPath = `/directory/${countryKey}`;
 
     return (
         <main className="min-h-screen bg-[#050608] pb-24">
+            <PageSeoContractJsonLd path={canonicalPath} />
             {/* Master Hero Area */}
             <div className="relative overflow-hidden bg-[#0A0D14] border-b border-white/[0.05]">
                 {/* Global World Map Blur visual */}
