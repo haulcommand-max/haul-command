@@ -23956,9 +23956,6 @@ export type Database = {
           country_code: string | null
           term_id: string | null
           status: string | null
-          noindex: boolean
-          index_state: string
-          noindex_reason: string | null
           generated_at: string | null
           created_at: string | null
           updated_at: string | null
@@ -23971,9 +23968,6 @@ export type Database = {
           country_code?: string | null
           term_id?: string | null
           status?: string | null
-          noindex?: boolean
-          index_state?: string
-          noindex_reason?: string | null
           generated_at?: string | null
           created_at?: string | null
           updated_at?: string | null
@@ -23986,9 +23980,6 @@ export type Database = {
           country_code?: string | null
           term_id?: string | null
           status?: string | null
-          noindex?: boolean
-          index_state?: string
-          noindex_reason?: string | null
           generated_at?: string | null
           created_at?: string | null
           updated_at?: string | null
@@ -83928,21 +83919,19 @@ export type Database = {
         Returns: undefined
       }
       approve_claim: {
-        Args: {
-          p_claim_id: string
-          p_approved_by: string
-          p_notes: unknown
-        }
-        Returns: Json
-      }
-      approve_claim: {
-        Args: {
-          p_claim_id: string
-          p_admin_user_id: string
-          p_perks: unknown
-          p_approved_at: unknown
-        }
-        Returns: undefined
+        Args:
+          | {
+            p_claim_id: string
+            p_approved_by: string
+            p_notes: unknown
+          }
+          | {
+            p_claim_id: string
+            p_admin_user_id: string
+            p_perks: unknown
+            p_approved_at: unknown
+          }
+        Returns: Json | undefined
       }
       approve_vendor_application: {
         Args: {
@@ -83957,66 +83946,30 @@ export type Database = {
         Returns: Record<string, unknown>[]
       }
       array_to_halfvec: {
-        Args: {
-        }
-        Returns: unknown
-      }
-      array_to_halfvec: {
-        Args: {
-        }
-        Returns: unknown
-      }
-      array_to_halfvec: {
-        Args: {
-          double: unknown[]
-        }
-        Returns: unknown
-      }
-      array_to_halfvec: {
-        Args: {
-        }
+        Args:
+          | {
+          }
+          | {
+            double: unknown[]
+          }
         Returns: unknown
       }
       array_to_sparsevec: {
-        Args: {
-        }
-        Returns: unknown
-      }
-      array_to_sparsevec: {
-        Args: {
-        }
-        Returns: unknown
-      }
-      array_to_sparsevec: {
-        Args: {
-          double: unknown[]
-        }
-        Returns: unknown
-      }
-      array_to_sparsevec: {
-        Args: {
-        }
+        Args:
+          | {
+          }
+          | {
+            double: unknown[]
+          }
         Returns: unknown
       }
       array_to_vector: {
-        Args: {
-          double: unknown[]
-        }
-        Returns: unknown
-      }
-      array_to_vector: {
-        Args: {
-        }
-        Returns: unknown
-      }
-      array_to_vector: {
-        Args: {
-        }
-        Returns: unknown
-      }
-      array_to_vector: {
-        Args: {
-        }
+        Args:
+          | {
+            double: unknown[]
+          }
+          | {
+          }
         Returns: unknown
       }
       assess_quickpay_risk: {
@@ -84084,11 +84037,6 @@ export type Database = {
         }
         Returns: unknown
       }
-      binary_quantize: {
-        Args: {
-        }
-        Returns: unknown
-      }
       block_updates_deletes: {
         Args: {
         }
@@ -84101,30 +84049,28 @@ export type Database = {
         Returns: Json
       }
       build_claim_outreach_queue: {
-        Args: {
-          p_country_code: unknown
-          p_surface_type: unknown
-          p_tier_filter: unknown
-          p_limit_per_country: unknown
-          p_global_limit: unknown
-          p_min_priority: unknown
-          p_respect_fatigue: unknown
-          p_dry_run: unknown
-        }
-        Returns: string
-      }
-      build_claim_outreach_queue: {
-        Args: {
-          p_country_code: string
-          p_surface_type: string
-          p_tier_filter: string[]
-          p_limit_per_country: number
-          p_global_limit: number
-          p_min_priority: number
-          p_respect_fatigue: boolean
-          p_channel: string
-          p_dry_run: boolean
-        }
+        Args:
+          | {
+            p_country_code: unknown
+            p_surface_type: unknown
+            p_tier_filter: unknown
+            p_limit_per_country: unknown
+            p_global_limit: unknown
+            p_min_priority: unknown
+            p_respect_fatigue: unknown
+            p_dry_run: unknown
+          }
+          | {
+            p_country_code: string
+            p_surface_type: string
+            p_tier_filter: string[]
+            p_limit_per_country: number
+            p_global_limit: number
+            p_min_priority: number
+            p_respect_fatigue: boolean
+            p_channel: string
+            p_dry_run: boolean
+          }
         Returns: string
       }
       bulk_ingest_directory_listings: {
@@ -84342,28 +84288,23 @@ export type Database = {
         Returns: Json
       }
       compute_claim_priority_score: {
-        Args: {
-          p_surface_id: string
-          p_at_ts: unknown
-        }
-        Returns: Json
-      }
-      compute_claim_priority_score: {
-        Args: {
-          p_surface_id: unknown
-          p_country_code: unknown
-          p_surface_type: unknown
-          p_recompute_all: unknown
-          p_batch_limit: unknown
-          p_dry_run: unknown
-        }
-        Returns: number
-      }
-      compute_claim_priority_score: {
-        Args: {
-          p_surface_id: unknown
-        }
-        Returns: undefined
+        Args:
+          | {
+            p_surface_id: string
+            p_at_ts: unknown
+          }
+          | {
+            p_surface_id: unknown
+            p_country_code: unknown
+            p_surface_type: unknown
+            p_recompute_all: unknown
+            p_batch_limit: unknown
+            p_dry_run: unknown
+          }
+          | {
+            p_surface_id: unknown
+          }
+        Returns: Json | number | undefined
       }
       compute_claim_priority_score_batch: {
         Args: {
@@ -84478,33 +84419,31 @@ export type Database = {
         Returns: number
       }
       compute_fill_probability_v2: {
-        Args: {
-          p_posted_at: string
-          p_broker_trust_01: number
-          p_lane_density_01: number
-          p_backhaul_prob_01: number
-          p_deadhead_risk_01: number
-          p_ghost_score_01: number
-          p_rate_signal: string
-          p_distance_confidence: string
-        }
-        Returns: Record<string, unknown>[]
-      }
-      compute_fill_probability_v2: {
-        Args: {
-          p_load_id: string
-          p_posted_at: string
-          p_region: string
-          p_service_type: string
-          p_broker_trust_01: number
-          p_lane_density_01: number
-          p_backhaul_prob_01: number
-          p_rate_signal: string
-          p_verified_miles: number
-          p_ghost_score_01: number
-          p_deadhead_risk_01: number
-        }
-        Returns: Json
+        Args:
+          | {
+            p_posted_at: string
+            p_broker_trust_01: number
+            p_lane_density_01: number
+            p_backhaul_prob_01: number
+            p_deadhead_risk_01: number
+            p_ghost_score_01: number
+            p_rate_signal: string
+            p_distance_confidence: string
+          }
+          | {
+            p_load_id: string
+            p_posted_at: string
+            p_region: string
+            p_service_type: string
+            p_broker_trust_01: number
+            p_lane_density_01: number
+            p_backhaul_prob_01: number
+            p_rate_signal: string
+            p_verified_miles: number
+            p_ghost_score_01: number
+            p_deadhead_risk_01: number
+          }
+        Returns: Record<string, unknown>[] | Json
       }
       compute_geo_credibility: {
         Args: {
@@ -84700,16 +84639,6 @@ export type Database = {
         }
         Returns: number
       }
-      cosine_distance: {
-        Args: {
-        }
-        Returns: number
-      }
-      cosine_distance: {
-        Args: {
-        }
-        Returns: number
-      }
       create_ppl_lead: {
         Args: {
           p_payload: Json
@@ -84853,25 +84782,23 @@ export type Database = {
         Returns: unknown
       }
       enqueue_outreach_events: {
-        Args: {
-          p_batch_id: string
-          p_outreach_per_hour_global: unknown
-          p_outreach_per_hour_per_country: unknown
-          p_kill_switch_global_pause: unknown
-          p_pause_countries: unknown[]
-          p_pause_surface_types: unknown[]
-          p_dry_run: unknown
-        }
-        Returns: number
-      }
-      enqueue_outreach_events: {
-        Args: {
-          p_surface_id: string
-          p_priority_tier: string
-          p_channels: string[]
-          p_payload: unknown
-        }
-        Returns: Json
+        Args:
+          | {
+            p_batch_id: string
+            p_outreach_per_hour_global: unknown
+            p_outreach_per_hour_per_country: unknown
+            p_kill_switch_global_pause: unknown
+            p_pause_countries: unknown[]
+            p_pause_surface_types: unknown[]
+            p_dry_run: unknown
+          }
+          | {
+            p_surface_id: string
+            p_priority_tier: string
+            p_channels: string[]
+            p_payload: unknown
+          }
+        Returns: number | Json
       }
       enqueue_recent_active_loads: {
         Args: {
@@ -85312,8 +85239,8 @@ export type Database = {
       }
       halfvec_combine: {
         Args: {
-          double: unknown[]
-          double: unknown[]
+          double_0: unknown[]
+          double_1: unknown[]
         }
         Returns: number[]
       }
@@ -85449,15 +85376,13 @@ export type Database = {
         Returns: boolean
       }
       has_role: {
-        Args: {
-          p_role: string
-        }
-        Returns: boolean
-      }
-      has_role: {
-        Args: {
-          roles: string[]
-        }
+        Args:
+          | {
+            p_role: string
+          }
+          | {
+            roles: string[]
+          }
         Returns: boolean
       }
       has_role_in_scope: {
@@ -86217,29 +86142,27 @@ export type Database = {
         Returns: number
       }
       hc_compute_permit_complexity: {
-        Args: {
-          p_jurisdictions_count: unknown
-          p_load_height_in: unknown
-          p_load_width_in: unknown
-          p_load_weight_lbs: unknown
-          p_has_bridge_constraints: unknown
-          p_urban_density_score: unknown
-        }
-        Returns: Json
-      }
-      hc_compute_permit_complexity: {
-        Args: {
-          p_load_id: string
-          p_states_crossed: unknown
-          p_load_height_ft: unknown
-          p_load_width_ft: unknown
-          p_load_weight_lbs: unknown
-          p_night_move_required: unknown
-          p_urban_density_score: unknown
-          p_bridge_density_score: unknown
-          p_curfew_restrictions: unknown
-          p_seasonal_restrictions: unknown
-        }
+        Args:
+          | {
+            p_jurisdictions_count: unknown
+            p_load_height_in: unknown
+            p_load_width_in: unknown
+            p_load_weight_lbs: unknown
+            p_has_bridge_constraints: unknown
+            p_urban_density_score: unknown
+          }
+          | {
+            p_load_id: string
+            p_states_crossed: unknown
+            p_load_height_ft: unknown
+            p_load_width_ft: unknown
+            p_load_weight_lbs: unknown
+            p_night_move_required: unknown
+            p_urban_density_score: unknown
+            p_bridge_density_score: unknown
+            p_curfew_restrictions: unknown
+            p_seasonal_restrictions: unknown
+          }
         Returns: Json
       }
       hc_compute_profile_aging: {
@@ -86352,14 +86275,12 @@ export type Database = {
         Returns: Json
       }
       hc_corridor_liquidity_compute: {
-        Args: {
-        }
-        Returns: Json
-      }
-      hc_corridor_liquidity_compute: {
-        Args: {
-          p_country: string
-        }
+        Args:
+          | {
+          }
+          | {
+            p_country: string
+          }
         Returns: Json
       }
       hc_corridor_msg_count: {
@@ -86659,24 +86580,22 @@ export type Database = {
         Returns: string
       }
       hc_emit_event: {
-        Args: {
-          p_event_type: string
-          p_actor_type: unknown
-          p_actor_id: unknown
-          p_country_code: unknown
-          p_entity_type: unknown
-          p_entity_id: unknown
-          p_payload: unknown
-        }
-        Returns: string
-      }
-      hc_emit_event: {
-        Args: {
-          p_event_name: string
-          p_aggregate_type: string
-          p_aggregate_id: string
-          p_payload: Json
-        }
+        Args:
+          | {
+            p_event_type: string
+            p_actor_type: unknown
+            p_actor_id: unknown
+            p_country_code: unknown
+            p_entity_type: unknown
+            p_entity_id: unknown
+            p_payload: unknown
+          }
+          | {
+            p_event_name: string
+            p_aggregate_type: string
+            p_aggregate_id: string
+            p_payload: Json
+          }
         Returns: string
       }
       hc_enforce_not_banned: {
@@ -86785,15 +86704,13 @@ export type Database = {
         Returns: Json
       }
       hc_escrow_release: {
-        Args: {
-          p_escrow_id: string
-        }
-        Returns: Json
-      }
-      hc_escrow_release: {
-        Args: {
-          p_payment_id: number
-        }
+        Args:
+          | {
+            p_escrow_id: string
+          }
+          | {
+            p_payment_id: number
+          }
         Returns: Json
       }
       hc_estimate_route_economics: {
@@ -87974,22 +87891,20 @@ export type Database = {
         Returns: Json
       }
       hc_payment_route_select: {
-        Args: {
-          p_country_code: string
-          p_currency: string
-          p_amount_cents: number
-          p_has_plaid_linked: unknown
-        }
-        Returns: Record<string, unknown>[]
-      }
-      hc_payment_route_select: {
-        Args: {
-          p_country_code: string
-          p_currency: string
-          p_amount_cents: number
-          p_has_plaid_linked: unknown
-          p_direction: unknown
-        }
+        Args:
+          | {
+            p_country_code: string
+            p_currency: string
+            p_amount_cents: number
+            p_has_plaid_linked: unknown
+          }
+          | {
+            p_country_code: string
+            p_currency: string
+            p_amount_cents: number
+            p_has_plaid_linked: unknown
+            p_direction: unknown
+          }
         Returns: Record<string, unknown>[]
       }
       hc_payment_summary: {
@@ -88541,35 +88456,33 @@ export type Database = {
         Returns: Record<string, unknown>[]
       }
       hc_search_loads: {
-        Args: {
-          p_q: unknown
-          p_country_code: unknown
-          p_region: unknown
-          p_city: unknown
-          p_status: unknown
-          p_lat: unknown
-          p_lng: unknown
-          p_radius_km: unknown
-          p_h3_cells: unknown[]
-          p_limit: unknown
-          p_offset: unknown
-        }
-        Returns: Record<string, unknown>[]
-      }
-      hc_search_loads: {
-        Args: {
-          p_country_code: unknown
-          p_origin_state: unknown
-          p_dest_state: unknown
-          p_equipment_type: unknown
-          p_min_rate_cents: unknown
-          p_max_weight_lbs: unknown
-          p_urgency: unknown
-          p_corridor_id: unknown
-          p_page: unknown
-          p_per_page: unknown
-        }
-        Returns: Json
+        Args:
+          | {
+            p_q: unknown
+            p_country_code: unknown
+            p_region: unknown
+            p_city: unknown
+            p_status: unknown
+            p_lat: unknown
+            p_lng: unknown
+            p_radius_km: unknown
+            p_h3_cells: unknown[]
+            p_limit: unknown
+            p_offset: unknown
+          }
+          | {
+            p_country_code: unknown
+            p_origin_state: unknown
+            p_dest_state: unknown
+            p_equipment_type: unknown
+            p_min_rate_cents: unknown
+            p_max_weight_lbs: unknown
+            p_urgency: unknown
+            p_corridor_id: unknown
+            p_page: unknown
+            p_per_page: unknown
+          }
+        Returns: Record<string, unknown>[] | Json
       }
       hc_search_operators: {
         Args: {
@@ -89084,16 +88997,14 @@ export type Database = {
         Returns: Json
       }
       hc_trust_compute_batch: {
-        Args: {
-          p_limit: unknown
-        }
-        Returns: Json
-      }
-      hc_trust_compute_batch: {
-        Args: {
-          p_country_code: unknown
-          p_limit: unknown
-        }
+        Args:
+          | {
+            p_limit: unknown
+          }
+          | {
+            p_country_code: unknown
+            p_limit: unknown
+          }
         Returns: Json
       }
       hc_trust_recalc_batch: {
@@ -89372,16 +89283,6 @@ export type Database = {
         }
         Returns: number
       }
-      inner_product: {
-        Args: {
-        }
-        Returns: number
-      }
-      inner_product: {
-        Args: {
-        }
-        Returns: number
-      }
       is_admin: {
         Args: {
         }
@@ -89457,26 +89358,6 @@ export type Database = {
         }
         Returns: number
       }
-      l1_distance: {
-        Args: {
-        }
-        Returns: number
-      }
-      l1_distance: {
-        Args: {
-        }
-        Returns: number
-      }
-      l2_distance: {
-        Args: {
-        }
-        Returns: number
-      }
-      l2_distance: {
-        Args: {
-        }
-        Returns: number
-      }
       l2_distance: {
         Args: {
         }
@@ -89486,21 +89367,6 @@ export type Database = {
         Args: {
         }
         Returns: number
-      }
-      l2_norm: {
-        Args: {
-        }
-        Returns: number
-      }
-      l2_normalize: {
-        Args: {
-        }
-        Returns: unknown
-      }
-      l2_normalize: {
-        Args: {
-        }
-        Returns: unknown
       }
       l2_normalize: {
         Args: {
@@ -90188,19 +90054,17 @@ export type Database = {
         Returns: undefined
       }
       record_ad_click: {
-        Args: {
-          p_impression_token: string
-          p_session_id: string
-          p_viewer_ip_hash: unknown
-        }
-        Returns: Json
-      }
-      record_ad_click: {
-        Args: {
-          p_impression_token: string
-          p_session_id: unknown
-        }
-        Returns: undefined
+        Args:
+          | {
+            p_impression_token: string
+            p_session_id: string
+            p_viewer_ip_hash: unknown
+          }
+          | {
+            p_impression_token: string
+            p_session_id: unknown
+          }
+        Returns: Json | undefined
       }
       record_audit_event: {
         Args: {
@@ -90331,23 +90195,18 @@ export type Database = {
         Returns: undefined
       }
       refresh_load_intel_incremental: {
-        Args: {
-          p_batch: unknown
-        }
-        Returns: Json
-      }
-      refresh_load_intel_incremental: {
-        Args: {
-          p_batch: unknown
-          p_recent_minutes: unknown
-        }
-        Returns: Json
-      }
-      refresh_load_intel_incremental: {
-        Args: {
-          p_load_id: string
-        }
-        Returns: undefined
+        Args:
+          | {
+            p_batch: unknown
+          }
+          | {
+            p_batch: unknown
+            p_recent_minutes: unknown
+          }
+          | {
+            p_load_id: string
+          }
+        Returns: Json | undefined
       }
       refresh_load_intelligence: {
         Args: {
@@ -90647,26 +90506,24 @@ export type Database = {
         Returns: Json
       }
       serve_ad_ranked: {
-        Args: {
-          p_surface: string
-          p_viewer_key: unknown
-          p_session_id: unknown
-          p_geo_hash: unknown
-          p_context: unknown
-          p_limit: unknown
-        }
-        Returns: Json
-      }
-      serve_ad_ranked: {
-        Args: {
-          p_surface: string
-          p_viewer_key: string
-          p_session_id: string
-          p_viewer_ip_hash: unknown
-          p_geo_hash: unknown
-          p_context: unknown
-          p_limit: unknown
-        }
+        Args:
+          | {
+            p_surface: string
+            p_viewer_key: unknown
+            p_session_id: unknown
+            p_geo_hash: unknown
+            p_context: unknown
+            p_limit: unknown
+          }
+          | {
+            p_surface: string
+            p_viewer_key: string
+            p_session_id: string
+            p_viewer_ip_hash: unknown
+            p_geo_hash: unknown
+            p_context: unknown
+            p_limit: unknown
+          }
         Returns: Json
       }
       serve_adgrid_ad: {
@@ -90903,36 +90760,29 @@ export type Database = {
         }
         Returns: unknown
       }
-      subvector: {
-        Args: {
-        }
-        Returns: unknown
-      }
       sweep_dead_letter_queue: {
         Args: {
         }
         Returns: number
       }
       sweep_stale_loads: {
-        Args: {
-          p_batch: unknown
-          p_window_days: unknown
-          p_soft_ghost_threshold: unknown
-          p_hard_expire_hours: unknown
-          p_ghost_expire_hours: unknown
-          p_heartbeat_warn_hours: unknown
-          p_heartbeat_expire_hours: unknown
-        }
-        Returns: Json
-      }
-      sweep_stale_loads: {
-        Args: {
-          p_batch: unknown
-          p_window_days: unknown
-          p_soft_ghost_threshold: unknown
-          p_hard_expire_hours: unknown
-          p_ghost_expire_hours: unknown
-        }
+        Args:
+          | {
+            p_batch: unknown
+            p_window_days: unknown
+            p_soft_ghost_threshold: unknown
+            p_hard_expire_hours: unknown
+            p_ghost_expire_hours: unknown
+            p_heartbeat_warn_hours: unknown
+            p_heartbeat_expire_hours: unknown
+          }
+          | {
+            p_batch: unknown
+            p_window_days: unknown
+            p_soft_ghost_threshold: unknown
+            p_hard_expire_hours: unknown
+            p_ghost_expire_hours: unknown
+          }
         Returns: Json
       }
       sync_all_to_directory: {
@@ -91028,52 +90878,46 @@ export type Database = {
         Returns: number
       }
       trust_component_scores: {
-        Args: {
-          p_entity_profile_id: string
-          p_asof: unknown
-        }
-        Returns: Record<string, unknown>[]
-      }
-      trust_component_scores: {
-        Args: {
-          p_entity_profile_id: string
-          p_corridor_id: string
-          p_asof: unknown
-        }
+        Args:
+          | {
+            p_entity_profile_id: string
+            p_asof: unknown
+          }
+          | {
+            p_entity_profile_id: string
+            p_corridor_id: string
+            p_asof: unknown
+          }
         Returns: Record<string, unknown>[]
       }
       trust_confidence: {
-        Args: {
-          p_entity_profile_id: string
-          p_asof: unknown
-          p_c_min: unknown
-          p_lambda: unknown
-        }
-        Returns: number
-      }
-      trust_confidence: {
-        Args: {
-          p_entity_profile_id: string
-          p_corridor_id: string
-          p_asof: unknown
-          p_c_min: unknown
-          p_lambda: unknown
-        }
-        Returns: number
-      }
-      trust_critical_penalty: {
-        Args: {
-          p_entity_profile_id: string
-          p_asof: unknown
-        }
+        Args:
+          | {
+            p_entity_profile_id: string
+            p_asof: unknown
+            p_c_min: unknown
+            p_lambda: unknown
+          }
+          | {
+            p_entity_profile_id: string
+            p_corridor_id: string
+            p_asof: unknown
+            p_c_min: unknown
+            p_lambda: unknown
+          }
         Returns: number
       }
       trust_critical_penalty: {
-        Args: {
-          p_entity_profile_id: string
-          p_corridor_id: string
-          p_asof: unknown
-        }
+        Args:
+          | {
+            p_entity_profile_id: string
+            p_asof: unknown
+          }
+          | {
+            p_entity_profile_id: string
+            p_corridor_id: string
+            p_asof: unknown
+          }
         Returns: number
       }
       trust_decay_weight: {
@@ -91096,33 +90940,29 @@ export type Database = {
         Returns: Json
       }
       trust_score: {
-        Args: {
-          p_entity_profile_id: string
-          p_corridor_id: string
-          p_asof: unknown
-        }
-        Returns: number
-      }
-      trust_score: {
-        Args: {
-          p_entity_profile_id: string
-          p_asof: unknown
-        }
-        Returns: number
-      }
-      trust_trend: {
-        Args: {
-          p_entity_profile_id: string
-          p_asof: unknown
-        }
+        Args:
+          | {
+            p_entity_profile_id: string
+            p_corridor_id: string
+            p_asof: unknown
+          }
+          | {
+            p_entity_profile_id: string
+            p_asof: unknown
+          }
         Returns: number
       }
       trust_trend: {
-        Args: {
-          p_entity_profile_id: string
-          p_corridor_id: string
-          p_asof: unknown
-        }
+        Args:
+          | {
+            p_entity_profile_id: string
+            p_asof: unknown
+          }
+          | {
+            p_entity_profile_id: string
+            p_corridor_id: string
+            p_asof: unknown
+          }
         Returns: number
       }
       trust_upsert_params: {
@@ -91318,8 +91158,8 @@ export type Database = {
       }
       vector_combine: {
         Args: {
-          double: unknown[]
-          double: unknown[]
+          double_0: unknown[]
+          double_1: unknown[]
         }
         Returns: number[]
       }
@@ -91327,11 +91167,6 @@ export type Database = {
         Args: {
         }
         Returns: unknown
-      }
-      vector_dims: {
-        Args: {
-        }
-        Returns: number
       }
       vector_dims: {
         Args: {

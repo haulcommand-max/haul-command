@@ -3,6 +3,7 @@ import { definePageSeoContract, type PageSeoContract } from "@/lib/seo/page-seo-
 
 export type DirectoryRecordLike = {
   entity_family?: string | null;
+  entity_type?: string | null;
   entity_subtype?: string | null;
   role_primary?: string | null;
   verification_status?: string | null;
@@ -10,6 +11,8 @@ export type DirectoryRecordLike = {
   availability_status?: string | null;
   phone?: string | null;
   phone_number?: string | null;
+  phone_e164?: string | null;
+  phone_raw?: string | null;
   email?: string | null;
   website?: string | null;
   service_area?: string | null;
@@ -90,7 +93,7 @@ function normalizeValue(value?: string | null): string {
 }
 
 function hasContactSignal(record: DirectoryRecordLike): boolean {
-  return Boolean(record.phone || record.phone_number || record.email || record.website);
+  return Boolean(record.phone || record.phone_number || record.phone_e164 || record.phone_raw || record.email || record.website);
 }
 
 function toAttributeList(value?: string[] | string | null): string[] {
@@ -110,7 +113,7 @@ function humanize(value?: string | null): string {
 
 export function getDirectoryEntityLabel(record: DirectoryRecordLike): string {
   const subtype = normalizeValue(record.entity_subtype);
-  const family = normalizeValue(record.entity_family);
+  const family = normalizeValue(record.entity_family || record.entity_type);
   return SUBTYPE_LABELS[subtype] ?? ENTITY_LABELS[family] ?? "Support Record";
 }
 

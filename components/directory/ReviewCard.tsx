@@ -5,12 +5,12 @@ import { Star, Clock, Truck, MessageSquare, Camera } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { formatDistanceToNow } from "date-fns";
 
-// ══════════════════════════════════════════════════════════════
+//
 // ReviewCard — Haul Command Directory
 // Displays a single broker-submitted operator review.
 // 3-axis ratings: Punctuality, Communication, Equipment/Prof.
 // Pattern from: GeoDirectory MultiRatings & Reviews add-on.
-// ══════════════════════════════════════════════════════════════
+//
 
 export interface OperatorReview {
     id: string;
@@ -142,7 +142,7 @@ export function ReviewCard({ review, className }: ReviewCardProps) {
                 <div className="flex items-center gap-2">
                     {review.verified_job && (
                         <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-hc-success/10 border border-hc-success/20 text-[9px] font-black text-hc-success uppercase tracking-widest">
-                            ✓ Verified Job
+                             Verified Job
                         </span>
                     )}
                     {review.would_use_again !== undefined && (
@@ -150,7 +150,7 @@ export function ReviewCard({ review, className }: ReviewCardProps) {
                                 ? 'bg-hc-success/10 border-hc-success/20 text-hc-success'
                                 : 'bg-hc-danger/10 border-hc-danger/20 text-hc-danger'
                             }`}>
-                            {review.would_use_again ? '↩ Would Use Again' : '✗ Would Not Use Again'}
+                            {review.would_use_again ? ' Would Use Again' : ' Would Not Use Again'}
                         </span>
                     )}
                 </div>

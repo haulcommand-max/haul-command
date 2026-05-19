@@ -1,302 +1,443 @@
-/**
- * /advertise/buy — Self-Serve Ad Campaign Launcher
- *
- * This page converts DirectorySponsorCard CTAs into actual campaign setup.
- * Supports CPC campaigns, corridor sponsorships, and territory takeovers.
- *
- * Links from:
- *   - DirectorySponsorCard (lower position) â†’ /advertise/buy
- *   - /advertise main page â†’ /advertise/buy
- *   - HCFooterShell â†’ /advertise
- */
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import CheckoutButton from './CheckoutButton';
 
 export const metadata: Metadata = {
-    title: 'Launch a Campaign | Haul Command Advertising',
+    title: 'Buy Directory Sponsor Ads | Haul Command AdGrid',
     description:
-        'Start a self-serve advertising campaign on Haul Command. CPC campaigns from $0.75/click. Geo-targeted to states, corridors, and equipment types. Industry-only traffic.',
+        'Buy labeled Haul Command AdGrid placements for heavy-haul directory, corridor, role, and tool pages. Reach industry buyers without broad consumer traffic.',
     alternates: { canonical: 'https://www.haulcommand.com/advertise/buy' },
+    openGraph: {
+        title: 'Buy Directory Sponsor Ads | Haul Command AdGrid',
+        description:
+            'Sponsor heavy-haul directory demand across source-backed operator records, corridor pages, tool pages, and market surfaces.',
+        url: 'https://www.haulcommand.com/advertise/buy',
+        siteName: 'Haul Command',
+        type: 'website',
+    },
 };
 
 const CAMPAIGN_TYPES = [
     {
         id: 'cpc',
-        icon: 'âš¡',
-        name: 'Self-Serve CPC Campaign',
+        eyebrow: 'Best first campaign',
+        name: 'Directory Sponsor CPC',
         price: 'From $0.75/click',
         period: 'Pay as you go',
         color: '#3b82f6',
+        summary:
+            'Buy labeled sponsor placement on directory, role, corridor, and tool surfaces where heavy-haul buyers already search.',
         features: [
-            'Geo-target by state, corridor, or nationwide',
-            'Industry-only traffic — no consumer clicks',
-            'Appear in directory results, tool pages, corridor feeds',
-            'Real-time dashboard with click, impression, and CTR metrics',
-            'Pause or adjust budget any time',
-            'Average CPC: $0.75"“$2.50 depending on market',
+            'Target by state, corridor, country, role, or support category',
+            'Appear beside directory searches, market pages, and high-intent tools',
+            'Control budget, pause spend, and track clicks from one dashboard',
+            'Useful for equipment, insurance, training, permit, and service vendors',
         ],
-        bestFor: 'Equipment vendors, insurance providers, training programs',
+        bestFor: 'Testing a market before buying exclusive territory',
         cta: 'Launch CPC Campaign',
+        href: '/advertise/book?zone=directory_sponsor&type=cpc',
     },
     {
         id: 'corridor',
-        icon: 'ðŸ›£ï¸',
+        eyebrow: 'Route ownership',
         name: 'Corridor Sponsorship',
         price: '$199/mo',
-        period: 'Monthly or annual (15% off)',
+        period: 'Monthly, annual available',
         color: '#D4A843',
+        summary:
+            'Own named placement around a specific freight corridor, route-intel surface, or corridor-related directory result.',
         features: [
-            'Contracted placement on a named corridor page',
-            'Your brand shown on every search touching that corridor',
-            'Priority listing in corridor-related directory results',
-            'Branded "Corridor Sponsor" badge on your profile',
-            'Monthly analytics including search volume and match rate',
-            'Includes featured placement in corridor alerts',
+            'Labeled sponsor slot on a named corridor page',
+            'Visibility around searches touching that corridor',
+            'Sponsor badge for corridor-relevant directory appearances',
+            'Monthly market report with search and click activity',
         ],
-        bestFor: 'Operators who dominate a specific route',
+        bestFor: 'Operators and vendors with a strong route footprint',
         cta: 'Claim a Corridor',
+        href: '/advertise/territory?type=corridor',
     },
     {
         id: 'territory',
-        icon: 'ðŸ—ºï¸',
-        name: 'Territory Takeover',
-        price: '$149"“$499/mo',
-        period: 'Varies by state tier',
+        eyebrow: 'Market lock',
+        name: 'Territory Sponsor',
+        price: '$149-$499/mo',
+        period: 'Varies by market tier',
         color: '#22c55e',
+        summary:
+            'Reserve sponsor visibility for a state, country, or priority market while Haul Command grows local supply and demand.',
         features: [
-            'Own all sponsor slots in a state or country',
-            'Contracted placement in /near-me and directory results',
-            'Branded "Territory Sponsor" badge visible on all listings',
-            'Priority matching for loads in your territory',
-            'Monthly territory report: search volume, operator density, lead flow',
-            'First-mover lock: price grandfathered for 12 months',
+            'Territory placement across directory and near-me surfaces',
+            'Priority sponsor presence for local role and category searches',
+            'Monthly territory report with demand, density, and lead signals',
+            'First-mover pricing lock where inventory is available',
         ],
-        bestFor: 'Large operators or companies expanding into new markets',
+        bestFor: 'Companies expanding into Florida, US states, Canada, or Tier A countries',
         cta: 'View Territory Pricing',
+        href: '/advertise/territory',
     },
     {
         id: 'enterprise',
-        icon: 'ðŸ¢',
-        name: 'Enterprise Package',
+        eyebrow: 'Managed growth',
+        name: 'Enterprise Market Package',
         price: 'Custom',
-        period: 'Annual contract',
+        period: 'Annual or market plan',
         color: '#8b5cf6',
+        summary:
+            'Build a managed sponsor program across countries, role groups, corridors, data products, and launch markets.',
         features: [
-            'Multi-state or multi-country sponsorship bundles',
-            'Custom ad creative and landing pages',
-            'Dedicated account manager',
-            'API access for campaign management',
+            'Multi-state or multi-country sponsor bundles',
+            'Custom landing pages and account-based campaign routing',
             'Quarterly business reviews with market intelligence',
-            'White-label data products for your team',
+            'Optional API and data-product packaging for enterprise teams',
         ],
-        bestFor: 'National carriers, insurance companies, logistics platforms',
-        cta: 'Contact Sales',
+        bestFor: 'National carriers, insurers, logistics platforms, and global vendors',
+        cta: 'Talk to Sales',
+        href: '/contact?subject=enterprise-adgrid',
     },
 ];
 
 const TRUST_STATS = [
-    { value: '7,700+', label: 'Operators Listed' },
-    { value: '120', label: 'Countries Covered' },
-    { value: '100%', label: 'Industry Traffic' },
-    { value: '51', label: 'Active Corridors' },
+    { value: 'Source-backed', label: 'directory records', note: 'Directory records are designed to be claimable and proof-aware.' },
+    { value: '120', label: 'country coverage model', note: 'Global structure exists without claiming every market is live.' },
+    { value: '51', label: 'corridor surfaces', note: 'Route pages connect directory, tools, and sponsor inventory.' },
+    { value: 'Labeled', label: 'paid placement', note: 'Sponsor inventory is clearly marked to protect trust.' },
 ];
 
-export default function AdvertiseBuyPage() {
-    return (
-        <div style={{ minHeight: '100vh', background: '#0B0B0C', color: '#E5E7EB' }}>
-            {/* Hero */}
-            <section style={{
-                padding: '4rem 1.5rem 3rem',
-                maxWidth: 1200,
-                margin: '0 auto',
-                textAlign: 'center',
-            }}>
-                <div style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 8,
-                    padding: '4px 14px', borderRadius: 999,
-                    background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.20)',
-                    color: '#60A5FA', fontSize: 11, fontWeight: 700,
-                    textTransform: 'uppercase' as const, letterSpacing: '0.08em',
-                    marginBottom: 20,
-                }}>
-                    âš¡ Self-Serve Campaigns
-                </div>
-                <h1 style={{
-                    fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 900,
-                    color: '#FFFFFF', lineHeight: 1.1, marginBottom: 16,
-                }}>
-                    Launch a Campaign in 5 Minutes
-                </h1>
-                <p style={{
-                    fontSize: 16, color: '#9CA3AF', maxWidth: 640,
-                    margin: '0 auto 2rem', lineHeight: 1.6,
-                }}>
-                    Reach verified pilot car operators, heavy haul carriers, and brokers.
-                    No consumer traffic. No wasted impressions. Every click is industry-qualified.
-                </p>
+const PLACEMENT_SURFACES = [
+    'Directory search results',
+    'Country and state market pages',
+    'Role and category pages',
+    'Corridor intelligence pages',
+    'Tool results and support packets',
+    'Profile and report-card surfaces',
+];
 
-                {/* Trust stats strip */}
-                <div style={{
-                    display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16,
-                    maxWidth: 700, margin: '0 auto 3rem',
-                }}>
-                    {TRUST_STATS.map(s => (
-                        <div key={s.label}>
-                            <div style={{ fontSize: 24, fontWeight: 900, color: '#D4A843' }}>{s.value}</div>
-                            <div style={{ fontSize: 11, color: '#6B7280', fontWeight: 600 }}>{s.label}</div>
+const FAQS = [
+    {
+        question: 'What is a Haul Command Directory Sponsor?',
+        answer:
+            'A Directory Sponsor is a clearly labeled paid placement that appears around heavy-haul directory searches, role pages, corridor pages, and tool surfaces. It is built for industry traffic, not broad consumer advertising.',
+    },
+    {
+        question: 'Can I target Florida first?',
+        answer:
+            'Yes. Florida is the first active monetization market. Campaigns can target Florida, specific US states, corridors, countries, or role categories as inventory becomes available.',
+    },
+    {
+        question: 'Are sponsor placements the same as verified listings?',
+        answer:
+            'No. Sponsorship buys visibility. Verification, claim status, reviews, and source confidence remain separate trust signals so paid placement does not replace proof.',
+    },
+    {
+        question: 'Can I pause or change a campaign?',
+        answer:
+            'Self-serve CPC campaigns can be paused or adjusted. Corridor and territory sponsorships depend on market availability and the term selected at checkout or approval.',
+    },
+];
+
+const jsonLd = [
+    {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: 'Buy Directory Sponsor Ads on Haul Command',
+        url: 'https://www.haulcommand.com/advertise/buy',
+        description:
+            'Buy labeled AdGrid sponsor placements on heavy-haul directory, corridor, role, and tool pages.',
+        isPartOf: {
+            '@type': 'WebSite',
+            name: 'Haul Command',
+            url: 'https://www.haulcommand.com',
+        },
+    },
+    {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        name: 'Haul Command AdGrid Directory Sponsorship',
+        serviceType: 'B2B directory advertising',
+        provider: {
+            '@type': 'Organization',
+            name: 'Haul Command',
+            url: 'https://www.haulcommand.com',
+        },
+        areaServed: ['United States', 'Canada', 'Australia', 'United Kingdom', 'Global heavy-haul markets'],
+        offers: {
+            '@type': 'AggregateOffer',
+            priceCurrency: 'USD',
+            lowPrice: '0.75',
+            highPrice: '499',
+            offerCount: CAMPAIGN_TYPES.length,
+            availability: 'https://schema.org/InStock',
+        },
+    },
+    {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: FAQS.map((faq) => ({
+            '@type': 'Question',
+            name: faq.question,
+            acceptedAnswer: {
+                '@type': 'Answer',
+                text: faq.answer,
+            },
+        })),
+    },
+];
+
+type SponsorSearchParams = Record<string, string | string[] | undefined>;
+
+function getParam(params: SponsorSearchParams | undefined, key: string): string {
+    const value = params?.[key];
+    return Array.isArray(value) ? value[0] ?? '' : value ?? '';
+}
+
+function normalizeSponsorContext(params: SponsorSearchParams | undefined) {
+    const zone = getParam(params, 'zone') || getParam(params, 'placement') || 'directory_sponsor';
+    const country = getParam(params, 'country').toUpperCase();
+    const corridor = getParam(params, 'corridor');
+    const role = getParam(params, 'role');
+    const category = getParam(params, 'category') || getParam(params, 'topic');
+    const source = getParam(params, 'source') || getParam(params, 'slot') || getParam(params, 'goal');
+
+    const recommendedCampaignId =
+        zone.includes('corridor') || corridor
+            ? 'corridor'
+            : zone.includes('country') || zone.includes('territory') || country
+                ? 'territory'
+                : zone.includes('directory') || role || category
+                    ? 'cpc'
+                    : 'enterprise';
+
+    const contextLabel = [
+        zone ? `zone ${zone}` : null,
+        country ? `country ${country}` : null,
+        corridor ? `corridor ${corridor}` : null,
+        role ? `role ${role}` : null,
+        category ? `category ${category}` : null,
+    ].filter(Boolean).join(' / ');
+
+    return {
+        zone,
+        country,
+        corridor,
+        role,
+        category,
+        source,
+        recommendedCampaignId,
+        contextLabel: contextLabel || 'general AdGrid sponsor interest',
+    };
+}
+
+function appendSponsorContext(href: string, context: ReturnType<typeof normalizeSponsorContext>): string {
+    const [path, query = ''] = href.split('?');
+    const params = new URLSearchParams(query);
+    if (context.zone) params.set('zone', context.zone);
+    if (context.country) params.set('country', context.country);
+    if (context.corridor) params.set('corridor', context.corridor);
+    if (context.role) params.set('role', context.role);
+    if (context.category) params.set('category', context.category);
+    if (context.source) params.set('source', context.source);
+    const suffix = params.toString();
+    return suffix ? `${path}?${suffix}` : path;
+}
+
+export default async function AdvertiseBuyPage({
+    searchParams,
+}: {
+    searchParams?: Promise<SponsorSearchParams>;
+}) {
+    const params = await searchParams;
+    const sponsorContext = normalizeSponsorContext(params);
+    const campaignTypes = [...CAMPAIGN_TYPES].sort((a, b) => {
+        if (a.id === sponsorContext.recommendedCampaignId) return -1;
+        if (b.id === sponsorContext.recommendedCampaignId) return 1;
+        return 0;
+    });
+
+    return (
+        <div className="min-h-screen bg-transparent text-slate-100">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+
+            <section className="border-b border-[#C6923A]/15">
+                <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-20">
+                    <div>
+                        <Link
+                            href="/advertise"
+                            className="mb-5 inline-flex rounded-md border border-[#C6923A]/25 bg-black/40 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-[#F2B84B] no-underline"
+                        >
+                            AdGrid self-serve buying page
+                        </Link>
+                        <h1 className="max-w-3xl text-4xl font-black leading-tight tracking-normal text-white sm:text-5xl">
+                            Sponsor heavy-haul directory demand before your competitors own the market.
+                        </h1>
+                        <p className="mt-5 max-w-2xl text-base leading-7 text-slate-300">
+                            Buy labeled placements around Haul Command directory searches, corridor pages,
+                            role pages, and planning tools. Start with Florida, expand into the United
+                            States, then follow actual demand, claimed listings, and paid market signals.
+                        </p>
+                        <div className="mt-5 rounded-md border border-[#C6923A]/25 bg-[#C6923A]/10 p-4">
+                            <p className="text-[11px] font-black uppercase tracking-[0.12em] text-[#F2B84B]">
+                                Recommended starting point
+                            </p>
+                            <p className="mt-2 text-sm leading-6 text-slate-300">
+                                Start with <span className="font-bold text-white">
+                                    {CAMPAIGN_TYPES.find((campaign) => campaign.id === sponsorContext.recommendedCampaignId)?.name}
+                                </span>.
+                                Market signal: <span className="text-[#F2B84B]">{sponsorContext.contextLabel}</span>.
+                            </p>
                         </div>
-                    ))}
+                        <div className="mt-8 flex flex-wrap gap-3">
+                            <Link
+                                href="#campaign-options"
+                                className="rounded-md bg-[#F5A812] px-5 py-3 text-sm font-black text-black no-underline"
+                            >
+                                Compare Campaigns
+                            </Link>
+                            <Link
+                                href="/advertise/territory"
+                                className="rounded-md border border-[#C6923A]/35 bg-black/45 px-5 py-3 text-sm font-bold text-[#F2B84B] no-underline"
+                            >
+                                Check Territory Pricing
+                            </Link>
+                        </div>
+                    </div>
+
+                    <div className="rounded-lg border border-[#C6923A]/20 bg-black/55 p-5 shadow-[0_24px_90px_rgba(0,0,0,0.35)]">
+                        <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#F2B84B]">
+                            Proof-safe sponsor surface
+                        </p>
+                        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                            {TRUST_STATS.map((stat) => (
+                                <div key={stat.label} className="rounded-md border border-white/10 bg-white/[0.03] p-4">
+                                    <div className="text-2xl font-black text-[#F5A812]">{stat.value}</div>
+                                    <div className="mt-1 text-sm font-bold text-white">{stat.label}</div>
+                                    <p className="mt-2 text-xs leading-5 text-slate-400">{stat.note}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            {/* Campaign Type Cards */}
-            <section style={{
-                padding: '0 1.5rem 4rem',
-                maxWidth: 1200,
-                margin: '0 auto',
-            }}>
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                    gap: 24,
-                }}>
-                    {CAMPAIGN_TYPES.map(ct => (
-                        <div key={ct.id} style={{
-                            background: '#111114',
-                            border: '1px solid rgba(255,255,255,0.06)',
-                            borderRadius: 16,
-                            padding: 28,
-                            position: 'relative',
-                            overflow: 'hidden',
-                            display: 'flex',
-                            flexDirection: 'column',
-                        }}>
-                            {/* Accent */}
-                            <div style={{
-                                position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-                                background: `linear-gradient(90deg, ${ct.color}, transparent)`,
-                            }} />
+            <section id="campaign-options" className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+                <div className="mb-7 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                        <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#F2B84B]">
+                            Campaign options
+                        </p>
+                        <h2 className="mt-2 text-2xl font-black text-white">Pick the buying motion that matches your market.</h2>
+                    </div>
+                    <p className="max-w-xl text-sm leading-6 text-slate-400">
+                        Paid placement is labeled. Claim status, verification, ratings, and source confidence stay separate.
+                    </p>
+                </div>
 
-                            {/* Header */}
-                            <div style={{ marginBottom: 20 }}>
-                                <div style={{ fontSize: 28, marginBottom: 8 }}>{ct.icon}</div>
-                                <h2 style={{ fontSize: 18, fontWeight: 800, color: '#F0F0F2', margin: '0 0 6px' }}>
-                                    {ct.name}
-                                </h2>
-                                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-                                    <span style={{ fontSize: 22, fontWeight: 900, color: ct.color }}>
-                                        {ct.price}
-                                    </span>
-                                    <span style={{ fontSize: 11, color: '#6B7280' }}>{ct.period}</span>
-                                </div>
+                <div className="grid gap-5 lg:grid-cols-4">
+                    {campaignTypes.map((campaign) => {
+                        const isRecommended = campaign.id === sponsorContext.recommendedCampaignId;
+                        return (
+                        <article
+                            key={campaign.id}
+                            className="flex min-h-[410px] flex-col rounded-lg border bg-[#111114]/90 p-5"
+                            style={{
+                                borderTopColor: campaign.color,
+                                borderColor: isRecommended ? `${campaign.color}99` : 'rgba(255,255,255,0.10)',
+                                boxShadow: isRecommended ? `0 0 0 1px ${campaign.color}33, 0 20px 70px rgba(0,0,0,0.35)` : undefined,
+                            }}
+                        >
+                            <p className="text-[11px] font-black uppercase tracking-[0.1em]" style={{ color: campaign.color }}>
+                                {isRecommended ? 'Recommended for this click' : campaign.eyebrow}
+                            </p>
+                            <h3 className="mt-3 text-lg font-black text-white">{campaign.name}</h3>
+                            <p className="mt-3 min-h-[72px] text-sm leading-6 text-slate-400">{campaign.summary}</p>
+                            <div className="mt-5">
+                                <span className="text-2xl font-black" style={{ color: campaign.color }}>
+                                    {campaign.price}
+                                </span>
+                                <span className="ml-2 text-xs text-slate-500">{campaign.period}</span>
                             </div>
-
-                            {/* Features */}
-                            <ul style={{
-                                listStyle: 'none', padding: 0, margin: '0 0 16px',
-                                flex: 1,
-                            }}>
-                                {ct.features.map(f => (
-                                    <li key={f} style={{
-                                        display: 'flex', alignItems: 'flex-start', gap: 8,
-                                        fontSize: 12, color: '#9CA3AF', lineHeight: 1.5,
-                                        marginBottom: 8,
-                                    }}>
-                                        <span style={{
-                                            width: 5, height: 5, borderRadius: '50%',
-                                            background: ct.color, flexShrink: 0,
-                                            marginTop: 6,
-                                        }} />
-                                        {f}
+                            <ul className="mt-5 flex flex-1 flex-col gap-2">
+                                {campaign.features.map((feature) => (
+                                    <li key={feature} className="flex gap-2 text-sm leading-5 text-slate-300">
+                                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: campaign.color }} />
+                                        <span>{feature}</span>
                                     </li>
                                 ))}
                             </ul>
-
-                            {/* Best For */}
-                            <div style={{
-                                fontSize: 10, color: '#6B7280', fontWeight: 600,
-                                textTransform: 'uppercase' as const, letterSpacing: '0.06em',
-                                marginBottom: 16,
-                            }}>
-                                Best for: {ct.bestFor}
+                            <p className="mt-5 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-500">
+                                Best for: {campaign.bestFor}
+                            </p>
+                            <div className="mt-4">
+                                <CheckoutButton
+                                    campaignId={campaign.id}
+                                    price={campaign.price}
+                                    color={campaign.color}
+                                    label={campaign.cta}
+                                    href={appendSponsorContext(campaign.href, sponsorContext)}
+                                    context={sponsorContext}
+                                />
                             </div>
+                        </article>
+                    )})}
+                </div>
+            </section>
 
-                            {/* CTA */}
-                            <CheckoutButton 
-                                campaignId={ct.id}
-                                price={ct.price}
-                                color={ct.color}
-                                label={ct.cta}
-                                href={ct.id === 'territory' ? '/advertise/territory' : ct.id === 'enterprise' ? '/advertise?contact=enterprise' : '/advertise/territory'}
-                            />
+            <section className="border-y border-[#C6923A]/15 bg-black/35">
+                <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
+                    <div>
+                        <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#F2B84B]">
+                            Where ads can appear
+                        </p>
+                        <h2 className="mt-2 text-2xl font-black text-white">Buy into the surfaces where heavy-haul decisions happen.</h2>
+                        <p className="mt-4 text-sm leading-6 text-slate-400">
+                            AdGrid is built around operational intent: search, compare, plan, claim, match, and sponsor.
+                            The buying page routes to the same directory, role, corridor, and tool universe that powers Haul Command.
+                        </p>
+                    </div>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                        {PLACEMENT_SURFACES.map((surface) => (
+                            <div key={surface} className="rounded-md border border-white/10 bg-white/[0.03] px-4 py-3 text-sm font-bold text-slate-200">
+                                {surface}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            <section className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+                <h2 className="text-center text-2xl font-black text-white">Questions advertisers ask first</h2>
+                <div className="mt-7 grid gap-4">
+                    {FAQS.map((faq) => (
+                        <div key={faq.question} className="rounded-lg border border-white/10 bg-[#111114]/85 p-5">
+                            <h3 className="text-base font-black text-white">{faq.question}</h3>
+                            <p className="mt-2 text-sm leading-6 text-slate-400">{faq.answer}</p>
                         </div>
                     ))}
                 </div>
-            </section>
-
-            {/* Bottom CTA */}
-            <section style={{
-                padding: '3rem 1.5rem',
-                maxWidth: 800,
-                margin: '0 auto',
-                textAlign: 'center',
-                borderTop: '1px solid rgba(255,255,255,0.06)',
-            }}>
-                <h2 style={{ fontSize: 20, fontWeight: 800, color: '#FFFFFF', marginBottom: 8 }}>
-                    Not sure which campaign is right?
-                </h2>
-                <p style={{ fontSize: 14, color: '#9CA3AF', marginBottom: 20 }}>
-                    Compare all options on our main advertising page, or see territory-specific pricing.
-                </p>
-                <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-                    <Link href="/advertise" style={{
-                        padding: '10px 20px', borderRadius: 10,
-                        background: 'rgba(212,168,67,0.12)', border: '1px solid rgba(212,168,67,0.25)',
-                        color: '#D4A843', fontWeight: 700, fontSize: 13,
-                        textDecoration: 'none',
-                    }}>
-                        View All Options â†’
-                    </Link>
-                    <Link href="/advertise/territory" style={{
-                        padding: '10px 20px', borderRadius: 10,
-                        background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-                        color: '#9CA3AF', fontWeight: 700, fontSize: 13,
-                        textDecoration: 'none',
-                    }}>
-                        Territory Pricing â†’
-                    </Link>
+                <div className="mt-10 rounded-lg border border-[#C6923A]/25 bg-black/55 p-6 text-center">
+                    <h2 className="text-xl font-black text-white">Need a market plan before checkout?</h2>
+                    <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-400">
+                        Start with Florida or a high-demand corridor. We can map sponsor surfaces to role coverage,
+                        claimed listings, buyer demand, and paid match opportunities before you commit.
+                    </p>
+                    <div className="mt-5 flex flex-wrap justify-center gap-3">
+                        <Link
+                            href="/advertise"
+                            className="rounded-md border border-[#C6923A]/35 bg-[#C6923A]/10 px-5 py-3 text-sm font-bold text-[#F2B84B] no-underline"
+                        >
+                            View All Advertising Options
+                        </Link>
+                        <Link
+                            href="/contact?subject=adgrid-market-plan"
+                            className="rounded-md border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-bold text-white no-underline"
+                        >
+                            Request a Market Plan
+                        </Link>
+                    </div>
                 </div>
             </section>
-
-            {/* FAQ Schema */}
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        '@context': 'https://schema.org',
-                        '@type': 'FAQPage',
-                        mainEntity: [
-                            {
-                                '@type': 'Question',
-                                name: 'How much does it cost to advertise on Haul Command?',
-                                acceptedAnswer: {
-                                    '@type': 'Answer',
-                                    text: 'Self-serve CPC campaigns start at $0.75/click. Corridor sponsorships are $199/month. Territory sponsorships range from $149-$499/month depending on state market tier. All campaigns can be paused or adjusted at any time.',
-                                },
-                            },
-                            {
-                                '@type': 'Question',
-                                name: 'Is the traffic industry-specific?',
-                                acceptedAnswer: {
-                                    '@type': 'Answer',
-                                    text: 'Yes. 95%+ of Haul Command traffic is from verified pilot car operators, heavy haul carriers, brokers, and dispatchers. No consumer traffic. Every impression and click is industry-qualified.',
-                                },
-                            },
-                        ],
-                    }),
-                }}
-            />
         </div>
     );
 }

@@ -5,10 +5,10 @@ import { Zap, Clock, Users, Activity, Lock, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { motion } from "framer-motion";
 
-// ══════════════════════════════════════════════════════════════
+//
 // PredictedFillIntelligence — Profile Section 5
 // Data monetization wedge displaying operational probabilities.
-// ══════════════════════════════════════════════════════════════
+//
 
 interface PredictedFillIntelligenceProps {
     fillProbabilityPct?: number; // e.g., 88

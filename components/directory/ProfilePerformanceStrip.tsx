@@ -5,11 +5,11 @@ import { CheckCircle2, Clock, Zap, Map, Activity } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils/cn";
 
-// ══════════════════════════════════════════════════════════════
+//
 // ProfilePerformanceStrip — Section 2 Live Strip
-// Displays: Completed Escorts, On-Time Reliability, Median Response, 
+// Displays: Completed Escorts, On-Time Reliability, Median Response,
 // Corridors Served, Last Active.
-// ══════════════════════════════════════════════════════════════
+//
 
 interface ProfilePerformanceStripProps {
     completedEscorts?: number;

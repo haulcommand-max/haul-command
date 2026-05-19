@@ -6,7 +6,7 @@ import { DirectorySearchList, HardFilterState } from '../_components/DirectorySe
 
 /**
  * DirectoryFilterOrchestrator
- * 
+ *
  * Client-side wrapper that manages filter state between the
  * DirectoryHardFilter sidebar and the DirectorySearchList.
  * This component bridges the gap between the server-rendered

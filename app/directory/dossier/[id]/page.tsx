@@ -97,7 +97,7 @@ function ratingText(value: number | null | undefined) {
   return value ? `${Number(value).toFixed(1)} / 5` : 'Needs report';
 }
 
-// ── Proof state badge ────────────────────────────────────────────────────────
+//  Proof state badge
 function ProofBadge({ state }: { state: ProofState }) {
   return (
     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${proofStateBadgeClass(state)}`}>
@@ -106,7 +106,7 @@ function ProofBadge({ state }: { state: ProofState }) {
   );
 }
 
-// ── Capability row ───────────────────────────────────────────────────────────
+//  Capability row
 function CapabilityRow({ label, value, proof }: { label: string; value: string | boolean | null; proof: ProofState }) {
   const hasValue = value !== null && value !== false && value !== '';
   return (
@@ -114,7 +114,7 @@ function CapabilityRow({ label, value, proof }: { label: string; value: string |
       <span className="text-xs text-amber-100/70 font-medium">{label}</span>
       <div className="flex items-center gap-2">
         <span className={`text-xs font-bold ${hasValue ? 'text-white' : 'text-gray-500'}`}>
-          {value === true ? '✓ Yes' : value === false || !value ? '—' : String(value)}
+          {value === true ? ' Yes' : value === false || !value ? '—' : String(value)}
         </span>
         <ProofBadge state={hasValue ? proof : 'missing'} />
       </div>
@@ -122,7 +122,7 @@ function CapabilityRow({ label, value, proof }: { label: string; value: string |
   );
 }
 
-// ── Score ring ───────────────────────────────────────────────────────────────
+//  Score ring
 function ScoreRing({ score, label, color = '#F1A91B' }: { score: number | null; label: string; color?: string }) {
   if (!score || score === 0) {
     return (
@@ -189,7 +189,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
     }
   }
 
-  // ── Resolve location — NEVER default to US ──────────────────────────────
+  //  Resolve location — NEVER default to US
   const countryCode = resolveCountryCode(operator);
   const countryIsKnown = countryCode !== 'unknown';
   const pack = getCountryPack(countryCode, operator.state_inferred);
@@ -229,14 +229,14 @@ export default async function DossierPage({ params }: { params: { id: string } }
     countryIsKnown ? pack.countryName : null,
   ].filter(Boolean).join(', ') || (countryIsKnown ? pack.countryName : 'Country needs verification');
 
-  // ── Trust signals ────────────────────────────────────────────────────────
+  //  Trust signals
   const trustScore = operator.confidence_score || operator.trust_score || null;
   const claimStatus = String(operator.claim_status || operator.claimed_status || '').toLowerCase();
   const isClaimed = operator.is_claimed === true || claimStatus === 'claimed' || claimStatus === 'verified';
   const hasRating = operator.rating_avg && Number(operator.rating_avg) > 0;
   const ratingCount = operator.rating_count || 0;
 
-  // ── HC-ID generation ─────────────────────────────────────────────────────
+  //  HC-ID generation
   const hcId = (() => {
     const cc = countryIsKnown ? countryCode : 'XX';
     const sc = (operator.state_inferred || '').toUpperCase().slice(0, 3) || 'XX';
@@ -246,7 +246,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
     return `HC-${cc}-${sc}-${roleAbbr}-${numPart}`;
   })();
 
-  // ── Data freshness ────────────────────────────────────────────────────────
+  //  Data freshness
   const freshnessText = (() => {
     const ts = operator.last_seen_at || operator.updated_at;
     if (!ts) return 'Seeded profile — not yet verified';
@@ -279,7 +279,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      {/* ── HEADER ── */}
+      {/*  HEADER  */}
       <div className="border-b border-[#F1A91B]/10"
         style={{ background: 'linear-gradient(135deg, #0B0F14 0%, #111827 50%, #0f1a24 100%)' }}>
         <div className="max-w-5xl mx-auto px-4 py-8">
@@ -299,7 +299,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
                     ? 'bg-green-500/10 border-green-500/30 text-green-400'
                     : 'bg-amber-500/10 border-amber-500/30 text-amber-400'
                 }`}>
-                  {isClaimed ? '✓ Claimed' : '○ Unclaimed'}
+                  {isClaimed ? ' Claimed' : '○ Unclaimed'}
                 </span>
                 <span className="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] text-amber-200/60">
                   {freshnessText}
@@ -339,10 +339,10 @@ export default async function DossierPage({ params }: { params: { id: string } }
         </div>
       </div>
 
-      {/* ── BODY ── */}
+      {/*  BODY  */}
       <div className="max-w-5xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-6 pb-32">
 
-        {/* ── MAIN COLUMN ── */}
+        {/*  MAIN COLUMN  */}
         <div className="md:col-span-2 flex flex-col gap-6">
 
           {/* 0. Profile answer block */}
@@ -619,7 +619,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
               <div className="text-center py-6">
                 <p className="text-sm text-gray-500 italic mb-3">Rate structure not yet provided.</p>
                 <Link href="/rates/guide/pilot-car" className="text-xs text-[#C6923A] hover:text-[#F1A91B] underline underline-offset-2">
-                  See 2026 regional benchmarks →
+                  See 2026 regional benchmarks
                 </Link>
               </div>
             )}
@@ -706,7 +706,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
           )}
         </div>
 
-        {/* ── SIDEBAR ── */}
+        {/*  SIDEBAR  */}
         <div className="flex flex-col gap-4">
 
           {/* Action center */}
@@ -763,7 +763,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
               </div>
               <div className="flex justify-between">
                 <span className="text-amber-100/60">Country</span>
-                <span className="text-white font-semibold">{countryIsKnown ? pack.countryName : '⚠ Needs verification'}</span>
+                <span className="text-white font-semibold">{countryIsKnown ? pack.countryName : ' Needs verification'}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-amber-100/60">Service radius</span>
@@ -802,7 +802,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
               <p className="text-xs font-bold text-amber-300 mb-1">Is this your listing?</p>
               <p className="text-xs text-amber-100/60 mb-3">Claim it free in 60 seconds to unlock trust scores, broker leads, and verified badges.</p>
               <Link href={`/claim?entity=${operator.contact_id || id}&operator=${id}`} data-profile-event="profile_claim_clicked" className="hc-btn-primary w-full py-2 rounded-lg flex items-center justify-center gap-2 text-xs">
-                Claim Free →
+                Claim Free
               </Link>
             </div>
           )}

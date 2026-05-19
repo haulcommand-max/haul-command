@@ -66,7 +66,7 @@ export default function CompareOperators({ operators, onRemove, onBook }: Props)
             overflow: 'auto', fontFamily: "var(--font-inter, 'Inter', system-ui, sans-serif)",
         }}>
             <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                <h3 style={{ margin: 0, color: '#F9FAFB', fontSize: 16, fontWeight: 700 }}>⚖️ Compare Operators ({operators.length})</h3>
+                <h3 style={{ margin: 0, color: '#F9FAFB', fontSize: 16, fontWeight: 700 }}> Compare Operators ({operators.length})</h3>
             </div>
 
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -77,7 +77,7 @@ export default function CompareOperators({ operators, onRemove, onBook }: Props)
                             <th key={op.id} style={{ padding: '12px', textAlign: 'center', minWidth: 150 }}>
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
                                     <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(245,158,11,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>
-                                        {op.photo_url ? <img src={op.photo_url} alt="" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }} /> : '👤'}
+                                        {op.photo_url ? <img src={op.photo_url} alt="" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }} /> : ''}
                                     </div>
                                     <span style={{ fontSize: 13, fontWeight: 700, color: '#F9FAFB' }}>{op.display_name}</span>
                                     <span style={{
@@ -85,7 +85,7 @@ export default function CompareOperators({ operators, onRemove, onBook }: Props)
                                         background: op.tier === 'elite' ? 'rgba(245,158,11,0.2)' : op.tier === 'strong' ? 'rgba(139,92,246,0.2)' : 'rgba(255,255,255,0.08)',
                                         color: op.tier === 'elite' ? '#F59E0B' : op.tier === 'strong' ? '#8B5CF6' : '#9CA3AF',
                                     }}>{op.tier.toUpperCase()}</span>
-                                    <button aria-label="Interactive Button" onClick={() => onRemove(op.id)} style={{ background: 'none', border: 'none', color: '#6B7280', fontSize: 11, cursor: 'pointer' }}>✕ Remove</button>
+                                    <button aria-label="Interactive Button" onClick={() => onRemove(op.id)} style={{ background: 'none', border: 'none', color: '#6B7280', fontSize: 11, cursor: 'pointer' }}> Remove</button>
                                 </div>
                             </th>
                         ))}
@@ -98,7 +98,7 @@ export default function CompareOperators({ operators, onRemove, onBook }: Props)
                         {operators.map(op => (
                             <td key={op.id} style={{ padding: '10px 12px', textAlign: 'center' }}>
                                 <span style={{ fontSize: 13, fontWeight: 700, color: op.available ? '#10B981' : '#EF4444' }}>
-                                    {op.available ? '🟢 Yes' : '🔴 No'}
+                                    {op.available ? ' Yes' : ' No'}
                                 </span>
                             </td>
                         ))}
@@ -124,7 +124,7 @@ export default function CompareOperators({ operators, onRemove, onBook }: Props)
                         <td style={{ padding: '10px 12px', fontSize: 12, color: '#9CA3AF', fontWeight: 600 }}>Verified</td>
                         {operators.map(op => (
                             <td key={op.id} style={{ padding: '10px 12px', textAlign: 'center', fontSize: 14 }}>
-                                {op.verified_insurance ? '🛡️' : '⬜'} {op.verified_license ? '📋' : '⬜'} {op.verified_equipment ? '🚗' : '⬜'}
+                                {op.verified_insurance ? '' : '⬜'} {op.verified_license ? '' : '⬜'} {op.verified_equipment ? '' : '⬜'}
                             </td>
                         ))}
                     </tr>

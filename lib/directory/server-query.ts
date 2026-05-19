@@ -12,6 +12,8 @@ export type DirectoryFallbackFilterPlan = {
   category: DirectoryCategoryFilter | null;
   surfaceViews: DirectorySurfaceView[];
   locationSearch: string;
+  inferredCategory: string | null;
+  isPureRoleQuery: boolean;
   order: Array<{ column: string; ascending: boolean }>;
   limit: number;
 };
@@ -124,10 +126,17 @@ const CATEGORY_SURFACE_VIEWS: Record<string, DirectorySurfaceView[]> = {
 
 const CATEGORY_ALIASES: Record<string, string> = {
   escort: "escort-vehicle",
+  escorts: "escort-vehicle",
+  "escort-vehicle-services": "escort-vehicle",
   "escort-service": "escort-vehicle",
   "escort-services": "escort-vehicle",
+  "pilot-car": "pilot-car",
+  "pilot-cars": "pilot-car",
   "pilot-car-operator": "pilot-car",
   "pilot-car-operators": "pilot-car",
+  "pilot-car-services": "pilot-car",
+  "pilot-cars-near-me": "pilot-car",
+  "pilot-car-operators-near-me": "pilot-car",
   "high-pole": "height-pole",
   "high-pole-escort": "height-pole",
   "high-pole-escorts": "height-pole",
@@ -186,16 +195,45 @@ export function resolveDirectorySurfaceViews(category?: string | null): Director
   return CATEGORY_SURFACE_VIEWS[normalized] ?? DEFAULT_SURFACE_VIEWS;
 }
 
+function inferDirectoryCategoryFromQuery(q?: string | null): string | null {
+  const slug = slugifyDirectoryMarket(String(q ?? ""));
+  if (!slug) return null;
+
+  const direct = normalizeDirectoryCategory(slug);
+  if (CATEGORY_FILTERS[direct]) return direct;
+
+  const spaced = ` ${slug.replace(/-/g, " ")} `;
+  const roleSignals: Array<{ category: string; terms: string[] }> = [
+    { category: "pilot-car", terms: [" pilot car ", " pilot cars ", " pilot operator ", " pilot operators "] },
+    { category: "escort-vehicle", terms: [" escort ", " escorts ", " escort vehicle ", " escort vehicles "] },
+    { category: "height-pole", terms: [" height pole ", " high pole "] },
+    { category: "route-survey", terms: [" route survey ", " route surveyor ", " route surveyors "] },
+    { category: "permit-service", terms: [" permit support ", " permit service ", " permit services ", " permitting "] },
+    { category: "truck-parking", terms: [" truck parking ", " staging yard ", " staging yards ", " parking "] },
+    { category: "mobile-mechanic", terms: [" mobile mechanic ", " mobile repair ", " roadside repair "] },
+    { category: "freight-broker", terms: [" freight broker ", " freight brokers ", " broker ", " brokers "] },
+  ];
+
+  return roleSignals.find((signal) => signal.terms.some((term) => spaced.includes(term)))?.category ?? null;
+}
+
 export function buildDirectoryFallbackFilterPlan(params: {
   country?: string | null;
   category?: string | null;
   q?: string | null;
 }): DirectoryFallbackFilterPlan {
+  const explicitCategory = normalizeDirectoryCategory(params.category);
+  const inferredCategory = explicitCategory || inferDirectoryCategoryFromQuery(params.q);
+  const category = resolveDirectoryCategoryFilter(inferredCategory);
+  const isPureRoleQuery = Boolean(!explicitCategory && inferredCategory);
+
   return {
     countryCode: normalizeDirectoryCountry(params.country),
-    category: resolveDirectoryCategoryFilter(params.category),
-    surfaceViews: resolveDirectorySurfaceViews(params.category),
-    locationSearch: String(params.q ?? "").trim(),
+    category,
+    surfaceViews: resolveDirectorySurfaceViews(inferredCategory),
+    locationSearch: isPureRoleQuery ? "" : String(params.q ?? "").trim(),
+    inferredCategory,
+    isPureRoleQuery,
     order: [
       { column: "rank_score", ascending: false },
       { column: "confidence_score", ascending: false },
@@ -210,10 +248,11 @@ export function buildDirectoryLocationOrFilter(locationSearch: string): string |
   if (!value) return null;
   const escaped = value.replace(/[%_,]/g, (char) => `\\${char}`);
   return [
-    `city_inferred.ilike.%${escaped}%`,
-    `state_inferred.ilike.%${escaped}%`,
-    `company.ilike.%${escaped}%`,
+    `city.ilike.%${escaped}%`,
+    `state.ilike.%${escaped}%`,
     `name.ilike.%${escaped}%`,
+    `primary_role.ilike.%${escaped}%`,
+    `public_label.ilike.%${escaped}%`,
   ].join(",");
 }
 

@@ -18,7 +18,7 @@ export default function ClaimValueContrast({ claimUrl }: ClaimValueContrastProps
                 {/* Unclaimed column */}
                 <div className="vc-col unclaimed">
                     <div className="vc-col-header">
-                        <span className="vc-icon">🔒</span>
+                        <span className="vc-icon"></span>
                         <span>Unclaimed</span>
                     </div>
                     <ul>
@@ -36,7 +36,7 @@ export default function ClaimValueContrast({ claimUrl }: ClaimValueContrastProps
                 {/* Claimed column */}
                 <div className="vc-col claimed">
                     <div className="vc-col-header">
-                        <span className="vc-icon">✅</span>
+                        <span className="vc-icon"></span>
                         <span>Claimed</span>
                     </div>
                     <ul>
@@ -121,8 +121,8 @@ export default function ClaimValueContrast({ claimUrl }: ClaimValueContrastProps
           left: 0;
           top: 0;
         }
-        li.negative::before { content: '✗'; color: #EF4444; }
-        li.positive::before { content: '✓'; color: #10B981; }
+        li.negative::before { content: ''; color: #EF4444; }
+        li.positive::before { content: ''; color: #10B981; }
         .vc-cta {
           margin-top: 20px;
           text-align: center;

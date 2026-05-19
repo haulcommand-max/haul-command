@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
   buildDirectoryFallbackFilterPlan,
+  buildDirectoryMarketFilterPlan,
   normalizeDirectoryCountry,
   resolveDirectoryCategoryFilter,
+  resolveDirectorySurfaceViews,
 } from "@/lib/directory/server-query";
 
 describe("directory fallback query planning", () => {
@@ -21,7 +23,7 @@ describe("directory fallback query planning", () => {
     });
   });
 
-  it("normalizes supported country codes without turning missing or invalid countries into US", () => {
+  it("normalizes supported country codes without turning invalid countries into US", () => {
     expect(normalizeDirectoryCountry(undefined)).toBeNull();
     expect(normalizeDirectoryCountry("ca")).toBe("CA");
     expect(normalizeDirectoryCountry("AU")).toBe("AU");
@@ -48,6 +50,17 @@ describe("directory fallback query planning", () => {
     expect(plan.limit).toBe(50);
   });
 
+  it("treats role searches as category intent instead of no-result location text", () => {
+    const plan = buildDirectoryFallbackFilterPlan({
+      q: "Pilot car operators",
+    });
+
+    expect(plan.category?.entityFamily).toBe("operator");
+    expect(plan.category?.entitySubtypes).toContain("pilot_car_operator");
+    expect(plan.surfaceViews).toEqual(["v_directory_operators"]);
+    expect(plan.locationSearch).toBe("");
+  });
+
   it("maps non-operator categories away from the pilot-car family", () => {
     expect(resolveDirectoryCategoryFilter("mobile-mechanic")).toMatchObject({
       entityFamily: "infrastructure",
@@ -57,5 +70,31 @@ describe("directory fallback query planning", () => {
       entityFamily: "broker",
       entitySubtypes: ["freight_broker"],
     });
+  });
+
+  it("keeps the default directory broad enough to include carrier and authority surfaces", () => {
+    const surfaces = resolveDirectorySurfaceViews();
+
+    expect(surfaces).toEqual([
+      "v_directory_operators",
+      "v_directory_support_locations",
+      "v_directory_services",
+      "v_directory_brokers",
+      "v_directory_carriers",
+      "v_directory_infrastructure",
+      "v_directory_authorities",
+    ]);
+  });
+
+  it("plans non-US country metro routes across the full directory", () => {
+    const plan = buildDirectoryMarketFilterPlan({ country: "de", slug: "hamburg" });
+
+    expect(plan.countryCode).toBe("DE");
+    expect(plan.marketName).toBe("Hamburg");
+    expect(plan.scope).toEqual({ type: "metro", name: "Hamburg" });
+    expect(plan.noIndexWhenEmpty).toBe(true);
+    expect(plan.surfaceViews).toEqual(resolveDirectorySurfaceViews());
+    expect(plan.locationOrFilter).toContain("city_inferred.ilike.%Hamburg%");
+    expect(plan.locationOrFilter).toContain("state_inferred.ilike.%Hamburg%");
   });
 });

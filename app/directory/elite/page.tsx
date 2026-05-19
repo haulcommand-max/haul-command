@@ -40,7 +40,7 @@ export default function DirectoryEliteStore() {
             <div className="absolute top-0 right-0 bg-hc-yellow-400 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">PROFILE PROOF</div>
             <h3 className="text-xl font-bold text-white mb-1 mt-2">Verified proof review</h3>
             <p className="text-sm text-hc-gray-400 mb-4">For claimed providers with real documents, equipment, media, and service-area updates.</p>
-            
+
             <div className="space-y-2 mb-6">
               <div className="flex justify-between text-sm">
                 <span className="text-hc-gray-500">Trust display</span>

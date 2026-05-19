@@ -6,11 +6,11 @@ import { X, ChevronLeft, ChevronRight, Upload, Camera } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { motion, AnimatePresence } from "framer-motion";
 
-// ══════════════════════════════════════════════════════════════
+//
 // ProfileGallery — Haul Command Directory
 // Up to 6 photos of operator's rig / equipment setup.
 // Pattern borrowed from: eDirectory photo galleries.
-// ══════════════════════════════════════════════════════════════
+//
 
 interface GalleryPhoto {
     url: string;

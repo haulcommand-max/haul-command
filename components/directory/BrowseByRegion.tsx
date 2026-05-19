@@ -17,7 +17,7 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { Globe, Search, Zap } from "lucide-react";
 
-// ── Data ─────────────────────────────────────────────────────────────────────
+//  Data
 
 const US: [string, string][] = [
     ["AL", "Alabama"], ["AK", "Alaska"], ["AZ", "Arizona"], ["AR", "Arkansas"], ["CA", "California"],
@@ -40,7 +40,7 @@ const CA: [string, string][] = [
 ];
 
 // Simulated density until real-time counts pipe through
-// Format: region_code → { count, signal }
+// Format: region_code  { count, signal }
 const DENSITY: Record<string, { count: number; signal: "high" | "medium" | "thin" | "soon" }> = {
     TX: { count: 47, signal: "high" }, FL: { count: 38, signal: "high" },
     CA: { count: 31, signal: "high" }, GA: { count: 24, signal: "high" },
@@ -65,7 +65,7 @@ const SIGNAL_CONFIG = {
     soon: { dot: "#4b5563", label: "Coming Soon", bg: "rgba(75,85,99,0.04)", border: "rgba(75,85,99,0.1)" },
 };
 
-// ── Tile ─────────────────────────────────────────────────────────────────────
+//  Tile
 
 function RegionTile({ code, name, href, hot }: { code: string; name: string; href: string; hot: boolean }) {
     const density = DENSITY[code] ?? { count: 0, signal: "soon" as const };
@@ -120,7 +120,7 @@ function RegionTile({ code, name, href, hot }: { code: string; name: string; hre
     );
 }
 
-// ── Main Component ────────────────────────────────────────────────────────────
+//  Main Component
 
 export function BrowseByRegion({ className = "" }: { className?: string }) {
     const [tab, setTab] = useState<"us" | "ca">("us");
@@ -146,7 +146,7 @@ export function BrowseByRegion({ className = "" }: { className?: string }) {
             border: "1px solid rgba(255,255,255,0.06)",
         }}>
 
-            {/* ── Micro-stats strip ── */}
+            {/*  Micro-stats strip  */}
             <div className="flex flex-wrap items-center gap-x-6 gap-y-1 mb-5 pb-4"
                 style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
                 {[
@@ -166,12 +166,12 @@ export function BrowseByRegion({ className = "" }: { className?: string }) {
                     <Link aria-label="Navigation Link" href="/claim"
                         className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest text-black transition-transform hover:scale-[1.03]"
                         style={{ background: "#F1A91B" }}>
-                        Claim Profile →
+                        Claim Profile
                     </Link>
                 </div>
             </div>
 
-            {/* ── Header row ── */}
+            {/*  Header row  */}
             <div className="flex items-center gap-3 mb-4">
                 <Globe className="w-4 h-4 text-[#F1A91B] flex-shrink-0" />
                 <div>
@@ -189,13 +189,13 @@ export function BrowseByRegion({ className = "" }: { className?: string }) {
                                 color: tab === t ? "#000" : "rgba(255,255,255,0.35)",
                                 border: "1px solid " + (tab === t ? "transparent" : "rgba(255,255,255,0.08)"),
                             }}>
-                            {t === "us" ? "🇺🇸 US" : "🇨🇦 CA"}
+                            {t === "us" ? " US" : " CA"}
                         </button>
                     ))}
                 </div>
             </div>
 
-            {/* ── Search ── */}
+            {/*  Search  */}
             <div className="relative mb-4">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/25 pointer-events-none" />
                 <input
@@ -214,12 +214,12 @@ export function BrowseByRegion({ className = "" }: { className?: string }) {
                 {query && (
                     <button aria-label="Interactive Button" onClick={() => setQuery("")}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/60 text-xs">
-                        ✕
+                        Clear
                     </button>
                 )}
             </div>
 
-            {/* ── Tile grid ── */}
+            {/*  Tile grid  */}
             {filtered.length === 0 ? (
                 <div className="text-center py-8 text-white/25 text-sm">
                     No regions match "{query}"
@@ -238,7 +238,7 @@ export function BrowseByRegion({ className = "" }: { className?: string }) {
                 </div>
             )}
 
-            {/* ── Legend ── */}
+            {/*  Legend  */}
             <div className="flex flex-wrap items-center gap-4 mt-4 pt-3"
                 style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>
                 {Object.entries(SIGNAL_CONFIG).map(([key, cfg]) => (
@@ -249,12 +249,12 @@ export function BrowseByRegion({ className = "" }: { className?: string }) {
                 ))}
             </div>
 
-            {/* ── Mobile claim CTA ── */}
+            {/*  Mobile claim CTA  */}
             <div className="mt-4 sm:hidden">
                 <Link aria-label="Navigation Link" href="/claim"
                     className="flex items-center justify-center w-full py-3 rounded-xl text-sm font-black uppercase tracking-widest text-black"
                     style={{ background: "#F1A91B" }}>
-                    Claim Your Profile →
+                    Claim Your Profile
                 </Link>
             </div>
         </section>

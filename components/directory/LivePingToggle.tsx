@@ -45,7 +45,7 @@ export function LivePingToggle({ operatorId, initialStatus = 'offline' }: LivePi
       const { error } = await supabase.rpc('ping_live_status', {
         p_operator_id: operatorId,
         p_status: newStatus,
-        p_lat: null, 
+        p_lat: null,
         p_lng: null
       });
 
@@ -81,8 +81,8 @@ export function LivePingToggle({ operatorId, initialStatus = 'offline' }: LivePi
           disabled={isPinging}
           className={`
             relative w-32 h-32 rounded-full flex flex-col items-center justify-center transition-all duration-300 shadow-2xl
-            ${isLive 
-              ? 'bg-[#22c55e] border-4 border-[#22c55e]/30 shadow-[0_0_60px_rgba(34,197,94,0.4)] scale-105' 
+            ${isLive
+              ? 'bg-[#22c55e] border-4 border-[#22c55e]/30 shadow-[0_0_60px_rgba(34,197,94,0.4)] scale-105'
               : 'bg-[#1a1a1a] border-4 border-white/5 hover:border-white/20'
             }
           `}

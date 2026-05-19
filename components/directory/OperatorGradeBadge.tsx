@@ -6,13 +6,13 @@
  * OR accepts a pre-computed grade string.
  *
  * Usage:
- *   <OperatorGradeBadge score={85} />          → "A" (gold)
- *   <OperatorGradeBadge grade="B+" size="lg" /> → "B+" (blue)
+ *   <OperatorGradeBadge score={85} />           "A" (gold)
+ *   <OperatorGradeBadge grade="B+" size="lg" />  "B+" (blue)
  */
 
 import React from "react";
 
-// ── Grade mapping (mirrors the DB function) ───────────────────────────────────
+//  Grade mapping (mirrors the DB function)
 
 const GRADE_CONFIG: Record<string, { color: string; bg: string; glow: string }> = {
     "A+": { color: "#F1A91B", bg: "rgba(241,169,27,0.12)", glow: "rgba(241,169,27,0.3)" },

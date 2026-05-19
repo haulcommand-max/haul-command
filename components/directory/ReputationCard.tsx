@@ -10,7 +10,7 @@
 import type { TrustTier, CapabilityModule, BadgeType } from '@/lib/reputation-engine';
 import { CAPABILITY_LABELS, BADGE_RULES } from '@/lib/reputation-engine';
 
-// ── Types ──
+//  Types
 interface CategoryScore {
     label: string;
     score: number;
@@ -54,14 +54,14 @@ const TIER_STYLES: Record<TrustTier, { color: string; bg: string; border: string
 };
 
 const DEFAULT_CATEGORIES: CategoryScore[] = [
-    { label: 'Identity & Ownership', score: 0, maxScore: 10, icon: '🪪' },
-    { label: 'Profile Strength', score: 0, maxScore: 15, icon: '📋' },
-    { label: 'Verification & Compliance', score: 0, maxScore: 20, icon: '✅' },
-    { label: 'Responsiveness', score: 0, maxScore: 10, icon: '⚡' },
-    { label: 'Reliability', score: 0, maxScore: 15, icon: '🎯' },
-    { label: 'Freshness', score: 0, maxScore: 10, icon: '🔄' },
-    { label: 'Territory Coverage', score: 0, maxScore: 10, icon: '🗺️' },
-    { label: 'Dispatch Readiness', score: 0, maxScore: 10, icon: '🚀' },
+    { label: 'Identity & Ownership', score: 0, maxScore: 10, icon: '' },
+    { label: 'Profile Strength', score: 0, maxScore: 15, icon: '' },
+    { label: 'Verification & Compliance', score: 0, maxScore: 20, icon: '' },
+    { label: 'Responsiveness', score: 0, maxScore: 10, icon: '' },
+    { label: 'Reliability', score: 0, maxScore: 15, icon: '' },
+    { label: 'Freshness', score: 0, maxScore: 10, icon: '' },
+    { label: 'Territory Coverage', score: 0, maxScore: 10, icon: '' },
+    { label: 'Dispatch Readiness', score: 0, maxScore: 10, icon: '' },
 ];
 
 export default function ReputationCard({
@@ -77,7 +77,7 @@ export default function ReputationCard({
     improvements,
 }: ReputationCardProps) {
 
-    // ── UNCLAIMED: Locked state ──
+    //  UNCLAIMED: Locked state
     if (!claimed) {
         return (
             <div className="rep-card locked">
@@ -106,7 +106,7 @@ export default function ReputationCard({
                                 <div className="rep-bar-track">
                                     <div className="rep-bar-fill locked" style={{ width: '0%' }} />
                                 </div>
-                                <span className="rep-cat-status locked">🔒</span>
+                                <span className="rep-cat-status locked"></span>
                             </div>
                         </div>
                     ))}
@@ -119,7 +119,7 @@ export default function ReputationCard({
                         {Object.entries(CAPABILITY_LABELS).map(([key, label]) => (
                             <div key={key} className="rep-cap-item locked">
                                 <span>{label}</span>
-                                <span className="locked-text">🔒 Claim to activate</span>
+                                <span className="locked-text"> Claim to activate</span>
                             </div>
                         ))}
                     </div>
@@ -138,7 +138,7 @@ export default function ReputationCard({
         );
     }
 
-    // ── CLAIMED: Live state ──
+    //  CLAIMED: Live state
     const activeTier = tier || 'unverified';
     const tierStyle = TIER_STYLES[activeTier];
     const score = overallScore ?? 0;
@@ -234,7 +234,7 @@ export default function ReputationCard({
             {/* Private: Score Improvements (operator dashboard only) */}
             {showPrivate && improvements && improvements.length > 0 && (
                 <div className="rep-section private">
-                    <h4 className="rep-section-title">🔑 What Improves Your Score Fastest</h4>
+                    <h4 className="rep-section-title"> What Improves Your Score Fastest</h4>
                     <div className="rep-improvements">
                         {improvements.map((imp, i) => (
                             <div key={i} className="rep-imp-row">
@@ -251,7 +251,7 @@ export default function ReputationCard({
     );
 }
 
-// ── Shared styles ──
+//  Shared styles
 const CARD_STYLES = `
   .rep-card {
     background: linear-gradient(135deg, rgba(11,17,32,0.97), rgba(15,23,42,0.97));

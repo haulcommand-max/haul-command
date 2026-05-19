@@ -16,7 +16,7 @@
 import React from "react";
 import { Zap, Shield, Route, MapPin } from "lucide-react";
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+//  Types
 
 export type SortMode =
     | "fastest_response"
@@ -33,7 +33,7 @@ export interface DirectorySortControlsProps {
     hasLocation?: boolean;
 }
 
-// ── Config ─────────────────────────────────────────────────────────────────────
+//  Config
 
 interface SortOption {
     value: SortMode;
@@ -78,7 +78,7 @@ const SORT_OPTIONS: SortOption[] = [
     },
 ];
 
-// ── Component ─────────────────────────────────────────────────────────────────
+//  Component
 
 export default function DirectorySortControls({
     value,
@@ -147,7 +147,7 @@ export default function DirectorySortControls({
     );
 }
 
-// ── Sort logic — use on server or client to reorder operators ─────────────────
+//  Sort logic — use on server or client to reorder operators
 
 export type OperatorForSort = {
     id: string;

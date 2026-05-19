@@ -55,8 +55,8 @@ const DEFAULT_FILTERS: DirectoryFilterState = {
 const DEFAULT_SEARCH_FIELDS = ['company', 'name', 'company_name', 'display_name', 'city', 'city_inferred', 'state_inferred', 'state_code', 'primary_service_area', 'services', 'specialties'];
 
 const CATEGORY_OPTIONS = [
-  { value: '', label: 'All Categories' },
-  { value: 'support', label: 'All Support' },
+  { value: '', label: 'All Support Types' },
+  { value: 'support', label: 'Any Support' },
   { value: 'pilot-car', label: 'Pilot Cars' },
   { value: 'escort', label: 'Escorts' },
   { value: 'route-survey', label: 'Route Survey' },
@@ -104,7 +104,7 @@ function recordHasClaimState(item: any, claim: DirectoryClaimFilter): boolean {
 function recordHasProofState(item: any, proof: DirectoryProofFilter): boolean {
   if (proof === 'all') return true;
   const status = normalizeFilterValue(item.verification_status || item.proof_status || item.trust_status);
-  const hasContact = Boolean(item.phone || item.phone_number || item.website || item.email);
+  const hasContact = Boolean(item.phone || item.phone_number || item.phone_e164 || item.phone_raw || item.website || item.email);
   const verified = [
     'verified',
     'document_verified',
@@ -121,29 +121,24 @@ function recordHasProofState(item: any, proof: DirectoryProofFilter): boolean {
 function recordMatchesCategory(item: any, category: string): boolean {
   const normalized = normalizeFilterValue(category);
   if (!normalized || normalized === 'support') return true;
-  const metadata = item.metadata && typeof item.metadata === 'object' ? item.metadata : {};
 
   const haystack = [
     item.entity_family,
+    item.entity_type,
     item.entity_subtype,
-    metadata.entity_family,
-    metadata.entity_subtype,
-    metadata.primary_service,
-    metadata.primary_category,
+    item.primary_role,
+    item.role_primary,
+    item.public_label,
     item.category,
     item.category_slug,
     item.service_type,
     item.primary_service,
     item.primary_category,
     item.equipment_types,
-    metadata.equipment_types,
-    metadata.service_categories,
-    metadata.services,
-    metadata.specialties,
-    metadata.tags,
     item.services,
     item.specialties,
     item.tags,
+    item.search_surface,
   ]
     .flatMap((value) => Array.isArray(value) ? value : [value])
     .map(normalizeFilterValue)
@@ -413,9 +408,9 @@ export function DirectorySearchBar({
           }}
           aria-label="Filter by verification"
         >
-          <option value="all">All proof states</option>
-          <option value="verified">Document/performance proof</option>
-          <option value="contact_confirmed">Contact Confirmed</option>
+          <option value="all">Any Proof State</option>
+          <option value="verified">Verified Records</option>
+          <option value="contact_confirmed">Contact Path</option>
         </select>
       </div>
 
@@ -434,9 +429,9 @@ export function DirectorySearchBar({
         }}
         aria-label="Filter by claim status"
       >
-        <option value="all">All Claims</option>
-        <option value="claimed">Claimed</option>
-        <option value="unclaimed">Unclaimed</option>
+        <option value="all">Any Claim State</option>
+        <option value="claimed">Claimed Profiles</option>
+        <option value="unclaimed">Claimable / Unclaimed</option>
       </select>
 
       <div style={{ position: 'relative', flex: '0 0 auto' }}>
@@ -459,7 +454,7 @@ export function DirectorySearchBar({
           }}
           aria-label="Sort directory records"
         >
-          <option value="score">Best Signal</option>
+          <option value="score">Best Fit</option>
           <option value="newest">Newest</option>
           <option value="name">Name</option>
         </select>

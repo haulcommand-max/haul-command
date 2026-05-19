@@ -16,14 +16,14 @@ export interface FilterState {
 }
 
 const EQUIPMENT_OPTIONS = [
-  { key: 'height_pole', label: 'Height Pole', icon: '📏' },
-  { key: 'arrow_board', label: 'Arrow Board', icon: '➡️' },
-  { key: 'flags_signs', label: 'Flags & Signs', icon: '🚩' },
-  { key: 'oversize_banners', label: 'OVERSIZE Banners', icon: '⚠️' },
-  { key: 'radio_cb', label: 'CB Radio', icon: '📻' },
-  { key: 'gps_tracker', label: 'GPS Tracker', icon: '📡' },
-  { key: 'dashcam', label: 'Dashcam', icon: '📹' },
-  { key: 'fire_extinguisher', label: 'Fire Extinguisher', icon: '🧯' },
+  { key: 'height_pole', label: 'Height Pole', icon: '' },
+  { key: 'arrow_board', label: 'Arrow Board', icon: '' },
+  { key: 'flags_signs', label: 'Flags & Signs', icon: '' },
+  { key: 'oversize_banners', label: 'OVERSIZE Banners', icon: '' },
+  { key: 'radio_cb', label: 'CB Radio', icon: '' },
+  { key: 'gps_tracker', label: 'GPS Tracker', icon: '' },
+  { key: 'dashcam', label: 'Dashcam', icon: '' },
+  { key: 'fire_extinguisher', label: 'Fire Extinguisher', icon: '' },
 ];
 
 export function DirectoryHardFilter({ onFilterChange }: { onFilterChange?: (filters: FilterState) => void }) {
@@ -44,7 +44,7 @@ export function DirectoryHardFilter({ onFilterChange }: { onFilterChange?: (filt
   const updateFilter = (key: keyof FilterState, value: boolean | string[]) => {
     const next = { ...filters, [key]: value };
     setFilters(next);
-    
+
     // Count active filters
     let count = 0;
     if (next.highPole) count++;
@@ -57,14 +57,14 @@ export function DirectoryHardFilter({ onFilterChange }: { onFilterChange?: (filt
     if (next.verified) count++;
     count += next.equipmentType.length;
     setActiveCount(count);
-    
+
     onFilterChange?.(next);
   };
 
   const toggleEquipment = (key: string) => {
     const current = filters.equipmentType;
-    const next = current.includes(key) 
-      ? current.filter(k => k !== key) 
+    const next = current.includes(key)
+      ? current.filter(k => k !== key)
       : [...current, key];
     updateFilter('equipmentType', next);
   };
@@ -109,12 +109,12 @@ export function DirectoryHardFilter({ onFilterChange }: { onFilterChange?: (filt
             </h4>
             <div className="grid grid-cols-2 gap-2">
               {[
-                { key: 'highPole' as const, label: 'Height Pole Certified', icon: '📏', desc: 'Has height pole equipment' },
-                { key: 'twic' as const, label: 'TWIC Card', icon: '🔐', desc: 'Port/maritime clearance' },
-                { key: 'hazmat' as const, label: 'HazMat Endorsed', icon: '☢️', desc: 'Hazardous materials' },
-                { key: 'superload' as const, label: 'Superload Rated', icon: '🏗', desc: '200,000+ lbs' },
-                { key: 'avCertified' as const, label: 'AV Escort Certified', icon: '🤖', desc: 'Autonomous vehicle escort' },
-                { key: 'verified' as const, label: 'HC Verified', icon: '✅', desc: 'Identity confirmed' },
+                { key: 'highPole' as const, label: 'Height Pole Certified', icon: '', desc: 'Has height pole equipment' },
+                { key: 'twic' as const, label: 'TWIC Card', icon: '', desc: 'Port/maritime clearance' },
+                { key: 'hazmat' as const, label: 'HazMat Endorsed', icon: '', desc: 'Hazardous materials' },
+                { key: 'superload' as const, label: 'Superload Rated', icon: '', desc: '200,000+ lbs' },
+                { key: 'avCertified' as const, label: 'AV Escort Certified', icon: '', desc: 'Autonomous vehicle escort' },
+                { key: 'verified' as const, label: 'HC Verified', icon: '', desc: 'Identity confirmed' },
               ].map(cert => (
                 <button
                   key={cert.key}

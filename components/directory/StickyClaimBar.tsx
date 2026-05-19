@@ -110,7 +110,7 @@ export function StickyClaimBar({
 
     return (
         <>
-            {/* ── Inline bar (always shown at top of section) ───────────────────── */}
+            {/*  Inline bar (always shown at top of section)  */}
             <div
                 className="flex items-center justify-between gap-4 rounded-2xl px-5 py-4"
                 style={{
@@ -156,7 +156,7 @@ export function StickyClaimBar({
                 </div>
             </div>
 
-            {/* ── Sticky bottom bar (mobile only, appears on scroll) ─────────────── */}
+            {/*  Sticky bottom bar (mobile only, appears on scroll)  */}
             <div
                 className={`fixed bottom-0 left-0 right-0 z-50 md:hidden transition-all duration-300 ${visible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
                     }`}

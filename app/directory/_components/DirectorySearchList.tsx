@@ -1,11 +1,11 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Search, MapPin, LockKeyhole, Shield, Zap } from "lucide-react";
-import { buildDirectoryDossierHref } from "@/lib/directory/routes";
+import { NoDeadEndBlock } from "@/components/ui/NoDeadEndBlock";
 
-// â”€â”€â”€ Shared filter type (matches DirectoryHardFilter) â”€â”€â”€â”€â”€â”€
+// Shared filter type (matches DirectoryHardFilter).
 export interface HardFilterState {
   highPole: boolean;
   twic: boolean;
@@ -22,12 +22,28 @@ interface OperatorResult {
   id: string;
   slug?: string;
   name: string;
-  phone: string;
+  contact_available?: boolean;
   location: string;
   score: number;
   badges?: Record<string, boolean>;
   equipment_tags?: string[];
   is_available_now?: boolean;
+}
+
+interface RoleChip {
+  id: string;
+  label: string;
+  href?: string;
+  family?: string | null;
+  priority?: number;
+  isRare?: boolean;
+}
+
+interface SearchSuggestion {
+  type: string;
+  label: string;
+  href: string;
+  sub?: string;
 }
 
 export function DirectorySearchList({
@@ -39,10 +55,18 @@ export function DirectorySearchList({
 }) {
   const [query, setQuery] = useState(initialQuery);
   const [results, setResults] = useState<OperatorResult[]>([]);
-  const [isCensored, setIsCensored] = useState(false);
+  const [hasContactGate, setHasContactGate] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const [filtersApplied, setFiltersApplied] = useState<Record<string, any> | null>(null);
+  const [roleChips, setRoleChips] = useState<RoleChip[]>([]);
+  const [roleSource, setRoleSource] = useState<string>("loading");
+  const [selectedRoleId, setSelectedRoleId] = useState<string>("all");
+  const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
+  const [isSuggestionOpen, setIsSuggestionOpen] = useState(false);
+  const selectedRole = roleChips.find((role) => role.id === selectedRoleId);
+  const encodedSearch = encodeURIComponent(query || selectedRole?.label || "heavy haul support");
+  const encodedRole = encodeURIComponent(selectedRole?.id || query || "support");
 
   const fetchOperators = useCallback(async (searchQuery: string, hardFilters?: HardFilterState) => {
     setIsLoading(true);
@@ -50,7 +74,7 @@ export function DirectorySearchList({
       // Build query params
       const params = new URLSearchParams();
       if (searchQuery) params.set('q', searchQuery);
-      
+
       // Hard filter params
       if (hardFilters) {
         if (hardFilters.twic) params.set('twic', 'true');
@@ -68,7 +92,7 @@ export function DirectorySearchList({
       const data = await res.json();
 
       setResults(data.operators || []);
-      setIsCensored(data.censored === true);
+      setHasContactGate((data.operators || []).some((op: OperatorResult) => op.contact_available));
       setTotalCount(data.total ?? 0);
       setFiltersApplied(data.filters_applied || null);
     } catch (e) {
@@ -82,17 +106,74 @@ export function DirectorySearchList({
     fetchOperators(query, filters);
   }, [query, filters, fetchOperators]);
 
+  useEffect(() => {
+    const cleanQuery = query.trim();
+    if (cleanQuery.length < 2) {
+      setSuggestions([]);
+      setIsSuggestionOpen(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    const timeout = window.setTimeout(async () => {
+      try {
+        const params = new URLSearchParams({ q: cleanQuery });
+        const res = await fetch(`/api/search/suggest?${params.toString()}`, {
+          signal: controller.signal,
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        setSuggestions(Array.isArray(data.suggestions) ? data.suggestions : []);
+        setIsSuggestionOpen(true);
+      } catch (error: any) {
+        if (error?.name !== "AbortError") {
+          setSuggestions([]);
+        }
+      }
+    }, 180);
+
+    return () => {
+      controller.abort();
+      window.clearTimeout(timeout);
+    };
+  }, [query]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function fetchRoleChips() {
+      try {
+        const res = await fetch("/api/roles/chips?limit=500");
+        const data = await res.json();
+        if (cancelled) return;
+        setRoleChips(Array.isArray(data.chips) ? data.chips : []);
+        setRoleSource(data.source || "fallback");
+      } catch (error) {
+        if (!cancelled) {
+          console.error("[DirectorySearchList] role chips unavailable", error);
+          setRoleSource("fallback");
+        }
+      }
+    }
+
+    fetchRoleChips();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   // Badge renderer
   const renderBadges = (badges?: Record<string, boolean>, isAvailable?: boolean) => {
     if (!badges && !isAvailable) return null;
     const active: { key: string; label: string; color: string; icon: string }[] = [];
-    if (isAvailable) active.push({ key: 'live', label: 'LIVE', color: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30', icon: 'ðŸŸ¢' });
-    if (badges?.twic) active.push({ key: 'twic', label: 'TWIC', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20', icon: 'ðŸ”' });
-    if (badges?.hazmat) active.push({ key: 'hazmat', label: 'HazMat', color: 'bg-orange-500/10 text-orange-400 border-orange-500/20', icon: 'â˜¢ï¸' });
-    if (badges?.highPole) active.push({ key: 'highPole', label: 'Height Pole', color: 'bg-purple-500/10 text-purple-400 border-purple-500/20', icon: 'ðŸ“' });
-    if (badges?.superload) active.push({ key: 'superload', label: 'Superload', color: 'bg-red-500/10 text-red-400 border-red-500/20', icon: 'ðŸ—' });
-    if (badges?.avCertified) active.push({ key: 'av', label: 'AV Cert', color: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20', icon: 'ðŸ¤–' });
-    if (badges?.verified) active.push({ key: 'verified', label: 'Verified', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', icon: 'âœ…' });
+    if (isAvailable) active.push({ key: 'live', label: 'LIVE', color: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30', icon: 'LIVE' });
+    if (badges?.twic) active.push({ key: 'twic', label: 'TWIC', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20', icon: 'PORT' });
+    if (badges?.hazmat) active.push({ key: 'hazmat', label: 'HazMat', color: 'bg-orange-500/10 text-orange-400 border-orange-500/20', icon: 'HAZ' });
+    if (badges?.highPole) active.push({ key: 'highPole', label: 'Height Pole', color: 'bg-purple-500/10 text-purple-400 border-purple-500/20', icon: 'HP' });
+    if (badges?.superload) active.push({ key: 'superload', label: 'Superload', color: 'bg-red-500/10 text-red-400 border-red-500/20', icon: 'SL' });
+    if (badges?.avCertified) active.push({ key: 'av', label: 'AV Cert', color: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20', icon: 'AV' });
+    if (badges?.verified) active.push({ key: 'verified', label: 'Verified', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', icon: 'OK' });
     if (active.length === 0) return null;
     return (
       <div className="flex flex-wrap gap-1 mt-1.5">
@@ -112,11 +193,41 @@ export function DirectorySearchList({
         <Search className="absolute left-4 top-3.5 text-slate-400 w-5 h-5" />
         <input
           type="text"
-          placeholder="Search by city, state, or company name..."
+          placeholder="Search operators, roles, states, corridors, or provider names..."
           className="w-full  border border-slate-700 rounded-lg py-3 pl-12 pr-4 text-white focus:outline-none focus:border-amber-500"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onFocus={() => {
+            if (suggestions.length > 0) setIsSuggestionOpen(true);
+          }}
         />
+        {isSuggestionOpen && suggestions.length > 0 && (
+          <div className="absolute left-0 right-0 top-full z-30 mt-2 overflow-hidden rounded-xl border border-white/10 bg-[#080B10] shadow-2xl">
+            <div className="border-b border-white/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.16em] text-[#C6923A]">
+              Search suggestions
+            </div>
+            <div className="max-h-80 overflow-y-auto">
+              {suggestions.map((suggestion) => (
+                <Link
+                  key={`${suggestion.type}:${suggestion.href}:${suggestion.label}`}
+                  href={suggestion.href}
+                  className="flex items-start gap-3 border-b border-white/[0.06] px-4 py-3 no-underline transition-colors last:border-b-0 hover:bg-white/[0.04]"
+                  onClick={() => setIsSuggestionOpen(false)}
+                >
+                  <span className="mt-0.5 rounded-md border border-[#C6923A]/25 bg-[#C6923A]/10 px-2 py-1 text-[10px] font-black uppercase tracking-wider text-[#C6923A]">
+                    {suggestion.type}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block truncate text-sm font-bold text-white">{suggestion.label}</span>
+                    {suggestion.sub && (
+                      <span className="mt-0.5 block truncate text-xs text-slate-500">{suggestion.sub}</span>
+                    )}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Active filter indicator */}
@@ -124,7 +235,7 @@ export function DirectorySearchList({
         <div className="flex items-center gap-2 px-3 py-2 bg-[#0b0f14] border border-white/10 rounded-lg">
           <Shield className="w-3.5 h-3.5 text-[#C6923A]" />
           <span className="text-[11px] text-neutral-400 font-medium">
-            Filtered results — showing operators matching your certification requirements
+            Filtered results - showing operators matching your certification requirements
           </span>
           <span className="ml-auto text-[10px] font-bold text-[#C6923A]">
             {totalCount.toLocaleString()} match{totalCount !== 1 ? 'es' : ''}
@@ -133,39 +244,105 @@ export function DirectorySearchList({
       )}
 
       {/* Role / Position Filters */}
-      <div className="flex overflow-x-auto pb-2 gap-2 hc-scrollbar-hide">
-        {[
-          "All Roles",
-          "Pilot Car (PEVO)",
-          "Tillerman",
-          "Height Pole",
-          "Route Surveyor",
-          "Bucket Truck",
-          "Broker / Dispatch",
-          "Police Escort",
-          "Mechanic",
-          "Heavy Wrecker"
-        ].map((role, idx) => (
+      <div className="space-y-2">
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-slate-500">
+            Role Command Center
+          </p>
+          <p className="text-[10px] text-slate-500">
+            {roleChips.length > 0
+              ? `${roleChips.length.toLocaleString()} roles from ${roleSource}`
+              : "Loading role spine..."}
+          </p>
+        </div>
+        <div className="flex overflow-x-auto pb-2 gap-2 hc-scrollbar-hide">
           <button
-            key={role}
             className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
-              idx === 0 
-                ? "bg-amber-500 text-white border-amber-500" 
+              selectedRoleId === "all"
+                ? "bg-amber-500 text-white border-amber-500"
                 : " text-slate-300 border-slate-800 hover:border-slate-500 hover:text-white"
             }`}
+            onClick={() => {
+              setSelectedRoleId("all");
+              setQuery("");
+            }}
           >
-            {role}
+            All Roles
+          </button>
+          {roleChips.map((role) => (
+          <button
+            key={role.id}
+            className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
+              selectedRoleId === role.id
+                ? "bg-amber-500 text-white border-amber-500"
+                : " text-slate-300 border-slate-800 hover:border-slate-500 hover:text-white"
+            }`}
+            title={role.family || undefined}
+            onClick={() => {
+              setSelectedRoleId(role.id);
+              setQuery(role.label);
+            }}
+          >
+            {role.label}
+            {role.isRare ? " *" : ""}
           </button>
         ))}
+        </div>
       </div>
 
       {isLoading && <div className="text-center text-slate-400">Loading Directory Infrastructure...</div>}
+
+      {!isLoading && results.length === 0 && (
+        <div className="rounded-2xl border border-dashed border-[#C6923A]/35 bg-[#0b0f14]/90 p-4">
+          <div className="mb-3 text-center">
+            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#C6923A]">
+              Verified supply is thin for this search
+            </p>
+            <p className="mx-auto mt-2 max-w-2xl text-sm leading-6 text-slate-400">
+              No matching support records are visible yet. Turn this search into a support packet,
+              claim path, provider suggestion, or sponsor signal instead of losing the demand.
+            </p>
+          </div>
+          <NoDeadEndBlock
+            heading="Turn this gap into a next action"
+            moves={[
+              {
+                href: `/loads/post?source=directory-empty&q=${encodedSearch}`,
+                icon: "LOAD",
+                title: "Build Support Packet",
+                desc: "Route the need to the right provider stack",
+                primary: true,
+                color: "#C6923A",
+              },
+              {
+                href: `/claim?source=directory-empty&role=${encodedRole}`,
+                icon: "OK",
+                title: "Claim or Add Profile",
+                desc: "Help buyers find this capability",
+              },
+              {
+                href: `/contact?subject=suggest-provider&role=${encodedRole}`,
+                icon: "TIP",
+                title: "Suggest Provider",
+                desc: "Send a correction or local source",
+              },
+              {
+                href: `/advertise/buy?zone=directory_sponsor&role=${encodedRole}&source=directory-empty`,
+                icon: "AD",
+                title: "Sponsor This Gap",
+                desc: "Own visibility around this demand moment",
+              },
+            ]}
+            style={{ padding: 0, maxWidth: "none" }}
+          />
+        </div>
+      )}
 
       {/* Results List */}
       <div className="relative">
         <div className={`space-y-4`}>
           {results.map((op, idx) => {
-            const shouldBlur = isCensored && idx >= 2;
+            const shouldBlur = false;
 
             return (
               <div
@@ -208,7 +385,7 @@ export function DirectorySearchList({
                         </span>
                       )}
                     </div>
-                    
+
                     <div className="flex items-center gap-2 text-sm text-gray-400 font-medium mb-3">
                       <MapPin className="w-4 h-4 text-emerald-500" />
                       <span>{op.location || 'Location Not Set'}</span>
@@ -237,7 +414,7 @@ export function DirectorySearchList({
                     </div>
 
                     <div className="flex flex-row md:flex-col gap-2 w-full mt-2 md:mt-0">
-                      <Link href={buildDirectoryDossierHref(op.slug || op.id)} className="flex-1 md:w-full items-center justify-center text-center px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-[11px] uppercase tracking-widest font-bold rounded-xl transition-all">
+                      <Link href={`/directory/dossier/${op.slug || op.id}`} className="flex-1 md:w-full items-center justify-center text-center px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-[11px] uppercase tracking-widest font-bold rounded-xl transition-all">
                         View Dossier
                       </Link>
                       <Link href={`/report-card/${op.slug || op.id}`} className="flex-1 md:w-full items-center justify-center text-center px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-[#C6923A] text-[11px] uppercase tracking-widest font-bold rounded-xl transition-all">
@@ -248,7 +425,7 @@ export function DirectorySearchList({
                       </Link>
                       {op.score < 50 && (
                         <Link href={`/claim?operator=${op.slug || op.id}`} className="flex-1 md:w-full items-center justify-center text-center px-4 py-2 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-400 text-[10px] uppercase tracking-widest font-bold rounded-xl transition-all">
-                          Is this your business? Claim it free →
+                          Is this your business? Claim it free -&gt;
                         </Link>
                       )}
                     </div>
@@ -259,14 +436,14 @@ export function DirectorySearchList({
           })}
         </div>
 
-        {/* Censorship Honeypot Overlay */}
-        {isCensored && results.length > 2 && (
+        {/* Consent-gated contact prompt */}
+        {hasContactGate && results.length > 2 && (
           <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#020617] to-transparent flex flex-col items-center justify-end pb-8">
             <div className=" border border-slate-700/50 p-6 rounded-xl text-center max-w-md shadow-2xl backdrop-blur-md">
               <LockKeyhole className="w-8 h-8 text-amber-500 mx-auto mb-3" />
               <h4 className="text-white font-bold text-lg">Identity Verification Required</h4>
               <p className="text-slate-400 text-sm mt-2 mb-4 leading-relaxed">
-                To prevent data scraping and protect operators, sign in to view eligible contact fields and source-backed directory details where they are available.
+                Contact details are consent-gated. Send a route request through Haul Command so providers choose what to share and every unlock leaves an audit trail.
               </p>
               <Link href="/login" className="inline-flex w-full items-center justify-center rounded-md px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white font-bold mt-4">
                 Login to Unlock Directory

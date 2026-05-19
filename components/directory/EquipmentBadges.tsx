@@ -3,11 +3,11 @@
 import React from "react";
 import { cn } from "@/lib/utils/cn";
 
-// ══════════════════════════════════════════════════════════════
+//
 // EquipmentBadges — Haul Command Directory
 // Visual icon-badge manifest for pilot car equipment.
 // Stolen pattern from: GeoDirectory MultiRatings badge system.
-// ══════════════════════════════════════════════════════════════
+//
 
 export interface EquipmentItem {
     key: string;
@@ -20,43 +20,43 @@ export const EQUIPMENT_MANIFEST: EquipmentItem[] = [
     {
         key: "high_pole",
         label: "High Pole",
-        icon: "📡",
+        icon: "",
         description: "Telescoping high pole for overhead clearance detection",
     },
     {
         key: "cb_radio",
         label: "CB Radio",
-        icon: "📻",
+        icon: "",
         description: "Citizens Band radio for corridor communication",
     },
     {
         key: "radar_gun",
         label: "Radar / Speed",
-        icon: "🎯",
+        icon: "",
         description: "Speed measurement equipment for work zone compliance",
     },
     {
         key: "flags_signs",
         label: "Flags & Signs",
-        icon: "🚩",
+        icon: "",
         description: "Standard OVERSIZE LOAD flags and signage package",
     },
     {
         key: "rotating_beacon",
         label: "Rotating Beacon",
-        icon: "🔆",
+        icon: "",
         description: "Amber rotating or LED beacon light bar",
     },
     {
         key: "two_way_radio",
         label: "2-Way Radio",
-        icon: "📡",
+        icon: "",
         description: "Licensed two-way radio for dispatch communication",
     },
     {
         key: "amber_lights",
         label: "Amber Lights",
-        icon: "⚠️",
+        icon: "",
         description: "Vehicle-mounted amber warning light system",
     },
     {
@@ -74,61 +74,61 @@ export const EQUIPMENT_MANIFEST: EquipmentItem[] = [
     {
         key: "steer_escort",
         label: "Steerman",
-        icon: "🏗️",
+        icon: "",
         description: "Certified to operate rear steering on modular trailers",
     },
     {
         key: "night_certified",
         label: "Night Certified",
-        icon: "🌙",
+        icon: "",
         description: "Equipped and certified for dusk-to-dawn runs",
     },
     {
         key: "multi_state",
         label: "Multi-State",
-        icon: "🗺️",
+        icon: "",
         description: "Certified to operate across multiple state lines",
     },
     {
         key: "twic",
         label: "TWIC Card",
-        icon: "💳",
+        icon: "",
         description: "Transportation Worker Identification Credential for port access",
     },
     {
         key: "police_coordination",
         label: "Police Escort",
-        icon: "🚓",
+        icon: "",
         description: "Experienced in coordinating with local/state police escorts",
     },
     {
         key: "bucket_support",
         label: "Bucket Truck",
-        icon: "🪜",
+        icon: "",
         description: "Bucket truck support for overhead wire lifts",
     },
     {
         key: "route_surveys",
         label: "Route Surveys",
-        icon: "📏",
+        icon: "",
         description: "Pre-trip physical route constraint measurement",
     },
     {
         key: "superload",
         label: "Superload",
-        icon: "💪",
+        icon: "",
         description: "Certified for superload / extreme dimension moves",
     },
     {
         key: "odsna",
         label: "ODSNA",
-        icon: "✅",
+        icon: "",
         description: "Overdimensional Safety Network of America certified",
     },
     {
         key: "imsa",
         label: "IMSA",
-        icon: "🏛️",
+        icon: "",
         description: "International Municipal Signal Association certified",
     },
 ];

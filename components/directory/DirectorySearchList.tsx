@@ -19,7 +19,7 @@ import {
 import { LiveKitDispatchButton } from '../dispatch/LiveKitDispatchButton';
 import { VAPIDispatchButton } from '../dispatch/VAPIDispatchButton';
 
-// ── Types ────────────────────────────────────────────────────────────────────
+//  Types
 interface Operator {
   id: string;
   slug: string;
@@ -56,7 +56,7 @@ interface Props {
   isAuthenticated?: boolean;
 }
 
-// ── Login Gate Modal ─────────────────────────────────────────────────────────
+//  Login Gate Modal
 function LoginGateModal({ onClose }: { onClose: () => void }) {
   return (
     <div
@@ -107,7 +107,7 @@ function LoginGateModal({ onClose }: { onClose: () => void }) {
           href="/auth/signup"
           style={{ display: 'block', width: '100%', background: 'linear-gradient(135deg, #F59E0B, #D97706)', border: 'none', borderRadius: 14, padding: '15px 20px', color: '#000', fontSize: 15, fontWeight: 800, textAlign: 'center', textDecoration: 'none', boxSizing: 'border-box' }}
         >
-          Create Free Account →
+          Create Free Account
         </a>
         <a
           href="/auth/login"
@@ -120,7 +120,7 @@ function LoginGateModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-// ── Operator Card ─────────────────────────────────────────────────────────────
+//  Operator Card
 function OperatorCard({ op, isAuthenticated, onUnlockClick }: { op: Operator; isAuthenticated: boolean; onUnlockClick: () => void }) {
   const censored = op.metadata?.is_censored;
   const phone = op.metadata?.phone;
@@ -230,12 +230,12 @@ function OperatorCard({ op, isAuthenticated, onUnlockClick }: { op: Operator; is
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           {isAuthenticated && (
             <>
-              <LiveKitDispatchButton 
-                compact 
-                operatorId={op.id} 
-                operatorName={op.name} 
-                operatorPhone={phone} 
-                operatorLocation={op.country_code === 'US' ? op.state : op.country_code} 
+              <LiveKitDispatchButton
+                compact
+                operatorId={op.id}
+                operatorName={op.name}
+                operatorPhone={phone}
+                operatorLocation={op.country_code === 'US' ? op.state : op.country_code}
               />
             </>
           )}
@@ -251,7 +251,7 @@ function OperatorCard({ op, isAuthenticated, onUnlockClick }: { op: Operator; is
   );
 }
 
-// ── Main Component ────────────────────────────────────────────────────────────
+//  Main Component
 export function DirectorySearchList({ initialQ = '', initialState = '', isAuthenticated = false }: Props) {
   const [q, setQ] = useState(initialQ);
   const [stateFilter, setStateFilter] = useState(initialState);
@@ -392,7 +392,7 @@ export function DirectorySearchList({ initialQ = '', initialState = '', isAuthen
             onClick={() => setPage(p => Math.max(1, p - 1))}
             style={{ padding: '9px 18px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, color: page <= 1 ? '#334155' : '#94a3b8', cursor: page <= 1 ? 'not-allowed' : 'pointer', fontSize: 13, fontWeight: 600 }}
           >
-            ← Prev
+             Prev
           </button>
           <span style={{ display: 'flex', alignItems: 'center', padding: '0 16px', fontSize: 13, color: '#64748b' }}>
             {page} / {results.total_pages}
@@ -402,7 +402,7 @@ export function DirectorySearchList({ initialQ = '', initialState = '', isAuthen
             onClick={() => setPage(p => p + 1)}
             style={{ padding: '9px 18px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, color: !results.has_more ? '#334155' : '#94a3b8', cursor: !results.has_more ? 'not-allowed' : 'pointer', fontSize: 13, fontWeight: 600 }}
           >
-            Next →
+            Next
           </button>
         </div>
       )}

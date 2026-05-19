@@ -24,18 +24,17 @@ import {
     type DirectorySurfaceView,
 } from '@/lib/directory/server-query';
 import {
-    fallbackRowMatchesCategory,
-    normalizeDirectoryFallbackRow,
-} from '@/lib/directory/fallback-normalization';
+    MOBILE_APP_PAGE_TEMPLATES,
+    ROLE_EXPERIENCE_FAMILIES,
+} from '@/lib/role-experience/role-experience-engine';
 import { absoluteUrl, SITE_URL } from '@/lib/site-url';
-import { getGlobalHreflangTags } from '@/lib/seo/hreflang';
 
 export const dynamic = 'force-dynamic';
 
 const proofStates = [
     {
-        label: 'Indexed',
-        description: 'A company, service, or infrastructure record is searchable as part of the support graph.',
+        label: 'Listed',
+        description: 'The company, service, yard, authority, or support record is visible for discovery.',
     },
     {
         label: 'Claimable',
@@ -43,7 +42,7 @@ const proofStates = [
     },
     {
         label: 'Contact Confirmed',
-        description: 'A phone, website, or contact path is present without inventing live availability.',
+        description: 'A phone, website, or request path is present without inventing live availability.',
     },
     {
         label: 'Document Verified',
@@ -114,6 +113,61 @@ const userGroups = [
     },
 ];
 
+const directorySearchPromises = [
+    {
+        label: 'Find the right support',
+        body: 'Search for pilot cars, escort vehicles, permit help, route survey, yards, repair, equipment, brokers, carriers, and project-cargo specialists.',
+    },
+    {
+        label: 'Check the market',
+        body: 'Use country, state, province, city, corridor, and service-area signals. Thin markets show request and correction paths instead of fake coverage.',
+    },
+    {
+        label: 'Read the proof state',
+        body: 'Each listing shows whether it is listed, claimable, contact-confirmed, document-verified, or performance-backed.',
+    },
+    {
+        label: 'Take the next action',
+        body: 'Request help, claim or correct a listing, check requirements, build a support packet, or sponsor a real market gap.',
+    },
+];
+
+const directoryRoleFamilyCopy: Record<string, { buyerLine: string; primaryAction: string }> = {
+    operator: {
+        buyerLine: 'Use this when you need pilot cars, escorts, heavy-haul carriers, high-pole support, or operators that can be compared by market and proof state.',
+        primaryAction: 'Search operators',
+    },
+    broker_dispatcher: {
+        buyerLine: 'Use this when a load needs coverage fast and you need to turn a route, deadline, and support list into a provider stack.',
+        primaryAction: 'Build support packet',
+    },
+    support_partner: {
+        buyerLine: 'Use this for yards, parking, repair, fuel, suppliers, installers, training, and field services that support the move around the route.',
+        primaryAction: 'Find support partners',
+    },
+    route_intelligence: {
+        buyerLine: 'Use this when permit complexity, route survey, bridge clearance, port handoff, border crossing, or weather risk matters before dispatch.',
+        primaryAction: 'Check route help',
+    },
+    adgrid_sponsor: {
+        buyerLine: 'Use this when a supplier or service provider wants labeled visibility near a real buyer moment without implying fake rank or fake availability.',
+        primaryAction: 'Sponsor a gap',
+    },
+    admin_command: {
+        buyerLine: 'Use this for corrections, claims, source review, and market maturity signals that keep the public directory honest.',
+        primaryAction: 'Submit correction',
+    },
+};
+
+const directoryRoleFamilies = Object.values(ROLE_EXPERIENCE_FAMILIES).map((family) => ({
+    ...family,
+    publicCopy: directoryRoleFamilyCopy[family.id],
+    searchableTemplates: family.defaultTemplates
+        .map((templateId) => MOBILE_APP_PAGE_TEMPLATES[templateId])
+        .filter((template) => template.publicIndexable)
+        .slice(0, 3),
+}));
+
 const internalLinkGroups = [
     {
         title: 'Find support',
@@ -130,7 +184,7 @@ const internalLinkGroups = [
             { label: 'Escort requirements', href: '/regulations' },
             { label: 'Heavy haul tools', href: '/tools' },
             { label: 'Load board', href: '/loads' },
-            { label: 'Corridor intelligence', href: '/corridor' },
+            { label: 'Corridor intelligence', href: '/corridors' },
         ],
     },
     {
@@ -159,13 +213,19 @@ const faqs = [
     },
     {
         question: 'Does Haul Command cover multiple countries?',
-        answer: 'Yes. Haul Command is structured around a 120-country coverage model, but each market should tell the truth about what is actually available: source-backed records, claim paths, regulation context, or a developing-market request path.',
+        answer: 'Yes. Haul Command supports a 120-country directory framework, but every market is labeled by evidence. Some markets are ready for requests, some have listed providers, and some still need claims, corrections, or local sources.',
     },
     {
         question: 'How does Haul Command help brokers and carriers?',
         answer: 'Haul Command helps brokers and carriers search by location, role, service type, and route need so they can compare heavy haul support options faster.',
     },
 ];
+
+function applyDirectorySurfaceCategoryFilter(query: any, category: NonNullable<ReturnType<typeof buildDirectoryFallbackFilterPlan>['category']>) {
+    return query
+        .eq('entity_type', category.entityFamily)
+        .in('entity_subtype', category.entitySubtypes);
+}
 
 function buildDirectoryJsonLd(providerCount: number) {
     return {
@@ -225,20 +285,19 @@ function buildDirectoryJsonLd(providerCount: number) {
 export async function generateMetadata(): Promise<Metadata> {
     return {
         title: "Pilot Car & Escort Vehicle Directory | Heavy Haul Support Providers | Haul Command",
-        description: "Search Haul Command's heavy haul support graph to find pilot car operators, escort vehicles, permit support, route survey help, infrastructure, and oversize load support records by location, service type, and profile status.",
+        description: "Search Haul Command to find pilot car operators, escort vehicles, permit support, route survey help, yards, repair, parking, brokers, carriers, and oversize load support records by location, service type, and profile status.",
         alternates: {
             canonical: absoluteUrl('/directory'),
-            languages: getGlobalHreflangTags('/directory'),
         },
         openGraph: {
-            title: "Heavy Haul Support Graph | Haul Command",
-            description: "Find and compare pilot cars, escort vehicles, permit support, route intelligence, infrastructure, and heavy haul support records across Haul Command's 120-country coverage model.",
+            title: "Heavy Haul Support Directory | Haul Command",
+            description: "Find and compare pilot cars, escort vehicles, permit support, route intelligence, yards, repair, parking, brokers, carriers, and heavy haul support records across Haul Command's global directory.",
             url: absoluteUrl('/directory'),
             images: [getPageFamilyOgImage('directory')],
         },
         twitter: {
             card: "summary_large_image",
-            title: "Heavy Haul Support Graph | Haul Command",
+            title: "Heavy Haul Support Directory | Haul Command",
             description: "Find pilot cars, escort vehicles, permit support, route survey help, infrastructure, and oversize load support records by location, service type, and profile status.",
             images: [getPageFamilyOgImage('directory')],
         }
@@ -264,11 +323,12 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
 
     // Fetch support records from the searchable heavy-haul graph.
     let providers: any[] = [];
-    
+    let directoryDataIssue: string | null = null;
+
     // 1. Try Typesense if a search query exists
     let usedTypesense = false;
     const searchQuery = [queryLocation, queryCategory].filter(Boolean).join(' ').trim();
-    
+
     if (searchQuery) {
         try {
             const tsClient = getTypesenseSearch();
@@ -339,9 +399,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                     }
 
                     if (plan.category) {
-                        query = query
-                            .eq('entity_family', plan.category.entityFamily)
-                            .in('entity_subtype', plan.category.entitySubtypes);
+                        query = applyDirectorySurfaceCategoryFilter(query, plan.category);
                     }
 
                     if (locationOrFilter) {
@@ -358,6 +416,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                     const { data, error } = await query.limit(perSurfaceLimit);
                     if (error) {
                         console.warn(`[directory] Supabase ${surfaceView} query failed:`, error.message);
+                        directoryDataIssue = `Directory data source failed: ${error.message}`;
                         return [];
                     }
 
@@ -375,6 +434,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                 .slice(0, plan.limit);
         } catch (e) {
             console.warn('[directory] Supabase query failed:', e);
+            directoryDataIssue = 'Directory data source failed before records could load.';
         }
     }
 
@@ -383,11 +443,15 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
             let publishableQuery = supabase.from('v_directory_publishable').select('*');
 
             if (fallbackPlan.countryCode) {
-                publishableQuery = publishableQuery.eq('country_code_inferred', fallbackPlan.countryCode);
+                publishableQuery = publishableQuery.eq('country_code', fallbackPlan.countryCode);
             }
 
-            if (queryLocation) {
-                const escaped = queryLocation.replace(/[%_,]/g, (char) => `\\${char}`);
+            if (fallbackPlan.isPureRoleQuery && fallbackPlan.category) {
+                publishableQuery = publishableQuery.eq('entity_family', fallbackPlan.category.entityFamily);
+            }
+
+            if (fallbackPlan.locationSearch) {
+                const escaped = fallbackPlan.locationSearch.replace(/[%_,]/g, (char) => `\\${char}`);
                 publishableQuery = publishableQuery.or([
                     `company.ilike.%${escaped}%`,
                     `name.ilike.%${escaped}%`,
@@ -403,52 +467,63 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
 
             if (error) {
                 console.warn('[directory] publishable fallback failed:', error.message);
+                directoryDataIssue = `Directory publishable fallback failed: ${error.message}`;
             } else {
-                providers = (data ?? [])
-                    .map((row: any) => normalizeDirectoryFallbackRow(row, 'v_directory_publishable'))
-                    .filter((row: any) => fallbackRowMatchesCategory(row, fallbackPlan.category));
+                providers = (data ?? []).map((row: any) => ({
+                    ...row,
+                    id: row.contact_id ?? row.id ?? row.entity_id,
+                    contact_id: row.contact_id ?? row.id ?? row.entity_id,
+                    company: row.company ?? row.name,
+                    name: row.name ?? row.company,
+                    country_code: row.country_code,
+                    state: row.state_inferred ?? row.state_code,
+                    admin1_code: row.state_code ?? row.state_inferred,
+                    source_view: 'v_directory_publishable',
+                }));
             }
         } catch (e) {
             console.warn('[directory] publishable fallback exception:', e);
+            directoryDataIssue = 'Directory publishable fallback failed before records could load.';
         }
     }
 
-    if (providers.length === 0) {
+    if (providers.length === 0 && fallbackPlan.isPureRoleQuery && fallbackPlan.category) {
         try {
-            let entityQuery = supabase
-                .from('directory_entities')
-                .select('id,name,display_name,country_code,admin1_code,city,entity_type,entity_subtype,visibility_status,claim_status')
-                .not('name', 'is', null);
+            const relaxedResults = await Promise.all(
+                fallbackPlan.surfaceViews.map(async (surfaceView: DirectorySurfaceView) => {
+                    let query = supabase.from(surfaceView).select('*');
 
-            if (fallbackPlan.countryCode) {
-                entityQuery = entityQuery.eq('country_code', fallbackPlan.countryCode);
-            }
+                    if (fallbackPlan.countryCode) {
+                        query = query.eq('country_code', fallbackPlan.countryCode);
+                    }
 
-            if (fallbackPlan.category) {
-                entityQuery = entityQuery.in('entity_subtype', fallbackPlan.category.entitySubtypes);
-            }
+                    query = query.eq('entity_type', fallbackPlan.category!.entityFamily);
 
-            if (queryLocation) {
-                const escaped = queryLocation.replace(/[%_,]/g, (char) => `\\${char}`);
-                entityQuery = entityQuery.ilike('name', `%${escaped}%`);
-            }
+                    const { data, error } = await query
+                        .order('rank_score', { ascending: false, nullsFirst: false })
+                        .limit(Math.max(12, Math.ceil(fallbackPlan.limit / Math.max(fallbackPlan.surfaceViews.length, 1))));
 
-            entityQuery = entityQuery.limit(fallbackPlan.limit);
+                    if (error) {
+                        console.warn(`[directory] relaxed role fallback ${surfaceView} failed:`, error.message);
+                        directoryDataIssue = `Directory role fallback failed: ${error.message}`;
+                        return [];
+                    }
 
-            const { data, error } = await entityQuery;
+                    return data ?? [];
+                })
+            );
 
-            if (error) {
-                console.warn('[directory] directory_entities fallback failed:', error.message);
-            } else {
-                providers = (data ?? [])
-                    .filter((row: any) => {
-                        if (!fallbackPlan.category) return true;
-                        return fallbackPlan.category.entitySubtypes.includes(row.entity_subtype);
-                    })
-                    .map((row: any) => normalizeDirectoryFallbackRow(row, 'directory_entities'));
-            }
+            providers = relaxedResults
+                .flat()
+                .sort((a: any, b: any) => {
+                    const aScore = Number(a.rank_score ?? a.confidence_score ?? a.directory_quality_score ?? 0);
+                    const bScore = Number(b.rank_score ?? b.confidence_score ?? b.directory_quality_score ?? 0);
+                    return bScore - aScore;
+                })
+                .slice(0, fallbackPlan.limit);
         } catch (e) {
-            console.warn('[directory] directory_entities fallback exception:', e);
+            console.warn('[directory] relaxed role fallback exception:', e);
+            directoryDataIssue = 'Directory role fallback failed before records could load.';
         }
     }
 
@@ -457,9 +532,9 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
         countryScope: targetCountry ?? undefined,
         statCards: [
             { value: providers.length, label: 'Visible on this view' },
-            { value: 'Source-backed', label: 'Record posture' },
+            { value: '7,468+', label: 'Industry records' },
             { value: targetCountry ?? 'GLOBAL', label: 'Country scope' },
-            { value: 'Coverage varies', label: 'Country framework' },
+            { value: '120', label: 'Country framework' },
         ],
         quickChips: roleCoverage.slice(0, 8).map((role) => ({
             label: role,
@@ -476,7 +551,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
             { label: 'Build move support packet', href: '/loads/post?intent=support-packet', intent: 'load_post_intent' },
             { label: 'Claim your listing', href: '/claim', intent: 'claim_intent' },
             { label: 'Check escort requirements', href: '/regulations', intent: 'regulation_intent' },
-            { label: 'Review availability broadcasts', href: '/available-now', intent: 'provider_intent' },
+            { label: 'Find available providers', href: '/available-now', intent: 'provider_intent' },
             { label: 'Sponsor directory demand', href: '/advertise?placement=directory-market', intent: 'sponsor_intent' },
             { label: 'View training paths', href: '/training', intent: 'training_intent' },
         ],
@@ -504,14 +579,14 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                                     What is Haul Command?
                                 </h2>
                                 <p className="mt-4 rounded-xl border border-[#C6923A]/35 bg-[#C6923A]/10 p-4 text-sm md:text-base font-semibold leading-7 text-[#fff7e8]">
-                                    Haul Command is a heavy haul support graph and operating system for finding pilot cars, escort vehicles, permit support, route intelligence, infrastructure, and field support for oversize and overweight loads. It helps brokers, carriers, shippers, dispatchers, and support providers search by role, location, service area, route need, and proof state across priority markets where source coverage exists.
+                                    Haul Command helps heavy haul teams find pilot cars, escort vehicles, permit support, route survey help, yards, repair, parking, brokers, carriers, and field support for oversize and overweight loads. Search by role, location, service area, route need, and proof state before you call, request support, or build a move packet.
                                 </p>
                                 <div className="mt-5 space-y-4 text-sm md:text-base leading-7 text-[#d8c6a3]">
                                     <p>
-                                        Haul Command is built for the real heavy haul workflow: finding the right escort support, understanding route and permit requirements, comparing route-support records, checking service areas, and giving operators or infrastructure partners a profile they can claim and improve.
+                                        Haul Command is built for the real heavy haul workflow: find the right escort support, understand route and permit requirements, compare support records, check service areas, and give operators or infrastructure partners a profile they can claim and improve.
                                     </p>
                                     <p>
-                                        Proof states are intentionally conservative. Indexed, claimable, contact confirmed, document verified, and performance verified mean different things, and the page should not imply live availability unless the underlying data supports it.
+                                        Proof states are intentionally conservative. Listed, claimable, contact confirmed, document verified, and performance verified mean different things, and the page should not imply live availability unless the underlying data supports it.
                                     </p>
                                 </div>
                             </div>
@@ -529,19 +604,95 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                         </div>
                     </section>
 
+                    <section aria-labelledby="directory-role-engine" className="mb-8 rounded-2xl border border-[#C6923A]/25 bg-black/45 p-5 shadow-[0_20px_70px_rgba(0,0,0,0.28)] backdrop-blur-[2px] md:p-7">
+                        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                            <div className="max-w-3xl">
+                                <div className="text-xs font-black uppercase tracking-[0.18em] text-[#C6923A]">Find support by role and market</div>
+                                <h2 id="directory-role-engine" className="mt-2 text-2xl font-black tracking-tight text-white md:text-3xl">
+                                    Search heavy-haul support without guessing who is real, local, or claimable
+                                </h2>
+                                <p className="mt-3 text-sm leading-6 text-[#d8c6a3] md:text-base">
+                                    Start with the role you need and the market where the load is moving. Haul Command shows public support records, claim paths, contact/proof signals, and next actions for pilot cars, escorts, permit support, route survey, yards, repair, suppliers, brokers, carriers, and project-cargo specialists.
+                                </p>
+                            </div>
+                            <div className="flex flex-wrap gap-3">
+                                <Link href="/loads/post?intent=directory-support-packet" className="inline-flex min-h-11 w-fit items-center rounded-lg bg-[#C6923A] px-4 py-2 text-sm font-black text-[#0B0B0C] transition-colors hover:bg-[#E0B05C]">
+                                    Build support packet
+                                </Link>
+                                <Link href="/claim?intent=directory-correction" className="inline-flex min-h-11 w-fit items-center rounded-lg border border-[#C6923A]/35 bg-[#C6923A]/10 px-4 py-2 text-sm font-black text-[#F8DFB0] transition-colors hover:bg-[#C6923A]/16">
+                                    Claim or fix listing
+                                </Link>
+                            </div>
+                        </div>
+
+                        <div className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+                            {directorySearchPromises.map((promise) => (
+                                <div key={promise.label} className="rounded-xl border border-white/10 bg-white/[0.05] p-4">
+                                    <div className="text-sm font-black text-white">{promise.label}</div>
+                                    <p className="mt-2 text-xs leading-5 text-[#d8c6a3]">{promise.body}</p>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+                            {directoryRoleFamilies.map((family) => (
+                                <div key={family.id} className="rounded-xl border border-white/10 bg-white/[0.045] p-4">
+                                    <div className="flex items-start justify-between gap-3">
+                                        <div>
+                                            <h3 className="text-base font-black text-white">{family.label}</h3>
+                                            <p className="mt-1 text-xs font-semibold leading-5 text-[#d8c6a3]">{family.publicCopy.buyerLine}</p>
+                                        </div>
+                                        <span className="rounded-full border border-[#C6923A]/25 bg-[#C6923A]/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-[#F8DFB0]">
+                                            search lane
+                                        </span>
+                                    </div>
+                                    <div className="mt-3 flex flex-wrap gap-2">
+                                        {family.coreRoleExamples.slice(0, 3).map((role) => (
+                                            <Link
+                                                key={role}
+                                                href={`/directory?q=${encodeURIComponent(role)}`}
+                                                className="rounded-full border border-white/10 bg-black/25 px-2.5 py-1 text-[11px] font-bold text-[#fff7e8] hover:border-[#C6923A]/50 hover:bg-[#C6923A]/10"
+                                            >
+                                                {role}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                    <div className="mt-3 flex flex-wrap items-center gap-2">
+                                        <Link
+                                            href={`/directory?q=${encodeURIComponent(family.coreRoleExamples[0] ?? family.label)}`}
+                                            className="rounded-lg bg-[#C6923A] px-3 py-2 text-[11px] font-black text-[#0B0B0C] hover:bg-[#E0B05C]"
+                                        >
+                                            {family.publicCopy.primaryAction}
+                                        </Link>
+                                        {family.searchableTemplates.map((template) => (
+                                            <Link
+                                                key={template.id}
+                                                href={template.routePattern}
+                                                className="text-[11px] font-black text-[#C6923A] underline-offset-4 hover:text-white hover:underline"
+                                            >
+                                                {template.label}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
                     {/* Searchable operator grid */}
                     <div id="directory-results">
                         <DirectoryGrid
                             providers={providers}
                             targetCountry={targetCountry ?? 'GLOBAL'}
                             initialFilters={{
-                                query: queryLocation,
+                                query: fallbackPlan.locationSearch,
                                 country: targetCountry ?? '',
-                                category: queryCategory,
+                                category: fallbackPlan.inferredCategory ?? queryCategory,
                                 proof: resolvedParams.proof === 'verified' || resolvedParams.proof === 'contact_confirmed' ? resolvedParams.proof : 'all',
                                 claim: resolvedParams.claim === 'claimed' || resolvedParams.claim === 'unclaimed' ? resolvedParams.claim : 'all',
                                 sort: resolvedParams.sort === 'newest' || resolvedParams.sort === 'name' ? resolvedParams.sort : 'score',
                             }}
+                            dataIssue={directoryDataIssue}
                         />
                     </div>
                 </div>
@@ -630,8 +781,8 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                         </div>
                     </section>
 
-                    <section aria-label="How this directory page is built" className="rounded-2xl border border-dashed border-[#C6923A]/25 bg-black/35 p-5 text-sm leading-6 text-[#d8c6a3] backdrop-blur-[2px]">
-                        <strong className="text-white">How this page is built:</strong> this directory combines listed provider profiles, profile status, location and service metadata, route-support categories, requirement links, glossary context, and market-status signals. Verification, trust, freshness, and contact states should appear only when the underlying data supports them.
+                    <section aria-label="Directory trust rule" className="rounded-2xl border border-dashed border-[#C6923A]/25 bg-black/35 p-5 text-sm leading-6 text-[#d8c6a3] backdrop-blur-[2px]">
+                        <strong className="text-white">Trust rule:</strong> Haul Command separates listed, claimable, contact-confirmed, document-verified, and performance-backed records. If a market is thin, use the request, claim, correction, or sponsor paths instead of assuming coverage is live.
                     </section>
                 </div>
             </HCContentSection>
@@ -647,7 +798,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                     <LiveActivityFeed fallbackStats={[
                         { label: 'visible on this view', value: providers.length.toLocaleString() },
                         { label: 'country scope', value: targetCountry ?? 'GLOBAL' },
-                        { label: 'coverage model', value: 'priority markets' },
+                        { label: 'country framework', value: '120 countries' },
                     ]} />
                   </div>
                 </div>

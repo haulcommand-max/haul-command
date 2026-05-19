@@ -5,16 +5,10 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
-import { PageSeoContractJsonLd } from '@/components/seo/PageSeoContractJsonLd';
 import {
-  buildCorridorSeoJsonLd,
   getCorridorSeoPageBySlug,
   type CorridorSeoPageModel,
 } from '@/lib/corridors/corridor-seo-page';
-import {
-  getPageSeoContract,
-  metadataFromDbPageSeoContract,
-} from '@/lib/seo/page-seo-contract-db';
 import { MapPin, TrendingUp, Truck, ChevronRight, Shield, DollarSign, FileText } from 'lucide-react';
 
 interface PageProps { params: Promise<{ slug: string }>; }
@@ -27,14 +21,38 @@ function createCorridorPageClient() {
   return createClient();
 }
 
+async function getCorridorBySlug(supabase: any, slug: string, columns: string) {
+  const bySlug = await supabase
+    .from('hc_corridors')
+    .select(columns)
+    .eq('slug', slug)
+    .maybeSingle();
+
+  if (bySlug.data || bySlug.error) return bySlug;
+
+  const byCorridorKey = await supabase
+    .from('hc_corridors')
+    .select(columns)
+    .eq('corridor_key', slug)
+    .maybeSingle();
+
+  if (byCorridorKey.data || byCorridorKey.error) return byCorridorKey;
+
+  if (/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(slug)) {
+    return supabase
+      .from('hc_corridors')
+      .select(columns)
+      .eq('id', slug)
+      .maybeSingle();
+  }
+
+  return byCorridorKey;
+}
+
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
-  const canonicalPath = `/corridors/${slug}`;
-  const contract = await getPageSeoContract(canonicalPath);
-  if (contract) return metadataFromDbPageSeoContract(contract, canonicalPath);
-
   const supabase = createCorridorPageClient();
-  const { data } = await supabase.from('hc_corridors').select('name,start_state,end_state,country_code').eq('corridor_key', slug).maybeSingle();
+  const { data } = await getCorridorBySlug(supabase, slug, 'name,start_state,end_state,country_code');
   if (!data) {
     const seoPage = await getCorridorSeoPageBySlug(supabase as any, slug);
     if (seoPage) {
@@ -53,16 +71,28 @@ export async function generateMetadata({ params }: PageProps) {
   return generatePageMetadata({
     title: `${name} Heavy Haul Corridor — Escort Requirements & Rates`,
     description: `Live pilot car supply, permit requirements, and rate benchmarks for the ${name} heavy haul corridor. Find verified escort operators and post loads.`,
-    canonicalPath,
+    canonicalPath: `/corridors/${slug}`,
   });
 }
 
 function CorridorSeoSeedPage({ page }: { page: CorridorSeoPageModel }) {
-  const jsonLd = buildCorridorSeoJsonLd(page);
+  const jsonLd = page.jsonld && typeof page.jsonld === 'object'
+    ? page.jsonld
+    : {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: page.h1,
+        description: page.description,
+        url: `https://www.haulcommand.com${page.canonicalPath}`,
+        isPartOf: {
+          '@type': 'WebSite',
+          name: 'Haul Command',
+          url: 'https://www.haulcommand.com',
+        },
+      };
 
   return (
     <main className="hc-page-shell hc-surface-site-dark pb-20">
-      <PageSeoContractJsonLd path={page.canonicalPath} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <div className="bg-[#0B0F14] text-white border-b border-white/[0.06]">
@@ -181,11 +211,11 @@ export default async function CorridorPage({ params }: PageProps) {
   const { slug } = await params;
   const supabase = createCorridorPageClient();
 
-  const { data: corridor } = await supabase
-    .from('hc_corridors')
-    .select('id, name, corridor_key, start_state, end_state, start_city, end_city, country_code, miles, demand_score, operator_count, load_count_30d, escort_demand_level, oversize_frequency, corridor_type, avg_rate_per_mile_cents, risk_tier')
-    .eq('corridor_key', slug)
-    .maybeSingle();
+  const { data: corridor } = await getCorridorBySlug(
+    supabase,
+    slug,
+    'id, name, slug, corridor_key, start_state, end_state, start_city, end_city, country_code, miles, demand_score, operator_count, load_count_30d, escort_demand_level, oversize_frequency, corridor_type, avg_rate_per_mile_cents, risk_tier'
+  );
 
   if (!corridor) {
     const seoPage = await getCorridorSeoPageBySlug(supabase as any, slug);
@@ -204,7 +234,7 @@ export default async function CorridorPage({ params }: PageProps) {
   // Related corridors (same country)
   const { data: related } = await supabase
     .from('hc_corridors')
-    .select('corridor_key, name, start_state, end_state, demand_score')
+    .select('slug, corridor_key, name, start_state, end_state, demand_score')
     .eq('country_code', corridor.country_code)
     .neq('id', corridor.id)
     .order('demand_score', { ascending: false })
@@ -229,7 +259,6 @@ export default async function CorridorPage({ params }: PageProps) {
 
   return (
     <main className="hc-page-shell hc-surface-site-dark pb-20">
-      <PageSeoContractJsonLd path={`/corridors/${slug}`} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* Header */}
@@ -324,8 +353,8 @@ export default async function CorridorPage({ params }: PageProps) {
             <div>
               <h2 className="text-xl font-black text-white mb-4">Related Corridors</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {related!.filter((r: any) => r.corridor_key).map((r: any) => (
-                  <Link key={r.id} href={`/corridors/${r.corridor_key}`} className="flex items-center justify-between p-4 bg-gray-50 hover:bg-[#F1A91B]/5 border border-gray-200 hover:border-[#F1A91B]/30 rounded-xl transition-all group">
+                {related!.filter((r: any) => r.slug || r.corridor_key).map((r: any) => (
+                  <Link key={r.slug || r.corridor_key} href={`/corridors/${r.slug || r.corridor_key}`} className="flex items-center justify-between p-4 bg-gray-50 hover:bg-[#F1A91B]/5 border border-gray-200 hover:border-[#F1A91B]/30 rounded-xl transition-all group">
                     <div>
                       <p className="font-bold text-sm text-gray-800 group-hover:text-[#C6923A]">{r.name}</p>
                       <p className="text-xs text-gray-500">{r.start_state} → {r.end_state}</p>

@@ -16,7 +16,7 @@ import {
     TrendingUp, AlertTriangle, Info,
 } from "lucide-react";
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+//  Types
 
 export interface OperatorReportCardData {
     composite_score: number;
@@ -72,7 +72,7 @@ function SubScoreBar({ label, value, icon: Icon, weight }: SubScore) {
     );
 }
 
-// ── Main Component ────────────────────────────────────────────────────────────
+//  Main Component
 
 interface OperatorReportCardProps {
     data: OperatorReportCardData;

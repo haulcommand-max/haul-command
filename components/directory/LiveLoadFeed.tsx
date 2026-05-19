@@ -34,7 +34,7 @@ export default function LiveLoadFeed({ city, state, limit = 5 }: { city: string;
 
     if (isLoading) return (
         <div style={{ opacity: 0.85, color: '#9ca3af', padding: '1.5rem', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, marginBottom: '2rem', background: 'rgba(255,255,255,0.02)' }}>
-            ⚡ Scanning for live loads near {city}...
+             Scanning for live loads near {city}...
         </div>
     );
 
@@ -55,10 +55,10 @@ export default function LiveLoadFeed({ city, state, limit = 5 }: { city: string;
                 </div>
                 <div style={{ marginTop: 16, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                     <Link aria-label="Navigation Link" href={`/loads/post?city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}`} style={{ fontWeight: 800, background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', padding: '8px 16px', borderRadius: 8, textDecoration: 'none' }}>
-                        Post a Load →
+                        Post a Load
                     </Link>
                     <Link aria-label="Navigation Link" href={`/directory/us/${state.toLowerCase()}/${encodeURIComponent(city.toLowerCase())}`} style={{ fontWeight: 800, background: 'rgba(255,255,255,0.1)', color: 'white', padding: '8px 16px', borderRadius: 8, textDecoration: 'none' }}>
-                        Explore Nearby →
+                        Explore Nearby
                     </Link>
                 </div>
             </div>
@@ -73,7 +73,7 @@ export default function LiveLoadFeed({ city, state, limit = 5 }: { city: string;
                     Live loads near {city}, {state}
                 </div>
                 <Link aria-label="Navigation Link" href={`/loads?city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}`} style={{ fontWeight: 800, color: '#F1A91B', fontSize: 14, textDecoration: 'none' }}>
-                    View board →
+                    View board
                 </Link>
             </div>
 
@@ -85,7 +85,7 @@ export default function LiveLoadFeed({ city, state, limit = 5 }: { city: string;
                 }}>
                     <div style={{ fontWeight: 800, fontSize: 16, color: '#f9fafb' }}>{l.title}</div>
                     <div style={{ opacity: 0.9, marginTop: 6, color: '#d1d5db', fontSize: 14 }}>
-                        <strong style={{ color: '#fff' }}>{l.origin_text}</strong> → <strong style={{ color: '#fff' }}>{l.dest_text}</strong>
+                        <strong style={{ color: '#fff' }}>{l.origin_text}</strong>  <strong style={{ color: '#fff' }}>{l.dest_text}</strong>
                     </div>
                     <div style={{ marginTop: 12, display: 'flex', gap: 12, flexWrap: 'wrap', fontSize: 12 }}>
                         <span style={{ background: 'rgba(255,255,255,0.1)', padding: '4px 8px', borderRadius: 6, fontWeight: 700 }}>{l.load_date}</span>

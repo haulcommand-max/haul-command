@@ -20,12 +20,12 @@ import { buildDirectoryMarketSeoContract } from '@/lib/directory/presentation';
 import { buildFAQPageJsonLd, buildQAPageJsonLd } from '@/lib/seo/jsonld';
 import { getPageSeoContract, metadataFromDbPageSeoContract } from '@/lib/seo/page-seo-contract-db';
 
-// ═══════════════════════════════════════════════════════════════
+//
 // /directory/[country]/[slug] — City-level directory page
 // SEO-optimized local landing page with operator listings,
 // trust signals, sponsor zones, and local proof.
 // Designed for "pilot car [city]" and "escort service [city]" intent.
-// ═══════════════════════════════════════════════════════════════
+//
 
 interface PageProps {
   params: Promise<{ country: string; slug: string }>;
@@ -194,13 +194,13 @@ export default async function CityDirectoryPage({ params }: PageProps) {
 
   const supabase = createClient();
 
-  // ── OPERATOR-FIRST RESOLUTION ─────────────────────────────────
+  //  OPERATOR-FIRST RESOLUTION
   // P0 FIX: Check if this slug matches an operator before treating
   // it as a city name. Without this, URLs like
   // /directory/ak/lopez-contracting-nc-pilot-driver render as
   // "Pilot Car Services in Lopez Contracting Nc Pilot Driver"
   // with 0 operators — destroying trust.
-  // ──────────────────────────────────────────────────────────────
+  //
   let operatorMatch: any = null;
   try {
     const { data } = await supabase
@@ -478,7 +478,7 @@ export default async function CityDirectoryPage({ params }: PageProps) {
                 </span>
               </div>
               <p style={{ fontSize: 12, color: '#6b7280', marginBottom: 16 }}>Rate bands, route demand, and corridor sponsor inventory unlock after source-backed market signals are attached.</p>
-              
+
               <div style={{ opacity: 0.72, userSelect: 'none', pointerEvents: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {['Rate observations', 'Support density', 'Top corridor signals'].map((label) => (
                   <div key={label} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E5E7EB', paddingBottom: 8 }}>
@@ -506,12 +506,12 @@ export default async function CityDirectoryPage({ params }: PageProps) {
           <NoDeadEndBlock
             heading={`Looking for More in ${cityName}?`}
             moves={[
-              { href: '/directory', icon: '🔍', title: 'Full Directory', desc: 'Search all support records', primary: true, color: '#0a66c2' },
-              { href: '/claim', icon: '✓', title: 'Claim / Fix Profile', desc: 'Improve a claimable record', primary: true, color: '#86198F' },
-              { href: '/available-now', icon: '📡', title: 'Available Now', desc: 'Availability intake' },
-              { href: '/corridors', icon: '🗺️', title: 'Corridors', desc: 'Route intelligence' },
-              { href: '/escort-requirements', icon: '⚖️', title: 'Requirements', desc: 'State escort rules' },
-              { href: '/training', icon: '🎓', title: 'Get Certified', desc: 'HC training program' },
+              { href: '/directory', icon: '', title: 'Full Directory', desc: 'Search all support records', primary: true, color: '#0a66c2' },
+              { href: '/claim', icon: '', title: 'Claim / Fix Profile', desc: 'Improve a claimable record', primary: true, color: '#86198F' },
+              { href: '/available-now', icon: '', title: 'Available Now', desc: 'Availability intake' },
+              { href: '/corridors', icon: '', title: 'Corridors', desc: 'Route intelligence' },
+              { href: '/escort-requirements', icon: '', title: 'Requirements', desc: 'State escort rules' },
+              { href: '/training', icon: '', title: 'Get Certified', desc: 'HC training program' },
             ]}
           />
         </div>

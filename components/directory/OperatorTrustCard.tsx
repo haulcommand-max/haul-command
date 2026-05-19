@@ -5,7 +5,7 @@
  * A high-conversion decision unit for directory listings.
  * Turns a passive profile into a trust-dense, action-oriented card.
  *
- * Layout zones (top → bottom):
+ * Layout zones (top  bottom):
  *   1. Header identity    — avatar, name, verification badges, availability dot
  *   2. Trust metrics row  — 4-col grid: jobs, on-time %, response, years active
  *   3. Specialization chips — corridor/service tags, max 4 + overflow
@@ -27,7 +27,7 @@ import {
     Lock, BarChart3, Phone, Eye
 } from "lucide-react";
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+//  Types
 export type AvailabilityStatus = "available" | "busy" | "offline";
 
 export interface OperatorTrustCardProps {
@@ -64,7 +64,7 @@ export interface OperatorTrustCardProps {
     /** Social proof line — freshness-priority, caller picks the most recent */
     socialProofLine?: string;   // "Last load completed: 2 hours ago"
 
-    /** Confidence score 0-100 → drives performance strip width */
+    /** Confidence score 0-100  drives performance strip width */
     confidenceScore?: number;
 
     /** Whether this listing has been claimed by its owner */
@@ -91,7 +91,7 @@ export interface OperatorTrustCardProps {
     compact?: boolean;
 }
 
-// ── Sub-components ────────────────────────────────────────────────────────────
+//  Sub-components
 
 function AvatarCircle({ name, size = 56 }: { name: string; size?: number }) {
     const initials = name
@@ -222,7 +222,7 @@ function PerformanceStrip({ score }: { score: number }) {
     );
 }
 
-// ── Win #1: Equipment Flair Tags (Reddit pattern) ────────────────────────────
+//  Win #1: Equipment Flair Tags (Reddit pattern)
 const FLAIR_COLORS: Record<string, { bg: string; fg: string; border: string }> = {
     "high pole": { bg: "rgba(239,68,68,0.10)", fg: "#ef4444", border: "rgba(239,68,68,0.25)" },
     "steerable": { bg: "rgba(59,130,246,0.10)", fg: "#3b82f6", border: "rgba(59,130,246,0.25)" },
@@ -272,7 +272,7 @@ function EquipmentFlairTags({ tags }: { tags: string[] }) {
     );
 }
 
-// ── Win #2: Public Trust Score Badge (Reddit karma pattern) ──────────────────
+//  Win #2: Public Trust Score Badge (Reddit karma pattern)
 function TrustScoreBadge({ score }: { score: number }) {
     const clamped = Math.max(0, Math.min(100, score));
     const tier =
@@ -301,7 +301,7 @@ function TrustScoreBadge({ score }: { score: number }) {
     );
 }
 
-// ── Win #3: Claim This Listing CTA (Yellow Pages pattern) ────────────────────
+//  Win #3: Claim This Listing CTA (Yellow Pages pattern)
 function ClaimListingBanner({ id }: { id: string }) {
     return (
         <Link aria-label="Navigation Link"
@@ -339,7 +339,7 @@ function ClaimListingBanner({ id }: { id: string }) {
     );
 }
 
-// ── Contact Masking (GDPR/PIPEDA/LGPD/POPIA legal compliance) ────────────────
+//  Contact Masking (GDPR/PIPEDA/LGPD/POPIA legal compliance)
 function ContactMaskedBanner() {
     return (
         <div
@@ -352,14 +352,14 @@ function ContactMaskedBanner() {
             <Lock className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "#3b82f6" }} />
             <div className="flex-1 min-w-0">
                 <span className="text-[11px] font-semibold" style={{ color: "#94a3b8" }}>
-                    📞 Contact info available after listing is claimed
+                     Contact info available after listing is claimed
                 </span>
             </div>
         </div>
     );
 }
 
-// ── Profile Completion Meter (LinkedIn psychology) ───────────────────────────
+//  Profile Completion Meter (LinkedIn psychology)
 function ProfileCompletionMeter({ completion }: { completion: number }) {
     const clamped = Math.max(0, Math.min(100, completion));
     const color =
@@ -393,7 +393,7 @@ function ProfileCompletionMeter({ completion }: { completion: number }) {
     );
 }
 
-// ── Demand Signal Counter (FOMO mechanic / Phantom Demand) ───────────────────
+//  Demand Signal Counter (FOMO mechanic / Phantom Demand)
 function DemandSignalCounter({ signals }: {
     signals: { searchesThisWeek?: number; viewsThisWeek?: number; contactAttempts?: number }
 }) {
@@ -437,7 +437,7 @@ function DemandSignalCounter({ signals }: {
     );
 }
 
-// ── Main component ────────────────────────────────────────────────────────────
+//  Main component
 
 export default function OperatorTrustCard({
     id,
@@ -483,7 +483,7 @@ export default function OperatorTrustCard({
             style={{ maxWidth: 420 }}
             aria-label={`Operator: ${name}`}
         >
-            {/* ── Zone 1: Header identity ── */}
+            {/*  Zone 1: Header identity  */}
             <div className="flex items-start gap-3">
                 <AvatarCircle name={name} size={compact ? 44 : 56} />
                 <div className="flex-1 min-w-0">
@@ -538,7 +538,7 @@ export default function OperatorTrustCard({
                 </div>
             </div>
 
-            {/* ── Zone 2: Trust metrics row ── */}
+            {/*  Zone 2: Trust metrics row  */}
             {metrics.length > 0 && (
                 <div
                     className="grid rounded-xl py-3 px-2"
@@ -560,22 +560,22 @@ export default function OperatorTrustCard({
                 </div>
             )}
 
-            {/* ── Zone 3a: Equipment Flair Tags (Win #1) ── */}
+            {/*  Zone 3a: Equipment Flair Tags (Win #1)  */}
             {equipmentTypes.length > 0 && (
                 <EquipmentFlairTags tags={equipmentTypes} />
             )}
 
-            {/* ── Zone 3b: Specialization chips ── */}
+            {/*  Zone 3b: Specialization chips  */}
             {specializations.length > 0 && (
                 <SpecializationChips chips={specializations} />
             )}
 
-            {/* ── Zone 4: Performance strip ── */}
+            {/*  Zone 4: Performance strip  */}
             {confidenceScore !== undefined && (
                 <PerformanceStrip score={confidenceScore} />
             )}
 
-            {/* ── Zone 5: Social proof line ── */}
+            {/*  Zone 5: Social proof line  */}
             {socialProofLine && (
                 <p
                     className="text-xs font-medium leading-snug"
@@ -587,18 +587,18 @@ export default function OperatorTrustCard({
                 </p>
             )}
 
-            {/* ── Zone 5b: Profile Completion Meter (LinkedIn psychology) ── */}
+            {/*  Zone 5b: Profile Completion Meter (LinkedIn psychology)  */}
             {isClaimed && profileCompletion !== undefined && profileCompletion < 100 && (
                 <ProfileCompletionMeter completion={profileCompletion} />
             )}
 
-            {/* ── Zone 5c: Contact Masking (legal compliance) ── */}
+            {/*  Zone 5c: Contact Masking (legal compliance)  */}
             {!isClaimed && <ContactMaskedBanner />}
 
-            {/* ── Zone 5d: Demand Signal Counter (Phantom Demand) ── */}
+            {/*  Zone 5d: Demand Signal Counter (Phantom Demand)  */}
             {demandSignals && <DemandSignalCounter signals={demandSignals} />}
 
-            {/* ── Zone 6: Dual CTA row ── */}
+            {/*  Zone 6: Dual CTA row  */}
             <div className="flex gap-2 mt-auto pt-1">
                 {isClaimed && onRequestEscort && (
                     <button
@@ -639,7 +639,7 @@ export default function OperatorTrustCard({
                 </Link>
             </div>
 
-            {/* ── Zone 7: Claim This Listing (Win #3 — Yellow Pages pattern) ── */}
+            {/*  Zone 7: Claim This Listing (Win #3 — Yellow Pages pattern)  */}
             {!isClaimed && (
                 <ClaimListingBanner id={id} />
             )}

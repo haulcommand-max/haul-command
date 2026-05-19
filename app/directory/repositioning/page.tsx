@@ -31,7 +31,7 @@ export default async function RepositioningFeed() {
     return (
         <div className=" bg-transparent pt-24 pb-32">
             <div className="max-w-7xl mx-auto px-4 md:px-6">
-                
+
                 {/* Header */}
                 <div className="mb-12 border-b border-white/5 pb-8">
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#10B981]/10 border border-[#10B981]/20 rounded-full mb-4">
@@ -51,7 +51,7 @@ export default async function RepositioningFeed() {
                     {backhauls && backhauls.length > 0 ? (
                         backhauls.map((hauls: any) => (
                             <div key={hauls.id} className="group flex flex-col md:flex-row items-center justify-between p-6 bg-white/[0.02] border border-white/5 rounded-2xl hover:bg-white/[0.04] hover:border-white/10 transition">
-                                
+
                                 <div className="flex-1 w-full flex flex-col md:flex-row gap-6 mb-4 md:mb-0">
                                     <div className="flex-shrink-0">
                                         <div className="w-12 h-12 rounded-xl bg-black border border-white/10 flex items-center justify-center">
@@ -66,13 +66,13 @@ export default async function RepositioningFeed() {
                                             </span>
                                             {hauls.trust_score ? (
                                                 <span className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-md bg-[#C6923A]/10 text-[#C6923A] border border-[#C6923A]/30">
-                                                    <Shield className="w-3 h-3 fill-[#C6923A]/20" /> 
+                                                    <Shield className="w-3 h-3 fill-[#C6923A]/20" />
                                                     <span className="text-white bg-[#C6923A] px-1.5 py-0.5 rounded text-[9px]">{hauls.trust_score} TP</span>
                                                     {hauls.trust_score >= 80 ? 'High signal' : 'Claimed'}
                                                 </span>
                                             ) : (
                                                 <span className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-md bg-neutral-800 text-neutral-400 border border-white/10">
-                                                    <Shield className="w-3 h-3" /> 
+                                                    <Shield className="w-3 h-3" />
                                                     Unverified
                                                 </span>
                                             )}
@@ -100,11 +100,11 @@ export default async function RepositioningFeed() {
                                     <div className="text-xs text-white/30 font-medium uppercase tracking-widest">
                                         Until {new Date(hauls.available_to).toLocaleDateString()}
                                     </div>
-                                    <a 
-                                        href={`/directory/dossier/${hauls.operator_slug}`} 
+                                    <a
+                                        href={`/directory/dossier/${hauls.operator_slug}`}
                                         className="px-6 py-2.5 bg-[#C6923A] hover:bg-[#C6923A]/90 text-black font-black uppercase text-xs tracking-wider rounded-lg transition"
                                     >
-                                        Intercept Load â†’
+                                        Intercept Load
                                     </a>
                                 </div>
                             </div>

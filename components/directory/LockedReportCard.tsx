@@ -20,8 +20,8 @@ interface LockedReportCardProps {
     completionPct?: number;
 }
 
-const LOCK_ICON = '🔒';
-const WARN_ICON = '⚠️';
+const LOCK_ICON = '';
+const WARN_ICON = '';
 
 export default function LockedReportCard({
     claimed,
@@ -142,7 +142,7 @@ export default function LockedReportCard({
         );
     }
 
-    // ── Claimed version: live report card ──
+    //  Claimed version: live report card
     return (
         <div className="report-card-live">
             <div className="rc-header">
@@ -167,12 +167,12 @@ export default function LockedReportCard({
                 />
                 <Row
                     label="Compliance"
-                    value={complianceStatus === 'verified' ? '✅ Verified' : `${WARN_ICON} Incomplete`}
+                    value={complianceStatus === 'verified' ? ' Verified' : `${WARN_ICON} Incomplete`}
                     status={complianceStatus === 'verified' ? 'good' : 'warn'}
                 />
                 <Row
                     label="Reliability"
-                    value={reliabilityStatus === 'active' ? '✅ Active' : `${LOCK_ICON} Locked`}
+                    value={reliabilityStatus === 'active' ? ' Active' : `${LOCK_ICON} Locked`}
                     status={reliabilityStatus === 'active' ? 'good' : 'locked'}
                 />
                 <Row
@@ -186,16 +186,16 @@ export default function LockedReportCard({
                 <Row
                     label="Freshness"
                     value={
-                        freshnessStatus === 'fresh' ? '🟢 Fresh' :
-                            freshnessStatus === 'stale' ? '🟡 Stale' : '🔴 Not Activated'
+                        freshnessStatus === 'fresh' ? ' Fresh' :
+                            freshnessStatus === 'stale' ? ' Stale' : ' Not Activated'
                     }
                     status={freshnessStatus === 'fresh' ? 'good' : freshnessStatus === 'stale' ? 'ok' : 'critical'}
                 />
                 <Row
                     label="Dispatch Readiness"
                     value={
-                        dispatchReadiness === 'eligible' ? '✅ Eligible' :
-                            dispatchReadiness === 'nearly' ? '🟡 Nearly Ready' : '❌ Not Eligible'
+                        dispatchReadiness === 'eligible' ? ' Eligible' :
+                            dispatchReadiness === 'nearly' ? ' Nearly Ready' : ' Not Eligible'
                     }
                     status={dispatchReadiness === 'eligible' ? 'good' : dispatchReadiness === 'nearly' ? 'ok' : 'critical'}
                 />
@@ -243,7 +243,7 @@ export default function LockedReportCard({
     );
 }
 
-// ── Row component ──
+//  Row component
 function Row({ label, value, status }: { label: string; value: string; status: 'good' | 'ok' | 'warn' | 'critical' | 'locked' }) {
     const colors = {
         good: '#10B981',

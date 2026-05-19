@@ -76,33 +76,27 @@ describe("DirectorySearchBar deterministic filters", () => {
     ]);
   });
 
-  it("keeps publishable fallback rows when category signals are stored in metadata", () => {
+  it("matches live public-view entity_type and primary_role fields", () => {
     const result = applyDirectoryFilters(
       [
         {
-          company: "Fallback Pilot Car Record",
-          country_code_inferred: "US",
-          state_code: "FL",
-          metadata: {
-            entity_family: "operator",
-            entity_subtype: "pilot_car_operator",
-            service_categories: ["pilot car", "high pole"],
-          },
-          claim_status: "claimable",
-          rank_score: 12,
+          name: "Sample Escort",
+          entity_type: "operator",
+          entity_subtype: "pilot_car_operator",
+          primary_role: "Pilot car operator",
+          rank_score: 90,
+        },
+        {
+          name: "Sample Yard",
+          entity_type: "infrastructure",
+          entity_subtype: "truck_parking",
+          primary_role: "Staging yard",
+          rank_score: 80,
         },
       ],
-      {
-        query: "",
-        country: "US",
-        category: "pilot-car",
-        state: "FL",
-        proof: "all",
-        claim: "all",
-        sort: "score",
-      },
+      { category: "pilot-car" },
     );
 
-    expect(result.map((record) => record.company)).toEqual(["Fallback Pilot Car Record"]);
+    expect(result.map((record) => record.name)).toEqual(["Sample Escort"]);
   });
 });

@@ -5,7 +5,7 @@
  * Root page rule: show ONLY state name + code. No categories. No MiniKpi.
  * No "unknown" labels ever. Hot states get a subtle amber ring.
  *
- * Click → /directory/{country}/{code}
+ * Click  /directory/{country}/{code}
  */
 "use client";
 
@@ -18,10 +18,10 @@ type Country = "US" | "CA";
 
 type Region = { country: Country; code: string; name: string };
 
-// ── Hot states (demand signal — subtle only, no label) ────────────────────────
+//  Hot states (demand signal — subtle only, no label)
 const HOT_STATES = new Set(["TX", "LA", "FL", "CA", "GA", "TN", "AL", "AZ", "NC", "OK", "OR", "WA", "ON", "BC", "AB"]);
 
-// ── Region data ───────────────────────────────────────────────────────────────
+//  Region data
 const US_REGIONS: Region[] = [
     { country: "US", code: "AL", name: "Alabama" }, { country: "US", code: "AK", name: "Alaska" },
     { country: "US", code: "AZ", name: "Arizona" }, { country: "US", code: "AR", name: "Arkansas" },
@@ -66,12 +66,12 @@ const CA_REGIONS: Region[] = [
     { country: "CA", code: "YT", name: "Yukon" },
 ];
 
-// ── Props ─────────────────────────────────────────────────────────────────────
+//  Props
 interface Props {
     initialCountry?: Country;
 }
 
-// ── Component ─────────────────────────────────────────────────────────────────
+//  Component
 export default function BrowseRegions2026({ initialCountry = "US" }: Props) {
     const [country, setCountry] = React.useState<Country>(initialCountry);
     const [q, setQ] = React.useState("");
@@ -100,7 +100,7 @@ export default function BrowseRegions2026({ initialCountry = "US" }: Props) {
     return (
         <section id="browse-state" aria-label="Browse by state or province">
 
-            {/* ── Controls row ───────────────────────────────────────────── */}
+            {/*  Controls row  */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-5">
                 {/* Country toggle */}
                 <div
@@ -121,7 +121,7 @@ export default function BrowseRegions2026({ initialCountry = "US" }: Props) {
                                 : { background: "transparent", color: "rgba(255,255,255,0.38)" }
                             }
                         >
-                            <span>{c === "US" ? "🇺🇸" : "🇨🇦"}</span>
+                            <span>{c === "US" ? "" : ""}</span>
                             {c === "US" ? "United States" : "Canada"}
                         </button>
                     ))}
@@ -149,7 +149,7 @@ export default function BrowseRegions2026({ initialCountry = "US" }: Props) {
                             style={{ color: "rgba(255,255,255,0.3)", fontSize: 11 }}
                             aria-label="Clear search"
                         >
-                            ✕
+                            Clear
                         </button>
                     )}
                 </div>
@@ -158,11 +158,11 @@ export default function BrowseRegions2026({ initialCountry = "US" }: Props) {
                 <Link aria-label="Navigation Link" href="/map"
                     className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:opacity-80 ml-auto"
                     style={{ background: "rgba(241,169,27,0.08)", border: "1px solid rgba(241,169,27,0.18)", color: "#F1A91B" }}>
-                    Map View →
+                    Map View
                 </Link>
             </div>
 
-            {/* ── Region grid ────────────────────────────────────────────── */}
+            {/*  Region grid  */}
             <div
                 className="grid gap-2.5"
                 style={{ gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))" }}
@@ -220,10 +220,10 @@ export default function BrowseRegions2026({ initialCountry = "US" }: Props) {
                 })}
             </div>
 
-            {/* ── Empty state ─────────────────────────────────────────────── */}
+            {/*  Empty state  */}
             {filtered.length === 0 && (
                 <div className="flex flex-col items-center gap-2 py-12 text-center">
-                    <span className="text-2xl">🔍</span>
+                    <span className="text-2xl"></span>
                     <p className="text-sm font-semibold" style={{ color: "rgba(255,255,255,0.3)" }}>
                         No results for &ldquo;{q}&rdquo;
                     </p>
@@ -235,7 +235,7 @@ export default function BrowseRegions2026({ initialCountry = "US" }: Props) {
                 </div>
             )}
 
-            {/* ── Footer ──────────────────────────────────────────────────── */}
+            {/*  Footer  */}
             {filtered.length > 0 && (
                 <div className="flex items-center justify-between mt-4 pt-3"
                     style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
@@ -246,7 +246,7 @@ export default function BrowseRegions2026({ initialCountry = "US" }: Props) {
                     <Link aria-label="Navigation Link" href="/claim"
                         className="text-[10px] font-black uppercase tracking-widest transition-opacity hover:opacity-70"
                         style={{ color: "rgba(241,169,27,0.5)" }}>
-                        Claim your profile →
+                        Claim your profile
                     </Link>
                 </div>
             )}

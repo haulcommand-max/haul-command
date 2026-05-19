@@ -1,18 +1,25 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { Search, Mic, MapPin, Briefcase, Navigation, ShieldAlert, Cpu } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { Briefcase, Cpu, MapPin, Mic, Navigation, Search, ShieldAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@supabase/supabase-js";
-import { buildDirectoryDossierHref } from "@/lib/directory/routes";
 
 interface SearchPrediction {
   id: string;
-  type: "entity" | "route" | "permit" | "rare_role";
+  type: "entity" | "route" | "permit" | "rare_role" | "role" | "place" | "rate";
   label: string;
   subtitle?: string;
   url: string;
   confidence: number;
+}
+
+function mapSuggestionType(type: string): SearchPrediction["type"] {
+  if (type === "operator") return "entity";
+  if (type === "corridor") return "route";
+  if (type === "role") return "role";
+  if (type === "place") return "place";
+  if (type === "rate") return "rate";
+  return "permit";
 }
 
 export function GlobalOmniSearch() {
@@ -23,7 +30,6 @@ export function GlobalOmniSearch() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  // Handle outside click to close dropdown
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
@@ -34,9 +40,32 @@ export function GlobalOmniSearch() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Web Speech API for Voice Search
+  const fetchCanonicalSuggestions = async (input: string) => {
+    if (input.length < 2) {
+      setPredictions([]);
+      return;
+    }
+
+    const params = new URLSearchParams({ q: input });
+    const response = await fetch(`/api/search/suggest?${params.toString()}`);
+    if (!response.ok) return;
+
+    const data = await response.json();
+    const results: SearchPrediction[] = (data.suggestions ?? []).map((suggestion: any, index: number) => ({
+      id: `${suggestion.type}-${index}-${suggestion.href}`,
+      type: mapSuggestionType(String(suggestion.type)),
+      label: String(suggestion.label ?? ""),
+      subtitle: suggestion.sub ? String(suggestion.sub) : undefined,
+      url: String(suggestion.href ?? "/search"),
+      confidence: 0.9,
+    }));
+
+    setPredictions(results);
+    setIsOpen(true);
+  };
+
   const toggleVoiceSearch = () => {
-    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    if (!("webkitSpeechRecognition" in window) && !("SpeechRecognition" in window)) {
       alert("Voice search is not supported in this browser.");
       return;
     }
@@ -47,28 +76,21 @@ export function GlobalOmniSearch() {
     recognition.continuous = false;
     recognition.interimResults = true;
 
-    recognition.onstart = () => {
-      setIsListening(true);
-    };
-
+    recognition.onstart = () => setIsListening(true);
     recognition.onresult = (event: any) => {
       const transcript = Array.from(event.results)
         .map((result: any) => result[0])
-        .map((result) => result.transcript)
+        .map((result: any) => result.transcript)
         .join("");
       setQuery(transcript);
-      simulateTypoTolerantPrediction(transcript);
+      fetchCanonicalSuggestions(transcript);
       setIsOpen(true);
     };
-
     recognition.onerror = (event: any) => {
       console.error("Speech recognition error", event.error);
       setIsListening(false);
     };
-
-    recognition.onend = () => {
-      setIsListening(false);
-    };
+    recognition.onend = () => setIsListening(false);
 
     if (isListening) {
       recognition.stop();
@@ -78,116 +100,72 @@ export function GlobalOmniSearch() {
     }
   };
 
-  // Active TypeSense Search Integration (Wave 3)
-  const simulateTypoTolerantPrediction = async (input: string) => {
-    if (input.length < 2) {
-      setPredictions([]);
-      return;
-    }
-    
-    // Check if we have supabase client initialized
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-    if (!supabaseUrl) return;
-
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    const { data, error } = await supabase.functions.invoke("discovery-search-core", {
-      body: { action: "search", query: input }
-    });
-
-    if (error || !data || !data.ok || !data.results) return;
-
-    const results: SearchPrediction[] = [];
-    const [profilesData, corridorsData, glossaryData] = data.results;
-
-    if (corridorsData?.hits) {
-      corridorsData.hits.forEach((h: any) => {
-         const doc = h.document;
-         results.push({ id: `c-${doc.id}`, type: "route", label: `${doc.origin_state || ''} to ${doc.dest_state || doc.corridor_id}`, subtitle: "Live Rates & Availability", url: `/rates/corridors/${doc.corridor_id.toLowerCase()}`, confidence: 0.99 });
-      });
-    }
-
-    if (profilesData?.hits) {
-      profilesData.hits.forEach((h: any) => {
-         const doc = h.document;
-         const isRare = doc.equipment_tags?.includes("bucket_truck") || doc.equipment_tags?.includes("height_pole");
-         results.push({ id: `p-${doc.id}`, type: isRare ? "rare_role" : "entity", label: doc.display_name, subtitle: `${doc.home_base_state || 'US'} · ${doc.vehicle_type?.replace(/_/g, " ")}`, url: buildDirectoryDossierHref(doc.slug || doc.id), confidence: 0.95 });
-      });
-    }
-
-    if (glossaryData?.hits) {
-      glossaryData.hits.forEach((h: any) => {
-         const doc = h.document;
-         results.push({ id: `g-${doc.id}`, type: "permit", label: doc.term, subtitle: "Glossary & Regulations", url: `/glossary/${doc.slug}`, confidence: 0.88 });
-      });
-    }
-
-    setPredictions(results);
-    setIsOpen(true);
-  };
-
   const IconMap = {
     entity: Briefcase,
     route: MapPin,
     permit: ShieldAlert,
     rare_role: Cpu,
+    role: Cpu,
+    place: MapPin,
+    rate: ShieldAlert,
   };
 
   return (
-    <div ref={wrapperRef} className="relative w-full max-w-2xl mx-auto z-50">
-      <div className="relative flex items-center w-full h-12 rounded-full bg-slate-900 border border-slate-700 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 shadow-lg overflow-hidden transition-all duration-200">
+    <div ref={wrapperRef} className="relative z-50 mx-auto w-full max-w-2xl">
+      <div className="relative flex h-12 w-full items-center overflow-hidden rounded-full border border-slate-700 bg-slate-900 shadow-lg transition-all duration-200 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500">
         <div className="pl-4 text-slate-400">
           <Search size={20} />
         </div>
         <input
           type="text"
           value={query}
-          onChange={(e) => {
-            setQuery(e.target.value);
-            simulateTypoTolerantPrediction(e.target.value);
+          onChange={(event) => {
+            const nextQuery = event.target.value;
+            setQuery(nextQuery);
+            fetchCanonicalSuggestions(nextQuery);
           }}
-          onFocus={() => { if (query.length >= 2) setIsOpen(true) }}
-          placeholder="Search anything (e.g., 'Texas escorts', 'Bucket trucks in AZ', 'Route rules')..."
-          className="w-full bg-transparent border-none text-white px-4 py-2 focus:outline-none placeholder-slate-500 font-medium"
+          onFocus={() => {
+            if (query.length >= 2) setIsOpen(true);
+          }}
+          placeholder="Search anything (e.g., Texas escorts, bucket trucks in AZ, route rules)..."
+          className="w-full border-none bg-transparent px-4 py-2 font-medium text-white placeholder-slate-500 focus:outline-none"
         />
         <button
           onClick={toggleVoiceSearch}
-          className={`pr-4 pl-2 h-full flex items-center justify-center transition-colors ${isListening ? 'text-orange-500 animate-pulse' : 'text-slate-400 hover:text-white'}`}
+          className={`flex h-full items-center justify-center pl-2 pr-4 transition-colors ${isListening ? "animate-pulse text-orange-500" : "text-slate-400 hover:text-white"}`}
           title="Voice Search"
         >
           <Mic size={20} />
         </button>
       </div>
 
-      {/* Predictive Dropdown */}
       {isOpen && predictions.length > 0 && (
-        <div className="absolute top-14 left-0 w-full bg-slate-900 border border-slate-700 rounded-xl shadow-2xl overflow-hidden backdrop-blur-md">
+        <div className="absolute left-0 top-14 w-full overflow-hidden rounded-xl border border-slate-700 bg-slate-900 shadow-2xl backdrop-blur-md">
           <div className="flex flex-col py-2">
-            {predictions.map((p) => {
-              const Icon = IconMap[p.type] || Navigation;
+            {predictions.map((prediction) => {
+              const Icon = IconMap[prediction.type] || Navigation;
               return (
                 <button
-                  key={p.id}
+                  key={prediction.id}
                   onClick={() => {
                     setIsOpen(false);
-                    router.push(p.url);
+                    router.push(prediction.url);
                   }}
-                  className="flex items-start px-4 py-3 hover:bg-slate-800 transition-colors text-left"
+                  className="flex items-start px-4 py-3 text-left transition-colors hover:bg-slate-800"
                 >
-                  <div className={`mt-1 flex-shrink-0 p-2 rounded-lg ${p.type === 'rare_role' ? 'bg-orange-500/20 text-orange-400' : 'bg-slate-800 text-slate-400'}`}>
+                  <div className={`mt-1 flex-shrink-0 rounded-lg p-2 ${prediction.type === "rare_role" || prediction.type === "role" ? "bg-orange-500/20 text-orange-400" : "bg-slate-800 text-slate-400"}`}>
                     <Icon size={18} />
                   </div>
                   <div className="ml-3 flex flex-col">
-                    <span className="text-white font-medium">{p.label}</span>
-                    <span className="text-slate-400 text-sm">{p.subtitle}</span>
+                    <span className="font-medium text-white">{prediction.label}</span>
+                    <span className="text-sm text-slate-400">{prediction.subtitle}</span>
                   </div>
                 </button>
               );
             })}
           </div>
-          <div className="bg-slate-950 px-4 py-2 border-t border-slate-800 flex justify-between items-center text-xs text-slate-500">
-            <span>Powered by TypeSense Intelligence</span>
+          <div className="flex items-center justify-between border-t border-slate-800 bg-slate-950 px-4 py-2 text-xs text-slate-500">
+            <span>Powered by Haul Command search</span>
             <span>Press Enter to search all</span>
           </div>
         </div>

@@ -2,9 +2,9 @@
  * SponsoredBadge — FTC/CMA compliant advertising disclosure component.
  * Required on ALL boosted/paid directory listings to comply with:
  * - FTC Endorsement Guides (US)
- * - CMA transparency rules (UK)  
+ * - CMA transparency rules (UK)
  * - EU Digital Services Act (DSA) Article 26
- * 
+ *
  * Usage:
  *   <SponsoredBadge type="boost" />      // AdGrid boost
  *   <SponsoredBadge type="featured" />    // Featured listing

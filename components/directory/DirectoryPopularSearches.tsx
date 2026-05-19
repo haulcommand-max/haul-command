@@ -41,7 +41,7 @@ export default function DirectoryPopularSearches() {
     return (
         <div>
             <div style={{ fontSize: 10, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#4b5563', marginBottom: 10 }}>
-                🔥 Trending Searches
+                 Trending Searches
             </div>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 {trending.slice(0, 12).map((t, i) => {

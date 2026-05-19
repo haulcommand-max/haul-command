@@ -4,12 +4,12 @@ import React, { useState } from "react";
 import { Star, Send, X, Clock, Truck, MessageSquare, Map, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 
-// ══════════════════════════════════════════════════════════════
+//
 // ReviewForm — Haul Command Directory (v2 — 5-axis)
-// Post-job broker → escort operational review.
+// Post-job broker  escort operational review.
 // Axes: On Time | Communication | Professionalism | Equipment | Route Awareness
 // + would_use_again boolean + optional 500-char text + photo upload
-// ══════════════════════════════════════════════════════════════
+//
 
 interface ReviewFormProps {
     escortId: string;
@@ -41,7 +41,7 @@ function StarInput({ label, value, onChange, hint, hero }: StarInputProps) {
                     "text-[11px] font-bold uppercase tracking-widest",
                     hero ? "text-hc-gold-500" : "text-hc-text"
                 )}>
-                    {hero && <span className="mr-1">★</span>}
+                    {hero && <span className="mr-1"></span>}
                     {label}
                     {hero && <span className="ml-1.5 text-[9px] font-black text-hc-gold-500/60 normal-case tracking-normal">(most important)</span>}
                 </label>
@@ -228,7 +228,7 @@ export function ReviewForm({
                             : "bg-hc-danger/10 border-hc-danger/30 text-hc-danger"
                     )}
                 >
-                    {wouldUseAgain ? "✓ Yes" : "✗ No"}
+                    {wouldUseAgain ? " Yes" : " No"}
                 </button>
             </div>
 

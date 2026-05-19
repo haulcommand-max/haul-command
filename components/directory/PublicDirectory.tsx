@@ -14,7 +14,7 @@ import DirectorySponsorCard from '@/components/directory/DirectorySponsorCard';
 import TrustBadge from '@/components/trust/TrustBadge';
 import { buildDirectoryDossierHref } from '@/lib/directory/routes';
 
-/* ═══════════════════════════════════════════════════════════════════
+/*
    PUBLIC DIRECTORY — Haul Command v2
    Full public-facing operator directory with:
    - Command Black #0B0B0C background, Gold #C6923A accent
@@ -24,9 +24,9 @@ import { buildDirectoryDossierHref } from '@/lib/directory/routes';
    - AdGrid slot at position 7
    - AG card hover animation
    - Wired to /api/directory/listings
-   ═══════════════════════════════════════════════════════════════════ */
+    */
 
-// ── Design Tokens (Command Black + Gold system) ──────────────────
+//  Design Tokens (Command Black + Gold system)
 const T = {
   bg: '#0B0B0C',
   bgCard: '#111114',
@@ -53,7 +53,7 @@ const T = {
   subtle: '#45454D',
 } as const;
 
-// ── Corridor status config ──────────────────────────────────────
+//  Corridor status config
 const CORRIDOR_STATUS = {
   HOT:  { label: 'HOT', color: '#ef4444', bg: 'rgba(239,68,68,0.12)', border: 'rgba(239,68,68,0.25)', cls: 'ag-badge-hot' },
   WARM: { label: 'WARM', color: '#f59e0b', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.25)', cls: 'ag-badge-warm' },
@@ -62,7 +62,7 @@ const CORRIDOR_STATUS = {
 
 type CorridorHeat = 'HOT' | 'WARM' | 'COOL';
 
-// ── No seed operators -- show honest empty state when DB is empty ──
+//  No seed operators -- show honest empty state when DB is empty
 const EMPTY_STATE_OPERATORS: Operator[] = [];
 
 const SERVICE_LABELS: Record<string, string> = {
@@ -90,9 +90,9 @@ interface Filters {
   sortBy: 'rank' | 'response' | 'rate' | 'newest';
 }
 
-// ═══════════════════════════════════════════════════════════════
+//
 // CORRIDOR HEAT BADGE
-// ═══════════════════════════════════════════════════════════════
+//
 function CorridorBadge({ heat }: { heat: CorridorHeat }) {
   const cfg = CORRIDOR_STATUS[heat];
   return (
@@ -103,9 +103,9 @@ function CorridorBadge({ heat }: { heat: CorridorHeat }) {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════
+//
 // ADGRID SLOT — Position 7 in the grid
-// ═══════════════════════════════════════════════════════════════
+//
 function AdGridSlot() {
   return (
     <div className="ag-sponsored-glow ag-slide-up" style={{background: `linear-gradient(135deg, rgba(198,146,58,0.06), rgba(198,146,58,0.02))`,border: `1px solid ${T.goldBorder}`,borderRadius: 16,padding: '20px',display: 'flex',flexDirection: 'column',gap: 14,position: 'relative',overflow: 'hidden'}}>
@@ -113,7 +113,7 @@ function AdGridSlot() {
       <div style={{position: 'absolute',top: 0,left: 0,right: 0,height: 3,background: `linear-gradient(90deg, ${T.gold}, ${T.goldLight}, ${T.gold})`}} />
       <div style={{position: 'absolute',top: 10,right: 12,fontSize: 8,fontWeight: 800,color: T.gold,textTransform: 'uppercase',letterSpacing: '0.12em',background: T.goldDim,padding: '2px 8px',borderRadius: 4}}>Sponsored</div>
       <div style={{display: 'flex',gap: 12,alignItems: 'flex-start',paddingTop: 6 }}>
-        <div style={{width: 44,height: 44,borderRadius: 10,background: T.goldDim,border: `1px solid ${T.goldBorder}`,display: 'flex',alignItems: 'center',justifyContent: 'center',fontSize: 20,flexShrink: 0}}>🛡️</div>
+        <div style={{width: 44,height: 44,borderRadius: 10,background: T.goldDim,border: `1px solid ${T.goldBorder}`,display: 'flex',alignItems: 'center',justifyContent: 'center',fontSize: 20,flexShrink: 0}}></div>
         <div style={{flex: 1,minWidth: 0 }}>
           <div style={{fontSize: 14,fontWeight: 800,color: T.gold }}>
             Fleet Insurance Solutions
@@ -133,9 +133,9 @@ function AdGridSlot() {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════
+//
 // OPERATOR CARD — Full design with metrics row + badges
-// ═══════════════════════════════════════════════════════════════
+//
 function OperatorCard({ op, position }: { op: Operator; position: number }) {
   return (
     <div className="ag-card-hover ag-slide-up" data-directory-result style={{background: op.sponsored
@@ -147,7 +147,7 @@ function OperatorCard({ op, position }: { op: Operator; position: number }) {
 
       {/* Header: Avatar + Name + Location */}
       <div style={{display: 'flex',gap: 12,alignItems: 'flex-start' }}>
-        <div style={{width: 44,height: 44,borderRadius: 10,flexShrink: 0,background: T.bgElevated,border: `1px solid ${T.border}`,display: 'flex',alignItems: 'center',justifyContent: 'center',fontSize: 18}}>🚗</div>
+        <div style={{width: 44,height: 44,borderRadius: 10,flexShrink: 0,background: T.bgElevated,border: `1px solid ${T.border}`,display: 'flex',alignItems: 'center',justifyContent: 'center',fontSize: 18}}></div>
         <div style={{flex: 1,minWidth: 0 }}>
           <div style={{display: 'flex',alignItems: 'center',gap: 5,flexWrap: 'wrap' }}>
             <span style={{fontSize: 14,fontWeight: 800,color: T.text }}>{op.name}</span>
@@ -195,7 +195,7 @@ function OperatorCard({ op, position }: { op: Operator; position: number }) {
         <div style={{display: 'flex',alignItems: 'center',gap: 10,flexWrap: 'wrap' }}>
           {op.avgRating != null && (
             <div style={{display: 'flex',alignItems: 'center',gap: 3 }}>
-              <span style={{fontSize: 13,color: '#fbbf24' }}>{'★'.repeat(Math.floor(op.avgRating))}{op.avgRating % 1 >= 0.5 ? '½' : ''}</span>
+              <span style={{fontSize: 13,color: '#fbbf24' }}>{''.repeat(Math.floor(op.avgRating))}{op.avgRating % 1 >= 0.5 ? '½' : ''}</span>
               <span style={{fontSize: 11,fontWeight: 800,color: T.text }}>{op.avgRating.toFixed(1)}</span>
             </div>
           )}
@@ -252,9 +252,9 @@ function OperatorCard({ op, position }: { op: Operator; position: number }) {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════
+//
 // FILTER TOGGLE SWITCH
-// ═══════════════════════════════════════════════════════════════
+//
 function ToggleSwitch({ label, active, onChange, icon }: {
   label: string; active: boolean; onChange: () => void; icon: React.ReactNode;
 }) {
@@ -269,18 +269,18 @@ function ToggleSwitch({ label, active, onChange, icon }: {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════
+//
 // FILTER CHIP
-// ═══════════════════════════════════════════════════════════════
+//
 function FilterChip({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
   return (
     <button aria-label="Interactive Button" onClick={onClick} data-filter-control className="ag-chip-snap" style={{padding: '6px 14px',borderRadius: 999,cursor: 'pointer',fontSize: 11,fontWeight: 700,border: 'none',background: active ? T.gold : 'rgba(255,255,255,0.04)',color: active ? '#000' : T.muted,transition: 'all 0.15s ease'}}>{label}</button>
   );
 }
 
-// ═══════════════════════════════════════════════════════════════
+//
 // MAIN COMPONENT
-// ═══════════════════════════════════════════════════════════════
+//
 export function PublicDirectory() {
   const [operators, setOperators] = useState<Operator[]>([]);
   const [total, setTotal] = useState(0);
@@ -385,7 +385,7 @@ export function PublicDirectory() {
 
       <div style={{background: T.bg,minHeight: '100vh',color: T.text }}>
 
-        {/* ── Social Proof Bar — Industry-Native ── */}
+        {/*  Social Proof Bar — Industry-Native  */}
         <div style={{background: 'rgba(255,255,255,0.02)',borderBottom: `1px solid ${T.border}`,padding: '10px 0' }}>
           <div style={{maxWidth: 1400,margin: '0 auto',padding: '0 20px',display: 'flex',flexWrap: 'wrap',gap: '10px 24px',justifyContent: 'center',alignItems: 'center' }}>
             <div style={{display: 'flex',alignItems: 'center',gap: 6,fontSize: 12,color: T.muted }}>
@@ -410,7 +410,7 @@ export function PublicDirectory() {
           </div>
         </div>
 
-        {/* ── Hero Search Section ── */}
+        {/*  Hero Search Section  */}
         <div style={{background: `linear-gradient(180deg, rgba(198,146,58,0.03) 0%, transparent 100%)`,borderBottom: `1px solid ${T.border}`,padding: '36px 20px 28px'}}>
           <div style={{maxWidth: 800,margin: '0 auto',textAlign: 'center' }}>
             <div style={{fontSize: 10,fontWeight: 800,color: T.gold,textTransform: 'uppercase',letterSpacing: '0.15em',marginBottom: 8 }}>Pilot Car Directory</div>
@@ -465,7 +465,7 @@ export function PublicDirectory() {
           </div>
         </div>
 
-        {/* ── Main Content ── */}
+        {/*  Main Content  */}
         <div style={{maxWidth: 1400,margin: '0 auto',padding: '28px 20px' }}>
           <div style={{display: 'flex',gap: 24,alignItems: 'flex-start' }}>
 
@@ -539,13 +539,13 @@ export function PublicDirectory() {
               {/* Empty state when no operators */}
               {!loading && filteredOps.length === 0 && (
                 <div style={{textAlign: 'center',padding: '60px 20px',background: T.bgCard,border: `1px solid ${T.border}`,borderRadius: 20}}>
-                  <div style={{fontSize: 48,marginBottom: 16}}>🚗</div>
+                  <div style={{fontSize: 48,marginBottom: 16}}></div>
                   <div style={{fontSize: 22,fontWeight: 900,color: T.text,marginBottom: 8}}>No Operators Listed Yet</div>
                   <div style={{fontSize: 14,color: T.textSecondary,maxWidth: 420,margin: '0 auto 24px',lineHeight: 1.6}}>
                     Be the first pilot car operator in this area to claim your free listing and start receiving job requests.
                   </div>
                   <Link aria-label="Claim Your Listing" href="/claim" style={{display: 'inline-flex',alignItems: 'center',gap: 8,padding: '14px 28px',borderRadius: 12,background: `linear-gradient(135deg, ${T.gold}, ${T.goldLight})`,color: '#000',fontSize: 14,fontWeight: 900,textDecoration: 'none'}}>
-                    🚛 Get Listed Free
+                     Get Listed Free
                   </Link>
                 </div>
               )}

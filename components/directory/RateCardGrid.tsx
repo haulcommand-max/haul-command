@@ -1,6 +1,6 @@
 /**
  * RateCardGrid — renders bundle.pricing grouped by service category.
- * Uses rate data from rate_benchmarks (via getRegionBundle → pricing[]).
+ * Uses rate data from rate_benchmarks (via getRegionBundle  pricing[]).
  * Shows ranges (low–high), currency, confidence chip, and CTA.
  * Empty state if pricing array is empty.
  */
@@ -9,7 +9,7 @@ import React from "react";
 import Link from "next/link";
 import type { RegionPricing } from "@/lib/data/getRegionBundle";
 
-// ── Service category taxonomy ─────────────────────────────────────────────────
+//  Service category taxonomy
 
 const CATEGORY_ORDER = [
     "lead_chase",
@@ -103,7 +103,7 @@ function confidenceColor(c: string) {
     return { bg: "rgba(251,191,36,0.1)", border: "rgba(251,191,36,0.25)", text: "#fbbf24" };
 }
 
-// ── Single rate card ──────────────────────────────────────────────────────────
+//  Single rate card
 
 function RateCard({ row, ctaHref }: { row: RegionPricing; ctaHref: string }) {
     const cc = confidenceColor(row.confidence ?? "medium");
@@ -132,7 +132,7 @@ function RateCard({ row, ctaHref }: { row: RegionPricing; ctaHref: string }) {
                     <div className="text-[11px] text-white/30 font-mono">{formatUnit(row.unit)} · {row.currency_code}</div>
                     {(row.p25_rate || row.p75_rate) && (
                         <div className="text-[10px] text-white/20 mt-0.5">
-                            p25: {row.currency_code === "CAD" ? "CA$" : "$"}{row.p25_rate} → p75: {row.currency_code === "CAD" ? "CA$" : "$"}{row.p75_rate}
+                            p25: {row.currency_code === "CAD" ? "CA$" : "$"}{row.p25_rate}  p75: {row.currency_code === "CAD" ? "CA$" : "$"}{row.p75_rate}
                         </div>
                     )}
                 </div>
@@ -155,7 +155,7 @@ function RateCard({ row, ctaHref }: { row: RegionPricing; ctaHref: string }) {
     );
 }
 
-// ── Main grid ────────────────────────────────────────────────────────────────
+//  Main grid
 
 interface Props {
     pricing: RegionPricing[];
@@ -171,7 +171,7 @@ export function RateCardGrid({ pricing, regionName, country, region }: Props) {
                 className="rounded-2xl p-8 text-center"
                 style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}
             >
-                <div className="text-white/20 text-3xl mb-3">📋</div>
+                <div className="text-white/20 text-3xl mb-3"></div>
                 <p className="text-white/30 text-sm">
                     Rate benchmarks for {regionName} are not available yet — check back soon.
                 </p>

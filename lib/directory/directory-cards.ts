@@ -1,10 +1,10 @@
-// ══════════════════════════════════════════════════════════════
+//
 // DIRECTORY CARDS SERVICE — wired to v_public_directory_cards
 //
 // Replaces the raw hc_global_operators query with the purpose-built
 // production view that joins market_entities + countries +
 // provider_performance_rollups with proper RLS.
-// ══════════════════════════════════════════════════════════════
+//
 
 import { createClient } from '@/lib/supabase/server';
 

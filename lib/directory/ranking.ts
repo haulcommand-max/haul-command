@@ -132,7 +132,7 @@ function computeGeoProximity(listing: DirectoryListing, searchLat: number, searc
 }
 
 function computeVerification(listing: DirectoryListing): number {
-    return listing.verification_tier / 4; // 0-4 → 0-1
+    return listing.verification_tier / 4; // 0-4  0-1
 }
 
 function computeRecency(listing: DirectoryListing): number {
@@ -147,7 +147,7 @@ function computeRecency(listing: DirectoryListing): number {
 function computeReviews(listing: DirectoryListing): number {
     if (listing.review_count === 0) return 0;
     const countNorm = Math.min(listing.review_count / 20, 1); // cap at 20 reviews
-    const scoreNorm = listing.avg_review_score / 5;            // 0-5 → 0-1
+    const scoreNorm = listing.avg_review_score / 5;            // 0-5  0-1
     return countNorm * 0.4 + scoreNorm * 0.6;
 }
 

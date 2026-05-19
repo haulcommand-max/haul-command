@@ -13,7 +13,7 @@
 import React from "react";
 import { AlertTriangle, TrendingUp, Shield, Activity, CheckCircle } from "lucide-react";
 
-// ── Config ────────────────────────────────────────────────────────────────────
+//  Config
 
 const CAL_CONFIG = {
     CRITICAL: {
@@ -65,7 +65,7 @@ const CAL_CONFIG = {
 
 type CalLabel = keyof typeof CAL_CONFIG;
 
-// ── Props ─────────────────────────────────────────────────────────────────────
+//  Props
 
 interface SupplyPressureBadgeProps {
     calLabel?: string | null;
@@ -79,7 +79,7 @@ interface SupplyPressureBadgeProps {
     showPremium?: boolean;
 }
 
-// ── Component ─────────────────────────────────────────────────────────────────
+//  Component
 
 export function SupplyPressureBadge({
     calLabel,
@@ -93,7 +93,7 @@ export function SupplyPressureBadge({
     showPremium = false,
 }: SupplyPressureBadgeProps) {
 
-    // Low data → show neutral badge, not shortage
+    // Low data  show neutral badge, not shortage
     if (lowDataFlag) {
         return (
             <div
@@ -185,7 +185,7 @@ export function SupplyPressureBadge({
     );
 }
 
-// ── Utility: compute CAL label from raw score ─────────────────────────────────
+//  Utility: compute CAL label from raw score
 export function calLabelFromScore(cal: number): CalLabel {
     if (cal >= 85) return "CRITICAL";
     if (cal >= 70) return "TIGHT";
@@ -194,7 +194,7 @@ export function calLabelFromScore(cal: number): CalLabel {
     return "STRONG";
 }
 
-// ── Utility: compute premium range from CAL ───────────────────────────────────
+//  Utility: compute premium range from CAL
 export function premiumRangeFromCal(cal: number): [number, number] {
     if (cal >= 85) return [20, 35];
     if (cal >= 70) return [12, 20];

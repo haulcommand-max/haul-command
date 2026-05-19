@@ -8,13 +8,13 @@ import {
     ChevronRight, Star, TrendingUp, Camera,
 } from "lucide-react";
 
-// ══════════════════════════════════════════════════════════════
+//
 // TrustScoreCard — Above-the-fold profile intelligence surface
 // Source: lib/trust/composite-trust-engine.ts
 // Spec: HC_DOMINATION_PATCH_V1 Phase 1 — Profile Surface
 // Shows: composite score, verified jobs, response speed,
 //        evidence count, repeat pair rate
-// ══════════════════════════════════════════════════════════════
+//
 
 type SpeedBand = "elite" | "fast" | "normal" | "slow";
 
@@ -175,9 +175,9 @@ export function TrustScoreCard({
     );
 }
 
-// ══════════════════════════════════════════════════════════════
+//
 // MetricCell — Reusable stat box
-// ══════════════════════════════════════════════════════════════
+//
 
 function MetricCell({
     icon: Icon,

@@ -1,5 +1,6 @@
 import "server-only";
 import { createClient } from "@supabase/supabase-js";
+import { CORRIDOR_DATA } from "@/lib/data/corridors";
 
 // ── Server-only Supabase client ──
 // This module CANNOT be imported from client components.
@@ -30,7 +31,7 @@ export async function getMarketPulse(): Promise<MarketPulseData> {
         .single();
 
     if (error || !data) {
-        console.error("getMarketPulse error:", error);
+        console.warn("getMarketPulse fallback:", error?.message);
         return {
             escorts_online_now: 0,
             escorts_available_now: 0,
@@ -89,7 +90,7 @@ export async function getDirectoryListings(params: {
     const { data, error, count } = await query;
 
     if (error) {
-        console.error("getDirectoryListings error:", error);
+        console.warn("getDirectoryListings fallback:", error.message);
         return { listings: [], total: 0 };
     }
 
@@ -127,27 +128,47 @@ export interface CorridorData {
     escorts_online: number;
 }
 
+const FALLBACK_CORRIDORS: CorridorData[] = Object.values(CORRIDOR_DATA)
+    .sort((a, b) => b.demandScore - a.demandScore)
+    .slice(0, 12)
+    .map((corridor) => ({
+        id: corridor.slug,
+        name: corridor.displayName,
+        slug: corridor.slug,
+        origin_region: corridor.primaryStates[0] ?? "",
+        destination_region: corridor.primaryStates[corridor.primaryStates.length - 1] ?? "",
+        country_code: "US",
+        heat_score: corridor.demandScore,
+        loads_7d: 0,
+        escorts_online: corridor.operatorCount,
+    }));
+
 export async function getCorridors(): Promise<CorridorData[]> {
     const sb = getSupabase();
+
     const { data, error } = await sb
         .from("hc_corridors")
-        .select("*")
-        .order("demand_score", { ascending: false })
+        .select("id, name, slug, corridor_key, start_state, end_state, origin_region_code, destination_region_code, country_code, demand_score, corridor_score, market_priority_score, seo_priority_score, load_count_30d, operator_count")
+        .order("demand_score", { ascending: false, nullsFirst: false })
         .limit(50);
 
     if (error) {
-        console.error("getCorridors error:", error);
-        return [];
+        console.warn("getCorridors fallback:", error.message);
+        return FALLBACK_CORRIDORS;
+    }
+
+    if (!data?.length) {
+        return FALLBACK_CORRIDORS;
     }
 
     return (data ?? []).map((c: any) => ({
-        id: c.id,
+        id: c.slug || c.corridor_key || c.id,
         name: c.name || c.corridor_name || `Corridor ${c.id}`,
-        slug: c.corridor_key || c.id,
-        origin_region: c.start_state || c.origin_zone || "",
-        destination_region: c.end_state || c.destination_zone || "",
+        slug: c.slug || c.corridor_key || c.id,
+        origin_region: c.start_state || c.origin_region_code || "",
+        destination_region: c.end_state || c.destination_region_code || "",
         country_code: c.country_code || "US",
-        heat_score: Number(c.demand_score ?? 0),
+        heat_score: Number(c.demand_score ?? c.corridor_score ?? c.market_priority_score ?? c.seo_priority_score ?? 0),
         loads_7d: Number(c.load_count_30d ?? 0),
         escorts_online: Number(c.operator_count ?? 0),
     }));
@@ -175,7 +196,7 @@ export async function getPorts(): Promise<PortData[]> {
         .limit(100);
 
     if (error) {
-        console.error("getPorts error:", error);
+        console.warn("getPorts fallback:", error.message);
         return [];
     }
 
@@ -209,7 +230,7 @@ export async function getRegions(): Promise<RegionData[]> {
         .order("name", { ascending: true });
 
     if (error) {
-        console.error("getRegions error:", error);
+        console.warn("getRegions fallback:", error.message);
         return [];
     }
 
@@ -233,7 +254,7 @@ export async function getSponsors() {
         .eq("status", "active");
 
     if (error) {
-        console.error("getSponsors error:", error);
+        console.warn("getSponsors fallback:", error.message);
         return [];
     }
     return data ?? [];

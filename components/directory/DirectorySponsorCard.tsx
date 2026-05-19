@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-// ═══════════════════════════════════════════════════════════════
+//
 // DIRECTORY SPONSOR CARD — Injected between directory results
 //
 // Shows empty-market sponsor inventory or live sponsor creative.
@@ -8,7 +8,7 @@ import Link from 'next/link';
 //
 // Design: Distinguished from organic results with gold border +
 // "Sponsored" label for FTC compliance. Links to /advertise.
-// ═══════════════════════════════════════════════════════════════
+//
 
 interface DirectorySponsorCardProps {
   position: 'upper' | 'lower';
@@ -61,7 +61,7 @@ export default function DirectorySponsorCard({ position, stateCode, countryCode 
         fontSize: 24,
         flexShrink: 0,
       }}>
-        {position === 'upper' ? '🗺️' : '⚡'}
+        {position === 'upper' ? '' : ''}
       </div>
 
       {/* Copy */}
@@ -108,7 +108,7 @@ export default function DirectorySponsorCard({ position, stateCode, countryCode 
           transition: 'all 0.2s ease',
         }}
       >
-        {copy.cta} →
+        {copy.cta}
       </Link>
     </div>
   );

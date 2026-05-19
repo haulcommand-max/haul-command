@@ -19,7 +19,7 @@ interface Corridor {
     slug?: string;
     label: string;
     href: string;
-    endpoints?: string;          // "Houston, TX → Baton Rouge, LA"
+    endpoints?: string;          // "Houston, TX  Baton Rouge, LA"
     hot?: boolean;
     supplyPct?: number;          // 0–100 (100 = full, 0 = void)
     demandScore?: number;        // 0–100
@@ -34,77 +34,77 @@ interface CorridorStripProps {
 }
 
 const STATIC_CORRIDORS: Corridor[] = [
-    // ── Tier 1 — Backbone Interstates ────────────────────────────────────────
+    //  Tier 1 — Backbone Interstates
     {
         label: "I-10 Gulf South",
         href: "/corridors/i-10",
-        endpoints: "Los Angeles, CA → Jacksonville, FL",
+        endpoints: "Los Angeles, CA  Jacksonville, FL",
         hot: true, supplyPct: 28, demandScore: 91, operatorCount: 47,
     },
     {
         label: "I-75 Southeast",
         href: "/corridors/i-75",
-        endpoints: "Sault Ste. Marie, MI → Miami, FL",
+        endpoints: "Sault Ste. Marie, MI  Miami, FL",
         hot: true, supplyPct: 42, demandScore: 84, operatorCount: 63,
     },
     {
         label: "I-35 Central Spine",
         href: "/corridors/i-35",
-        endpoints: "Laredo, TX → Duluth, MN",
+        endpoints: "Laredo, TX  Duluth, MN",
         hot: true, supplyPct: 31, demandScore: 88, operatorCount: 52,
     },
     {
         label: "I-40 Southwest",
         href: "/corridors/i-40",
-        endpoints: "Barstow, CA → Wilmington, NC",
+        endpoints: "Barstow, CA  Wilmington, NC",
         hot: false, supplyPct: 55, demandScore: 72, operatorCount: 38,
     },
     {
         label: "I-20 Deep South",
         href: "/corridors/i-20",
-        endpoints: "Pecos, TX → Florence, SC",
+        endpoints: "Pecos, TX  Florence, SC",
         hot: true, supplyPct: 38, demandScore: 79, operatorCount: 44,
     },
     {
         label: "I-95 Northeast Corridor",
         href: "/corridors/i-95",
-        endpoints: "Miami, FL → Fort Kent, ME",
+        endpoints: "Miami, FL  Fort Kent, ME",
         hot: false, supplyPct: 61, demandScore: 68, operatorCount: 55,
     },
     {
         label: "I-70 Heartland",
         href: "/corridors/i-70",
-        endpoints: "Cove Fort, UT → Baltimore, MD",
+        endpoints: "Cove Fort, UT  Baltimore, MD",
         hot: false, supplyPct: 64, demandScore: 65, operatorCount: 41,
     },
     {
         label: "I-80 Northern Transcontinental",
         href: "/corridors/i-80",
-        endpoints: "San Francisco, CA → Teaneck, NJ",
+        endpoints: "San Francisco, CA  Teaneck, NJ",
         hot: false, supplyPct: 49, demandScore: 70, operatorCount: 36,
     },
     {
         label: "I-90 Northern Tier",
         href: "/corridors/i-90",
-        endpoints: "Seattle, WA → Boston, MA",
+        endpoints: "Seattle, WA  Boston, MA",
         hot: false, supplyPct: 52, demandScore: 61, operatorCount: 29,
     },
     {
         label: "I-5 West Coast",
         href: "/corridors/i-5",
-        endpoints: "San Diego, CA → Blaine, WA",
+        endpoints: "San Diego, CA  Blaine, WA",
         hot: false, supplyPct: 58, demandScore: 63, operatorCount: 41,
     },
     {
         label: "I-65 Midwest–Gulf",
         href: "/corridors/i-65",
-        endpoints: "Mobile, AL → Gary, IN",
+        endpoints: "Mobile, AL  Gary, IN",
         hot: false, supplyPct: 60, demandScore: 59, operatorCount: 33,
     },
     {
         label: "Trans-Canada HWY",
         href: "/corridors/trans-canada",
-        endpoints: "Victoria, BC → St. John's, NL",
+        endpoints: "Victoria, BC  St. John's, NL",
         hot: false, supplyPct: 70, demandScore: 55, operatorCount: 24,
     },
 ];
@@ -237,7 +237,7 @@ export function CorridorStrip({
                                 </div>
                             )}
 
-                            {/* Stats row — "View →" always visible, dims unless hovered */}
+                            {/* Stats row — "View " always visible, dims unless hovered */}
                             <div className="flex items-center gap-3 mt-auto pt-2">
                                 {c.operatorCount != null && (
                                     <span className="flex items-center gap-1 text-[10px]"

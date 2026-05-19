@@ -25,6 +25,7 @@ interface DirectoryGridProps {
   providers: any[];
   targetCountry: string;
   initialFilters?: Partial<DirectoryFilterState>;
+  dataIssue?: string | null;
 }
 
 // Common US states for filter dropdown
@@ -35,7 +36,7 @@ const STATE_OPTIONS = [
   'VA','WA','WV','WI','WY',
 ].map(code => ({ code, name: stateFullName(code) || code }));
 
-export function DirectoryGrid({ providers, targetCountry, initialFilters }: DirectoryGridProps) {
+export function DirectoryGrid({ providers, targetCountry, initialFilters, dataIssue }: DirectoryGridProps) {
   const [filtered, setFiltered] = useState<any[] | null>(null);
   const displayItems = filtered ?? providers;
   const intentLanes = buildDirectoryIntentLanes(targetCountry);
@@ -48,9 +49,22 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters }: Dire
     return record.company_name || record.company || record.display_name || record.name || record.full_name || 'Indexed support record';
   }
 
-  function isClaimedRecord(record: any): boolean {
-    const status = String(record.claim_status || record.claimed_status || '').toLowerCase();
-    return Boolean(record.is_claimed || status === 'claimed' || status === 'verified' || status === 'approved');
+  function hasContactSignal(record: any): boolean {
+    return Boolean(record.contact_available || record.phone || record.phone_number || record.phone_e164 || record.phone_raw || record.website || record.email);
+  }
+
+  function getClaimLine(record: any, proofLabel: string): string {
+    const status = String(record.claim_status || record.owner_claim_status || record.profile_claim_status || '').toLowerCase();
+    if (['claimed', 'approved', 'owner_verified'].includes(status) || record.claimed_at || record.owner_user_id) {
+      return 'Owned profile - use proof and service details before outreach.';
+    }
+    if (proofLabel === 'Contact Confirmed') {
+      return 'Contact path exists; request support through a consent-safe action.';
+    }
+    if (proofLabel === 'Claimable') {
+      return 'Unclaimed record - good target for claim, correction, or provider recruitment.';
+    }
+    return 'Listed record - verify fit before relying on it for a move.';
   }
 
   return (
@@ -101,6 +115,8 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters }: Dire
           const proof = getDirectoryProofState(p);
           const attributes = getDirectorySupportAttributes(p);
           const displayName = getDisplayName(p);
+          const contactSignal = hasContactSignal(p);
+          const hasRealRating = Number(p.rating_avg) > 0 && Number(p.review_count ?? p.reviews_count ?? 0) > 0;
           const profileHref = recordId ? `/directory/dossier/${encodeURIComponent(recordId)}` : '/directory';
           const packetHref = recordId
             ? `/loads/post?support=${encodeURIComponent(recordId)}&country=${encodeURIComponent(targetCountry)}`
@@ -108,7 +124,6 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters }: Dire
           const claimHref = recordId
             ? `/claim?operator=${encodeURIComponent(recordId)}`
             : `/claim?country=${encodeURIComponent(targetCountry)}`;
-          const isClaimed = isClaimedRecord(p);
 
           return (
             <div
@@ -155,6 +170,9 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters }: Dire
                       </span>
                       {p.last_seen_at && <FreshnessBadge lastSeenAt={p.last_seen_at} />}
                     </div>
+                    <p className="mt-2 text-xs leading-5 text-[#d8c6a3]">
+                      {getClaimLine(p, proof.label)}
+                    </p>
                   </div>
 
                   {/* Profile signal score */}
@@ -207,36 +225,31 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters }: Dire
                       <Shield style={{ width: 12, height: 12 }} /> Verified
                     </span>
                   )}
-                  {p.rating_avg && Number(p.rating_avg) > 0 && (
+                  {hasRealRating && (
                     <span style={{
                       fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 6,
                       background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)',
                       color: '#fff7e8', display: 'flex', alignItems: 'center', gap: 4,
                     }}>
-                      <Star style={{ width: 12, height: 12, color: '#EAB308' }} /> {Number(p.rating_avg).toFixed(1)}
+                      <Star style={{ width: 12, height: 12, color: '#EAB308' }} /> {Number(p.rating_avg).toFixed(1)} public rating
                     </span>
                   )}
+                  <span style={{
+                    fontSize: 11, fontWeight: 700, padding: '4px 10px', borderRadius: 6,
+                    background: contactSignal ? 'rgba(59,130,246,0.10)' : 'rgba(255,255,255,0.04)',
+                    border: `1px solid ${contactSignal ? 'rgba(59,130,246,0.28)' : 'rgba(255,255,255,0.10)'}`,
+                    color: contactSignal ? '#BFDBFE' : '#d8c6a3',
+                  }}>
+                    {contactSignal ? 'Contact path available' : 'Request or claim contact'}
+                  </span>
+                  <span style={{
+                    fontSize: 11, fontWeight: 700, padding: '4px 10px', borderRadius: 6,
+                    background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.10)',
+                    color: '#d8c6a3',
+                  }}>
+                    Source confidence: {proof.strength >= 4 ? 'high' : proof.strength >= 2 ? 'medium' : 'review needed'}
+                    </span>
                 </div>
-
-                {!isClaimed && (
-                  <div className="mb-4 rounded-xl border border-[#C6923A]/35 bg-[#C6923A]/10 p-3">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <div>
-                        <p className="text-xs font-black uppercase tracking-[0.12em] text-[#F8DFB0]">Unclaimed profile</p>
-                        <p className="mt-1 text-xs leading-5 text-[#d8c6a3]">
-                          Claim this record to correct services, proof, service areas, and dispatch-ready contact options.
-                        </p>
-                      </div>
-                      <Link
-                        href={claimHref}
-                        onClick={() => track.event('directory_inline_claim_prompt_click', { entity_id: recordId, entity_family: p.entity_family, country_code: targetCountry })}
-                        className="inline-flex min-h-9 items-center rounded-lg bg-[#C6923A] px-3 text-xs font-black text-black transition-colors hover:bg-[#E4B872]"
-                      >
-                        Claim profile
-                      </Link>
-                    </div>
-                  </div>
-                )}
               </div>
 
               {/* Actions */}
@@ -269,7 +282,7 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters }: Dire
                   className="hover:shadow-[0_0_24px_rgba(198,146,58,0.28)]"
                 >
                   <ClipboardList style={{ width: 14, height: 14 }} />
-                  Build Packet
+                  Request Support
                 </Link>
                 <Link
                   href={claimHref}
@@ -289,7 +302,7 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters }: Dire
           );
         }) : (
           <div className="col-span-full">
-            <EmptyMarketState country={targetCountry} />
+            <EmptyMarketState country={targetCountry} dataIssue={dataIssue} />
             <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
               {filtered !== null && (
                 <button

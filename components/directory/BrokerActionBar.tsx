@@ -4,10 +4,10 @@ import React from "react";
 import { PhoneCall, Heart, GitCompare, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 
-// ══════════════════════════════════════════════════════════════
+//
 // BrokerActionBar — Profile Section 7
 // Sticky bottom bar providing immediate conversion actions.
-// ══════════════════════════════════════════════════════════════
+//
 
 interface BrokerActionBarProps {
     className?: string;

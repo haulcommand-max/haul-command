@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: PageProps) {
     if (contract) return metadataFromDbPageSeoContract(contract, canonicalPath);
 
     const hasPublishedRegionSet = Boolean(COUNTRY_REGIONS[countryKey]?.length);
-    
+
     return generatePageMetadata({
         title: `${formattedCountry} Pilot Car Directory & Escort Network`,
         description: `Access source-backed heavy haul pilot car records, region-level regulation paths, and corridor support actions in ${formattedCountry}. Sparse markets stay clearly labeled until evidence improves.`,
@@ -68,7 +68,7 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
             <div className="relative overflow-hidden bg-[#0A0D14] border-b border-white/[0.05]">
                 {/* Global World Map Blur visual */}
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#C6923A]/10 rounded-full blur-[100px] opacity-30 pointer-events-none transform translate-x-1/3 -translate-y-1/3" />
-                
+
                 <div className="hc-container pt-8 pb-16 relative z-10">
                     <BreadcrumbRail crumbs={[
                         { label: 'Global Directory', href: '/directory' },
@@ -92,18 +92,18 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
             </div>
 
             <div className="hc-container mt-12 grid grid-cols-1 xl:grid-cols-12 gap-10">
-                
+
                 {/* Main Content Column */}
                 <div className="xl:col-span-8 flex flex-col gap-10">
-                    
+
                     {/* Region Expansion Hub (HC-W3-01 Downflow) */}
                     <div className="bg-[#0A0D14] border border-white/[0.04] rounded-2xl p-8">
                         <h3 className="text-lg font-bold text-white mb-6">Select Operating State / Province</h3>
                         {subRegions.length > 0 ? (
                             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                                 {subRegions.map(region => (
-                                <a 
-                                    key={region} 
+                                <a
+                                    key={region}
                                     href={`/directory/${countryKey}/${region.toLowerCase().replace(/\s+/g, '-')}`}
                                     className="px-4 py-3 bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.03] hover:border-white/[0.1] rounded-lg text-sm text-[#8FA3B8] hover:text-white transition-all text-center truncate"
                                 >
@@ -118,7 +118,7 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
                         )}
                     </div>
 
-                    <MarketClusterGrid 
+                    <MarketClusterGrid
                         marketName={formattedName}
                         parentStateName="Federal Jurisdiction"
                         nearbyMarkets={[
@@ -136,7 +136,7 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
                     />
 
                     {/* HC-W3-08: Competitor Absorption */}
-                    <CompetitorAbsorptionCard 
+                    <CompetitorAbsorptionCard
                         targetAudience="brokers"
                         competitorType="Static Directory"
                         valueProp="Stop relying on stale PDFs. Build a source-backed support packet with claim state, route context, and dispatch actions before a broker commits the move."
@@ -146,20 +146,20 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
 
                 {/* Right Rail */}
                 <div className="xl:col-span-4 flex flex-col gap-8">
-                    <ClaimFirstCTA 
-                        mode="claim" 
-                        marketLabel={formattedName} 
+                    <ClaimFirstCTA
+                        mode="claim"
+                        marketLabel={formattedName}
                         headline="Command this network."
                     />
 
                     {/* HC-W3-02: Authority Source Map */}
-                    <AuthoritySourceMap 
+                    <AuthoritySourceMap
                         region={formattedName}
                         lastVerified="Source-dependent"
                         confidenceSignals={['Directory source records', 'Permit authority references', 'Claim-state evidence']}
                     />
 
-                    <IntentMatrix 
+                    <IntentMatrix
                         category={`${formattedName} Intelligence`}
                         intents={[
                             { label: 'Oversize Enterprise API', url: '/enterprise/data', searchVolumeEstimate: 'high' },

@@ -61,7 +61,7 @@ export function ReportForm({ slug }: { slug?: string }) {
           {errorString}
         </div>
       )}
-      
+
       <div>
         <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Issue Type</label>
         <select name="issue_type" required className="w-full bg-black border border-white/10 rounded-lg px-4 py-3 text-white text-sm focus:border-amber-500/50 outline-none">
@@ -72,10 +72,10 @@ export function ReportForm({ slug }: { slug?: string }) {
           <option value="other">Other / Unsafe activity</option>
         </select>
       </div>
-      
+
       <div>
         <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Details & Correct Info (Optional)</label>
-        <textarea 
+        <textarea
           name="description"
           rows={4}
           placeholder="What should the correct public data be?"

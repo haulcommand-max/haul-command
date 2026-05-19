@@ -15,7 +15,7 @@ import React from "react";
 import type { TruckStop, PilotCarHotel } from "@/lib/data/getRegionBundle";
 import { Truck, Wifi, ShowerHead, Scale, Bed, ShieldCheck, HelpCircle, ExternalLink } from "lucide-react";
 
-// ── Truck stop card ───────────────────────────────────────────────────────────
+//  Truck stop card
 
 function TruckStopCard({ stop }: { stop: TruckStop }) {
     const amenities = [
@@ -57,7 +57,7 @@ function TruckStopCard({ stop }: { stop: TruckStop }) {
     );
 }
 
-// ── Hotel card ────────────────────────────────────────────────────────────────
+//  Hotel card
 
 function HotelCard({ hotel }: { hotel: PilotCarHotel }) {
     return (
@@ -99,7 +99,7 @@ function HotelCard({ hotel }: { hotel: PilotCarHotel }) {
     );
 }
 
-// ── FAQ schema builder ────────────────────────────────────────────────────────
+//  FAQ schema builder
 
 export function buildFaqSchema(regionName: string) {
     return {
@@ -142,7 +142,7 @@ export function buildFaqSchema(regionName: string) {
     };
 }
 
-// ── Main component ────────────────────────────────────────────────────────────
+//  Main component
 
 interface Props {
     truckStops: TruckStop[];
@@ -159,13 +159,13 @@ export function StateInfrastructure({ truckStops, hotels, regionName, country, r
 
     return (
         <>
-            {/* ── JSON-LD FAQ Schema ────────────────────────────────────── */}
+            {/*  JSON-LD FAQ Schema  */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
             />
 
-            {/* ── Truck Stops ───────────────────────────────────────────── */}
+            {/*  Truck Stops  */}
             {hasStops && (
                 <section className="mb-16">
                     <div className="flex items-center gap-2 mb-6">
@@ -179,7 +179,7 @@ export function StateInfrastructure({ truckStops, hotels, regionName, country, r
                 </section>
             )}
 
-            {/* ── Pilot Car Friendly Hotels ─────────────────────────────── */}
+            {/*  Pilot Car Friendly Hotels  */}
             {hasHotels && (
                 <section className="mb-16">
                     <div className="flex items-center gap-2 mb-6">
@@ -193,7 +193,7 @@ export function StateInfrastructure({ truckStops, hotels, regionName, country, r
                 </section>
             )}
 
-            {/* ── SEO Authority Block — always renders ──────────────────── */}
+            {/*  SEO Authority Block — always renders  */}
             <section className="mb-16">
                 <div className="flex items-center gap-2 mb-6">
                     <HelpCircle className="w-5 h-5" style={{ color: "#F1A91B" }} />
@@ -230,7 +230,7 @@ export function StateInfrastructure({ truckStops, hotels, regionName, country, r
                         href={`/directory/${country.toLowerCase()}`}
                         className="inline-flex items-center gap-1.5 text-xs text-white/30 hover:text-white/60 transition-colors font-bold"
                     >
-                        ← All {country === "US" ? "US States" : "CA Provinces"}
+                         All {country === "US" ? "US States" : "CA Provinces"}
                     </a>
                     <a
                         href="/quote"

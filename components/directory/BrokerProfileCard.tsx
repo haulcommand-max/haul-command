@@ -12,8 +12,8 @@ export interface OperatorProfile {
   cityCounty: string;
   stateCode: string;
   serviceArea: string;
-  ecosystemPosition: string; 
-  googleRating: number | null; 
+  ecosystemPosition: string;
+  googleRating: number | null;
   reviewCount: number | null;
   primaryTrustSource: string | null;
   topCommentSnippet: string | null;
@@ -33,9 +33,9 @@ export default function BrokerProfileCard({ profile }: { profile: OperatorProfil
       isFeatured ? 'bg-[#12110c] border-amber-500/40' : 'bg-white/5 border-white/10 hover:border-amber-500/30'
     }`}
     style={{ borderLeft: profile.fmcsaVerified ? '4px solid #10B981' : isFeatured ? '4px solid #F59E0B' : '4px solid rgba(255,255,255,0.1)' }}>
-      
+
       <Link aria-label="Navigation Link" href={`/providers/${profile.slug || profile.id}`} className="absolute inset-0 z-10" />
-      
+
       {/* Header Row: Company & Verified Status */}
       <div className="flex justify-between items-start">
         <div className="flex-1 min-w-0 pr-2">
@@ -46,11 +46,11 @@ export default function BrokerProfileCard({ profile }: { profile: OperatorProfil
             {profile.cityCounty ? `${profile.cityCounty}, ` : ''}{profile.stateCode} • <span className="text-amber-400">{profile.ecosystemPosition}</span>
           </p>
         </div>
-        
+
         {/* Verification Pill */}
         {profile.fmcsaVerified ? (
           <span className="bg-green-500/10 text-green-400 px-2 py-1 flex-shrink-0 relative z-20 rounded-full text-[10px] uppercase font-extrabold tracking-wider border border-green-500/20">
-            ✓ Verified
+             Verified
           </span>
         ) : (
           isFeatured && <span className="bg-amber-500/10 text-amber-500 px-2 flex-shrink-0 relative z-20 py-1 rounded-full text-[10px] uppercase font-extrabold tracking-wider border border-amber-500/20">
@@ -62,7 +62,7 @@ export default function BrokerProfileCard({ profile }: { profile: OperatorProfil
       {/* Trust Row: Stars & Trust Source */}
       <div className="flex items-center gap-3 bg-black/40 p-2.5 rounded-lg border border-white/5">
         <div className="flex items-center gap-1">
-          <span className="text-amber-400 text-sm">{'★'.repeat(Math.round(rating))}</span>
+          <span className="text-amber-400 text-sm">{''.repeat(Math.round(rating))}</span>
           <span className="text-sm font-bold text-white ml-1">{rating.toFixed(1)}</span>
         </div>
         <div className="h-4 w-px bg-white/10"></div>
@@ -84,7 +84,7 @@ export default function BrokerProfileCard({ profile }: { profile: OperatorProfil
 
       {/* Action Row */}
       <div className="mt-auto pt-4 flex gap-2 relative z-20">
-        <a href={`tel:${profile.phoneNumber || '+18005550000'}`} 
+        <a href={`tel:${profile.phoneNumber || '+18005550000'}`}
            className="flex-1 text-center bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black py-2.5 rounded-lg font-black text-xs tracking-wider uppercase transition-all shadow-lg shadow-amber-500/20">
           Call Dispatch
         </a>

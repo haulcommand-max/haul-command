@@ -30,7 +30,7 @@ export default function ReportIncorrectDataPage({ searchParams }: { searchParams
             <AlertTriangle className="w-8 h-8 text-red-500" />
           </div>
         </div>
-        
+
         <h1 className="text-2xl font-black text-center mb-2 text-white">Report Inaccurate Data</h1>
         <p className="text-gray-400 text-center mb-8 text-sm">
           Haul Command ingests data from thousands of sources. If you found a listing with outdated or incorrect operational data, please report it to our trust and safety team.
@@ -47,7 +47,7 @@ export default function ReportIncorrectDataPage({ searchParams }: { searchParams
         <div className="mt-8 pt-6 border-t border-white/10 text-center flex flex-col items-center gap-2">
            <h3 className="font-bold text-sm text-white">Is this your business?</h3>
            <p className="text-xs text-gray-500 px-4">Instead of reporting, you can claim this profile to correct the data instantly and take control.</p>
-           <Link href={`/claim${slug ? `?claim_id=${slug}` : ''}`} className="text-amber-500 hover:text-amber-400 text-sm font-bold mt-1">Claim Profile Now â†’</Link>
+           <Link href={`/claim${slug ? `?claim_id=${slug}` : ''}`} className="text-amber-500 hover:text-amber-400 text-sm font-bold mt-1">Claim Profile Now</Link>
         </div>
       </div>
     </div>

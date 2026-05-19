@@ -5,10 +5,10 @@ import { ShieldAlert, Zap, ArrowRight, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils/cn";
 
-// ══════════════════════════════════════════════════════════════
+//
 // ProfileClaimSidebar — Section 7 Engine
 // Prominent sticky CTA to drive unclaimed profiles to verify.
-// ══════════════════════════════════════════════════════════════
+//
 
 interface ProfileClaimSidebarProps {
     profileId: string;

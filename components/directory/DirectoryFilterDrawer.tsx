@@ -17,13 +17,13 @@ import {
     type ServiceType,
 } from "@/lib/directory/filters";
 
-// ══════════════════════════════════════════════════════════════
+//
 // DirectoryFilterDrawer — Haul Command v5
 // 10x version of GeoDirectory Advanced Search.
 // Heavy-haul industry specific: equipment types, certified states,
 // superload quals, service type (lead/chase/both), corridor filter.
 // Slides in from right on mobile, inline panel on desktop.
-// ══════════════════════════════════════════════════════════════
+//
 
 interface DirectoryFilterDrawerProps {
     filters: DirectoryFilters;
@@ -155,7 +155,7 @@ function FilterPanel({ filters, onChange }: {
     return (
         <div className="space-y-1 divide-y divide-hc-border-bare">
 
-            {/* ── Service Type ── */}
+            {/*  Service Type  */}
             <div className="py-3">
                 <SectionHeader
                     title="Service Type"
@@ -187,7 +187,7 @@ function FilterPanel({ filters, onChange }: {
                 </AnimatePresence>
             </div>
 
-            {/* ── Equipment / Gear ── */}
+            {/*  Equipment / Gear  */}
             <div className="py-3">
                 <SectionHeader
                     title="Equipment Required"
@@ -220,7 +220,7 @@ function FilterPanel({ filters, onChange }: {
                 </AnimatePresence>
             </div>
 
-            {/* ── Qualifications ── */}
+            {/*  Qualifications  */}
             <div className="py-3">
                 <SectionHeader
                     title="Qualifications"
@@ -247,7 +247,7 @@ function FilterPanel({ filters, onChange }: {
                                         : "bg-hc-elevated border-hc-border"
                                 )}>
                                     <div>
-                                        <p className="text-[11px] font-bold text-hc-text">💪 Superload Qualified</p>
+                                        <p className="text-[11px] font-bold text-hc-text"> Superload Qualified</p>
                                         <p className="text-[10px] text-hc-subtle">Extreme dimension / mega-move certified</p>
                                     </div>
                                     <input
@@ -267,7 +267,7 @@ function FilterPanel({ filters, onChange }: {
                                         : "bg-hc-elevated border-hc-border"
                                 )}>
                                     <div>
-                                        <p className="text-[11px] font-bold text-hc-text">📡 High Pole Required</p>
+                                        <p className="text-[11px] font-bold text-hc-text"> High Pole Required</p>
                                         <p className="text-[10px] text-hc-subtle">Must have telescoping height detection pole</p>
                                     </div>
                                     <input
@@ -287,7 +287,7 @@ function FilterPanel({ filters, onChange }: {
                                         : "bg-hc-elevated border-hc-border"
                                 )}>
                                     <div>
-                                        <p className="text-[11px] font-bold text-hc-text">🌙 Night Certified</p>
+                                        <p className="text-[11px] font-bold text-hc-text"> Night Certified</p>
                                         <p className="text-[10px] text-hc-subtle">Equipped and certified for dusk-to-dawn runs</p>
                                     </div>
                                     <input
@@ -307,7 +307,7 @@ function FilterPanel({ filters, onChange }: {
                                         : "bg-hc-elevated border-hc-border"
                                 )}>
                                     <div>
-                                        <p className="text-[11px] font-bold text-hc-text">🗺️ Multi-State</p>
+                                        <p className="text-[11px] font-bold text-hc-text"> Multi-State</p>
                                         <p className="text-[10px] text-hc-subtle">Certified to operate across state lines</p>
                                     </div>
                                     <input
@@ -324,7 +324,7 @@ function FilterPanel({ filters, onChange }: {
                 </AnimatePresence>
             </div>
 
-            {/* ── Verification Status (OSOW Haven parity) ── */}
+            {/*  Verification Status (OSOW Haven parity)  */}
             <div className="py-3">
                 <SectionHeader
                     title="Verification Status"
@@ -400,7 +400,7 @@ function FilterPanel({ filters, onChange }: {
                 </AnimatePresence>
             </div>
 
-            {/* ── Certified States ── */}
+            {/*  Certified States  */}
             <div className="py-3">
                 <SectionHeader
                     title="Certified States"
@@ -441,7 +441,7 @@ function FilterPanel({ filters, onChange }: {
                 </AnimatePresence>
             </div>
 
-            {/* ── Corridor Quick-Pick ── */}
+            {/*  Corridor Quick-Pick  */}
             <div className="py-3">
                 <SectionHeader
                     title="Corridor"

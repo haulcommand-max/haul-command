@@ -10,12 +10,12 @@ import { SITE_URL } from '@/lib/site-url';
 import { buildQAPageJsonLd } from '@/lib/seo/jsonld';
 import { getGlobalHreflangTags } from '@/lib/seo/hreflang';
 
-// ═══════════════════════════════════════════════════════════════
+//
 // CATEGORY DIRECTORY PAGE — /directory/category/[slug]
 // Canonical page for each service category.
 // Generates crawlable HTML for map-pack indexing.
 // Pulls real operator data from hc_places + hc_global_operators.
-// ═══════════════════════════════════════════════════════════════
+//
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -388,7 +388,7 @@ export default async function CategoryDirectoryPage({ params, searchParams }: Pr
                   {!op.claimed && (
                     <p className="text-xs text-amber-500/70 mt-1">
                       Operate or steward this listing?{' '}
-                      <span className="font-bold text-amber-500 group-hover:underline">Claim it free →</span>
+                      <span className="font-bold text-amber-500 group-hover:underline">Claim it free </span>
                     </p>
                   )}
                 </Link>
@@ -403,7 +403,7 @@ export default async function CategoryDirectoryPage({ params, searchParams }: Pr
                     href={`/directory/category/${slug}?country=${country.toLowerCase()}&page=${page - 1}${state ? `&state=${state}` : ''}`}
                     className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-white/20"
                   >
-                    ← Previous
+                     Previous
                   </Link>
                 )}
                 <span className="text-sm text-gray-500">
@@ -414,7 +414,7 @@ export default async function CategoryDirectoryPage({ params, searchParams }: Pr
                     href={`/directory/category/${slug}?country=${country.toLowerCase()}&page=${page + 1}${state ? `&state=${state}` : ''}`}
                     className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm hover:border-white/20"
                   >
-                    Next →
+                    Next
                   </Link>
                 )}
               </div>
@@ -429,7 +429,7 @@ export default async function CategoryDirectoryPage({ params, searchParams }: Pr
               href={category.claim_route}
               className="inline-block px-6 py-3 bg-amber-500 hover:bg-amber-400 text-black text-sm font-bold rounded-xl transition-colors"
             >
-              List Your Business Free →
+              List Your Business Free
             </Link>
           </div>
         )}

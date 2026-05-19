@@ -56,7 +56,7 @@ export default function EcosystemContext({
             {/* Connected Surfaces */}
             {surfaces.length > 0 && (
                 <div className="eco-section">
-                    <h4 className="eco-section-title">📍 Connected Territories</h4>
+                    <h4 className="eco-section-title"> Connected Territories</h4>
                     <div className="eco-tags">
                         {surfaces.slice(0, 6).map(s => (
                             <a key={s.slug} href={`/place/${s.slug}`} className="eco-tag">
@@ -73,7 +73,7 @@ export default function EcosystemContext({
             {/* Connected Corridors */}
             {corridors.length > 0 && (
                 <div className="eco-section">
-                    <h4 className="eco-section-title">🛣️ Corridor Coverage</h4>
+                    <h4 className="eco-section-title"> Corridor Coverage</h4>
                     <div className="eco-tags">
                         {corridors.map(c => (
                             <a key={c.slug} href={`/corridors/${c.slug}`} className="eco-tag corridor">
@@ -87,7 +87,7 @@ export default function EcosystemContext({
             {/* Category Placement */}
             {category && (
                 <div className="eco-section">
-                    <h4 className="eco-section-title">🏷️ Listed Under</h4>
+                    <h4 className="eco-section-title"> Listed Under</h4>
                     <div className="eco-tags">
                         <span className="eco-tag active">{category}</span>
                         {relatedCategories.slice(0, 4).map(rc => (
@@ -99,7 +99,7 @@ export default function EcosystemContext({
 
             {/* Location context */}
             <div className="eco-location">
-                <span className="eco-loc-icon">🌍</span>
+                <span className="eco-loc-icon"></span>
                 <span>{city}, {state}, {country} — searchable in all regional and corridor searches</span>
             </div>
 
