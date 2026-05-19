@@ -37,6 +37,30 @@ interface WaveResponse {
     candidates_considered: number;
 }
 
+interface PricingOracleResponse {
+    currency: string;
+    unit: string;
+    recommended: {
+        floor: number;
+        target: number;
+        ceiling: number;
+    };
+    fill_probability_at_target: number;
+    confidence: number;
+    confidence_label: string;
+    multipliers: {
+        country: number;
+        heat: number;
+        complexity: number;
+    };
+    posted_grade: {
+        label: string;
+        color: string;
+        fillProb: number;
+    } | null;
+    explanation: string[];
+}
+
 type WizardStep = 1 | 2 | 3 | 4 | 5;
 
 const REGIONS = [
@@ -102,6 +126,7 @@ function createInitialForm() {
         load_weight: '',
         load_type: 'oversized',
         urgency: 'normal',
+        route_miles: '',
         base_rate: '',
         escort_lead: '1',
         escort_chase: '0',
@@ -132,6 +157,9 @@ export default function PostLoadPage() {
     const [matchResult, setMatchResult] = useState<MatchResponse | null>(null);
     const [waveResult, setWaveResult] = useState<WaveResponse | null>(null);
     const [elapsedMs, setElapsedMs] = useState<number | null>(null);
+    const [pricingPreview, setPricingPreview] = useState<PricingOracleResponse | null>(null);
+    const [pricingLoading, setPricingLoading] = useState(false);
+    const [pricingError, setPricingError] = useState<string | null>(null);
     const [posting, setPosting] = useState(false);
     const [dispatching, setDispatching] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -163,9 +191,67 @@ export default function PostLoadPage() {
         setMatchResult(null);
         setWaveResult(null);
         setElapsedMs(null);
+        setPricingPreview(null);
+        setPricingError(null);
         setError(null);
         setShowAdvancedCoords(false);
         setSelectedMatchId(null);
+    }
+
+    function inferCountryCode(region: string) {
+        return ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'].includes(region.toUpperCase())
+            ? 'CA'
+            : 'US';
+    }
+
+    function mapOracleLoadType() {
+        if (form.requires_police) return 'POLICE';
+        if (form.requires_high_pole || form.load_type === 'high_pole') return 'HEIGHT_POLE';
+        return 'PEVO';
+    }
+
+    async function refreshPricingPreview() {
+        setPricingPreview(null);
+        setPricingError(null);
+
+        const milesEstimate = parseNumber(form.route_miles);
+        if (!milesEstimate || milesEstimate <= 0) {
+            setPricingError('Add route miles to unlock pricing, fill-probability, and urgency guidance.');
+            return;
+        }
+
+        setPricingLoading(true);
+        try {
+            const response = await fetch('/api/pricing/oracle', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    country_code: inferCountryCode(form.origin_state),
+                    region_code: form.origin_state || undefined,
+                    miles_estimate: milesEstimate,
+                    load_type: mapOracleLoadType(),
+                    width_ft: parseNumber(form.load_width) ?? undefined,
+                    height_ft: parseNumber(form.load_height) ?? undefined,
+                    length_ft: parseNumber(form.load_length) ?? undefined,
+                    weight_lbs: parseNumber(form.load_weight) ?? undefined,
+                    requires_police: form.requires_police,
+                    posted_price: parseNumber(form.base_rate) ?? undefined,
+                }),
+            });
+
+            if (!response.ok) {
+                const body = await response.json().catch(() => ({}));
+                setPricingError(body?.error ?? 'Pricing oracle is temporarily unavailable.');
+                return;
+            }
+
+            const data: PricingOracleResponse = await response.json();
+            setPricingPreview(data);
+        } catch (caughtError) {
+            setPricingError(String(caughtError));
+        } finally {
+            setPricingLoading(false);
+        }
     }
 
     async function handleGeneratePreview() {
@@ -374,6 +460,7 @@ export default function PostLoadPage() {
                             <div style={{display: 'grid',gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))',gap: 12 }}>
                                 <Field label="Lead escorts" value={form.escort_lead} placeholder="1" inputMode="numeric" onChange={(value) => setField('escort_lead', value)} />
                                 <Field label="Chase escorts" value={form.escort_chase} placeholder="0" inputMode="numeric" onChange={(value) => setField('escort_chase', value)} />
+                                <Field label="Route miles" value={form.route_miles} placeholder="450" inputMode="decimal" onChange={(value) => setField('route_miles', value)} />
                                 <Field label="Base rate ($)" value={form.base_rate} placeholder="600" inputMode="decimal" onChange={(value) => setField('base_rate', value)} />
                             </div>
 
@@ -409,8 +496,8 @@ export default function PostLoadPage() {
 
                         <StickyBar>
                             <MobileButton variant="secondary" onClick={() => setStep(1)}>Back</MobileButton>
-                            <MobileButton variant="primary" disabled={!detailsReady} onClick={() => { setError(null); setStep(3); }}>
-                                Continue to review
+                            <MobileButton variant="primary" disabled={!detailsReady || pricingLoading} onClick={async () => { setError(null); await refreshPricingPreview(); setStep(3); }}>
+                                {pricingLoading ? 'Checking pricing...' : 'Continue to review'}
                             </MobileButton>
                         </StickyBar>
                     </>
@@ -425,8 +512,11 @@ export default function PostLoadPage() {
                             <SummaryItem label="Weight" value={`${form.load_weight || '--'} lb`} />
                             <SummaryItem label="Escort plan" value={`${form.escort_lead} lead / ${form.escort_chase} chase`} />
                             <SummaryItem label="Urgency" value={getUrgencyLabel(form.urgency)} />
+                            <SummaryItem label="Route miles" value={form.route_miles ? `${form.route_miles} mi` : 'Needed for pricing oracle'} />
                             <SummaryItem label="Base rate" value={form.base_rate ? `$${form.base_rate}` : '--'} />
                         </Section>
+
+                        <PricingPreviewSection preview={pricingPreview} loading={pricingLoading} error={pricingError} onRefresh={refreshPricingPreview} />
 
                         <Section title="What happens next" description="The same backend flow stays in place, but the mobile sequence is now clearer and easier to control.">
                             <InfoItem index="1" title="Create the load record" body="Supabase gets the live load record first, using the same payload path the old screen used." />
@@ -513,6 +603,68 @@ function Section({ title, description, children }: { title: string; description?
 
 function ErrorBanner({ message }: { message: string }) {
     return <div style={{marginTop: 12,padding: '14px 16px',borderRadius: 16,border: '1px solid rgba(239, 68, 68, 0.18)',background: 'rgba(239, 68, 68, 0.08)',color: '#FCA5A5',fontSize: 14,lineHeight: 1.55 }}>{message}</div>;
+}
+
+function PricingPreviewSection({
+    preview,
+    loading,
+    error,
+    onRefresh,
+}: {
+    preview: PricingOracleResponse | null;
+    loading: boolean;
+    error: string | null;
+    onRefresh: () => Promise<void>;
+}) {
+    const fillPct = preview ? Math.round(preview.fill_probability_at_target * 100) : null;
+    const confidencePct = preview ? Math.round(preview.confidence * 100) : null;
+
+    return (
+        <Section title="Pricing intelligence" description="Uses the existing pricing oracle only when route miles are provided. No mileage means no fake dynamic price.">
+            {loading && <div style={{fontSize: 14,color: 'var(--m-text-secondary, #c7ccd7)' }}>Checking the pricing oracle...</div>}
+
+            {!loading && preview && (
+                <div style={{display: 'grid',gap: 12 }}>
+                    <div style={{display: 'grid',gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 150px), 1fr))',gap: 10 }}>
+                        <StatBox label="Floor" value={`${preview.currency}${preview.recommended.floor.toLocaleString()}`} compact />
+                        <StatBox label="Target" value={`${preview.currency}${preview.recommended.target.toLocaleString()}`} compact />
+                        <StatBox label="Ceiling" value={`${preview.currency}${preview.recommended.ceiling.toLocaleString()}`} compact />
+                    </div>
+                    <div style={{display: 'grid',gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 150px), 1fr))',gap: 10 }}>
+                        <StatBox label="Fill at target" value={fillPct !== null ? `${fillPct}%` : '--'} compact />
+                        <StatBox label="Confidence" value={confidencePct !== null ? `${confidencePct}%` : preview.confidence_label} compact />
+                        <StatBox label="Complexity x" value={`${preview.multipliers.complexity.toFixed(2)}x`} compact />
+                    </div>
+                    {preview.posted_grade && (
+                        <div style={{padding: '12px 14px',borderRadius: 16,border: `1px solid ${preview.posted_grade.color}`,background: 'rgba(255, 255, 255, 0.03)' }}>
+                            <div style={labelStyle}>Posted-rate grade</div>
+                            <div style={{marginTop: 6,fontSize: 17,fontWeight: 900,color: preview.posted_grade.color }}>{preview.posted_grade.label}</div>
+                            <div style={{marginTop: 4,fontSize: 12,color: 'var(--m-text-secondary, #c7ccd7)' }}>Expected fill at posted rate: {Math.round(preview.posted_grade.fillProb * 100)}%</div>
+                        </div>
+                    )}
+                    {preview.explanation.length > 0 && (
+                        <div style={{display: 'grid',gap: 8 }}>
+                            {preview.explanation.map((line) => (
+                                <div key={line} style={{fontSize: 13,lineHeight: 1.55,color: 'var(--m-text-secondary, #c7ccd7)' }}>
+                                    + {line}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    <MobileButton variant="secondary" onClick={onRefresh} disabled={loading}>Refresh pricing</MobileButton>
+                </div>
+            )}
+
+            {!loading && !preview && (
+                <div style={{display: 'grid',gap: 12 }}>
+                    <div style={{fontSize: 14,lineHeight: 1.6,color: error ? '#FCA5A5' : 'var(--m-text-secondary, #c7ccd7)' }}>
+                        {error ?? 'Pricing intelligence has not run yet.'}
+                    </div>
+                    <MobileButton variant="secondary" onClick={onRefresh} disabled={loading}>Run pricing oracle</MobileButton>
+                </div>
+            )}
+        </Section>
+    );
 }
 
 function Field({
