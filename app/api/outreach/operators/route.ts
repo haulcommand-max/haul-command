@@ -72,7 +72,7 @@ function buildClaimEmail(name: string, state: string, claimUrl: string): string 
             Hey ${name}, we've created a directory profile for you based on public licensing records in <strong style="color: #f5b942;">${state}</strong>.
         </p>
         <p style="font-size: 14px; color: #8fa3b8; line-height: 1.7; margin: 0 0 24px;">
-            <strong style="color: #fff;">Claim it free</strong> to add your phone number, services, and get the verified badge \u2713 that gets you 5\u00d7 more job requests.
+            <strong style="color: #fff;">Claim it free</strong> to add your public contact path, services, proof details, and service-area corrections so brokers can evaluate the record with better source context.
         </p>
         <a href="${claimUrl}" style="display: inline-block; padding: 14px 32px; border-radius: 12px; background: linear-gradient(135deg, #C6923A, #8A6428); color: #000; font-weight: 800; font-size: 14px; text-decoration: none;">Claim Your Profile \u2192</a>
         <p style="font-size: 11px; color: #556070; margin-top: 24px;">

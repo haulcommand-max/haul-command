@@ -6,8 +6,7 @@ import { createClient } from '@/utils/supabase/client';
 
 /* ═══════════════════════════════════════════════════════════════════
    PUBLIC LOAD BOARD PREVIEW
-   Shows 3 full load cards + blurred/gated cards 4-10
-   Drives sign-up urgency with HOT/WARM/COOL badges
+   Shows source-backed public load cards when available.
    ═══════════════════════════════════════════════════════════════════ */
 
 const T = {
@@ -16,20 +15,6 @@ const T = {
   gold: '#f5b942', green: '#27d17f', red: '#f87171', amber: '#f59e0b',
   blue: '#3ba4ff', text: '#f0f4f8', muted: '#8fa3b8',
 } as const;
-
-// Seed loads for when DB is empty
-const SEED_LOADS = [
-  { id: 's1', origin_state: 'TX', dest_state: 'LA', service_required: 'Pilot Car', rate_amount: 650, urgency: 'hot', posted_at: new Date(Date.now() - 8 * 60000).toISOString() },
-  { id: 's2', origin_state: 'FL', dest_state: 'GA', service_required: 'Height Pole', rate_amount: 420, urgency: 'warm', posted_at: new Date(Date.now() - 22 * 60000).toISOString() },
-  { id: 's3', origin_state: 'CA', dest_state: 'AZ', service_required: 'Pilot Car', rate_amount: 890, urgency: 'hot', posted_at: new Date(Date.now() - 45 * 60000).toISOString() },
-  { id: 's4', origin_state: 'OH', dest_state: 'PA', service_required: 'Wide Load', rate_amount: 310, urgency: 'warm', posted_at: new Date(Date.now() - 1.5 * 3600000).toISOString() },
-  { id: 's5', origin_state: 'IL', dest_state: 'WI', service_required: 'Pilot Car', rate_amount: 275, urgency: 'cool', posted_at: new Date(Date.now() - 2 * 3600000).toISOString() },
-  { id: 's6', origin_state: 'NC', dest_state: 'VA', service_required: 'Route Survey', rate_amount: 500, urgency: 'hot', posted_at: new Date(Date.now() - 2.5 * 3600000).toISOString() },
-  { id: 's7', origin_state: 'WA', dest_state: 'OR', service_required: 'Height Pole', rate_amount: 380, urgency: 'warm', posted_at: new Date(Date.now() - 3 * 3600000).toISOString() },
-  { id: 's8', origin_state: 'GA', dest_state: 'AL', service_required: 'Pilot Car', rate_amount: 220, urgency: 'cool', posted_at: new Date(Date.now() - 4 * 3600000).toISOString() },
-  { id: 's9', origin_state: 'TN', dest_state: 'KY', service_required: 'Pilot Car', rate_amount: 290, urgency: 'warm', posted_at: new Date(Date.now() - 5 * 3600000).toISOString() },
-  { id: 's10', origin_state: 'NV', dest_state: 'CA', service_required: 'Wide Load', rate_amount: 720, urgency: 'hot', posted_at: new Date(Date.now() - 6 * 3600000).toISOString() },
-];
 
 function timeSince(dateStr: string) {
   const s = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
@@ -173,13 +158,12 @@ export function PublicLoadBoardPreview() {
           setLoads(data);
           setLiveCount(count ?? data.length);
         } else {
-          // Fallback to seed loads
-          setLoads(SEED_LOADS);
-          setLiveCount(SEED_LOADS.length);
+          setLoads([]);
+          setLiveCount(0);
         }
       } catch {
-        setLoads(SEED_LOADS);
-        setLiveCount(SEED_LOADS.length);
+        setLoads([]);
+        setLiveCount(0);
       }
       setLoading(false);
     }
@@ -219,14 +203,14 @@ export function PublicLoadBoardPreview() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 10 }}>
             <span style={{ width: 7, height: 7, borderRadius: '50%', background: T.green, boxShadow: `0 0 6px ${T.green}`, animation: 'pulse-warm 2s infinite' }} />
             <span style={{ fontSize: 10, fontWeight: 800, color: T.green, textTransform: 'uppercase', letterSpacing: '0.15em' }}>
-              Live Load Board
+              Public Load Board
             </span>
           </div>
           <h1 style={{ fontSize: 'clamp(22px, 4vw, 34px)', fontWeight: 900, margin: '0 0 8px', lineHeight: 1.2 }}>
-            {liveCount > 0 && !loading ? `${liveCount} Loads Available Now` : 'Open Loads — Accept Jobs Today'}
+            {liveCount > 0 && !loading ? `${liveCount} Open Load Signals` : 'No public load signals loaded'}
           </h1>
           <p style={{ fontSize: 14, color: T.muted, margin: 0 }}>
-            Sign in to view full details, accept jobs, and set availability
+            Sign in to view sourced details, submit responses, and set availability
           </p>
         </div>
 
@@ -240,7 +224,7 @@ export function PublicLoadBoardPreview() {
                   {cfg.label}
                 </span>
                 <span style={{ fontSize: 11, color: T.muted }}>
-                  {u === 'hot' ? 'Fill in <1h' : u === 'warm' ? 'Fill in <4h' : 'Flexible'}
+                  {u === 'hot' ? 'High-priority review' : u === 'warm' ? 'Time-sensitive' : 'Flexible'}
                 </span>
               </div>
             );
@@ -259,14 +243,22 @@ export function PublicLoadBoardPreview() {
           ) : (
             <>
               {/* Full preview — first 3 */}
-              <div style={{ marginBottom: 8, fontSize: 11, fontWeight: 700, color: T.muted, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                Preview — 3 of {liveCount} loads
-              </div>
-              <div className="ag-stagger" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 14, marginBottom: 14 }}>
-                {preview.map((load, i) => (
-                  <LoadPreviewCard key={load.id} load={load} index={i} />
-                ))}
-              </div>
+              {preview.length === 0 ? (
+                <div style={{ padding: 24, borderRadius: 16, border: `1px solid ${T.border}`, background: T.bgCard, color: T.muted, textAlign: 'center', marginBottom: 18 }}>
+                  No source-backed public loads are available right now. Post a request or sign in to manage alerts.
+                </div>
+              ) : (
+                <>
+                  <div style={{ marginBottom: 8, fontSize: 11, fontWeight: 700, color: T.muted, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                    Preview - {preview.length} of {liveCount} load signals
+                  </div>
+                  <div className="ag-stagger" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 14, marginBottom: 14 }}>
+                    {preview.map((load, i) => (
+                      <LoadPreviewCard key={load.id} load={load} index={i} />
+                    ))}
+                  </div>
+                </>
+              )}
 
               {/* Gated — blurred */}
               {gated.length > 0 && (
@@ -291,10 +283,10 @@ export function PublicLoadBoardPreview() {
             border: '1px solid rgba(245,185,66,0.25)',
           }}>
             <div style={{ fontSize: 20, fontWeight: 900, color: T.text, marginBottom: 8 }}>
-              Sign in to Accept Jobs
+              Sign in to Respond
             </div>
             <div style={{ fontSize: 13, color: T.muted, marginBottom: 20 }}>
-              Toggle available, receive push offers, track earnings, and build your trust score.
+              Toggle availability, receive eligible request alerts, track responses, and build your profile packet.
             </div>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
               <Link aria-label="Navigation Link" href="/login" className="ag-press" style={{ padding: '12px 28px', borderRadius: 12, background: 'linear-gradient(135deg, #f5b942, #e8a830)', color: '#000', fontWeight: 800, fontSize: 14, textDecoration: 'none' }}>

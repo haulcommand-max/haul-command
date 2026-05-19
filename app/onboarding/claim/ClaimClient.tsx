@@ -10,12 +10,12 @@ import {
 
 const PREMIUM_PRICE = 99;
 const PREMIUM_FEATURES = [
-    { icon: Shield, label: "Verified Badge", desc: "Blue check on all directory pages" },
-    { icon: Star, label: "Priority Placement", desc: "Top of corridor and search results" },
-    { icon: Zap, label: "Lead Routing", desc: "Push notifications for matching loads" },
-    { icon: Mail, label: "Review Automation", desc: "Auto-request reviews after every job" },
-    { icon: Globe, label: "SEO Boost", desc: "Dedicated profile page with Schema markup" },
-    { icon: Phone, label: "Phone Reveal", desc: "Your number visible to active brokers" },
+    { icon: Shield, label: "Proof Review", desc: "Eligible proof badge after source review" },
+    { icon: Star, label: "Labeled Placement", desc: "Eligible sponsor surfaces where inventory exists" },
+    { icon: Zap, label: "Request Alerts", desc: "Notifications for eligible support requests" },
+    { icon: Mail, label: "Review Capture", desc: "Ask for feedback after confirmed platform jobs" },
+    { icon: Globe, label: "Profile Schema", desc: "Structured profile page and richer entity context" },
+    { icon: Phone, label: "Public Contact Path", desc: "Show the safest broker request route you approve" },
 ];
 
 const VERIFICATION_METHODS = [
@@ -39,7 +39,7 @@ export default function ClaimClient() {
     async function handleVerify() {
         if (!selectedMethod) return;
         setVerifying(true);
-        // Simulate verification (in production, this calls the edge function)
+        // Local ownership step only; proof review happens after submission.
         await new Promise(resolve => setTimeout(resolve, 2000));
         setVerified(true);
         setVerifying(false);
@@ -59,7 +59,7 @@ export default function ClaimClient() {
             <div className="max-w-2xl mx-auto px-4 py-16">
                 {/* Progress */}
                 <div className="flex items-center justify-center gap-3 mb-12">
-                    {["Verify", "Plan", "Activate"].map((label, i) => {
+                    {["Claim", "Plan", "Submit"].map((label, i) => {
                         const stepIdx = i === 0 ? "verify" : i === 1 ? "plan" : "checkout";
                         const isActive = step === stepIdx || (step === "checkout" && i <= 2);
                         const isDone = (step === "plan" && i === 0) || (step === "checkout" && i <= 1);
@@ -89,7 +89,7 @@ export default function ClaimClient() {
                                 Verify {surfaceName}
                             </h1>
                             <p className="text-white/50 mt-2 text-sm">
-                                Prove you own this business to unlock premium features.
+                                Start the ownership step so you can correct public fields and submit proof for review.
                             </p>
                         </div>
 
@@ -131,7 +131,7 @@ export default function ClaimClient() {
                                 minHeight: "56px",
                             }}
                         >
-                            {verifying ? "Verifying..." : "Verify Ownership"}
+                            {verifying ? "Submitting..." : "Submit Ownership Step"}
                         </button>
                     </div>
                 )}
@@ -142,7 +142,7 @@ export default function ClaimClient() {
                         <div className="text-center">
                             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-4">
                                 <CheckCircle className="w-4 h-4 text-emerald-400" />
-                                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Verified</span>
+                                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Ownership Step Submitted</span>
                             </div>
                             <h1 className="text-3xl font-black tracking-tight mt-4" style={{ fontFamily: "var(--font-display)" }}>
                                 Choose Your Plan
@@ -164,7 +164,7 @@ export default function ClaimClient() {
                                     <h3 className="font-bold text-lg">Free Claim</h3>
                                     <span className="text-lg font-black text-white/50">$0</span>
                                 </div>
-                                <p className="text-sm text-white/40">Basic verified listing. Limited visibility.</p>
+                                <p className="text-sm text-white/40">Claim the listing, correct core fields, and submit proof when available.</p>
                             </button>
 
                             {/* Premium */}

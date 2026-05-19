@@ -1,8 +1,4 @@
 import React from "react";
-// Fake imports that map to expected module layout from spec
-// import AttributeBlock from "../modules/AttributeBlock";
-// import ReviewSnippets from "../modules/ReviewSnippets";
-// import TrustScore from "../modules/TrustScore";
 
 export default function ProfilePage({ 
     entity,
@@ -50,13 +46,13 @@ export default function ProfilePage({
 
             {/* Services & Attribute Block */}
             <section className="bg-white p-6 rounded-lg shadow border border-neutral-200">
-                <h2 className="text-xl font-bold text-neutral-900 mb-4">Verified Capabilities</h2>
+                <h2 className="text-xl font-bold text-neutral-900 mb-4">Listed Capabilities</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                     {attributes.map(attr => (
                         <div key={attr.id} className="bg-neutral-50 px-3 py-2 rounded text-sm font-medium border border-neutral-100 flex items-center justify-between">
                             {/* Uses canonical key for now, could resolve via Alias later */}
                             <span className="text-sm text-neutral-700 capitalize">{attr.canonical_key.replace(/_/g, ' ')}</span>
-                            {attr.confidence_score > 80 && <span className="text-green-500 text-xs">✓ Verified</span>}
+                            {attr.confidence_score > 80 && <span className="text-green-500 text-xs">High confidence</span>}
                         </div>
                     ))}
                 </div>
@@ -82,7 +78,7 @@ export default function ProfilePage({
             {/* Conversion Path */}
             <section className="mt-8 flex justify-center">
                 <button className="bg-black hover:bg-neutral-800 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all">
-                    {entity.claim_status === 'unclaimed' ? "Claim & Optimize Profile" : "Request Urgent Support"}
+                    {entity.claim_status === 'unclaimed' ? "Claim and Improve Profile" : "Start Support Request"}
                 </button>
             </section>
 

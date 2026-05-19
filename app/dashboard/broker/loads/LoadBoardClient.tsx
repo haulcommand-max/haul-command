@@ -158,14 +158,15 @@ function CryptoEscrowForm({
     setErrorMsg("");
 
     try {
-      // Typically this would call NOWPayments API to generate a payment invoice for the escrow
       const res = await fetch("/api/escrow/crypto-fund", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ load_id: loadId, amount, currency, accepted_slippage: acknowledgesSlippage }),
       });
-      // Even if API doesn&apos;t exist yet, we simulate success for demo
-      // const result = await res.json();
+      if (!res.ok) {
+        const result = await res.json().catch(() => ({}));
+        throw new Error(result.error ?? "Crypto escrow is not available yet.");
+      }
       
       setTimeout(() => {
         setStatus("done");
@@ -181,7 +182,7 @@ function CryptoEscrowForm({
   if (status === "done") {
     return (
       <div className="flex items-center gap-2 text-emerald-400 text-sm font-semibold py-2">
-        ðŸ"’ Crypto Escrow Authorized — ${amount} held in smart contract.
+        Crypto escrow request received - confirm processor status before dispatch.
       </div>
     );
   }
@@ -192,7 +193,7 @@ function CryptoEscrowForm({
         <div>
           <p className="text-white font-bold text-sm">Fund Milestone Escrow</p>
           <p className="text-slate-400 text-xs mt-0.5">
-            ${amount} secured via Haul Command Settlement OS. Funds split by approved route milestones.
+            ${amount} payment request. Escrow starts only after processor confirmation.
           </p>
         </div>
         <span className="text-xs font-mono bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-1 rounded">
@@ -229,7 +230,7 @@ function CryptoEscrowForm({
           className="mt-1 bg-slate-800 border-slate-600 rounded text-blue-500 focus:ring-blue-500"
         />
         <label htmlFor="slippage-check" className="text-xs text-slate-400 leading-tight">
-          By proceeding, I confirm that Haul Command utilizes NOWPayments Auto-Conversion. If I pay in ADA or BTC, the API instantly locks the value into USD Stablecoins to prevent 14-day volatility risk during escrow. Haul Command abstracts the underlying bridge networks to guarantee exact-fiat payouts to operators.
+          By proceeding, I understand crypto settlement depends on the payment processor, network confirmation, KYC/AML checks, and final escrow authorization. Do not treat this as dispatch confirmation.
         </label>
       </div>
 
@@ -246,7 +247,7 @@ function CryptoEscrowForm({
           onClick={handleFundEscrow}
           className="flex-1 bg-blue-600 hover:bg-blue-500 text-white disabled:bg-slate-700 disabled:text-slate-400"
         >
-          {status === "processing" ? "Authorizing..." : `ðŸ"’ Fund Crypto Escrow — $${amount}`}
+          {status === "processing" ? "Authorizing..." : `Request Crypto Escrow - $${amount}`}
         </Button>
         <Button aria-label="Interactive Button"
           onClick={onCancel}
@@ -257,7 +258,7 @@ function CryptoEscrowForm({
       </div>
 
       <p className="text-slate-600 text-[10px] leading-relaxed">
-        Powered by Haul Command Settlement OS. Funds are secured and rules-based. Instant payouts and milestone-based releases available upon verified delivery. Full compliance with AML/KYC.
+        Crypto escrow is pending processor support and compliance review. Milestone release is available only after confirmed payment, eligible delivery proof, and payout configuration.
       </p>
     </div>
   );

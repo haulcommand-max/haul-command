@@ -58,8 +58,8 @@ export default function SuccessContent() {
                         <h1 className="text-3xl font-black tracking-tight mb-2">Profile Claimed!</h1>
                         <p className="text-gray-400 text-sm">
                             {isPremium
-                                ? "Your Premium Profile is activated and pending review."
-                                : "Your free profile is claimed. Brokers can now find you."}
+                                ? "Your premium request was received. Placement and proof labels start after payment, inventory, and profile review."
+                                : "Your free profile is claimed. Directory visibility updates after review and index refresh."}
                         </p>
                     </div>
                 </div>
@@ -68,9 +68,9 @@ export default function SuccessContent() {
                 <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02]">
                     <p className="text-xs text-gray-500 uppercase tracking-widest font-bold font-mono mb-2">Next Steps</p>
                     <ul className="text-left text-sm text-gray-300 space-y-2">
-                        <li>1. Verification in 2–4 hours. Watch for email.</li>
-                        <li>2. Your profile is now searchable in the directory.</li>
-                        <li>3. Add certifications, equipment, and service area to rank higher.</li>
+                        <li>1. Review timing varies by proof type, country, and source confidence.</li>
+                        <li>2. Directory visibility updates after the claim and profile fields are reviewed.</li>
+                        <li>3. Add certifications, equipment, and service areas to improve profile completeness.</li>
                     </ul>
                 </div>
 
@@ -79,8 +79,8 @@ export default function SuccessContent() {
                     <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-5 space-y-4">
                         <div className="text-center">
                             <p className="text-xs font-bold uppercase tracking-widest text-amber-400 mb-1">Upgrade Your Profile</p>
-                            <h2 className="text-lg font-black text-white">Get Found 5× More Often</h2>
-                            <p className="text-xs text-gray-400 mt-1">Free profiles are listed. Pro profiles get matched, boosted, and preferred by brokers.</p>
+                            <h2 className="text-lg font-black text-white">Make the Profile Easier to Trust</h2>
+                            <p className="text-xs text-gray-400 mt-1">Pro tools help you maintain proof, request alerts, and eligible visibility signals without promising rank or demand.</p>
                         </div>
 
                         <div className="grid grid-cols-1 gap-3">
@@ -92,7 +92,7 @@ export default function SuccessContent() {
                                             <Star className="w-4 h-4 text-amber-400" />
                                             <span className="text-sm font-black text-white">Commander Pro — $29/mo</span>
                                         </div>
-                                        <p className="text-xs text-gray-400">Priority dispatch · Unlimited loads · Route Survey Generator</p>
+                                        <p className="text-xs text-gray-400">Request alerts · Profile tools · Route Survey Generator</p>
                                     </div>
                                 </div>
                                 <UpgradeButton priceKey="escort_pro_monthly" label="Upgrade to Pro →" color="#F1A91B" />
@@ -104,7 +104,7 @@ export default function SuccessContent() {
                                     <Shield className="w-4 h-4 text-gray-400 flex-shrink-0 mt-0.5" />
                                     <div>
                                         <p className="text-sm font-bold text-white">Founding Sponsor — from $299 one-time</p>
-                                        <p className="text-xs text-gray-400">Permanent badge · Corridor placement · Early-adopter price locked forever</p>
+                                        <p className="text-xs text-gray-400">Sponsor badge review · Corridor placement options · Early-adopter pricing</p>
                                     </div>
                                 </div>
                                 <Link href="/advertise/founding-sponsor"

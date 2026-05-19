@@ -187,18 +187,20 @@ export default async function BrokerDashboardPage() {
             </div>
             <div className="flex items-center justify-between mb-4 relative z-10">
               <p className="text-xs font-bold text-[#f0f2f5] flex items-center gap-2">
-                <span className="text-amber-500">Live Network Broadcasts</span>
+                <span className="text-amber-500">Operator Broadcasts</span>
               </p>
               <Link href="/available-now" className="text-[10px] text-[#566880] hover:text-amber-400 transition-colors">View Map â†’</Link>
             </div>
             
             <div className="space-y-3 relative z-10">
-              {/* Dummy hydration fallback - in production relies on realtime Supabase hooks, mocked here for layout integrity */}
-              {[
-                { name: 'Phantom Escorts LLC', loc: 'Houston, TX', eta: 'Available Now', trust: 98, status: 'available_now' },
-                { name: 'Apex Pilot Services', loc: 'Atlanta, GA', eta: 'Available Today', trust: 92, status: 'available_today' },
-                { name: 'Vanguard Heavy Haul', loc: 'Denver, CO', eta: 'Available Now', trust: 88, status: 'available_now' }
-              ].map((op, i) => (
+              {([] as Array<{ name: string; loc: string; eta: string; trust: number; status: string }>).length === 0 ? (
+                <div className="rounded-xl border border-[#1e3048] bg-[#07090d] p-4">
+                  <p className="text-xs font-bold text-white">No source-backed live broadcasts loaded</p>
+                  <p className="mt-1 text-[10px] leading-5 text-[#8a9ab0]">
+                    Availability rows appear here after operators submit current pings through the platform.
+                  </p>
+                </div>
+              ) : ([] as Array<{ name: string; loc: string; eta: string; trust: number; status: string }>).map((op, i) => (
                 <div key={i} className="flex items-center justify-between gap-3 rounded-xl border border-[#1e3048] bg-[#07090d] p-3 hover:border-amber-500/30 transition-all">
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-bold text-white truncate">{op.name}</p>
@@ -217,7 +219,7 @@ export default async function BrokerDashboardPage() {
             </div>
             
             <Link href="/available-now" className="mt-4 block w-full py-2 text-center text-xs font-bold bg-[#1e3048] text-white rounded-lg hover:bg-[#2a4060] transition-colors relative z-10">
-              Browse All Active Operators
+              Browse Availability Signals
             </Link>
           </div>
 
@@ -233,10 +235,10 @@ export default async function BrokerDashboardPage() {
           <p className="text-xs font-bold text-[#3b82f6] mb-3">ðŸ“Š Market Intelligence</p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Avg Response Time', val: '8 min', note: 'Network avg · last 30d' },
-              { label: 'Coverage', val: 'priority markets', note: 'Global operator network' },
-              { label: 'Operator Records', val: 'Directory', note: 'Trust-scored profiles' },
-              { label: 'Avg Completion Rate', val: '97.2%', note: 'Platform-wide metric' },
+              { label: 'Response Time', val: 'Pending', note: 'Needs recent sourced events' },
+              { label: 'Coverage', val: 'Market model', note: 'Directory and corridor signals' },
+              { label: 'Operator Records', val: 'Directory', note: 'Claim and proof states vary' },
+              { label: 'Completion Rate', val: 'Pending', note: 'Needs confirmed platform jobs' },
             ].map(m => (
               <div key={m.label}>
                 <p className="text-[10px] text-[#566880] font-semibold tracking-wider uppercase mb-1">{m.label}</p>

@@ -4,8 +4,8 @@
  * Tracks which email each operator has received in operator_outreach_log
  * and advances them through the sequence:
  *   Email 1 (Day 0): "Your profile is ready to claim"
- *   Email 2 (Day 3): "490 brokers searched [STATE] this week"
- *   Email 3 (Day 7): "Last chance — competitors are getting first pick"
+ *   Email 2 (Day 3): "Brokers are searching [STATE]"
+ *   Email 3 (Day 7): "Keep your profile accurate"
  *
  * POST: Execute sequence for a batch of operators (called by cron)
  * GET:  Dry-run preview showing who would get which email
@@ -45,7 +45,7 @@ const SEQUENCE: EmailTemplate[] = [
           <li>Contact visibility for brokers searching your area</li>
         </ul>
         <p style="font-size: 14px; color: #8fa3b8; line-height: 1.7; margin: 0 0 24px;">
-          <strong style="color: #fff;">Claim it free</strong> to add your phone number, services, and get the verified badge ✓ that gets you 5× more job requests.
+          <strong style="color: #fff;">Claim it free</strong> to add your public contact path, services, proof details, and service-area corrections so brokers can evaluate the record with better source context.
         </p>
         <a href="${claimUrl}" style="display: inline-block; padding: 14px 32px; border-radius: 12px; background: linear-gradient(135deg, #C6923A, #8A6428); color: #000; font-weight: 800; font-size: 14px; text-decoration: none;">
           Claim Your Profile →
@@ -59,24 +59,24 @@ const SEQUENCE: EmailTemplate[] = [
   {
     step: 2,
     delayDays: 3,
-    subject: (_, state) => `490 brokers searched ${state} this week — your profile isn't visible yet`,
+    subject: (_, state) => `Brokers are searching ${state} — make sure your profile is accurate`,
     html: (name, state, claimUrl) => `
       <div style="font-family: 'Inter', sans-serif; max-width: 560px; margin: 0 auto; padding: 32px; background: #0a0f16; color: #f0f4f8; border-radius: 16px;">
         <div style="font-size: 10px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: #C6923A; margin-bottom: 20px;">HAUL COMMAND</div>
         <h1 style="font-size: 22px; font-weight: 900; margin: 0 0 16px; color: #fff;">Brokers are searching ${state}</h1>
         <p style="font-size: 14px; color: #8fa3b8; line-height: 1.7; margin: 0 0 16px;">
-          ${name}, <strong style="color: #f5b942;">490+ broker searches</strong> happened in ${state} this week on Haul Command. Unclaimed profiles don't show up in search results.
+          ${name}, brokers use Haul Command to compare escort and heavy-haul support options in ${state}. Unclaimed profiles may be missing service areas, proof details, and preferred contact paths.
         </p>
         <div style="background: rgba(245,185,66,0.06); border: 1px solid rgba(245,185,66,0.2); border-radius: 12px; padding: 16px; margin: 0 0 20px;">
-          <div style="font-size: 12px; color: #C6923A; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">This week in ${state}</div>
+          <div style="font-size: 12px; color: #C6923A; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">Profile fields brokers check</div>
           <div style="display: flex; gap: 16px;">
-            <div style="text-align: center;"><div style="font-size: 24px; font-weight: 900; color: #f5b942;">490+</div><div style="font-size: 10px; color: #8fa3b8;">Searches</div></div>
-            <div style="text-align: center;"><div style="font-size: 24px; font-weight: 900; color: #27d17f;">12</div><div style="font-size: 10px; color: #8fa3b8;">Loads Posted</div></div>
-            <div style="text-align: center;"><div style="font-size: 24px; font-weight: 900; color: #3ba4ff;">8</div><div style="font-size: 10px; color: #8fa3b8;">Operators Claimed</div></div>
+            <div style="text-align: center;"><div style="font-size: 18px; font-weight: 900; color: #f5b942;">Services</div><div style="font-size: 10px; color: #8fa3b8;">Listed clearly</div></div>
+            <div style="text-align: center;"><div style="font-size: 18px; font-weight: 900; color: #27d17f;">Proof</div><div style="font-size: 10px; color: #8fa3b8;">Source-backed</div></div>
+            <div style="text-align: center;"><div style="font-size: 18px; font-weight: 900; color: #3ba4ff;">Contact</div><div style="font-size: 10px; color: #8fa3b8;">Current path</div></div>
           </div>
         </div>
         <p style="font-size: 14px; color: #8fa3b8; line-height: 1.7; margin: 0 0 24px;">
-          Claimed profiles appear in broker search results. Unclaimed profiles don't. Takes 60 seconds.
+          Claimed profiles can be corrected, completed, and reviewed with better public context. It takes about a minute to start.
         </p>
         <a href="${claimUrl}" style="display: inline-block; padding: 14px 32px; border-radius: 12px; background: linear-gradient(135deg, #C6923A, #8A6428); color: #000; font-weight: 800; font-size: 14px; text-decoration: none;">
           Claim Now — Free →
@@ -89,25 +89,25 @@ const SEQUENCE: EmailTemplate[] = [
   {
     step: 3,
     delayDays: 7,
-    subject: (_, state) => `Last chance — ${state} operators are getting first pick on loads`,
+    subject: (_, state) => `Keep your ${state} Haul Command profile accurate`,
     html: (name, state, claimUrl) => `
       <div style="font-family: 'Inter', sans-serif; max-width: 560px; margin: 0 auto; padding: 32px; background: #0a0f16; color: #f0f4f8; border-radius: 16px;">
         <div style="font-size: 10px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: #C6923A; margin-bottom: 20px;">HAUL COMMAND</div>
-        <h1 style="font-size: 22px; font-weight: 900; margin: 0 0 16px; color: #fff;">Your competitors in ${state} are live</h1>
+        <h1 style="font-size: 22px; font-weight: 900; margin: 0 0 16px; color: #fff;">Your ${state} profile still needs review</h1>
         <p style="font-size: 14px; color: #8fa3b8; line-height: 1.7; margin: 0 0 16px;">
-          ${name}, since we last reached out, <strong style="color: #27d17f;">8 more operators in ${state}</strong> have claimed their profiles and are now visible to brokers.
+          ${name}, your listing may be missing service areas, equipment, proof details, or a current public contact path. Claiming lets you correct the record instead of leaving brokers to interpret incomplete data.
         </p>
         <p style="font-size: 14px; color: #8fa3b8; line-height: 1.7; margin: 0 0 16px;">
-          Claimed operators get:
+          Claimed operators can add:
         </p>
         <ul style="font-size: 14px; color: #8fa3b8; line-height: 1.8; padding-left: 20px; margin: 0 0 20px;">
-          <li><strong style="color: #fff;">Verified badge ✓</strong> — brokers trust verified profiles 5× more</li>
-          <li><strong style="color: #fff;">Search visibility</strong> — appear when brokers search ${state}</li>
-          <li><strong style="color: #fff;">Direct messages</strong> — brokers can DM you about loads</li>
-          <li><strong style="color: #fff;">Rate insights</strong> — see what others charge in your corridors</li>
+          <li><strong style="color: #fff;">Claim status</strong> — show who can maintain the profile</li>
+          <li><strong style="color: #fff;">Service areas</strong> — correct the markets and corridors you actually serve</li>
+          <li><strong style="color: #fff;">Contact path</strong> — give brokers a safer way to request support</li>
+          <li><strong style="color: #fff;">Proof details</strong> — add evidence that can be reviewed before dispatch</li>
         </ul>
         <p style="font-size: 14px; color: #f87171; line-height: 1.7; margin: 0 0 24px;">
-          ⚠️ This is our last reminder. Your unclaimed profile will remain invisible to brokers.
+          This is the last reminder in this sequence. Your unclaimed profile may remain incomplete until you or our team corrects it.
         </p>
         <a href="${claimUrl}" style="display: inline-block; padding: 14px 32px; border-radius: 12px; background: linear-gradient(135deg, #C6923A, #8A6428); color: #000; font-weight: 800; font-size: 14px; text-decoration: none;">
           Claim Your Profile — Last Chance →

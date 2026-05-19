@@ -8,8 +8,7 @@ import { cn } from "@/lib/utils/cn";
 // RecentlyFilledStrip — Haul Command (v2 — live data)
 //
 // Fetches from /api/recently-filled (60s cache).
-// Falls back to demo data while loading or if API fails.
-// Auto-scrolling ticker proves demand + liquidity.
+// Renders only source-backed API data.
 // ══════════════════════════════════════════════════════════════
 
 interface FilledItem {
@@ -23,15 +22,6 @@ interface FilledItem {
     filled_ago_label: string;
 }
 
-const DEMO_ITEMS: FilledItem[] = [
-    { job_id: "d1", origin_city: "Houston", origin_region: "TX", dest_city: "Baton Rouge", dest_region: "LA", escort_type: "Pilot Car", fill_minutes: 3, filled_ago_label: "4m ago" },
-    { job_id: "d2", origin_city: "Atlanta", origin_region: "GA", dest_city: "Columbia", dest_region: "SC", escort_type: "High Pole", fill_minutes: 7, filled_ago_label: "12m ago" },
-    { job_id: "d3", origin_city: "Dallas", origin_region: "TX", dest_city: "OKC", dest_region: "OK", escort_type: "Pilot Car", fill_minutes: 2, filled_ago_label: "18m ago" },
-    { job_id: "d4", origin_city: "Knoxville", origin_region: "TN", dest_city: "Roanoke", dest_region: "VA", escort_type: "Escort", fill_minutes: 11, filled_ago_label: "31m ago" },
-    { job_id: "d5", origin_city: "Phoenix", origin_region: "AZ", dest_city: "Albuquerque", dest_region: "NM", escort_type: "Pilot Car", fill_minutes: 5, filled_ago_label: "44m ago" },
-    { job_id: "d6", origin_city: "Memphis", origin_region: "TN", dest_city: "Little Rock", dest_region: "AR", escort_type: "Steersman", fill_minutes: 19, filled_ago_label: "1h ago" },
-];
-
 function fillSpeedColor(minutes: number): string {
     if (minutes <= 5) return "text-hc-success";
     if (minutes <= 15) return "text-hc-gold-500";
@@ -43,7 +33,7 @@ interface RecentlyFilledStripProps {
 }
 
 export function RecentlyFilledStrip({ className }: RecentlyFilledStripProps) {
-    const [items, setItems] = useState<FilledItem[]>(DEMO_ITEMS);
+    const [items, setItems] = useState<FilledItem[]>([]);
     const scrollRef = useRef<HTMLDivElement>(null);
 
     // Manual fetch with 60s refresh — avoids needing SWR as a dependency
@@ -59,7 +49,7 @@ export function RecentlyFilledStrip({ className }: RecentlyFilledStripProps) {
                     setItems(json.items);
                 }
             } catch {
-                // keep demo data on error — strip always shows
+                // Keep the strip hidden when there is no source-backed data.
             }
         }
 
@@ -97,6 +87,8 @@ export function RecentlyFilledStrip({ className }: RecentlyFilledStripProps) {
         };
     }, [items]);
 
+    if (items.length === 0) return null;
+
     return (
         <div className={cn("w-full space-y-2", className)}>
             {/* Label */}
@@ -108,7 +100,7 @@ export function RecentlyFilledStrip({ className }: RecentlyFilledStripProps) {
                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-hc-muted">
                     Recently Filled
                 </span>
-                <span className="text-[10px] text-hc-subtle">— proof the market is moving</span>
+                <span className="text-[10px] text-hc-subtle">- source-backed fills</span>
             </div>
 
             {/* Scrolling strip */}

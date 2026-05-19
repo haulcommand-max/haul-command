@@ -10,7 +10,7 @@ export type AvailableOperatorRow = {
   // Enriched
   company_name: string;
   slug: string;
-  trust_score: number;
+  trust_score: number | null;
   certifications?: string[];
   equipment_flags?: string[];
   city?: string;
@@ -57,9 +57,9 @@ export async function getLiveAvailableOperators(limit = 100): Promise<AvailableO
     const op = opMap.get(d.operator_id);
     return {
       ...d,
-      company_name: op?.company_name || 'Verified Operator',
+      company_name: op?.company_name || 'Unclaimed directory record',
       slug: op?.slug || d.operator_id,
-      trust_score: op?.trust_score || 85,
+      trust_score: typeof op?.trust_score === 'number' ? op.trust_score : null,
       certifications: op?.certifications_list || [],
       equipment_flags: op?.raw_equipment || [],
       city: op?.city_county || 'Local',

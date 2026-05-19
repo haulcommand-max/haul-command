@@ -8,8 +8,8 @@ import Link from 'next/link';
 //
 // Fires after approveClaim() returns success.
 // Shows:
-//   1. Animated "You're live!" confirmation
-//   2. Money projection widget (corridor-based, not fake data)
+//   1. Animated claim-received confirmation
+//   2. Corridor benchmark widget when a source-backed value is available
 //   3. Profile completion progress bar
 //   4. Pro upgrade CTA
 //   5. "Continue building profile" secondary CTA
@@ -29,8 +29,7 @@ import Link from 'next/link';
 interface PostClaimModalProps {
     operatorName: string;
     corridorName?: string;
-    /** Average monthly USD earned by Pro operators on this corridor.
-     *  Pull from corridor data or use 4200 as safe default. */
+    /** Optional corridor benchmark from sourced data. */
     corridorAvgMonthlyUsd?: number;
     profileCompletionPct?: number;
     proUpgradeHref: string;
@@ -52,9 +51,9 @@ const PROFILE_TASKS = [
 
 // Milestone unlocks shown at each threshold
 const MILESTONES = [
-    { pct: 50, label: 'Search visibility boost + first lead preview', color: 'text-blue-400' },
-    { pct: 70, label: 'Map placement, dispatch eligibility, trust badge', color: 'text-hc-gold-400' },
-    { pct: 90, label: 'Leaderboard priority + full marketplace access', color: 'text-green-400' },
+    { pct: 50, label: 'More complete public profile fields', color: 'text-blue-400' },
+    { pct: 70, label: 'Better proof context for matching review', color: 'text-hc-gold-400' },
+    { pct: 90, label: 'Full profile packet for brokers to evaluate', color: 'text-green-400' },
 ];
 
 function MoneyProjectionWidget({ corridorName, avgMonthly }: { corridorName: string; avgMonthly: number }) {
@@ -80,21 +79,27 @@ function MoneyProjectionWidget({ corridorName, avgMonthly }: { corridorName: str
     return (
         <div className="rounded-xl border border-hc-gold-500/30 bg-gradient-to-br from-hc-gold-500/10 to-amber-900/5 p-5">
             <div className="text-xs font-bold uppercase tracking-widest text-hc-gold-400 mb-3">
-                {corridorName} — Avg Pro Operator Income
+                {corridorName} - Corridor Benchmark
             </div>
             <div className="flex items-baseline gap-2 mb-2">
-                <span className="text-4xl font-extrabold text-white tabular-nums">
-                    ${animated.toLocaleString()}
-                </span>
-                <span className="text-gray-400 text-sm">/month</span>
+                {avgMonthly > 0 ? (
+                    <>
+                        <span className="text-4xl font-extrabold text-white tabular-nums">
+                            ${animated.toLocaleString()}
+                        </span>
+                        <span className="text-gray-400 text-sm">/month</span>
+                    </>
+                ) : (
+                    <span className="text-2xl font-extrabold text-white">Benchmark pending</span>
+                )}
             </div>
             <p className="text-xs text-gray-400 leading-relaxed">
-                Based on real platform data from verified Pro operators active on this corridor.
-                Free operators earn less — upgrade to unlock priority lead matching.
+                Use this as planning context only. Actual revenue, requests, and acceptance depend on corridor demand,
+                availability, proof, and broker confirmation.
             </p>
             <div className="mt-3 flex items-center gap-2">
                 <span className="inline-block w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-xs text-green-400 font-semibold">Live data</span>
+                <span className="text-xs text-green-400 font-semibold">Benchmark signal</span>
             </div>
         </div>
     );
@@ -169,7 +174,7 @@ function ProfileProgressBar({ pct }: { pct: number }) {
 export function PostClaimModal({
     operatorName,
     corridorName = 'Your Corridor',
-    corridorAvgMonthlyUsd = 4200,
+    corridorAvgMonthlyUsd = 0,
     profileCompletionPct = 10,
     proUpgradeHref,
     dashboardHref = '/dashboard',
@@ -242,10 +247,10 @@ export function PostClaimModal({
                                 />
                             </svg>
                         </div>
-                        <h2 className="text-2xl font-extrabold text-white mb-2">You're live!</h2>
+                        <h2 className="text-2xl font-extrabold text-white mb-2">Claim received</h2>
                         <p className="text-gray-400 text-sm">
                             <span className="text-white font-semibold">{operatorName}</span>{' '}
-                            is now searchable on Haul Command.
+                            was submitted for directory review.
                         </p>
                         <style>{`
                             @keyframes drawCheck {
@@ -270,10 +275,10 @@ export function PostClaimModal({
                             </div>
                             <div>
                                 <h2 className="font-extrabold text-white text-lg leading-tight">
-                                    {operatorName} is live
+                                    {operatorName} is under review
                                 </h2>
                                 <p className="text-sm text-gray-400">
-                                    Brokers searching {corridorName} can now find you.
+                                    Complete the profile so brokers can evaluate the record with better context.
                                 </p>
                             </div>
                         </div>
