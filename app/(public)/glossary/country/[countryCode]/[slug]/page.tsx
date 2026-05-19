@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import GlossaryPage from "@/components/surfaces/GlossaryPage";
 import { getGlossaryTermPayload } from "@/lib/glossary/queries";
-import { glossaryTermMetadata } from "@/lib/glossary/seo";
+import { glossaryCountryTermAlternates, glossaryTermMetadata } from "@/lib/glossary/seo";
 
 const SITE_URL = "https://www.haulcommand.com";
 
@@ -35,9 +35,7 @@ export async function generateMetadata({
   const isIndexable = Boolean(payload.term.overlay?.is_indexable);
   return {
     ...glossaryTermMetadata(payload, [countryCode.toUpperCase()]),
-    alternates: {
-      canonical: `https://www.haulcommand.com/glossary/country/${countryCode.toLowerCase()}/${payload.term.slug}`,
-    },
+    alternates: glossaryCountryTermAlternates(payload.term.slug, countryCode),
     robots: isIndexable ? { index: true, follow: true } : { index: false, follow: true },
   };
 }

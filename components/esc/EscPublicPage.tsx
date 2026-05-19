@@ -2,10 +2,52 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
 
 import type { EscPublicPage } from "@/lib/esc/esc-public-content";
+import { JsonLd } from "@/components/seo/JsonLd";
+
+const SITE_URL = "https://www.haulcommand.com";
+
+function pathForPage(page: EscPublicPage) {
+  if (page.primaryCta.href.startsWith("/tools/") || page.eyebrow.toLowerCase().includes("checker")) {
+    return `/tools/${page.slug}`;
+  }
+
+  if (page.eyebrow.toLowerCase().includes("glossary")) return `/glossary/${page.slug}`;
+  return `/resources/${page.slug}`;
+}
+
+function applicationSchemaFor(page: EscPublicPage) {
+  const path = pathForPage(page);
+  if (!path.startsWith("/tools/")) return null;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "@id": `${SITE_URL}${path}#app`,
+    name: page.title,
+    url: `${SITE_URL}${path}`,
+    description: page.description,
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    isAccessibleForFree: true,
+    publisher: {
+      "@type": "Organization",
+      name: "Haul Command",
+      url: SITE_URL,
+    },
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+  };
+}
 
 export function EscPublicPage({ page }: { page: EscPublicPage }) {
+  const applicationSchema = applicationSchemaFor(page);
+
   return (
     <main className="min-h-screen bg-[#070707] text-zinc-100">
+      {applicationSchema ? <JsonLd data={applicationSchema} /> : null}
       <section className="border-b border-amber-500/15 bg-[radial-gradient(circle_at_top,rgba(245,166,35,0.14),transparent_38%),linear-gradient(180deg,#101010,#070707)] px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-black/45 px-3 py-1 text-xs font-black uppercase tracking-[0.12em] text-amber-300">

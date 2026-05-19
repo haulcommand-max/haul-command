@@ -5,6 +5,7 @@ import { getGlobalStats } from "@/lib/server/global-stats";
 import { collectNextMoveSignals } from "@/lib/server/collect-next-move-signals";
 import { createClient } from "@/lib/supabase/server";
 import { getHomepageRoleChips } from "@/lib/homepage/role-chips";
+import { getGlobalHreflangTags } from "@/lib/seo/hreflang";
 import HomeClient from "./_components/HomeClient";
 
 const HOME_HERO_IMAGE_URL = 'https://www.haulcommand.com/images/hero/haul-command-find-post-claim-hero-pilot-car-oversize-load.webp';
@@ -68,6 +69,7 @@ export const metadata = {
   },
   alternates: {
     canonical: 'https://www.haulcommand.com/',
+    languages: getGlobalHreflangTags('/'),
   },
 };
 

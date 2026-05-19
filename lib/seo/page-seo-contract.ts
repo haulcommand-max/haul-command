@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { getGlobalHreflangTags } from '@/lib/seo/hreflang';
 
 const SITE_URL = 'https://www.haulcommand.com';
 const SITE_NAME = 'Haul Command';
@@ -133,6 +134,13 @@ export function definePageSeoContract(contract: PageSeoContract) {
 
 export function contractToMetadata(contract: PageSeoContract): Metadata {
   const canonical = absoluteUrl(contract.canonicalPath ?? contract.path);
+  const canonicalPath = (() => {
+    try {
+      return new URL(canonical).pathname;
+    } catch {
+      return contract.canonicalPath ?? contract.path;
+    }
+  })();
   const shouldIndex =
     contract.robots !== 'noindex' &&
     contract.qualityStatus !== 'developing_noindex' &&
@@ -148,7 +156,10 @@ export function contractToMetadata(contract: PageSeoContract): Metadata {
       ...contract.secondaryKeywords,
       ...contract.entityTerms,
     ].filter(Boolean).join(', '),
-    alternates: { canonical },
+    alternates: {
+      canonical,
+      languages: getGlobalHreflangTags(canonicalPath),
+    },
     robots: {
       index: shouldIndex,
       follow: shouldFollow,

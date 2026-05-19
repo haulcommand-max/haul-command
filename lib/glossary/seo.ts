@@ -156,16 +156,34 @@ const COUNTRY_LANG_MAP: Record<string, string> = {
 
 function buildHreflangAlternates(
   basePath: string,
-  _countryCodes: string[]
+  countryCodes: string[]
 ): Metadata["alternates"] {
   const languages: Record<string, string> = {};
 
   // x-default always points to the canonical term page (no country prefix)
   languages["x-default"] = `${SITE_URL}${basePath}`;
+  for (const countryCode of Array.from(new Set(countryCodes.map((code) => code.toUpperCase())))) {
+    const lang = COUNTRY_LANG_MAP[countryCode];
+    if (!lang) continue;
+    const termSlug = basePath.replace(/^\/glossary\//, "");
+    languages[lang] = `${SITE_URL}/glossary/country/${countryCode.toLowerCase()}/${termSlug}`;
+  }
 
   return {
     canonical: `${SITE_URL}${basePath}`,
     languages,
+  };
+}
+
+export function glossaryCountryTermAlternates(termSlug: string, countryCode: string): Metadata["alternates"] {
+  const country = countryCode.toUpperCase();
+  const lang = COUNTRY_LANG_MAP[country];
+  return {
+    canonical: `${SITE_URL}/glossary/country/${country.toLowerCase()}/${termSlug}`,
+    languages: {
+      "x-default": `${SITE_URL}/glossary/${termSlug}`,
+      ...(lang ? { [lang]: `${SITE_URL}/glossary/country/${country.toLowerCase()}/${termSlug}` } : {}),
+    },
   };
 }
 

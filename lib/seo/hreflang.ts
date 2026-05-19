@@ -105,6 +105,21 @@ export function getCountryLocale(iso2: string): string {
   return `${lang}-${iso2}`;
 }
 
+function normalizePagePath(pagePath: string): string {
+  const trimmed = pagePath.trim();
+  if (!trimmed || trimmed === '/') return '';
+
+  try {
+    const url = new URL(trimmed);
+    return normalizePagePath(`${url.pathname}${url.search}`);
+  } catch {
+    // Keep relative paths relative. Next metadata resolves the absolute URLs.
+  }
+
+  const withSlash = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
+  return withSlash.endsWith('/') && withSlash.length > 1 ? withSlash.slice(0, -1) : withSlash;
+}
+
 /**
  * Generate hreflang alternates for a page at the given path.
  * Returns a Record<locale, url> for Next.js metadata alternates.languages
@@ -120,14 +135,15 @@ export function getCountryLocale(iso2: string): string {
  *   }
  */
 export function getGlobalHreflangTags(pagePath: string): Record<string, string> {
+  const normalizedPath = normalizePagePath(pagePath);
   const alternates: Record<string, string> = {
-    'x-default': `${BASE_URL}/en${pagePath}`,
+    'x-default': `${BASE_URL}${normalizedPath || '/'}`,
   };
 
   for (const country of COUNTRY_REGISTRY) {
     const locale = getCountryLocale(country.code);
     const cc = country.code.toLowerCase();
-    alternates[locale] = `${BASE_URL}/${cc}${pagePath}`;
+    alternates[locale] = `${BASE_URL}/${cc}${normalizedPath}`;
   }
 
   return alternates;
