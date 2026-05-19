@@ -5,7 +5,9 @@ import { notFound } from 'next/navigation';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 import { DirectoryBackgroundShell } from '@/components/directory/DirectoryBackgroundShell';
 import {
+  buildDirectoryOperatorFaqs,
   buildDirectoryOperatorCanonicalUrl,
+  getDirectoryOperatorExpertise,
   buildDirectoryOperatorJsonLd,
   buildDirectoryOperatorMetadata,
 } from '@/lib/directory/operator-profile-seo';
@@ -127,7 +129,9 @@ export default async function OperatorProfilePage({ params }: { params: Promise<
   const completionRate = metadata.completion_rate || 0;
   const initials = name.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase();
   const canonicalUrl = buildDirectoryOperatorCanonicalUrl(op, slug);
-  const jsonLd = buildDirectoryOperatorJsonLd(op, canonicalUrl);
+  const faqs = buildDirectoryOperatorFaqs(op);
+  const expertiseKeywords = getDirectoryOperatorExpertise(op);
+  const jsonLd = buildDirectoryOperatorJsonLd(op, canonicalUrl, { includeFaq: faqs.length > 0, faqs });
 
   const similar = await getSimilar(op.admin1_code || '', op.id);
 
@@ -236,6 +240,23 @@ export default async function OperatorProfilePage({ params }: { params: Promise<
               </div>
             </div>
 
+            {expertiseKeywords.length > 0 && (
+              <div style={{ background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24 }}>
+                <h2 style={{ fontSize: 15, fontWeight: 800, margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.06em', color: T.muted }}>Areas of Expertise</h2>
+                <p style={{ margin: '0 0 14px', fontSize: 13, lineHeight: 1.6, color: T.textSecondary }}>
+                  These terms describe the public service and route-support signals attached to this profile. Confirm fit,
+                  availability, equipment, and proof before dispatching an oversize move.
+                </p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  {expertiseKeywords.map((keyword) => (
+                    <span key={keyword} style={{ fontSize: 12, fontWeight: 700, padding: '7px 12px', borderRadius: 999, background: 'rgba(255,255,255,0.04)', border: `1px solid ${T.border}`, color: T.textSecondary }}>
+                      {keyword}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Corridors */}
             {corridors.length > 0 && (
               <div style={{ background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24 }}>
@@ -292,6 +313,20 @@ export default async function OperatorProfilePage({ params }: { params: Promise<
               ))}
             </div>
           </div>
+        )}
+
+        {faqs.length > 0 && (
+          <section style={{ marginTop: 20, background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24 }}>
+            <h2 style={{ fontSize: 18, fontWeight: 900, margin: '0 0 16px', color: T.text }}>Profile FAQ</h2>
+            <div style={{ display: 'grid', gap: 12 }}>
+              {faqs.map((faq) => (
+                <article key={faq.question} style={{ border: `1px solid ${T.border}`, borderRadius: 12, padding: 16, background: T.bgSurface }}>
+                  <h3 style={{ margin: 0, fontSize: 14, fontWeight: 900, color: T.text }}>{faq.question}</h3>
+                  <p style={{ margin: '8px 0 0', fontSize: 13, lineHeight: 1.65, color: T.textSecondary }}>{faq.answer}</p>
+                </article>
+              ))}
+            </div>
+          </section>
         )}
       </div>
 

@@ -12,6 +12,7 @@ const PRECOMPUTED_JSON_LD_KEYS = [
   "schema_payload",
   "structured_data",
   "schema_org",
+  "local_business_schema",
 ];
 
 function firstString(...values: unknown[]) {
@@ -62,6 +63,18 @@ export function buildDirectoryOperatorCanonicalUrl(record: DirectoryOperatorReco
 export function getDirectoryOperatorServices(record: DirectoryOperatorRecord) {
   const metadata = asRecord(record.metadata);
   return uniqueStrings(asArray(record.services).concat(asArray(metadata.services)));
+}
+
+export function getDirectoryOperatorExpertise(record: DirectoryOperatorRecord) {
+  const metadata = asRecord(record.metadata);
+  const services = getDirectoryOperatorServices(record).map((service) => service.replace(/[_-]/g, " "));
+  return uniqueStrings([
+    ...services,
+    ...asArray(record.long_tail_keywords),
+    ...asArray(metadata.long_tail_keywords),
+    ...asArray(record.expertise_keywords),
+    ...asArray(metadata.expertise_keywords),
+  ]).slice(0, 12);
 }
 
 export function getDirectoryOperatorLocation(record: DirectoryOperatorRecord) {
@@ -193,7 +206,7 @@ export function buildDirectoryOperatorJsonLd(
   };
 
   if (description) businessJsonLd.description = description;
-  if (services.length > 0) businessJsonLd.knowsAbout = services;
+  if (services.length > 0) businessJsonLd.knowsAbout = getDirectoryOperatorExpertise(record);
   if (city || region || country) {
     businessJsonLd.address = {
       "@type": "PostalAddress",
