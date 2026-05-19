@@ -60,8 +60,8 @@ export default function AdminAdsPage() {
       setLoading(true);
       try {
         const [statsRes, campsRes] = await Promise.all([
-          fetch('/api/adgrid/admin-stats'),
-          fetch('/api/adgrid/admin-campaigns'),
+          fetch('/api/admin/adgrid/stats'),
+          fetch('/api/admin/adgrid/campaigns'),
         ]);
         const statsData = await statsRes.json();
         const campsData = await campsRes.json();
@@ -75,7 +75,7 @@ export default function AdminAdsPage() {
   }, []);
 
   const updateStatus = async (id: string, status: string) => {
-    await fetch('/api/adgrid/admin-campaigns', {
+    await fetch('/api/admin/adgrid/campaigns', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ campaign_id: id, status }),
