@@ -11,6 +11,32 @@ import HomeClient from "./_components/HomeClient";
 const HOME_HERO_IMAGE_URL = 'https://www.haulcommand.com/images/hero/haul-command-find-post-claim-hero-pilot-car-oversize-load.webp';
 const HOME_SOCIAL_IMAGE_URL = 'https://www.haulcommand.com/images/hero/haul-command-homepage-social-preview-pilot-car-heavy-haul.jpg';
 const HOME_HERO_IMAGE_ALT = 'Pilot car escorting an oversize load truck on a highway at golden hour';
+const HOME_FAQ_ITEMS = [
+  {
+    question: 'What is a pilot car or escort vehicle?',
+    answer: 'A pilot car, also called an escort vehicle or PEVO, travels ahead of or behind an oversize load to warn traffic, check route clearances, and communicate with the load driver.',
+  },
+  {
+    question: 'How do I find a pilot car near me?',
+    answer: 'Search Haul Command by city, state, corridor, or country. Filter by equipment type, certification status, trust signals, and availability.',
+  },
+  {
+    question: 'Can operators claim a free Haul Command listing?',
+    answer: 'Yes. Claim your company listing to set your phone number, services, coverage area, certifications, and equipment. No credit card required.',
+  },
+  {
+    question: 'Does Haul Command cover more than the United States?',
+    answer: 'Yes. Haul Command is building a 120-country coverage model, with live and expanding market depth across the US, Canada, Australia, UK, Germany, UAE, South Africa, Brazil, and more.',
+  },
+  {
+    question: 'Can brokers post or route oversize loads?',
+    answer: 'Yes. Brokers and carriers can post loads, search available escorts on active corridors, and request route intelligence by load type.',
+  },
+  {
+    question: 'Can staging yards, equipment installers, or sponsors join?',
+    answer: 'Yes. Haul Command supports staging yards, secure parking, equipment suppliers, bucket truck operators, permit agents, route surveyors, training providers, and advertisers.',
+  },
+];
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // HOMEPAGE — Server Component
@@ -187,6 +213,21 @@ export default async function LandingPage() {
                   "description": "The heavy haul operating system for pilot car discovery, escort requirements, load board activity, route intelligence, and compliance training across a 120-country coverage model.",
                   "areaServed": { "@type": "Place", "name": "Worldwide" },
                   "knowsAbout": ["Pilot Car Services","Oversize Load Escort","Heavy Haul Transportation","PEVO Certification","Escort Vehicle Operator Training","DOT Permit Compliance","Route Survey Services"]
+                })
+            }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "FAQPage",
+                  "@id": "https://www.haulcommand.com/#faq",
+                  "mainEntity": HOME_FAQ_ITEMS.map((item) => ({
+                    "@type": "Question",
+                    "name": item.question,
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": item.answer,
+                    },
+                  })),
                 })
             }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{

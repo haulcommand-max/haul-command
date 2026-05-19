@@ -6,7 +6,7 @@ import {
     ArrowRight, Search, MapPin, Shield, CheckCircle,
     Users, TrendingUp,
     ChevronRight, Truck, Navigation, Building2, FileText,
-    Zap, BookOpen, HelpCircle, Download,
+    Zap, BookOpen, HelpCircle, Download, Code2,
 } from "lucide-react";
 import type { MarketPulseData, DirectoryListing, CorridorData } from "@/lib/server/data";
 import type { HeroPack } from "@/components/hero/heroPacks";
@@ -1597,7 +1597,7 @@ export default function HomeClient({
                             <span className="text-xs font-bold text-purple-600 flex items-center gap-1 mt-1">Claim Free Listing <ChevronRight className="w-3 h-3" /></span>
                         </Link>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                         <Link href="/loads" className="bg-black/35 border border-white/10 hover:border-[#EC4899]/40 rounded-xl p-5 transition-all group flex flex-col gap-2">
                             <div className="w-9 h-9 rounded-lg bg-pink-50 flex items-center justify-center"><Truck className="w-5 h-5 text-pink-500" /></div>
                             <h3 className="font-bold text-white text-sm">Post or find a load</h3>
@@ -1615,6 +1615,12 @@ export default function HomeClient({
                             <h3 className="font-bold text-white text-sm">Advertise your business</h3>
                             <p className="text-xs text-white/55 flex-1">Geo-targeted placements on state, corridor, and category pages.</p>
                             <span className="text-xs font-bold text-sky-600 flex items-center gap-1 mt-1">View Ad Products <ChevronRight className="w-3 h-3" /></span>
+                        </Link>
+                        <Link href="/developers" className="bg-black/35 border border-white/10 hover:border-[#22D3EE]/40 rounded-xl p-5 transition-all group flex flex-col gap-2">
+                            <div className="w-9 h-9 rounded-lg bg-cyan-50 flex items-center justify-center"><Code2 className="w-5 h-5 text-cyan-500" /></div>
+                            <h3 className="font-bold text-white text-sm">Use the data API</h3>
+                            <p className="text-xs text-white/55 flex-1">Route intelligence, trust scores, rate signals, and heavy-haul market data for enterprise workflows.</p>
+                            <span className="text-xs font-bold text-cyan-500 flex items-center gap-1 mt-1">Open Developers <ChevronRight className="w-3 h-3" /></span>
                         </Link>
                     </div>
                 </div>
