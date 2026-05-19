@@ -86,7 +86,7 @@ export function ReviewCard({ review, className }: ReviewCardProps) {
                     </div>
                     <div>
                         <p className="text-sm font-bold text-hc-text">
-                            {review.reviewer_company ?? "Verified Broker"}
+                            {review.reviewer_company ?? "Directory reviewer"}
                         </p>
                         <p className="text-[10px] text-hc-subtle uppercase tracking-widest">
                             {review.reviewer_role ?? "Broker"}

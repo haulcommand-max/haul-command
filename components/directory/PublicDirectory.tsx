@@ -304,7 +304,7 @@ export function PublicDirectory() {
       if (res.ok) {
         const data = await res.json();
         const listings: Operator[] = (data.listings || []).map((l: any) => ({
-          id: l.id, name: l.name || 'Verified Operator',
+          id: l.id, name: l.name || 'Unclaimed directory record',
           state: l.region_code || '', region: l.city ? `${l.city}, ${l.region_code}` : l.region_code,
           services: l.metadata?.services || ['pilot_car'],
           verified: l.claim_status === 'claimed' || l.claim_status === 'verified',
@@ -390,12 +390,12 @@ export function PublicDirectory() {
           <div style={{maxWidth: 1400,margin: '0 auto',padding: '0 20px',display: 'flex',flexWrap: 'wrap',gap: '10px 24px',justifyContent: 'center',alignItems: 'center' }}>
             <div style={{display: 'flex',alignItems: 'center',gap: 6,fontSize: 12,color: T.muted }}>
               <span style={{width: 7,height: 7,borderRadius: '50%',background: T.green,boxShadow: `0 0 6px ${T.green}`,animation: 'pulse-gold 2s infinite' }} />
-              <span style={{fontWeight: 700,color: T.text }}>{total > 0 ? total.toLocaleString() : '—'}</span> escort vehicles staged
+              <span style={{fontWeight: 700,color: T.text }}>{total > 0 ? total.toLocaleString() : '--'}</span> source-backed records
             </div>
             <div style={{width: 1,height: 14,background: T.border }} />
             <div style={{display: 'flex',alignItems: 'center',gap: 5,fontSize: 12,color: T.muted }}>
               <Clock size={12} style={{color: T.gold }} />
-              Avg dispatch <span style={{fontWeight: 700,color: T.gold,margin: '0 2px' }}>—</span>
+              Response data <span style={{fontWeight: 700,color: T.gold,margin: '0 2px' }}>--</span>
             </div>
             <div style={{width: 1,height: 14,background: T.border }} />
             <div style={{display: 'flex',alignItems: 'center',gap: 5,fontSize: 12,color: T.muted }}>
@@ -450,8 +450,8 @@ export function PublicDirectory() {
 
             {/* Filter chips row */}
             <div style={{display: 'flex',flexWrap: 'wrap',gap: 6,marginTop: 14,justifyContent: 'center' }}>
-              <FilterChip label="Wheels Ready" active={filters.availableNow} onClick={() => setFilters(f => ({ ...f, availableNow: !f.availableNow }))} />
-              <FilterChip label="DOT Verified" active={filters.verifiedOnly} onClick={() => setFilters(f => ({ ...f, verifiedOnly: !f.verifiedOnly }))} />
+              <FilterChip label="Availability ping" active={filters.availableNow} onClick={() => setFilters(f => ({ ...f, availableNow: !f.availableNow }))} />
+              <FilterChip label="Claimed or proofed" active={filters.verifiedOnly} onClick={() => setFilters(f => ({ ...f, verifiedOnly: !f.verifiedOnly }))} />
               <FilterChip label="Escrow" active={filters.escrowOnly} onClick={() => setFilters(f => ({ ...f, escrowOnly: !f.escrowOnly }))} />
               <FilterChip label="Lead Car" active={filters.serviceType === 'lead_car'} onClick={() => setFilters(f => ({ ...f, serviceType: f.serviceType === 'lead_car' ? '' : 'lead_car' }))} />
               <FilterChip label="Chase Car" active={filters.serviceType === 'chase_car'} onClick={() => setFilters(f => ({ ...f, serviceType: f.serviceType === 'chase_car' ? '' : 'chase_car' }))} />
@@ -473,8 +473,8 @@ export function PublicDirectory() {
             <div className="dir-sidebar">
               <div style={{background: T.bgCard,border: `1px solid ${T.border}`,borderRadius: 16,padding: '16px',display: 'flex',flexDirection: 'column',gap: 2}}>
                 <div style={{fontSize: 11,fontWeight: 800,color: T.muted,textTransform: 'uppercase',letterSpacing: '0.1em',padding: '0 12px 8px' }}>Filters</div>
-                <ToggleSwitch label="Wheels Ready" active={filters.availableNow} onChange={() => setFilters(f => ({ ...f, availableNow: !f.availableNow }))} icon={<Zap size={14} />} />
-                <ToggleSwitch label="DOT Verified" active={filters.verifiedOnly} onChange={() => setFilters(f => ({ ...f, verifiedOnly: !f.verifiedOnly }))} icon={<ShieldCheck size={14} />} />
+                <ToggleSwitch label="Availability Ping" active={filters.availableNow} onChange={() => setFilters(f => ({ ...f, availableNow: !f.availableNow }))} icon={<Zap size={14} />} />
+                <ToggleSwitch label="Claimed or Proofed" active={filters.verifiedOnly} onChange={() => setFilters(f => ({ ...f, verifiedOnly: !f.verifiedOnly }))} icon={<ShieldCheck size={14} />} />
                 <ToggleSwitch label="Escrow Ready" active={filters.escrowOnly} onChange={() => setFilters(f => ({ ...f, escrowOnly: !f.escrowOnly }))} icon={<Shield size={14} />} />
                 <ToggleSwitch label="Superload Cert" active={filters.avCertified} onChange={() => setFilters(f => ({ ...f, avCertified: !f.avCertified }))} icon={<Award size={14} />} />
 
@@ -542,7 +542,7 @@ export function PublicDirectory() {
                   <div style={{fontSize: 48,marginBottom: 16}}></div>
                   <div style={{fontSize: 22,fontWeight: 900,color: T.text,marginBottom: 8}}>No Operators Listed Yet</div>
                   <div style={{fontSize: 14,color: T.textSecondary,maxWidth: 420,margin: '0 auto 24px',lineHeight: 1.6}}>
-                    Be the first pilot car operator in this area to claim your free listing and start receiving job requests.
+                    Be the first pilot car operator in this area to claim or correct a free listing, add proof, and create a request path for brokers.
                   </div>
                   <Link aria-label="Claim Your Listing" href="/claim" style={{display: 'inline-flex',alignItems: 'center',gap: 8,padding: '14px 28px',borderRadius: 12,background: `linear-gradient(135deg, ${T.gold}, ${T.goldLight})`,color: '#000',fontSize: 14,fontWeight: 900,textDecoration: 'none'}}>
                      Get Listed Free
@@ -556,7 +556,7 @@ export function PublicDirectory() {
                   Need a Pilot Car? Post Your Load.
                 </div>
                 <div style={{fontSize: 14,color: T.textSecondary,marginBottom: 20,maxWidth: 480,margin: '0 auto 20px' }}>
-                  Sign in to see trust scores, dispatch history, and request operators directly. Free for escorts.
+                  Sign in to compare proof signals, source confidence, and request paths. Free for escorts to claim or correct a listing.
                 </div>
                 <div style={{display: 'flex',gap: 12,justifyContent: 'center',flexWrap: 'wrap' }}>
                   <Link aria-label="Navigation Link" href="/login" className="ag-press" style={{padding: '12px 28px',borderRadius: 12,background: `linear-gradient(135deg, ${T.gold}, ${T.goldLight})`,color: '#000',fontWeight: 800,fontSize: 14,textDecoration: 'none'}}>Sign In Free</Link>

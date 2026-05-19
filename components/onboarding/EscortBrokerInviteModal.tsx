@@ -71,16 +71,16 @@ export default function EscortBrokerInviteModal({
     const handleText = () => {
         if (!inviteUrl) return;
         const msg = encodeURIComponent(
-            `Hey — I just set up my verified pilot car profile on Haul Command. You can book me directly here: ${inviteUrl}`
+            `Hey - I set up my Haul Command pilot car profile. You can view my service areas, proof details, and request path here: ${inviteUrl}`
         );
         window.open(`sms:?body=${msg}`, "_blank");
     };
 
     const handleEmail = () => {
         if (!inviteUrl) return;
-        const subject = encodeURIComponent("Book me directly on Haul Command");
+        const subject = encodeURIComponent("View my Haul Command profile");
         const body = encodeURIComponent(
-            `Hey${brokerName ? " " + brokerName : ""},\n\nI just set up my verified pilot car profile on Haul Command — you can book me directly and see my live availability:\n\n${inviteUrl}\n\nTakes 2 minutes to set up for you — and you'll get faster responses from me.\n\n${escortName ?? "Your escort"}`
+            `Hey${brokerName ? " " + brokerName : ""},\n\nI set up my Haul Command pilot car profile so you can review my service areas, proof details, and request path before the next move:\n\n${inviteUrl}\n\nIt takes 2 minutes to save the profile and send a request when you need coverage.\n\n${escortName ?? "Your escort"}`
         );
         window.open(`mailto:?subject=${subject}&body=${body}`, "_blank");
     };
@@ -127,7 +127,7 @@ export default function EscortBrokerInviteModal({
                     </h2>
                     <p className="text-slate-400 text-sm mt-1">
                         {isPostJob
-                            ? "Send them your verified Haul Command profile — they can book you directly next time."
+                            ? "Send them your Haul Command profile so they can review proof and request you faster next time."
                             : `Invite the brokers you already work with${escortName ? ", " + escortName : ""}.`}
                     </p>
                 </div>
@@ -201,7 +201,7 @@ export default function EscortBrokerInviteModal({
 
                         {/* Incentive note */}
                         <p className="text-center text-xs text-slate-500">
-                            Brokers who book through verified profiles get priority response visibility from you
+                            Brokers who save your profile can return to your request path faster when the next move is ready.
                         </p>
                     </div>
                 )}

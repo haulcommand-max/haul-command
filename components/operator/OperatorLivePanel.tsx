@@ -195,7 +195,7 @@ export function OperatorLivePanel({
         ) : (
           <div>
             <p className="text-[12px] text-white/50 mb-3">
-              Declare availability so brokers can find you in the live feed.
+              Declare a self-reported availability ping. Brokers may see it when proof, distance, and filters match.
             </p>
             <button
               onClick={declareAvailable}
@@ -308,12 +308,12 @@ export function OperatorLivePanel({
             <div>
               {!isClaimed && (
                 <p className="text-[12px] text-amber-300 font-semibold mb-2">
-                  Claim your profile to appear in live dispatch feeds and gain trust score uplift.
+                  Claim your profile to add service areas, proof, contact rules, and correction authority before brokers compare you.
                 </p>
               )}
               {isClaimed && profileCompleteness < 80 && (
                 <p className="text-[12px] text-amber-300 font-semibold mb-2">
-                  Complete your profile ({profileCompleteness}% done) to rank higher in searches.
+                  Complete your profile ({profileCompleteness}% done) to qualify for stronger proof and placement signals.
                 </p>
               )}
               <Link
