@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { runProfileAudit } from '@/lib/workers/profileAuditWorker';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 /**
  * POST /api/events/profile-updated
@@ -17,7 +18,13 @@ export async function POST(req: NextRequest) {
   const secret = req.headers.get('x-cron-secret')
     ?? req.headers.get('x-supabase-signature');
 
-  if (secret !== process.env.CRON_SECRET && secret !== process.env.SUPABASE_WEBHOOK_SECRET) {
+  const isWebhook = Boolean(
+    secret &&
+      ((process.env.CRON_SECRET && secret === process.env.CRON_SECRET) ||
+        (process.env.SUPABASE_WEBHOOK_SECRET && secret === process.env.SUPABASE_WEBHOOK_SECRET)),
+  );
+
+  if (!isWebhook && !isInternalRequest(req.headers)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -108,6 +115,6 @@ export async function POST(req: NextRequest) {
       payload_json: { error: msg },
     });
 
-    return NextResponse.json({ ok: false, error: msg }, { status: 500 });
+    return NextResponse.json({ ok: false, error: 'Profile audit failed' }, { status: 500 });
   }
 }
