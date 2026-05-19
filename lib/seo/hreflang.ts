@@ -120,6 +120,34 @@ function normalizePagePath(pagePath: string): string {
   return withSlash.endsWith('/') && withSlash.length > 1 ? withSlash.slice(0, -1) : withSlash;
 }
 
+function countryEquivalentPath(normalizedPath: string, countryCode: string): string | null {
+  const cc = countryCode.toLowerCase();
+  if (!normalizedPath) return `/${cc}`;
+
+  const countryHub = normalizedPath.match(/^\/[a-z]{2}$/i);
+  if (countryHub) return `/${cc}`;
+
+  const countryAwarePatterns = [
+    /^\/directory\/([a-z]{2})(\/.*)?$/i,
+    /^\/rates\/([a-z]{2})(\/.*)?$/i,
+    /^\/regulations\/([a-z]{2})(\/.*)?$/i,
+    /^\/glossary\/country\/([a-z]{2})(\/.*)?$/i,
+  ];
+
+  for (const pattern of countryAwarePatterns) {
+    const match = normalizedPath.match(pattern);
+    if (match) {
+      const suffix = match[2] ?? "";
+      return normalizedPath.replace(pattern, (fullPath) => {
+        const prefix = fullPath.slice(0, fullPath.indexOf(match[1]));
+        return `${prefix}${cc}${suffix}`;
+      });
+    }
+  }
+
+  return null;
+}
+
 /**
  * Generate hreflang alternates for a page at the given path.
  * Returns a Record<locale, url> for Next.js metadata alternates.languages
@@ -136,14 +164,21 @@ function normalizePagePath(pagePath: string): string {
  */
 export function getGlobalHreflangTags(pagePath: string): Record<string, string> {
   const normalizedPath = normalizePagePath(pagePath);
+  const canonicalPath = normalizedPath || "/";
   const alternates: Record<string, string> = {
-    'x-default': `${BASE_URL}${normalizedPath || '/'}`,
+    'x-default': `${BASE_URL}${canonicalPath}`,
   };
 
   for (const country of COUNTRY_REGISTRY) {
     const locale = getCountryLocale(country.code);
-    const cc = country.code.toLowerCase();
-    alternates[locale] = `${BASE_URL}/${cc}${normalizedPath}`;
+    const equivalentPath = countryEquivalentPath(normalizedPath, country.code);
+    if (equivalentPath) {
+      alternates[locale] = `${BASE_URL}${equivalentPath}`;
+    }
+  }
+
+  if (!alternates["en-US"]) {
+    alternates["en-US"] = `${BASE_URL}${canonicalPath}`;
   }
 
   return alternates;
