@@ -144,7 +144,7 @@ export async function POST(req: NextRequest) {
     console.error('[resource-download]', err);
     const isJson = req.headers.get('content-type')?.includes('application/json');
     if (isJson) {
-      return NextResponse.json({ error: err.message }, { status: 500 });
+      return NextResponse.json({ error: 'Resource download failed' }, { status: 500 });
     }
     return NextResponse.redirect(new URL('/resources?error=server', req.url));
   }
