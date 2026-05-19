@@ -60,27 +60,6 @@ interface Post {
   corridor_slug?: string;
 }
 
-// Seed profile
-const SEED_PROFILE: Profile = {
-  id: 'seed',
-  full_name: 'Verified Operator',
-  company_name: 'Professional Escort Services',
-  bio: 'Licensed pilot car operator specializing in oversize load escorts. Fully insured, height pole equipped, available 24/7 for urgent loads.',
-  city: 'Dallas',
-  state: 'TX',
-  corridors: ['I-10 Gulf Coast', 'I-35 Central Texas', 'I-20 East-West'],
-  equipment: ['Height Pole', 'Pilot Car', 'CB Radio', 'LED Warning Signs'],
-  years_experience: 8,
-  certifications: ['State Licensed', 'DOT Compliant', 'Insured'],
-  total_runs: 342,
-  trust_score: 87,
-  avg_response_minutes: 12,
-  corridor_rank: 3,
-  verified: true,
-  follower_count: 28,
-  following_count: 15,
-};
-
 function timeSince(dateStr: string) {
   const s = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
   if (s < 3600) return `${Math.floor(s / 60)}m ago`;
@@ -89,7 +68,7 @@ function timeSince(dateStr: string) {
 }
 
 export function OperatorProfilePage({ operatorId }: OperatorProfileProps) {
-  const [profile, setProfile] = useState<Profile>(SEED_PROFILE);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [endorsements, setEndorsements] = useState<Endorsement[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
@@ -104,15 +83,15 @@ export function OperatorProfilePage({ operatorId }: OperatorProfileProps) {
           const l = data.listings[0];
           setProfile({
             id: l.id,
-            full_name: l.name || 'Verified Operator',
+            full_name: l.name || 'Unclaimed directory record',
             company_name: l.name,
-            bio: l.metadata?.bio || SEED_PROFILE.bio,
+            bio: l.metadata?.bio || 'This directory record has limited public detail. Confirm service areas, equipment, proof, and availability before dispatch.',
             city: l.city,
             state: l.region_code,
-            corridors: l.metadata?.corridors || SEED_PROFILE.corridors,
-            equipment: l.metadata?.equipment || SEED_PROFILE.equipment,
-            years_experience: l.metadata?.years_experience || 5,
-            certifications: l.metadata?.certifications || SEED_PROFILE.certifications,
+            corridors: Array.isArray(l.metadata?.corridors) ? l.metadata.corridors : [],
+            equipment: Array.isArray(l.metadata?.equipment) ? l.metadata.equipment : [],
+            years_experience: l.metadata?.years_experience,
+            certifications: Array.isArray(l.metadata?.certifications) ? l.metadata.certifications : [],
             total_runs: l.metadata?.total_runs,
             trust_score: l.rank_score ? Math.round(l.rank_score * 100) : undefined,
             avg_response_minutes: l.metadata?.avg_response_minutes,
@@ -122,7 +101,7 @@ export function OperatorProfilePage({ operatorId }: OperatorProfileProps) {
             following_count: l.metadata?.following_count || 0,
           });
         }
-      } catch { /* use seed */ }
+      } catch { /* keep empty instead of rendering seeded proof */ }
 
       // Load endorsements
       try {
@@ -142,6 +121,34 @@ export function OperatorProfilePage({ operatorId }: OperatorProfileProps) {
     }
     load();
   }, [operatorId]);
+
+  if (loading) {
+    return (
+      <div style={{ background: T.bg, minHeight: '100vh', color: T.text, display: 'grid', placeItems: 'center', padding: 24 }}>
+        <div style={{ background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24, color: T.muted }}>
+          Loading source-backed profile data...
+        </div>
+      </div>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <div style={{ background: T.bg, minHeight: '100vh', color: T.text, display: 'grid', placeItems: 'center', padding: 24 }}>
+        <div style={{ maxWidth: 520, background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24 }}>
+          <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: T.gold }}>Profile not verified</div>
+          <h1 style={{ fontSize: 24, margin: '10px 0 8px' }}>No source-backed profile loaded</h1>
+          <p style={{ color: T.muted, lineHeight: 1.6, margin: 0 }}>
+            Haul Command did not load enough public evidence to show this operator profile. Use the directory, submit a correction, or start a support request instead of relying on placeholder data.
+          </p>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 18 }}>
+            <Link aria-label="Navigation Link" href="/directory" style={{ padding: '10px 14px', borderRadius: 10, background: T.gold, color: '#000', fontWeight: 800, textDecoration: 'none', fontSize: 13 }}>Search directory</Link>
+            <Link aria-label="Navigation Link" href="/claim" style={{ padding: '10px 14px', borderRadius: 10, border: `1px solid ${T.borderStrong}`, color: T.text, textDecoration: 'none', fontSize: 13 }}>Claim or correct</Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ background: T.bg, minHeight: '100vh', color: T.text }}>
@@ -191,7 +198,7 @@ export function OperatorProfilePage({ operatorId }: OperatorProfileProps) {
               color: '#000', fontWeight: 800, fontSize: 13, textDecoration: 'none',
               display: 'flex', alignItems: 'center', gap: 6,
             }}>
-              <Zap size={13} /> Book This Operator
+              <Zap size={13} /> Start Support Request
             </Link>
           </div>
         </div>
@@ -223,10 +230,10 @@ export function OperatorProfilePage({ operatorId }: OperatorProfileProps) {
           display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: 12, marginBottom: 20,
         }}>
           {[
-            { label: 'Total Runs', value: profile.total_runs ?? '—', icon: TrendingUp, color: T.gold },
-            { label: 'Trust Score', value: profile.trust_score ?? '—', icon: Star, color: T.green },
-            { label: 'Avg Response', value: profile.avg_response_minutes ? `${profile.avg_response_minutes}m` : '—', icon: Clock, color: T.blue },
-            { label: 'Corridor Rank', value: profile.corridor_rank ? `#${profile.corridor_rank}` : '—', icon: Award, color: T.purple },
+            { label: 'Runs reported', value: profile.total_runs ?? 'Not provided', icon: TrendingUp, color: T.gold },
+            { label: 'Directory score', value: profile.trust_score ?? 'Not scored', icon: Star, color: T.green },
+            { label: 'Response data', value: profile.avg_response_minutes ? `${profile.avg_response_minutes}m` : 'Not provided', icon: Clock, color: T.blue },
+            { label: 'Corridor signal', value: profile.corridor_rank ? `#${profile.corridor_rank}` : 'Not ranked', icon: Award, color: T.purple },
           ].map(stat => (
             <div key={stat.label} style={{
               background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: 14,
@@ -260,7 +267,7 @@ export function OperatorProfilePage({ operatorId }: OperatorProfileProps) {
                   <div>
                     <div style={{ fontSize: 13, color: T.text, lineHeight: 1.5 }}>"{e.content}"</div>
                     <div style={{ fontSize: 11, color: T.muted, marginTop: 4 }}>
-                      — {(e.profiles as any)?.full_name || 'Verified Broker'} · {timeSince(e.created_at)}
+                      - {(e.profiles as any)?.full_name || 'Directory user'} - {timeSince(e.created_at)}
                     </div>
                   </div>
                 </div>

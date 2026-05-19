@@ -73,7 +73,7 @@ export function LivePingToggle({ operatorId, initialStatus = 'offline' }: LivePi
       <div className="relative z-10 flex flex-col items-center">
         <h3 className="text-lg font-bold text-white mb-2">Broadcasting Status</h3>
         <p className="text-xs text-neutral-400 text-center mb-6 max-w-[200px]">
-          Turn this on to appear immediately at the top of broker searches in your 250-mile radius.
+          Turn this on to publish a self-reported availability ping. Placement still depends on proof, fit, distance, and active broker filters.
         </p>
 
         <button
@@ -101,7 +101,7 @@ export function LivePingToggle({ operatorId, initialStatus = 'offline' }: LivePi
         </button>
 
         <div className="mt-6 text-[10px] uppercase tracking-widest text-neutral-500 font-medium">
-          {isLive ? 'Brokers can see you' : 'Hidden from active dispatch'}
+          {isLive ? 'Self-reported ping active' : 'No active availability ping'}
         </div>
       </div>
     </div>
