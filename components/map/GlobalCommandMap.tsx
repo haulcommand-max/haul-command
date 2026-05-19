@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { Shield } from 'lucide-react';
 
 import { createClient } from '@/lib/supabase/client';
+import { buildDirectoryDossierHref } from '@/lib/directory/routes';
 
 interface OperatorNode {
   id: string;
@@ -224,9 +225,9 @@ export function GlobalCommandMap() {
                   <Shield className="w-3 h-3" /> {selectedNode.score} TP
                 </span>
               </div>
-              <p className="text-xs text-neutral-400 mb-3">Verified Escort Operator</p>
+              <p className="text-xs text-neutral-400 mb-3">Source-backed escort operator</p>
               
-              <Link href={`/directory/profile/${selectedNode.slug}`} className="block w-full text-center bg-white/5 hover:bg-white/10 text-white text-xs font-bold py-2 rounded-lg transition">
+              <Link href={buildDirectoryDossierHref(selectedNode.slug)} className="block w-full text-center bg-white/5 hover:bg-white/10 text-white text-xs font-bold py-2 rounded-lg transition">
                 View Intel &rarr;
               </Link>
             </div>

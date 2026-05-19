@@ -12,6 +12,7 @@ import { getEscortTerm, getCountry, COUNTRIES } from '@/lib/countries';
 import { SponsoredBadge } from '@/components/directory/SponsoredBadge';
 import DirectorySponsorCard from '@/components/directory/DirectorySponsorCard';
 import TrustBadge from '@/components/trust/TrustBadge';
+import { buildDirectoryDossierHref } from '@/lib/directory/routes';
 
 /* ═══════════════════════════════════════════════════════════════════
    PUBLIC DIRECTORY — Haul Command v2
@@ -242,7 +243,7 @@ function OperatorCard({ op, position }: { op: Operator; position: number }) {
           <Link aria-label="Navigation Link" href="/claim" style={{flex: 1,padding: '10px 14px',borderRadius: 10,textAlign: 'center',background: T.goldDim,border: `1px solid ${T.goldBorder}`,color: T.gold,fontSize: 12,fontWeight: 800,textDecoration: 'none'}} className="ag-press">Claim This Listing</Link>
         ) : (
           <>
-            <Link aria-label="Navigation Link" href={`/directory/profile/${op.slug || op.id}`} style={{flex: 1,padding: '10px 14px',borderRadius: 10,textAlign: 'center',background: T.bgElevated,border: `1px solid ${T.borderMid}`,color: T.text,fontSize: 12,fontWeight: 700,textDecoration: 'none'}} className="ag-press">View Profile</Link>
+            <Link aria-label="Navigation Link" href={buildDirectoryDossierHref(op.slug || op.id)} style={{flex: 1,padding: '10px 14px',borderRadius: 10,textAlign: 'center',background: T.bgElevated,border: `1px solid ${T.borderMid}`,color: T.text,fontSize: 12,fontWeight: 700,textDecoration: 'none'}} className="ag-press">View Profile</Link>
             <button aria-label="Interactive Button" style={{padding: '10px 16px',borderRadius: 10,background: `linear-gradient(135deg, ${T.gold}, ${T.goldLight})`,border: 'none',color: '#000',fontSize: 12,fontWeight: 800,cursor: 'pointer'}} className="ag-press">Request</button>
           </>
         )}

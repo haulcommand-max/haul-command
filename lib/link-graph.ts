@@ -5,6 +5,7 @@
  * and ensure PageRank flows rationally across the 25k+ page matrix.
  */
 import { createClient } from "@supabase/supabase-js";
+import { buildDirectoryDossierHref } from "@/lib/directory/routes";
 
 // Basic types for the graph builder
 export type NodeEntity = 'country' | 'city' | 'corridor' | 'port' | 'zone' | 'operator' | 'industry';
@@ -51,7 +52,7 @@ export async function buildCityLinkGraph(countryCode: string, citySlug: string, 
     const { data: operators } = await supabase.rpc('get_nearest_operators', { lat: coords.lat, lon: coords.lon, limit_val: 5 });
     if (operators) {
         operators.forEach((op: any) => links.push({
-            href: `/directory/profile/${op.slug}`,
+            href: buildDirectoryDossierHref(op.slug),
             anchorText: generateAnchorEntropy(op.display_name, 'operator'),
             relationship: 'nearby',
             weight: Number(op.composite_weight) || 0.7
@@ -118,7 +119,7 @@ export async function buildCorridorLinkGraph(corridorId: string, originSlug: str
     const { data: operators } = await supabase.rpc('get_operators_for_corridor', { target_corridor_id: corridorId, limit_val: 5 });
     if (operators) {
         operators.forEach((op: any) => links.push({
-            href: `/directory/profile/${op.slug}`,
+            href: buildDirectoryDossierHref(op.slug),
             anchorText: generateAnchorEntropy(op.display_name, 'operator'),
             relationship: 'nearby',
             weight: Number(op.trust_score) / 100 || 0.8

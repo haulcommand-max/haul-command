@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
+import { buildDirectoryDossierHref } from '@/lib/directory/routes';
 
 /* ────────────────────────────────────────────────────────────────
  * /report-card/[operatorId]
@@ -64,7 +65,7 @@ export async function generateMetadata({ params }: ReportCardPageProps): Promise
     },
     openGraph: {
       title: `${name} — Trust Score ${score}/100`,
-      description: `Verified operator report card on Haul Command. ${location}.`,
+      description: `Operator report card on Haul Command. ${location}.`,
       type: 'profile',
     },
   };
@@ -117,7 +118,8 @@ export default async function ReportCardPage({ params }: ReportCardPageProps) {
   const regions = (operator.operating_regions || []) as string[];
   const memberSince = operator.created_at ? new Date(operator.created_at).getFullYear() : 'N/A';
   const scoreColor = score >= 80 ? 'emerald' : score >= 50 ? 'amber' : 'rose';
-  const scoreLabel = score >= 80 ? 'Verified Authority' : score >= 50 ? 'Claimed & Active' : 'Unverified';
+  const scoreLabel = score >= 80 ? 'Verified Authority' : score >= 50 ? 'Source-backed' : 'Unverified';
+  const operatorDossierHref = buildDirectoryDossierHref(operator.slug || operator.id);
 
   const reportCardSchema = {
     '@context': 'https://schema.org',
@@ -125,13 +127,6 @@ export default async function ReportCardPage({ params }: ReportCardPageProps) {
     name: operator.company_name || operator.name,
     url: `https://www.haulcommand.com/report-card/${operatorId}`,
     ...(operator.avatar_url ? { logo: operator.avatar_url } : {}),
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: Math.min(score / 20, 5).toFixed(1),
-      bestRating: '5',
-      worstRating: '1',
-      ratingCount: operator.jobs_completed || 1,
-    },
     address: {
       '@type': 'PostalAddress',
       addressLocality: operator.location,
@@ -150,7 +145,7 @@ export default async function ReportCardPage({ params }: ReportCardPageProps) {
             <div className="flex items-center gap-2 text-[10px] text-white/40 font-medium uppercase tracking-widest mb-6">
               <Link href="/directory" className="hover:text-amber-400 transition-colors">Directory</Link>
               <span>/</span>
-              <Link href={`/directory/profile/${operator.slug || operator.id}`} className="hover:text-amber-400 transition-colors">{operator.company_name || operator.name}</Link>
+              <Link href={operatorDossierHref} className="hover:text-amber-400 transition-colors">{operator.company_name || operator.name}</Link>
               <span>/</span>
               <span className="text-amber-400">Report Card</span>
             </div>
@@ -270,7 +265,7 @@ export default async function ReportCardPage({ params }: ReportCardPageProps) {
         <section className="border-t border-white/5 text-center py-12 px-4">
           <h2 className="text-lg font-bold text-white mb-4">Ready to work with {operator.company_name || operator.name}?</h2>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href={`/directory/profile/${operator.slug || operator.id}`}
+            <Link href={operatorDossierHref}
               className="px-6 py-3 bg-white/5 border border-white/15 text-white font-semibold text-sm rounded-xl hover:bg-white/10 transition-all">
               View Full Profile
             </Link>

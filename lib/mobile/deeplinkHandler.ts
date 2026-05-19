@@ -11,7 +11,7 @@ const SCHEME = "haulcommand://";
 /** All supported deep link routes */
 const ROUTE_MAP: Array<{ pattern: RegExp; resolve: (match: RegExpMatchArray) => string }> = [
     // Profile
-    { pattern: /^profile\/([a-zA-Z0-9_-]+)/, resolve: (m) => `/directory/profile/${m[1]}` },
+    { pattern: /^profile\/([a-zA-Z0-9_-]+)/, resolve: (m) => `/directory/dossier/${m[1]}` },
 
     // Load / Job
     { pattern: /^load\/([a-zA-Z0-9_-]+)/, resolve: (m) => `/loads/${m[1]}` },

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Search, MapPin, LockKeyhole, Shield, Zap } from "lucide-react";
+import { buildDirectoryDossierHref } from "@/lib/directory/routes";
 
 // â”€â”€â”€ Shared filter type (matches DirectoryHardFilter) â”€â”€â”€â”€â”€â”€
 export interface HardFilterState {
@@ -236,7 +237,7 @@ export function DirectorySearchList({
                     </div>
 
                     <div className="flex flex-row md:flex-col gap-2 w-full mt-2 md:mt-0">
-                      <Link href={`/directory/profile/${op.slug || op.id}`} className="flex-1 md:w-full items-center justify-center text-center px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-[11px] uppercase tracking-widest font-bold rounded-xl transition-all">
+                      <Link href={buildDirectoryDossierHref(op.slug || op.id)} className="flex-1 md:w-full items-center justify-center text-center px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-[11px] uppercase tracking-widest font-bold rounded-xl transition-all">
                         View Dossier
                       </Link>
                       <Link href={`/report-card/${op.slug || op.id}`} className="flex-1 md:w-full items-center justify-center text-center px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-[#C6923A] text-[11px] uppercase tracking-widest font-bold rounded-xl transition-all">

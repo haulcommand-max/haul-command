@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
+import { buildDirectoryDossierHref } from "@/lib/directory/routes";
 
 export function AvailabilityCard({ operator }: { operator: any }) {
+    const trustScore = typeof operator.trust_score === 'number' ? operator.trust_score : null;
+
     // Determine status color
     let statusColor = "bg-green-500";
     let statusText = "Available Now";
@@ -46,7 +49,7 @@ export function AvailabilityCard({ operator }: { operator: any }) {
                 <div className="flex-grow">
                     <div className="flex justify-between items-start">
                         <div>
-                            <Link href={`/directory/profile/${operator.operator_slug || operator.operator_id}`} className="hover:underline">
+                            <Link href={buildDirectoryDossierHref(operator.operator_slug || operator.operator_id)} className="hover:underline">
                                 <h3 className="text-xl font-bold text-white mb-1 flex items-center gap-2">
                                     {operator.operator_name || "Verified Operator"}
                                     {operator.claim_status === 'claimed' && (
@@ -82,7 +85,7 @@ export function AvailabilityCard({ operator }: { operator: any }) {
                     </button>
                     
                     <div className="mt-3 text-[10px] text-center w-full uppercase tracking-widest text-[#8ab0d0] flex items-center justify-center gap-1">
-                        Trust Score: <span className="text-white font-bold">{operator.trust_score || 85}</span> / 100
+                        Trust Score: <span className="text-white font-bold">{trustScore ?? 'Not scored'}</span>{trustScore != null ? ' / 100' : ''}
                     </div>
                 </div>
             </div>

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Search, Mic, MapPin, Briefcase, Navigation, ShieldAlert, Cpu } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
+import { buildDirectoryDossierHref } from "@/lib/directory/routes";
 
 interface SearchPrediction {
   id: string;
@@ -111,7 +112,7 @@ export function GlobalOmniSearch() {
       profilesData.hits.forEach((h: any) => {
          const doc = h.document;
          const isRare = doc.equipment_tags?.includes("bucket_truck") || doc.equipment_tags?.includes("height_pole");
-         results.push({ id: `p-${doc.id}`, type: isRare ? "rare_role" : "entity", label: doc.display_name, subtitle: `${doc.home_base_state || 'US'} · ${doc.vehicle_type?.replace(/_/g, " ")}`, url: `/directory/profile/${doc.slug}`, confidence: 0.95 });
+         results.push({ id: `p-${doc.id}`, type: isRare ? "rare_role" : "entity", label: doc.display_name, subtitle: `${doc.home_base_state || 'US'} · ${doc.vehicle_type?.replace(/_/g, " ")}`, url: buildDirectoryDossierHref(doc.slug || doc.id), confidence: 0.95 });
       });
     }
 

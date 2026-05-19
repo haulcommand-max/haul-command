@@ -23,6 +23,7 @@ import {
   AlertTriangle, ChevronRight, Radio, Star
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
+import { buildDirectoryDossierHref } from '@/lib/directory/routes';
 
 interface TrustSummary {
   score_total: number;
@@ -166,7 +167,7 @@ export function OperatorLivePanel({
             </div>
           </div>
         </div>
-        <Link href={`/directory/profile/${operatorSlug}`}
+        <Link href={buildDirectoryDossierHref(operatorSlug)}
           className="text-[11px] font-bold text-amber-400 border border-amber-400/30 rounded-lg px-3 py-1.5 hover:bg-amber-400/10 transition-colors">
           View Profile
         </Link>
@@ -316,7 +317,7 @@ export function OperatorLivePanel({
                 </p>
               )}
               <Link
-                href={`/directory/profile/${operatorSlug}`}
+                href={buildDirectoryDossierHref(operatorSlug)}
                 className="text-[11px] font-bold text-amber-400 hover:underline"
               >
                 {!isClaimed ? 'Claim Profile →' : 'Complete Profile →'}

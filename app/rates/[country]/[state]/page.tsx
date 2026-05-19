@@ -159,7 +159,7 @@ export default async function StateRatesPage({ params }: Props) {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {operators!.map((op: any) => (
-                <Link key={op.id} href={`/directory/profile/${op.slug || op.id}`}
+                <Link key={op.id} href={`/directory/dossier/${encodeURIComponent(op.slug || op.id)}`}
                   className="flex items-center justify-between p-3 bg-gray-50 hover:bg-[#F1A91B]/5 border border-gray-200 hover:border-[#F1A91B]/30 rounded-xl transition-all group">
                   <div>
                     <p className="font-bold text-sm text-gray-800 group-hover:text-[#C6923A]">{op.name}</p>

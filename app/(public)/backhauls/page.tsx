@@ -181,7 +181,7 @@ export default async function BackhaulsPage() {
                     {/* CTA */}
                     <div style={{ display: 'flex', gap: 8 }}>
                       {b.operator_slug ? (
-                        <Link href={`/directory/profile/${b.operator_slug}`} style={{
+                        <Link href={`/directory/dossier/${encodeURIComponent(b.operator_slug)}`} style={{
                           flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                           padding: '12px', borderRadius: 10,
                           background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.25)',

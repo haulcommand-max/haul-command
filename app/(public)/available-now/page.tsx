@@ -321,7 +321,7 @@ export default async function AvailableNowPage() {
                       </Link>
                       
                       {b.operator_slug ? (
-                        <Link href={`/directory/profile/${b.operator_slug}`} style={{
+                        <Link href={`/directory/dossier/${encodeURIComponent(b.operator_slug)}`} style={{
                           flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                           padding: '10px', borderRadius: 10,
                           background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',

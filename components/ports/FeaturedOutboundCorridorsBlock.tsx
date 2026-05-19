@@ -268,7 +268,7 @@ export function FeaturedOutboundCorridorsBlock({
                             {/* Featured operator slot */}
                             {op ? (
                                 <Link aria-label="Navigation Link"
-                                    href={`/directory/profile/${op.id}`}
+                                    href={`/directory/dossier/${encodeURIComponent(op.id)}`}
                                     onClick={() =>
                                         logEvent("click", "adgrid_port_outbound_corridor_featured", portId, {
                                             corridor_slug: corridor.corridorSlug,

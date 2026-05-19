@@ -193,7 +193,7 @@ export default async function RepositionPage() {
                     {/* CTA */}
                     <div style={{ display: 'flex', gap: 8 }}>
                       {post.operator_slug ? (
-                        <a href={`/api/telemetry/repo-click?id=${post.id}&action=directory&url=${encodeURIComponent('/directory/profile/'+post.operator_slug)}`} style={{
+                        <a href={`/api/telemetry/repo-click?id=${post.id}&action=directory&url=${encodeURIComponent('/directory/dossier/'+post.operator_slug)}`} style={{
                           flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                           padding: '10px', borderRadius: 10,
                           background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)',
