@@ -48,6 +48,11 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters }: Dire
     return record.company_name || record.company || record.display_name || record.name || record.full_name || 'Indexed support record';
   }
 
+  function isClaimedRecord(record: any): boolean {
+    const status = String(record.claim_status || record.claimed_status || '').toLowerCase();
+    return Boolean(record.is_claimed || status === 'claimed' || status === 'verified' || status === 'approved');
+  }
+
   return (
     <>
       <div className="mb-5 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
@@ -103,6 +108,7 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters }: Dire
           const claimHref = recordId
             ? `/claim?operator=${encodeURIComponent(recordId)}`
             : `/claim?country=${encodeURIComponent(targetCountry)}`;
+          const isClaimed = isClaimedRecord(p);
 
           return (
             <div
@@ -211,6 +217,26 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters }: Dire
                     </span>
                   )}
                 </div>
+
+                {!isClaimed && (
+                  <div className="mb-4 rounded-xl border border-[#C6923A]/35 bg-[#C6923A]/10 p-3">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div>
+                        <p className="text-xs font-black uppercase tracking-[0.12em] text-[#F8DFB0]">Unclaimed profile</p>
+                        <p className="mt-1 text-xs leading-5 text-[#d8c6a3]">
+                          Claim this record to correct services, proof, service areas, and dispatch-ready contact options.
+                        </p>
+                      </div>
+                      <Link
+                        href={claimHref}
+                        onClick={() => track.event('directory_inline_claim_prompt_click', { entity_id: recordId, entity_family: p.entity_family, country_code: targetCountry })}
+                        className="inline-flex min-h-9 items-center rounded-lg bg-[#C6923A] px-3 text-xs font-black text-black transition-colors hover:bg-[#E4B872]"
+                      >
+                        Claim profile
+                      </Link>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Actions */}
