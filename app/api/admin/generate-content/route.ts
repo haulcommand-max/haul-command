@@ -1,7 +1,14 @@
 import { NextResponse } from 'next/server';
 import { AutonomousContentEngine } from '@/lib/ai/content-engine';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 export async function POST(req: Request) {
+    const adminSecret = req.headers.get('x-admin-secret');
+    const isAdmin = Boolean(process.env.HC_ADMIN_SECRET && adminSecret === process.env.HC_ADMIN_SECRET);
+    if (!isAdmin && !isInternalRequest(req.headers)) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     try {
         const { topic, trackSlug, moduleSlug } = await req.json();
         

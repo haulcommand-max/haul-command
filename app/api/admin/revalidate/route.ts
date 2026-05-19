@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath, revalidateTag } from "next/cache";
-import { env } from "@/lib/env";
+import { isInternalRequest } from "@/lib/auth/internal-request";
 
 export async function POST(request: NextRequest) {
-  const token = request.headers.get("x-internal-token");
-  if (token !== env.INTERNAL_WORKER_TOKEN) {
+  if (!isInternalRequest(request.headers)) {
     return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
   }
 

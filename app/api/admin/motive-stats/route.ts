@@ -4,10 +4,17 @@
  */
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 export const runtime = 'nodejs';
 
-export async function GET() {
+export async function GET(req: Request) {
+  const adminSecret = req.headers.get('x-admin-secret');
+  const isAdmin = Boolean(process.env.HC_ADMIN_SECRET && adminSecret === process.env.HC_ADMIN_SECRET);
+  if (!isAdmin && !isInternalRequest(req.headers)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const supabase = getSupabaseAdmin();
 
   const [connResult, webhookResult, syncResult, errorResult] = await Promise.all([
