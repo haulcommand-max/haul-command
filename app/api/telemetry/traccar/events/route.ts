@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 // Haul Command Traccar Event Webhook Receiver
 // Traccar pushes real-time events: ignition on/off, SOS button press,
@@ -44,7 +45,8 @@ export async function POST(request: Request) {
     try {
         // Validate webhook secret
         const authHeader = request.headers.get('authorization');
-        if (TRACCAR_WEBHOOK_SECRET && authHeader !== `Bearer ${TRACCAR_WEBHOOK_SECRET}`) {
+        const isWebhook = Boolean(TRACCAR_WEBHOOK_SECRET && authHeader === `Bearer ${TRACCAR_WEBHOOK_SECRET}`);
+        if (!isWebhook && !isInternalRequest(request.headers)) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
@@ -123,6 +125,7 @@ export async function POST(request: Request) {
 
         if (insertError) {
             console.error('[Traccar Events] Insert error:', insertError.message);
+            return NextResponse.json({ error: 'Telemetry event write failed' }, { status: 500 });
         }
 
         // If dispatch alert triggered, insert a notification

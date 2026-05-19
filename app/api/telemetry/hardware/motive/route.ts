@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 // Haul Command Hardware Telemetry: Motive/Samsara Dashcam Webhook Ingestion
 // Converts AI-detected dashcam events (from fixed cab hardware) into Haul Command network hazards.
@@ -11,7 +12,7 @@ export async function POST(request: Request) {
         
         // 1. Verify Webhook Authenticity (Motive Payload)
         // Ensure this is a legitimate ping from a registered dashcam
-        if (!process.env.MOTIVE_API_SECRET || !signature) {
+        if (!isInternalRequest(request.headers) && (!process.env.MOTIVE_API_SECRET || signature !== process.env.MOTIVE_API_SECRET)) {
              return NextResponse.json({ error: 'Missing security payload' }, { status: 401 });
         }
 

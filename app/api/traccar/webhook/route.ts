@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { isInternalRequest } from '@/lib/auth/internal-request'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -7,6 +8,14 @@ const supabase = createClient(
 )
 
 export async function POST(req: NextRequest) {
+  const authHeader = req.headers.get('authorization')
+  const isWebhook = Boolean(
+    process.env.TRACCAR_WEBHOOK_SECRET && authHeader === `Bearer ${process.env.TRACCAR_WEBHOOK_SECRET}`
+  )
+  if (!isWebhook && !isInternalRequest(req.headers)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const payload = await req.json()
   const {
     deviceId, deviceName,
@@ -71,7 +80,16 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  await Promise.allSettled(writes)
+  const results = await Promise.allSettled(writes)
+  const failed = results.filter((result) => result.status === 'rejected').length
+  const dbErrors = results.filter(
+    (result) => result.status === 'fulfilled' && result.value.error
+  ).length
+
+  if (failed || dbErrors) {
+    console.error('[traccar-webhook] position write failed:', { failed, dbErrors })
+    return NextResponse.json({ error: 'GPS position write failed' }, { status: 500 })
+  }
 
   return NextResponse.json({ ok: true })
 }

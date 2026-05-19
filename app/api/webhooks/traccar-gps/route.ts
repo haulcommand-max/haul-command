@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { isInternalRequest } from '@/lib/auth/internal-request';
 
 // POST /api/webhooks/traccar-gps
 // Traccar sends position updates to this endpoint
@@ -15,6 +16,14 @@ const supabase = createClient(
 
 export async function POST(req: NextRequest) {
   try {
+    const authHeader = req.headers.get('authorization');
+    const isWebhook = Boolean(
+      process.env.TRACCAR_WEBHOOK_SECRET && authHeader === `Bearer ${process.env.TRACCAR_WEBHOOK_SECRET}`
+    );
+    if (!isWebhook && !isInternalRequest(req.headers)) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await req.json();
     
     // Traccar position webhook format
@@ -43,6 +52,7 @@ export async function POST(req: NextRequest) {
 
     if (signalError) {
       console.error('[traccar-gps] Insert error:', signalError.message);
+      return NextResponse.json({ error: 'GPS signal write failed' }, { status: 500 });
     }
 
     // Also update escort_locations_current (live operator position)
@@ -60,7 +70,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true, device: device_unique_id });
   } catch (err) {
     console.error('[traccar-gps] Error:', err);
-    return NextResponse.json({ error: String(err) }, { status: 500 });
+    return NextResponse.json({ error: 'GPS webhook failed' }, { status: 500 });
   }
 }
 
