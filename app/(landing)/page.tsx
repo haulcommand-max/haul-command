@@ -1,15 +1,89 @@
 import { getMarketPulse, getDirectoryListings, getCorridors } from "@/lib/server/data";
-import { getCountryFromHeaders } from "@/lib/geo/getCountryFromRequest";
+import { headers } from "next/headers";
 import { resolveHeroPack } from "@/components/hero/heroPacks";
 import { getGlobalStats } from "@/lib/server/global-stats";
-import { collectNextMoveSignals } from "@/lib/server/collect-next-move-signals";
-import { createClient } from "@/lib/supabase/server";
 import { getHomepageRoleChips } from "@/lib/homepage/role-chips";
+import type { UserSignals } from "@/lib/next-moves-engine";
 import HomeClient from "./_components/HomeClient";
 
 const HOME_HERO_IMAGE_URL = 'https://www.haulcommand.com/images/hero/haul-command-find-post-claim-hero-pilot-car-oversize-load.webp';
 const HOME_SOCIAL_IMAGE_URL = 'https://www.haulcommand.com/images/hero/haul-command-homepage-social-preview-pilot-car-heavy-haul.jpg';
 const HOME_HERO_IMAGE_ALT = 'Pilot car escorting an oversize load truck on a highway at golden hour';
+const HOMEPAGE_DATA_TIMEOUT_MS = 650;
+
+const FALLBACK_MARKET_PULSE: Awaited<ReturnType<typeof getMarketPulse>> = {
+    escorts_online_now: 0,
+    escorts_available_now: 0,
+    open_loads_now: 0,
+    median_fill_time_min_7d: null,
+    fill_rate_7d: null,
+};
+
+const FALLBACK_DIRECTORY_RESULT: Awaited<ReturnType<typeof getDirectoryListings>> = {
+    listings: [],
+    total: 0,
+};
+
+const FALLBACK_GLOBAL_STATS: Awaited<ReturnType<typeof getGlobalStats>> = {
+    totalCountries: 2,
+    liveCountries: 2,
+    coveredCountries: 2,
+    nextCountries: 0,
+    plannedCountries: 0,
+    futureCountries: 0,
+    totalOperators: -1,
+    totalCorridors: -1,
+    totalSupportLocations: -1,
+    avgRatePerDay: 380,
+    statsUpdatedAt: null,
+};
+
+const FALLBACK_ROLE_CHIPS: Awaited<ReturnType<typeof getHomepageRoleChips>> = {
+    chips: [],
+    source: 'fallback',
+    eligibleCount: 0,
+};
+
+async function withHomepageFallback<T>(label: string, promise: Promise<T>, fallback: T): Promise<T> {
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    const guarded = promise.catch((error) => {
+        console.warn(`${label} fallback:`, error instanceof Error ? error.message : error);
+        return fallback;
+    });
+    const timeout = new Promise<T>((resolve) => {
+        timeoutId = setTimeout(() => {
+            console.warn(`${label} timed out; rendering homepage fallback`);
+            resolve(fallback);
+        }, HOMEPAGE_DATA_TIMEOUT_MS);
+    });
+
+    const result = await Promise.race([guarded, timeout]);
+    if (timeoutId) clearTimeout(timeoutId);
+    return result;
+}
+
+async function getHomepageRequestContext(): Promise<{ countryCode: string; detectedState: string | null }> {
+    try {
+        const h = await headers();
+        const cookieHeader = h.get("cookie") ?? "";
+        const cookieCountry = cookieHeader.match(/(?:^|;\s*)hc_country=([A-Za-z]{2})/)?.[1];
+        const rawCountry =
+            cookieCountry ??
+            h.get("x-vercel-ip-country") ??
+            h.get("cf-ipcountry") ??
+            h.get("x-country") ??
+            h.get("x-geo-country") ??
+            "US";
+        const countryCode = /^[A-Za-z]{2}$/.test(rawCountry) ? rawCountry.toUpperCase() : "US";
+
+        return {
+            countryCode,
+            detectedState: h.get("x-vercel-ip-country-region"),
+        };
+    } catch {
+        return { countryCode: "US", detectedState: null };
+    }
+}
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // HOMEPAGE — Server Component
@@ -20,32 +94,43 @@ const HOME_HERO_IMAGE_ALT = 'Pilot car escorting an oversize load truck on a hig
 
 export const metadata = {
   title: {
-    absolute: 'Haul Command | Pilot Car & Escort Vehicle Directory for Heavy Haul',
+    absolute: 'Haul Command | Pilot Car Directory & Oversize Load Escort Network',
   },
   description:
-    'Find pilot cars, escort vehicles, and heavy haul support with Haul Command. Search providers, post loads, and claim listings on a platform built for the heavy haul industry.',
+    'Find pilot car companies, escort vehicles, height-pole providers, route survey support, and oversize load requirements with Haul Command. Search providers, post loads, and claim listings on a heavy haul support network.',
   keywords: [
     'pilot car',
+    'pilot car company',
+    'pilot car service',
     'escort vehicle',
     'oversize load',
     'heavy haul',
     'pilot car near me',
+    'pilot cars near me',
     'pilot car directory',
+    'pilot car companies near me',
     'oversize load escort',
+    'wide load escort',
+    'heavy haul escort',
     'heavy haul load board',
     'superload escort',
     'oversize permit',
+    'oversize load permit',
     'escort vehicle directory',
+    'escort requirements by state',
     'pilot car operator',
     'heavy haul dispatch',
     'oversize load transport',
     'pilot car rates',
     'escort vehicle cost per mile',
+    'height pole escort',
+    'route survey company',
+    'OSOW regulations',
   ],
   openGraph: {
-    title: 'Haul Command | Pilot Car & Escort Vehicle Directory for Heavy Haul',
+    title: 'Haul Command | Pilot Car Directory & Oversize Load Escort Network',
     description:
-      'Find pilot car operators and escort vehicles for oversize loads across a 120-country heavy haul coverage model. Browse the load board, check requirements, and claim your free listing.',
+      'Find pilot car companies, escort vehicles, height-pole providers, route survey support, truck stops, hotels, and oversize load requirements across a 120-country heavy haul coverage model.',
     url: 'https://www.haulcommand.com/',
     siteName: 'Haul Command',
     images: [
@@ -61,8 +146,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image' as const,
-    title: 'Pilot Car & Escort Vehicle Directory | Haul Command',
-    description: 'Find pilot car and escort vehicle operators across a 120-country heavy haul coverage model. Post and browse oversize loads.',
+    title: 'Pilot Car Directory & Oversize Escort Network | Haul Command',
+    description: 'Find pilot car companies, escort vehicles, route support, and oversize load requirements across a 120-country heavy haul coverage model.',
     images: [HOME_SOCIAL_IMAGE_URL],
     site: '@haulcommand',
   },
@@ -74,46 +159,31 @@ export const metadata = {
 export const dynamic = 'force-dynamic'; // SSR-only — uses geo headers + live DB queries
 
 export default async function LandingPage() {
-    const countryCode = await getCountryFromHeaders();
+    const { countryCode, detectedState } = await getHomepageRequestContext();
     const heroPack = resolveHeroPack(countryCode);
-
-    // Detect state from Vercel geo header (auto-populated on Edge Network)
-    const { headers } = await import('next/headers');
-    const headersList = await headers();
-    const detectedState = headersList.get('x-vercel-ip-country-region') ?? null;
-
-    // Authenticated user id (anonymous if not logged in)
-    let userId: string | null = null;
-    try {
-        const supabase = await createClient();
-        const { data: { user } } = await supabase.auth.getUser();
-        userId = user?.id ?? null;
-    } catch {}
 
     let marketPulse: Awaited<ReturnType<typeof getMarketPulse>>;
     let directoryResult: Awaited<ReturnType<typeof getDirectoryListings>>;
     let corridors: Awaited<ReturnType<typeof getCorridors>>;
     let globalStats: Awaited<ReturnType<typeof getGlobalStats>>;
-    let nextMoveSignals: Awaited<ReturnType<typeof collectNextMoveSignals>>;
+    const nextMoveSignals: Partial<UserSignals> = { detectedState };
     let heroRoleChipResult: Awaited<ReturnType<typeof getHomepageRoleChips>>;
 
     try {
-        [marketPulse, directoryResult, corridors, globalStats, nextMoveSignals, heroRoleChipResult] = await Promise.all([
-            getMarketPulse(),
-            getDirectoryListings({ limit: 8 }),
-            getCorridors(),
-            getGlobalStats(),
-            collectNextMoveSignals({ userId, detectedState }),
-            getHomepageRoleChips(countryCode),
+        [marketPulse, directoryResult, corridors, globalStats, heroRoleChipResult] = await Promise.all([
+            withHomepageFallback('getMarketPulse', getMarketPulse(), FALLBACK_MARKET_PULSE),
+            withHomepageFallback('getDirectoryListings', getDirectoryListings({ limit: 8 }), FALLBACK_DIRECTORY_RESULT),
+            withHomepageFallback('getCorridors', getCorridors(), []),
+            withHomepageFallback('getGlobalStats', getGlobalStats(), FALLBACK_GLOBAL_STATS),
+            withHomepageFallback('getHomepageRoleChips', getHomepageRoleChips(countryCode), FALLBACK_ROLE_CHIPS),
         ]);
     } catch (e) {
-        console.error('Homepage data fetch failed:', e);
-        marketPulse = { escorts_online_now: 0, escorts_available_now: 0, open_loads_now: 0, median_fill_time_min_7d: null, fill_rate_7d: null };
-        directoryResult = { listings: [], total: 0 };
+        console.warn('Homepage data fallback used:', e instanceof Error ? e.message : e);
+        marketPulse = FALLBACK_MARKET_PULSE;
+        directoryResult = FALLBACK_DIRECTORY_RESULT;
         corridors = [];
-        globalStats = { totalCountries: 2, liveCountries: 2, coveredCountries: 2, nextCountries: 0, plannedCountries: 0, futureCountries: 0, totalOperators: -1, totalCorridors: -1, totalSupportLocations: -1, avgRatePerDay: 380, statsUpdatedAt: null };
-        nextMoveSignals = {};
-        heroRoleChipResult = { chips: [], source: 'fallback', eligibleCount: 0 };
+        globalStats = FALLBACK_GLOBAL_STATS;
+        heroRoleChipResult = FALLBACK_ROLE_CHIPS;
     }
 
     return (
@@ -151,7 +221,20 @@ export default async function LandingPage() {
                     "height": 821,
                     "caption": HOME_HERO_IMAGE_ALT
                   },
-                  "description": "Haul Command helps heavy haul teams find pilot cars, escort vehicles, permits, route intelligence, and support providers for oversize loads across a 120-country coverage model.",
+                  "description": "Haul Command helps heavy haul teams find pilot car companies, escort vehicles, height-pole providers, route survey support, permits, truck stops, hotels, route intelligence, and oversize load requirements across a 120-country coverage model.",
+                  "about": [
+                    "pilot car directory",
+                    "pilot car service",
+                    "escort vehicle directory",
+                    "oversize load escort",
+                    "wide load escort",
+                    "height pole escort",
+                    "route survey company",
+                    "oversize load permit",
+                    "escort requirements by state",
+                    "OSOW regulations",
+                    "heavy haul support network"
+                  ],
                   "breadcrumb": {
                     "@type": "BreadcrumbList",
                     "itemListElement": [
