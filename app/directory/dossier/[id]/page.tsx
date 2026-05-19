@@ -233,8 +233,8 @@ export default async function DossierPage({ params }: { params: { id: string } }
   const trustScore = operator.confidence_score || operator.trust_score || null;
   const claimStatus = String(operator.claim_status || operator.claimed_status || '').toLowerCase();
   const isClaimed = operator.is_claimed === true || claimStatus === 'claimed' || claimStatus === 'verified';
-  const hasRating = operator.rating_avg && Number(operator.rating_avg) > 0;
   const ratingCount = operator.rating_count || 0;
+  const hasRating = Number(operator.rating_avg) > 0 && Number(ratingCount) > 0;
 
   //  HC-ID generation
   const hcId = (() => {
@@ -638,23 +638,11 @@ export default async function DossierPage({ params }: { params: { id: string } }
             </div>
 
             {hasRating ? (
-              <div className="space-y-3">
-                {/* Review score bars */}
-                {[
-                  { label: 'Showed up on time', score: 95 },
-                  { label: 'Had proper gear', score: 90 },
-                  { label: 'Communication', score: 88 },
-                  { label: 'Knew the route', score: 85 },
-                  { label: 'Would rehire', score: 92 },
-                ].map(({ label, score }) => (
-                  <div key={label} className="flex items-center gap-3">
-                    <span className="text-xs text-amber-100/70 w-36 flex-shrink-0">{label}</span>
-                    <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
-                      <div className="h-full bg-[#F1A91B] rounded-full" style={{ width: `${score}%` }} />
-                    </div>
-                    <span className="text-xs text-amber-200/60 w-8 text-right">{score}%</span>
-                  </div>
-                ))}
+              <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-4">
+                <p className="text-sm leading-6 text-amber-100/75">
+                  This public rating is shown only from reported review totals attached to this profile.
+                  Detailed sub-scores appear after verified dispatch reviews are available.
+                </p>
               </div>
             ) : (
               <div className="text-center py-6">

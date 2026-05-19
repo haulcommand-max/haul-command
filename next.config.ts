@@ -153,6 +153,26 @@ const nextConfig: NextConfig = {
                 permanent: true,
             },
             {
+                source: "/providers",
+                destination: "/directory",
+                permanent: true,
+            },
+            {
+                source: "/providers/:slug",
+                destination: "/directory/dossier/:slug",
+                permanent: true,
+            },
+            {
+                source: "/companies",
+                destination: "/directory",
+                permanent: true,
+            },
+            {
+                source: "/companies/:slug",
+                destination: "/directory/dossier/:slug",
+                permanent: true,
+            },
+            {
                 source: "/operators/:path*",
                 destination: "/directory/:path*",
                 permanent: true,
@@ -201,6 +221,11 @@ const nextConfig: NextConfig = {
             {
                 source: '/requirements',
                 destination: '/escort-requirements',
+                permanent: true,
+            },
+            {
+                source: '/rates/pilot-car',
+                destination: '/rates/guide/pilot-car',
                 permanent: true,
             },
             {

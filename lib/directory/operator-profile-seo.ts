@@ -5,16 +5,6 @@ type DirectoryOperatorRecord = Record<string, any>;
 export type DirectoryOperatorFaq = { question: string; answer: string };
 
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.haulcommand.com").replace(/\/$/, "");
-const PRECOMPUTED_JSON_LD_KEYS = [
-  "json_ld",
-  "jsonld",
-  "schema_json",
-  "schema_jsonld",
-  "schema_payload",
-  "structured_data",
-  "schema_org",
-  "local_business_schema",
-];
 
 function firstString(...values: unknown[]) {
   for (const value of values) {
@@ -41,19 +31,6 @@ function asArray(value: unknown) {
 
 function uniqueStrings(values: string[]) {
   return Array.from(new Set(values.map((value) => value.trim()).filter(Boolean)));
-}
-
-function isJsonLdPayload(value: unknown): value is Record<string, unknown> {
-  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
-  const record = value as Record<string, unknown>;
-  return record["@context"] === "https://schema.org" || Array.isArray(record["@graph"]);
-}
-
-function jsonLdGraphEntries(value: unknown): Record<string, unknown>[] {
-  const graph = asRecord(value)["@graph"];
-  return Array.isArray(graph)
-    ? (graph.filter((entry) => entry && typeof entry === "object" && !Array.isArray(entry)) as Record<string, unknown>[])
-    : [];
 }
 
 export function getDirectoryOperatorName(record: DirectoryOperatorRecord) {
@@ -114,15 +91,6 @@ export function getDirectoryOperatorSourceConfidence(record: DirectoryOperatorRe
   return "limited";
 }
 
-export function getPrecomputedDirectoryOperatorJsonLd(record: DirectoryOperatorRecord) {
-  const metadata = asRecord(record.metadata);
-  for (const key of PRECOMPUTED_JSON_LD_KEYS) {
-    if (isJsonLdPayload(record[key])) return record[key] as Record<string, unknown>;
-    if (isJsonLdPayload(metadata[key])) return metadata[key] as Record<string, unknown>;
-  }
-  return null;
-}
-
 export function shouldIndexDirectoryOperator(record: DirectoryOperatorRecord) {
   const metadata = asRecord(record.metadata);
   const name = getDirectoryOperatorName(record);
@@ -132,12 +100,24 @@ export function shouldIndexDirectoryOperator(record: DirectoryOperatorRecord) {
 
   const location = firstString(record.city, record.city_inferred, record.admin1_code, record.state_inferred, metadata.city);
   const services = getDirectoryOperatorServices(record);
-  const proof = firstString(record.claim_status, record.verification_status, metadata.claim_status);
+  const expertise = getDirectoryOperatorExpertise(record);
+  const description = firstString(record.description, record.summary, metadata.description, metadata.summary);
+  const claimStatus = getDirectoryOperatorClaimStatus(record).toLowerCase();
+  const verificationStatus = getDirectoryOperatorVerificationStatus(record).toLowerCase();
+  const sourceConfidence = getDirectoryOperatorSourceConfidence(record).toLowerCase();
   const trustScore = firstNumber(record.trust_score, record.confidence_score, metadata.trust_score);
-  const precomputed = getPrecomputedDirectoryOperatorJsonLd(record);
+  const hasClaimOrProof = ["claimed", "verified", "owner_verified", "admin_verified"].includes(claimStatus)
+    || ["verified", "proof_submitted", "admin_reviewed", "source_backed", "fmcsa_verified"].includes(verificationStatus);
+  const hasSourceConfidence = ["high", "medium", "owner_submitted", "admin_reviewed"].includes(sourceConfidence) || trustScore >= 70;
 
-  if (!location && services.length === 0 && !proof && trustScore === 0 && !precomputed) {
+  if (!location) return { index: false, reason: "missing_service_area" };
+
+  if (services.length === 0 && expertise.length === 0 && !description) {
     return { index: false, reason: "thin_record" };
+  }
+
+  if (!hasClaimOrProof && !hasSourceConfidence) {
+    return { index: false, reason: "limited_source_confidence" };
   }
 
   return { index: true, reason: "source_backed_profile" };
@@ -192,7 +172,6 @@ export function buildDirectoryOperatorJsonLd(
   canonicalUrl: string,
   options: { includeFaq?: boolean; faqs?: DirectoryOperatorFaq[] } = {},
 ) {
-  const precomputed = getPrecomputedDirectoryOperatorJsonLd(record);
   const metadata = asRecord(record.metadata);
   const name = getDirectoryOperatorName(record);
   const { city, region, country } = getDirectoryOperatorLocation(record);
@@ -203,11 +182,8 @@ export function buildDirectoryOperatorJsonLd(
   const serviceType = services[0]?.replace(/_/g, " ") || "Heavy-haul support";
   const faqs = options.faqs ?? buildDirectoryOperatorFaqs(record);
 
-  const precomputedBusiness: Record<string, unknown> = precomputed && !Array.isArray(precomputed["@graph"]) ? precomputed : {};
-  const precomputedGraph = jsonLdGraphEntries(precomputed);
   const businessJsonLd: Record<string, unknown> = {
-    ...precomputedBusiness,
-    "@type": precomputedBusiness["@type"] ?? ["Organization", "LocalBusiness", "ProfessionalService"],
+    "@type": ["Organization", "LocalBusiness", "ProfessionalService"],
     "@id": `${canonicalUrl}#business`,
     url: canonicalUrl,
     name,
@@ -239,10 +215,6 @@ export function buildDirectoryOperatorJsonLd(
   }
 
   const graph: Record<string, unknown>[] = [
-    ...precomputedGraph.filter((entry) => {
-      const id = entry["@id"];
-      return id !== `${canonicalUrl}#profile` && id !== `${canonicalUrl}#business` && id !== `${canonicalUrl}#breadcrumbs` && id !== `${canonicalUrl}#faq`;
-    }),
     {
       "@type": "WebPage",
       "@id": `${canonicalUrl}#profile`,

@@ -32,7 +32,15 @@ async function getArticle(slug: string) {
 }
 
 function shouldNoindexArticle(article: any): boolean {
-  return article.noindex === true || article.index_state === "noindex" || article.index_status === "noindex";
+  const rawContent = typeof article.content === "string" ? article.content : "";
+  const textContent = rawContent.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  const status = typeof article.status === "string" ? article.status.toLowerCase() : "";
+
+  return article.noindex === true
+    || article.index_state === "noindex"
+    || article.index_status === "noindex"
+    || (status.length > 0 && status !== "published")
+    || textContent.length < 800;
 }
 
 export async function generateMetadata({ params }: BlogArticlePageProps): Promise<Metadata> {
@@ -83,7 +91,9 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps) 
   }
 
   const noindexArticle = shouldNoindexArticle(article);
-  const publishedDate = new Date(article.created_at || article.updated_at || Date.now()).toLocaleDateString("en-US", {
+  const publishedAt = article.published_at || article.created_at || article.updated_at;
+  const modifiedAt = article.updated_at || publishedAt;
+  const publishedDate = new Date(publishedAt || Date.now()).toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
@@ -96,8 +106,8 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps) 
     headline: article.title,
     description: article.excerpt || article.title,
     image: article.hero_image_url || "/images/blog_hero_bg.png",
-    datePublished: article.created_at,
-    dateModified: article.updated_at || article.created_at,
+    datePublished: publishedAt,
+    dateModified: modifiedAt,
     author: {
       "@type": "Organization",
       name: "Haul Command",

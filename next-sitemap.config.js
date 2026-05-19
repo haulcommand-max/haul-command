@@ -14,6 +14,15 @@ module.exports = {
     '/dev/*',
     '/route-check',
     '/app/*',
+    '/companies',
+    '/companies/*',
+    '/providers',
+    '/providers/*',
+    '/directory/profile/*',
+    '/home',
+    '/loads',
+    '/loads/*',
+    '/near/*',
   ],
   robotsTxtOptions: {
     additionalSitemaps: [

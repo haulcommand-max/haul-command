@@ -29,7 +29,7 @@ export const Canonical = {
 
     // Entities
     provider: (slug: string) =>
-        `${DOMAIN}/providers/${normalizeSlug(slug)}`,
+        `${DOMAIN}/directory/dossier/${encodeURIComponent(normalizeSlug(slug))}`,
 
     load: (id: string) =>
         `${DOMAIN}/loads/${id}`,

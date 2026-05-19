@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { LiveKitDispatchButton } from '../dispatch/LiveKitDispatchButton';
 import { VAPIDispatchButton } from '../dispatch/VAPIDispatchButton';
+import { buildDirectoryDossierHref } from '@/lib/directory/routes';
 
 //  Types
 interface Operator {
@@ -240,7 +241,7 @@ function OperatorCard({ op, isAuthenticated, onUnlockClick }: { op: Operator; is
             </>
           )}
           <a
-            href={`/providers/${op.slug}`}
+            href={buildDirectoryDossierHref(op.slug || op.id)}
             style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: '#60a5fa', fontWeight: 600, textDecoration: 'none' }}
           >
             View Profile <ChevronRight size={12} />

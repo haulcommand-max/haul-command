@@ -8,13 +8,14 @@ interface DriverEmbedSnippetProps {
     state: string;
 }
 
-export function DriverEmbedSnippet({ driverId, driverName, state }: DriverEmbedSnippetProps) {
-    const profileUrl = `https://haulcommand.com/directory/us/${state.toLowerCase()}/profile/${driverId}`;
+export function DriverEmbedSnippet({ driverId, driverName }: DriverEmbedSnippetProps) {
+    const profileUrl = `https://www.haulcommand.com/directory/dossier/${encodeURIComponent(driverId.trim())}`;
+    const badgeLabel = `View ${driverName || 'this provider'} on Haul Command`;
 
-    const snippet = `<!-- Haul Command Verification Badge -->
+    const snippet = `<!-- Haul Command Profile Badge -->
 <a href="${profileUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-block;border:1px solid #F1A91B;border-radius:8px;padding:8px 16px;background:#0a0a0f;color:#F1A91B;font-family:system-ui,sans-serif;text-decoration:none;font-weight:bold;font-size:14px;box-shadow:0 4px 12px rgba(241,169,27,0.15);">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:text-bottom;margin-right:6px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-  Verified on Haul Command
+  ${badgeLabel}
 </a>`;
 
     return (
@@ -32,7 +33,7 @@ export function DriverEmbedSnippet({ driverId, driverName, state }: DriverEmbedS
             <div className="mb-6 flex justify-center py-4 bg-black/50 rounded-lg border border-white/5">
                 <a href={profileUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', border: '1px solid #F1A91B', borderRadius: '8px', padding: '8px 16px', background: '#0a0a0f', color: '#F1A91B', fontFamily: 'system-ui, sans-serif', textDecoration: 'none', fontWeight: 'bold', fontSize: '14px', boxShadow: '0 4px 12px rgba(241,169,27,0.15)' }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'inline', verticalAlign: 'text-bottom', marginRight: '6px' }}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                    Verified on Haul Command
+                    {badgeLabel}
                 </a>
             </div>
 

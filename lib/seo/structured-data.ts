@@ -92,7 +92,7 @@ export function generateProfilePageSchema(props: ProfilePageSchemaProps) {
     mainEntity: {
       '@type': 'Organization',
       name: props.name,
-      url: `https://www.haulcommand.com/profile/${props.slug}`,
+      url: `https://www.haulcommand.com/directory/dossier/${encodeURIComponent(props.slug)}`,
       description: props.description,
       image: props.image_url,
       telephone: props.telephone,
