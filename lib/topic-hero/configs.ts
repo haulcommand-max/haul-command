@@ -39,7 +39,7 @@ const familyBackground: Record<TopicHeroPageFamily, string> = {
   dashboard: "/backgrounds/dashboard-hero.jpg",
   admin: "/backgrounds/dashboard-hero.jpg",
   auth: "/backgrounds/verify-hero.jpg",
-  utility: "/backgrounds/haul-command-final-bg.jpg",
+  utility: "/backgrounds/haul-command-industrial-gold-texture-background.png",
 };
 
 const defaultCtas: Record<TopicHeroPageFamily, TopicHeroCta> = {

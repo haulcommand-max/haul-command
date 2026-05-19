@@ -24,8 +24,8 @@ export function ProfileClaimSidebar({ profileId, isClaimed, claimHash, className
         return (
             <div className={cn("bg-[#0a0a0a] border border-[#1a1a1a] p-6 rounded-2xl flex flex-col items-center text-center", className)}>
                 <ShieldCheck className="w-8 h-8 text-emerald-500 mb-3" />
-                <h3 className="text-[11px] font-bold text-white uppercase tracking-[0.15em] mb-1">Ownership Verified</h3>
-                <p className="text-[10px] text-[#555]">This operator manages their own Haul Command presence.</p>
+                <h3 className="text-[11px] font-bold text-white uppercase tracking-[0.15em] mb-1">Profile Claimed</h3>
+                <p className="text-[10px] text-[#555]">This operator can manage its Haul Command presence.</p>
             </div>
         );
     }
@@ -43,7 +43,7 @@ export function ProfileClaimSidebar({ profileId, isClaimed, claimHash, className
             </div>
 
             <p className="text-xs text-[#888] leading-relaxed mb-6 relative z-10">
-                This public directory profile has not been claimed. Claim it now to unlock load matching, manage your capability matrix, and build broker trust.
+                This public directory profile has not been claimed. Claim it to manage service areas, submit proof, and keep broker comparisons from relying on stale data.
             </p>
 
             <ul className="space-y-3 mb-6 relative z-10">
@@ -53,11 +53,11 @@ export function ProfileClaimSidebar({ profileId, isClaimed, claimHash, className
                 </li>
                 <li className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#aaa]">
                     <Zap className="w-3 h-3 text-[#F1A91B]" />
-                    Receive Direct Requests
+                    Set Request Paths
                 </li>
                 <li className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#aaa]">
                     <Zap className="w-3 h-3 text-[#F1A91B]" />
-                    Build Trust Score
+                    Submit Proof Signals
                 </li>
             </ul>
 
@@ -65,7 +65,7 @@ export function ProfileClaimSidebar({ profileId, isClaimed, claimHash, className
                 href={claimUrl}
                 className="w-full flex items-center justify-between px-4 py-3.5 bg-[#F1A91B] hover:bg-[#f0b93a] text-black font-black uppercase tracking-widest text-xs rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 relative z-10"
             >
-                <span>Get Verified Status</span>
+                <span>Start Claim Review</span>
                 <ArrowRight className="w-4 h-4" />
             </Link>
         </div>

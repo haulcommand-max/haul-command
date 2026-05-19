@@ -93,7 +93,7 @@ export function buildDirectoryCardCopy(input: DirectoryProofCopyInput): Director
         "Unclaimed profile. If this is your company, claim it before the next broker compares you from incomplete data.",
       profileCta: "Review record",
       packetCta: "Build backup plan",
-      claimCta: "Claim before competitors do",
+      claimCta: "Claim and correct",
       sourceConfidenceLabel: "claim needed",
     };
   }
@@ -129,7 +129,7 @@ export function buildEmptyMarketConversionCopy(locationName: string, hasDataIssu
       "That is not a dead end. Post the need, claim the missing profile, suggest a provider, or sponsor the gap so the next broker has a clearer path.",
     primaryCta: "Post the support need",
     claimCta: "Claim the missing profile",
-    sponsorCta: "Own this market gap",
+    sponsorCta: "Sponsor this market gap",
     footnote:
       "Thin markets are labeled honestly. Haul Command will not pretend local coverage exists until source-backed records, claims, or request activity support it.",
   };

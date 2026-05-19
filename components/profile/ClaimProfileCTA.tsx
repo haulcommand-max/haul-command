@@ -8,10 +8,10 @@ export function ClaimProfileCTA({ operatorId, operatorName, hcId }: ClaimCTAProp
           <h3 className="text-lg font-bold text-[#f0f2f5] mb-2">Claim {operatorName}</h3>
           <p className="text-sm text-[#8a7050] mb-3">Free to claim. HC ID: <span className="font-mono text-[#d4950e]">{hcId??'Pending'}</span></p>
           <ul className="space-y-1 text-xs text-[#8a7050]">
-            <li>✓ Priority placement in search results</li>
-            <li>✓ Verified badge on your profile</li>
-            <li>✓ Real-time load alerts in your corridor</li>
-            <li>✓ Analytics — who&apos;s viewing your profile</li>
+            <li>✓ Control public service areas and contact paths</li>
+            <li>✓ Submit proof for verification review</li>
+            <li>✓ Set corridor and request preferences</li>
+            <li>✓ Review analytics eligibility as data becomes available</li>
           </ul>
         </div>
         <a href={`/claim?operator=${operatorId}`} className="block flex-shrink-0 bg-[#d4950e] text-[#07090d] font-bold text-sm px-6 py-3 rounded-xl hover:bg-[#e8a828] text-center whitespace-nowrap">Claim Free Profile →</a>

@@ -30,7 +30,7 @@ const STATE_CONFIG: Record<string, {
     borderColor: 'rgba(245,158,11,0.2)',
     nextHref: '/auth/register?intent=claim',
     nextLabel: 'Start Claim',
-    description: 'Claim your listing to appear in search and receive load offers.',
+    description: 'Claim your listing to control public data, request paths, and proof submission.',
   },
   claim_started: {
     label: 'Claim In Progress',
@@ -48,7 +48,7 @@ const STATE_CONFIG: Record<string, {
     borderColor: 'rgba(59,130,246,0.2)',
     nextHref: '/settings/profile',
     nextLabel: 'Build Profile',
-    description: 'Your identity is verified. Build your profile to go live.',
+    description: 'Your identity check passed. Build your profile so it can be reviewed for public visibility.',
   },
   ownership_granted: {
     label: 'Ownership Confirmed',
@@ -57,7 +57,7 @@ const STATE_CONFIG: Record<string, {
     borderColor: 'rgba(59,130,246,0.2)',
     nextHref: '/settings/profile',
     nextLabel: 'Build Profile',
-    description: 'You own this listing. Complete your profile to appear in search.',
+    description: 'You own this listing. Complete your profile so it can be reviewed for search visibility.',
   },
   profile_started: {
     label: 'Profile In Progress',

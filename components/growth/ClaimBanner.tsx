@@ -46,7 +46,7 @@ export default function ClaimBanner({
                             Is this your business?
                         </p>
                         <p className="text-amber-100/80 text-xs">
-                            Claim &amp; verify to unlock premium features
+                            Claim to control public data and submit proof for review
                         </p>
                     </div>
                     <Link aria-label="Navigation Link"
@@ -77,22 +77,22 @@ export default function ClaimBanner({
                     </div>
                     <div>
                         <h3 className="text-lg font-bold text-white">Is this your business?</h3>
-                        <p className="text-sm text-slate-400">Claim this listing to manage your profile</p>
+                        <p className="text-sm text-slate-400">Claim this listing to manage public profile data</p>
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
                     <div className="flex items-center gap-2 text-slate-300">
                         <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
-                        <span>Verified badge + rank boost</span>
+                        <span>Proof review path</span>
                     </div>
                     <div className="flex items-center gap-2 text-slate-300">
                         <Star className="w-4 h-4 text-amber-400 shrink-0" />
-                        <span>Receive reviews + ratings</span>
+                        <span>Manage request paths</span>
                     </div>
                     <div className="flex items-center gap-2 text-slate-300">
                         <TrendingUp className="w-4 h-4 text-blue-400 shrink-0" />
-                        <span>Appear higher in search</span>
+                        <span>Improve completeness signals</span>
                     </div>
                 </div>
 
@@ -114,7 +114,7 @@ export default function ClaimBanner({
             <Shield className="w-5 h-5 text-amber-400 shrink-0" />
             <p className="flex-1 text-sm text-slate-300">
                 <span className="font-semibold text-white">Is this your business?</span>{' '}
-                Claim to verify, update details, and boost your rank.
+                Claim to update details, submit proof, and control how brokers evaluate the profile.
             </p>
             <Link aria-label="Navigation Link"
                 href={claimUrl}

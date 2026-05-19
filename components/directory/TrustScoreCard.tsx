@@ -111,7 +111,7 @@ export function TrustScoreCard({
                             className="text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider"
                             style={{ color: tier.color, background: `${tier.color}15`, border: `1px solid ${tier.color}25` }}
                         >
-                            Verified
+                            Evidence score
                         </span>
                     </div>
 
@@ -160,7 +160,7 @@ export function TrustScoreCard({
                     <div className="flex items-center gap-2">
                         <Star className="w-3.5 h-3.5 text-white/30" />
                         <span className="text-xs text-white/50 group-hover:text-white/70 transition-colors">
-                            View Verified Job Ledger
+                            View Evidence Ledger
                         </span>
                         {verifiedJobCount > 0 && (
                             <span className="text-[9px] font-bold text-white/30 bg-white/5 px-1.5 py-0.5 rounded">

@@ -3,7 +3,7 @@
    Approved golden/yellow grunge background.
 
    Required asset path:
-   public/backgrounds/haul-command-golden-grunge-bg.png
+   public/backgrounds/haul-command-industrial-gold-texture-background.png
 */
 
 html {
@@ -11,7 +11,7 @@ html {
 }
 
 body {
-  background-image: url("/backgrounds/haul-command-final-bg.jpg") !important;
+  background-image: url("/backgrounds/haul-command-industrial-gold-texture-background.png") !important;
   background-repeat: repeat-y !important;
   background-size: 100% auto !important;
   background-position: top center !important;

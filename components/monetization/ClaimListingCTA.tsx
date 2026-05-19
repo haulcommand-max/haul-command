@@ -72,7 +72,7 @@ export function ClaimListingCTA({
                             {operatorName ? `Is this your business?` : 'Unclaimed listing'}
                         </div>
                         <div style={{ fontSize: 10, color: '#6b7280' }}>
-                            Claim to update info, respond to leads, and unlock analytics
+                            Claim to update info, set request paths, and review analytics eligibility
                         </div>
                     </div>
                 </div>
@@ -103,7 +103,7 @@ export function ClaimListingCTA({
                             : `Claim your listing${geoLabel ? ` in ${geoLabel}` : ''}`}
                     </div>
                     <div style={{ fontSize: 12, color: '#9CA3AF', lineHeight: 1.5 }}>
-                        Verified operators get priority placement, lead alerts, analytics, and trust badges.
+                        Claimed operators can correct service areas, submit proof, and request review for stronger visibility.
                         {claimedCount && claimedCount > 0 && (
                             <span style={{ color: '#D4A843', fontWeight: 700 }}> {claimedCount} operators claimed this week.</span>
                         )}
@@ -151,17 +151,17 @@ export function ClaimListingCTA({
                 <p style={{ fontSize: 12, color: '#6b7280', marginBottom: 16, lineHeight: 1.5, margin: '4px 0 16px' }}>
                     {operatorName
                         ? `${operatorName} is listed on Haul Command but hasn't been claimed yet.`
-                        : `Unclaimed listings${geoLabel ? ` in ${geoLabel}` : ''} are missing out on leads.`}
+                        : `Unclaimed listings${geoLabel ? ` in ${geoLabel}` : ''} may be compared from incomplete data.`}
                 </p>
 
                 {/* Benefits */}
                 <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 16px', display: 'flex', flexDirection: 'column', gap: 6 }}>
                     {[
                         'Update your business information',
-                        'Respond directly to broker inquiries',
-                        'Unlock analytics dashboard',
-                        'Earn a verified trust badge',
-                        'Get priority in search results',
+                        'Set request and correction paths',
+                        'Review profile analytics eligibility',
+                        'Submit proof for trust review',
+                        'Improve completeness signals',
                     ].map((b, i) => (
                         <li key={i} style={{ fontSize: 11, color: '#9CA3AF', display: 'flex', alignItems: 'center', gap: 6 }}>
                             <span style={{ color: '#10b981', fontSize: 10 }}>✓</span> {b}
@@ -176,7 +176,7 @@ export function ClaimListingCTA({
                         background: 'rgba(212,168,67,0.04)',
                         fontSize: 11, color: '#D4A843', fontWeight: 600,
                     }}>
-                        {claimedCount && claimedCount > 0 && `${claimedCount} operators claimed this week`}
+                        {claimedCount && claimedCount > 0 && `${claimedCount} operators claimed or updated this week`}
                         {claimedCount && totalUnclaimed && ' · '}
                         {totalUnclaimed && totalUnclaimed > 0 && `${totalUnclaimed} unclaimed in this area`}
                     </div>

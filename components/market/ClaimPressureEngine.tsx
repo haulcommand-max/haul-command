@@ -43,12 +43,12 @@ interface MarketSignal {
 
 // Claim value items — what you unlock
 const CLAIM_VALUES = [
-    { icon: CheckCircle, label: 'Verified badge + trust boost', color: '#22C55E' },
-    { icon: Star, label: 'Receive ratings & reviews', color: '#F59E0B' },
-    { icon: TrendingUp, label: 'Higher search ranking', color: '#3B82F6' },
-    { icon: Users, label: 'Dispatch matching eligible', color: '#8B5CF6' },
-    { icon: Zap, label: 'Real-time availability status', color: '#14B8A6' },
-    { icon: Clock, label: 'Lead routing & notifications', color: '#EC4899' },
+    { icon: CheckCircle, label: 'Submit proof for review', color: '#22C55E' },
+    { icon: Star, label: 'Manage public profile details', color: '#F59E0B' },
+    { icon: TrendingUp, label: 'Improve completeness signals', color: '#3B82F6' },
+    { icon: Users, label: 'Request matching eligibility review', color: '#8B5CF6' },
+    { icon: Zap, label: 'Set availability preferences', color: '#14B8A6' },
+    { icon: Clock, label: 'Configure request notifications', color: '#EC4899' },
 ];
 
 export function ClaimPressureEngine({
@@ -104,11 +104,11 @@ export function ClaimPressureEngine({
     // Market urgency copy
     const urgencyCopy = marketSignal
         ? marketSignal.mode === 'live'
-            ? `${marketSignal.activeLoads} active loads in your area. Verified operators get contacted first.`
+            ? `${marketSignal.activeLoads} active loads in this market. Claim to keep your service data current before buyers compare options.`
             : marketSignal.mode === 'seeding'
-                ? `${marketSignal.verifiedOperators} operators claimed in your market. Don't fall behind.`
-                : `Operators in your area are getting verified. Claim yours before someone else does.`
-        : 'Verify to unlock premium features and get found by brokers.';
+                ? `${marketSignal.verifiedOperators} claimed or reviewed operators in this market. Do not let stale data speak for your company.`
+                : `This market is still building proof. Claim to correct service areas, contact paths, and proof status.`
+        : 'Claim to control profile data, submit proof, and make the next broker comparison accurate.';
 
     /* ───── INLINE VARIANT ───── */
     if (variant === 'inline') {
@@ -151,7 +151,7 @@ export function ClaimPressureEngine({
                                 )}
                                 <span className="flex items-center gap-1">
                                     <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                                    {marketSignal.verifiedOperators} verified
+                                    {marketSignal.verifiedOperators} reviewed
                                 </span>
                             </div>
                         )}
@@ -191,7 +191,7 @@ export function ClaimPressureEngine({
                         <div className="text-[10px] text-white/40">
                             {marketSignal && marketSignal.activeLoads > 0
                                 ? `${marketSignal.activeLoads} loads active · Free verification`
-                                : 'Free · Verified in 24 hrs'}
+                                : 'Free claim · review required'}
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -241,12 +241,12 @@ export function ClaimPressureEngine({
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
                                 </span>
-                                <span className="text-[11px] font-bold text-emerald-400">{marketSignal.activeLoads} live loads</span>
+                                <span className="text-[11px] font-bold text-emerald-400">{marketSignal.activeLoads} loads shown</span>
                             </div>
                         )}
                         <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/10 border border-amber-500/15 rounded-lg">
                             <Users className="w-3 h-3 text-amber-400" />
-                            <span className="text-[11px] font-bold text-amber-400">{marketSignal.verifiedOperators} claimed</span>
+                            <span className="text-[11px] font-bold text-amber-400">{marketSignal.verifiedOperators} reviewed</span>
                         </div>
                     </div>
                 )}
@@ -281,7 +281,7 @@ export function ClaimPressureEngine({
                     <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </Link>
                 <p className="text-center text-[10px] text-white/25 mt-3 uppercase tracking-wider font-semibold">
-                    Free · Takes 2 minutes · No credit card
+                    Free claim · proof review required · no credit card
                 </p>
             </div>
         </div>

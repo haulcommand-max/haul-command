@@ -335,7 +335,7 @@ export default function HomeClient({
                     --hc-brand-gold-bright: #F1A91B;
                     --hc-brand-bronze: #8B5518;
                     --hc-brand-black: #050505;
-                    --hc-panel: rgba(0, 0, 0, 0.55);
+                    --hc-panel: rgba(5, 5, 5, 0.46);
                     --hc-panel-border: rgba(215,150,34,0.26);
                     --hc-panel-shadow: 0 18px 44px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,210,120,0.08);
                     position: relative;
@@ -349,8 +349,8 @@ export default function HomeClient({
                     z-index: 0;
                     pointer-events: none;
                     background:
-                        radial-gradient(circle at 50% 0%, rgba(215, 150, 34, 0.12), transparent 34%),
-                        linear-gradient(180deg, rgba(0,0,0,0.62), rgba(0,0,0,0.78));
+                        radial-gradient(circle at 50% 0%, rgba(215, 150, 34, 0.10), transparent 34%),
+                        linear-gradient(180deg, rgba(0,0,0,0.30), rgba(0,0,0,0.48));
                 }
                 .hc-homepage-shell > section,
                 .hc-homepage-shell > footer {
@@ -407,20 +407,23 @@ export default function HomeClient({
                     background: var(--hc-panel);
                     border: 1px solid var(--hc-panel-border);
                     box-shadow: var(--hc-panel-shadow);
-                    backdrop-filter: blur(6px);
+                    backdrop-filter: blur(12px) saturate(118%);
+                    -webkit-backdrop-filter: blur(12px) saturate(118%);
                 }
                 .hc-chip {
                     border: 1px solid rgba(215,150,34,0.28);
                     background: var(--hc-panel);
                     color: rgba(255,255,255,0.88);
-                    backdrop-filter: blur(6px);
+                    backdrop-filter: blur(12px) saturate(118%);
+                    -webkit-backdrop-filter: blur(12px) saturate(118%);
                 }
                 .hc-homepage-shell .bg-black\\/30,
                 .hc-homepage-shell .bg-black\\/35,
                 .hc-homepage-shell .bg-black\\/40,
                 .hc-homepage-shell .bg-black\\/55 {
                     background-color: var(--hc-panel) !important;
-                    backdrop-filter: blur(6px);
+                    backdrop-filter: blur(12px) saturate(118%);
+                    -webkit-backdrop-filter: blur(12px) saturate(118%);
                 }
                 .hc-gold-divider {
                     height: 2px;
@@ -429,17 +432,18 @@ export default function HomeClient({
                 }
                 .hc-premium-hero {
                     min-height: 570px;
-                    background: #120904;
+                    background: rgba(18,9,4,0.18);
                 }
                 .hc-premium-hero-image {
                     object-position: 61% center;
                     filter: saturate(1.05) contrast(1.02);
+                    opacity: 0.66;
                 }
                 .hc-hero-readability {
                     background:
-                        linear-gradient(180deg, rgba(0,0,0,0.54) 0%, rgba(0,0,0,0.18) 35%, rgba(0,0,0,0.18) 62%, rgba(0,0,0,0.66) 100%),
-                        radial-gradient(circle at 50% 14%, rgba(0,0,0,0.32), transparent 46%),
-                        linear-gradient(90deg, rgba(0,0,0,0.42), transparent 30%, transparent 66%, rgba(0,0,0,0.32));
+                        linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.12) 35%, rgba(0,0,0,0.14) 62%, rgba(0,0,0,0.52) 100%),
+                        radial-gradient(circle at 50% 14%, rgba(0,0,0,0.24), transparent 46%),
+                        linear-gradient(90deg, rgba(0,0,0,0.32), transparent 30%, transparent 66%, rgba(0,0,0,0.24));
                 }
                 .hc-hero-sky-drift {
                     top: -14%;
@@ -847,8 +851,8 @@ export default function HomeClient({
                     }
                     .hc-hero-readability {
                         background:
-                            linear-gradient(180deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.34) 34%, rgba(0,0,0,0.30) 58%, rgba(0,0,0,0.76) 100%),
-                            linear-gradient(90deg, rgba(0,0,0,0.18), transparent 46%, rgba(0,0,0,0.28));
+                            linear-gradient(180deg, rgba(0,0,0,0.46) 0%, rgba(0,0,0,0.22) 34%, rgba(0,0,0,0.24) 58%, rgba(0,0,0,0.58) 100%),
+                            linear-gradient(90deg, rgba(0,0,0,0.14), transparent 46%, rgba(0,0,0,0.22));
                     }
                     .hc-hero-beacon {
                         left: 70%;
@@ -993,7 +997,7 @@ export default function HomeClient({
             <section className="relative w-full pb-8 hc-homepage-dark-surface">
                 <div className="relative max-w-7xl mx-auto px-4 pt-2">
                     <div
-                        className="hc-premium-hero relative w-full overflow-hidden rounded-xl border-2 border-[#D79622] shadow-[0_0_0_1px_rgba(255,218,130,0.22),0_24px_80px_rgba(0,0,0,0.55),0_0_42px_rgba(215,150,34,0.22)]"
+                        className="hc-premium-hero relative w-full overflow-hidden rounded-xl border border-white/14 shadow-[0_24px_72px_rgba(0,0,0,0.34),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-sm"
                         data-role-chip-source={heroRoleChipSource}
                         data-role-chip-count={heroRoleChipCount}
                         data-role-chip-pool-count={heroChipPool.length}
@@ -1045,7 +1049,7 @@ export default function HomeClient({
                                 <h1 className="hero-headline-industrial mx-auto mb-3">
                                     Find Pilot Cars, Escort Vehicles &amp; Heavy Haul Support
                                 </h1>
-                                <p className="mx-auto max-w-3xl rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-sm font-black leading-6 text-black shadow-[0_8px_22px_rgba(0,0,0,0.14)] backdrop-blur-[2px] sm:text-base sm:leading-7">
+                                <p className="mx-auto max-w-3xl rounded-xl border border-[#F1A91B]/22 bg-black/42 px-4 py-2 text-sm font-black leading-6 text-white shadow-[0_8px_22px_rgba(0,0,0,0.18)] backdrop-blur-md sm:text-base sm:leading-7">
                                     The heavy haul operating system for brokers, carriers, pilot car operators, permit teams, and route-support providers across a {registryCountryLabel}-country coverage model.
                                 </p>
                             </div>
@@ -1070,10 +1074,10 @@ export default function HomeClient({
                                 <form
                                     action="/directory"
                                     method="GET"
-                                    className="hc-hero-search-form w-full max-w-3xl flex flex-col sm:flex-row items-stretch bg-white rounded-lg overflow-hidden"
+                                    className="hc-hero-search-form w-full max-w-3xl flex flex-col sm:flex-row items-stretch bg-white/85 rounded-lg overflow-hidden backdrop-blur-md"
                                     data-search="hero-directory"
                                 >
-                                    <div className="hc-hero-search-field flex-[1.35] flex items-center gap-2 bg-white px-4 py-3 border-b sm:border-b-0 sm:border-r border-gray-300">
+                                    <div className="hc-hero-search-field flex-[1.35] flex items-center gap-2 bg-white/72 px-4 py-3 border-b sm:border-b-0 sm:border-r border-gray-300/70">
                                         <Search className="w-5 h-5 text-[#D4A348] flex-shrink-0" />
                                         <label className="w-full text-left">
                                             <span className="hc-search-step-label">1. Service</span>
@@ -1086,7 +1090,7 @@ export default function HomeClient({
                                             </select>
                                         </label>
                                     </div>
-                                    <div className="hc-hero-search-field flex-1 flex items-center gap-2 bg-white px-4 py-3 border-b sm:border-b-0 sm:border-r border-gray-300">
+                                    <div className="hc-hero-search-field flex-1 flex items-center gap-2 bg-white/72 px-4 py-3 border-b sm:border-b-0 sm:border-r border-gray-300/70">
                                         <MapPin className="w-5 h-5 text-gray-400 flex-shrink-0" />
                                         <label className="w-full text-left">
                                             <span className="hc-search-step-label">2. Where</span>

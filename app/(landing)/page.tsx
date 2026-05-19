@@ -11,6 +11,48 @@ import HomeClient from "./_components/HomeClient";
 const HOME_HERO_IMAGE_URL = 'https://www.haulcommand.com/images/hero/haul-command-find-post-claim-hero-pilot-car-oversize-load.webp';
 const HOME_SOCIAL_IMAGE_URL = 'https://www.haulcommand.com/images/hero/haul-command-homepage-social-preview-pilot-car-heavy-haul.jpg';
 const HOME_HERO_IMAGE_ALT = 'Pilot car escorting an oversize load truck on a highway at golden hour';
+const HOMEPAGE_DATA_TIMEOUT_MS = 1400;
+const FALLBACK_MARKET_PULSE = {
+    escorts_online_now: 0,
+    escorts_available_now: 0,
+    open_loads_now: 0,
+    median_fill_time_min_7d: null,
+    fill_rate_7d: null,
+};
+const FALLBACK_GLOBAL_STATS = {
+    totalCountries: 120,
+    liveCountries: 0,
+    coveredCountries: 0,
+    nextCountries: 0,
+    plannedCountries: 0,
+    futureCountries: 0,
+    totalOperators: -1,
+    totalCorridors: -1,
+    totalSupportLocations: -1,
+    avgRatePerDay: 380,
+    statsUpdatedAt: null,
+};
+const FALLBACK_HERO_ROLE_CHIPS = { chips: [], source: 'fallback' as const, eligibleCount: 0 };
+
+function withHomepageBudget<T>(label: string, promise: Promise<T>, fallback: T): Promise<T> {
+    return new Promise<T>((resolve) => {
+        const timeout = setTimeout(() => {
+            console.warn(`[homepage] ${label} exceeded ${HOMEPAGE_DATA_TIMEOUT_MS}ms; rendering fallback`);
+            resolve(fallback);
+        }, HOMEPAGE_DATA_TIMEOUT_MS);
+
+        promise
+            .then((value) => {
+                clearTimeout(timeout);
+                resolve(value);
+            })
+            .catch((error) => {
+                clearTimeout(timeout);
+                console.warn(`[homepage] ${label} failed; rendering fallback`, error);
+                resolve(fallback);
+            });
+    });
+}
 const HOME_FAQ_ITEMS = [
   {
     question: 'What is a pilot car or escort vehicle?',
@@ -111,12 +153,15 @@ export default async function LandingPage() {
     const detectedState = headersList.get('x-vercel-ip-country-region') ?? null;
 
     // Authenticated user id (anonymous if not logged in)
-    let userId: string | null = null;
-    try {
-        const supabase = await createClient();
-        const { data: { user } } = await supabase.auth.getUser();
-        userId = user?.id ?? null;
-    } catch {}
+    const userId = await withHomepageBudget(
+        'auth user lookup',
+        (async () => {
+            const supabase = await createClient();
+            const { data: { user } } = await supabase.auth.getUser();
+            return user?.id ?? null;
+        })(),
+        null as string | null,
+    );
 
     let marketPulse: Awaited<ReturnType<typeof getMarketPulse>>;
     let directoryResult: Awaited<ReturnType<typeof getDirectoryListings>>;
@@ -127,21 +172,21 @@ export default async function LandingPage() {
 
     try {
         [marketPulse, directoryResult, corridors, globalStats, nextMoveSignals, heroRoleChipResult] = await Promise.all([
-            getMarketPulse(),
-            getDirectoryListings({ limit: 8 }),
-            getCorridors(),
-            getGlobalStats(),
-            collectNextMoveSignals({ userId, detectedState }),
-            getHomepageRoleChips(countryCode),
+            withHomepageBudget('market pulse', getMarketPulse(), FALLBACK_MARKET_PULSE),
+            withHomepageBudget('directory preview', getDirectoryListings({ limit: 8 }), { listings: [], total: 0 }),
+            withHomepageBudget('corridor preview', getCorridors(), []),
+            withHomepageBudget('global stats', getGlobalStats(), FALLBACK_GLOBAL_STATS),
+            withHomepageBudget('next-move signals', collectNextMoveSignals({ userId, detectedState }), {}),
+            withHomepageBudget('hero role chips', getHomepageRoleChips(countryCode), FALLBACK_HERO_ROLE_CHIPS),
         ]);
     } catch (e) {
         console.error('Homepage data fetch failed:', e);
-        marketPulse = { escorts_online_now: 0, escorts_available_now: 0, open_loads_now: 0, median_fill_time_min_7d: null, fill_rate_7d: null };
+        marketPulse = FALLBACK_MARKET_PULSE;
         directoryResult = { listings: [], total: 0 };
         corridors = [];
-        globalStats = { totalCountries: 2, liveCountries: 2, coveredCountries: 2, nextCountries: 0, plannedCountries: 0, futureCountries: 0, totalOperators: -1, totalCorridors: -1, totalSupportLocations: -1, avgRatePerDay: 380, statsUpdatedAt: null };
+        globalStats = FALLBACK_GLOBAL_STATS;
         nextMoveSignals = {};
-        heroRoleChipResult = { chips: [], source: 'fallback', eligibleCount: 0 };
+        heroRoleChipResult = FALLBACK_HERO_ROLE_CHIPS;
     }
 
     return (
