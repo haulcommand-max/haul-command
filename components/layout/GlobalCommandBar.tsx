@@ -34,7 +34,15 @@ export function GlobalCommandBar() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#2A1A05] bg-[#050505] shadow-[0_10px_30px_rgba(0,0,0,0.55)]">
+    <header
+      className="sticky top-0 z-50 w-full border-b shadow-[0_10px_30px_rgba(0,0,0,0.42)]"
+      style={{
+        backgroundColor: "rgba(5, 5, 5, 0.58)",
+        borderColor: "rgba(241, 169, 27, 0.24)",
+        backdropFilter: "blur(16px) saturate(118%)",
+        WebkitBackdropFilter: "blur(16px) saturate(118%)",
+      }}
+    >
       {/* ── Single unified row — logo left, desktop nav center, actions right ── */}
       <div className="mx-auto flex h-16 w-full max-w-screen-2xl items-center justify-between gap-3 px-4 sm:px-5 lg:h-[72px] lg:px-8 xl:px-10">
 

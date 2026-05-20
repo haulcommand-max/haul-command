@@ -46,6 +46,8 @@ export type PageFamily =
     | "dashboard"
     | "default";
 
+const MASTER_BACKGROUND_SRC = "/backgrounds/haul-command-industrial-gold-texture-background.png";
+
 interface PageFamilyAsset {
     /** Path relative to /public — must exist in the repo */
     src: string;
@@ -62,97 +64,97 @@ interface PageFamilyAsset {
 
 export const PAGE_FAMILY_MAP: Record<PageFamily, PageFamilyAsset> = {
     homepage: {
-        src: "/backgrounds/homepage-hero.jpg",
+        src: MASTER_BACKGROUND_SRC,
         alt: "Heavy haul fleet operations yard at dusk — Haul Command",
         focalPoint: "center",
         palette: { primary: "#0b0f19", accent: "#C6923A" },
     },
     training: {
-        src: "/backgrounds/training-hero.jpg",
+        src: MASTER_BACKGROUND_SRC,
         alt: "Oversized heavy haul load convoy on an American highway at golden hour — Haul Command Training",
         focalPoint: "center",
         palette: { primary: "#0b0f19", accent: "#C6923A" },
     },
     directory: {
-        src: "/backgrounds/directory-hero.jpg",
+        src: MASTER_BACKGROUND_SRC,
         alt: "Aerial night view of a highway interchange with heavy truck light trails — Haul Command Directory",
         focalPoint: "center",
         palette: { primary: "#050d1a", accent: "#3b82f6" },
     },
     corridor: {
-        src: "/backgrounds/corridor-hero.jpg",
+        src: MASTER_BACKGROUND_SRC,
         alt: "Long exposure highway corridor at night — Haul Command Route Intelligence",
         focalPoint: "bottom",
         palette: { primary: "#060c18", accent: "#22c55e" },
     },
     "load-board": {
-        src: "/backgrounds/load-board-hero.jpg",
+        src: MASTER_BACKGROUND_SRC,
         alt: "Heavy load truck at a freight terminal — Haul Command Load Board",
         focalPoint: "center",
         palette: { primary: "#0a0e1c", accent: "#C6923A" },
     },
     profiles: {
-        src: "/backgrounds/profiles-hero.jpg",
+        src: MASTER_BACKGROUND_SRC,
         alt: "Pilot car operators preparing a convoy — Haul Command Operator Profiles",
         focalPoint: "top",
         palette: { primary: "#0b0f19", accent: "#C6923A" },
     },
     regulations: {
-        src: "/backgrounds/regulations-hero.jpg",
+        src: MASTER_BACKGROUND_SRC,
         alt: "State highway with permit signs — Haul Command Regulations Hub",
         focalPoint: "center",
         palette: { primary: "#0a0d17", accent: "#eab308" },
     },
     glossary: {
-        src: "/backgrounds/glossary-hero.jpg",
+        src: MASTER_BACKGROUND_SRC,
         alt: "Technical overhead load diagram — Haul Command Heavy Haul Glossary",
         focalPoint: "center",
         palette: { primary: "#080c18", accent: "#6366f1" },
     },
     blog: {
-        src: "/backgrounds/blog-hero.jpg",
+        src: MASTER_BACKGROUND_SRC,
         alt: "Heavy haul industry news — Haul Command Intelligence Hub",
         focalPoint: "center",
         palette: { primary: "#0b0f19", accent: "#C6923A" },
     },
     forms: {
-        src: "/backgrounds/forms-hero.jpg",
+        src: MASTER_BACKGROUND_SRC,
         alt: "Compliance documents and permits — Haul Command Forms Hub",
         focalPoint: "right",
         palette: { primary: "#0a0c17", accent: "#64748b" },
     },
     marketplace: {
-        src: "/backgrounds/marketplace-hero.jpg",
+        src: MASTER_BACKGROUND_SRC,
         alt: "Heavy haul equipment and vendor operations — Haul Command Marketplace",
         focalPoint: "center",
         palette: { primary: "#0b0f19", accent: "#C6923A" },
     },
     tools: {
-        src: "/backgrounds/tools-hero.jpg",
+        src: MASTER_BACKGROUND_SRC,
         alt: "Route planning and permit intelligence tools — Haul Command",
         focalPoint: "center",
         palette: { primary: "#080c18", accent: "#06b6d4" },
     },
     about: {
-        src: "/backgrounds/about-hero.jpg",
+        src: MASTER_BACKGROUND_SRC,
         alt: "Haul Command team and mission — heavy haul logistics operating system",
         focalPoint: "center",
         palette: { primary: "#0b0f19", accent: "#C6923A" },
     },
     contact: {
-        src: "/backgrounds/contact-hero.jpg",
+        src: MASTER_BACKGROUND_SRC,
         alt: "Heavy haul dispatcher at work — Haul Command contact",
         focalPoint: "center",
         palette: { primary: "#0b0f19", accent: "#C6923A" },
     },
     dashboard: {
-        src: "/backgrounds/dashboard-hero.jpg",
+        src: MASTER_BACKGROUND_SRC,
         alt: "Haul Command operator dashboard — real-time logistics",
         focalPoint: "center",
         palette: { primary: "#050d1a", accent: "#3b82f6" },
     },
     default: {
-        src: "/backgrounds/homepage-hero.jpg",
+        src: MASTER_BACKGROUND_SRC,
         alt: "Haul Command — heavy haul logistics operating system",
         focalPoint: "center",
         palette: { primary: "#0b0f19", accent: "#C6923A" },
