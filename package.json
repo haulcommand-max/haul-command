@@ -14,6 +14,7 @@
         "typecheck:go-live": "tsc -p tsconfig.go-live.json --noEmit --pretty false",
         "audit:platform-readiness": "node scripts/audit-platform-readiness.mjs --write",
         "audit:media-governance": "node scripts/audit-media-governance.mjs --write",
+        "media:starter-packets": "node scripts/media/generate-video-packets.mjs --write",
         "backfill:glossary-schema": "node scripts/backfill-glossary-schema-json.mjs",
         "geocode:operator-queue": "node scripts/geocode-operator-queue.mjs",
         "brand:generate": "node scripts/brand/generate-assets.mjs",

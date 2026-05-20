@@ -1,0 +1,578 @@
+{
+  "generated_at": "static",
+  "packets": [
+    {
+      "id": "what-is-a-pilot-car",
+      "priority": 1,
+      "title": "What Is a Pilot Car?",
+      "lane": "search_answer",
+      "duration": "2-5m",
+      "engine": "remotion",
+      "money_path": "training",
+      "audience": "new operators, brokers, carriers, and shippers",
+      "source_page": "/what-is-a-pilot-car",
+      "secondary_pages": [
+        "/directory",
+        "/escort-requirements",
+        "/training"
+      ],
+      "watch_page": "/videos/what-is-a-pilot-car",
+      "hook": "A pilot car is not just a car with lights. It is part of the safety and communication system around an oversize load.",
+      "script": [
+        "A pilot car, also called an escort vehicle in many markets, helps move oversize loads more safely.",
+        "The job can include warning traffic, communicating hazards, helping with route movement, and supporting compliance needs.",
+        "A lead car, chase car, high-pole escort, route survey, bucket truck, and police escort are not always the same role.",
+        "The details change by jurisdiction, load size, route, and industry.",
+        "Haul Command connects role explainers to provider search, training, and local requirements.",
+        "If you need support, find providers. If you provide support, claim your profile."
+      ],
+      "visuals": [
+        "escort vehicle diagram",
+        "lead/chase/high-pole role labels",
+        "load movement scene",
+        "directory CTA"
+      ],
+      "captions": [
+        "Escort vehicle",
+        "Route support",
+        "Safety communication",
+        "Find or claim support"
+      ],
+      "cta": "Find providers",
+      "youtube": {
+        "title": "What Is a Pilot Car? Escort Vehicle Basics Explained",
+        "description": "A practical explanation of pilot cars, escort vehicles, and oversize-load support. Rules and terms vary by jurisdiction.",
+        "tags": [
+          "what is a pilot car",
+          "escort vehicle",
+          "oversize load",
+          "heavy haul",
+          "pilot car training"
+        ]
+      }
+    },
+    {
+      "id": "when-do-you-need-a-pilot-car",
+      "priority": 2,
+      "title": "When Do You Need a Pilot Car?",
+      "lane": "search_answer",
+      "duration": "2-5m",
+      "engine": "remotion",
+      "money_path": "broker_post",
+      "audience": "brokers, carriers, dispatchers, and shippers",
+      "source_page": "/when-do-you-need-a-pilot-car",
+      "secondary_pages": [
+        "/escort-requirements",
+        "/tools/escort-count-calculator"
+      ],
+      "watch_page": "/videos/when-do-you-need-a-pilot-car",
+      "hook": "The honest answer is: it depends on the load, the route, and the jurisdiction.",
+      "script": [
+        "Pilot car requirements can be triggered by width, height, length, weight, route restrictions, traffic conditions, or permit terms.",
+        "A move that is simple in one jurisdiction can require more support in another.",
+        "That is why a generic rule from a forum is not enough for dispatch.",
+        "Start with the load dimensions, then check the route and local requirements.",
+        "Use Haul Command to move from a quick answer into a requirement check, support search, or load post.",
+        "Verify requirements before dispatch because official rules and permit terms control the move."
+      ],
+      "visuals": [
+        "dimension trigger cards",
+        "jurisdiction warning",
+        "escort count calculator",
+        "requirements CTA"
+      ],
+      "captions": [
+        "Width",
+        "Height",
+        "Route",
+        "Verify before dispatch"
+      ],
+      "cta": "Check escort requirements",
+      "youtube": {
+        "title": "When Do You Need a Pilot Car for an Oversize Load?",
+        "description": "A practical overview of pilot car requirement triggers. Always verify official rules and permit terms before dispatch.",
+        "tags": [
+          "when do you need a pilot car",
+          "escort requirements",
+          "oversize load",
+          "permit requirements"
+        ]
+      }
+    },
+    {
+      "id": "pilot-car-cost-basics",
+      "priority": 3,
+      "title": "How Much Does a Pilot Car Cost?",
+      "lane": "search_answer",
+      "duration": "2-5m",
+      "engine": "remotion",
+      "money_path": "broker_post",
+      "audience": "brokers, carriers, shippers, and operators",
+      "source_page": "/tools/escort-calculator",
+      "secondary_pages": [
+        "/tools/instant-quote",
+        "/rates",
+        "/directory"
+      ],
+      "watch_page": "/videos/how-much-does-a-pilot-car-cost",
+      "hook": "The price is not just a mile rate. It changes with route difficulty, timing, proof, and role fit.",
+      "script": [
+        "Pilot car cost can change with distance, wait time, number of escorts, high-pole needs, route survey needs, state or country rules, and urgency.",
+        "A simple local move is different from a multi-jurisdiction corridor move.",
+        "The cheapest phone number can become expensive if the provider is wrong for the load.",
+        "Use calculator output as planning context, not a guaranteed quote.",
+        "Then confirm with providers who can actually support the route and role.",
+        "Haul Command helps buyers compare support and helps operators show why they are ready."
+      ],
+      "visuals": [
+        "cost factor stack",
+        "rate planning disclaimer",
+        "calculator UI",
+        "provider comparison CTA"
+      ],
+      "captions": [
+        "Distance",
+        "Wait time",
+        "Role fit",
+        "Confirm before dispatch"
+      ],
+      "cta": "Estimate support cost",
+      "youtube": {
+        "title": "How Much Does a Pilot Car Cost? Planning Factors Explained",
+        "description": "A practical pilot car cost primer for planning oversize-load support. Final quotes depend on route, role, and provider confirmation.",
+        "tags": [
+          "pilot car cost",
+          "escort vehicle rate",
+          "oversize load cost",
+          "heavy haul rates"
+        ]
+      }
+    },
+    {
+      "id": "permit-cost-basics",
+      "priority": 4,
+      "title": "Oversize Permit Cost Basics",
+      "lane": "search_answer",
+      "duration": "2-4m",
+      "engine": "remotion",
+      "money_path": "broker_post",
+      "audience": "brokers, carriers, shippers, and permit teams",
+      "source_page": "/tools/permit-cost-calculator",
+      "secondary_pages": [
+        "/permits",
+        "/escort-requirements"
+      ],
+      "watch_page": "/videos/oversize-permit-cost-basics",
+      "hook": "Permit cost is only one part of the move. Lead time, route restrictions, and support roles can matter just as much.",
+      "script": [
+        "Oversize permit costs can vary by jurisdiction, dimensions, weight, route, axle configuration, and whether a move is treated as a superload.",
+        "Multi-state or cross-border moves add more coordination.",
+        "Permit timing also matters because a late permit can delay equipment, escorts, and staging.",
+        "A calculator can help with planning, but official agencies and permit terms control the final move.",
+        "Use Haul Command to estimate, then connect permit needs to escort support and route planning."
+      ],
+      "visuals": [
+        "permit fee factor cards",
+        "multi-jurisdiction route",
+        "lead-time timeline",
+        "permit calculator CTA"
+      ],
+      "captions": [
+        "Fees vary",
+        "Lead time matters",
+        "Route terms control",
+        "Plan before dispatch"
+      ],
+      "cta": "Estimate permit cost",
+      "youtube": {
+        "title": "Oversize Permit Cost Basics for Heavy Haul Moves",
+        "description": "A planning primer for oversize permit costs, lead times, and support coordination. Verify official permit terms before dispatch.",
+        "tags": [
+          "oversize permit cost",
+          "heavy haul permit",
+          "superload permit",
+          "permit calculator"
+        ]
+      }
+    },
+    {
+      "id": "start-pilot-car-company",
+      "priority": 5,
+      "title": "How to Start a Pilot Car Company",
+      "lane": "pillar",
+      "duration": "6-10m",
+      "engine": "remotion",
+      "money_path": "training",
+      "audience": "new and aspiring pilot car operators",
+      "source_page": "/resources/guides/how-to-start-pilot-car-company",
+      "secondary_pages": [
+        "/resources/certification/state-pilot-car-certifications",
+        "/training",
+        "/claim"
+      ],
+      "watch_page": "/videos/how-to-start-a-pilot-car-company",
+      "hook": "Starting a pilot car company is not just buying lights and waiting for calls.",
+      "script": [
+        "You need to understand the role, the market, the equipment, insurance expectations, documentation, certification where required, and how buyers verify you.",
+        "The first mistake is treating every job like the same job.",
+        "The second mistake is being invisible when brokers search.",
+        "Build your setup, learn your requirements, document your proof, and show your coverage area.",
+        "Haul Command training and claim tools are designed to help serious operators become easier to find and easier to trust."
+      ],
+      "visuals": [
+        "startup checklist",
+        "equipment proof",
+        "certification map",
+        "claim profile CTA"
+      ],
+      "captions": [
+        "Equipment",
+        "Insurance",
+        "Certification",
+        "Proof"
+      ],
+      "cta": "Start training and claim your profile",
+      "youtube": {
+        "title": "How to Start a Pilot Car Company: Equipment, Proof, and Getting Found",
+        "description": "A practical starter guide for pilot car operators covering equipment, certification, insurance expectations, proof, and visibility.",
+        "tags": [
+          "start pilot car company",
+          "pilot car business",
+          "pilot car training",
+          "escort vehicle"
+        ]
+      }
+    },
+    {
+      "id": "pilot-car-certification-by-state",
+      "priority": 6,
+      "title": "Pilot Car Certification by State",
+      "lane": "search_answer",
+      "duration": "3-6m",
+      "engine": "remotion",
+      "money_path": "training",
+      "audience": "operators, carriers, and brokers",
+      "source_page": "/resources/certification/state-pilot-car-certifications",
+      "secondary_pages": [
+        "/training",
+        "/directory/us"
+      ],
+      "watch_page": "/videos/pilot-car-certification-by-state",
+      "hook": "Certification rules are not the same everywhere, and reciprocity can confuse new operators.",
+      "script": [
+        "Some jurisdictions have stricter pilot car certification expectations. Others are lighter or handle requirements through permit terms.",
+        "Reciprocity can matter when operators cross state lines.",
+        "The dangerous shortcut is assuming one certificate works everywhere.",
+        "Haul Command should be used as a planning layer, not as a replacement for official sources.",
+        "Check the state, check the route, and keep your profile proof current."
+      ],
+      "visuals": [
+        "state certification map",
+        "reciprocity arrows",
+        "renewal reminder",
+        "training CTA"
+      ],
+      "captions": [
+        "Rules vary",
+        "Reciprocity matters",
+        "Verify sources",
+        "Keep proof current"
+      ],
+      "cta": "Review certification resources",
+      "youtube": {
+        "title": "Pilot Car Certification by State: What Operators Should Check",
+        "description": "A plain-English certification and reciprocity primer for pilot car operators. Verify official state requirements before dispatch.",
+        "tags": [
+          "pilot car certification",
+          "PEVO",
+          "pilot car state requirements",
+          "escort vehicle training"
+        ]
+      }
+    },
+    {
+      "id": "height-pole-route-survey",
+      "priority": 7,
+      "title": "Height Pole and Route Survey Basics",
+      "lane": "training_short",
+      "duration": "60-90s",
+      "engine": "remotion",
+      "money_path": "training",
+      "audience": "operators, brokers, and dispatchers",
+      "source_page": "/tools/route-survey",
+      "secondary_pages": [
+        "/what-is-a-pilot-car",
+        "/directory?category=route-survey"
+      ],
+      "watch_page": "/videos/height-pole-and-route-survey-basics",
+      "hook": "A tall load does not fail at the bridge. It fails before the route was checked.",
+      "script": [
+        "A height pole is used to check vertical clearance before a tall load reaches overhead risk.",
+        "A route survey helps identify clearance, turn, grade, and restriction issues before dispatch.",
+        "They are related, but they are not the same thing.",
+        "For tall or complex moves, guessing from a map can become expensive.",
+        "Use Haul Command to find the right support role and check the route before the load moves."
+      ],
+      "visuals": [
+        "height pole setup",
+        "bridge clearance overlay",
+        "route survey checklist",
+        "route-survey CTA"
+      ],
+      "captions": [
+        "Height pole",
+        "Route survey",
+        "Clearance risk",
+        "Check before dispatch"
+      ],
+      "cta": "Find route survey support",
+      "youtube": {
+        "title": "Height Pole and Route Survey Basics for Oversize Loads",
+        "description": "A short explanation of height poles, route surveys, and why clearance planning matters before dispatch.",
+        "tags": [
+          "height pole",
+          "route survey",
+          "high pole escort",
+          "oversize load"
+        ]
+      }
+    },
+    {
+      "id": "risky-load-posting",
+      "priority": 8,
+      "title": "How to Read a Risky Load Posting",
+      "lane": "tool_short",
+      "duration": "45-75s",
+      "engine": "hyperframes",
+      "money_path": "broker_post",
+      "audience": "operators, brokers, and dispatchers",
+      "source_page": "/tools/load-analyzer",
+      "secondary_pages": [
+        "/pricing",
+        "/loads/post"
+      ],
+      "watch_page": "/videos/how-to-read-a-risky-load-posting",
+      "hook": "A risky load posting often hides the cost in the details nobody filled out.",
+      "script": [
+        "Watch for missing dimensions, unclear route, no permit status, vague timing, and no support role clarity.",
+        "Those gaps can affect escorts, police coordination, night restrictions, weekend restrictions, and rate risk.",
+        "Operators should not quote blind.",
+        "Brokers should not expect accurate responses from incomplete details.",
+        "Use the load analyzer to catch missing information before the market wastes time."
+      ],
+      "visuals": [
+        "load analyzer page",
+        "missing field highlights",
+        "risk score",
+        "post load CTA"
+      ],
+      "captions": [
+        "Missing dimensions",
+        "Unknown route",
+        "No permit status",
+        "Quote smarter"
+      ],
+      "cta": "Analyze the load",
+      "youtube": {
+        "title": "How to Read a Risky Oversize Load Posting",
+        "description": "A fast Haul Command walkthrough of load-posting risk signals for operators, brokers, and dispatchers.",
+        "tags": [
+          "oversize load posting",
+          "heavy haul broker",
+          "pilot car quote",
+          "load analyzer"
+        ]
+      }
+    },
+    {
+      "id": "directory-find-or-get-found",
+      "priority": 9,
+      "title": "Find Support or Get Found in the Directory",
+      "lane": "shorts",
+      "duration": "45-60s",
+      "engine": "hyperframes",
+      "money_path": "claim",
+      "audience": "buyers and support providers",
+      "source_page": "/directory",
+      "secondary_pages": [
+        "/claim",
+        "/loads/post?intent=directory-support-need"
+      ],
+      "watch_page": "/videos/find-support-or-get-found-in-the-directory",
+      "hook": "Haul Command has two jobs in the directory: help buyers find support and help serious providers get found.",
+      "script": [
+        "If you need help moving a load, search by role, place, corridor, or support need.",
+        "If the market is thin, post demand instead of dead-ending.",
+        "If you provide support, claim your listing and add proof.",
+        "The goal is not a bigger phone list.",
+        "The goal is a market that becomes easier to trust every time people use it."
+      ],
+      "visuals": [
+        "directory search",
+        "buyer/provider split",
+        "no-dead-end actions",
+        "claim/post CTAs"
+      ],
+      "captions": [
+        "Find support",
+        "Get found",
+        "Post demand",
+        "Add proof"
+      ],
+      "cta": "Search the directory",
+      "youtube": {
+        "title": "How Haul Command Helps Buyers Find Support and Providers Get Found",
+        "description": "A short directory walkthrough for heavy-haul buyers and support providers.",
+        "tags": [
+          "heavy haul directory",
+          "pilot car directory",
+          "claim listing",
+          "post a load"
+        ]
+      }
+    },
+    {
+      "id": "corridor-planning-no-fake-certainty",
+      "priority": 10,
+      "title": "Corridor Planning Without Fake Certainty",
+      "lane": "data_product",
+      "duration": "60-90s",
+      "engine": "remotion",
+      "money_path": "data_product",
+      "audience": "brokers, carriers, sponsors, and route planners",
+      "source_page": "/corridors",
+      "secondary_pages": [
+        "/loads/post",
+        "/directory",
+        "/escort-requirements"
+      ],
+      "watch_page": "/videos/corridor-planning-without-fake-certainty",
+      "hook": "A corridor page should help you plan. It should not pretend every rate, provider, or restriction is guaranteed.",
+      "script": [
+        "Good corridor planning connects route context, support roles, requirements, tools, and next actions.",
+        "Bad corridor content pretends it knows more than the data proves.",
+        "Haul Command should show source confidence, support gaps, provider paths, and where to verify before dispatch.",
+        "That is how corridor intelligence becomes useful instead of just decorative.",
+        "Use the corridor page to plan the support stack, then post the load or find providers."
+      ],
+      "visuals": [
+        "corridor page modules",
+        "source confidence badge",
+        "support stack",
+        "post/find CTA"
+      ],
+      "captions": [
+        "Plan the route",
+        "Check confidence",
+        "Find support",
+        "Verify before dispatch"
+      ],
+      "cta": "Explore corridors",
+      "youtube": {
+        "title": "Heavy Haul Corridor Planning Without Fake Certainty",
+        "description": "How to use corridor pages for route support planning without treating unsupported estimates as guaranteed facts.",
+        "tags": [
+          "heavy haul corridor",
+          "route planning",
+          "oversize load",
+          "corridor intelligence"
+        ]
+      }
+    },
+    {
+      "id": "own-the-corridor",
+      "priority": 11,
+      "title": "Do Not Buy Random Ads. Own the Corridor.",
+      "lane": "sponsor_pitch",
+      "duration": "60-90s",
+      "engine": "hyperframes",
+      "money_path": "sponsor",
+      "audience": "sponsors, permit services, suppliers, yards, and local partners",
+      "source_page": "/sponsor",
+      "secondary_pages": [
+        "/advertise",
+        "/data-products/corridor-intelligence"
+      ],
+      "watch_page": "/videos/own-the-heavy-haul-corridor",
+      "hook": "Do not buy random ads. Own the corridor where heavy-haul buyers already have intent.",
+      "script": [
+        "A generic ad reaches people who may never move a load.",
+        "A corridor sponsor appears where the buyer is already thinking about route support, providers, rules, and risk.",
+        "That is the difference between attention and intent.",
+        "Haul Command turns role pages, corridor pages, training, and market demand into sponsor inventory.",
+        "Sponsor the market where your next customer is already looking."
+      ],
+      "visuals": [
+        "corridor page",
+        "sponsor slot preview",
+        "intent funnel",
+        "AdGrid placement map"
+      ],
+      "captions": [
+        "Intent beats random reach",
+        "Own a role",
+        "Own a corridor",
+        "Sponsor the market"
+      ],
+      "cta": "Sponsor this market",
+      "youtube": {
+        "title": "How to Own a Heavy Haul Corridor With Better Sponsor Placement",
+        "description": "A Haul Command sponsor pitch for companies that want attention tied to real heavy-haul intent.",
+        "tags": [
+          "heavy haul advertising",
+          "corridor sponsor",
+          "AdGrid",
+          "pilot car marketing"
+        ]
+      }
+    },
+    {
+      "id": "no-results-market-signal",
+      "priority": 12,
+      "title": "No Results Is Not the End. It Is a Market Signal.",
+      "lane": "market_opportunity",
+      "duration": "45-75s",
+      "engine": "hyperframes",
+      "money_path": "adgrid",
+      "audience": "providers, sponsors, and operators in thin markets",
+      "source_page": "/directory",
+      "secondary_pages": [
+        "/claim",
+        "/sponsor",
+        "/loads/post?intent=directory-support-need"
+      ],
+      "watch_page": "/videos/no-results-is-a-market-signal",
+      "hook": "When a buyer searches and no claimed provider appears, that is not just a dead end. It is demand data.",
+      "script": [
+        "A failed search can tell us where the market is thin.",
+        "That creates a provider claim opportunity, a sponsor opportunity, and a better page to improve.",
+        "The user still needs next actions: expand radius, post a load, ask who they need, or claim coverage.",
+        "Haul Command should get smarter even when supply is missing.",
+        "Thin markets are where the operating system has to work hardest."
+      ],
+      "visuals": [
+        "no-results state",
+        "expand radius",
+        "market gap score",
+        "sponsor/claim CTA"
+      ],
+      "captions": [
+        "Failed search",
+        "Demand signal",
+        "Claim opportunity",
+        "Sponsor opportunity"
+      ],
+      "cta": "Claim or sponsor this market",
+      "youtube": {
+        "title": "Why No Results Can Be a Heavy Haul Market Signal",
+        "description": "How Haul Command turns thin markets and failed searches into supply, claim, and sponsor opportunities.",
+        "tags": [
+          "heavy haul directory",
+          "pilot car shortage",
+          "market gap",
+          "AdGrid"
+        ]
+      }
+    }
+  ]
+}
