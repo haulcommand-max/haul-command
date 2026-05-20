@@ -8,6 +8,7 @@ import { FAQAccordion } from '@/components/training/FAQAccordion';
 import { EnrollButton } from '@/components/training/EnrollButton';
 import { TrainingCatalogGrid } from '@/components/training/TrainingCatalogGrid';
 import { PolicyEnforcedLinks } from '@/components/training/PolicyEnforcedLinks';
+import { extractTrainingCatalogRows } from '@/lib/training/pricing';
 
 export const metadata: Metadata = {
   title: 'Haul Command | Global Pilot Car Certification & Escort Training',
@@ -98,7 +99,7 @@ export default async function TrainingHome() {
     .order('priority', { ascending: false })
     .limit(30);
 
-  let catalog = Array.isArray(catalogRows) && catalogRows.length > 0 ? catalogRows : [];
+  let catalog = extractTrainingCatalogRows(catalogRows);
   const geoCoverage = geoCount ? Array.from({ length: geoCount }) : [];
   const levels = Array.isArray(levelsRows) ? levelsRows : [];
 

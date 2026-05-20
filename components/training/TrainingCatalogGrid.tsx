@@ -14,6 +14,8 @@ type CatalogItem = {
   requirement_fit: string;
   ranking_impact: string;
   sponsor_eligible: boolean;
+  price_cents?: number | null;
+  currency?: string | null;
   price_display?: string;
 };
 
