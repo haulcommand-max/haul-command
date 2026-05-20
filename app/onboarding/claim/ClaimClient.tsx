@@ -19,9 +19,9 @@ const PREMIUM_FEATURES = [
 ];
 
 const VERIFICATION_METHODS = [
-    { id: "phone", label: "Phone OTP", icon: Phone, desc: "We'll text a code to your business number", time: "~30 seconds" },
-    { id: "website", label: "Website Token", icon: Globe, desc: "Add a meta tag to your company website", time: "~2 minutes" },
-    { id: "email", label: "Domain Email", icon: Mail, desc: "Verify via your company email address", time: "~1 minute" },
+    { id: "phone", label: "Phone Contact", icon: Phone, desc: "Submit a business number for ownership review", time: "review step" },
+    { id: "website", label: "Website Proof", icon: Globe, desc: "Submit website proof instructions for review", time: "review step" },
+    { id: "email", label: "Domain Email", icon: Mail, desc: "Submit a company email for ownership review", time: "review step" },
 ];
 
 export default function ClaimClient() {
@@ -33,15 +33,13 @@ export default function ClaimClient() {
     const [step, setStep] = useState<"verify" | "plan" | "checkout">("verify");
     const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
     const [verifying, setVerifying] = useState(false);
-    const [verified, setVerified] = useState(false);
     const [selectedPlan, setSelectedPlan] = useState<"free" | "premium">("premium");
 
     async function handleVerify() {
         if (!selectedMethod) return;
         setVerifying(true);
-        // Local ownership step only; proof review happens after submission.
+        // Local ownership method selection only; proof review happens after submission.
         await new Promise(resolve => setTimeout(resolve, 2000));
-        setVerified(true);
         setVerifying(false);
         setStep("plan");
     }

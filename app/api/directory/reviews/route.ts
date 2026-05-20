@@ -131,12 +131,21 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "overall_rating required (1–5)" }, { status: 400 });
     }
 
+    const optionalRatings = { professionalism, communication, reliability, equipment, safety_score, route_quality };
+    for (const [field, value] of Object.entries(optionalRatings)) {
+        if (value == null) continue;
+        if (typeof value !== "number" || value < 1 || value > 5) {
+            return NextResponse.json({ error: `${field} must be 1-5 when provided` }, { status: 400 });
+        }
+    }
+
     // Anti self-review
     if (targetId === user.id) {
         return NextResponse.json({ error: "Cannot review yourself" }, { status: 400 });
     }
 
-    // Use service role to insert (bypasses RLS)
+    // Use service role only after auth. New reviews stay hidden until a
+    // moderation/evidence job verifies the reviewer relationship.
     const svc = await makeServiceSupabase();
     const { data: review, error } = await svc
         .from("escort_reviews")
@@ -154,7 +163,7 @@ export async function POST(req: NextRequest) {
             review_type: review_type ?? null,
             cargo_type: cargo_type ?? null,
             is_verified: false,
-            is_hidden: false,
+            is_hidden: true,
         })
         .select("id")
         .single();
@@ -170,5 +179,8 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Review submission failed" }, { status: 500 });
     }
 
-    return NextResponse.json({ id: review!.id }, { status: 201 });
+    return NextResponse.json(
+        { id: review!.id, status: "pending_review" },
+        { status: 202 },
+    );
 }
