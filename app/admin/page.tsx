@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { requireSystemAdminPage } from '@/lib/admin/require-admin';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Admin — Haul Command',
@@ -38,6 +41,7 @@ const NAV_SECTIONS = [
     label: 'ðŸš¨ Operations',
     links: [
       { href: '/admin/directory', label: 'Directory', desc: '7,745 listings management' },
+      { href: '/admin/competitors', label: 'Competitor Intel', desc: 'Coverage gaps and competitor-sourced claim queue' },
       { href: '/admin/ops', label: 'Ops', desc: 'Platform operations' },
       { href: '/admin/trust', label: 'Trust & Safety', desc: 'Fraud, verification, disputes' },
       { href: '/admin/abuse', label: 'Abuse', desc: 'Reports and bans' },
@@ -46,7 +50,9 @@ const NAV_SECTIONS = [
   },
 ];
 
-export default function AdminPage() {
+export default async function AdminPage() {
+  await requireSystemAdminPage('/admin');
+
   return (
     <div className=" bg-[#0a0a0a] text-white p-4 md:p-8">
       <div className="max-w-4xl mx-auto">

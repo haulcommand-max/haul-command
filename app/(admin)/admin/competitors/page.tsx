@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { createClient } from "@supabase/supabase-js";
 import type { ReactNode } from "react";
 
+import {
+  getDisplacementAction,
+  getDisplacementPriority,
+  normalizeCompetitorStatus,
+  numberValue,
+  daysSince,
+  summarizeCompetitorIntel,
+} from "@/lib/admin/competitor-intel";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import type { Database } from "@/types/supabase";
 
 export const dynamic = "force-dynamic";
@@ -29,10 +37,10 @@ type DashboardData = {
 type StatusKey = "WINNING" | "TIED" | "BEHIND" | "UNKNOWN";
 
 async function fetchCompetitorDashboard(): Promise<DashboardData> {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-  if (!url || !serviceKey) {
+  let supabase: ReturnType<typeof getSupabaseAdmin>;
+  try {
+    supabase = getSupabaseAdmin() as ReturnType<typeof getSupabaseAdmin>;
+  } catch {
     return {
       configured: false,
       errors: ["Supabase admin credentials are not configured for this environment."],
@@ -40,10 +48,6 @@ async function fetchCompetitorDashboard(): Promise<DashboardData> {
       claimQueue: [],
     };
   }
-
-  const supabase = createClient<Database>(url, serviceKey, {
-    auth: { persistSession: false },
-  });
 
   const errors: string[] = [];
 
@@ -81,22 +85,10 @@ async function fetchCompetitorDashboard(): Promise<DashboardData> {
   };
 }
 
-function normalizeStatus(status: string | null): StatusKey {
-  const normalized = (status ?? "").trim().toUpperCase();
-  if (normalized === "WINNING" || normalized === "TIED" || normalized === "BEHIND") {
-    return normalized;
-  }
-  return "UNKNOWN";
-}
-
 function text(value: unknown, fallback = "Unknown"): string {
   if (typeof value === "string" && value.trim()) return value.trim();
   if (typeof value === "number") return String(value);
   return fallback;
-}
-
-function numberValue(value: number | null | undefined): number {
-  return typeof value === "number" && Number.isFinite(value) ? value : 0;
 }
 
 function formatDate(value: string | null): string {
@@ -108,13 +100,6 @@ function formatDate(value: string | null): string {
     day: "numeric",
     year: "numeric",
   }).format(parsed);
-}
-
-function daysSince(value: string | null): number | null {
-  if (!value) return null;
-  const parsed = new Date(value);
-  if (Number.isNaN(parsed.getTime())) return null;
-  return Math.floor((Date.now() - parsed.getTime()) / 86_400_000);
 }
 
 function statusClass(status: StatusKey): string {
@@ -134,37 +119,10 @@ function priorityClass(priority: string | null): string {
 
 export default async function CompetitorIntelPage() {
   const data = await fetchCompetitorDashboard();
-  const statusCounts = data.intel.reduce<Record<StatusKey, number>>(
-    (acc, row) => {
-      acc[normalizeStatus(row.our_status)] += 1;
-      return acc;
-    },
-    { WINNING: 0, TIED: 0, BEHIND: 0, UNKNOWN: 0 },
-  );
-  const trackedCompetitors = new Set(data.intel.map((row) => row.competitor_name)).size;
-  const trackedMarkets = data.intel.length;
-  const netCoverageDelta = data.intel.reduce(
-    (sum, row) => sum + numberValue(row.coverage_delta),
-    0,
-  );
-  const highValueClaims = data.claimQueue.filter(
-    (operator) => numberValue(operator.claim_value_score) >= 70,
-  ).length;
-  const unclaimedCompetitorTargets = data.claimQueue.filter((operator) => !operator.is_claimed).length;
-  const staleIntel = data.intel.filter((row) => {
-    const age = daysSince(row.last_checked);
-    return age == null || age > 14;
-  }).length;
-  const topClaimValue = data.claimQueue.reduce(
-    (max, operator) => Math.max(max, numberValue(operator.claim_value_score)),
-    0,
-  );
-  const mostExposedMarkets = data.intel
-    .filter((row) => normalizeStatus(row.our_status) === "BEHIND" || numberValue(row.coverage_delta) < 0)
-    .slice(0, 12);
-  const topClaimTargets = data.claimQueue
-    .filter((operator) => !operator.is_claimed)
-    .slice(0, 5);
+  const summary = summarizeCompetitorIntel(data.intel, data.claimQueue);
+  const statusCounts = summary.statusCounts;
+  const mostExposedMarkets = summary.mostExposedMarkets;
+  const topClaimTargets = summary.topClaimTargets;
 
   return (
     <div className="min-h-full bg-[#070707] text-zinc-100">
@@ -203,11 +161,11 @@ export default async function CompetitorIntelPage() {
         ) : null}
 
         <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-          <MetricCard label="Tracked competitors" value={trackedCompetitors} />
-          <MetricCard label="Tracked markets" value={trackedMarkets} />
+          <MetricCard label="Tracked competitors" value={summary.trackedCompetitors} />
+          <MetricCard label="Tracked markets" value={summary.trackedMarkets} />
           <MetricCard label="Behind markets" value={statusCounts.BEHIND} tone="danger" />
-          <MetricCard label="Net coverage delta" value={netCoverageDelta} tone={netCoverageDelta < 0 ? "danger" : "success"} />
-          <MetricCard label="High-value claim targets" value={highValueClaims} tone="warning" />
+          <MetricCard label="Net coverage delta" value={summary.netCoverageDelta} tone={summary.netCoverageDelta < 0 ? "danger" : "success"} />
+          <MetricCard label="High-value claim targets" value={summary.highValueClaims} tone="warning" />
         </section>
 
         <section className="grid gap-4 lg:grid-cols-3">
@@ -219,13 +177,13 @@ export default async function CompetitorIntelPage() {
           />
           <ActionCard
             title="P1 steal-back queue"
-            value={`${unclaimedCompetitorTargets} unclaimed`}
+            value={`${summary.unclaimedCompetitorTargets} unclaimed`}
             tone="warning"
-            body={`Top claim value score is ${topClaimValue}. Prioritize owner contact, proof request, and competitor-source cleanup for these operators.`}
+            body={`Top claim value score is ${summary.topClaimValue}. Prioritize owner contact, proof request, and competitor-source cleanup for these operators.`}
           />
           <ActionCard
             title="P1 stale intel refresh"
-            value={`${staleIntel} stale`}
+            value={`${summary.staleIntel} stale`}
             tone="neutral"
             body="Refresh records older than 14 days before making paid territory or market coverage decisions from this dashboard."
           />
@@ -254,12 +212,14 @@ export default async function CompetitorIntelPage() {
                       <th className="px-4 py-3">Competitor</th>
                       <th className="px-4 py-3 text-right">Delta</th>
                       <th className="px-4 py-3">Status</th>
-                      <th className="px-4 py-3">Checked</th>
+                      <th className="px-4 py-3">Priority</th>
+                      <th className="px-4 py-3">Next move</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-white/10">
                     {mostExposedMarkets.map((row) => {
-                      const status = normalizeStatus(row.our_status);
+                      const status = normalizeCompetitorStatus(row.our_status);
+                      const priority = getDisplacementPriority(row);
                       return (
                         <tr key={row.id} className="bg-[#0b0b0b]">
                           <td className="px-4 py-4">
@@ -297,7 +257,15 @@ export default async function CompetitorIntelPage() {
                               {status}
                             </span>
                           </td>
-                          <td className="px-4 py-4 text-xs text-zinc-500">{formatDate(row.last_checked)}</td>
+                          <td className="px-4 py-4">
+                            <span className={`rounded-full border px-2.5 py-1 text-[10px] font-black uppercase ${priority === "P0" ? "border-red-500/35 bg-red-500/10 text-red-200" : priority === "P1" ? "border-amber-400/30 bg-amber-400/10 text-amber-200" : "border-white/10 bg-white/5 text-zinc-300"}`}>
+                              {priority}
+                            </span>
+                            <div className="mt-2 text-xs text-zinc-500">{formatDate(row.last_checked)}</div>
+                          </td>
+                          <td className="max-w-xs px-4 py-4 text-xs leading-5 text-zinc-500">
+                            {getDisplacementAction(row)}
+                          </td>
                         </tr>
                       );
                     })}
@@ -416,7 +384,7 @@ export default async function CompetitorIntelPage() {
                 </thead>
                 <tbody className="divide-y divide-white/10">
                   {data.intel.map((row) => {
-                    const status = normalizeStatus(row.our_status);
+                    const status = normalizeCompetitorStatus(row.our_status);
                     return (
                       <tr key={row.id} className="bg-[#0b0b0b]">
                         <td className="px-4 py-4 font-semibold text-white">{row.competitor_name}</td>
