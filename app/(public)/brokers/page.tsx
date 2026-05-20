@@ -14,6 +14,15 @@ interface ProofData {
   corridors: number;
   surgeActive: number;
   topCorridors: Array<{ label: string; demand: string; loads: number; rate: number }>;
+  supplyAlerts: Array<{
+    id: string;
+    city: string | null;
+    state_code: string | null;
+    corridor_id: string | null;
+    alert_type: string | null;
+    available_count: number | null;
+    message: string | null;
+  }>;
 }
 
 function useProofData(): ProofData {
@@ -22,6 +31,7 @@ function useProofData(): ProofData {
     corridors: 0,
     surgeActive: 0,
     topCorridors: [],
+    supplyAlerts: [],
   });
 
   useEffect(() => {
@@ -47,6 +57,15 @@ function useProofData(): ProofData {
               rate: c.avg_rate_usd,
             })),
           }));
+        }
+      })
+      .catch(() => {});
+
+    fetch('/api/v1/demand-intelligence/supply-alerts?limit=3')
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (d?.ok && Array.isArray(d.alerts)) {
+          setData(prev => ({ ...prev, supplyAlerts: d.alerts }));
         }
       })
       .catch(() => {});
@@ -127,7 +146,7 @@ export default function BrokersPage() {
           maxWidth: 520,
         }}>
           Haul Command tracks escort supply and demand pressure across every major corridor in real time.
-          Route smarter. Fill faster. Reduce dead-head risk.
+          Route smarter. Fill faster. Reduce deadhead risk.
         </p>
 
         {/* Proof bar */}
@@ -152,6 +171,12 @@ export default function BrokersPage() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#f97316' }} />
                 <strong style={{ color: '#f97316' }}>{proof.surgeActive}</strong> surge active
+              </div>
+            )}
+            {proof.supplyAlerts.length > 0 && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#fb923c' }} />
+                <strong style={{ color: '#fb923c' }}>{proof.supplyAlerts.length}</strong> active supply alert{proof.supplyAlerts.length === 1 ? '' : 's'}
               </div>
             )}
           </div>
@@ -219,6 +244,48 @@ export default function BrokersPage() {
           </div>
         ))}
       </div>
+
+      {proof.supplyAlerts.length > 0 && (
+        <div style={{ padding: '0 20px 36px', maxWidth: 700, margin: '0 auto' }}>
+          <div style={{
+            fontSize: 10,
+            fontWeight: 800,
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+            color: '#8f97a7',
+            marginBottom: 12,
+          }}>
+            Active supply alerts
+          </div>
+          <div style={{ display: 'grid', gap: 10 }}>
+            {proof.supplyAlerts.map(alert => {
+              const label = [alert.city, alert.state_code].filter(Boolean).join(', ') || alert.corridor_id || 'Market alert';
+              return (
+                <div key={alert.id} style={{
+                  padding: 16,
+                  borderRadius: 16,
+                  background: 'rgba(249, 115, 22, 0.08)',
+                  border: '1px solid rgba(249, 115, 22, 0.20)',
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'flex-start' }}>
+                    <div>
+                      <div style={{ fontSize: 14, fontWeight: 900, color: '#fff7ed' }}>{label}</div>
+                      <div style={{ marginTop: 6, fontSize: 13, lineHeight: 1.55, color: '#fed7aa' }}>
+                        {alert.message || 'Active supply pressure signal. Confirm operator fit before dispatch.'}
+                      </div>
+                    </div>
+                    {typeof alert.available_count === 'number' && (
+                      <div style={{ minWidth: 72, textAlign: 'right', fontSize: 11, color: '#fdba74', fontWeight: 900 }}>
+                        {alert.available_count} signal{alert.available_count === 1 ? '' : 's'}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Live corridor pressure preview */}
       {proof.topCorridors.length > 0 && (

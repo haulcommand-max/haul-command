@@ -27,6 +27,15 @@ interface PricingResult {
     operator_count: number;
     demand_pressure: number;
     surge_active: boolean;
+    surge_multiplier: number;
+    supply_alert_count: number;
+    supply_alerts: Array<{
+        id: string;
+        label: string;
+        message: string;
+        alert_type: string | null;
+        available_count: number | null;
+    }>;
     inventory_class: string;
 }
 
@@ -104,7 +113,9 @@ export async function GET(req: NextRequest) {
     let operatorCount = 0;
     let demandPressure = 0;
     let surgeActive = false;
+    let surgeMultiplier = 1.0;
     let inventoryClass = type;
+    let supplyAlerts: PricingResult['supply_alerts'] = [];
 
     // Get density from H3 if provided
     if (h3Cell) {
@@ -128,6 +139,7 @@ export async function GET(req: NextRequest) {
         if (demand) {
             demandPressure = demand.demand_pressure ?? 0;
             surgeActive = demand.surge_active ?? false;
+            surgeMultiplier = Math.max(surgeMultiplier, demand.surge_multiplier ?? 1.0);
         }
 
         // Check supply
@@ -144,6 +156,37 @@ export async function GET(req: NextRequest) {
             demandPressure = Math.max(demandPressure, supply.demand_pressure ?? 0);
         }
     }
+
+    const { data: alerts } = await supabase
+        .from('supply_alerts')
+        .select('id,city,state_code,corridor_id,alert_type,available_count,message,expires_at')
+        .eq('active', true)
+        .order('created_at', { ascending: false })
+        .limit(12);
+
+    const normalizedValue = (value || h3Cell).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    supplyAlerts = (alerts ?? [])
+        .filter((alert: any) => {
+            const expiresAt = alert.expires_at ? new Date(alert.expires_at).getTime() : null;
+            if (expiresAt && expiresAt <= Date.now()) return false;
+            if (!normalizedValue) return true;
+            const city = typeof alert.city === 'string' ? alert.city.toLowerCase() : '';
+            const alertHaystack = [
+                alert.city,
+                alert.state_code,
+                alert.corridor_id,
+                alert.message,
+            ].filter(Boolean).join(' ').toLowerCase().replace(/[^a-z0-9]+/g, ' ');
+            return alertHaystack.includes(normalizedValue) || (city ? normalizedValue.includes(city) : false);
+        })
+        .slice(0, 3)
+        .map((alert: any) => ({
+            id: alert.id,
+            label: [alert.city, alert.state_code].filter(Boolean).join(', ') || alert.corridor_id || 'Market alert',
+            message: alert.message ?? 'Active supply pressure signal for this market.',
+            alert_type: alert.alert_type,
+            available_count: alert.available_count,
+        }));
 
     // Check existing sponsorship
     const { data: existing } = await supabase
@@ -172,6 +215,9 @@ export async function GET(req: NextRequest) {
         operator_count: operatorCount,
         demand_pressure: demandPressure,
         surge_active: surgeActive,
+        surge_multiplier: surgeMultiplier,
+        supply_alert_count: supplyAlerts.length,
+        supply_alerts: supplyAlerts,
         inventory_class: inventoryClass,
     };
 
