@@ -60,7 +60,7 @@ export function buildDirectoryCardCopy(input: DirectoryProofCopyInput): Director
         "Stronger proof signal. Review service area, equipment, and route fit before you commit the move.",
       profileCta: "Inspect proof",
       packetCta: "Build fit packet",
-      claimCta: input.isClaimed ? "Update proof" : "Claim proof lane",
+      claimCta: input.isClaimed ? "Update proof" : "Submit proof review",
       sourceConfidenceLabel: "high",
     };
   }
@@ -82,7 +82,7 @@ export function buildDirectoryCardCopy(input: DirectoryProofCopyInput): Director
         "Contact path exists. Confirm equipment, route fit, timing, and proof before dispatch.",
       profileCta: "Check details",
       packetCta: "Request support",
-      claimCta: "Claim and control it",
+      claimCta: "Claim and correct it",
       sourceConfidenceLabel: "medium",
     };
   }
@@ -93,7 +93,7 @@ export function buildDirectoryCardCopy(input: DirectoryProofCopyInput): Director
         "Unclaimed profile. If this is your company, claim it before the next broker compares you from incomplete data.",
       profileCta: "Review record",
       packetCta: "Build backup plan",
-      claimCta: "Claim before competitors do",
+      claimCta: "Claim before stale data costs you",
       sourceConfidenceLabel: "claim needed",
     };
   }
