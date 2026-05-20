@@ -4,6 +4,12 @@ import { createClient } from "@supabase/supabase-js";
 import type { ReactNode } from "react";
 
 import type { Database } from "@/types/supabase";
+import {
+  buildCompetitorIntelSummary,
+  competitorNumberValue,
+  normalizeCompetitorStatus,
+  type CompetitorStatusKey,
+} from "@/lib/competitor/competitor-intel-engine";
 
 export const dynamic = "force-dynamic";
 
@@ -25,8 +31,6 @@ type DashboardData = {
   intel: CompetitorIntelRow[];
   claimQueue: OperatorRow[];
 };
-
-type StatusKey = "WINNING" | "TIED" | "BEHIND" | "UNKNOWN";
 
 async function fetchCompetitorDashboard(): Promise<DashboardData> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -81,14 +85,6 @@ async function fetchCompetitorDashboard(): Promise<DashboardData> {
   };
 }
 
-function normalizeStatus(status: string | null): StatusKey {
-  const normalized = (status ?? "").trim().toUpperCase();
-  if (normalized === "WINNING" || normalized === "TIED" || normalized === "BEHIND") {
-    return normalized;
-  }
-  return "UNKNOWN";
-}
-
 function text(value: unknown, fallback = "Unknown"): string {
   if (typeof value === "string" && value.trim()) return value.trim();
   if (typeof value === "number") return String(value);
@@ -96,7 +92,7 @@ function text(value: unknown, fallback = "Unknown"): string {
 }
 
 function numberValue(value: number | null | undefined): number {
-  return typeof value === "number" && Number.isFinite(value) ? value : 0;
+  return competitorNumberValue(value);
 }
 
 function formatDate(value: string | null): string {
@@ -110,14 +106,7 @@ function formatDate(value: string | null): string {
   }).format(parsed);
 }
 
-function daysSince(value: string | null): number | null {
-  if (!value) return null;
-  const parsed = new Date(value);
-  if (Number.isNaN(parsed.getTime())) return null;
-  return Math.floor((Date.now() - parsed.getTime()) / 86_400_000);
-}
-
-function statusClass(status: StatusKey): string {
+function statusClass(status: CompetitorStatusKey): string {
   if (status === "WINNING") return "border-emerald-500/30 bg-emerald-500/10 text-emerald-200";
   if (status === "TIED") return "border-amber-400/30 bg-amber-400/10 text-amber-200";
   if (status === "BEHIND") return "border-red-500/35 bg-red-500/10 text-red-200";
@@ -134,37 +123,16 @@ function priorityClass(priority: string | null): string {
 
 export default async function CompetitorIntelPage() {
   const data = await fetchCompetitorDashboard();
-  const statusCounts = data.intel.reduce<Record<StatusKey, number>>(
-    (acc, row) => {
-      acc[normalizeStatus(row.our_status)] += 1;
-      return acc;
-    },
-    { WINNING: 0, TIED: 0, BEHIND: 0, UNKNOWN: 0 },
-  );
-  const trackedCompetitors = new Set(data.intel.map((row) => row.competitor_name)).size;
-  const trackedMarkets = data.intel.length;
-  const netCoverageDelta = data.intel.reduce(
-    (sum, row) => sum + numberValue(row.coverage_delta),
-    0,
-  );
-  const highValueClaims = data.claimQueue.filter(
-    (operator) => numberValue(operator.claim_value_score) >= 70,
-  ).length;
-  const unclaimedCompetitorTargets = data.claimQueue.filter((operator) => !operator.is_claimed).length;
-  const staleIntel = data.intel.filter((row) => {
-    const age = daysSince(row.last_checked);
-    return age == null || age > 14;
-  }).length;
-  const topClaimValue = data.claimQueue.reduce(
-    (max, operator) => Math.max(max, numberValue(operator.claim_value_score)),
-    0,
-  );
-  const mostExposedMarkets = data.intel
-    .filter((row) => normalizeStatus(row.our_status) === "BEHIND" || numberValue(row.coverage_delta) < 0)
-    .slice(0, 12);
-  const topClaimTargets = data.claimQueue
-    .filter((operator) => !operator.is_claimed)
-    .slice(0, 5);
+  const summary = buildCompetitorIntelSummary(data.intel, data.claimQueue);
+  const {
+    statusCounts,
+    trackedCompetitors,
+    trackedMarkets,
+    netCoverageDelta,
+    highValueClaims,
+    mostExposedMarkets,
+    topClaimTargets,
+  } = summary;
 
   return (
     <div className="min-h-full bg-[#070707] text-zinc-100">
@@ -211,24 +179,15 @@ export default async function CompetitorIntelPage() {
         </section>
 
         <section className="grid gap-4 lg:grid-cols-3">
-          <ActionCard
-            title="P0 displacement markets"
-            value={`${mostExposedMarkets.length} exposed`}
-            tone="danger"
-            body="Work the lowest coverage deltas first: claim targets, refresh local directory content, and run acquisition outreach before sponsor sales."
-          />
-          <ActionCard
-            title="P1 steal-back queue"
-            value={`${unclaimedCompetitorTargets} unclaimed`}
-            tone="warning"
-            body={`Top claim value score is ${topClaimValue}. Prioritize owner contact, proof request, and competitor-source cleanup for these operators.`}
-          />
-          <ActionCard
-            title="P1 stale intel refresh"
-            value={`${staleIntel} stale`}
-            tone="neutral"
-            body="Refresh records older than 14 days before making paid territory or market coverage decisions from this dashboard."
-          />
+          {summary.priorityMoves.slice(0, 3).map((move) => (
+            <ActionCard
+              key={move.title}
+              title={`${move.priority} ${move.title}`}
+              value={`${move.count} ${move.priority === "P0" ? "exposed" : move.title === "Steal-back queue" ? "unclaimed" : "stale"}`}
+              tone={move.priority === "P0" ? "danger" : "warning"}
+              body={move.action}
+            />
+          ))}
         </section>
 
         <section className="grid gap-4 lg:grid-cols-4">
@@ -259,7 +218,7 @@ export default async function CompetitorIntelPage() {
                   </thead>
                   <tbody className="divide-y divide-white/10">
                     {mostExposedMarkets.map((row) => {
-                      const status = normalizeStatus(row.our_status);
+                      const status = normalizeCompetitorStatus(row.our_status);
                       return (
                         <tr key={row.id} className="bg-[#0b0b0b]">
                           <td className="px-4 py-4">
@@ -416,7 +375,7 @@ export default async function CompetitorIntelPage() {
                 </thead>
                 <tbody className="divide-y divide-white/10">
                   {data.intel.map((row) => {
-                    const status = normalizeStatus(row.our_status);
+                    const status = normalizeCompetitorStatus(row.our_status);
                     return (
                       <tr key={row.id} className="bg-[#0b0b0b]">
                         <td className="px-4 py-4 font-semibold text-white">{row.competitor_name}</td>
@@ -475,7 +434,7 @@ function MetricCard({
   );
 }
 
-function StatusCard({ status, count }: { status: StatusKey; count: number }) {
+function StatusCard({ status, count }: { status: CompetitorStatusKey; count: number }) {
   return (
     <div className={`rounded-lg border p-5 ${statusClass(status)}`}>
       <div className="text-sm font-black uppercase tracking-[0.18em]">{status}</div>
