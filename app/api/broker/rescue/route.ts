@@ -143,7 +143,7 @@ function buildRescueActions(
         actions.push({
             action_id: 'repost_boost',
             label: 'Repost with Boost',
-            description: 'Refresh your listing and get priority placement in operator feeds for 24 hours.',
+            description: 'Refresh your listing and improve labeled visibility in operator feeds for 24 hours.',
             priority: 'secondary',
             type: 'repost_boost',
             estimated_impact: '4x more visibility',

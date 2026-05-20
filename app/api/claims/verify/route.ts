@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
         type: 'claim_approval',
         urgency: 'normal',
         title: '\u2713 Listing Verified!',
-        body: 'Your listing is now verified. You\u2019ll receive priority placement and load offers.',
+        body: 'Your listing verification is recorded. Add proof and service areas to improve broker-facing context.',
         url: `/directory/${claim.listing_id}`
       });
     }

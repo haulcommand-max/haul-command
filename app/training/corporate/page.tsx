@@ -173,7 +173,7 @@ export default function CorporateTrainingPage() {
             Corporate Pricing
           </h2>
           <p style={{ color: '#6a6a7a', textAlign: 'center', marginBottom: 40 }}>
-            All cohorts include digital certificates, priority placement, and quarterly recertification reminders.
+            All cohorts include digital certificates, reviewed placement eligibility, and quarterly recertification reminders.
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>

@@ -51,7 +51,7 @@ export function calculateProfileCompleteness(input: ProfileCompletenessInput): S
 
     // proof_presence: 0.10 (10 points)
     if ((input.proofCount || 0) > 0) { score += 10; }
-    else { failReasons.push("No documented proof or verified badges."); }
+    else { failReasons.push("No documented proof or reviewed signals."); }
 
     // faq_q_and_a_depth: 0.05 (5 points)
     if ((input.faqCount || 0) >= 3) { score += 5; }

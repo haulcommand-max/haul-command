@@ -273,7 +273,7 @@ export function generateClaimCTA(params: {
     const competitorPressure = params.competitorsVerified > 0
         ? `${params.competitorsVerified} of ${params.competitorsInArea} ${params.placeType.replace(/_/g, ' ')}s near you already claimed and upgraded their listing`
         : params.competitorsInArea > 5
-            ? `${params.competitorsInArea} ${params.placeType.replace(/_/g, ' ')}s compete for attention in ${params.city || 'your area'} — stand out with a verified badge`
+            ? `${params.competitorsInArea} ${params.placeType.replace(/_/g, ' ')}s compete for attention in ${params.city || 'your area'} — stand out with stronger proof context`
             : undefined;
 
     // Value estimate

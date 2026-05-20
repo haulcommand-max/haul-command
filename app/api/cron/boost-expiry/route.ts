@@ -7,14 +7,11 @@ export const maxDuration = 30;
 
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { requireInternalRequest } from '@/lib/security/internal-request-auth';
 
 export async function GET(req: Request) {
-  // Verify cron secret (Vercel sends this header)
-  const authHeader = req.headers.get('authorization');
-  const cronSecret = process.env.CRON_SECRET;
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const authFailure = requireInternalRequest(req);
+  if (authFailure) return authFailure;
 
   const sb = getSupabaseAdmin();
   const now = new Date().toISOString();
@@ -72,7 +69,7 @@ export async function GET(req: Request) {
                     While boosted, your listing appeared at the top of search results with a gold "Sponsored" badge.
                   </p>
                   <p style="font-size: 14px; color: #8fa3b8; line-height: 1.6;">
-                    Renew now to keep your priority placement and keep getting found by brokers.
+                    Renew now to keep your sponsored badge and broker-facing boost context active.
                   </p>
                   <a href="https://haulcommand.com/boost" style="
                     display: inline-block; margin-top: 16px; padding: 12px 28px; border-radius: 12px;

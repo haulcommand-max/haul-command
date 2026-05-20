@@ -6,16 +6,13 @@
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient }              from '@/utils/supabase/server';
+import { requireInternalRequest } from '@/lib/security/internal-request-auth';
 
 export const maxDuration = 60;
 
 export async function POST(req: NextRequest) {
-  // Verify Vercel cron secret
-  const authHeader = req.headers.get('authorization');
-  const cronSecret = process.env.CRON_SECRET;
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const authFailure = requireInternalRequest(req);
+  if (authFailure) return authFailure;
 
   const supabase = await createClient();
 

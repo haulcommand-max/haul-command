@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import { Resend } from 'resend';
 import { see } from '@/lib/ai/brain';
 import { tracked } from '@/lib/ai/tracker';
+import { requireInternalRequest } from '@/lib/security/internal-request-auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,10 +27,8 @@ export const dynamic = 'force-dynamic';
  * High-risk threshold 7+ ≈ ~30% of listings ≈ 2,300 outreach emails
  */
 export async function POST(req: NextRequest) {
-  const authHeader = req.headers.get('authorization');
-  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const authFailure = requireInternalRequest(req);
+  if (authFailure) return authFailure;
 
   const body = await req.json().catch(() => ({}));
   const analyzeLimit = Math.min(body.analyze_limit ?? 100, 200);

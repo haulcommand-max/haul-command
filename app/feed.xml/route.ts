@@ -27,7 +27,7 @@ export async function GET() {
       <content:encoded><![CDATA[
         <p>${post.meta_description || ''}</p>
         <hr/>
-        <p><strong>→ <a href="https://www.haulcommand.com/claim">Claim your Pilot Car profile on Haul Command</a></strong> — Free listing, verified badge, direct dispatch leads.</p>
+        <p><strong>→ <a href="https://www.haulcommand.com/claim">Claim your Pilot Car profile on Haul Command</a></strong> — Free listing controls, proof context, and request pathways.</p>
       ]]></content:encoded>
     </item>`;
   }).join('\n');

@@ -66,7 +66,7 @@ export default function CertificationUpload() {
                 Upload Certification Documents
             </h3>
             <p className="text-sm text-gray-400 mb-6">
-                Upload your external pilot car certificates or defensive driving documents to add verified badges to your Haul Command profile.
+                Upload your external pilot car certificates or defensive driving documents to add reviewed proof signals to your Haul Command profile.
             </p>
 
             {successMessage && (

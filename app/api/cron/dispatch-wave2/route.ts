@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { trySendBulkNotification, dispatchWaveTemplate } from '@/lib/notifications/fcm';
+import { requireInternalRequest } from '@/lib/security/internal-request-auth';
 
 export const runtime = 'nodejs';
 
@@ -13,12 +14,8 @@ export const runtime = 'nodejs';
  */
 export async function GET(req: NextRequest) {
   try {
-    // 1. Optional cron secret guard (if configured)
-    const cronSecret = process.env.CRON_SECRET;
-    const authHeader = req.headers.get('Authorization');
-    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-      // return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); // uncomment when CRON_SECRET is fully enforced
-    }
+    const authFailure = requireInternalRequest(req);
+    if (authFailure) return authFailure;
 
     const admin = getSupabaseAdmin();
     // 15 minutes ago

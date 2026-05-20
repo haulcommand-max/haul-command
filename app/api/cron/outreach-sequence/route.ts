@@ -6,15 +6,14 @@ export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
 import { NextResponse } from 'next/server';
+import { requireInternalRequest, getInternalRequestToken } from '@/lib/security/internal-request-auth';
 
 export async function GET(req: Request) {
-  const authHeader = req.headers.get('authorization');
-  const cronSecret = process.env.CRON_SECRET;
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const authFailure = requireInternalRequest(req);
+  if (authFailure) return authFailure;
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com';
+  const internalToken = getInternalRequestToken();
 
   try {
     // Call the sequence endpoint internally
@@ -22,7 +21,7 @@ export async function GET(req: Request) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${cronSecret}`,
+        ...(internalToken ? { Authorization: `Bearer ${internalToken}` } : {}),
       },
       body: JSON.stringify({ limit: 50 }),
     });

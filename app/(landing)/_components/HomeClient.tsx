@@ -1189,7 +1189,7 @@ export default function HomeClient({
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                             <div>
                                 <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#F1A91B]">
-                                    Registry coverage, verified profiles, and route intelligence expanding by market
+                                    Registry coverage, claimable profiles, and route intelligence expanding by market
                                 </p>
                                 <h2 className="mt-1 text-lg font-black text-white">Live demand across escorts, loads, corridors, and support providers</h2>
                                 <p className="mt-2 text-sm leading-6 text-white/68">
@@ -1343,11 +1343,11 @@ export default function HomeClient({
                         <div className="hc-brand-card rounded-xl p-4">
                             <h2 className="text-sm font-black text-white">For Pilot Car Operators</h2>
                             <p className="mt-2 text-sm leading-6 text-white/68">
-                                Claim your profile, show your equipment and certifications, get discovered by brokers,
+                                Claim your profile, show your equipment and certifications, improve broker-facing context,
                                 and build a stronger presence in the corridors you actually serve.
                             </p>
                             <div className="mt-4 flex flex-wrap gap-2">
-                                {["Claim profile", "Verify equipment", "Get leads", "Own territory"].map((item) => (
+                                {["Claim profile", "Submit proof", "Add services", "Add service areas"].map((item) => (
                                     <span key={item} className="hc-chip rounded-full px-3 py-1.5 text-[11px] font-bold">{item}</span>
                                 ))}
                             </div>
@@ -1403,7 +1403,7 @@ export default function HomeClient({
                     <div className="hc-brand-card rounded-xl p-4">
                         <div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                             <div>
-                                <h2 className="text-sm font-black text-white">Live U.S. Escort Markets</h2>
+                                <h2 className="text-sm font-black text-white">U.S. Escort Market Links</h2>
                                 <p className="text-xs text-white/70">Popular pilot car and heavy haul support markets in the United States.</p>
                             </div>
                             <div className="flex flex-wrap gap-3">
@@ -1418,7 +1418,7 @@ export default function HomeClient({
                                 href={`/near/${loc.toLowerCase().replace(/\s+/g, '-').replace(',', '')}`}
                                 className="px-3 py-1.5 text-xs font-semibold text-white/65 bg-black/30 hover:bg-[#F1A91B]/10 hover:text-[#D4A348] border border-white/10 hover:border-[#F1A91B]/30 rounded-full transition-all"
                             >
-                                {loc} <span className="text-white/55">{index % 3 === 0 ? "47 operators" : index % 3 === 1 ? "38 listings" : "29 signals"}</span>
+                                {loc} <span className="text-white/55">market page</span>
                             </Link>
                         ))}
                         </div>
@@ -1442,12 +1442,12 @@ export default function HomeClient({
                         <div className="flex-1">
                             <h2 className="text-xl font-black text-white mb-2">Claim Your Free Listing</h2>
                             <p className="text-sm text-white/65 mb-4 max-w-xl">
-                                Operators listed on Haul Command: {displayRegistryOperators}. Claim your profile to unlock visibility, trust signals, and broker lead flow — free in under 60 seconds.
+                                Operators listed on Haul Command: {displayRegistryOperators}. Claim your profile to add service areas, proof, contact rules, and broker-facing context. Free to start.
                             </p>
                             <div className="flex flex-wrap gap-4 text-xs text-white/55 mb-5">
                                 <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-green-500" /> Verification badge when eligibility confirmed</span>
-                                <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-green-500" /> Appears in search & on map</span>
-                                <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-green-500" /> Analytics + lead tracking</span>
+                                <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-green-500" /> Eligible for search and map placement</span>
+                                <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-green-500" /> Analytics and lead tracking when configured</span>
                             </div>
                             <Link
                                 href="/claim"

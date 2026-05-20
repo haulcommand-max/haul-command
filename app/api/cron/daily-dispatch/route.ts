@@ -1,16 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { requireInternalRequest } from '@/lib/security/internal-request-auth';
 
 // Vercel cron-triggered: daily at 06:00 UTC
 // Checks standing orders, auto-dispatches due ones
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
-  // Verify cron auth
-  const authHeader = req.headers.get('authorization');
-  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const authFailure = requireInternalRequest(req);
+  if (authFailure) return authFailure;
 
   try {
     // Dispatch standing orders

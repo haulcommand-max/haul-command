@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { requireInternalRequest, getInternalRequestToken } from '@/lib/security/internal-request-auth';
 
 // POST /api/webhooks/n8n-content
 // n8n webhook → triggers content generation
@@ -8,16 +9,15 @@ import { NextRequest, NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
-  const secret = req.headers.get('x-n8n-secret');
-  if (secret !== process.env.CRON_SECRET && process.env.CRON_SECRET) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const authFailure = requireInternalRequest(req);
+  if (authFailure) return authFailure;
 
   // Forward to the content engine
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.haulcommand.com';
+  const internalToken = getInternalRequestToken();
   const response = await fetch(`${base}/api/cron/content-engine`, {
     method: 'GET',
-    headers: { authorization: `Bearer ${process.env.CRON_SECRET ?? ''}` },
+    headers: internalToken ? { authorization: `Bearer ${internalToken}` } : {},
   });
 
   const data = await response.json().catch(() => ({ error: 'Parse failed' }));

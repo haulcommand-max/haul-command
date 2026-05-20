@@ -4,17 +4,15 @@ import { see } from '@/lib/ai/brain';
 import { PROMPTS } from '@/lib/ai/prompts';
 import { tracked } from '@/lib/ai/tracker';
 import { cacheGet, cacheSet, CACHE_TTL } from '@/lib/ai/cache';
+import { requireInternalRequest } from '@/lib/security/internal-request-auth';
 
 export const dynamic = 'force-dynamic';
 
 // GET /api/cron/content-engine
 // Vercel cron: 0 6 * * *
 export async function GET(req: NextRequest) {
-  const authHeader = req.headers.get('authorization');
-  const cronSecret = process.env.CRON_SECRET;
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const authFailure = requireInternalRequest(req);
+  if (authFailure) return authFailure;
 
   const supabase = createClient();
   const results: any[] = [];

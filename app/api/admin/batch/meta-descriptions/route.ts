@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { batchGenerateMetaDescriptions, enrichOperatorProfile } from '@/lib/ai/brain';
 import { tracked } from '@/lib/ai/tracker';
+import { requireInternalRequest } from '@/lib/security/internal-request-auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,10 +16,8 @@ export const dynamic = 'force-dynamic';
  * Speed: 10 concurrent, ~$0.77 total, runs in ~5-8 minutes
  */
 export async function POST(req: NextRequest) {
-  const authHeader = req.headers.get('authorization');
-  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const authFailure = requireInternalRequest(req);
+  if (authFailure) return authFailure;
 
   const supabase = createClient();
   const body = await req.json().catch(() => ({}));

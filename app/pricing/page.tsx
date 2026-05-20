@@ -35,7 +35,7 @@ const pricingSchema = {
             mainEntity: [
                 { '@type': 'Question', name: 'How much does Haul Command cost?', acceptedAnswer: { '@type': 'Answer', text: 'Haul Command is free to claim your profile and appear in search. Operator Pro plans start at $29/month. Broker Business plans start at $99/month. Enterprise plans start at $499/month. All plans include a 14-day free trial.' } },
                 { '@type': 'Question', name: 'Is there a free pilot car operator plan?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Free pilot car operator accounts include a basic directory listing, standard profile, 1 operating region, and up to 5 lead alerts per month. The free plan is permanent — no credit card required to claim your profile.' } },
-                { '@type': 'Question', name: 'What is included in the Haul Command Elite plan?', acceptedAnswer: { '@type': 'Answer', text: 'Elite ($79/month) includes a verified and certified badge, top listing placement, unlimited operating regions, priority lead matching, advanced analytics, route intelligence, competitor insights, API read access, and dedicated support.' } },
+                { '@type': 'Question', name: 'What is included in the Haul Command Elite plan?', acceptedAnswer: { '@type': 'Answer', text: 'Elite ($79/month) includes proof review tooling, stronger profile controls, unlimited operating regions, advanced analytics, route intelligence, competitor insights, API read access, and dedicated support.' } },
                 { '@type': 'Question', name: 'Can I cancel anytime?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Cancel anytime from your dashboard. Your subscription remains active until the end of your billing period. No cancellation fees, no questions asked.' } },
                 { '@type': 'Question', name: 'Do you offer annual pricing?', acceptedAnswer: { '@type': 'Answer', text: 'Annual plans include 2 months free (equivalent to 17% off). Contact billing@haulcommand.com or manage in your dashboard after subscribing.' } },
             ],
@@ -43,7 +43,7 @@ const pricingSchema = {
         {
             '@type': 'Product',
             name: 'Haul Command Operator Pro',
-            description: 'Professional pilot car and escort vehicle operator listing with verified badge, priority placement, and lead matching.',
+            description: 'Professional pilot car and escort vehicle operator listing with proof review, profile controls, and broker-facing context.',
             url: 'https://www.haulcommand.com/pricing',
             brand: { '@type': 'Brand', name: 'Haul Command' },
             offers: { '@type': 'Offer', price: '29.00', priceCurrency: 'USD', priceSpecification: { '@type': 'RecurringCharge', billingFrequency: 'Monthly' }, availability: 'https://schema.org/InStock', url: 'https://www.haulcommand.com/onboarding' },

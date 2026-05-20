@@ -1,6 +1,7 @@
 import { headers } from 'next/headers';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { NextResponse } from 'next/server';
+import { getInternalRequestAuthFailure } from '@/lib/security/internal-request-auth';
 
 // ── Supabase admin client ─────────────────────────────────────────────────
 export function supabaseAdmin() {
@@ -11,14 +12,7 @@ export function supabaseAdmin() {
 // Returns null if authorized, or a 401 NextResponse if not.
 export async function cronGuard(): Promise<NextResponse | null> {
     const headersList = await headers();
-    const authHeader = headersList.get('authorization');
-    const cronSecret = process.env.CRON_SECRET;
-
-    // Vercel sends: Authorization: Bearer <CRON_SECRET>
-    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-        return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
-    }
-    return null;
+    return getInternalRequestAuthFailure({ headers: headersList } as Request);
 }
 
 // ── Job logger ────────────────────────────────────────────────────────────

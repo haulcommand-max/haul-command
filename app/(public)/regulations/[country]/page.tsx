@@ -362,7 +362,7 @@ export default async function RegulationCountryPage({ params }: PageProps) {
                 <span style={{ fontSize: 11, fontWeight: 800, color: '#C6923A', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Find Escorts</span>
               </div>
               <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>
-                Find verified pilot car operators in {name}. Real availability, trust scores.
+                Find pilot car records in {name}. Review claim state, proof signals, and availability context where supplied.
               </p>
               <Link href={`/directory?country=${countryCode}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '10px 0', borderRadius: 10, width: '100%', background: 'linear-gradient(135deg, #C6923A, #E0B05C)', color: '#000', fontSize: 12, fontWeight: 900, textDecoration: 'none' }}>
                 Search {name} Escorts

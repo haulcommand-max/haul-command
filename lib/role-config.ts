@@ -66,7 +66,7 @@ export const ROLE_CONFIGS: Record<HCRole, RoleConfig> = {
     primaryActions: [
       { id: 'op_find_loads', label: 'Find Loads', href: '/loads', icon: '📦', description: 'Browse loads matching your service area' },
       { id: 'op_claim_profile', label: 'Claim Profile', href: '/claim', icon: '✅', description: 'Take ownership of your listing' },
-      { id: 'op_get_verified', label: 'Get Verified', href: '/claim', icon: '🛡️', description: 'Earn the verified badge for priority placement' },
+      { id: 'op_get_verified', label: 'Submit Proof', href: '/claim', icon: '🛡️', description: 'Add evidence for reviewed trust signals' },
       { id: 'op_improve_rank', label: 'Improve Rank', href: '/leaderboards', icon: '📈', description: 'Move up for earlier access to loads' },
     ],
     secondaryActions: [

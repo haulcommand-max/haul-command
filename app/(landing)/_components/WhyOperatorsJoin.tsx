@@ -85,7 +85,7 @@ const OPERATOR_HOOKS = [
   {
     icon: Award,
     title: "Preferred Operator Status",
-    desc: "Top-ranked operators get a gold badge, priority dispatch queue, and higher visibility in the directory.",
+    desc: "Operators with stronger proof and profile completeness can earn clearer labeled visibility in the directory.",
     accent: "#C6923A",
     badge: null,
   },

@@ -215,7 +215,7 @@ export default function InsurancePage() {
                 <Zap style={{ width: 14, height: 14, color: '#C6923A' }} />
                 <span style={{ fontSize: 11, fontWeight: 800, color: '#C6923A', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Claim Free Listing</span>
               </div>
-              <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>Get found by brokers. Trust score, verified badge, and insurance status displayed on your profile.</p>
+              <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>Add broker-facing context. Proof, insurance status, and claim details can display on your profile where supplied.</p>
               <Link href="/claim" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px 0', borderRadius: 10, width: '100%', background: 'rgba(198,146,58,0.08)', border: '1px solid rgba(198,146,58,0.22)', color: '#C6923A', fontSize: 12, fontWeight: 800, textDecoration: 'none' }}>
                 Claim Listing — Free
               </Link>

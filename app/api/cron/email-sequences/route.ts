@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import { Resend } from 'resend';
 import { see } from '@/lib/ai/brain';
 import { tracked } from '@/lib/ai/tracker';
+import { requireInternalRequest } from '@/lib/security/internal-request-auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,10 +20,8 @@ export const dynamic = 'force-dynamic';
  * Body: { email, sequence_id, user_id?, trigger_event?, context? }
  */
 export async function GET(req: NextRequest) {
-  const authHeader = req.headers.get('authorization');
-  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const authFailure = requireInternalRequest(req);
+  if (authFailure) return authFailure;
 
   const supabase = createClient();
   const resend = new Resend(process.env.RESEND_API_KEY);

@@ -61,7 +61,7 @@ const actionMessages: Record<ActionType, Record<ActionStatus, { title: string; d
         failed: { title: 'Claim Issue', detail: 'There was a problem processing your claim. Please contact support.' },
     },
     apply_partner: {
-        success: { title: 'Application Received', detail: 'We\'ll review and get back within 48 hours. Vetted partners get priority placement.' },
+        success: { title: 'Application Received', detail: 'We\'ll review and get back within 48 hours. Vetted partners can become eligible for labeled placement.' },
         partial: { title: 'Application Incomplete', detail: 'Please complete all required fields to submit.' },
         pending: { title: 'Submitting...', detail: 'Processing your partner application.' },
         failed: { title: 'Submission Failed', detail: 'We couldn\'t process your application. Please try again.' },

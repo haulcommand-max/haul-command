@@ -47,13 +47,13 @@ type RouteConfig = { href: string; icon: any; label: string; desc: string; color
 const ROLE_ROUTE_MAP: Record<HCRole, RouteConfig[]> = {
     escort_operator: [
         { href: "/loads", icon: Package, label: "Find Jobs", desc: "Loads near you", color: "#22c55e", primary: true },
-        { href: "/onboarding/claim", icon: Shield, label: "Claim Profile", desc: "Get verified", color: "#3b82f6", primary: true },
+        { href: "/onboarding/claim", icon: Shield, label: "Claim Profile", desc: "Submit proof", color: "#3b82f6", primary: true },
         { href: "/tools/escort-calculator", icon: Compass, label: "Rate Tools", desc: "What to charge", color: "#a855f7", primary: false },
         { href: "/corridors", icon: Map, label: "Coverage", desc: "Your corridors", color: "#C6923A", primary: false },
     ],
     broker_dispatcher: [
         { href: "/loads/post", icon: MapPin, label: "Post Load", desc: "Get coverage fast", color: "#C6923A", primary: true },
-        { href: "/directory", icon: Search, label: "Find Escorts", desc: "Verified operators", color: "#22c55e", primary: true },
+        { href: "/directory", icon: Search, label: "Find Escorts", desc: "Proof signals", color: "#22c55e", primary: true },
         { href: "/corridors", icon: BarChart3, label: "Corridors", desc: "Supply density", color: "#a855f7", primary: false },
         { href: "/loads/rescue", icon: Flame, label: "Rescue Fill", desc: "Hard-fill lanes", color: "#ef4444", primary: false },
     ],

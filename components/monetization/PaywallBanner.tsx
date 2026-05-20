@@ -91,7 +91,7 @@ const URGENCY_STYLES: Record<'soft' | 'medium' | 'hard', { bar: string; badge: s
 const COPY: Record<string, { headline: string; sub: string }> = {
   lead_limit_reached: {
     headline: 'You\'ve used your 5 free leads this month.',
-    sub: 'Upgrade to Pro — unlimited leads, verified badge, priority ranking.',
+    sub: 'Upgrade to Pro for more lead access, proof controls, and profile analytics.',
   },
   search_limit_reached: {
     headline: 'Daily search limit reached.',

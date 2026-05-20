@@ -6,9 +6,10 @@ export interface ClaimFirstCTAProps {
     mode: 'claim' | 'request_support' | 'app_install' | 'book_corridor';
     marketLabel: string;
     headline?: string;
+    ctaHref?: string;
 }
 
-export function ClaimFirstCTA({ mode, marketLabel, headline }: ClaimFirstCTAProps) {
+export function ClaimFirstCTA({ mode, marketLabel, headline, ctaHref }: ClaimFirstCTAProps) {
     
     // Maps intent mode to the exact copy and linking rules specified in HC-W1-07
     const renderContent = () => {
@@ -52,7 +53,8 @@ export function ClaimFirstCTA({ mode, marketLabel, headline }: ClaimFirstCTAProp
         }
     };
 
-    const content = renderContent();
+    const renderedContent = renderContent();
+    const content = { ...renderedContent, ctaHref: ctaHref || renderedContent.ctaHref };
     const IconComponent = content.icon;
 
     return (

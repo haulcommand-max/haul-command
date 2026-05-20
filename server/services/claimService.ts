@@ -35,10 +35,11 @@ export class ClaimService {
             throw new Error("Failed to start claim session.");
         }
 
-        // 3. Mark entity as claim_started
+        // 3. Mark entity as claim_started. Ownership is assigned only after
+        // verification/approval; starting a claim must not grant control.
         await supabaseAdmin
             .from("hc_entities")
-            .update({ claim_status: "claim_started", owner_user_id: user_id })
+            .update({ claim_status: "claim_started" })
             .eq("id", entity_id);
 
         return session;
