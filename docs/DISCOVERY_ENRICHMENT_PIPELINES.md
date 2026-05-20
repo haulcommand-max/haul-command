@@ -31,6 +31,7 @@ For Supabase Edge Functions, set at least:
 
 - Firecrawl worker: `supabase/functions/firecrawl-worker/index.ts`
 - Discovery migration: `supabase/migrations/20260520143000_discovery_enrichment_pipelines.sql`
+- Discovery queue runner: `scripts/discovery/run-work-queue.mjs`
 - Safe Vercel env loader: `scripts/set-vercel-env.sh`
 - Existing raw ingest API: `app/api/discovery/ingest/route.ts`
 - Existing OSM cron: `app/api/cron/osm-enrichment/route.ts`
@@ -47,6 +48,23 @@ For Supabase Edge Functions, set at least:
 7. Use Firecrawl for official pages, association pages, and source-backed candidate evidence.
 8. Run geocode backfill only for records without verified coordinates.
 9. Review quality and dedupe before promotion.
+
+## Discovery Queue Runner
+
+Run the first safe worker set with:
+
+```bash
+npm run discovery:work-queue -- --limit 5
+```
+
+Supported jobs:
+
+- `tavily_search`
+- `reverse_company_search`
+- `firecrawl_scrape`
+- `clay_enrichment`
+
+Unsupported jobs such as `authority_registry_scan`, `association_member_scan`, `geocode_backfill`, and `osm_overpass_template` are marked `skipped` with a reason until dedicated non-Google, non-Make consumers exist. The runner only stages observations in `hc_entities_raw` or hands off to the Firecrawl/Clay worker path; it does not promote rows directly into public directory tables.
 
 ## Firecrawl Worker Contract
 
