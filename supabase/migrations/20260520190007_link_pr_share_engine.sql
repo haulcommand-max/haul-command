@@ -90,6 +90,85 @@ create table if not exists public.hc_linkable_assets (
   )
 );
 
+-- Live compatibility: an earlier linkable-asset table may already exist with a
+-- smaller PR/asset schema. Keep it and add the Link + PR + Share columns needed
+-- by this layer instead of replacing the existing table.
+alter table public.hc_linkable_assets add column if not exists asset_key text;
+alter table public.hc_linkable_assets add column if not exists asset_type text;
+alter table public.hc_linkable_assets add column if not exists source_surface_type text;
+alter table public.hc_linkable_assets add column if not exists source_surface_key text;
+alter table public.hc_linkable_assets add column if not exists canonical_url text;
+alter table public.hc_linkable_assets add column if not exists country_codes text[] not null default '{}';
+alter table public.hc_linkable_assets add column if not exists region_keys text[] not null default '{}';
+alter table public.hc_linkable_assets add column if not exists role_keys text[] not null default '{}';
+alter table public.hc_linkable_assets add column if not exists corridor_keys text[] not null default '{}';
+alter table public.hc_linkable_assets add column if not exists topic_tags text[] not null default '{}';
+alter table public.hc_linkable_assets add column if not exists methodology_note text;
+alter table public.hc_linkable_assets add column if not exists source_urls text[] not null default '{}';
+alter table public.hc_linkable_assets add column if not exists source_confidence integer not null default 50;
+alter table public.hc_linkable_assets add column if not exists data_as_of date;
+alter table public.hc_linkable_assets add column if not exists refresh_cadence text;
+alter table public.hc_linkable_assets add column if not exists has_downloadable_image boolean not null default false;
+alter table public.hc_linkable_assets add column if not exists has_short_video boolean not null default false;
+alter table public.hc_linkable_assets add column if not exists has_youtube_video boolean not null default false;
+alter table public.hc_linkable_assets add column if not exists has_embed_code boolean not null default false;
+alter table public.hc_linkable_assets add column if not exists has_share_button boolean not null default false;
+alter table public.hc_linkable_assets add column if not exists has_faq boolean not null default false;
+alter table public.hc_linkable_assets add column if not exists has_quote_sheet boolean not null default false;
+alter table public.hc_linkable_assets add column if not exists seo_value integer not null default 0;
+alter table public.hc_linkable_assets add column if not exists training_value integer not null default 0;
+alter table public.hc_linkable_assets add column if not exists conversion_value integer not null default 0;
+alter table public.hc_linkable_assets add column if not exists linkability_score integer not null default 0;
+alter table public.hc_linkable_assets add column if not exists journalist_pitch_angle text;
+alter table public.hc_linkable_assets add column if not exists shareability_score integer not null default 0;
+alter table public.hc_linkable_assets add column if not exists embed_available boolean not null default false;
+alter table public.hc_linkable_assets add column if not exists podcast_talking_points text[] not null default '{}';
+alter table public.hc_linkable_assets add column if not exists utm_campaign text;
+alter table public.hc_linkable_assets add column if not exists indexability_status text not null default 'needs_review';
+alter table public.hc_linkable_assets add column if not exists legal_review_status text not null default 'not_required';
+alter table public.hc_linkable_assets add column if not exists status text not null default 'draft';
+alter table public.hc_linkable_assets add column if not exists metadata jsonb not null default '{}'::jsonb;
+
+do $$
+begin
+  if exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'hc_linkable_assets'
+      and column_name = 'asset_kind'
+  ) then
+    update public.hc_linkable_assets
+    set asset_key = coalesce(asset_key, slug, id::text),
+        asset_type = coalesce(asset_type, asset_kind, 'other'),
+        source_surface_type = coalesce(source_surface_type, 'manual'),
+        canonical_url = coalesce(canonical_url, html_path),
+        country_codes = case when country_codes <> '{}'::text[] then country_codes else coalesce(countries_covered, '{}'::text[]) end,
+        topic_tags = case when topic_tags <> '{}'::text[] then topic_tags else coalesce(entities_referenced, '{}'::text[]) end,
+        data_as_of = coalesce(data_as_of, data_period_end),
+        refresh_cadence = coalesce(refresh_cadence, publish_cadence),
+        has_downloadable_image = has_downloadable_image or cover_image is not null,
+        has_embed_code = has_embed_code or html_path is not null,
+        has_share_button = has_share_button or share_count > 0,
+        status = case when published_at is not null or is_public then 'active' else status end,
+        indexability_status = case when is_public and not is_gated then 'index' else indexability_status end
+    where asset_key is null
+      or asset_type is null
+      or source_surface_type is null;
+  else
+    update public.hc_linkable_assets
+    set asset_key = coalesce(asset_key, slug, id::text),
+        asset_type = coalesce(asset_type, 'other'),
+        source_surface_type = coalesce(source_surface_type, 'manual')
+    where asset_key is null
+      or asset_type is null
+      or source_surface_type is null;
+  end if;
+end $$;
+
+create unique index if not exists idx_hc_linkable_assets_asset_key_unique
+  on public.hc_linkable_assets (asset_key);
+
 create index if not exists idx_hc_linkable_assets_status
   on public.hc_linkable_assets (status, indexability_status, linkability_score desc);
 
