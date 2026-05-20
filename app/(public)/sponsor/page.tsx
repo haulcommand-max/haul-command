@@ -108,6 +108,15 @@ export default function SponsorPage() {
         scarcity_label: string;
         pricing_posture: string;
         surge_active: boolean;
+        surge_multiplier: number;
+        supply_alert_count: number;
+        supply_alerts: Array<{
+            id: string;
+            label: string;
+            message: string;
+            alert_type: string | null;
+            available_count: number | null;
+        }>;
         operator_count: number;
     } | null>(null);
 
@@ -494,6 +503,36 @@ export default function SponsorPage() {
                                     <div style={{ fontSize: 13, color: 'var(--m-text-secondary)', lineHeight: 1.4 }}>
                                         {marketPricing.messaging}
                                     </div>
+                                    {(marketPricing.surge_active || marketPricing.supply_alert_count > 0) && (
+                                        <div style={{
+                                            display: 'grid',
+                                            gap: 8,
+                                            marginTop: 8,
+                                            padding: 10,
+                                            borderRadius: 12,
+                                            border: '1px solid rgba(249, 115, 22, 0.22)',
+                                            background: 'rgba(249, 115, 22, 0.08)',
+                                        }}>
+                                            <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#fb923c' }}>
+                                                Market pressure
+                                                {marketPricing.surge_active ? ` - ${marketPricing.surge_multiplier.toFixed(1)}x surge signal` : ''}
+                                            </div>
+                                            {marketPricing.supply_alerts.length > 0 ? (
+                                                marketPricing.supply_alerts.map((alert) => (
+                                                    <div key={alert.id} style={{ fontSize: 12, lineHeight: 1.45, color: '#fed7aa' }}>
+                                                        <strong style={{ color: '#fff7ed' }}>{alert.label}:</strong> {alert.message}
+                                                        {typeof alert.available_count === 'number' && (
+                                                            <span style={{ color: '#fdba74' }}> {alert.available_count} availability signal{alert.available_count === 1 ? '' : 's'}.</span>
+                                                        )}
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <div style={{ fontSize: 12, lineHeight: 1.45, color: '#fed7aa' }}>
+                                                    Demand pressure is elevated. Pricing reflects the live corridor signal; availability still needs operator confirmation.
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
                                     <div style={{ fontSize: 24, fontWeight: 900, color: 'var(--hc-gold-400)', marginTop: 4 }}>
                                         ${marketPricing.base_price_monthly}<span style={{ fontSize: 13, fontWeight: 600, color: 'var(--m-text-muted)' }}>/mo</span>
                                     </div>
