@@ -17,6 +17,7 @@
         "media:starter-packets": "node scripts/media/generate-video-packets.mjs --write",
         "media:render-starter": "node scripts/media/render-starter-video.mjs",
         "discovery:work-queue": "node scripts/discovery/run-work-queue.mjs",
+        "discovery:authority-sources": "node scripts/discovery/load-authority-sources.mjs",
         "backfill:glossary-schema": "node scripts/backfill-glossary-schema-json.mjs",
         "geocode:operator-queue": "node scripts/geocode-operator-queue.mjs",
         "brand:generate": "node scripts/brand/generate-assets.mjs",
