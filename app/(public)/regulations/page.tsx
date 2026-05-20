@@ -338,7 +338,7 @@ export default function RegulationsIndexPage() {
                 </span>
               </div>
               <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>
-                Find verified pilot car operators in any jurisdiction. Real availability, real trust scores.
+                Find pilot car and support records by jurisdiction. Review claim state, proof signals, and contact paths before dispatch.
               </p>
               <Link href="/directory" style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -370,7 +370,7 @@ export default function RegulationsIndexPage() {
                 </span>
               </div>
               <p style={{ fontSize: 12, color: '#64748b', margin: '0 0 12px', lineHeight: 1.5 }}>
-                List your escort services. Get trust score, Haul Command Proof badge, and verified leads.
+                List your escort services, add proof, and become eligible for stronger broker-facing placement.
               </p>
               <Link href="/claim" style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center',

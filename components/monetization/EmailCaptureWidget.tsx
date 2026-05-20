@@ -52,7 +52,7 @@ export default function EmailCaptureWidget({
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(74,222,128,0.1)_0,transparent_100%)]"></div>
                 <CheckCircle2 className="w-10 h-10 text-emerald-400 relative z-10" />
                 <h3 className="text-xl font-bold text-white relative z-10">Command Confirmed</h3>
-                <p className="text-emerald-400/80 text-sm relative z-10">You're now on the priority dispatch list for {geoInterest || 'this area'}.</p>
+                <p className="text-emerald-400/80 text-sm relative z-10">You're on the update list for {geoInterest || 'this area'}.</p>
             </div>
         );
     }

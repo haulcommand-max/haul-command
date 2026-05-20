@@ -20,7 +20,7 @@ interface ProfileClaimSidebarProps {
 export function ProfileClaimSidebar({ profileId, isClaimed, claimHash, className }: ProfileClaimSidebarProps) {
     if (isClaimed) {
         // If claimed, maybe show an upsell to 'Elite' or just be invisible.
-        // For now, if claimed, we'll return a smaller verified badge card for morale.
+        // For now, if claimed, return a smaller proof-context card for morale.
         return (
             <div className={cn("bg-[#0a0a0a] border border-[#1a1a1a] p-6 rounded-2xl flex flex-col items-center text-center", className)}>
                 <ShieldCheck className="w-8 h-8 text-emerald-500 mb-3" />

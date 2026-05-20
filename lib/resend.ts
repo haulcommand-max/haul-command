@@ -203,8 +203,8 @@ export async function sendClaimCompetitorPressure(to: string, data: ClaimOutreac
                 <p style="margin:6px 0">🏆 Activating Trust Report Cards</p>
                 <p style="margin:6px 0">🎯 Becoming eligible for dispatch matching</p>
             </div>
-            <p><strong>Unclaimed listings stay weaker.</strong> They have no verified badges, no trust score, and no competitive advantage.</p>
-            <p>Claim your listing now to control your ranking and stay competitive in your territory.</p>
+            <p><strong>Unclaimed listings stay incomplete.</strong> They have no owner-submitted proof, claim context, or current service-area details.</p>
+            <p>Claim your listing now to manage your profile and keep your territory presence accurate.</p>
             ${CLAIM_CTA(data.claim_url, 'Claim Before Competitors Pull Ahead →')}
         `),
     });
@@ -222,11 +222,11 @@ export async function sendClaimMissedOpportunity(to: string, data: ClaimOutreach
             <div style="background:rgba(255,255,255,0.05);padding:16px;border-radius:8px;margin:16px 0">
                 <p style="margin:6px 0;color:#EF4444">❌ No control over how your business appears</p>
                 <p style="margin:6px 0;color:#EF4444">❌ No Trust Report Card</p>
-                <p style="margin:6px 0;color:#EF4444">❌ No verified badges</p>
+                <p style="margin:6px 0;color:#EF4444">❌ No owner-submitted proof</p>
                 <p style="margin:6px 0;color:#EF4444">❌ Not eligible for load matching</p>
                 <p style="margin:6px 0;color:#EF4444">❌ Invisible to premium broker searches</p>
             </div>
-            <p>Claimed operators unlock <strong>visibility, trust, and future matching tools</strong>. Don't leave your territory presence unmanaged.</p>
+            <p>Claimed operators can manage <strong>profile context, proof, and future matching tools</strong>. Don't leave your territory presence unmanaged.</p>
             ${CLAIM_CTA(data.claim_url, 'Claim Your Listing Now →')}
         `),
     });

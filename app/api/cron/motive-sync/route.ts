@@ -11,19 +11,15 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { syncAllMotiveConnections } from '@/lib/motive/sync';
+import { requireInternalRequest } from '@/lib/security/internal-request-auth';
 
 // Vercel cron config
 export const runtime = 'nodejs';
 export const maxDuration = 60; // 60 seconds max
 
 export async function POST(request: NextRequest) {
-  // Verify cron secret
-  const authHeader = request.headers.get('authorization');
-  const cronSecret = process.env.CRON_SECRET;
-
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const authFailure = requireInternalRequest(request);
+  if (authFailure) return authFailure;
 
   try {
     console.log('[Motive Cron] Starting sync...');

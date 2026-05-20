@@ -73,8 +73,8 @@ const URGENCY_LABELS: Record<Urgency, string> = {
 };
 
 const URGENCY_SUBTEXTS: Record<Urgency, (name: string, type: string) => string> = {
-    critical: (n, t) => `Escort supply is critically low on ${t === "port" ? "the" : ""} ${n}. Sponsor your slot now to capture priority placement.`,
-    high: (n, t) => `Demand is elevated on ${n}. Sponsored operators are currently getting priority load routing on this ${t}.`,
+    critical: (n, t) => `Escort supply is critically low on ${t === "port" ? "the" : ""} ${n}. Sponsor a labeled slot to improve visibility.`,
+    high: (n, t) => `Demand is elevated on ${n}. Sponsored operators can show labeled availability context on this ${t}.`,
     moderate: (n, _t) => `${n} is trending. Claim your sponsored slot before competitors do.`,
 };
 

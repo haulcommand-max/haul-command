@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { requireInternalRequest } from '@/lib/security/internal-request-auth';
 
 /**
  * GET/POST /api/cron/content-pipeline
@@ -27,11 +28,8 @@ export async function POST(req: Request) {
 }
 
 async function runContentPipeline(req: Request) {
-    // Verify cron secret. Vercel cron uses GET, but manual/internal callers may use POST.
-    const authHeader = req.headers.get('authorization');
-    if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const authFailure = requireInternalRequest(req);
+    if (authFailure) return authFailure;
 
     const svc = getSupabaseAdmin();
     const started = Date.now();

@@ -1,16 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { requireInternalRequest } from '@/lib/security/internal-request-auth';
 
 /**
  * Directory Promotion Pipeline
  * POST: Promote hc_identities + profiles → directory_listings
  */
 export async function POST(req: NextRequest) {
-    const authHeader = req.headers.get('authorization');
-    const cronSecret = process.env.CRON_SECRET;
-    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const authFailure = requireInternalRequest(req);
+    if (authFailure) return authFailure;
 
     const sb = getSupabaseAdmin();
     const results = {

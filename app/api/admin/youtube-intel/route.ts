@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { see } from '@/lib/ai/brain';
 import { tracked } from '@/lib/ai/tracker';
+import { requireInternalRequest } from '@/lib/security/internal-request-auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,10 +21,8 @@ export const dynamic = 'force-dynamic';
  * Cost: ~$0.005 per analysis (Gemini 2.5 Flash with grounding)
  */
 export async function POST(req: NextRequest) {
-  const authHeader = req.headers.get('authorization');
-  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const authFailure = requireInternalRequest(req);
+  if (authFailure) return authFailure;
 
   const body = await req.json().catch(() => ({}));
   const { topic = 'heavy haul escort trucking', competitor } = body;

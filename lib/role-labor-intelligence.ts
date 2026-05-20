@@ -52,7 +52,7 @@ export const roleIntelligenceRoles: RoleIntelligence[] = [
     automationScore: 38, automationClass: 'human_plus_software',
     automationPlan: ['automate broker matching', 'automate document verification intake', 'automate availability and radius alerts', 'automate rate guidance and corridor ranking'],
     surfaces: { directory: '/directory?category=pilot_car_operator', role: '/roles/pilot-car-operator', training: '/training/roles/pilot-car-operator', tools: ['/tools/escort-calculator','/tools/escort-count-calculator','/rates'], corridors: '/corridors?role=pilot-car-operator', dataProduct: '/labor-demand?role=pilot-car-operator' },
-    monetizationProducts: ['verified profile', 'priority placement', 'broker lead routing', 'corridor sponsorship', 'rate intelligence'], searchableAcross120Countries: true,
+    monetizationProducts: ['proof-reviewed profile', 'labeled placement', 'broker request routing', 'corridor sponsorship', 'rate intelligence'], searchableAcross120Countries: true,
   },
   {
     slug: 'high-pole-escort', title: 'High Pole Escort', emoji: '📐', directoryCategoryKey: 'high_pole', jobFamily: 'escort_operations',

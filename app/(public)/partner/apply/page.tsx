@@ -67,7 +67,7 @@ export default function PartnerApplyPage() {
                         </div>
                         <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', lineHeight: 1.5, maxWidth: 400, margin: '0 auto' }}>
                             We'll review your application and get back to you within 48 hours.
-                            Vetted partners get priority placement on corridor and market pages.
+                            Vetted partners can become eligible for labeled corridor and market placements.
                         </div>
                         <Link aria-label="Navigation Link" href="/" style={{
                             display: 'inline-flex', marginTop: 20, padding: '12px 24px', borderRadius: 12,

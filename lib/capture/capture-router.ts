@@ -282,7 +282,7 @@ function claimedProfileOffer(identity: VisitorIdentity, ctx: PageContext): Captu
   return {
     type: 'upgrade_premium',
     headline: 'Unlock Commander features',
-    subtext: 'See who viewed your profile, get priority dispatch, and unlock analytics',
+    subtext: 'See profile activity, strengthen proof context, and unlock analytics',
     ctaLabel: 'Start 14-Day Trial',
     ctaUrl: '/pricing',
     icon: '⚡',

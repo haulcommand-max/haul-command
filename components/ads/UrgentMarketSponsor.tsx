@@ -73,7 +73,7 @@ const MODE_CONFIG: Record<MarketMode, {
     bg: 'rgba(245,158,11,0.06)',
     border: 'rgba(245,158,11,0.2)',
     headline: 'Demand exceeds supply in this market',
-    sub: 'Operators who claim now skip the waitlist and get priority placement for incoming loads.',
+    sub: 'Operators who claim now can add proof and service-area context before demand is routed.',
     cta: 'Skip Waitlist — Claim Now →',
     ctaHref: '/claim?intent=waitlist_skip',
     ctaColor: 'linear-gradient(135deg, #F59E0B, #D97706)',

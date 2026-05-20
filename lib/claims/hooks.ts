@@ -24,7 +24,7 @@ export const MONETIZATION_HOOKS: MonetizationHook[] = [
     },
     {
         trigger: 'ownership_granted',
-        offer: 'You\'re live! Get found faster with Pro.',
+        offer: 'Claim received. Improve profile context with Pro tools.',
         channel: 'in-app',
         urgency: 'soft',
         cta_text: 'Upgrade to Pro',
@@ -40,10 +40,10 @@ export const MONETIZATION_HOOKS: MonetizationHook[] = [
     },
     {
         trigger: 'profile_70',
-        offer: 'Start premium trial — dispatch eligible',
+        offer: 'See reviewed upgrade options for dispatch eligibility',
         channel: 'in-app',
         urgency: 'medium',
-        cta_text: 'Start Dispatch Trial',
+        cta_text: 'Review Eligibility Tools',
         cta_href: '/upgrade?plan=elite&trigger=profile_70',
     },
     {
@@ -56,10 +56,10 @@ export const MONETIZATION_HOOKS: MonetizationHook[] = [
     },
     {
         trigger: 'first_compare',
-        offer: 'Stand out with priority dispatch',
+        offer: 'Strengthen your proof and profile context',
         channel: 'in-app',
         urgency: 'soft',
-        cta_text: 'Get Priority',
+        cta_text: 'Review Pro Tools',
         cta_href: '/upgrade?plan=pro&trigger=first_compare',
     },
     {

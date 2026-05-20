@@ -250,6 +250,7 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
                         mode="claim"
                         marketLabel={formattedName}
                         headline="Claim or correct this market profile."
+                        ctaHref={`/claim?country=${countryKey}&source=directory-country`}
                     />
 
                     {/* HC-W3-02: Authority Source Map */}

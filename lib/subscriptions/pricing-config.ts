@@ -135,7 +135,7 @@ export const DIRECTORY_PLANS: PricePlan[] = [
         stripe_price_lookup_key: 'directory_elite_monthly',
         features: [
             'Everything in Verified Pro',
-            'Top-of-corridor priority placement',
+            'Labeled corridor visibility where eligible',
             'Leaderboard visibility boost',
             'Advanced analytics + competitor insights',
             'Dispute protection priority',
