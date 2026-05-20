@@ -10,7 +10,7 @@ import type {
   TopicHeroTier,
 } from "./types";
 
-const MASTER_BACKGROUND = "/backgrounds/haul-command-industrial-gold-texture-background.png";
+const MASTER_BACKGROUND = "/backgrounds/master-background.png";
 
 const familyBackground: Record<TopicHeroPageFamily, string> = {
   homepage: MASTER_BACKGROUND,

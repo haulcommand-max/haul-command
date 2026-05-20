@@ -46,7 +46,7 @@ export type PageFamily =
     | "dashboard"
     | "default";
 
-const MASTER_BACKGROUND_SRC = "/backgrounds/haul-command-industrial-gold-texture-background.png";
+const MASTER_BACKGROUND_SRC = "/backgrounds/master-background.png";
 
 interface PageFamilyAsset {
     /** Path relative to /public — must exist in the repo */

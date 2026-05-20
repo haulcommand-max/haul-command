@@ -1,9 +1,9 @@
 /*
    HAUL COMMAND MASTER BACKGROUND
-   Approved site-wide master background.
+   William-approved site-wide Master Background.
 
    Required asset path:
-   public/backgrounds/haul-command-industrial-gold-texture-background.png
+   public/backgrounds/master-background.png
 */
 
 html {
@@ -11,10 +11,12 @@ html {
 }
 
 body {
-  background-image: url("/backgrounds/haul-command-industrial-gold-texture-background.png") !important;
-  background-repeat: repeat-y !important;
-  background-size: 100% auto !important;
-  background-position: top center !important;
+  background-image:
+    linear-gradient(180deg, rgba(11, 9, 6, 0.04), rgba(11, 9, 6, 0.07)),
+    url("/backgrounds/master-background.png") !important;
+  background-repeat: repeat, repeat !important;
+  background-size: auto, 1000px 1000px !important;
+  background-position: center top, center top !important;
   background-attachment: scroll !important;
   background-color: #9d9890 !important;
 }
