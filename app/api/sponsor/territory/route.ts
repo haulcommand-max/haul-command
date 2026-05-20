@@ -7,6 +7,7 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import Stripe from 'stripe';
 
 
 const TERRITORY_PLANS = {
@@ -72,16 +73,19 @@ export async function POST(req: NextRequest) {
             }, { status: 409 });
         }
 
-        // Create Stripe checkout
-        let checkoutUrl = `/sponsor/success?territory=${territory_type}&value=${territory_value}`;
+        if (!process.env.STRIPE_SECRET_KEY) {
+            return NextResponse.json(
+                { error: 'Sponsor checkout is not configured.' },
+                { status: 503 },
+            );
+        }
 
-        if (process.env.STRIPE_SECRET_KEY) {
-            const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-            const session = await stripe.checkout.sessions.create({
-                mode: 'subscription',
-                customer_email: email,
-                line_items: [{
+        const session = await stripe.checkout.sessions.create({
+            mode: 'subscription',
+            customer_email: email,
+            line_items: [{
                     price_data: {
                         currency: 'usd',
                         product_data: {
@@ -92,19 +96,23 @@ export async function POST(req: NextRequest) {
                         unit_amount: plan.price_monthly * 100,
                         recurring: { interval: 'month' },
                     },
-                    quantity: 1,
-                }],
-                metadata: {
-                    type: 'territory_sponsorship',
-                    territory_type,
-                    territory_value,
-                    company_name,
-                },
-                success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com'}/sponsor/success?session_id={CHECKOUT_SESSION_ID}`,
-                cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com'}/sponsor/checkout`,
-            });
+                quantity: 1,
+            }],
+            metadata: {
+                type: 'territory_sponsorship',
+                territory_type,
+                territory_value,
+                company_name,
+            },
+            success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com'}/sponsor/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com'}/sponsor/checkout`,
+        });
 
-            checkoutUrl = session.url;
+        if (!session.url) {
+            return NextResponse.json(
+                { error: 'Stripe did not return a checkout URL.' },
+                { status: 502 },
+            );
         }
 
         // Record the pending sponsorship (schema: sponsor_user_id, territory_type, territory_value, plan, price_cents_monthly, status)
@@ -135,7 +143,7 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({
             ok: true,
-            checkoutUrl,
+            checkoutUrl: session.url,
             plan: {
                 name: plan.name,
                 price: `$${plan.price_monthly}/mo`,

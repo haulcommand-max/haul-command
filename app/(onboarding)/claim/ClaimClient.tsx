@@ -92,7 +92,7 @@ function ClaimPageInner() {
                     lineHeight: 1.5,
                     margin: 0,
                 }}>
-                    Verify your phone to unlock your operator dashboard, respond to loads, and build your trust score.
+                    Confirm your phone so we can start the claim flow and route your profile into proof review.
                 </p>
             </div>
 
@@ -104,9 +104,9 @@ function ClaimPageInner() {
                 marginBottom: 28,
             }}>
                 {[
-                    { icon: Shield, label: 'Verified', desc: 'Badge' },
-                    { icon: Clock, label: '< 2 min', desc: 'To verify' },
-                    { icon: CheckCircle, label: 'Free', desc: 'to claim' },
+                    { icon: Shield, label: 'Phone', desc: 'Confirmed' },
+                    { icon: Clock, label: '< 2 min', desc: 'to submit' },
+                    { icon: CheckCircle, label: 'Free', desc: 'to start' },
                 ].map(({ icon: Icon, label, desc }) => (
                     <div key={label} style={{
                         textAlign: 'center',
@@ -231,9 +231,9 @@ function ClaimPageInner() {
                     What happens next
                 </div>
                 {[
-                    'Enter your code to verify your number',
-                    'Your operator profile activates instantly',
-                    'Start responding to loads and building trust',
+                    'Enter your code to confirm this number',
+                    'Submit profile and proof details for review',
+                    'Update service areas and broker request preferences',
                 ].map((step, i) => (
                     <div key={i} style={{
                         display: 'flex',
