@@ -21,6 +21,7 @@ function providedToken(request: InternalRequest) {
   return (
     request.headers.get("x-internal-token")?.trim() ||
     request.headers.get("x-admin-secret")?.trim() ||
+    request.headers.get("x-cron-secret")?.trim() ||
     bearer ||
     ""
   );

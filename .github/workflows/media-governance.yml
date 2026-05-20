@@ -1,0 +1,32 @@
+name: Media Governance
+
+on:
+  pull_request:
+    paths:
+      - "app/api/video/**"
+      - "lib/media-engine/**"
+      - "scripts/audit-media-governance.mjs"
+      - "tests/unit/media-*.test.ts"
+      - "supabase/migrations/*media*"
+      - ".github/workflows/media-governance.yml"
+  workflow_dispatch:
+
+jobs:
+  static-media-governance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - run: npm ci --legacy-peer-deps
+
+      - name: Audit paid media governance
+        run: npm run audit:media-governance
+
+      - name: Run media governance unit tests
+        run: npm test -- tests/unit/media-cost-governor.test.ts tests/unit/media-governance-audit.test.ts

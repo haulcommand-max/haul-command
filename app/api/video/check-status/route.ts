@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import { assertPaidProviderAllowed, type MediaMoneyPath } from '@/lib/media-engine/cost-governor';
 
 const HEYGEN_API_KEY = process.env.HEYGEN_API_KEY;
 const ELAI_API_KEY   = process.env.ELAI_API_KEY;
@@ -75,7 +76,7 @@ export async function GET(req: NextRequest) {
       let videoUrl: string | null = null;
       let durationSecs: number | null = null;
 
-      if (job.provider === 'heygen' || HEYGEN_API_KEY) {
+      if (job.provider === 'heygen') {
         const s = await heygenStatus(job.provider_video_id);
         status    = s.status;           // 'processing' | 'completed' | 'failed'
         videoUrl  = s.video_url || null;
@@ -127,8 +128,31 @@ export async function GET(req: NextRequest) {
         if (job.blog_post_id)    await supabase.from('blog_posts').update(updatePayload).eq('id', job.blog_post_id);
         if (job.content_queue_id) await supabase.from('content_queue').update({ video_url_en: videoUrl, heygen_status: 'en_complete' }).eq('id', job.content_queue_id);
 
-        // Trigger multilingual translations (HeyGen only)
-        if (HEYGEN_API_KEY) {
+        // Trigger multilingual translations only when this specific job was approved for paid localization.
+        if (job.provider === 'heygen' && HEYGEN_API_KEY && job.translation_approved === true) {
+          const translationDecision = assertPaidProviderAllowed({
+            assetType: 'translation',
+            sourceType: 'manual_script',
+            moneyPath: (job.media_money_path ?? 'none') as MediaMoneyPath,
+            humanNeededScore: Number(job.human_needed_score ?? 0),
+            expectedValueCents: Number(job.expected_value_cents ?? 0),
+            estimatedCostCents: Number(job.estimated_cost_cents ?? 0),
+            requiresAvatar: true,
+            requiresVoice: true,
+            isTranslation: true,
+            winnerSignal: job.winner_signal === true || job.translation_winner_signal === true,
+            manualApproval: true,
+          });
+
+          if (!translationDecision.allowed) {
+            await supabase.from('video_jobs').update({
+              translation_approved: false,
+              cost_governor_decision: translationDecision,
+            }).eq('id', job.id);
+            results.push(`${job.id}: translation blocked by cost governor`);
+            continue;
+          }
+
           try {
             const translations = await heygenTranslate(job.provider_video_id);
             // translations: [{ language: 'es', video_translate_id: 'abc' }, ...]
@@ -143,6 +167,12 @@ export async function GET(req: NextRequest) {
               topic_slug: job.topic_slug,
               format: job.format, // retain orientation metadata
               attempts: 0,
+              media_money_path: job.media_money_path ?? 'none',
+              human_needed_score: job.human_needed_score ?? 0,
+              expected_value_cents: job.expected_value_cents ?? 0,
+              estimated_cost_cents: job.estimated_cost_cents ?? 0,
+              translation_approved: false,
+              cost_governor_decision: translationDecision,
             }));
             if (translationJobs.length) {
               await supabase.from('video_jobs').insert(translationJobs);
