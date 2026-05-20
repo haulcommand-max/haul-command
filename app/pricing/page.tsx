@@ -1,309 +1,181 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import { ESCORT_SUBSCRIPTION_TIERS, BROKER_SUBSCRIPTION_TIERS } from '@/lib/monetization/monetization-engine';
-import { ProofStrip } from '@/components/ui/ProofStrip';
-import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
+import type { Metadata } from "next";
+import Link from "next/link";
+
+import { StorefrontBuyButton } from "@/components/pricing/StorefrontBuyButton";
+import { NoDeadEndBlock } from "@/components/ui/NoDeadEndBlock";
+import { ProofStrip } from "@/components/ui/ProofStrip";
+import {
+  detectRequestCountry,
+  formatStorefrontPrice,
+  getStorefrontProducts,
+  groupStorefrontProducts,
+} from "@/lib/storefront/pricing";
 
 export const metadata: Metadata = {
-    title: 'Haul Command Pricing | Pilot Car Operator & Carrier Plans',
-    description: 'Transparent pricing for all Haul Command plans. Free forever for basic listings. Pro starts at $29/month for operators and $99/month for brokers. Enterprise and sponsor plans available.',
-    alternates: {
-        canonical: 'https://www.haulcommand.com/pricing',
-    },
+  title: "Haul Command Data Products & Pricing",
+  description:
+    "Buy Haul Command data products, market intelligence, AdGrid signals, and heavy-haul operating reports with localized pricing where available.",
+  alternates: {
+    canonical: "https://www.haulcommand.com/pricing",
+  },
 };
 
-const pricingSchema = {
-    '@context': 'https://schema.org',
-    '@graph': [
-        {
-            '@type': 'WebPage',
-            '@id': 'https://www.haulcommand.com/pricing',
-            name: 'Haul Command Pricing | Pilot Car Operator & Carrier Plans',
-            description: 'Transparent pricing for all Haul Command plans. Free forever for basic listings. Pro starts at $29/month for operators and $99/month for brokers.',
-            url: 'https://www.haulcommand.com/pricing',
-            publisher: { '@type': 'Organization', name: 'Haul Command', url: 'https://www.haulcommand.com' },
-        },
-        {
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-                { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.haulcommand.com' },
-                { '@type': 'ListItem', position: 2, name: 'Pricing', item: 'https://www.haulcommand.com/pricing' },
-            ],
-        },
-        {
-            '@type': 'FAQPage',
-            mainEntity: [
-                { '@type': 'Question', name: 'How much does Haul Command cost?', acceptedAnswer: { '@type': 'Answer', text: 'Haul Command is free to claim your profile and appear in search. Operator Pro plans start at $29/month. Broker Business plans start at $99/month. Enterprise plans start at $499/month. All plans include a 14-day free trial.' } },
-                { '@type': 'Question', name: 'Is there a free pilot car operator plan?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Free pilot car operator accounts include a basic directory listing, standard profile, 1 operating region, and up to 5 lead alerts per month. The free plan is permanent — no credit card required to claim your profile.' } },
-                { '@type': 'Question', name: 'What is included in the Haul Command Elite plan?', acceptedAnswer: { '@type': 'Answer', text: 'Elite ($79/month) includes proof review tooling, stronger profile controls, unlimited operating regions, advanced analytics, route intelligence, competitor insights, API read access, and dedicated support.' } },
-                { '@type': 'Question', name: 'Can I cancel anytime?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Cancel anytime from your dashboard. Your subscription remains active until the end of your billing period. No cancellation fees, no questions asked.' } },
-                { '@type': 'Question', name: 'Do you offer annual pricing?', acceptedAnswer: { '@type': 'Answer', text: 'Annual plans include 2 months free (equivalent to 17% off). Contact billing@haulcommand.com or manage in your dashboard after subscribing.' } },
-            ],
-        },
-        {
-            '@type': 'Product',
-            name: 'Haul Command Operator Pro',
-            description: 'Professional pilot car and escort vehicle operator listing with proof review, profile controls, and broker-facing context.',
-            url: 'https://www.haulcommand.com/pricing',
-            brand: { '@type': 'Brand', name: 'Haul Command' },
-            offers: { '@type': 'Offer', price: '29.00', priceCurrency: 'USD', priceSpecification: { '@type': 'RecurringCharge', billingFrequency: 'Monthly' }, availability: 'https://schema.org/InStock', url: 'https://www.haulcommand.com/onboarding' },
-        },
-        {
-            '@type': 'Product',
-            name: 'Haul Command Operator Elite',
-            description: 'Top-tier pilot car operator listing with verified + certified badge, unlimited regions, route intelligence, and API access.',
-            url: 'https://www.haulcommand.com/pricing',
-            brand: { '@type': 'Brand', name: 'Haul Command' },
-            offers: { '@type': 'Offer', price: '79.00', priceCurrency: 'USD', priceSpecification: { '@type': 'RecurringCharge', billingFrequency: 'Monthly' }, availability: 'https://schema.org/InStock', url: 'https://www.haulcommand.com/onboarding' },
-        },
-    ],
+const storefrontSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Haul Command Data Products & Pricing",
+  url: "https://www.haulcommand.com/pricing",
+  description:
+    "Storefront for Haul Command data products, market intelligence, AdGrid signals, and heavy-haul operating reports.",
+  publisher: { "@type": "Organization", name: "Haul Command", url: "https://www.haulcommand.com" },
 };
 
+export default async function PricingPage() {
+  const [countryCode, products] = await Promise.all([
+    detectRequestCountry(),
+    getStorefrontProducts(),
+  ]);
+  const categories = groupStorefrontProducts(products);
+  const isLocalized = countryCode !== "US";
 
-const SPONSOR_HIGHLIGHTS = [
-    { name: 'Territory Sponsor', price: '$299/mo', note: 'Contracted per state', href: '/advertise/territory' },
-    { name: 'Corridor Sponsor', price: '$199/mo', note: 'Contracted per corridor', href: '/advertise/corridor' },
-    { name: 'Port Sponsor', price: '$499/mo', note: 'Contracted per port', href: '/advertise/enterprise' },
-    { name: 'Self-Serve CPC', price: '$0.75+/click', note: 'No minimum budget', href: '/advertise/buy' },
-];
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(storefrontSchema) }} />
+      <ProofStrip variant="bar" />
 
-export default function PricingPage() {
-    return (
-        <>
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingSchema) }} />
-
-            {/* ProofStrip — trust signals above the fold */}
-            <ProofStrip variant="bar" />
-
-            <div className=" bg-[#0B0B0C] text-white">
-
-                {/* â”€â”€ Hero â”€â”€ */}
-                <section className="border-b border-white/5 text-center py-20 sm:py-24 px-4">
-                    <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-hc-gold-400 mb-6">
-                        Transparent Pricing
-                    </div>
-                    <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white mb-4">
-                        Simple Pricing for Heavy Haul
-                    </h1>
-                    <p className="text-lg text-gray-400 max-w-xl mx-auto mb-2">
-                        Free to start. Upgrade when you are ready to grow. No hidden fees.
-                    </p>
-                    <p className="text-sm text-gray-500">All paid plans include a 14-day free trial.</p>
-                </section>
-
-                {/* â”€â”€ Operator Plans â”€â”€ */}
-                <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                    <h2 className="text-xl font-bold text-white mb-1">Pilot Car Operators & Escort Services</h2>
-                    <p className="text-sm text-gray-400 mb-8">Get verified, get found, get dispatched.</p>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {ESCORT_SUBSCRIPTION_TIERS.map((tier, i) => (
-                            <div key={tier.name}
-                                className={`rounded-2xl border p-8 flex flex-col gap-5 ${i === 1
-                                    ? 'border-hc-gold-500/50 bg-gradient-to-br from-hc-gold-500/5 to-transparent ring-1 ring-hc-gold-500/20'
-                                    : 'border-white/10 bg-[#121214]'
-                                    }`}>
-                                {i === 1 && (
-                                    <div className="absolute -mt-12">
-                                        <span className="bg-hc-gold-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">
-                                            Most Popular
-                                        </span>
-                                    </div>
-                                )}
-                                <div>
-                                    <h3 className="font-bold text-white text-lg mb-1">{tier.name}</h3>
-                                    <div className="flex items-baseline gap-1 mb-3">
-                                        <span className="text-3xl font-extrabold text-white">
-                                            {tier.price === 0 ? 'Free' : `$${tier.price}`}
-                                        </span>
-                                        {tier.price > 0 && <span className="text-gray-500 text-sm">/month</span>}
-                                    </div>
-                                </div>
-                                <ul className="space-y-2 flex-1">
-                                    {tier.features.map(f => (
-                                        <li key={f} className="flex items-start gap-2 text-sm text-gray-300">
-                                            <span className="text-hc-gold-400 mt-0.5 flex-shrink-0">✓</span>
-                                            {f}
-                                        </li>
-                                    ))}
-                                </ul>
-                                {tier.limits && (
-                                    <div className="border-t border-white/5 pt-4 space-y-1">
-                                        {Object.entries(tier.limits).map(([key, val]) => (
-                                            <div key={key} className="flex justify-between text-xs text-gray-500">
-                                                <span className="capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
-                                                <span className={val === -1 ? 'text-hc-gold-400 font-bold' : 'text-gray-400'}>
-                                                    {val === -1 ? 'Unlimited' : val}
-                                                </span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                                <Link href={tier.price === 0 ? '/claim' : '/onboarding'}
-                                    className={`inline-flex items-center justify-center w-full py-3 rounded-xl font-semibold text-sm transition-all ${i === 1
-                                        ? 'bg-hc-gold-500 text-white hover:bg-hc-gold-400'
-                                        : 'border border-white/20 text-white hover:bg-white/5'
-                                        }`}>
-                                    {tier.price === 0 ? 'Claim Your Profile — Free' : `Start ${tier.name} Trial`}
-                                </Link>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-
-                {/* â”€â”€ Broker/Carrier Plans â”€â”€ */}
-                <section className="border-t border-white/5 bg-[#0f1115]">
-                    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                        <h2 className="text-xl font-bold text-white mb-1">Brokers, Carriers & Dispatchers</h2>
-                        <p className="text-sm text-gray-400 mb-8">Find coverage, manage routes, access corridor intelligence.</p>
-
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            {BROKER_SUBSCRIPTION_TIERS.map((tier, i) => (
-                                <div key={tier.name}
-                                    className={`rounded-2xl border p-8 flex flex-col gap-5 ${i === 1
-                                        ? 'border-blue-500/50 bg-gradient-to-br from-blue-500/5 to-transparent'
-                                        : 'border-white/10 bg-[#121214]'
-                                        }`}>
-                                    <div>
-                                        <h3 className="font-bold text-white text-lg mb-1">{tier.name}</h3>
-                                        <div className="flex items-baseline gap-1 mb-3">
-                                            <span className="text-3xl font-extrabold text-white">
-                                                {tier.price === 0 ? 'Free' : `$${tier.price}`}
-                                            </span>
-                                            {tier.price > 0 && <span className="text-gray-500 text-sm">/month</span>}
-                                        </div>
-                                    </div>
-                                    <ul className="space-y-2 flex-1">
-                                        {tier.features.map(f => (
-                                            <li key={f} className="flex items-start gap-2 text-sm text-gray-300">
-                                                <span className="text-blue-400 mt-0.5 flex-shrink-0">✓</span>
-                                                {f}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                    {tier.limits && (
-                                        <div className="border-t border-white/5 pt-4 space-y-1">
-                                            {Object.entries(tier.limits).map(([key, val]) => (
-                                                <div key={key} className="flex justify-between text-xs text-gray-500">
-                                                    <span className="capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
-                                                    <span className={val === -1 ? 'text-blue-400 font-bold' : 'text-gray-400'}>
-                                                        {val === -1 ? 'Unlimited' : val}
-                                                    </span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                    <Link href={tier.price === 0 ? '/directory' : '/onboarding?type=broker'}
-                                        className={`inline-flex items-center justify-center w-full py-3 rounded-xl font-semibold text-sm transition-all ${i === 1
-                                            ? 'bg-blue-600 text-white hover:bg-blue-500'
-                                            : 'border border-white/20 text-white hover:bg-white/5'
-                                            }`}>
-                                        {tier.price === 0 ? 'Search Free' : `Start ${tier.name} Trial`}
-                                    </Link>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* â”€â”€ Sponsor / Advertiser Highlight â”€â”€ */}
-                <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                    <h2 className="text-xl font-bold text-white mb-1">Sponsor & Advertiser Plans</h2>
-                    <p className="text-sm text-gray-400 mb-8">For training providers, insurers, equipment suppliers, and businesses reaching the heavy haul industry.</p>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {SPONSOR_HIGHLIGHTS.map(({ name, price, note, href }) => (
-                            <Link key={name} href={href}
-                                className="border border-white/10 rounded-xl p-5 bg-[#121214] hover:border-white/20 transition-all group">
-                                <div className="text-lg font-bold text-white mb-1 group-hover:text-hc-gold-400 transition-colors">{price}</div>
-                                <div className="text-sm font-semibold text-gray-300 mb-0.5">{name}</div>
-                                <div className="text-xs text-gray-500">{note}</div>
-                            </Link>
-                        ))}
-                    </div>
-                    <div className="mt-4">
-                        <Link href="/advertise" className="text-sm text-hc-gold-400 hover:text-hc-gold-300 transition-colors">
-                            View all advertising options â†’
-                        </Link>
-                    </div>
-                </section>
-
-                {/* â”€â”€ FAQ â”€â”€ */}
-                <section className="border-t border-white/5 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                    <h2 className="text-2xl font-bold text-white text-center mb-8">Pricing FAQ</h2>
-                    <div className="space-y-5">
-                        {[
-                            {
-                                q: 'How much does Haul Command cost?',
-                                a: 'Haul Command is free to claim your profile and appear in search. Operator Pro plans start at $29/month. Broker Business plans start at $99/month. Enterprise plans start at $499/month. All paid plans include a 14-day free trial.',
-                            },
-                            {
-                                q: 'Is there a free pilot car operator plan?',
-                                a: 'Yes. Free accounts include a basic directory listing, standard profile, 1 operating region, and up to 5 lead alerts per month. Permanently free — no credit card required.',
-                            },
-                            {
-                                q: 'What is included in the Elite plan?',
-                                a: 'Elite ($79/month) includes verified + certified badge, top listing placement, unlimited operating regions, priority lead matching, advanced analytics, route intelligence, API read access, and dedicated support.',
-                            },
-                            {
-                                q: 'Can I cancel anytime?',
-                                a: 'Yes. Cancel anytime from your dashboard. Your subscription remains active until the end of your billing period. No cancellation fees.',
-                            },
-                            {
-                                q: 'Do you offer annual pricing?',
-                                a: 'Annual plans include 2 months free (equivalent to 17% off). Contact billing@haulcommand.com or manage in your dashboard after subscribing.',
-                            },
-                        ].map(({ q, a }) => (
-                            <div key={q} className="border border-white/10 rounded-xl p-5">
-                                <h3 className="font-semibold text-white mb-1.5 text-sm">{q}</h3>
-                                <p className="text-xs text-gray-400 leading-relaxed">{a}</p>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-
-                {/* â”€â”€ Bottom CTA â”€â”€ */}
-                <section className="border-t border-white/5 text-center py-16 px-4">
-                    <h2 className="text-2xl font-bold text-white mb-3">Start free. Upgrade when you win.</h2>
-                    <p className="text-gray-400 mb-6 max-w-md mx-auto text-sm">Claim your profile now at no cost. Upgrade to Pro when you start receiving leads and want to accelerate.</p>
-                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                        <Link href="/claim"
-                            className="inline-flex items-center justify-center px-8 py-4 bg-hc-gold-500 text-white font-bold text-sm uppercase tracking-widest rounded-xl hover:bg-hc-gold-400 transition-all">
-                            Claim Your Free Profile
-                        </Link>
-                        <Link href="/advertise"
-                            className="inline-flex items-center justify-center px-8 py-4 border border-white/20 text-white font-semibold text-sm rounded-xl hover:bg-white/5 transition-all">
-                            Advertise on Haul Command
-                        </Link>
-                    </div>
-                </section>
-
-                {/* â”€â”€ Internal link mesh — tool + glossary + directory â”€â”€ */}
-                <section className="border-t border-white/5 py-10 text-center">
-                    <div className="text-xs font-black uppercase tracking-widest text-white/25 mb-5">Helpful Resources</div>
-                    <div className="flex flex-wrap justify-center gap-3">
-                        <Link href="/directory" className="text-xs px-4 py-2 rounded-lg border border-white/10 text-white/50 hover:text-amber-400 hover:border-amber-500/25 transition-all">ðŸ” Browse Operator Directory</Link>
-                        <Link href="/tools/escort-calculator" className="text-xs px-4 py-2 rounded-lg border border-white/10 text-white/50 hover:text-amber-400 hover:border-amber-500/25 transition-all">ðŸ§® Escort Calculator</Link>
-                        <Link href="/glossary/pilot-car" className="text-xs px-4 py-2 rounded-lg border border-white/10 text-white/50 hover:text-amber-400 hover:border-amber-500/25 transition-all">ðŸ“– What Is a Pilot Car?</Link>
-                        <Link href="/escort-requirements" className="text-xs px-4 py-2 rounded-lg border border-white/10 text-white/50 hover:text-amber-400 hover:border-amber-500/25 transition-all">âš–ï¸ State Escort Rules</Link>
-                        <Link href="/available-now" className="text-xs px-4 py-2 rounded-lg border border-white/10 text-white/50 hover:text-amber-400 hover:border-amber-500/25 transition-all">ðŸŸ¢ Live Availability</Link>
-                        <Link href="/advertise" className="text-xs px-4 py-2 rounded-lg border border-white/10 text-white/50 hover:text-amber-400 hover:border-amber-500/25 transition-all">ðŸ“¢ Advertise on Haul Command</Link>
-                    </div>
-                </section>
-
-                {/* â”€â”€ No-Dead-End block â”€â”€ */}
-                <NoDeadEndBlock
-                    heading="Ready to Start Growing on Haul Command?"
-                    moves={[
-                        { href: '/claim', icon: 'âœ“', title: 'Claim Your Free Profile', desc: 'Free forever, no card needed', primary: true, color: '#D4A844' },
-                        { href: '/onboarding', icon: 'â¬†ï¸', title: 'Upgrade to Pro', desc: 'Start $29/mo trial today', primary: true, color: '#22C55E' },
-                        { href: '/directory', icon: 'ðŸ”', title: 'Browse Operators', desc: 'See what Pro listings look like' },
-                        { href: '/advertise', icon: 'ðŸ“¢', title: 'Advertise Instead', desc: 'Territory & corridor sponsors' },
-                        { href: '/roles/pilot-car-operator', icon: 'ðŸš—', title: 'Operator Role Guide', desc: 'Get the full operator overview' },
-                        { href: '/loads', icon: 'ðŸ“‹', title: 'Load Board', desc: 'Find loads in your area' },
-                    ]}
-                />
-
+      <main className="min-h-screen bg-[#0B0F14] text-white">
+        <section className="border-b border-white/10 px-4 py-16 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#d4950e]/30 bg-[#d4950e]/10 px-4 py-1.5 text-xs font-black uppercase tracking-[0.18em] text-[#F1A91B]">
+              Data Monetization Storefront
             </div>
-        </>
-    );
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-end">
+              <div>
+                <h1 className="max-w-3xl text-4xl font-black tracking-tight text-white sm:text-5xl">
+                  Buy the market signals that move heavy haul.
+                </h1>
+                <p className="mt-5 max-w-2xl text-base leading-7 text-slate-300">
+                  Pricing is loaded from Haul Command&apos;s live storefront catalog. Each product keeps its sample, methodology, refresh cadence, and Stripe readiness attached to the product code.
+                </p>
+              </div>
+              <div className="rounded-lg border border-white/10 bg-white/[0.03] p-5">
+                <div className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">Visitor market</div>
+                <div className="mt-2 text-3xl font-black text-white">{countryCode}</div>
+                {isLocalized ? (
+                  <div className="mt-3 rounded-md border border-emerald-400/25 bg-emerald-400/10 px-3 py-2 text-xs font-bold text-emerald-200">
+                    Localized pricing resolved at checkout
+                  </div>
+                ) : (
+                  <div className="mt-3 rounded-md border border-white/10 bg-white/[0.03] px-3 py-2 text-xs text-slate-300">
+                    U.S. base pricing
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+          {categories.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {categories.map((category) => (
+                <Link
+                  key={category.slug}
+                  href={`/pricing/${category.slug}`}
+                  className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm font-bold text-slate-200 transition hover:border-[#d4950e]/40 hover:text-[#F1A91B]"
+                >
+                  {category.label}
+                  <span className="ml-2 text-xs text-slate-500">{category.products.length}</span>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-lg border border-amber-400/20 bg-amber-400/10 p-5 text-sm text-amber-100">
+              The storefront catalog is not available in this environment yet. Once `v_storefront_pricing` is reachable, products will render here without hardcoded prices.
+            </div>
+          )}
+        </section>
+
+        <section className="mx-auto max-w-6xl space-y-12 px-4 pb-16 sm:px-6 lg:px-8">
+          {categories.map((category) => (
+            <section key={category.slug} id={category.slug}>
+              <div className="mb-5 flex flex-col justify-between gap-3 border-b border-white/10 pb-4 sm:flex-row sm:items-end">
+                <div>
+                  <h2 className="text-2xl font-black text-white">{category.label}</h2>
+                  <p className="mt-1 text-sm text-slate-400">
+                    {category.products.length} sellable product{category.products.length === 1 ? "" : "s"}
+                  </p>
+                </div>
+                <Link href={`/pricing/${category.slug}`} className="text-sm font-bold text-[#F1A91B] hover:text-white">
+                  Open category
+                </Link>
+              </div>
+
+              <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                {category.products.map((product) => (
+                  <article key={product.product_code} className="flex min-h-[360px] flex-col rounded-lg border border-white/10 bg-[#111820] p-5">
+                    <div className="mb-4 flex items-start justify-between gap-3">
+                      <div>
+                        <div className="text-[11px] font-black uppercase tracking-[0.16em] text-[#F1A91B]">
+                          {product.product_type || "Data product"}
+                        </div>
+                        <h3 className="mt-2 text-lg font-black leading-6 text-white">{product.name}</h3>
+                      </div>
+                      {product.trial_days ? (
+                        <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2.5 py-1 text-[10px] font-black uppercase text-emerald-200">
+                          {product.trial_days}d trial
+                        </span>
+                      ) : null}
+                    </div>
+
+                    <p className="min-h-[72px] text-sm leading-6 text-slate-300">{product.description || "Market intelligence product from the Haul Command data catalog."}</p>
+
+                    <div className="mt-5 grid grid-cols-2 gap-3">
+                      <div className="rounded-md border border-white/10 bg-white/[0.03] p-3">
+                        <div className="text-[10px] font-black uppercase tracking-[0.14em] text-slate-500">Monthly</div>
+                        <div className="mt-1 text-xl font-black text-white">
+                          {formatStorefrontPrice(product.price_cents, product.currency_code || "USD")}
+                        </div>
+                      </div>
+                      <div className="rounded-md border border-white/10 bg-white/[0.03] p-3">
+                        <div className="text-[10px] font-black uppercase tracking-[0.14em] text-slate-500">Annual</div>
+                        <div className="mt-1 text-xl font-black text-white">
+                          {formatStorefrontPrice(product.price_annual_cents, product.currency_code || "USD")}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 space-y-2 text-xs text-slate-400">
+                      {product.methodology_note ? <p>Methodology: {product.methodology_note}</p> : null}
+                      {product.refresh_cadence ? <p>Refresh: {product.refresh_cadence}</p> : null}
+                      {product.data_as_of ? <p>Data as of: {product.data_as_of}</p> : null}
+                    </div>
+
+                    <div className="mt-auto flex gap-2 pt-5">
+                      <StorefrontBuyButton product={product} countryCode={countryCode} interval="month" className="flex-1 rounded-lg bg-[#d4950e] px-4 py-3 text-sm font-black text-[#0B0F14] transition hover:bg-[#F1A91B]" />
+                      <StorefrontBuyButton product={product} countryCode={countryCode} interval="year" className="flex-1 rounded-lg border border-[#d4950e]/40 px-4 py-3 text-sm font-black text-[#F1A91B] transition hover:bg-[#d4950e]/10" />
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+          ))}
+        </section>
+
+        <section className="border-t border-white/10 px-4 py-10 text-center text-xs text-slate-500">
+          <p>Some data &copy; OpenStreetMap contributors</p>
+        </section>
+
+        <NoDeadEndBlock
+          heading="Need a different Haul Command path?"
+          moves={[
+            { href: "/claim", icon: "PRO", title: "Claim Profile", desc: "Turn operators into market signal", primary: true, color: "#D4A844" },
+            { href: "/advertise", icon: "ADS", title: "Advertise", desc: "Buy sponsor visibility", primary: true, color: "#22C55E" },
+            { href: "/directory", icon: "DIR", title: "Directory", desc: "Search providers" },
+            { href: "/tools", icon: "TLS", title: "Tools", desc: "Run calculators and checklists" },
+          ]}
+        />
+      </main>
+    </>
+  );
 }
