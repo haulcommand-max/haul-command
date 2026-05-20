@@ -1,0 +1,19 @@
+1
+00:00:00,000 --> 00:00:06,000
+Good corridor planning connects route context, support roles, requirements, tools, and next actions.
+
+2
+00:00:07,000 --> 00:00:13,000
+Bad corridor content pretends it knows more than the data proves.
+
+3
+00:00:14,000 --> 00:00:20,000
+Haul Command should show source confidence, support gaps, provider paths, and where to verify before dispatch.
+
+4
+00:00:21,000 --> 00:00:27,000
+That is how corridor intelligence becomes useful instead of just decorative.
+
+5
+00:00:28,000 --> 00:00:34,000
+Use the corridor page to plan the support stack, then post the load or find providers.

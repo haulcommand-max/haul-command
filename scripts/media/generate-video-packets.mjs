@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const OUT_DIR = "docs/media/video-packets";
+const INDIVIDUAL_PACKET_DIR = "individual";
 
 const sharedRequiredPacket = [
   "transcript",
@@ -403,6 +404,44 @@ function packetToMarkdown(packet) {
   ].join("\n");
 }
 
+function formatSrtTimestamp(totalSeconds) {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = Math.floor(totalSeconds % 60);
+  const milliseconds = 0;
+
+  return [
+    String(hours).padStart(2, "0"),
+    String(minutes).padStart(2, "0"),
+    String(seconds).padStart(2, "0"),
+  ].join(":") + `,${String(milliseconds).padStart(3, "0")}`;
+}
+
+export function buildDraftSrt(packet) {
+  return packet.script
+    .map((line, index) => {
+      const start = index * 7;
+      const end = start + 6;
+
+      return [
+        String(index + 1),
+        `${formatSrtTimestamp(start)} --> ${formatSrtTimestamp(end)}`,
+        line,
+      ].join("\n");
+    })
+    .join("\n\n");
+}
+
+function writeIndividualPackets(outDir) {
+  const individualDir = join(outDir, INDIVIDUAL_PACKET_DIR);
+  mkdirSync(individualDir, { recursive: true });
+
+  for (const packet of packets) {
+    writeFileSync(join(individualDir, `${String(packet.priority).padStart(2, "0")}-${packet.id}.md`), `${packetToMarkdown(packet)}\n`);
+    writeFileSync(join(individualDir, `${String(packet.priority).padStart(2, "0")}-${packet.id}.srt`), `${buildDraftSrt(packet)}\n`);
+  }
+}
+
 export function getStarterVideoPackets() {
   return packets;
 }
@@ -429,6 +468,7 @@ function main() {
     mkdirSync(outDir, { recursive: true });
     writeFileSync(join(outDir, "starter-set.json"), `${json}\n`);
     writeFileSync(join(outDir, "starter-set.md"), `${markdown}\n`);
+    writeIndividualPackets(outDir);
   } else {
     console.log(markdown);
   }

@@ -1,0 +1,23 @@
+1
+00:00:00,000 --> 00:00:06,000
+Pilot car requirements can be triggered by width, height, length, weight, route restrictions, traffic conditions, or permit terms.
+
+2
+00:00:07,000 --> 00:00:13,000
+A move that is simple in one jurisdiction can require more support in another.
+
+3
+00:00:14,000 --> 00:00:20,000
+That is why a generic rule from a forum is not enough for dispatch.
+
+4
+00:00:21,000 --> 00:00:27,000
+Start with the load dimensions, then check the route and local requirements.
+
+5
+00:00:28,000 --> 00:00:34,000
+Use Haul Command to move from a quick answer into a requirement check, support search, or load post.
+
+6
+00:00:35,000 --> 00:00:41,000
+Verify requirements before dispatch because official rules and permit terms control the move.

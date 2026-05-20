@@ -1,0 +1,19 @@
+1
+00:00:00,000 --> 00:00:06,000
+If you need help moving a load, search by role, place, corridor, or support need.
+
+2
+00:00:07,000 --> 00:00:13,000
+If the market is thin, post demand instead of dead-ending.
+
+3
+00:00:14,000 --> 00:00:20,000
+If you provide support, claim your listing and add proof.
+
+4
+00:00:21,000 --> 00:00:27,000
+The goal is not a bigger phone list.
+
+5
+00:00:28,000 --> 00:00:34,000
+The goal is a market that becomes easier to trust every time people use it.

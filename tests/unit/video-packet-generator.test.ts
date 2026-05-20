@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildStarterVideoPacketMarkdown, getStarterVideoPackets } from "../../scripts/media/generate-video-packets.mjs";
+import { buildDraftSrt, buildStarterVideoPacketMarkdown, getStarterVideoPackets } from "../../scripts/media/generate-video-packets.mjs";
 
 describe("starter video packet generator", () => {
   it("creates a practical no-Elai starter set for today", () => {
@@ -21,5 +21,13 @@ describe("starter video packet generator", () => {
     expect(markdown).toContain("Remotion");
     expect(markdown).toContain("HyperFrames");
     expect(markdown).toContain("avoid Elai");
+  });
+
+  it("creates draft caption files from the video script", () => {
+    const [firstPacket] = getStarterVideoPackets();
+    const srt = buildDraftSrt(firstPacket);
+
+    expect(srt).toContain("00:00:00,000 --> 00:00:06,000");
+    expect(srt).toContain(firstPacket.script[0]);
   });
 });

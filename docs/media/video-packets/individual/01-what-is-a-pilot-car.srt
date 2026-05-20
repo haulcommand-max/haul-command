@@ -1,0 +1,23 @@
+1
+00:00:00,000 --> 00:00:06,000
+A pilot car, also called an escort vehicle in many markets, helps move oversize loads more safely.
+
+2
+00:00:07,000 --> 00:00:13,000
+The job can include warning traffic, communicating hazards, helping with route movement, and supporting compliance needs.
+
+3
+00:00:14,000 --> 00:00:20,000
+A lead car, chase car, high-pole escort, route survey, bucket truck, and police escort are not always the same role.
+
+4
+00:00:21,000 --> 00:00:27,000
+The details change by jurisdiction, load size, route, and industry.
+
+5
+00:00:28,000 --> 00:00:34,000
+Haul Command connects role explainers to provider search, training, and local requirements.
+
+6
+00:00:35,000 --> 00:00:41,000
+If you need support, find providers. If you provide support, claim your profile.

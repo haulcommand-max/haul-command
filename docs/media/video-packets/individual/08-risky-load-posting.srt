@@ -1,0 +1,19 @@
+1
+00:00:00,000 --> 00:00:06,000
+Watch for missing dimensions, unclear route, no permit status, vague timing, and no support role clarity.
+
+2
+00:00:07,000 --> 00:00:13,000
+Those gaps can affect escorts, police coordination, night restrictions, weekend restrictions, and rate risk.
+
+3
+00:00:14,000 --> 00:00:20,000
+Operators should not quote blind.
+
+4
+00:00:21,000 --> 00:00:27,000
+Brokers should not expect accurate responses from incomplete details.
+
+5
+00:00:28,000 --> 00:00:34,000
+Use the load analyzer to catch missing information before the market wastes time.
