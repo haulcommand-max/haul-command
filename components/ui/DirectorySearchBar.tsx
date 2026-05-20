@@ -16,6 +16,7 @@ import { stateFullName } from '@/lib/geo/state-names';
 interface DirectorySearchBarProps {
   items: any[];
   onFilter: (filtered: any[]) => void;
+  onFilterState?: (filters: DirectoryFilterState, resultCount: number) => void;
   placeholder?: string;
   /** Field names on the item to search against */
   searchFields?: string[];
@@ -206,6 +207,7 @@ export function DirectorySearchBar({
   compact = false,
   surface = 'light',
   initialFilters,
+  onFilterState,
 }: DirectorySearchBarProps) {
   const [filters, setFilters] = useState<DirectoryFilterState>({ ...DEFAULT_FILTERS, ...initialFilters });
   const isCommand = surface === 'command';
@@ -222,7 +224,8 @@ export function DirectorySearchBar({
   const filterItems = useCallback((nextFilters: DirectoryFilterState) => {
     const result = applyDirectoryFilters(items, nextFilters, searchFields);
     onFilter(result);
-  }, [items, onFilter, searchFields]);
+    onFilterState?.(nextFilters, result.length);
+  }, [items, onFilter, onFilterState, searchFields]);
 
   useEffect(() => {
     filterItems(filters);

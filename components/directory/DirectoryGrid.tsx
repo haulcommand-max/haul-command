@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { DirectorySearchBar } from '@/components/ui/DirectorySearchBar';
 import { FreshnessBadge } from '@/components/ui/FreshnessBadge';
@@ -39,8 +39,52 @@ const STATE_OPTIONS = [
 
 export function DirectoryGrid({ providers, targetCountry, initialFilters, dataIssue }: DirectoryGridProps) {
   const [filtered, setFiltered] = useState<any[] | null>(null);
+  const [searchSignal, setSearchSignal] = useState<{ filters: DirectoryFilterState; resultCount: number } | null>(null);
   const displayItems = filtered ?? providers;
   const intentLanes = buildDirectoryIntentLanes(targetCountry);
+
+  const handleFiltered = useCallback((nextFiltered: any[]) => {
+    setFiltered(nextFiltered);
+  }, []);
+
+  const handleFilterState = useCallback((filters: DirectoryFilterState, resultCount: number) => {
+    setSearchSignal({ filters, resultCount });
+  }, []);
+
+  useEffect(() => {
+    if (!searchSignal) return;
+    const { filters, resultCount } = searchSignal;
+    const hasSearchIntent = Boolean(
+      filters.query.trim() ||
+      filters.state ||
+      filters.country ||
+      filters.category ||
+      filters.proof !== 'all' ||
+      filters.claim !== 'all',
+    );
+    if (!hasSearchIntent) return;
+
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => {
+      fetch('/api/capture/directory-search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: filters.query,
+          filters: { ...filters, country: filters.country || targetCountry },
+          result_count: resultCount,
+          source: 'directory_grid',
+        }),
+        signal: controller.signal,
+        keepalive: true,
+      }).catch(() => {});
+    }, 600);
+
+    return () => {
+      controller.abort();
+      window.clearTimeout(timeout);
+    };
+  }, [searchSignal, targetCountry]);
 
   function getRecordId(record: any): string {
     return String(record.contact_id || record.id || record.entity_id || record.slug || record.company || record.name || '');
@@ -85,7 +129,8 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters, dataIs
 
       <DirectorySearchBar
         items={providers}
-        onFilter={setFiltered}
+        onFilter={handleFiltered}
+        onFilterState={handleFilterState}
         placeholder="Search company, city, parking, repair, permit, route support..."
         stateOptions={STATE_OPTIONS}
         surface="command"
