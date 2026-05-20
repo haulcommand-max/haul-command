@@ -27,10 +27,12 @@ describe("authority import parser scaffold guardrails", () => {
     const parserFunctions = [
       "authority-csv-parser",
       "authority-api-parser",
+      "authority-json-parser",
       "authority-html-scrape-parser",
       "authority-xml-parser",
       "authority-xlsx-parser",
       "authority-pdf-scrape-parser",
+      "authority-zip-parser",
     ];
 
     for (const parserFunction of parserFunctions) {

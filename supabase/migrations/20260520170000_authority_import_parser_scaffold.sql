@@ -10,7 +10,7 @@ create table if not exists public.hc_authority_source_imports (
   country_code text not null,
   authority_name text not null,
   source_url text not null,
-  source_format text not null check (source_format in ('csv','json','xlsx','xml','pdf_scrape','html_scrape','api')),
+  source_format text not null check (source_format in ('api','csv','html_scrape','json','pdf_scrape','xml','xlsx','zip')),
   source_category text not null default 'government_registry' check (
     source_category in ('government_registry','association_registry','public_open_data','manual_review')
   ),
@@ -71,12 +71,13 @@ immutable
 as $$
   select case p_source_format
     when 'csv' then 'authority-csv-parser'
-    when 'json' then 'authority-api-parser'
+    when 'json' then 'authority-json-parser'
     when 'api' then 'authority-api-parser'
     when 'html_scrape' then 'authority-html-scrape-parser'
     when 'xml' then 'authority-xml-parser'
     when 'xlsx' then 'authority-xlsx-parser'
     when 'pdf_scrape' then 'authority-pdf-scrape-parser'
+    when 'zip' then 'authority-zip-parser'
     else 'authority-html-scrape-parser'
   end;
 $$;
@@ -207,7 +208,7 @@ select
   t.source_url,
   case
     when t.source_url ilike '%.csv%' then 'csv'
-    when t.source_url ilike '%.zip%' then 'csv'
+    when t.source_url ilike '%.zip%' then 'zip'
     when t.provider = 'government_registry' then 'html_scrape'
     else 'html_scrape'
   end as source_format,
@@ -219,7 +220,7 @@ select
   public.fn_authority_parser_for_format(
     case
       when t.source_url ilike '%.csv%' then 'csv'
-      when t.source_url ilike '%.zip%' then 'csv'
+      when t.source_url ilike '%.zip%' then 'zip'
       when t.provider = 'government_registry' then 'html_scrape'
       else 'html_scrape'
     end

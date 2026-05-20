@@ -102,14 +102,16 @@ Parser functions:
 
 - `authority-csv-parser`
 - `authority-api-parser`
+- `authority-json-parser`
 - `authority-html-scrape-parser`
 - `authority-xml-parser`
 - `authority-xlsx-parser`
 - `authority-pdf-scrape-parser`
+- `authority-zip-parser`
 
-CSV, API/JSON, HTML, and XML parsers fetch source data and stage observations into `hc_entities_raw`. XLSX and PDF parsers are intentionally scaffolded but quarantined until the approved Fly/Hugging Face utility extraction layer is wired. No parser writes to `directory_entities`, marks a profile verified, creates review/rating data, or bypasses dedup/seasoning.
+CSV, API, JSON, HTML, and XML parsers fetch source data and stage observations into `hc_entities_raw`. XLSX, PDF, and ZIP parsers are intentionally scaffolded but quarantined until the approved Fly/Hugging Face utility extraction layer is wired. No parser writes to `directory_entities`, marks a profile verified, creates review/rating data, or bypasses dedup/seasoning.
 
-ZIP-backed authority datasets are registry-tracked but quarantined until a dedicated extractor is added. FMCSA census ZIP handling should continue through the existing FMCSA ingestion path until this parser layer has audited archive support.
+ZIP-backed authority datasets are registry-tracked through `authority-zip-parser` but quarantined until a dedicated extractor is added. FMCSA census ZIP handling should continue through the existing FMCSA ingestion path until this parser layer has audited archive support.
 
 ## Firecrawl Worker Contract
 

@@ -36,12 +36,15 @@ describe("authority parser promotion safety", () => {
   });
 
   it("quarantines high-risk document formats until approved extraction is wired", () => {
-    const xlsxParser = read("supabase/functions/authority-xlsx-parser/index.ts");
     const pdfParser = read("supabase/functions/authority-pdf-scrape-parser/index.ts");
+    const xlsxParser = read("supabase/functions/authority-xlsx-parser/index.ts");
+    const zipParser = read("supabase/functions/authority-zip-parser/index.ts");
 
     expect(xlsxParser).toContain('status: "quarantined"');
     expect(xlsxParser).toContain("audited spreadsheet parser");
     expect(pdfParser).toContain('status: "quarantined"');
     expect(pdfParser).toContain("approved Fly/Hugging Face utility layer");
+    expect(zipParser).toContain('status: "quarantined"');
+    expect(zipParser).toContain("audited archive extractor");
   });
 });
