@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils/cn";
 
 //
 // ProfileClaimSidebar — Section 7 Engine
-// Prominent sticky CTA to drive unclaimed profiles to verify.
+// Prominent sticky CTA to drive unclaimed profiles into proof review.
 //
 
 interface ProfileClaimSidebarProps {
@@ -24,8 +24,8 @@ export function ProfileClaimSidebar({ profileId, isClaimed, claimHash, className
         return (
             <div className={cn("bg-[#0a0a0a] border border-[#1a1a1a] p-6 rounded-2xl flex flex-col items-center text-center", className)}>
                 <ShieldCheck className="w-8 h-8 text-emerald-500 mb-3" />
-                <h3 className="text-[11px] font-bold text-white uppercase tracking-[0.15em] mb-1">Ownership Verified</h3>
-                <p className="text-[10px] text-[#555]">This operator manages their own Haul Command presence.</p>
+                <h3 className="text-[11px] font-bold text-white uppercase tracking-[0.15em] mb-1">Ownership Claimed</h3>
+                <p className="text-[10px] text-[#555]">This operator manages their public Haul Command presence.</p>
             </div>
         );
     }
@@ -39,25 +39,25 @@ export function ProfileClaimSidebar({ profileId, isClaimed, claimHash, className
 
             <div className="flex items-center gap-2 mb-4 relative z-10">
                 <ShieldAlert className="w-5 h-5 text-[#F1A91B]" />
-                <h3 className="text-sm font-black text-white uppercase tracking-wider">Unverified Listing</h3>
+                <h3 className="text-sm font-black text-white uppercase tracking-wider">Unclaimed Listing</h3>
             </div>
 
             <p className="text-xs text-[#888] leading-relaxed mb-6 relative z-10">
-                This public directory profile has not been claimed. Claim it now to unlock load matching, manage your capability matrix, and build broker trust.
+                This public directory profile has not been claimed. Claim it to correct public fields, submit proof for review, and choose the safest broker request path.
             </p>
 
             <ul className="space-y-3 mb-6 relative z-10">
                 <li className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#aaa]">
                     <Zap className="w-3 h-3 text-[#F1A91B]" />
-                    Control Your Corridors
+                    Correct Service Areas
                 </li>
                 <li className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#aaa]">
                     <Zap className="w-3 h-3 text-[#F1A91B]" />
-                    Receive Direct Requests
+                    Submit Proof For Review
                 </li>
                 <li className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#aaa]">
                     <Zap className="w-3 h-3 text-[#F1A91B]" />
-                    Build Trust Score
+                    Set Broker Request Path
                 </li>
             </ul>
 
@@ -65,7 +65,7 @@ export function ProfileClaimSidebar({ profileId, isClaimed, claimHash, className
                 href={claimUrl}
                 className="w-full flex items-center justify-between px-4 py-3.5 bg-[#F1A91B] hover:bg-[#f0b93a] text-black font-black uppercase tracking-widest text-xs rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 relative z-10"
             >
-                <span>Get Verified Status</span>
+                <span>Start Claim Review</span>
                 <ArrowRight className="w-4 h-4" />
             </Link>
         </div>
