@@ -1,0 +1,136 @@
+# Discovery Enrichment Pipelines
+
+This is the execution contract for Tavily, Firecrawl, Clay, OSM, government registries, association registries, geocode backfill, and quality review.
+
+## Standing Rules
+
+- Do not use Google Places for this pipeline.
+- Do not use Make.com.
+- Do not create another canonical directory table.
+- Do not promote scraped candidates straight into verified/provider surfaces.
+- Do not fake demand, verification, authority, scarcity, reviews, or market coverage.
+- Do not commit API keys, webhook URLs, service-role keys, tokens, or screenshots of secrets.
+- All discoveries must season through raw/staged queues, confidence checks, dedupe, and claim/proof paths before public trust claims.
+
+## Required Secrets
+
+Set these outside Git:
+
+- `TAVILY_API_KEY`
+- `FIRECRAWL_API_KEY`
+- `CLAY_WEBHOOK_URL`
+- `CLAY_API_KEY`
+
+For Supabase Edge Functions, set at least:
+
+- `FIRECRAWL_API_KEY`
+- `FIRECRAWL_WORKER_SECRET` or `CRON_SECRET`
+- `CLAY_WEBHOOK_URL` when Clay handoff is enabled
+
+## Local Repo Pieces
+
+- Firecrawl worker: `supabase/functions/firecrawl-worker/index.ts`
+- Discovery migration: `supabase/migrations/20260520143000_discovery_enrichment_pipelines.sql`
+- Safe Vercel env loader: `scripts/set-vercel-env.sh`
+- Existing raw ingest API: `app/api/discovery/ingest/route.ts`
+- Existing OSM cron: `app/api/cron/osm-enrichment/route.ts`
+- Existing FMCSA cron: `app/api/cron/fmcsa-ingest/route.ts`
+
+## Pipeline Order
+
+1. Set secrets in Vercel and Supabase Edge Function secrets.
+2. Apply the discovery enrichment migration.
+3. Run `select public.hc_enqueue_discovery_from_templates(100);`.
+4. Run low-cost OSM jobs first.
+5. Run Tavily discovery jobs for rare roles, state-localized searches, and reverse-company evidence.
+6. Send Tavily raw discoveries to Clay via queued `clay_enrichment` work.
+7. Use Firecrawl for official pages, association pages, and source-backed candidate evidence.
+8. Run geocode backfill only for records without verified coordinates.
+9. Review quality and dedupe before promotion.
+
+## Firecrawl Worker Contract
+
+Request:
+
+```json
+{
+  "url": "https://example.com/member-directory",
+  "source_type": "association",
+  "source_name": "association_member_page",
+  "country_code": "US",
+  "target_entity_subtype": "pilot_car_operator",
+  "trigger_clay": false,
+  "dry_run": true
+}
+```
+
+Headers:
+
+```text
+Authorization: Bearer <FIRECRAWL_WORKER_SECRET or CRON_SECRET>
+Content-Type: application/json
+```
+
+Output lands in `hc_entities_raw` with source metadata and raw scrape payload. If `trigger_clay` is true and `CLAY_WEBHOOK_URL` is configured, the worker posts a minimal enrichment handoff to Clay.
+
+## Verification Queries
+
+Queue health, run with service/admin database access:
+
+```sql
+select *
+from public.v_hc_discovery_pipeline_health
+order by provider, job_type, status;
+```
+
+Template inventory:
+
+```sql
+select provider, count(*) as templates
+from public.hc_discovery_source_templates
+where active
+group by provider
+order by provider;
+```
+
+Ready work:
+
+```sql
+select provider, job_type, count(*) as ready
+from public.hc_discovery_work_queue
+where status = 'pending'
+  and run_after <= now()
+group by provider, job_type
+order by ready desc;
+```
+
+Clay auto-queue check after Tavily raw inserts:
+
+```sql
+select count(*) as clay_jobs
+from public.hc_discovery_work_queue
+where provider = 'clay'
+  and job_type = 'clay_enrichment'
+  and created_at >= now() - interval '7 days';
+```
+
+Failed work:
+
+```sql
+select provider, job_type, source_name, country_code, last_error, attempts, updated_at
+from public.hc_discovery_work_queue
+where status = 'failed'
+order by updated_at desc
+limit 50;
+```
+
+## Escalate Only When
+
+- A required API credential is missing or rejected.
+- A source blocks lawful crawling or terms prohibit use.
+- A live table shape differs from the migration assumptions in a way that would lose data.
+- A candidate could affect public verification, legal, safety, or authority claims without a source-backed review.
+
+## Current Limitation
+
+The local checkout does not include the Supabase CLI, and live Supabase credentials in the current environment were not validated in this patch. Code and migrations are ready for review, but live application of secrets, edge deployment, and database migration must be done with valid project access.
