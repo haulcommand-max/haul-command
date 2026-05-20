@@ -50,7 +50,7 @@ export const SHELL_IA_CONFIG = {
     order: ["quickActions", "discover", "intelligence", "markets", "trustAndGrowth", "appBridge"],
     quickActions: [
       { label: "Find Operators", href: "/directory" },
-      { label: "Post Load", href: "/loads/post" },
+      { label: "Post Load", href: "/load-board/post" },
       { label: "Browse Tools", href: "/tools" },
       { label: "See Regulations", href: "/regulations" },
       { label: "Claim Listing", href: "/claim" }

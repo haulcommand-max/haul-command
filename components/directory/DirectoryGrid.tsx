@@ -122,8 +122,8 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters, dataIs
           });
           const profileHref = recordId ? `/directory/dossier/${encodeURIComponent(recordId)}` : '/directory';
           const packetHref = recordId
-            ? `/loads/post?support=${encodeURIComponent(recordId)}&country=${encodeURIComponent(targetCountry)}`
-            : `/loads/post?country=${encodeURIComponent(targetCountry)}`;
+            ? `/load-board/post?support=${encodeURIComponent(recordId)}&country=${encodeURIComponent(targetCountry)}`
+            : `/load-board/post?country=${encodeURIComponent(targetCountry)}`;
           const claimHref = recordId
             ? `/claim?operator=${encodeURIComponent(recordId)}`
             : `/claim?country=${encodeURIComponent(targetCountry)}`;
@@ -316,7 +316,7 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters, dataIs
                   Clear filters
                 </button>
               )}
-              <Link href={`/loads/post?country=${encodeURIComponent(targetCountry)}`} className="rounded-lg bg-[#C6923A] px-4 py-2 text-sm font-black text-[#0B0B0C] hover:bg-[#E0B05C]">
+              <Link href={`/load-board/post?country=${encodeURIComponent(targetCountry)}`} className="rounded-lg bg-[#C6923A] px-4 py-2 text-sm font-black text-[#0B0B0C] hover:bg-[#E0B05C]">
                 Build support packet
               </Link>
               <Link href="/claim" className="rounded-lg border border-[#C6923A]/35 bg-[#C6923A]/10 px-4 py-2 text-sm font-bold text-[#F8DFB0] hover:bg-[#C6923A]/16">

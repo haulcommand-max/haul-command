@@ -70,7 +70,7 @@ export function EmptyMarketState({ country, region, city, dataIssue }: EmptyMark
                 </p>
 
                 <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 28 }}>
-                    <Link href={`/loads/post?source=no-result&market=${locationQuery}`} style={{ textDecoration: 'none' }}>
+                    <Link href={`/load-board/post?source=no-result&market=${locationQuery}`} style={{ textDecoration: 'none' }}>
                         <Button
                             style={{
                                 background: '#C6923A',

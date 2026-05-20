@@ -109,7 +109,7 @@ export default async function ClaimPage({ searchParams }: { searchParams: ClaimS
                 </div>
               </div>
               {operator.is_claimed ? (
-                <p className="text-xs text-[#22c55e] mt-4 font-semibold">This profile has already been claimed. <Link href="/support" className="underline hover:text-white">Contact support</Link> if this is yours.</p>
+                <p className="text-xs text-[#22c55e] mt-4 font-semibold">This profile has already been claimed. <Link href="/contact?subject=claimed-profile-support" className="underline hover:text-white">Contact support</Link> if this is yours.</p>
               ) : (
                 <div className="mt-5 border-t border-[#d4950e20] pt-4">
                   {claimPacket && (

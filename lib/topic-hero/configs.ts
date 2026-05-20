@@ -760,6 +760,7 @@ export const TOPIC_HERO_PRESETS = {
     pageFamily: "directory",
     pageTopic: "Heavy Haul Support Directory",
     routePattern: "/directory",
+    searchAction: "/directory",
     heroTier: "tier1",
     h1: "Find support. Get found. Post the need.",
     eyebrow: "Heavy-haul jobs, provider search, support requests, and proof states",
@@ -768,7 +769,7 @@ export const TOPIC_HERO_PRESETS = {
     microcopy: "Choose the action first, then narrow by role, country, market, and proof state.",
     primaryCTA: { label: "Find support", href: "#directory-results", intent: "provider_intent", style: "primary" },
     secondaryCTA: { label: "Claim your listing", href: "/claim", intent: "claim_intent", style: "secondary" },
-    tertiaryCTA: { label: "Post demand", href: "/loads/post?intent=support-packet", intent: "load_post_intent", style: "ghost" },
+    tertiaryCTA: { label: "Post demand", href: "/load-board/post?intent=support-packet", intent: "load_post_intent", style: "ghost" },
     statCards: [
       { value: "7,468+", label: "Industry records" },
       { value: "Claimable", label: "Profiles" },

@@ -227,7 +227,7 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
                         ]}
                         hotCorridors={[
                             { name: 'Published corridor pages', url: `/directory/${countryKey}?surface=corridors` },
-                            { name: 'Route support requests', url: `/loads/post?country=${countryKey}` }
+                            { name: 'Route support requests', url: `/load-board/post?country=${countryKey}` }
                         ]}
                         stateRegulationsUrl={`/regulations/${countryKey}`}
                         localTools={[
@@ -263,7 +263,7 @@ export default async function CountryDirectoryPage({ params }: PageProps) {
                     <IntentMatrix
                         category={`${formattedName} Intelligence`}
                         intents={[
-                            { label: 'Post a support request', url: `/loads/post?country=${countryKey}`, searchVolumeEstimate: 'high' },
+                            { label: 'Post a support request', url: `/load-board/post?country=${countryKey}`, searchVolumeEstimate: 'high' },
                             { label: 'Claim or correct a listing', url: `/claim?country=${countryKey}`, searchVolumeEstimate: 'medium' },
                             { label: 'Sponsor a labeled market gap', url: `/advertise?placement=directory-market&country=${countryKey}`, searchVolumeEstimate: 'long-tail' }
                         ]}

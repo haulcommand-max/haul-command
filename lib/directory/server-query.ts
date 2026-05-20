@@ -217,6 +217,36 @@ function inferDirectoryCategoryFromQuery(q?: string | null): string | null {
   return roleSignals.find((signal) => signal.terms.some((term) => spaced.includes(term)))?.category ?? null;
 }
 
+function extractLocationSearchFromRoleQuery(q: string, inferredCategory: string | null): string {
+  if (!q.trim() || !inferredCategory) return q.trim();
+
+  const categoryTerms = CATEGORY_FILTERS[inferredCategory]?.searchTerms ?? [];
+  let locationSearch = ` ${q.trim().toLowerCase()} `;
+  const removableTerms = [
+    ...categoryTerms,
+    inferredCategory.replace(/-/g, " "),
+    "operator",
+    "operators",
+    "provider",
+    "providers",
+    "service",
+    "services",
+    "support",
+    "find",
+    "near",
+    "in",
+    "for",
+  ].sort((a, b) => b.length - a.length);
+
+  for (const term of removableTerms) {
+    const escaped = term.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    if (!escaped) continue;
+    locationSearch = locationSearch.replace(new RegExp(`\\s${escaped}\\s`, "g"), " ");
+  }
+
+  return locationSearch.replace(/\s+/g, " ").trim();
+}
+
 export function buildDirectoryFallbackFilterPlan(params: {
   country?: string | null;
   category?: string | null;
@@ -226,12 +256,14 @@ export function buildDirectoryFallbackFilterPlan(params: {
   const inferredCategory = explicitCategory || inferDirectoryCategoryFromQuery(params.q);
   const category = resolveDirectoryCategoryFilter(inferredCategory);
   const isPureRoleQuery = Boolean(!explicitCategory && inferredCategory);
+  const rawQuery = String(params.q ?? "").trim();
+  const locationSearch = isPureRoleQuery ? extractLocationSearchFromRoleQuery(rawQuery, inferredCategory) : rawQuery;
 
   return {
     countryCode: normalizeDirectoryCountry(params.country),
     category,
     surfaceViews: resolveDirectorySurfaceViews(inferredCategory),
-    locationSearch: isPureRoleQuery ? "" : String(params.q ?? "").trim(),
+    locationSearch,
     inferredCategory,
     isPureRoleQuery,
     order: [
@@ -246,14 +278,24 @@ export function buildDirectoryFallbackFilterPlan(params: {
 export function buildDirectoryLocationOrFilter(locationSearch: string): string | null {
   const value = locationSearch.trim();
   if (!value) return null;
-  const escaped = value.replace(/[%_,]/g, (char) => `\\${char}`);
-  return [
-    `city.ilike.%${escaped}%`,
-    `state.ilike.%${escaped}%`,
-    `name.ilike.%${escaped}%`,
-    `primary_role.ilike.%${escaped}%`,
-    `public_label.ilike.%${escaped}%`,
-  ].join(",");
+  const lower = value.toLowerCase();
+  const regionValues = Object.entries({ ...US_STATES, ...CA_PROVINCES, ...AU_STATES }).flatMap(([code, name]) => {
+    if (code.toLowerCase() === lower || name.toLowerCase() === lower) return [code, name];
+    return [];
+  });
+  const searchValues = Array.from(new Set([value, ...regionValues]));
+
+  return searchValues.flatMap((searchValue) => {
+    const escaped = searchValue.replace(/[%_,]/g, (char) => `\\${char}`);
+    return [
+      `city.ilike.%${escaped}%`,
+      `state.ilike.%${escaped}%`,
+      `admin1_code.ilike.%${escaped}%`,
+      `name.ilike.%${escaped}%`,
+      `primary_role.ilike.%${escaped}%`,
+      `public_label.ilike.%${escaped}%`,
+    ];
+  }).join(",");
 }
 
 function escapePostgrestLike(value: string) {

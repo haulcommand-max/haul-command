@@ -54,7 +54,7 @@ export default function LiveLoadFeed({ city, state, limit = 5 }: { city: string;
                     Check nearby cities or post your load to trigger instant matching with local escorts.
                 </div>
                 <div style={{ marginTop: 16, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                    <Link aria-label="Navigation Link" href={`/loads/post?city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}`} style={{ fontWeight: 800, background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', padding: '8px 16px', borderRadius: 8, textDecoration: 'none' }}>
+                    <Link aria-label="Navigation Link" href={`/load-board/post?city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}`} style={{ fontWeight: 800, background: 'linear-gradient(135deg,#F1A91B,#d97706)', color: '#000', padding: '8px 16px', borderRadius: 8, textDecoration: 'none' }}>
                         Post a Load
                     </Link>
                     <Link aria-label="Navigation Link" href={`/directory/us/${state.toLowerCase()}/${encodeURIComponent(city.toLowerCase())}`} style={{ fontWeight: 800, background: 'rgba(255,255,255,0.1)', color: 'white', padding: '8px 16px', borderRadius: 8, textDecoration: 'none' }}>

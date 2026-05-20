@@ -30,7 +30,9 @@ export function ProfileClaimSidebar({ profileId, isClaimed, claimHash, className
         );
     }
 
-    const claimUrl = claimHash ? `/claim/${claimHash}` : `/claim/${profileId}`;
+    const claimUrl = claimHash
+        ? `/claim?hcid=${encodeURIComponent(claimHash)}`
+        : `/claim?operator=${encodeURIComponent(profileId)}`;
 
     return (
         <div className={cn("bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#2a2a2a] p-6 rounded-2xl relative overflow-hidden group", className)}>

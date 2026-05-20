@@ -80,12 +80,19 @@ const SORT_OPTIONS = [
 /* â”€â”€â”€ Main Page Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 export default function SearchPage() {
-    const [query, setQuery] = useState('');
+    const [query, setQuery] = useState(() => {
+        if (typeof window === 'undefined') return '';
+        return new URLSearchParams(window.location.search).get('q') ?? '';
+    });
     const [results, setResults] = useState<SearchResult[]>([]);
     const [total, setTotal] = useState(0);
     const [loading, setLoading] = useState(false);
     const [sortBy, setSortBy] = useState('relevance');
-    const [stateFilter, setStateFilter] = useState('');
+    const [stateFilter, setStateFilter] = useState(() => {
+        if (typeof window === 'undefined') return '';
+        const params = new URLSearchParams(window.location.search);
+        return params.get('region') ?? params.get('state') ?? '';
+    });
     const [typeFilter, setTypeFilter] = useState('All');
     const [geoEnabled, setGeoEnabled] = useState(false);
     const [userLat, setUserLat] = useState<number | null>(null);
@@ -93,6 +100,27 @@ export default function SearchPage() {
     const [radius, setRadius] = useState(100);
     const [searchMs, setSearchMs] = useState(0);
     const searchTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+    useEffect(() => {
+        const syncFromUrl = () => {
+            const nextQuery = new URLSearchParams(window.location.search).get('q') ?? '';
+            setQuery((current) => current === nextQuery ? current : nextQuery);
+        };
+        syncFromUrl();
+        window.addEventListener('popstate', syncFromUrl);
+        return () => window.removeEventListener('popstate', syncFromUrl);
+    }, []);
+
+    const commitSearchUrl = useCallback((nextQuery: string) => {
+        const params = new URLSearchParams(window.location.search);
+        const trimmed = nextQuery.trim();
+        if (trimmed) params.set('q', trimmed);
+        else params.delete('q');
+        if (stateFilter) params.set('region', stateFilter);
+        else params.delete('region');
+        const nextUrl = params.toString() ? `/search?${params.toString()}` : '/search';
+        window.history.replaceState(null, '', nextUrl);
+    }, [stateFilter]);
 
     /* â”€â”€â”€ Search function — calls /api/search/all (backed by hc_search_all RPC) â”€â”€â”€ */
     const doSearch = useCallback(async (searchQuery: string) => {
@@ -219,7 +247,17 @@ export default function SearchPage() {
                             <input
                                 type="text"
                                 value={query}
-                                onChange={(e) => setQuery(e.target.value)}
+                                onChange={(e) => {
+                                    setQuery(e.target.value);
+                                    commitSearchUrl(e.target.value);
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                        commitSearchUrl(query);
+                                        void doSearch(query);
+                                    }
+                                }}
                                 placeholder="Search operators, truck stops, ports, cities..."
                                 style={{
                                     width: '100%',

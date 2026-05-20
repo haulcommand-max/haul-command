@@ -112,7 +112,7 @@ const userGroups = [
     {
         title: 'Permit, route, and field teams',
         body: 'Move from scattered rules and contacts into connected requirements, glossary terms, route tools, and provider discovery.',
-        href: '/regulations',
+        href: '/escort-requirements',
         cta: 'Check requirements',
     },
 ];
@@ -138,7 +138,7 @@ const primaryIntentCards = [
         eyebrow: 'When the market looks thin',
         title: 'Post the support need',
         body: 'If the directory does not show enough source-backed coverage, post the need so Haul Command can capture demand instead of ending at a dead search.',
-        href: '/loads/post?intent=directory-support-need',
+        href: '/load-board/post?intent=directory-support-need',
         cta: 'Post demand',
         tone: 'blue',
     },
@@ -203,7 +203,7 @@ const internalLinkGroups = [
     {
         title: 'Plan the move',
         links: [
-            { label: 'Escort requirements', href: '/regulations' },
+            { label: 'Escort requirements', href: '/escort-requirements' },
             { label: 'Heavy haul tools', href: '/tools' },
             { label: 'Load board', href: '/loads' },
             { label: 'Corridor intelligence', href: '/corridors' },
@@ -570,9 +570,9 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
             })),
         ),
         relatedNextSteps: [
-            { label: 'Build move support packet', href: '/loads/post?intent=support-packet', intent: 'load_post_intent' },
+            { label: 'Build move support packet', href: '/load-board/post?intent=support-packet', intent: 'load_post_intent' },
             { label: 'Claim your listing', href: '/claim', intent: 'claim_intent' },
-            { label: 'Check escort requirements', href: '/regulations', intent: 'regulation_intent' },
+            { label: 'Check escort requirements', href: '/escort-requirements', intent: 'regulation_intent' },
             { label: 'Find available providers', href: '/available-now', intent: 'provider_intent' },
             { label: 'Sponsor directory demand', href: '/advertise?placement=directory-market', intent: 'sponsor_intent' },
             { label: 'View training paths', href: '/training', intent: 'training_intent' },
@@ -689,7 +689,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                                 </p>
                             </div>
                             <div className="flex flex-wrap gap-3">
-                                <Link href="/loads/post?intent=directory-support-packet" className="inline-flex min-h-11 w-fit items-center rounded-lg bg-[#C6923A] px-4 py-2 text-sm font-black text-[#0B0B0C] transition-colors hover:bg-[#E0B05C]">
+                                <Link href="/load-board/post?intent=directory-support-packet" className="inline-flex min-h-11 w-fit items-center rounded-lg bg-[#C6923A] px-4 py-2 text-sm font-black text-[#0B0B0C] transition-colors hover:bg-[#E0B05C]">
                                     Build support packet
                                 </Link>
                                 <Link href="/claim?intent=directory-correction" className="inline-flex min-h-11 w-fit items-center rounded-lg border border-[#C6923A]/35 bg-[#C6923A]/10 px-4 py-2 text-sm font-black text-[#F8DFB0] transition-colors hover:bg-[#C6923A]/16">
@@ -764,7 +764,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                                 <div className="text-xs font-black uppercase tracking-[0.18em] text-[#C6923A]">Role-rich discovery</div>
                                 <h2 id="directory-role-coverage" className="mt-2 text-2xl md:text-3xl font-black tracking-tight text-white">Find support by role, job intent, and proof state</h2>
                             </div>
-                            <Link href="/loads/post?intent=support-packet" className="inline-flex w-fit items-center rounded-lg bg-[#C6923A] px-4 py-2 text-sm font-bold text-black transition-colors hover:bg-[#E0B05C]">
+                            <Link href="/load-board/post?intent=support-packet" className="inline-flex w-fit items-center rounded-lg bg-[#C6923A] px-4 py-2 text-sm font-bold text-black transition-colors hover:bg-[#E0B05C]">
                                 Build move support packet
                             </Link>
                         </div>

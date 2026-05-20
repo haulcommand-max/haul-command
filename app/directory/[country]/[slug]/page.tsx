@@ -83,7 +83,7 @@ function buildMarketDirectAnswer(input: {
     confidenceLabel: hasCoverage ? 'Source-backed market records' : 'Sparse market - noindex',
     sourceHref: `/directory?country=${input.countryUpper}&q=${encodeURIComponent(input.cityName)}`,
     ctaHref: hasCoverage
-      ? `/loads/post?country=${input.countryUpper}&market=${encodeURIComponent(input.slug)}&intent=city-support`
+      ? `/load-board/post?country=${input.countryUpper}&market=${encodeURIComponent(input.slug)}&intent=city-support`
       : `/claim?country=${input.countryUpper}&market=${encodeURIComponent(input.slug)}&intent=city-market-claim&source=directory-city`,
     ctaLabel: hasCoverage ? 'Build support packet' : 'Claim this market',
   };
@@ -396,7 +396,7 @@ export default async function CityDirectoryPage({ params }: PageProps) {
                       }}>
                         View Profile
                       </Link>
-                      <Link href={`/loads/post?intent=city-support&country=${countryUpper}&market=${encodeURIComponent(slug)}&listing=${encodeURIComponent(recordId(op))}`} style={{
+                      <Link href={`/load-board/post?intent=city-support&country=${countryUpper}&market=${encodeURIComponent(slug)}&listing=${encodeURIComponent(recordId(op))}`} style={{
                         flex: 1, textAlign: 'center', padding: '8px', borderRadius: 8,
                         background: '#0a66c2', border: '1px solid #004182',
                         color: '#ffffff', fontSize: 12, fontWeight: 700, textDecoration: 'none',
@@ -438,7 +438,7 @@ export default async function CityDirectoryPage({ params }: PageProps) {
                   { href: `/regulations/${country.toLowerCase()}`, label: 'Country Requirements', icon: '01' },
                   { href: `/corridors?country=${countryUpper}`, label: 'Find Source-Backed Corridors', icon: '02' },
                   { href: `/tools?country=${countryUpper}`, label: 'Heavy Haul Tools', icon: '03' },
-                  { href: `/loads/post?country=${countryUpper}&market=${encodeURIComponent(slug)}&intent=city-support`, label: 'Build Support Packet', icon: '04' },
+                  { href: `/load-board/post?country=${countryUpper}&market=${encodeURIComponent(slug)}&intent=city-support`, label: 'Build Support Packet', icon: '04' },
                   { href: `/directory/${country}`, label: `Browse All ${countryUpper}`, icon: '05' },
                 ].map(l => (
                   <Link key={l.href} href={l.href} style={{

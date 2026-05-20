@@ -307,7 +307,7 @@ export function DirectorySearchList({
             heading="Turn this gap into a next action"
             moves={[
               {
-                href: `/loads/post?source=directory-empty&q=${encodedSearch}`,
+                href: `/load-board/post?source=directory-empty&q=${encodedSearch}`,
                 icon: "LOAD",
                 title: "Build Support Packet",
                 desc: "Route the need to the right provider stack",
@@ -420,7 +420,7 @@ export function DirectorySearchList({
                       <Link href={`/report-card/${op.slug || op.id}`} className="flex-1 md:w-full items-center justify-center text-center px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-[#C6923A] text-[11px] uppercase tracking-widest font-bold rounded-xl transition-all">
                         Report Card
                       </Link>
-                      <Link href={`/loads/post?operator=${op.id}`} className="flex-1 md:w-full items-center justify-center text-center px-4 py-3 bg-[#C6923A] hover:bg-[#E0B05C] text-black shadow-[0_0_15px_rgba(198,146,58,0.4)] text-[11px] uppercase tracking-widest font-black rounded-xl transition-all">
+                      <Link href={`/load-board/post?operator=${op.id}`} className="flex-1 md:w-full items-center justify-center text-center px-4 py-3 bg-[#C6923A] hover:bg-[#E0B05C] text-black shadow-[0_0_15px_rgba(198,146,58,0.4)] text-[11px] uppercase tracking-widest font-black rounded-xl transition-all">
                         Request Route
                       </Link>
                       {op.score < 50 && (

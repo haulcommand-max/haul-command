@@ -71,7 +71,7 @@ export function HCMobileMenu({ mode = 'public' }: { mode?: 'public' | 'app' }) {
           {/* Primary Actions */}
           <div className="flex flex-col gap-3">
             <Link
-              href="/loads/post"
+              href="/load-board/post"
               onClick={() => setOpen(false)}
               className="flex items-center justify-between w-full p-4 rounded-xl bg-[#F1A91B] hover:bg-[#D4951A] text-white font-black text-sm uppercase tracking-widest shadow-md transition-colors"
             >
@@ -101,7 +101,7 @@ export function HCMobileMenu({ mode = 'public' }: { mode?: 'public' | 'app' }) {
             <div className="flex flex-col gap-1">
               {[
                 { label: 'Pilot Car Directory', href: '/directory', badge: null },
-                { label: 'Load Board', href: '/loads', badge: 'LIVE' },
+                { label: 'Load Board', href: '/load-board', badge: 'LIVE' },
                 { label: 'Available Now', href: '/available-now', badge: null },
                 { label: 'Map View', href: '/map/live', badge: null },
               ].map(item => {
@@ -162,7 +162,7 @@ export function HCMobileMenu({ mode = 'public' }: { mode?: 'public' | 'app' }) {
             </Link>
             
             <Link
-              href="/loads/post"
+              href="/load-board/post"
               onClick={() => setOpen(false)}
               className="flex flex-col items-center justify-center flex-1 py-2 text-[#C6923A] relative"
             >

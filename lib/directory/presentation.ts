@@ -192,7 +192,7 @@ export function buildDirectoryIntentLanes(countryCode?: string | null): Director
     {
       label: "Need load support",
       body: "Build a support packet for escorts, parking, permits, repair, and route needs.",
-      href: withCountry("/loads/post"),
+      href: withCountry("/load-board/post"),
     },
     {
       label: "Claim profile",
@@ -277,13 +277,13 @@ export function buildDirectoryCountrySeoContract(countryCode?: string | null): P
     internalLinkSlots: [
       { label: "Global directory", href: "/directory", reason: "Directory root", pageFamily: "directory_hub" },
       { label: "Country regulations", href: `/regulations/${country.countryCode}`, reason: "Regulation context", pageFamily: "regulation" },
-      { label: "Post a support load", href: `/loads/post?country=${countryUpper}`, reason: "Demand capture", pageFamily: "load_board" },
+      { label: "Post a support load", href: `/load-board/post?country=${countryUpper}`, reason: "Demand capture", pageFamily: "load_board" },
       { label: "Heavy haul tools", href: `/tools?country=${countryUpper}`, reason: "Action path", pageFamily: "tools_hub" },
     ],
     conversionCtas: [
       { label: "Search directory", href: `/directory?country=${countryUpper}`, intent: "find_provider", primary: true },
       { label: "Claim or correct a profile", href: `/claim?country=${countryUpper}&source=directory-country`, intent: "claim_profile" },
-      { label: "Build support packet", href: `/loads/post?country=${countryUpper}&intent=country-support`, intent: "post_load" },
+      { label: "Build support packet", href: `/load-board/post?country=${countryUpper}&intent=country-support`, intent: "post_load" },
     ],
     sourceBasis: country.sourceBasis,
     updateFrequency: country.noIndex ? "weekly" : "daily",
@@ -327,11 +327,11 @@ export function buildDirectoryMarketSeoContract(input: DirectoryMarketSeoInput):
     region: marketKind === "region" ? input.marketName : undefined,
     internalLinkSlots: [
       { label: `${countryUpper} directory`, href: `/directory/${countryLower}`, reason: "Country rollup", pageFamily: "directory_country" },
-      { label: "Post a load", href: `/loads/post?country=${countryUpper}&market=${encodeURIComponent(input.slug)}`, reason: "Demand capture", pageFamily: "load_board" },
+      { label: "Post a load", href: `/load-board/post?country=${countryUpper}&market=${encodeURIComponent(input.slug)}`, reason: "Demand capture", pageFamily: "load_board" },
       { label: "Claim profile", href: `/claim?country=${countryUpper}&market=${encodeURIComponent(input.slug)}`, reason: "Claim path", pageFamily: "profile" },
     ],
     conversionCtas: [
-      { label: "Request support", href: `/loads/post?country=${countryUpper}&market=${encodeURIComponent(input.slug)}`, intent: "request_support", primary: true },
+      { label: "Request support", href: `/load-board/post?country=${countryUpper}&market=${encodeURIComponent(input.slug)}`, intent: "request_support", primary: true },
       { label: "Claim or correct listing", href: `/claim?country=${countryUpper}&market=${encodeURIComponent(input.slug)}`, intent: "claim_profile" },
     ],
     sourceBasis: input.recordCount > 0

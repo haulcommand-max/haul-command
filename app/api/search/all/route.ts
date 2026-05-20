@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from '@supabase/supabase-js';
-import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { AU_STATES, CA_PROVINCES, US_STATES } from "@/lib/geo/state-names";
 
 function parseArrayParam(v: string | null): string[] | null {
     if (!v) return null;
@@ -14,14 +14,59 @@ function parseNum(v: string | null) {
     return Number.isFinite(n) ? n : null;
 }
 
+const REGION_NAME_TO_CODE = Object.entries({ ...US_STATES, ...CA_PROVINCES, ...AU_STATES }).reduce(
+    (acc, [code, name]) => {
+        acc[name.toLowerCase()] = code;
+        acc[code.toLowerCase()] = code;
+        return acc;
+    },
+    {} as Record<string, string>
+);
+
+function escapeRegExp(value: string) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function normalizeSearchIntent(rawQ: string, suppliedRegion: string | null, suppliedTags: string[] | null) {
+    let q = rawQ.trim();
+    let region = suppliedRegion;
+    let tags = suppliedTags;
+    const lower = ` ${q.toLowerCase().replace(/[^a-z0-9]+/g, " ")} `;
+
+    if (!region) {
+        const regionMatch = Object.entries(REGION_NAME_TO_CODE)
+            .sort((a, b) => b[0].length - a[0].length)
+            .find(([name]) => lower.includes(` ${name} `));
+
+        if (regionMatch) {
+            region = regionMatch[1];
+            q = q.replace(new RegExp(`\\b${escapeRegExp(regionMatch[0])}\\b`, "ig"), " ");
+        }
+    }
+
+    if (!tags?.length && /\b(pilot\s*car|pilot\s*cars|escort\s*vehicle|escort\s*vehicles|escort|escorts|lead\s*car|chase\s*car)\b/i.test(q)) {
+        tags = ["pilot_car_operator_family"];
+        q = q
+            .replace(/\b(pilot\s*car|pilot\s*cars|escort\s*vehicle|escort\s*vehicles|escort|escorts|lead\s*car|chase\s*car)\b/ig, " ")
+            .replace(/\b(operator|operators|provider|providers|service|services|support|near|in|for|find)\b/ig, " ");
+    }
+
+    return {
+        q: q.replace(/\s+/g, " ").trim(),
+        region,
+        tags,
+    };
+}
+
 export async function GET(req: NextRequest) {
     const sp = req.nextUrl.searchParams;
 
     const q = sp.get("q") ?? "";
     const country = sp.get("country");
-    const region = sp.get("region");
+    const requestedRegion = sp.get("region") ?? sp.get("state");
     const city = sp.get("city");
-    const tags = parseArrayParam(sp.get("tags"));
+    const requestedTags = parseArrayParam(sp.get("tags"));
+    const normalizedIntent = normalizeSearchIntent(q, requestedRegion, requestedTags);
     const verifiedOnly =
         sp.get("verified") === "1" || sp.get("verified") === "true";
     const loadStatus = sp.get("load_status");
@@ -40,11 +85,11 @@ export async function GET(req: NextRequest) {
     );
 
     const { data, error } = await supabase.rpc("hc_search_all", {
-        p_q: q || null,
+        p_q: normalizedIntent.q || null,
         p_country_code: country,
-        p_region: region,
+        p_region: normalizedIntent.region,
         p_city: city,
-        p_tags: tags,
+        p_tags: normalizedIntent.tags,
         p_verified_only: verifiedOnly,
         p_load_status: loadStatus,
         p_lat: lat,
@@ -80,9 +125,9 @@ export async function GET(req: NextRequest) {
         query: {
             q,
             country,
-            region,
+            region: normalizedIntent.region,
             city,
-            tags,
+            tags: normalizedIntent.tags,
             verifiedOnly,
             loadStatus,
             lat,

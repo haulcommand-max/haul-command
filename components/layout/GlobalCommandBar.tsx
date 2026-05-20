@@ -25,7 +25,7 @@ const COMMAND_LINKS: CommandLink[] = [
 
 const MOBILE_COMMAND_LINKS: CommandLink[] = [
   { label: "Directory", href: "/directory" },
-  { label: "Post Load", href: "/loads/post" },
+  { label: "Post Load", href: "/load-board/post" },
   { label: "Tools", href: "/tools" },
   { label: "Claim", href: "/claim" },
 ];
@@ -119,7 +119,7 @@ export function GlobalCommandBar() {
       >
         {MOBILE_COMMAND_LINKS.map((link) => {
           const isActive = pathname?.startsWith(link.href) && link.href !== "/";
-          const isPrimary = link.href === "/loads/post" || link.href === "/claim";
+          const isPrimary = link.href === "/load-board/post" || link.href === "/claim";
           return (
             <Link
               key={link.href}

@@ -267,7 +267,7 @@ export default async function DossierPage({ params }: { params: { id: string } }
   const relatedLinks = [
     { href: `/directory?state=${operator.state_inferred || ''}&country=${countryCode}`, label: `${stateName || pack.regionTerm} provider directory` },
     { href: '/tools/escort-calculator', label: 'Escort requirement calculator' },
-    { href: '/loads/post', label: 'Post an oversize support need' },
+    { href: '/load-board/post', label: 'Post an oversize support need' },
     { href: '/glossary/high-pole', label: 'High pole escort glossary' },
     { href: '/resources/legal/frost-law-guide', label: 'Frost law and route restriction guide' },
     { href: '/advertise/buy', label: 'Sponsor this market on AdGrid' },

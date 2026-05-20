@@ -72,6 +72,10 @@ function normalizeFilterValue(value: unknown): string {
   return String(value ?? '').trim().toLowerCase();
 }
 
+function normalizeFilterSlug(value: unknown): string {
+  return normalizeFilterValue(value).replace(/_/g, '-');
+}
+
 function normalizeCode(value: unknown): string {
   return String(value ?? '').trim().toUpperCase();
 }
@@ -119,7 +123,32 @@ function recordHasProofState(item: any, proof: DirectoryProofFilter): boolean {
 }
 
 function recordMatchesCategory(item: any, category: string): boolean {
-  const normalized = normalizeFilterValue(category);
+  const categoryAliases: Record<string, string> = {
+    escorts: 'escort',
+    'escort-vehicle': 'escort',
+    'escort-vehicles': 'escort',
+    'escort-service': 'escort',
+    'escort-services': 'escort',
+    'escort-vehicle-services': 'escort',
+    'pilot-cars': 'pilot-car',
+    'pilot-car-operator': 'pilot-car',
+    'pilot-car-operators': 'pilot-car',
+    'pilot-car-services': 'pilot-car',
+    'high-pole': 'route-survey',
+    'height-pole': 'route-survey',
+    'permit-service': 'permit',
+    'permit-services': 'permit',
+    'permit-support': 'permit',
+    'truck-parking': 'parking',
+    'staging-yard': 'parking',
+    'staging-yards': 'parking',
+    'mobile-mechanic': 'repair',
+    'mobile-repair': 'repair',
+    'freight-broker': 'broker',
+    'heavy-haul-carrier': 'carrier',
+  };
+  const rawCategory = normalizeFilterSlug(category);
+  const normalized = categoryAliases[rawCategory] ?? rawCategory;
   if (!normalized || normalized === 'support') return true;
 
   const haystack = [
@@ -146,34 +175,100 @@ function recordMatchesCategory(item: any, category: string): boolean {
     .join(' ');
 
   const categoryTerms: Record<string, string[]> = {
-    'pilot-car': ['pilot', 'pilot_car', 'pilot car', 'lead', 'chase'],
-    escort: ['escort', 'escort_operator', 'escort vehicle', 'steer'],
-    'route-survey': ['route survey', 'route_survey', 'survey', 'high pole', 'high-pole', 'height pole'],
-    permit: ['permit', 'permitting', 'compliance'],
-    parking: ['parking', 'staging', 'yard', 'truck_parking'],
-    repair: ['repair', 'mechanic', 'mobile_truck_repair', 'service truck'],
-    broker: ['broker', 'freight_broker'],
-    carrier: ['carrier', 'hauler', 'operator_carrier'],
-    infrastructure: ['infrastructure', 'port', 'yard', 'facility', 'truck stop', 'truck_stop'],
+    'pilot-car': ['pilot', 'pilot-car', 'pilot_car', 'pilot car', 'lead', 'chase'],
+    escort: ['escort', 'escort-operator', 'escort_operator', 'escort vehicle', 'steer'],
+    'route-survey': ['route survey', 'route-survey', 'route_survey', 'survey', 'high pole', 'high-pole', 'height pole', 'height-pole'],
+    permit: ['permit', 'permit-service', 'permit_service', 'permitting', 'compliance'],
+    parking: ['parking', 'truck-parking', 'truck_parking', 'staging', 'staging-yard', 'staging_yard', 'yard'],
+    repair: ['repair', 'mechanic', 'mobile-mechanic', 'mobile_truck_repair', 'service truck'],
+    broker: ['broker', 'freight-broker', 'freight_broker'],
+    carrier: ['carrier', 'hauler', 'operator-carrier', 'operator_carrier'],
+    infrastructure: ['infrastructure', 'port', 'yard', 'facility', 'truck stop', 'truck-stop', 'truck_stop'],
   };
 
   return (categoryTerms[normalized] || [normalized]).some((term) => haystack.includes(term));
+}
+
+function getSearchHaystack(item: any, searchFields: string[]): string {
+  const fieldValues = searchFields.flatMap((field) => {
+    const value = item[field];
+    return Array.isArray(value) ? value : [value];
+  });
+  const stCode = item.state_inferred || item.state_code || item.admin1_code || '';
+  const fullName = stateFullName(stCode);
+  return [
+    ...fieldValues,
+    item.entity_family,
+    item.entity_type,
+    item.entity_subtype,
+    item.primary_role,
+    item.role_primary,
+    item.public_label,
+    item.category,
+    item.category_slug,
+    item.service_type,
+    item.primary_service,
+    item.primary_category,
+    item.equipment_types,
+    item.services,
+    item.specialties,
+    item.tags,
+    item.search_surface,
+    stCode,
+    fullName,
+  ]
+    .flatMap((value) => Array.isArray(value) ? value : [value])
+    .map(normalizeFilterValue)
+    .filter(Boolean)
+    .join(' ');
+}
+
+function buildQueryTokens(query: string): string[] {
+  const stopWords = new Set([
+    'a',
+    'an',
+    'and',
+    'are',
+    'business',
+    'businesses',
+    'company',
+    'companies',
+    'find',
+    'for',
+    'in',
+    'near',
+    'need',
+    'of',
+    'operator',
+    'operators',
+    'provider',
+    'providers',
+    'service',
+    'services',
+    'support',
+    'the',
+    'to',
+  ]);
+  return normalizeFilterValue(query)
+    .replace(/[^a-z0-9]+/g, ' ')
+    .split(' ')
+    .map((token) => token.trim())
+    .filter((token) => token.length > 1 && !stopWords.has(token));
 }
 
 function recordMatchesQuery(item: any, query: string, searchFields: string[]): boolean {
   const lower = normalizeFilterValue(query);
   if (!lower) return true;
 
-  const fieldMatch = searchFields.some(field => {
-    const val = item[field];
-    if (Array.isArray(val)) return val.some((entry) => normalizeFilterValue(entry).includes(lower));
-    return val && normalizeFilterValue(val).includes(lower);
-  });
-  if (fieldMatch) return true;
+  const haystack = getSearchHaystack(item, searchFields);
+  if (haystack.includes(lower)) return true;
+
+  const tokens = buildQueryTokens(query);
+  if (tokens.length > 0 && tokens.every((token) => haystack.includes(token))) return true;
 
   const stCode = item.state_inferred || item.state_code || item.admin1_code || '';
   const fullName = stateFullName(stCode);
-  return Boolean(fullName && fullName.toLowerCase().includes(lower));
+  return Boolean(fullName && normalizeFilterValue(fullName).includes(lower));
 }
 
 export function applyDirectoryFilters(

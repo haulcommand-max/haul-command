@@ -235,8 +235,8 @@ const nextConfig: NextConfig = {
             },
             ...US_STATE_REDIRECTS,
             ...COUNTRY_REDIRECTS,
-            // NOTE: www → apex redirect is handled by Vercel domain settings at the CDN edge.
-            // DO NOT add a www redirect here — it conflicts with Vercel and causes redirect loops.
+            // NOTE: Apex -> www canonicalization is handled by vercel.json and Vercel domain settings.
+            // DO NOT add the opposite host redirect here; conflicting host rules cause redirect loops.
         ];
     },
     // ── Rewrites ─────────────────────────────────────────────────────────
@@ -245,10 +245,6 @@ const nextConfig: NextConfig = {
     async rewrites() {
         return {
             beforeFiles: [
-                {
-                    source: '/available-now',
-                    destination: '/available-now-fixed',
-                },
                 {
                     source: '/sitemap.xml',
                     destination: '/api/sitemap',
