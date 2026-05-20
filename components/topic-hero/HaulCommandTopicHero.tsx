@@ -303,7 +303,7 @@ export function HaulCommandTopicHero({
     >
       <img
         className="hc-topic-hero__bg"
-        src={config.image.src ?? "/backgrounds/haul-command-final-bg.jpg"}
+        src={config.image.src ?? "/backgrounds/haul-command-industrial-gold-texture-background.png"}
         alt=""
         width={config.image.width}
         height={config.image.height}

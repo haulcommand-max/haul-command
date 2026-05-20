@@ -83,7 +83,7 @@ export function getCityServiceDefinition(service: string): CityServiceDefinition
 }
 
 export function buildLocaleCityServicePath(params: CityServiceRouteParams) {
-  return `/${normalizeRoutePart(params.locale)}/${normalizeRoutePart(params.region)}/${normalizeRoutePart(params.city)}/${normalizeRoutePart(params.service)}`;
+  return `/local/${normalizeRoutePart(params.locale)}/${normalizeRoutePart(params.region)}/${normalizeRoutePart(params.city)}/${normalizeRoutePart(params.service)}`;
 }
 
 export function buildLocaleCityServiceCanonical(params: CityServiceRouteParams) {

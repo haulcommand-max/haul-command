@@ -31,7 +31,7 @@ export function resolveLegacyCityServiceRedirect(pathname: string) {
     return null;
   }
 
-  return `/en-us/${state}/${city}/${service}`;
+  return `/local/en-us/${state}/${city}/${service}`;
 }
 
 export function isLegacyUsCityServicePath(pathname: string) {

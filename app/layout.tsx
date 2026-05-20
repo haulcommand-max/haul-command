@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { DynamicBackgroundEngine } from '@/components/ui/DynamicBackgroundEngine';
 import { GlobalCommandBar } from '@/components/layout/GlobalCommandBar';
-import { Suspense } from 'react';
 import { PwaRegistry } from '@/components/layout/PwaRegistry';
 import { PostHogProvider } from '@/components/analytics/PostHogProvider';
 import { GoogleTagManager } from '@next/third-parties/google';
@@ -57,7 +56,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       {/* Google Tag Manager — manages GA4, ads pixels, and all tags from one UI */}
       {gtmId && <GoogleTagManager gtmId={gtmId} />}
         <body className="hc-brand-site antialiased" suppressHydrationWarning>
-        <Suspense fallback={null}>
           {/* PostHog — product analytics, session replay, A/B testing */}
           <PostHogProvider>
             <SignalGridProvider>
@@ -70,7 +68,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </div>
             </SignalGridProvider>
           </PostHogProvider>
-        </Suspense>
       </body>
     </html>
   );

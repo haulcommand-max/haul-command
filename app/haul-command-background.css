@@ -1,22 +1,22 @@
 /*
-   HAUL COMMAND SITE-WIDE BACKGROUND
-   Approved golden/yellow grunge background.
+   HAUL COMMAND MASTER BACKGROUND
+   Approved site-wide master background.
 
    Required asset path:
-   public/backgrounds/haul-command-golden-grunge-bg.png
+   public/backgrounds/haul-command-industrial-gold-texture-background.png
 */
 
 html {
-  background-color: #f5c64a !important;
+  background-color: #9d9890 !important;
 }
 
 body {
-  background-image: url("/backgrounds/haul-command-final-bg.jpg") !important;
+  background-image: url("/backgrounds/haul-command-industrial-gold-texture-background.png") !important;
   background-repeat: repeat-y !important;
   background-size: 100% auto !important;
   background-position: top center !important;
   background-attachment: scroll !important;
-  background-color: #f5c64a !important;
+  background-color: #9d9890 !important;
 }
 
 body::before,
