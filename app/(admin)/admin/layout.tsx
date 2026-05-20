@@ -1,7 +1,39 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
+
+async function requireAdminPage() {
+  const cookieStore = await cookies();
+  const authClient = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { cookies: { getAll: () => cookieStore.getAll() } },
+  );
+
+  const { data: { user } } = await authClient.auth.getUser();
+  if (!user) {
+    redirect("/login?next=%2Fadmin");
+  }
+
+  const supabase = getSupabaseAdmin();
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (!profile || profile.role !== "system_admin") {
+    redirect("/next-moves?error=unauthorized_hq");
+  }
+}
+
+export default async function AdminLayout({ children }: { children: ReactNode }) {
+  await requireAdminPage();
+
   return (
     <div className="flex h-screen bg-[#070707] text-[#e5e5e5]">
       <aside className="flex w-64 flex-col border-r border-[#1a1a1a] bg-[#0c0c0c]">

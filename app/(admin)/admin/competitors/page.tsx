@@ -110,6 +110,13 @@ function formatDate(value: string | null): string {
   }).format(parsed);
 }
 
+function daysSince(value: string | null): number | null {
+  if (!value) return null;
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return Math.floor((Date.now() - parsed.getTime()) / 86_400_000);
+}
+
 function statusClass(status: StatusKey): string {
   if (status === "WINNING") return "border-emerald-500/30 bg-emerald-500/10 text-emerald-200";
   if (status === "TIED") return "border-amber-400/30 bg-amber-400/10 text-amber-200";
@@ -143,9 +150,21 @@ export default async function CompetitorIntelPage() {
   const highValueClaims = data.claimQueue.filter(
     (operator) => numberValue(operator.claim_value_score) >= 70,
   ).length;
+  const unclaimedCompetitorTargets = data.claimQueue.filter((operator) => !operator.is_claimed).length;
+  const staleIntel = data.intel.filter((row) => {
+    const age = daysSince(row.last_checked);
+    return age == null || age > 14;
+  }).length;
+  const topClaimValue = data.claimQueue.reduce(
+    (max, operator) => Math.max(max, numberValue(operator.claim_value_score)),
+    0,
+  );
   const mostExposedMarkets = data.intel
     .filter((row) => normalizeStatus(row.our_status) === "BEHIND" || numberValue(row.coverage_delta) < 0)
     .slice(0, 12);
+  const topClaimTargets = data.claimQueue
+    .filter((operator) => !operator.is_claimed)
+    .slice(0, 5);
 
   return (
     <div className="min-h-full bg-[#070707] text-zinc-100">
@@ -191,6 +210,27 @@ export default async function CompetitorIntelPage() {
           <MetricCard label="High-value claim targets" value={highValueClaims} tone="warning" />
         </section>
 
+        <section className="grid gap-4 lg:grid-cols-3">
+          <ActionCard
+            title="P0 displacement markets"
+            value={`${mostExposedMarkets.length} exposed`}
+            tone="danger"
+            body="Work the lowest coverage deltas first: claim targets, refresh local directory content, and run acquisition outreach before sponsor sales."
+          />
+          <ActionCard
+            title="P1 steal-back queue"
+            value={`${unclaimedCompetitorTargets} unclaimed`}
+            tone="warning"
+            body={`Top claim value score is ${topClaimValue}. Prioritize owner contact, proof request, and competitor-source cleanup for these operators.`}
+          />
+          <ActionCard
+            title="P1 stale intel refresh"
+            value={`${staleIntel} stale`}
+            tone="neutral"
+            body="Refresh records older than 14 days before making paid territory or market coverage decisions from this dashboard."
+          />
+        </section>
+
         <section className="grid gap-4 lg:grid-cols-4">
           <StatusCard status="WINNING" count={statusCounts.WINNING} />
           <StatusCard status="TIED" count={statusCounts.TIED} />
@@ -206,8 +246,8 @@ export default async function CompetitorIntelPage() {
             {mostExposedMarkets.length === 0 ? (
               <EmptyState>No losing or negative-delta markets are currently returned by competitor_intel.</EmptyState>
             ) : (
-              <div className="overflow-hidden rounded-lg border border-white/10">
-                <table className="w-full border-collapse text-left text-sm">
+              <div className="overflow-x-auto rounded-lg border border-white/10">
+                <table className="min-w-[760px] w-full border-collapse text-left text-sm">
                   <thead className="bg-white/[0.03] text-[11px] uppercase tracking-[0.18em] text-zinc-500">
                     <tr>
                       <th className="px-4 py-3">Market</th>
@@ -322,14 +362,46 @@ export default async function CompetitorIntelPage() {
         </section>
 
         <Panel
+          title="Immediate Claim Plays"
+          description="Unclaimed competitor-sourced operators to route into outreach or manual review before competitors keep the market relationship."
+        >
+          {topClaimTargets.length === 0 ? (
+            <EmptyState>No unclaimed competitor-sourced operators are currently returned.</EmptyState>
+          ) : (
+            <div className="grid gap-3 lg:grid-cols-5">
+              {topClaimTargets.map((operator) => (
+                <div key={operator.id} className="rounded-lg border border-white/10 bg-[#0b0b0b] p-4">
+                  <div className="text-xs font-black uppercase tracking-[0.18em] text-[#ffb400]">
+                    Score {numberValue(operator.claim_value_score)}
+                  </div>
+                  <h3 className="mt-2 text-sm font-black leading-tight text-white">{operator.company_name}</h3>
+                  <p className="mt-2 text-xs leading-5 text-zinc-500">
+                    {text(operator.region, text(operator.state, "Region unknown"))} / {text(operator.country_code, "Country unknown")}
+                  </p>
+                  <div className="mt-3 text-[11px] text-zinc-500">
+                    {operator.competitor_source ?? operator.source ?? "competitor sourced"}
+                  </div>
+                  <Link
+                    href={`/admin/directory?operator=${operator.id}`}
+                    className="mt-4 inline-flex rounded-md border border-white/10 px-3 py-2 text-xs font-bold text-zinc-200 hover:border-[#ffb400]/50 hover:text-[#ffb400]"
+                  >
+                    Open review
+                  </Link>
+                </div>
+              ))}
+            </div>
+          )}
+        </Panel>
+
+        <Panel
           title="All Competitor Coverage Records"
           description="Full read-only table from competitor_intel. Use this to decide where claim, content, and acquisition work should move next."
         >
           {data.intel.length === 0 ? (
             <EmptyState>No competitor_intel rows are available in this environment.</EmptyState>
           ) : (
-            <div className="overflow-hidden rounded-lg border border-white/10">
-              <table className="w-full border-collapse text-left text-sm">
+            <div className="overflow-x-auto rounded-lg border border-white/10">
+              <table className="min-w-[980px] w-full border-collapse text-left text-sm">
                 <thead className="bg-white/[0.03] text-[11px] uppercase tracking-[0.18em] text-zinc-500">
                   <tr>
                     <th className="px-4 py-3">Competitor</th>
@@ -408,6 +480,33 @@ function StatusCard({ status, count }: { status: StatusKey; count: number }) {
     <div className={`rounded-lg border p-5 ${statusClass(status)}`}>
       <div className="text-sm font-black uppercase tracking-[0.18em]">{status}</div>
       <div className="mt-3 text-3xl font-black">{count}</div>
+    </div>
+  );
+}
+
+function ActionCard({
+  title,
+  value,
+  body,
+  tone = "neutral",
+}: {
+  title: string;
+  value: string;
+  body: string;
+  tone?: "neutral" | "danger" | "warning";
+}) {
+  const toneClass =
+    tone === "danger"
+      ? "border-red-500/30 bg-red-500/10 text-red-100"
+      : tone === "warning"
+        ? "border-amber-400/30 bg-amber-400/10 text-amber-100"
+        : "border-white/10 bg-white/[0.03] text-zinc-100";
+
+  return (
+    <div className={`rounded-xl border p-5 ${toneClass}`}>
+      <div className="text-[11px] font-black uppercase tracking-[0.18em] opacity-70">{title}</div>
+      <div className="mt-3 text-2xl font-black tracking-tight">{value}</div>
+      <p className="mt-3 text-sm leading-6 opacity-80">{body}</p>
     </div>
   );
 }
