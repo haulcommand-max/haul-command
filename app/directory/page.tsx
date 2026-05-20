@@ -6,6 +6,7 @@ import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { LiveActivityFeed } from '@/components/feed/LiveActivityFeed';
 import { HCAskStrip } from '@/components/hc-ask/HCAskStrip';
 import { DirectoryGrid } from '@/components/directory/DirectoryGrid';
+import { RoleNeedResolver } from '@/components/directory/RoleNeedResolver';
 import { HaulCommandTopicHero } from '@/components/topic-hero/HaulCommandTopicHero';
 import { TOPIC_HERO_PRESETS } from '@/lib/topic-hero/configs';
 
@@ -627,6 +628,8 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                             ))}
                         </div>
                     </section>
+
+                    <RoleNeedResolver defaultCountry={targetCountry ?? 'US'} />
 
                     <div id="directory-results" className="mb-8 scroll-mt-24">
                         <DirectoryGrid
