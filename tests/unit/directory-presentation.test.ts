@@ -124,6 +124,15 @@ describe("directory presentation helpers", () => {
     );
   });
 
+  it("keeps the country directory route wired to the shared 120-country contract", () => {
+    const source = read("app/directory/[country]/page.tsx");
+
+    expect(source).toContain("buildDirectoryCountryPageContract");
+    expect(source).toContain("buildDirectoryCountrySeoContract");
+    expect(source).toContain("generateStaticParams = buildDirectoryCountryStaticParams");
+    expect(source).not.toContain("COUNTRY_REGIONS");
+  });
+
   it("keeps source-review directory contracts noindex while preserving follow", () => {
     const metadata = contractToMetadata(DIRECTORY_COUNTRY_CONTRACT);
 

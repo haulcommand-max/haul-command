@@ -1,5 +1,4 @@
 import React from 'react';
-import { generatePageMetadata } from '@/lib/seo/metadataFactory';
 import { BreadcrumbRail } from '@/components/ui/BreadcrumbRail';
 import { MarketClusterGrid } from '@/components/seo/MarketClusterGrid';
 import { AuthoritySourceMap } from '@/components/seo/AuthoritySourceMap';
@@ -11,6 +10,12 @@ import {
     getPageSeoContract,
     metadataFromDbPageSeoContract,
 } from '@/lib/seo/page-seo-contract-db';
+import {
+    buildDirectoryCountryPageContract,
+    buildDirectoryCountrySeoContract,
+    buildDirectoryCountryStaticParams,
+} from '@/lib/directory/presentation';
+import { contractToMetadata } from '@/lib/seo/page-seo-contract';
 import { createPublicClient } from '@/lib/supabase/server';
 
 interface PageProps {
@@ -23,13 +28,7 @@ async function resolveCountryParam(params: PageProps['params']) {
     return String(country || 'us').toLowerCase();
 }
 
-const COUNTRY_REGIONS: Record<string, string[]> = {
-    us: ['Texas', 'Florida', 'California', 'Oklahoma', 'Louisiana'],
-    ca: ['Ontario', 'Alberta', 'British Columbia', 'Saskatchewan', 'Quebec'],
-    au: ['Queensland', 'Western Australia', 'New South Wales', 'Victoria', 'South Australia'],
-    gb: ['England', 'Scotland', 'Wales', 'Northern Ireland'],
-    de: ['North Rhine-Westphalia', 'Bavaria', 'Lower Saxony', 'Baden-Wurttemberg', 'Hesse'],
-};
+export const generateStaticParams = buildDirectoryCountryStaticParams;
 
 type CapabilityTranslation = {
     capability: string;
@@ -104,24 +103,12 @@ function pickPrimaryServiceTerm(countryKey: string, intel: CountryDirectoryIntel
 
 export async function generateMetadata({ params }: PageProps) {
     const country = await resolveCountryParam(params);
-    const formattedCountry = country.toUpperCase();
     const countryKey = country.toLowerCase();
     const canonicalPath = `/directory/${countryKey}`;
     const contract = await getPageSeoContract(canonicalPath);
     if (contract) return metadataFromDbPageSeoContract(contract, canonicalPath);
 
-    const hasPublishedRegionSet = Boolean(COUNTRY_REGIONS[countryKey]?.length);
-    const intel = await getCountryDirectoryIntel(countryKey);
-    const marketName = intel.countryName ?? formattedCountry;
-    const serviceTerm = pickPrimaryServiceTerm(countryKey, intel);
-
-    return generatePageMetadata({
-        title: `${marketName} ${serviceTerm} Directory & Escort Network`,
-        description: `Access source-backed ${serviceTerm.toLowerCase()} records, region-level regulation paths, and corridor support actions in ${marketName}. Sparse markets stay clearly labeled until evidence improves.`,
-        canonicalPath,
-        countryCode: countryKey,
-        noIndex: !hasPublishedRegionSet,
-    });
+    return contractToMetadata(buildDirectoryCountrySeoContract(countryKey));
 }
 
 /**
@@ -131,11 +118,11 @@ export async function generateMetadata({ params }: PageProps) {
 export default async function CountryDirectoryPage({ params }: PageProps) {
     const country = await resolveCountryParam(params);
     const countryKey = country.toLowerCase();
-    const isUSA = countryKey === 'us';
+    const pageContract = buildDirectoryCountryPageContract(countryKey);
     const intel = await getCountryDirectoryIntel(countryKey);
-    const formattedName = intel.countryName ?? (isUSA ? 'United States' : country.toUpperCase());
+    const formattedName = intel.countryName ?? pageContract.displayName;
     const serviceTerm = pickPrimaryServiceTerm(countryKey, intel);
-    const subRegions = COUNTRY_REGIONS[countryKey] ?? [];
+    const subRegions = pageContract.subRegions;
     const canonicalPath = `/directory/${countryKey}`;
 
     return (
