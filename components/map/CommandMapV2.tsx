@@ -175,7 +175,7 @@ export function CommandMapV2({
         try {
             const res = await fetch('/api/map/hard-fills');
             if (!res.ok) {
-                // Generate mock hard-fill data from loads with high urgency if API doesn't exist yet
+                // The hard-fill layer is source-backed; keep it empty rather than fabricating alerts.
                 return;
             }
             const fc = await res.json();
