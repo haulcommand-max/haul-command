@@ -158,6 +158,14 @@ describe("directory presentation helpers", () => {
     expect(contractToMetadata(de).robots).toMatchObject({ index: false, follow: true });
   });
 
+  it("keeps the country route wired to the shared noindex contract", () => {
+    const source = read("app/directory/[country]/page.tsx");
+
+    expect(source).toContain("buildDirectoryCountryPageContract");
+    expect(source).toContain("noIndex: countryContract.noIndex");
+    expect(source).not.toContain("noIndex: !hasPublishedRegionSet");
+  });
+
   it("keeps empty local directory markets noindex until records exist", () => {
     const empty = buildDirectoryMarketSeoContract({
       countryCode: "DE",

@@ -96,5 +96,20 @@ describe("directory fallback query planning", () => {
     expect(plan.surfaceViews).toEqual(resolveDirectorySurfaceViews());
     expect(plan.locationOrFilter).toContain("city_inferred.ilike.%Hamburg%");
     expect(plan.locationOrFilter).toContain("state_inferred.ilike.%Hamburg%");
+    expect(plan.locationOrFilter).not.toContain("company.ilike");
+    expect(plan.locationOrFilter).not.toContain("name.ilike");
+  });
+
+  it("normalizes role query parameters into existing category filters", () => {
+    const plan = buildDirectoryFallbackFilterPlan({
+      country: "US",
+      category: "pilot_car_operator",
+      q: "Texas",
+    });
+
+    expect(plan.category?.entityFamily).toBe("operator");
+    expect(plan.category?.entitySubtypes).toContain("pilot_car_operator");
+    expect(plan.surfaceViews).toEqual(["v_directory_operators"]);
+    expect(plan.locationSearch).toBe("Texas");
   });
 });

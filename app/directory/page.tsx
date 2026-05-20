@@ -326,7 +326,7 @@ export async function generateMetadata(): Promise<Metadata> {
     };
 }
 
-export default async function GlobalDirectory({ searchParams }: { searchParams: Promise<{ country?: string, q?: string, category?: string, proof?: string, claim?: string, sort?: string }> }) {
+export default async function GlobalDirectory({ searchParams }: { searchParams: Promise<{ country?: string, q?: string, category?: string, role?: string, proof?: string, claim?: string, sort?: string }> }) {
     const resolvedParams = await searchParams;
     const cookieStore = await cookies();
     const supabase = createServerClient(
@@ -336,7 +336,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
     );
     const targetCountry = normalizeDirectoryCountry(resolvedParams.country);
     const queryLocation = resolvedParams.q || '';
-    const queryCategory = resolvedParams.category || '';
+    const queryCategory = resolvedParams.category || resolvedParams.role || '';
     const fallbackPlan = buildDirectoryFallbackFilterPlan({
         country: resolvedParams.country,
         category: queryCategory,

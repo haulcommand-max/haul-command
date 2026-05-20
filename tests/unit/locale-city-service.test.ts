@@ -22,7 +22,7 @@ describe("locale-first city service helpers", () => {
       region: "TX",
       city: "Houston",
       service: "Pilot Car",
-    })).toBe("https://www.haulcommand.com/en-us/tx/houston/pilot-car");
+    })).toBe("https://www.haulcommand.com/local/en-us/tx/houston/pilot-car");
   });
 
   it("keeps indexability gated by concrete useful signals", () => {
@@ -52,8 +52,8 @@ describe("locale-first city service helpers", () => {
   });
 
   it("redirects legacy US city-service slugs without breaking hyphenated city names", () => {
-    expect(resolveLegacyCityServiceRedirect("/us-tx-houston-pilot-car")).toBe("/en-us/tx/houston/pilot-car");
-    expect(resolveLegacyCityServiceRedirect("/us-tx-san-antonio-permit-support")).toBe("/en-us/tx/san-antonio/permit-support");
+    expect(resolveLegacyCityServiceRedirect("/us-tx-houston-pilot-car")).toBe("/local/en-us/tx/houston/pilot-car");
+    expect(resolveLegacyCityServiceRedirect("/us-tx-san-antonio-permit-support")).toBe("/local/en-us/tx/san-antonio/permit-support");
     expect(resolveLegacyCityServiceRedirect("/us-tx")).toBeNull();
   });
 

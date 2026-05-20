@@ -278,8 +278,6 @@ export function buildDirectoryMarketLocationOrFilter(scope: DirectoryMarketScope
     `city.ilike.%${escapedName}%`,
     `state_inferred.ilike.%${escapedName}%`,
     `admin1_code.ilike.%${escapedName}%`,
-    `company.ilike.%${escapedName}%`,
-    `name.ilike.%${escapedName}%`,
   ].join(",");
 }
 

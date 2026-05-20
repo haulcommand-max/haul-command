@@ -12,6 +12,7 @@ import {
     metadataFromDbPageSeoContract,
 } from '@/lib/seo/page-seo-contract-db';
 import { createPublicClient } from '@/lib/supabase/server';
+import { buildDirectoryCountryPageContract } from '@/lib/directory/presentation';
 
 interface PageProps {
     params: Promise<{ country?: string; countryCode?: string }> | { country?: string; countryCode?: string };
@@ -110,7 +111,7 @@ export async function generateMetadata({ params }: PageProps) {
     const contract = await getPageSeoContract(canonicalPath);
     if (contract) return metadataFromDbPageSeoContract(contract, canonicalPath);
 
-    const hasPublishedRegionSet = Boolean(COUNTRY_REGIONS[countryKey]?.length);
+    const countryContract = buildDirectoryCountryPageContract(countryKey);
     const intel = await getCountryDirectoryIntel(countryKey);
     const marketName = intel.countryName ?? formattedCountry;
     const serviceTerm = pickPrimaryServiceTerm(countryKey, intel);
@@ -120,7 +121,7 @@ export async function generateMetadata({ params }: PageProps) {
         description: `Access source-backed ${serviceTerm.toLowerCase()} records, region-level regulation paths, and corridor support actions in ${marketName}. Sparse markets stay clearly labeled until evidence improves.`,
         canonicalPath,
         countryCode: countryKey,
-        noIndex: !hasPublishedRegionSet,
+        noIndex: countryContract.noIndex,
     });
 }
 
