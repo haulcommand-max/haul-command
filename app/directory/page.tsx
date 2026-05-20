@@ -117,6 +117,41 @@ const userGroups = [
     },
 ];
 
+const primaryIntentCards = [
+    {
+        eyebrow: 'For operators and support providers',
+        title: 'Get found for more jobs',
+        body: 'Claim or correct your listing, add service areas and proof, and make it easier for brokers to choose you before they call the next company.',
+        href: '/claim?intent=directory-get-more-jobs',
+        cta: 'Claim your listing',
+        tone: 'green',
+    },
+    {
+        eyebrow: 'For brokers, carriers, and shippers',
+        title: 'Find people for this load',
+        body: 'Search pilot cars, escorts, permit help, route survey, yards, repair, parking, and field support by role, market, and proof state.',
+        href: '#directory-results',
+        cta: 'Search support',
+        tone: 'gold',
+    },
+    {
+        eyebrow: 'When the market looks thin',
+        title: 'Post the support need',
+        body: 'If the directory does not show enough source-backed coverage, post the need so Haul Command can capture demand instead of ending at a dead search.',
+        href: '/loads/post?intent=directory-support-need',
+        cta: 'Post demand',
+        tone: 'blue',
+    },
+    {
+        eyebrow: 'For sponsors and vendors',
+        title: 'Show up beside buyer intent',
+        body: 'Sponsor a role, market, or corridor without fake rank. Placement stays labeled and follows the real support moment.',
+        href: '/advertise?placement=directory-market&intent=buyer-moment',
+        cta: 'Sponsor demand',
+        tone: 'amber',
+    },
+];
+
 const directorySearchPromises = directorySearchPromiseCopy;
 
 const directoryRoleFamilyCopy: Record<string, { buyerLine: string; primaryAction: string }> = {
@@ -272,20 +307,20 @@ function buildDirectoryJsonLd(providerCount: number) {
 export async function generateMetadata(): Promise<Metadata> {
     return {
         title: "Pilot Car & Escort Vehicle Directory | Heavy Haul Support Providers | Haul Command",
-        description: "Search Haul Command to find pilot car operators, escort vehicles, permit support, route survey help, yards, repair, parking, brokers, carriers, and oversize load support records by location, service type, and profile status.",
+        description: "Use Haul Command to get found for more heavy-haul jobs, find pilot cars and field support for a load, or post a support need when a market is thin.",
         alternates: {
             canonical: absoluteUrl('/directory'),
         },
         openGraph: {
             title: "Heavy Haul Support Directory | Haul Command",
-            description: "Find and compare pilot cars, escort vehicles, permit support, route intelligence, yards, repair, parking, brokers, carriers, and heavy haul support records across Haul Command's global directory.",
+            description: "Get listed for more jobs, search heavy-haul support, or post demand when a move needs pilot cars, permits, route help, yards, repair, or field support.",
             url: absoluteUrl('/directory'),
             images: [getPageFamilyOgImage('directory')],
         },
         twitter: {
             card: "summary_large_image",
             title: "Heavy Haul Support Directory | Haul Command",
-            description: "Find pilot cars, escort vehicles, permit support, route survey help, infrastructure, and oversize load support records by location, service type, and profile status.",
+            description: "Get listed, find support, or post a heavy-haul support need across Haul Command's proof-labeled directory.",
             images: [getPageFamilyOgImage('directory')],
         }
     };
@@ -558,6 +593,57 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                     {/* HC Ask — intelligence strip */}
                     <div className="mb-6"><HCAskStrip context="directory" /></div>
 
+                    <section aria-labelledby="directory-primary-intents" className="mb-8 rounded-2xl border border-[#C6923A]/25 bg-black/45 p-4 shadow-[0_20px_70px_rgba(0,0,0,0.28)] backdrop-blur-[2px] md:p-6">
+                        <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                            <div className="max-w-3xl">
+                                <div className="text-xs font-black uppercase tracking-[0.18em] text-[#C6923A]">Choose what you came here to do</div>
+                                <h2 id="directory-primary-intents" className="mt-2 text-2xl font-black tracking-tight text-white md:text-3xl">
+                                    Get more jobs, find support, or post demand
+                                </h2>
+                                <p className="mt-3 text-sm leading-6 text-[#d8c6a3] md:text-base">
+                                    Haul Command is a working directory. Start with the action that matches your role, then use search and proof labels to narrow the market.
+                                </p>
+                            </div>
+                            <Link href="#directory-results" className="inline-flex min-h-11 w-fit items-center rounded-lg bg-[#C6923A] px-4 py-2 text-sm font-black text-[#0B0B0C] transition-colors hover:bg-[#E0B05C]">
+                                Jump to search
+                            </Link>
+                        </div>
+                        <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+                            {primaryIntentCards.map((intent) => (
+                                <Link
+                                    key={intent.title}
+                                    href={intent.href}
+                                    className="group flex min-h-[178px] flex-col justify-between rounded-xl border border-white/10 bg-white/[0.055] p-4 transition-colors hover:border-[#C6923A]/60 hover:bg-[#C6923A]/10"
+                                >
+                                    <div>
+                                        <div className="text-[10px] font-black uppercase tracking-[0.14em] text-[#C6923A]">{intent.eyebrow}</div>
+                                        <h3 className="mt-2 text-lg font-black leading-tight text-white">{intent.title}</h3>
+                                        <p className="mt-2 text-xs leading-5 text-[#d8c6a3]">{intent.body}</p>
+                                    </div>
+                                    <div className="mt-4 inline-flex w-fit rounded-lg bg-[#C6923A] px-3 py-2 text-xs font-black text-[#0B0B0C] group-hover:bg-[#E0B05C]">
+                                        {intent.cta}
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    </section>
+
+                    <div id="directory-results" className="mb-8 scroll-mt-24">
+                        <DirectoryGrid
+                            providers={providers}
+                            targetCountry={targetCountry ?? 'GLOBAL'}
+                            initialFilters={{
+                                query: fallbackPlan.locationSearch,
+                                country: targetCountry ?? '',
+                                category: fallbackPlan.inferredCategory ?? queryCategory,
+                                proof: resolvedParams.proof === 'verified' || resolvedParams.proof === 'contact_confirmed' ? resolvedParams.proof : 'all',
+                                claim: resolvedParams.claim === 'claimed' || resolvedParams.claim === 'unclaimed' ? resolvedParams.claim : 'all',
+                                sort: resolvedParams.sort === 'newest' || resolvedParams.sort === 'name' ? resolvedParams.sort : 'score',
+                            }}
+                            dataIssue={directoryDataIssue}
+                        />
+                    </div>
+
                     <section aria-labelledby="what-is-haul-command" className="mb-8 overflow-hidden rounded-2xl border border-[#C6923A]/25 bg-black/45 shadow-[0_20px_70px_rgba(0,0,0,0.28)] backdrop-blur-[2px]">
                         <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr]">
                             <div className="p-5 md:p-7">
@@ -666,22 +752,6 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                         </div>
                     </section>
 
-                    {/* Searchable operator grid */}
-                    <div id="directory-results">
-                        <DirectoryGrid
-                            providers={providers}
-                            targetCountry={targetCountry ?? 'GLOBAL'}
-                            initialFilters={{
-                                query: fallbackPlan.locationSearch,
-                                country: targetCountry ?? '',
-                                category: fallbackPlan.inferredCategory ?? queryCategory,
-                                proof: resolvedParams.proof === 'verified' || resolvedParams.proof === 'contact_confirmed' ? resolvedParams.proof : 'all',
-                                claim: resolvedParams.claim === 'claimed' || resolvedParams.claim === 'unclaimed' ? resolvedParams.claim : 'all',
-                                sort: resolvedParams.sort === 'newest' || resolvedParams.sort === 'name' ? resolvedParams.sort : 'score',
-                            }}
-                            dataIssue={directoryDataIssue}
-                        />
-                    </div>
                 </div>
             </HCContentSection>
 

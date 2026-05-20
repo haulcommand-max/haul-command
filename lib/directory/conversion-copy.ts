@@ -14,16 +14,16 @@ export type DirectoryCardCopy = {
 };
 
 export const directoryConversionCopy = {
-  answerEyebrow: "Proof-backed support, not a stale phone list",
-  answerHeadline: "Find heavy-haul support without gambling the load on a blind call",
+  answerEyebrow: "Jobs, coverage, and proof in one place",
+  answerHeadline: "Find work or find the people to cover a heavy-haul move",
   answerSummary:
-    "Haul Command turns scattered pilot car, escort, permit, route survey, yard, repair, broker, carrier, and field-support records into a proof-labeled action system. Buyers can build a support packet; providers can claim the profile that brokers already use to compare them.",
+    "If you operate, claim your profile so brokers can find you. If you broker or dispatch, search support and build a move packet. If the market is thin, post the need so the gap becomes a real demand signal.",
   answerBody:
-    "The directory is intentionally conservative: a listed record is not the same as a verified operator, live availability, or proof-backed performance. Every view should push the user toward the next real action: request support, inspect proof, claim the record, correct bad data, or sponsor a market gap.",
+    "The directory is built for the next action: get listed for more work, find pilot cars or field support, post a support need, inspect proof, correct bad data, or sponsor a market gap.",
   roleEyebrow: "Route pressure becomes a decision path",
-  roleHeadline: "Stop guessing who can actually support the move",
+  roleHeadline: "Pick the job problem first, then narrow the provider list",
   roleBody:
-    "Start with the load problem: route, deadline, service type, and market. Haul Command surfaces claim paths, contact signals, proof state, and next actions so brokers do not waste the critical hour calling stale listings and providers do not stay invisible in markets they already serve.",
+    "Start with the load, location, role, deadline, and proof state. Haul Command keeps claim paths, contact signals, and support requests visible so brokers stop wasting the critical hour and providers do not stay invisible in markets they already serve.",
   sponsorHeadline: "Own the support moment before the buyer chooses a fallback",
   sponsorBody:
     "Directory sponsorship belongs beside real search intent: market gaps, urgent support, route planning, and role-specific comparison. Paid placement is labeled and cannot manufacture verification, availability, or rank.",

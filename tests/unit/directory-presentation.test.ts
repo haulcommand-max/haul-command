@@ -16,6 +16,7 @@ import {
   contractToMetadata,
   type PageSeoContract,
 } from "@/lib/seo/page-seo-contract";
+import { buildEmptyMarketConversionCopy } from "@/lib/directory/conversion-copy";
 
 const DIRECTORY_COUNTRY_CONTRACT: PageSeoContract = {
   path: "/directory/de",
@@ -196,17 +197,21 @@ describe("directory presentation helpers", () => {
   it("keeps the directory root written for buyers and providers instead of internal architecture", () => {
     const page = read("app/directory/page.tsx");
     const emptyState = read("components/directory/EmptyMarketState.tsx");
+    const emptyMarketCopy = buildEmptyMarketConversionCopy("Hamburg, Germany", false);
+    const dataIssueCopy = buildEmptyMarketConversionCopy("Hamburg, Germany", true);
 
-    expect(page).toContain("Search heavy-haul support without guessing who is real, local, or claimable");
+    expect(page).toContain("Get more jobs, find support, or post demand");
+    expect(page).toContain("Choose what you came here to do");
     expect(page).toContain("Trust rule:");
-    expect(page).toContain("Request help, claim or correct a listing");
+    expect(page).toContain("Haul Command is a working directory");
     expect(page).not.toContain("How this page is built:");
     expect(page).not.toContain("role definitions, not hand-built static pages");
     expect(page).not.toContain("reusable role families");
     expect(page).not.toContain("operating system for finding");
-    expect(emptyState).toContain("Thin markets are labeled honestly");
-    expect(emptyState).toContain("Directory records are temporarily unavailable");
-    expect(emptyState).toContain("This is not a market-coverage signal");
+    expect(emptyState).toContain("buildEmptyMarketConversionCopy");
+    expect(emptyMarketCopy.footnote).toContain("Thin markets are labeled honestly");
+    expect(dataIssueCopy.headline).toBe("Directory records are temporarily unavailable");
+    expect(dataIssueCopy.body).toContain("not a market verdict");
   });
 
   it("keeps directory cards honest about contact paths and public ratings", () => {
@@ -216,7 +221,7 @@ describe("directory presentation helpers", () => {
     expect(grid).toContain("Request or claim contact");
     expect(grid).toContain("Source confidence:");
     expect(grid).toContain("Number(p.review_count ?? p.reviews_count ?? 0) > 0");
-    expect(grid).toContain("Request Support");
+    expect(grid).toContain("Build support packet");
   });
 
   it("keeps the directory ask strip on the dark command surface", () => {
