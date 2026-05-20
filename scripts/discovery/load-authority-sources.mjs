@@ -18,6 +18,7 @@ function parseArgs(argv) {
     file: null,
     dryRun: false,
     allowApprovedAssociations: false,
+    checkUrls: false,
   };
 
   for (let index = 0; index < argv.length; index++) {
@@ -28,6 +29,8 @@ function parseArgs(argv) {
       args.dryRun = true;
     } else if (token === "--allow-approved-associations") {
       args.allowApprovedAssociations = true;
+    } else if (token === "--check-urls") {
+      args.checkUrls = true;
     }
   }
 
@@ -114,6 +117,52 @@ async function readAuthoritySources(file, options) {
   });
 }
 
+async function checkSourceUrl(source) {
+  const started = Date.now();
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10_000);
+
+  try {
+    let response = await fetch(source.source_url, {
+      method: "HEAD",
+      redirect: "follow",
+      signal: controller.signal,
+      headers: {
+        "user-agent": "HaulCommandAuthoritySourceValidator/1.0 (+https://www.haulcommand.com/contact)",
+      },
+    });
+
+    if (response.status === 405 || response.status === 403) {
+      response = await fetch(source.source_url, {
+        method: "GET",
+        redirect: "follow",
+        signal: controller.signal,
+        headers: {
+          "user-agent": "HaulCommandAuthoritySourceValidator/1.0 (+https://www.haulcommand.com/contact)",
+          "range": "bytes=0-1024",
+        },
+      });
+    }
+
+    return {
+      source_key: source.source_key,
+      ok: response.ok,
+      status: response.status,
+      elapsed_ms: Date.now() - started,
+      final_url: response.url,
+    };
+  } catch (error) {
+    return {
+      source_key: source.source_key,
+      ok: false,
+      error: error instanceof Error ? error.message : String(error),
+      elapsed_ms: Date.now() - started,
+    };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 function getSupabase() {
   const url = env("NEXT_PUBLIC_SUPABASE_URL") ?? env("SUPABASE_URL");
   const key = env("SUPABASE_SERVICE_ROLE_KEY");
@@ -129,6 +178,7 @@ export async function loadAuthoritySources(argv = process.argv.slice(2)) {
   const sources = await readAuthoritySources(args.file, {
     allowApprovedAssociations: args.allowApprovedAssociations,
   });
+  const url_checks = args.checkUrls ? await Promise.all(sources.map(checkSourceUrl)) : [];
 
   if (args.dryRun) {
     return {
@@ -138,7 +188,12 @@ export async function loadAuthoritySources(argv = process.argv.slice(2)) {
       approved_count: sources.filter((source) => source.legal_review_status === "approved").length,
       association_review_count: sources.filter((source) => source.source_category === "association_registry" && source.legal_review_status !== "approved").length,
       quarantined_count: sources.filter((source) => source.status === "quarantined").length,
+      url_checks,
     };
+  }
+
+  if (args.checkUrls && url_checks.some((check) => !check.ok)) {
+    throw new Error("One or more authority source URLs failed validation. Re-run with --dry-run --check-urls to inspect.");
   }
 
   const supabase = getSupabase();

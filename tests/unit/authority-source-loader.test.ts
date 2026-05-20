@@ -26,4 +26,13 @@ describe("authority source loader guardrails", () => {
     expect(source).toContain("cannot be pre-approved");
     expect(source).toContain("--allow-approved-associations");
   });
+
+  it("supports explicit URL validation without making it the default path", () => {
+    const source = read("scripts/discovery/load-authority-sources.mjs");
+
+    expect(source).toContain("checkSourceUrl");
+    expect(source).toContain("--check-urls");
+    expect(source).toContain("HaulCommandAuthoritySourceValidator");
+    expect(source).toContain("url_checks");
+  });
 });

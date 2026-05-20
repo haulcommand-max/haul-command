@@ -89,7 +89,7 @@ Load a reviewed source list from the v2 handoff with:
 npm run discovery:authority-sources -- --file docs/codex-handoff-v2-authority-sources.json --dry-run
 ```
 
-Remove `--dry-run` only when Supabase service-role credentials are available. Association sources cannot be pre-approved by the loader unless `--allow-approved-associations` is passed after legal review.
+Add `--check-urls` to validate source reachability before import. Remove `--dry-run` only when Supabase service-role credentials are available. Association sources cannot be pre-approved by the loader unless `--allow-approved-associations` is passed after legal review.
 
 Approved imports are converted into `hc_discovery_work_queue` jobs with:
 
