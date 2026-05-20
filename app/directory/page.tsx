@@ -32,6 +32,10 @@ import {
     directoryConversionCopy,
     directorySearchPromiseCopy,
 } from '@/lib/directory/conversion-copy';
+import {
+    DIRECTORY_AUDIENCE_CONTRACT,
+    scoreAudienceContract,
+} from '@/lib/audience/audience-contracts';
 
 export const dynamic = 'force-dynamic';
 
@@ -578,6 +582,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
             { label: 'View training paths', href: '/training', intent: 'training_intent' },
         ],
     };
+    const audienceContractScore = scoreAudienceContract(DIRECTORY_AUDIENCE_CONTRACT);
 
     return (
         <HCContentPageShell>
@@ -625,6 +630,59 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                                     </div>
                                 </Link>
                             ))}
+                        </div>
+                    </section>
+
+                    <section aria-labelledby="directory-audience-contract" className="mb-8 rounded-2xl border border-white/10 bg-black/40 p-4 shadow-[0_20px_70px_rgba(0,0,0,0.22)] backdrop-blur-[2px] md:p-6">
+                        <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                            <div className="max-w-3xl">
+                                <div className="text-xs font-black uppercase tracking-[0.18em] text-[#C6923A]">Three-audience contract</div>
+                                <h2 id="directory-audience-contract" className="mt-2 text-2xl font-black tracking-tight text-white md:text-3xl">
+                                    Every directory state must help buyers, providers, and discovery systems
+                                </h2>
+                                <p className="mt-3 text-sm leading-6 text-[#d8c6a3] md:text-base">
+                                    The page is scored before scale: demand-side action, provider claim path, crawlable answer structure, trust proof, no-dead-end moves, labeled money paths, and country-aware guardrails.
+                                </p>
+                            </div>
+                            <div className="rounded-xl border border-[#C6923A]/30 bg-[#C6923A]/10 px-4 py-3 text-left lg:text-right">
+                                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-[#F8DFB0]">Index readiness</div>
+                                <div className="mt-1 text-2xl font-black text-white">{audienceContractScore.overall}/10</div>
+                            </div>
+                        </div>
+                        <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-3">
+                            <div className="rounded-xl border border-white/10 bg-white/[0.05] p-4">
+                                <h3 className="text-sm font-black text-white">Demand side</h3>
+                                <p className="mt-2 text-xs leading-5 text-[#d8c6a3]">Brokers, carriers, dispatchers, and shippers get find, post, ask, requirements, and packet actions.</p>
+                                <div className="mt-3 flex flex-wrap gap-2">
+                                    {DIRECTORY_AUDIENCE_CONTRACT.requiredCtas.demand.slice(0, 3).map((cta) => (
+                                        <Link key={cta.intent} href={cta.href} className="rounded-full border border-white/10 bg-black/25 px-2.5 py-1 text-[11px] font-bold text-[#fff7e8] hover:border-[#C6923A]/50">
+                                            {cta.label}
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="rounded-xl border border-white/10 bg-white/[0.05] p-4">
+                                <h3 className="text-sm font-black text-white">Supply side</h3>
+                                <p className="mt-2 text-xs leading-5 text-[#d8c6a3]">Operators and support providers always see how to claim, correct, add proof, and improve coverage visibility.</p>
+                                <div className="mt-3 flex flex-wrap gap-2">
+                                    {DIRECTORY_AUDIENCE_CONTRACT.requiredCtas.supply.slice(0, 3).map((cta) => (
+                                        <Link key={cta.intent} href={cta.href} className="rounded-full border border-white/10 bg-black/25 px-2.5 py-1 text-[11px] font-bold text-[#fff7e8] hover:border-[#C6923A]/50">
+                                            {cta.label}
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="rounded-xl border border-white/10 bg-white/[0.05] p-4">
+                                <h3 className="text-sm font-black text-white">Discovery systems</h3>
+                                <p className="mt-2 text-xs leading-5 text-[#d8c6a3]">Search, snippets, voice, and AI get short answers, FAQ, schema, links, local context, and no thin-market pretending.</p>
+                                <div className="mt-3 flex flex-wrap gap-2">
+                                    {DIRECTORY_AUDIENCE_CONTRACT.requiredDiscoveryModules.slice(0, 4).map((module) => (
+                                        <span key={module} className="rounded-full border border-white/10 bg-black/25 px-2.5 py-1 text-[11px] font-bold text-[#fff7e8]">
+                                            {module}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     </section>
 
