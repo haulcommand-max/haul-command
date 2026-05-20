@@ -58,6 +58,23 @@ interface PricingOracleResponse {
         color: string;
         fillProb: number;
     } | null;
+    market_signals?: {
+        demand_pressure: number;
+        surge_active: boolean;
+        surge_multiplier: number;
+        supply_count: number | null;
+        available_count: number | null;
+        supply_alert_count: number;
+        supply_alerts: Array<{
+            id: string;
+            label: string;
+            message: string;
+            alert_type: string | null;
+            available_count: number | null;
+        }>;
+        corridor_heat_band: 'cold' | 'balanced' | 'warm' | 'hot' | 'critical';
+        pressure_label: 'normal' | 'tight' | 'surging' | 'critical';
+    };
     explanation: string[];
 }
 
@@ -635,6 +652,9 @@ function PricingPreviewSection({
                         <StatBox label="Confidence" value={confidencePct !== null ? `${confidencePct}%` : preview.confidence_label} compact />
                         <StatBox label="Complexity x" value={`${preview.multipliers.complexity.toFixed(2)}x`} compact />
                     </div>
+                    {preview.market_signals && (
+                        <MarketPressurePanel signals={preview.market_signals} />
+                    )}
                     {preview.posted_grade && (
                         <div style={{padding: '12px 14px',borderRadius: 16,border: `1px solid ${preview.posted_grade.color}`,background: 'rgba(255, 255, 255, 0.03)' }}>
                             <div style={labelStyle}>Posted-rate grade</div>
@@ -664,6 +684,56 @@ function PricingPreviewSection({
                 </div>
             )}
         </Section>
+    );
+}
+
+function MarketPressurePanel({ signals }: { signals: NonNullable<PricingOracleResponse['market_signals']> }) {
+    const accent = signals.pressure_label === 'critical'
+        ? '#EF4444'
+        : signals.pressure_label === 'surging'
+            ? '#F97316'
+            : signals.pressure_label === 'tight'
+                ? '#F59E0B'
+                : 'var(--hc-gold-400)';
+    const pressureText = signals.pressure_label === 'normal'
+        ? 'Normal'
+        : signals.pressure_label === 'tight'
+            ? 'Tight'
+            : signals.pressure_label === 'surging'
+                ? 'Surging'
+                : 'Critical';
+
+    return (
+        <div style={{padding: '12px 14px',borderRadius: 16,border: `1px solid ${accent}`,background: 'rgba(255, 255, 255, 0.03)',display: 'grid',gap: 10 }}>
+            <div style={{display: 'flex',justifyContent: 'space-between',gap: 12,alignItems: 'start' }}>
+                <div>
+                    <div style={labelStyle}>Market pressure</div>
+                    <div style={{marginTop: 6,fontSize: 17,fontWeight: 900,color: accent }}>{pressureText}</div>
+                </div>
+                <div style={{textAlign: 'right',fontSize: 12,lineHeight: 1.5,color: 'var(--m-text-secondary, #c7ccd7)' }}>
+                    <div>Heat: {signals.corridor_heat_band}</div>
+                    <div>Surge: {signals.surge_multiplier.toFixed(2)}x</div>
+                </div>
+            </div>
+            <div style={{display: 'grid',gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 130px), 1fr))',gap: 8 }}>
+                <StatBox label="Demand" value={`${Math.round(signals.demand_pressure * 100)}%`} compact />
+                <StatBox label="Supply" value={signals.supply_count === null ? '--' : String(signals.supply_count)} compact />
+                <StatBox label="Available" value={signals.available_count === null ? '--' : String(signals.available_count)} compact />
+            </div>
+            {signals.supply_alerts.length > 0 && (
+                <div style={{display: 'grid',gap: 8 }}>
+                    {signals.supply_alerts.map((alert) => (
+                        <div key={alert.id} style={{padding: '10px 12px',borderRadius: 12,border: '1px solid rgba(255, 255, 255, 0.06)',background: 'rgba(255, 255, 255, 0.025)' }}>
+                            <div style={{fontSize: 12,fontWeight: 900,color: 'var(--m-text-primary, #f5f7fb)' }}>{alert.label}</div>
+                            <div style={{marginTop: 4,fontSize: 12,lineHeight: 1.5,color: 'var(--m-text-secondary, #c7ccd7)' }}>{alert.message}</div>
+                        </div>
+                    ))}
+                </div>
+            )}
+            <div style={{fontSize: 12,lineHeight: 1.5,color: 'var(--m-text-muted, #8f97a7)' }}>
+                Signals are pricing guidance, not a guarantee of live capacity.
+            </div>
+        </div>
     );
 }
 

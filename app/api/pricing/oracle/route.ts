@@ -8,6 +8,13 @@ import {
     type PriceInputs,
     type PriceBand,
 } from '@/lib/pricing/engine';
+import {
+    buildMarketPricingSignals,
+    type DemandSignalRow,
+    type MarketPricingSignals,
+    type SupplyAlertRow,
+    type SupplySnapshotRow,
+} from '@/lib/pricing/market-pressure';
 
 /**
  * POST /api/pricing/oracle
@@ -103,12 +110,13 @@ export async function POST(req: NextRequest) {
         ? (body.load_type === 'HEIGHT_POLE' ? 'day_rate_height' : 'day_rate')
         : rateType;
 
+    const supabase = getSupabaseAdmin();
+
     // Lookup corridor heat from scarcity metrics (dynamic, not hardcoded)
     let corridorHeatBand: 'cold' | 'balanced' | 'warm' | 'hot' | 'critical' = 'balanced';
     if (body.corridor_slug) {
         try {
-            const sb = getSupabaseAdmin();
-            const { data: scarcity } = await sb
+            const { data: scarcity } = await supabase
                 .from('corridor_scarcity_metrics')
                 .select('scarcity_tier')
                 .eq('corridor_id', body.corridor_slug)
@@ -129,6 +137,9 @@ export async function POST(req: NextRequest) {
             // Non-blocking — fall back to balanced
         }
     }
+
+    const marketSignals = await loadMarketPricingSignals(supabase, body, corridorHeatBand);
+    corridorHeatBand = marketSignals.corridor_heat_band;
 
     const priceInputs: PriceInputs = {
         countryCode: body.country_code,
@@ -180,7 +191,6 @@ export async function POST(req: NextRequest) {
 
     // Log pricing event
     try {
-        const supabase = getSupabaseAdmin();
         await supabase.from('pricing_events').insert({
             country_code: body.country_code,
             region_code: body.region_code || null,
@@ -240,7 +250,8 @@ export async function POST(req: NextRequest) {
             overpriced: { min: scaleToTotal(band.bands.overpriced.min, band, body.miles_estimate) },
         },
         posted_grade: postedGrade,
-        explanation: buildExplanation(body, band, complexityMods, confidence),
+        market_signals: marketSignals,
+        explanation: buildExplanation(body, band, complexityMods, confidence, marketSignals),
     });
 }
 
@@ -275,6 +286,7 @@ function buildExplanation(
     band: PriceBand,
     mods: string[],
     confidence: number,
+    marketSignals?: MarketPricingSignals,
 ): string[] {
     const bullets: string[] = [];
     bullets.push(`Based on ${body.country_code} market rates for ${body.load_type}`);
@@ -287,8 +299,88 @@ function buildExplanation(
     if (mods.length > 0) {
         bullets.push(`Complexity: ${mods.join(', ')}`);
     }
+    if (marketSignals && marketSignals.pressure_label !== 'normal') {
+        bullets.push(`Market pressure: ${marketSignals.pressure_label} (${marketSignals.corridor_heat_band} heat band)`);
+    }
+    if (marketSignals?.supply_alert_count) {
+        bullets.push(`${marketSignals.supply_alert_count} active supply-pressure signal${marketSignals.supply_alert_count === 1 ? '' : 's'} found`);
+    }
     if (confidence < 0.65) {
         bullets.push('Early market estimate — wider range expected');
     }
     return bullets;
+}
+
+async function loadMarketPricingSignals(
+    supabase: ReturnType<typeof getSupabaseAdmin>,
+    body: OracleRequest,
+    baseHeatBand: NonNullable<PriceInputs['corridorHeatBand']>,
+): Promise<MarketPricingSignals> {
+    let demandSignal: DemandSignalRow | null = null;
+    let supplySnapshot: SupplySnapshotRow | null = null;
+    let supplyAlerts: SupplyAlertRow[] = [];
+    const regionCode = body.region_code?.toUpperCase().replace(/[^A-Z0-9_-]/g, '');
+    const marketKey = [body.corridor_slug, body.region_code].filter(Boolean).join(' ') || body.country_code;
+
+    try {
+        let demandQuery = supabase
+            .from('corridor_demand_signals')
+            .select('demand_pressure,surge_active,surge_multiplier,demand_level,updated_at');
+
+        if (body.corridor_slug) {
+            demandQuery = demandQuery.eq('corridor_id', body.corridor_slug);
+        } else if (regionCode) {
+            demandQuery = demandQuery
+                .eq('country_code', body.country_code)
+                .or(`origin_region.eq.${regionCode},destination_region.eq.${regionCode}`);
+        } else {
+            demandQuery = demandQuery.eq('country_code', body.country_code);
+        }
+
+        const { data } = await demandQuery.order('updated_at', { ascending: false }).limit(1).maybeSingle();
+        demandSignal = data as DemandSignalRow | null;
+    } catch {
+        // Non-blocking: pricing should still work without corridor demand intelligence.
+    }
+
+    if (body.corridor_slug) {
+        try {
+            const { data } = await supabase
+                .from('corridor_supply_snapshot')
+                .select('supply_count,available_count,demand_pressure')
+                .eq('corridor_slug', body.corridor_slug)
+                .order('timestamp_bucket', { ascending: false })
+                .limit(1)
+                .maybeSingle();
+            supplySnapshot = data as SupplySnapshotRow | null;
+        } catch {
+            // Non-blocking: sparse corridor snapshots should not block pricing.
+        }
+    }
+
+    try {
+        let alertQuery = supabase
+            .from('supply_alerts')
+            .select('id,city,state_code,corridor_id,alert_type,available_count,message,expires_at')
+            .eq('active', true);
+
+        if (body.corridor_slug) {
+            alertQuery = alertQuery.eq('corridor_id', body.corridor_slug);
+        } else if (regionCode) {
+            alertQuery = alertQuery.eq('state_code', regionCode);
+        }
+
+        const { data } = await alertQuery.order('created_at', { ascending: false }).limit(12);
+        supplyAlerts = (data ?? []) as SupplyAlertRow[];
+    } catch {
+        // Non-blocking: supply_alerts is optional in older environments.
+    }
+
+    return buildMarketPricingSignals({
+        baseHeatBand,
+        demandSignal,
+        supplySnapshot,
+        supplyAlerts,
+        marketKey,
+    });
 }
