@@ -20,18 +20,22 @@ Set these outside Git:
 - `FIRECRAWL_API_KEY`
 - `CLAY_WEBHOOK_URL`
 - `CLAY_API_KEY`
+- `AUTHORITY_IMPORT_SECRET`
 
 For Supabase Edge Functions, set at least:
 
 - `FIRECRAWL_API_KEY`
 - `FIRECRAWL_WORKER_SECRET` or `CRON_SECRET`
 - `CLAY_WEBHOOK_URL` when Clay handoff is enabled
+- `AUTHORITY_IMPORT_SECRET` for authority parser functions
 
 ## Local Repo Pieces
 
 - Firecrawl worker: `supabase/functions/firecrawl-worker/index.ts`
 - Discovery migration: `supabase/migrations/20260520143000_discovery_enrichment_pipelines.sql`
+- Authority import parser migration: `supabase/migrations/20260520170000_authority_import_parser_scaffold.sql`
 - Discovery queue runner: `scripts/discovery/run-work-queue.mjs`
+- Authority parser edge functions: `supabase/functions/authority-*-parser/index.ts`
 - Safe Vercel env loader: `scripts/set-vercel-env.sh`
 - Existing raw ingest API: `app/api/discovery/ingest/route.ts`
 - Existing OSM cron: `app/api/cron/osm-enrichment/route.ts`
@@ -46,8 +50,9 @@ For Supabase Edge Functions, set at least:
 5. Run Tavily discovery jobs for rare roles, state-localized searches, and reverse-company evidence.
 6. Send Tavily raw discoveries to Clay via queued `clay_enrichment` work.
 7. Use Firecrawl for official pages, association pages, and source-backed candidate evidence.
-8. Run geocode backfill only for records without verified coordinates.
-9. Review quality and dedupe before promotion.
+8. Dispatch approved authority registry imports through parser edge functions.
+9. Run geocode backfill only for records without verified coordinates.
+10. Review quality and dedupe before promotion.
 
 ## Discovery Queue Runner
 
@@ -63,8 +68,48 @@ Supported jobs:
 - `reverse_company_search`
 - `firecrawl_scrape`
 - `clay_enrichment`
+- `authority_registry_scan`
+- `association_member_scan`
 
-Unsupported jobs such as `authority_registry_scan`, `association_member_scan`, `geocode_backfill`, and `osm_overpass_template` are marked `skipped` with a reason until dedicated non-Google, non-Make consumers exist. The runner only stages observations in `hc_entities_raw` or hands off to the Firecrawl/Clay worker path; it does not promote rows directly into public directory tables.
+Unsupported jobs such as `geocode_backfill`, `osm_overpass_template`, and `quality_dedup_review` are marked `skipped` with a reason until dedicated non-Google, non-Make consumers exist. The runner only stages observations in `hc_entities_raw` or hands off to the Firecrawl/Clay/authority-parser worker path; it does not promote rows directly into public directory tables.
+
+## Authority Import Parser Contract
+
+Authority sources live in `hc_authority_source_imports`. The dispatcher only enqueues sources with `legal_review_status = 'approved'`; association/member-list rows default to legal review instead of scraping by accident.
+
+Run the dispatcher with:
+
+```sql
+select public.fn_dispatch_authority_imports(10);
+```
+
+Approved imports are converted into `hc_discovery_work_queue` jobs with:
+
+```json
+{
+  "job_type": "authority_registry_scan",
+  "payload": {
+    "authority_source_import_id": "<uuid>",
+    "parser_function": "authority-csv-parser",
+    "source_format": "csv",
+    "legal_review_status": "approved",
+    "staging_policy": "raw_only_no_public_promotion"
+  }
+}
+```
+
+Parser functions:
+
+- `authority-csv-parser`
+- `authority-api-parser`
+- `authority-html-scrape-parser`
+- `authority-xml-parser`
+- `authority-xlsx-parser`
+- `authority-pdf-scrape-parser`
+
+CSV, API/JSON, HTML, and XML parsers fetch source data and stage observations into `hc_entities_raw`. XLSX and PDF parsers are intentionally scaffolded but quarantined until the approved Fly/Hugging Face utility extraction layer is wired. No parser writes to `directory_entities`, marks a profile verified, creates review/rating data, or bypasses dedup/seasoning.
+
+ZIP-backed authority datasets are registry-tracked but quarantined until a dedicated extractor is added. FMCSA census ZIP handling should continue through the existing FMCSA ingestion path until this parser layer has audited archive support.
 
 ## Firecrawl Worker Contract
 

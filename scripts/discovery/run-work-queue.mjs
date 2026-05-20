@@ -10,6 +10,8 @@ const SUPPORTED_JOB_TYPES = new Set([
   "reverse_company_search",
   "firecrawl_scrape",
   "clay_enrichment",
+  "authority_registry_scan",
+  "association_member_scan",
 ]);
 
 const STAGED_ONLY_MESSAGE =
@@ -256,6 +258,58 @@ async function runClayJob(job, dryRun) {
   return { ok: response.ok, provider: "clay", status: response.status };
 }
 
+async function runAuthorityJob(job, dryRun) {
+  if (job.payload?.legal_review_status !== "approved") {
+    return {
+      ok: true,
+      skipped: true,
+      reason: "Authority or association import is not legally approved",
+      promotion_policy: STAGED_ONLY_MESSAGE,
+    };
+  }
+
+  const parserFunction = String(job.payload?.parser_function ?? "").trim();
+  const importId = String(job.payload?.authority_source_import_id ?? "").trim();
+  if (!parserFunction || !importId) {
+    throw new Error("Authority discovery job requires payload.parser_function and payload.authority_source_import_id");
+  }
+
+  const projectUrl = env("NEXT_PUBLIC_SUPABASE_URL") ?? env("SUPABASE_URL");
+  const secret = env("AUTHORITY_IMPORT_SECRET") ?? env("CRON_SECRET") ?? env("SUPABASE_SERVICE_ROLE_KEY");
+  if (!projectUrl || !secret) throw new Error("Supabase URL and AUTHORITY_IMPORT_SECRET/CRON_SECRET are required");
+
+  const endpoint = `${projectUrl.replace(/\/$/, "")}/functions/v1/${parserFunction}`;
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${secret}`,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      import_id: importId,
+      source_url: job.source_url,
+      source_name: job.source_name,
+      source_format: job.payload?.source_format,
+      source_category: job.payload?.source_category,
+      country_code: normalizeCountry(job),
+      target_entity_subtype: job.target_entity_subtype,
+      dry_run: dryRun,
+      max_rows: Number(job.payload?.max_rows ?? 500),
+    }),
+  });
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(`Authority parser ${parserFunction} returned ${response.status}: ${JSON.stringify(body).slice(0, 500)}`);
+
+  return {
+    ok: true,
+    provider: job.provider,
+    parser_function: parserFunction,
+    parser_result: body,
+    dry_run: dryRun,
+    promotion_policy: STAGED_ONLY_MESSAGE,
+  };
+}
+
 async function runJob(job, dryRun) {
   if (!SUPPORTED_JOB_TYPES.has(job.job_type)) {
     return {
@@ -277,6 +331,10 @@ async function runJob(job, dryRun) {
   }
   if (job.job_type === "clay_enrichment") {
     return { status: "succeeded", summary: await runClayJob(job, dryRun) };
+  }
+  if (job.job_type === "authority_registry_scan" || job.job_type === "association_member_scan") {
+    const summary = await runAuthorityJob(job, dryRun);
+    return { status: summary.skipped ? "skipped" : "succeeded", summary };
   }
 
   return {
