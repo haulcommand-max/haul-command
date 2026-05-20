@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { buildJournalistModePrompt } from "@/lib/growth/link-pr-share-engine";
 import { getLinkableAssetScore, getLinkableAssets } from "@/lib/growth/linkable-asset-registry";
 
 export const metadata: Metadata = {
@@ -17,6 +18,29 @@ function statusLabel(status: string): string {
   if (status === "active") return "Active";
   return "Draft";
 }
+
+const journalistIntents = [
+  {
+    key: "quote",
+    title: "Need a quote",
+    prompt: buildJournalistModePrompt("quote"),
+  },
+  {
+    key: "data",
+    title: "Need data",
+    prompt: buildJournalistModePrompt("data"),
+  },
+  {
+    key: "source",
+    title: "Need a source",
+    prompt: buildJournalistModePrompt("source"),
+  },
+  {
+    key: "visual",
+    title: "Need a visual",
+    prompt: buildJournalistModePrompt("visual"),
+  },
+];
 
 export default function LinkableAssetsPage() {
   const assets = getLinkableAssets();
@@ -44,6 +68,35 @@ export default function LinkableAssetsPage() {
               <div className="text-3xl font-black text-white">{assets.filter((asset) => asset.media.embedCode !== "blocked").length}</div>
               <div className="mt-1 text-sm text-white/55">embed paths planned</div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 py-12" data-livekit-mode="journalist-source-desk">
+        <div className="rounded-lg border border-[#F1A91B]/25 bg-[#F1A91B]/10 p-6">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#F1A91B]">Journalist Source Desk</p>
+              <h2 className="mt-3 text-2xl font-black text-white">Turn source-backed assets into quotes, data, sources, and visuals</h2>
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-amber-50/75">
+                This public source-desk block gives journalists and podcasters a clean intake path without implying unreviewed data
+                is publishable. LiveKit can attach to the same prompts when voice intake is enabled.
+              </p>
+            </div>
+            <a
+              href="mailto:press@haulcommand.com?subject=Haul%20Command%20source%20request"
+              className="rounded-md bg-[#F1A91B] px-4 py-2 text-sm font-semibold text-[#0B0F14] hover:bg-[#d4950e]"
+            >
+              Email source request
+            </a>
+          </div>
+          <div className="mt-6 grid gap-3 md:grid-cols-2">
+            {journalistIntents.map((intent) => (
+              <div key={intent.key} className="rounded-md border border-white/10 bg-[#0B0F14]/75 p-4">
+                <h3 className="font-semibold text-white">{intent.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-white/65">{intent.prompt}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

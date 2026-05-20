@@ -49,6 +49,13 @@ describe("Linkable asset public wiring", () => {
   });
 
   it("adds a LiveKit-ready journalist source desk without claiming live voice is connected", () => {
+    expect(libraryPage).toContain('data-livekit-mode="journalist-source-desk"');
+    expect(libraryPage).toContain("Journalist Source Desk");
+    expect(libraryPage).toContain("Need a quote");
+    expect(libraryPage).toContain("Need data");
+    expect(libraryPage).toContain("Need a source");
+    expect(libraryPage).toContain("Need a visual");
+    expect(libraryPage).toContain("LiveKit can attach");
     expect(sourceDeskPage).toContain('data-livekit-mode="journalist-source-desk"');
     expect(sourceDeskPage).toContain("Need a Quote");
     expect(sourceDeskPage).toContain("Need Data");
