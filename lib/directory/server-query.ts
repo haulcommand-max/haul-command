@@ -155,6 +155,23 @@ const REGION_MAP_BY_COUNTRY: Record<string, Record<string, string>> = {
   AU: AU_STATES,
 };
 
+const ROLE_QUERY_FILLER_TERMS = [
+  "operator",
+  "operators",
+  "provider",
+  "providers",
+  "service",
+  "services",
+  "company",
+  "companies",
+  "near me",
+  "available now",
+  "find",
+  "need",
+  "hire",
+  "support",
+];
+
 export function normalizeDirectoryCategory(category?: string | null): string {
   const normalized = String(category ?? "")
     .trim()
@@ -217,6 +234,37 @@ function inferDirectoryCategoryFromQuery(q?: string | null): string | null {
   return roleSignals.find((signal) => signal.terms.some((term) => spaced.includes(term)))?.category ?? null;
 }
 
+function normalizeDirectoryRegionName(value: string): string {
+  const normalized = value.trim().toLowerCase();
+  if (!normalized) return "";
+
+  for (const regions of Object.values(REGION_MAP_BY_COUNTRY)) {
+    for (const [code, name] of Object.entries(regions)) {
+      if (normalized === code.toLowerCase() || normalized === name.toLowerCase()) {
+        return code;
+      }
+    }
+  }
+
+  return value.trim();
+}
+
+function stripRoleIntentFromQuery(q: string, category: DirectoryCategoryFilter | null): string {
+  let residual = ` ${q.toLowerCase().replace(/[^a-z0-9]+/g, " ")} `;
+  const terms = [
+    ...(category?.searchTerms ?? []),
+    ...ROLE_QUERY_FILLER_TERMS,
+  ].sort((a, b) => b.length - a.length);
+
+  for (const term of terms) {
+    const normalizedTerm = term.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+    if (!normalizedTerm) continue;
+    residual = residual.replace(new RegExp(`\\b${normalizedTerm}\\b`, "g"), " ");
+  }
+
+  return normalizeDirectoryRegionName(residual.replace(/\s+/g, " ").trim());
+}
+
 export function buildDirectoryFallbackFilterPlan(params: {
   country?: string | null;
   category?: string | null;
@@ -226,12 +274,15 @@ export function buildDirectoryFallbackFilterPlan(params: {
   const inferredCategory = explicitCategory || inferDirectoryCategoryFromQuery(params.q);
   const category = resolveDirectoryCategoryFilter(inferredCategory);
   const isPureRoleQuery = Boolean(!explicitCategory && inferredCategory);
+  const roleLocationSearch = isPureRoleQuery
+    ? stripRoleIntentFromQuery(String(params.q ?? ""), category)
+    : "";
 
   return {
     countryCode: normalizeDirectoryCountry(params.country),
     category,
     surfaceViews: resolveDirectorySurfaceViews(inferredCategory),
-    locationSearch: isPureRoleQuery ? "" : String(params.q ?? "").trim(),
+    locationSearch: isPureRoleQuery ? roleLocationSearch : String(params.q ?? "").trim(),
     inferredCategory,
     isPureRoleQuery,
     order: [
@@ -248,8 +299,15 @@ export function buildDirectoryLocationOrFilter(locationSearch: string): string |
   if (!value) return null;
   const escaped = value.replace(/[%_,]/g, (char) => `\\${char}`);
   return [
+    `city_inferred.ilike.%${escaped}%`,
     `city.ilike.%${escaped}%`,
+    `locality.ilike.%${escaped}%`,
+    `state_inferred.ilike.%${escaped}%`,
+    `state_code.ilike.%${escaped}%`,
+    `admin1_code.ilike.%${escaped}%`,
     `state.ilike.%${escaped}%`,
+    `company.ilike.%${escaped}%`,
+    `company_name.ilike.%${escaped}%`,
     `name.ilike.%${escaped}%`,
     `primary_role.ilike.%${escaped}%`,
     `public_label.ilike.%${escaped}%`,

@@ -99,4 +99,31 @@ describe("DirectorySearchBar deterministic filters", () => {
 
     expect(result.map((record) => record.name)).toEqual(["Sample Escort"]);
   });
+
+  it("matches natural role plus location searches by tokens instead of exact phrase only", () => {
+    const result = applyDirectoryFilters(
+      [
+        {
+          company_name: "Alpha Pilot Cars",
+          country_code: "US",
+          state_inferred: "TX",
+          city_inferred: "Houston",
+          primary_role: "Pilot car operator",
+          services: ["high pole", "route survey"],
+          rank_score: 91,
+        },
+        {
+          company_name: "Nevada Route Support",
+          country_code: "US",
+          state_inferred: "NV",
+          city_inferred: "Reno",
+          primary_role: "Route survey provider",
+          rank_score: 88,
+        },
+      ],
+      { query: "pilot car operator Texas" },
+    );
+
+    expect(result.map((record) => record.company_name)).toEqual(["Alpha Pilot Cars"]);
+  });
 });

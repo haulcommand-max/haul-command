@@ -173,7 +173,49 @@ function recordMatchesQuery(item: any, query: string, searchFields: string[]): b
 
   const stCode = item.state_inferred || item.state_code || item.admin1_code || '';
   const fullName = stateFullName(stCode);
-  return Boolean(fullName && fullName.toLowerCase().includes(lower));
+  if (fullName && fullName.toLowerCase().includes(lower)) return true;
+
+  const searchableText = [
+    ...searchFields.flatMap((field) => {
+      const value = item[field];
+      return Array.isArray(value) ? value : [value];
+    }),
+    item.entity_family,
+    item.entity_type,
+    item.entity_subtype,
+    item.primary_role,
+    item.role_primary,
+    item.public_label,
+    item.category,
+    item.category_slug,
+    item.service_type,
+    item.primary_service,
+    item.primary_category,
+    item.country_code,
+    item.country_code_inferred,
+    item.country,
+    stCode,
+    fullName,
+  ]
+    .map(normalizeFilterValue)
+    .filter(Boolean)
+    .join(' ');
+
+  const tokens = lower
+    .replace(/[^a-z0-9]+/g, ' ')
+    .split(/\s+/)
+    .map((token) => token.trim())
+    .filter((token) => token.length > 1);
+
+  if (tokens.length <= 1) return false;
+
+  return tokens.every((token) => {
+    const variants = new Set([token]);
+    if (token.endsWith('ies') && token.length > 4) variants.add(`${token.slice(0, -3)}y`);
+    if (token.endsWith('es') && token.length > 3) variants.add(token.slice(0, -2));
+    if (token.endsWith('s') && token.length > 3) variants.add(token.slice(0, -1));
+    return Array.from(variants).some((variant) => searchableText.includes(variant));
+  });
 }
 
 export function applyDirectoryFilters(

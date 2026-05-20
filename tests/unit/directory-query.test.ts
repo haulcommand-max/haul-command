@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   buildDirectoryFallbackFilterPlan,
+  buildDirectoryLocationOrFilter,
   buildDirectoryMarketFilterPlan,
   normalizeDirectoryCountry,
   resolveDirectoryCategoryFilter,
@@ -59,6 +60,26 @@ describe("directory fallback query planning", () => {
     expect(plan.category?.entitySubtypes).toContain("pilot_car_operator");
     expect(plan.surfaceViews).toEqual(["v_directory_operators"]);
     expect(plan.locationSearch).toBe("");
+  });
+
+  it("keeps the market term when a role search includes a location", () => {
+    const plan = buildDirectoryFallbackFilterPlan({
+      q: "pilot car operator Texas",
+    });
+
+    expect(plan.category?.entityFamily).toBe("operator");
+    expect(plan.category?.entitySubtypes).toContain("pilot_car_operator");
+    expect(plan.surfaceViews).toEqual(["v_directory_operators"]);
+    expect(plan.locationSearch).toBe("TX");
+  });
+
+  it("builds location filters against the live directory view field names", () => {
+    const filter = buildDirectoryLocationOrFilter("TX");
+
+    expect(filter).toContain("state_inferred.ilike.%TX%");
+    expect(filter).toContain("state_code.ilike.%TX%");
+    expect(filter).toContain("admin1_code.ilike.%TX%");
+    expect(filter).toContain("city_inferred.ilike.%TX%");
   });
 
   it("maps non-operator categories away from the pilot-car family", () => {

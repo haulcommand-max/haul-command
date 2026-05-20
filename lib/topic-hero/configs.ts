@@ -766,6 +766,8 @@ export const TOPIC_HERO_PRESETS = {
     subheadline:
       "Operators use the directory to get discovered for more work. Brokers, carriers, and shippers use it to find pilot cars, permits, route survey, staging, repair, parking, and field support before a load stalls.",
     microcopy: "Choose the action first, then narrow by role, country, market, and proof state.",
+    searchAction: "/directory",
+    searchPlaceholder: "Search role, market, corridor, or company",
     primaryCTA: { label: "Find support", href: "#directory-results", intent: "provider_intent", style: "primary" },
     secondaryCTA: { label: "Claim your listing", href: "/claim", intent: "claim_intent", style: "secondary" },
     tertiaryCTA: { label: "Post demand", href: "/loads/post?intent=support-packet", intent: "load_post_intent", style: "ghost" },

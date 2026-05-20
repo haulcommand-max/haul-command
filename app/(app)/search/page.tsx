@@ -94,6 +94,12 @@ export default function SearchPage() {
     const [searchMs, setSearchMs] = useState(0);
     const searchTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
 
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialQuery = urlParams.get('q') ?? '';
+        if (initialQuery) setQuery(initialQuery);
+    }, []);
+
     /* â”€â”€â”€ Search function — calls /api/search/all (backed by hc_search_all RPC) â”€â”€â”€ */
     const doSearch = useCallback(async (searchQuery: string) => {
         setLoading(true);

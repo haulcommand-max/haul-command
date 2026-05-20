@@ -59,4 +59,19 @@ describe("directory role command center wiring", () => {
     expect(suggestRoute).toContain("language");
     expect(suggestRoute).toContain("country");
   });
+
+  it("keeps the directory hero search on the directory results surface", () => {
+    const configs = read("lib/topic-hero/configs.ts");
+
+    expect(configs).toContain('routePattern: "/directory"');
+    expect(configs).toContain('searchAction: "/directory"');
+    expect(configs).toContain('searchPlaceholder: "Search role, market, corridor, or company"');
+  });
+
+  it("hydrates the legacy search utility from the q query parameter", () => {
+    const page = read("app/(app)/search/page.tsx");
+
+    expect(page).toContain("window.location.search");
+    expect(page).toContain("urlParams.get('q')");
+  });
 });
