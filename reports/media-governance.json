@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "errors": [],
+  "warnings": [
+    "translation_languages_configured_9"
+  ],
+  "metrics": {
+    "heygenGenerateCalls": 2,
+    "translationLanguages": 9,
+    "hasMediaLedger": true,
+    "hasCostGovernor": true,
+    "hasRetiredElaiPoll": true
+  }
+}

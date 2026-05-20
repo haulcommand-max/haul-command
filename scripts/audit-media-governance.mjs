@@ -22,10 +22,12 @@ export function buildMediaGovernanceReport(baseDir = process.cwd()) {
 
   const createRoute = file("app/api/video/create/route.ts");
   const statusRoute = file("app/api/video/check-status/route.ts");
+  const pollRoute = file("app/api/video/poll/route.ts");
   const fromUrlRoute = file("app/api/video/create-from-url/route.ts");
   const adminListRoute = file("app/api/video/admin-list/route.ts");
   const publishRoute = file("app/api/video/publish-youtube/route.ts");
   const migration = file("supabase/migrations/20260520093000_media_command_center_governance.sql");
+  const envExample = file(".env.example");
 
   const errors = [];
   const warnings = [];
@@ -50,6 +52,15 @@ export function buildMediaGovernanceReport(baseDir = process.cwd()) {
   }
   if (!fromUrlRoute.includes("Legacy Elai article-to-video generation is retired")) {
     errors.push("legacy_elai_create_from_url_not_explicitly_retired");
+  }
+  if (!pollRoute.includes("Legacy Elai polling is retired")) {
+    errors.push("legacy_elai_poll_not_explicitly_retired");
+  }
+  if (/ELAI_API_KEY|apis\.elai\.io|elaiStatus\(/.test(statusRoute)) {
+    errors.push("status_route_still_polls_elai");
+  }
+  if (/^ELAI_(API_KEY|AVATAR_ID)=/m.test(envExample)) {
+    errors.push("env_example_still_requests_elai_credentials");
   }
   if (!adminListRoute.includes("requireAdminRequest()")) {
     errors.push("video_admin_list_missing_admin_auth");
@@ -100,6 +111,7 @@ export function buildMediaGovernanceReport(baseDir = process.cwd()) {
       translationLanguages,
       hasMediaLedger: migration.includes("media_asset_ledger"),
       hasCostGovernor: createRoute.includes("assertPaidProviderAllowed"),
+      hasRetiredElaiPoll: pollRoute.includes("Legacy Elai polling is retired"),
     },
   };
 }

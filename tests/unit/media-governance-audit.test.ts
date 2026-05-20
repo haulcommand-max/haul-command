@@ -9,6 +9,7 @@ describe("media governance static audit", () => {
     expect(report.errors).toEqual([]);
     expect(report.metrics.hasCostGovernor).toBe(true);
     expect(report.metrics.hasMediaLedger).toBe(true);
+    expect(report.metrics.hasRetiredElaiPoll).toBe(true);
     expect(report.metrics.heygenGenerateCalls).toBeLessThanOrEqual(2);
     expect(report.warnings).toContain("translation_languages_configured_9");
   });

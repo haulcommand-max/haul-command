@@ -11,7 +11,7 @@ The Media Command Center is the governance layer for video, image, voice, transl
 - GitHub Actions: audit, validate, and queue. Do not render heavy videos in CI.
 - LiveKit: turns media and FAQ assets into consent-aware conversations. Do not use outbound journalist/source modes until DNC, consent, and signed webhook boundaries are verified.
 
-Elai is retired for new generation. Existing legacy `video_jobs` with `provider = 'elai'` can still be polled for completion, but no new Elai render should be created. The replacement split is HyperFrames for existing pages, Remotion for structured data, Fly/Hugging Face for utility AI, and HeyGen only for governed premium conversion work.
+Elai is retired for active generation and polling. The replacement split is HyperFrames for existing pages, Remotion for structured data, Fly/Hugging Face for utility AI, and HeyGen only for governed premium conversion work.
 
 ## Required Packet
 

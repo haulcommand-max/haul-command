@@ -1,6 +1,6 @@
 /**
  * GET /api/video/check-status
- * Cron: every 5 minutes — polls HeyGen + Elai for rendering status.
+ * Cron: every 5 minutes — polls governed HeyGen rendering status.
  * On complete:
  *   English → triggers multilingual translation
  *   Translation → stores language URL, updates blog_posts/content_queue
@@ -11,8 +11,6 @@ import { cookies } from 'next/headers';
 import { assertPaidProviderAllowed, type MediaMoneyPath } from '@/lib/media-engine/cost-governor';
 
 const HEYGEN_API_KEY = process.env.HEYGEN_API_KEY;
-const ELAI_API_KEY   = process.env.ELAI_API_KEY;
-const ELAI_BASE      = 'https://apis.elai.io/api/v1';
 
 const TRANSLATE_LANGUAGES = ['es','pt','de','fr','ar','nl','ja','ko','hi'];
 
@@ -24,14 +22,6 @@ async function heygenStatus(videoId: string) {
   const data = await res.json();
   // { code: 100, data: { video_id, status: 'processing'|'completed'|'failed', video_url, ... }}
   return data.data;
-}
-
-async function elaiStatus(videoId: string) {
-  const res = await fetch(`${ELAI_BASE}/videos/${videoId}`, {
-    headers: { Authorization: `Bearer ${ELAI_API_KEY}` },
-  });
-  if (!res.ok) throw new Error(`Elai status ${res.status}`);
-  return res.json();
 }
 
 async function heygenTranslate(videoId: string) {
@@ -76,38 +66,35 @@ export async function GET(req: NextRequest) {
       let videoUrl: string | null = null;
       let durationSecs: number | null = null;
 
-      if (job.provider === 'heygen') {
-        const s = await heygenStatus(job.provider_video_id);
-        status    = s.status;           // 'processing' | 'completed' | 'failed'
-        videoUrl  = s.video_url || null;
-        durationSecs = s.duration || null;
-        const heygenNorm = status === 'completed' ? 'complete' : status === 'failed' ? 'failed' : 'rendering';
+      if (job.provider !== 'heygen') {
         await supabase.from('video_jobs').update({
+          status: 'failed',
+          heygen_status: 'failed',
           last_polled_at: new Date().toISOString(),
           attempts: job.attempts + 1,
-          heygen_status: heygenNorm,
+          error_msg: `Provider ${job.provider ?? 'unknown'} is retired for active polling`,
         }).eq('id', job.id);
-        if (status !== 'completed' && status !== 'failed') {
-          results.push(`${job.id}: still rendering (${job.language})`);
-          continue;
-        }
-      } else {
-        const s = await elaiStatus(job.provider_video_id);
-        status   = s.status;
-        videoUrl = s.result_url || s.videoUrl || null;
-        durationSecs = s.duration || null;
-        await supabase.from('video_jobs').update({
-          last_polled_at: new Date().toISOString(),
-          attempts: job.attempts + 1,
-        }).eq('id', job.id);
-        if (status !== 'done' && status !== 'failed') {
-          results.push(`${job.id}: still rendering (${job.language})`);
-          continue;
-        }
+        results.push(`${job.id}: provider retired (${job.provider ?? 'unknown'})`);
+        continue;
+      }
+
+      const s = await heygenStatus(job.provider_video_id);
+      status    = s.status;           // 'processing' | 'completed' | 'failed'
+      videoUrl  = s.video_url || null;
+      durationSecs = s.duration || null;
+      const heygenNorm = status === 'completed' ? 'complete' : status === 'failed' ? 'failed' : 'rendering';
+      await supabase.from('video_jobs').update({
+        last_polled_at: new Date().toISOString(),
+        attempts: job.attempts + 1,
+        heygen_status: heygenNorm,
+      }).eq('id', job.id);
+      if (status !== 'completed' && status !== 'failed') {
+        results.push(`${job.id}: still rendering (${job.language})`);
+        continue;
       }
 
       // ── Handle failure
-      const isDone = status === 'completed' || status === 'done';
+      const isDone = status === 'completed';
       if (!isDone) {
         await supabase.from('video_jobs').update({ status: 'failed', heygen_status: 'failed' }).eq('id', job.id);
         results.push(`${job.id}: FAILED (${job.language})`);
