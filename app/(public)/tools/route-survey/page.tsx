@@ -5,7 +5,6 @@ import { createClient } from '@/lib/supabase/client';
 import { MapPin, Camera, Save, Navigation, ShieldCheck, Flag, ArrowLeft } from 'lucide-react';
 import PulsingButton from '@/components/ui/PulsingButton';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 interface LocationState {
     lat: number;
@@ -15,7 +14,6 @@ interface LocationState {
 
 export default function RouteSurveyApp() {
     const supabase = createClient();
-    const router = useRouter();
 
     const [isSurveying, setIsSurveying] = useState(false);
     const [surveyId, setSurveyId] = useState<string | null>(null);
@@ -91,7 +89,6 @@ export default function RouteSurveyApp() {
                 end_lat: currentLoc?.lat,
                 end_lng: currentLoc?.lng
             }).eq('id', surveyId);
-            router.push(`/tools/route-survey/${surveyId}`);
         }
     };
 
@@ -125,7 +122,7 @@ export default function RouteSurveyApp() {
                         </div>
                         <h2 className="text-2xl font-black text-white mb-2">Automate Your Survey Logs</h2>
                         <p className="text-slate-400 mb-8 leading-relaxed">
-                            As you drive, tap to log bridges, lines, and turns. RouteIQ automatically pins your exact GPS coordinates and generates a DOT-compliant PDF report.
+                            As you drive, tap to log bridges, lines, and turns. RouteIQ pins GPS coordinates for a draft survey log you can review before sharing or filing.
                         </p>
 
                         <div className="mb-6">
@@ -146,6 +143,36 @@ export default function RouteSurveyApp() {
                         >
                             Start Navigation
                         </PulsingButton>
+                    </div>
+                )}
+
+                {!isSurveying && surveyId && (
+                    <div className="border border-slate-800 rounded-3xl p-6 shadow-2xl mt-4">
+                        <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-6">
+                            <Save className="w-8 h-8 text-emerald-400" />
+                        </div>
+                        <h2 className="text-2xl font-black text-white mb-2">Survey log saved</h2>
+                        <p className="text-slate-400 mb-6 leading-relaxed">
+                            Your route survey was saved as a completed draft with {waypointsCount} waypoint{waypointsCount === 1 ? '' : 's'}.
+                            Review the data in the dashboard before using it for dispatch, permit filing, or customer documentation.
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <Link href="/dashboard" className="rounded-xl bg-amber-500 px-4 py-3 text-center text-sm font-black text-slate-950">
+                                Open Dashboard
+                            </Link>
+                            <button
+                                aria-label="Start another route survey"
+                                data-tool-interact
+                                onClick={() => {
+                                    setSurveyId(null);
+                                    setWaypointsCount(0);
+                                    setSurveyName('');
+                                }}
+                                className="rounded-xl border border-slate-700 px-4 py-3 text-sm font-black text-slate-200"
+                            >
+                                Start Another Survey
+                            </button>
+                        </div>
                     </div>
                 )}
 
@@ -185,7 +212,7 @@ export default function RouteSurveyApp() {
                                 className=" hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 transition-colors aspect-square touch-manipulation"
                             >
                                 <div className="w-16 h-16 bg-blue-500/10 rounded-full flex items-center justify-center">
-                                    <span className="text-3xl">ðŸŒ‰</span>
+                                    <span className="text-3xl">BR</span>
                                 </div>
                                 <span className="font-bold text-white uppercase tracking-wider text-sm">Bridge Hit</span>
                             </button>
@@ -195,7 +222,7 @@ export default function RouteSurveyApp() {
                                 className=" hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 transition-colors aspect-square touch-manipulation"
                             >
                                 <div className="w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center">
-                                    <span className="text-3xl">âš¡ï¸</span>
+                                    <span className="text-3xl">LW</span>
                                 </div>
                                 <span className="font-bold text-white uppercase tracking-wider text-sm">Low Wires</span>
                             </button>
@@ -205,7 +232,7 @@ export default function RouteSurveyApp() {
                                 className=" hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 transition-colors aspect-square touch-manipulation"
                             >
                                 <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center">
-                                    <span className="text-3xl">â†ªï¸</span>
+                                    <span className="text-3xl">TT</span>
                                 </div>
                                 <span className="font-bold text-white uppercase tracking-wider text-sm">Tight Turn</span>
                             </button>
@@ -215,7 +242,7 @@ export default function RouteSurveyApp() {
                                 className=" hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 transition-colors aspect-square touch-manipulation"
                             >
                                 <div className="w-16 h-16 bg-purple-500/10 rounded-full flex items-center justify-center">
-                                    <span className="text-3xl">âš ï¸</span>
+                                    <span className="text-3xl">!</span>
                                 </div>
                                 <span className="font-bold text-white uppercase tracking-wider text-sm">Other Pin</span>
                             </button>

@@ -2,9 +2,10 @@ import { Metadata } from 'next'
 import { JsonLd } from '@/components/seo/JsonLd'
 import Link from 'next/link'
 import { AdGridSponsorSlot } from '@/app/_components/directory/AdGridSponsorSlot'
+import { PermitCostPlanner } from './PermitCostPlanner'
 
 export const metadata: Metadata = {
-  title: 'Free Oversize Load Permit Cost Calculator — All 50 States | Haul Command',
+  title: 'Free Oversize Load Permit Cost Calculator - All 50 States | Haul Command',
   description: 'Estimate oversize load permit costs by state. Enter origin, destination, dimensions and weight for a planning worksheet. Free, public, no login required.',
   alternates: { canonical: 'https://www.haulcommand.com/tools/permit-cost-calculator' },
 }
@@ -12,9 +13,9 @@ export const metadata: Metadata = {
 export default function PermitCostCalculatorPage() {
   const schema = { '@context':'https://schema.org','@type':'WebApplication', name:'Oversize Permit Cost Calculator', url:'https://www.haulcommand.com/tools/permit-cost-calculator', description:'Free oversize load permit planning calculator for US state reference data. No login required.', applicationCategory:'BusinessApplication', isAccessibleForFree:true, offers:{"@type":'Offer',price:'0',priceCurrency:'USD'} }
   const faq = { '@context':'https://schema.org','@type':'FAQPage', mainEntity:[
-    {"@type":'Question', name:'How much does an oversize load permit cost?', acceptedAnswer:{"@type":'Answer', text:'Oversize permit costs vary by state. Base fees range from $15 to $100+, plus per-mile charges of $0.10"“$0.50 and per-ton-over fees. Use the calculator above for a planning estimate, then verify with each issuing authority.'}},
+    {"@type":'Question', name:'How much does an oversize load permit cost?', acceptedAnswer:{"@type":'Answer', text:'Oversize permit costs vary by state. Base fees range from $15 to $100+, plus per-mile charges of $0.10-$0.50 and per-ton-over fees. Use the calculator above for a planning estimate, then verify with each issuing authority.'}},
     {"@type":'Question', name:'Do I need a permit for every state my load travels through?', acceptedAnswer:{"@type":'Answer', text:'Yes. You need a separate oversize load permit for each state your route passes through. Some states offer trip permits, annual permits, or multi-trip permits depending on load frequency.'}},
-    {"@type":'Question', name:'How long does it take to get an oversize permit?', acceptedAnswer:{"@type":'Answer', text:'Standard permits are typically issued one to three business days in many markets. Superloads may require 5"“10 business days. Some states offer online issuance for standard loads.'}},
+    {"@type":'Question', name:'How long does it take to get an oversize permit?', acceptedAnswer:{"@type":'Answer', text:'Standard permits are typically issued one to three business days in many markets. Superloads may require 5-10 business days. Some states offer online issuance for standard loads.'}},
   ]}
 
   return (
@@ -24,35 +25,15 @@ export default function PermitCostCalculatorPage() {
       <div className=" bg-[#07090d] text-[#f0f2f5]">
         <div className="border-b border-[#131c28] bg-gradient-to-r from-[#0a1929] to-[#07090d]">
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
-            <p className="text-[11px] tracking-[0.2em] text-[#22c55e] font-semibold mb-3">FREE TOOL · NO LOGIN REQUIRED</p>
+            <p className="text-[11px] tracking-[0.2em] text-[#22c55e] font-semibold mb-3">FREE TOOL - NO LOGIN REQUIRED</p>
             <h1 className="text-2xl lg:text-4xl font-extrabold text-[#f0f2f5] mb-4">Oversize Load Permit Cost Calculator</h1>
-            <p data-speakable="true" className="text-sm text-[#d0dce8] max-w-2xl mb-2 leading-relaxed">Oversize load permit costs vary by state, typically ranging from $15 to $100+ in base fees plus per-mile charges of $0.10"“$0.50. A multi-state route may total $200"“$600 in permit fees alone. Enter your load dimensions and route below for a planning estimate covering states along your corridor.</p>
+            <p data-speakable="true" className="text-sm text-[#d0dce8] max-w-2xl mb-2 leading-relaxed">Oversize load permit costs vary by state, typically ranging from $15 to $100+ in base fees plus per-mile charges of $0.10-$0.50. A multi-state route may total $200-$600 in permit fees alone. Enter your load dimensions and route below for a planning estimate covering states along your corridor.</p>
             <p className="text-sm text-[#8a9ab0] mb-2 max-w-2xl">Enter your load dimensions and route. Get permit planning estimates by state, including pilot car considerations, escort rules, and superload thresholds that must be verified before filing.</p>
-            <p className="text-xs text-[#22c55e]">Free · All 50 US States · No account needed</p>
+            <p className="text-xs text-[#22c55e]">Free - All 50 US States - No account needed</p>
           </div>
         </div>
         <div className="px-4 lg:px-10 py-10 max-w-4xl mx-auto">
-          <div className="bg-[#0f1a24] border border-[#1e3048] rounded-2xl p-6 mb-8" id="calculator">
-            <h2 className="text-sm font-bold text-[#f0f2f5] mb-5">Load Dimensions &amp; Route</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              {[{label:'Width (ft)',ph:'12',id:'width'},{label:'Height (ft)',ph:'14',id:'height'},{label:'Length (ft)',ph:'100',id:'length'},{label:'Weight (lbs)',ph:'80000',id:'weight'}].map(f=>(
-                <div key={f.id}>
-                  <label className="block text-[10px] text-[#566880] mb-1.5 font-semibold tracking-wider">{f.label}</label>
-                  <input id={f.id} type="number" placeholder={f.ph} className="w-full bg-[#07090d] border border-[#1e3048] rounded-xl px-3 py-2.5 text-sm text-[#f0f2f5] placeholder-[#3a5068] focus:border-[#22c55e] focus:outline-none"/>
-                </div>
-              ))}
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              {[{label:'Origin (City, State)',ph:'Houston, TX',id:'origin'},{label:'Destination (City, State)',ph:'Baton Rouge, LA',id:'dest'}].map(f=>(
-                <div key={f.id}>
-                  <label className="block text-[10px] text-[#566880] mb-1.5 font-semibold tracking-wider">{f.label}</label>
-                  <input id={f.id} type="text" placeholder={f.ph} className="w-full bg-[#07090d] border border-[#1e3048] rounded-xl px-3 py-2.5 text-sm text-[#f0f2f5] placeholder-[#3a5068] focus:border-[#22c55e] focus:outline-none"/>
-                </div>
-              ))}
-            </div>
-            <button className="w-full bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold py-3.5 rounded-xl text-sm transition-colors">Preview Permit Costs â†’</button>
-            <p className="text-[10px] text-[#3a5068] text-center mt-3">Full dynamic calculation engine coming Q2 2026. Contact us for manual quotes: <a href="mailto:permits@haulcommand.com" className="text-[#d4950e]">permits@haulcommand.com</a></p>
-          </div>
+          <PermitCostPlanner />
 
           <div className="mb-8">
             <AdGridSponsorSlot regionName="National Coverage" type="permit_service_provider" countryCode="US" />
@@ -60,7 +41,7 @@ export default function PermitCostCalculatorPage() {
 
           {/* REFERENCE TABLE */}
           <div className="mb-10">
-            <h2 className="text-base font-bold text-[#f0f2f5] mb-4">Permit Cost Reference — Key States</h2>
+            <h2 className="text-base font-bold text-[#f0f2f5] mb-4">Permit Cost Reference - Key States</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-xs border-collapse">
                 <thead>
@@ -100,9 +81,9 @@ export default function PermitCostCalculatorPage() {
             <h2 className="text-sm font-bold text-[#f0f2f5] mb-4">Oversize Permit FAQs</h2>
             <div className="space-y-3">
               {[
-                {q:'How much does an oversize load permit cost?',a:'Permit costs vary significantly by state. Base fees range from $15 in some states to $100+ in others. Most states also charge per-mile fees ($0.10"“$0.50) and per-ton-over fees for overweight loads. A multi-state route from Texas to Ohio might total $200"“$600 in permit fees alone, plus escort costs.'},
+                {q:'How much does an oversize load permit cost?',a:'Permit costs vary significantly by state. Base fees range from $15 in some states to $100+ in others. Most states also charge per-mile fees ($0.10-$0.50) and per-ton-over fees for overweight loads. A multi-state route from Texas to Ohio might total $200-$600 in permit fees alone, plus escort costs.'},
                 {q:'Do I need a permit for every state my load travels through?',a:'Yes. Each state your route passes through requires its own permit. Some states offer annual or multi-trip permits for operators with frequent corridor use.'},
-                {q:'How long does it take to get an oversize permit?',a:'Standard permits are typically issued one to three business days in many markets. Superloads requiring engineering review may take 5"“10 business days. Several states now offer online issuance.'},
+                {q:'How long does it take to get an oversize permit?',a:'Standard permits are typically issued one to three business days in many markets. Superloads requiring engineering review may take 5-10 business days. Several states now offer online issuance.'},
                 {q:'What dimensions trigger a pilot car requirement?',a:'Pilot car requirements vary by state. In most US states, loads exceeding 12&apos; wide require at least one escort. At 14&apos;+ wide, two escorts plus a high pole are typically required. Some states have lower thresholds.'},
                 {q:'Can I use an annual permit instead of trip permits?',a:'Some states offer annual or blanket permits for operators with recurring loads in specific corridors. These are cost-effective for carriers with regular routes.'},
               ].map((item,i)=>(
@@ -125,14 +106,14 @@ export default function PermitCostCalculatorPage() {
                 ['/tools/frost-law-tracker','Frost Law Tracker'],
                 ['/tools/route-planner','Route Planner'],
               ].map(([href,label])=>(
-                <Link key={href} href={href} className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#22c55e] hover:text-[#22c55e] transition-colors">{label} â†’</Link>
+                <Link key={href} href={href} className="text-xs bg-[#0f1a24] border border-[#1e3048] text-[#8ab0d0] px-3 py-2 rounded-lg hover:border-[#22c55e] hover:text-[#22c55e] transition-colors">{label} -&gt;</Link>
               ))}
             </div>
           </div>
 
           {/* VISIBLE LAST UPDATED — AI engines cross-validate schema against visible page content */}
           <div className="mt-10 pt-4 border-t border-[#131c28] text-center">
-            <p className="text-[10px] text-[#3a5068]">Permit reference last updated: Q1 2026 · Partially verified planning data · Confirm with issuing authority before filing</p>
+            <p className="text-[10px] text-[#3a5068]">Permit reference last updated: Q1 2026 - Partially verified planning data - Confirm with issuing authority before filing</p>
           </div>
         </div>
       </div>
