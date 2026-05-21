@@ -96,7 +96,18 @@ describe("tool registry QA gate", () => {
     expect(script).toContain("tools-sitemap-candidates.csv");
     expect(script).toContain("tools-noindex-candidates.csv");
     expect(script).toContain("tools-merge-retire-candidates.csv");
+    expect(script).toContain("tools-follow-on-links.csv");
     expect(script).toContain("BLOCKED_NOT_OPEN");
+    expect(script).toContain("collectToolCards");
+    expect(script).toContain("legacy-link");
+    expect(script).toContain("numberArg");
+    expect(script).toContain('numberArg("offset"');
+    expect(script).toContain("No cards selected for offset=");
+    expect(script).toContain("isSuspiciousFollowOnRedirect");
+    expect(script).toContain("hasIntentMismatch");
+    expect(script).toContain("FAIL_WRONG_INTENT");
+    expect(script).toContain("unexpected_redirect");
+    expect(script).toContain("FAIL_FOLLOW_ON_LINKS");
     expect(workflow).toContain("npm run build");
     expect(workflow).toContain("npm run audit:tools -- --base-url=http://127.0.0.1:3005");
   });

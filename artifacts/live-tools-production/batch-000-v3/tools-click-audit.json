@@ -1,0 +1,1700 @@
+{
+  "summary": {
+    "baseUrl": "https://www.haulcommand.com",
+    "auditedAt": "2026-05-21T00:46:11.008Z",
+    "totalCards": 562,
+    "offset": 0,
+    "limit": 25,
+    "auditedCards": 25,
+    "openToolLinks": 25,
+    "pass": 0,
+    "fail": 25,
+    "blockedNotOpen": 0,
+    "followOnLinksChecked": 6,
+    "followOnLinkFailures": 0,
+    "partial": false,
+    "hubConsoleMessages": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()"
+      }
+    ]
+  },
+  "records": [
+    {
+      "slug": "cb-radio-channel-guide",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "CB Radio Channel Guide",
+      "description": "CB radio channels and protocols for escort operations by region",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/cb-radio-channel-guide",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/cb-radio-channel-guide",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-avail-est",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Availability Estimator",
+      "description": "Escort service intelligence for Availability Estimator — requirements, matching, and compliance",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-avail-est",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-avail-est",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-availability-estimator",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Availability Estimator",
+      "description": "Estimate escort availability in a region",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-availability-estimator",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-availability-estimator",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-badge-permit-requirement-checker",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Badge/Permit Requirement Checker",
+      "description": "State-issued permits required for escort operations",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-badge-permit-requirement-checker",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-badge-permit-requirement-checker",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-certification-finder",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Certification Finder",
+      "description": "Find certification requirements by state",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-certification-finder",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-certification-finder",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-count-calculator",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Count Calculator",
+      "description": "Calculate how many pilot cars your load legally requires",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-count-calculator",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 200,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-count-calculator",
+      "pageTitle": "Escort Count Calculator — How Many Pilot Cars? | Haul Command | Haul Command Operations",
+      "h1": "Escort Count Calculator Tool",
+      "h1Count": 2,
+      "metaDescription": "Calculate exactly how many pilot cars your oversize load legally requires. Based on width, height, length, and state-by-state requirements.",
+      "canonical": "https://www.haulcommand.com/tools/escort-count-calculator",
+      "robots": "",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": true,
+      "inputCount": 7,
+      "outputHintCount": 5,
+      "hasInteractiveSurface": true,
+      "internalLinks": [
+        "/",
+        "/directory",
+        "/tools/route-iq"
+      ],
+      "internalLinkFailures": [],
+      "followOnLinks": [
+        {
+          "text": "Directory",
+          "href": "/directory"
+        },
+        {
+          "text": "Pilot Car Files",
+          "href": "/escort-requirements"
+        },
+        {
+          "text": "Claim Profile",
+          "href": "/claim"
+        }
+      ],
+      "followOnLinkResults": [
+        {
+          "text": "Directory",
+          "href": "/directory",
+          "status": 200,
+          "finalUrl": "https://www.haulcommand.com/directory",
+          "redirected": false
+        },
+        {
+          "text": "Pilot Car Files",
+          "href": "/escort-requirements",
+          "status": 200,
+          "finalUrl": "https://www.haulcommand.com/escort-requirements",
+          "redirected": false
+        },
+        {
+          "text": "Claim Profile",
+          "href": "/claim",
+          "status": 200,
+          "finalUrl": "https://www.haulcommand.com/claim",
+          "redirected": false
+        }
+      ],
+      "followOnLinkFailures": [],
+      "ctaLinks": [
+        {
+          "text": "Directory",
+          "href": "/directory"
+        },
+        {
+          "text": "Claim Profile",
+          "href": "/claim"
+        },
+        {
+          "text": "Post a Load",
+          "href": "/loads/post"
+        },
+        {
+          "text": "Claim My Profile",
+          "href": "/claim"
+        },
+        {
+          "text": "Pilot Car Directory",
+          "href": "/directory"
+        },
+        {
+          "text": "Load BoardLIVE",
+          "href": "/loads"
+        },
+        {
+          "text": "Find",
+          "href": "/directory"
+        },
+        {
+          "text": "Post",
+          "href": "/loads/post"
+        },
+        {
+          "text": "Directory",
+          "href": "/directory"
+        },
+        {
+          "text": "Post Load",
+          "href": "/loads/post"
+        },
+        {
+          "text": "Claim",
+          "href": "/claim"
+        },
+        {
+          "text": "Find providers",
+          "href": "/directory"
+        },
+        {
+          "text": "Find providers",
+          "href": "/directory"
+        },
+        {
+          "text": "Find providers",
+          "href": "/directory"
+        },
+        {
+          "text": "🔍Find Escorts",
+          "href": "/directory"
+        },
+        {
+          "text": "Contact",
+          "href": "/contact"
+        },
+        {
+          "text": "Directory",
+          "href": "/directory"
+        },
+        {
+          "text": "Load Board",
+          "href": "/loads"
+        },
+        {
+          "text": "Claim Listing",
+          "href": "/claim"
+        },
+        {
+          "text": "Load Board",
+          "href": "/loads"
+        }
+      ],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "warning",
+          "text": "The resource https://www.haulcommand.com/_next/static/chunks/08tiwrbcfghow.css?dpl=dpl_DYxZzAr8MMfnA8DQ1gsfNkrxu2Qt was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally."
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA"
+      ]
+    },
+    {
+      "slug": "escort-dispatch",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Dispatch Dashboard",
+      "description": "Real-time dispatch board for escort vehicle coordination",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-dispatch",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-dispatch",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-equipment-checklist",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Equipment Checklist",
+      "description": "Required equipment by state — lights, signs, radios",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-equipment-checklist",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-equipment-checklist",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-insurance-requirement-checker",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Insurance Requirement Checker",
+      "description": "Minimum insurance requirements for escort operations",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-insurance-requirement-checker",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-insurance-requirement-checker",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-intel-suite",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Intelligence Suite",
+      "description": "Escort service intelligence for Intelligence Suite — requirements, matching, and compliance",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-intel-suite",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-intel-suite",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-suite",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Intelligence Suite",
+      "description": "All escort requirement tools in one place",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-suite",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-suite",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-lighting-requirement-checker",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Lighting Requirement Checker",
+      "description": "Required lights and strobes by state",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-lighting-requirement-checker",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-lighting-requirement-checker",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-reciprocity-checker",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Reciprocity Checker",
+      "description": "Which states accept your pilot car certification",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-reciprocity-checker",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-reciprocity-checker",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-renewal-timeline-checker",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Renewal Timeline Checker",
+      "description": "Renewal requirements and deadlines for certifications",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-renewal-timeline-checker",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-renewal-timeline-checker",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-calculator",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Requirement Checker",
+      "description": "Find exact escort requirements by load dimensions + state",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-calculator",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 200,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-calculator",
+      "pageTitle": "Escort Cost Calculator & Rate Estimator | Haul Command | Haul Command Operations",
+      "h1": "Planning Quote Worksheet",
+      "h1Count": 1,
+      "metaDescription": "Calculate detailed heavy haul escort vehicle costs by region, service type, and wait time using 2026 planning benchmarks where source data is available.",
+      "canonical": "https://www.haulcommand.com/tools/escort-calculator",
+      "robots": "",
+      "schemaTypes": [
+        "SoftwareApplication"
+      ],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": true,
+      "visibleToolModule": true,
+      "inputCount": 20,
+      "outputHintCount": 9,
+      "hasInteractiveSurface": true,
+      "internalLinks": [
+        "/",
+        "/directory",
+        "/tools/route-iq"
+      ],
+      "internalLinkFailures": [],
+      "followOnLinks": [
+        {
+          "text": "Directory",
+          "href": "/directory"
+        },
+        {
+          "text": "Pilot Car Files",
+          "href": "/escort-requirements"
+        },
+        {
+          "text": "Claim Profile",
+          "href": "/claim"
+        }
+      ],
+      "followOnLinkResults": [
+        {
+          "text": "Directory",
+          "href": "/directory",
+          "status": 200,
+          "finalUrl": "https://www.haulcommand.com/directory",
+          "redirected": false
+        },
+        {
+          "text": "Pilot Car Files",
+          "href": "/escort-requirements",
+          "status": 200,
+          "finalUrl": "https://www.haulcommand.com/escort-requirements",
+          "redirected": false
+        },
+        {
+          "text": "Claim Profile",
+          "href": "/claim",
+          "status": 200,
+          "finalUrl": "https://www.haulcommand.com/claim",
+          "redirected": false
+        }
+      ],
+      "followOnLinkFailures": [],
+      "ctaLinks": [
+        {
+          "text": "Directory",
+          "href": "/directory"
+        },
+        {
+          "text": "Claim Profile",
+          "href": "/claim"
+        },
+        {
+          "text": "Post a Load",
+          "href": "/loads/post"
+        },
+        {
+          "text": "Claim My Profile",
+          "href": "/claim"
+        },
+        {
+          "text": "Pilot Car Directory",
+          "href": "/directory"
+        },
+        {
+          "text": "Load BoardLIVE",
+          "href": "/loads"
+        },
+        {
+          "text": "Find",
+          "href": "/directory"
+        },
+        {
+          "text": "Post",
+          "href": "/loads/post"
+        },
+        {
+          "text": "Directory",
+          "href": "/directory"
+        },
+        {
+          "text": "Post Load",
+          "href": "/loads/post"
+        },
+        {
+          "text": "Claim",
+          "href": "/claim"
+        },
+        {
+          "text": "Find providers",
+          "href": "/directory"
+        },
+        {
+          "text": "Find providers",
+          "href": "/directory"
+        },
+        {
+          "text": "Find providers",
+          "href": "/directory"
+        },
+        {
+          "text": "Find Pilot Cars in United States",
+          "href": "/directory/us"
+        },
+        {
+          "text": "Find Local Providers",
+          "href": "/directory/us"
+        },
+        {
+          "text": "Find escort operators",
+          "href": "/directory"
+        },
+        {
+          "text": "Contact",
+          "href": "/contact"
+        },
+        {
+          "text": "Directory",
+          "href": "/directory"
+        },
+        {
+          "text": "Load Board",
+          "href": "/loads"
+        }
+      ],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 500 ()"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_WRONG_INTENT"
+      ]
+    },
+    {
+      "slug": "escort-req-al-ol",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Requirements — Albania",
+      "description": "Find exact escort vehicle requirements for Albania based on load dimensions and route",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-req-al-ol",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-req-al-ol",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-req-dz-ol",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Requirements — Algeria",
+      "description": "Find exact escort vehicle requirements for Algeria based on load dimensions and route",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-req-dz-ol",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-req-dz-ol",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-req-ao-ol",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Requirements — Angola",
+      "description": "Find exact escort vehicle requirements for Angola based on load dimensions and route",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-req-ao-ol",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-req-ao-ol",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-req-ar-ol",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Requirements — Argentina",
+      "description": "Find exact escort vehicle requirements for Argentina based on load dimensions and route",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-req-ar-ol",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-req-ar-ol",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-req-au-ol",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Requirements — Australia",
+      "description": "Find exact escort requirements for Australia based on load dimensions and route",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-req-au-ol",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-req-au-ol",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-req-at-ol",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Requirements — Austria",
+      "description": "Find exact escort vehicle requirements for Austria based on load dimensions and route",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-req-at-ol",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-req-at-ol",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-req-az-ol",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Requirements — Azerbaijan",
+      "description": "Find exact escort vehicle requirements for Azerbaijan based on load dimensions and route",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-req-az-ol",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-req-az-ol",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-req-bh-ol",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Requirements — Bahrain",
+      "description": "Find exact escort vehicle requirements for Bahrain based on load dimensions and route",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-req-bh-ol",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-req-bh-ol",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-req-bd-ol",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Requirements — Bangladesh",
+      "description": "Find exact escort vehicle requirements for Bangladesh based on load dimensions and route",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-req-bd-ol",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-req-bd-ol",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    },
+    {
+      "slug": "escort-req-be-ol",
+      "family": "",
+      "registryStatus": "",
+      "routeStatus": "",
+      "qaStatus": "",
+      "contentStatus": "",
+      "indexingStatus": "",
+      "title": "Escort Requirements — Belgium",
+      "description": "Find exact escort vehicle requirements for Belgium based on load dimensions and route",
+      "statusBadge": "Available — 120 Countries",
+      "href": "/tools/escort-req-be-ol",
+      "ctaLabel": "Open Tool →",
+      "extractionMode": "legacy-link",
+      "httpStatus": 404,
+      "finalUrl": "https://www.haulcommand.com/tools/escort-req-be-ol",
+      "pageTitle": "Haul Command | Autonomous Heavy Haul Operating System",
+      "h1": "",
+      "h1Count": 0,
+      "metaDescription": "The world's first fully-autonomous API, Load Board, and verified MSB settlement network for the heavy haul logistics industry.",
+      "canonical": "https://www.haulcommand.com",
+      "robots": "noindex",
+      "schemaTypes": [],
+      "placeholderText": [],
+      "mojibake": false,
+      "intentMismatch": false,
+      "visibleToolModule": false,
+      "inputCount": 0,
+      "outputHintCount": 0,
+      "hasInteractiveSurface": false,
+      "internalLinks": [],
+      "internalLinkFailures": [],
+      "followOnLinks": [],
+      "followOnLinkResults": [],
+      "followOnLinkFailures": [],
+      "ctaLinks": [],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: net::ERR_FAILED"
+        }
+      ],
+      "screenshot": "",
+      "classification": [
+        "FAIL_404",
+        "FAIL_H1",
+        "FAIL_NO_SCHEMA",
+        "FAIL_STATIC_NOT_TOOL"
+      ]
+    }
+  ]
+}
