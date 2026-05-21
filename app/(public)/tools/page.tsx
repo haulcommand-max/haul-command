@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { createClient } from '@supabase/supabase-js';
 import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import '@/components/ai-search/answer-block.css';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
@@ -8,27 +7,16 @@ import {
   isToolSchemaEligible,
   isToolVerifiedOpen,
   toolCtaLabel,
-  type ToolQaRow,
 } from '@/lib/tools/tool-qa';
-import { STATIC_TOOL_CONCEPTS } from '@/lib/tools/static-tool-concepts';
+import {
+  getApprovedToolTrustClaims,
+  getToolCountsVerified,
+  getToolRenderPackets,
+  renderBlockedToolLabel,
+  type ToolRenderPacket,
+} from '@/lib/tools/tool-substrate';
 
 export const revalidate = 3600;
-
-async function loadRegistryTools(): Promise<Tool[]> {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-  if (!supabaseUrl || !serviceRoleKey) return STATIC_TOOL_CONCEPTS as Tool[];
-
-  const supabase = createClient(supabaseUrl, serviceRoleKey);
-  const { data: tools } = await supabase
-    .from('hc_tool_registry')
-    .select('*')
-    .neq('status', 'internal_only')
-    .order('name');
-
-  return ((tools?.length ? tools : STATIC_TOOL_CONCEPTS) ?? []) as Tool[];
-}
 
 const FAMILIES: Record<string, { label: string; desc: string; icon: string; color: string }> = {
   rates:          { label: 'Rates & Pricing',          desc: 'Benchmarks, cost calculators, and margin tools for every move.',                icon: '\u{1F4B2}', color: '#22c55e' },
@@ -54,20 +42,7 @@ const STATUS_BADGE: Record<string, { label: string; bg: string; text: string; bo
   coming_soon:   { label: 'Coming Soon',            bg: 'rgba(148,163,184,0.08)', text: '#94a3b8', border: 'rgba(148,163,184,0.15)' },
 };
 
-interface Tool extends ToolQaRow {
-  slug: string;
-  name: string;
-  status: string;
-  page_url: string | null;
-  family: string;
-  category: string;
-  short_desc: string | null;
-  tier: string;
-  coverage_scope: string;
-  is_free: boolean;
-  requires_login: boolean;
-  primary_audience: string;
-}
+type Tool = ToolRenderPacket;
 
 export const metadata: Metadata = {
   title: 'Heavy Haul Tools & Calculators | Haul Command',
@@ -85,17 +60,23 @@ export const metadata: Metadata = {
 };
 
 export default async function ToolsPage() {
-  const allTools = await loadRegistryTools();
+  const [allPackets, trustClaims] = await Promise.all([
+    getToolRenderPackets(),
+    getApprovedToolTrustClaims(),
+  ]);
+  const counts = await getToolCountsVerified(allPackets);
+  const allTools = allPackets.filter((tool) => renderBlockedToolLabel(tool.open_tool_block_reason) !== 'Hidden');
 
   const grouped: Record<string, Tool[]> = {};
   for (const t of allTools) {
-    if (!grouped[t.family]) grouped[t.family] = [];
-    grouped[t.family].push(t);
+    const family = t.family || 'data';
+    if (!grouped[family]) grouped[family] = [];
+    grouped[family].push(t);
   }
 
   const statusOrder: Record<string, number> = { live_global: 1, live_selected: 2, beta: 3, coming_soon: 4 };
   for (const fam of Object.keys(grouped)) {
-    grouped[fam].sort((a, b) => (statusOrder[a.status] ?? 9) - (statusOrder[b.status] ?? 9));
+    grouped[fam].sort((a, b) => (statusOrder[a.status || ''] ?? 9) - (statusOrder[b.status || ''] ?? 9));
   }
 
   const familyOrder = Object.keys(grouped).sort((a, b) => {
@@ -105,18 +86,18 @@ export default async function ToolsPage() {
     return grouped[b].length - grouped[a].length;
   });
 
-  const totalTools = allTools.length;
-  const verifiedLiveCount = allTools.filter(isToolVerifiedOpen).length;
-  const betaCount = allTools.filter(t => t.status === 'beta').length;
-  const comingSoonCount = allTools.filter(t => t.status === 'coming_soon').length;
-  const familyCount = familyOrder.length;
+  const totalTools = counts.registered_concepts;
+  const verifiedLiveCount = counts.verified_live;
+  const betaCount = counts.pending_qa;
+  const comingSoonCount = counts.coming_soon;
+  const familyCount = counts.families || familyOrder.length;
 
   const schemaTools = allTools.filter(isToolSchemaEligible);
   const toolsSchema = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'Haul Command Tools & Calculators',
-    description: `${totalTools} registered heavy haul logistics tool concepts across ${familyCount} families. Verified live tools require route and content QA.`,
+    description: `${verifiedLiveCount} verified live heavy haul logistics tools across ${familyCount} families. Tool access is controlled by route, content, and indexing QA.`,
     url: 'https://www.haulcommand.com/tools',
     mainEntity: {
       '@type': 'ItemList',
@@ -129,7 +110,7 @@ export default async function ToolsPage() {
 
   const catCounts: Record<string, number> = {};
   for (const t of allTools) {
-    const cat = t.category.replace(/_/g, ' ');
+    const cat = String(t.category || 'tool').replace(/_/g, ' ');
     catCounts[cat] = (catCounts[cat] || 0) + 1;
   }
   const topCats = Object.entries(catCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
@@ -157,12 +138,12 @@ export default async function ToolsPage() {
           {/* Stats */}
           <div style={{ display: 'flex', gap: 24, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 40 }}>
             {[
+              { val: verifiedLiveCount, label: 'Verified Live Tools' },
               { val: totalTools, label: 'Registered Concepts' },
-              { val: verifiedLiveCount, label: 'Verified Live' },
-              { val: betaCount, label: 'Beta / QA Pending' },
+              { val: betaCount, label: 'Pending QA' },
               { val: comingSoonCount, label: 'Coming Soon' },
+              { val: counts.broken_404, label: 'Route Repairs' },
               { val: familyCount, label: 'Families' },
-              { val: 'Global', label: 'Country Framework' },
             ].map(s => (
               <div key={s.label} style={{ padding: '12px 20px', borderRadius: 12, background: 'rgba(198,146,58,0.06)', border: '1px solid rgba(198,146,58,0.15)' }}>
                 <div style={{ fontSize: 24, fontWeight: 800, color: '#C6923A' }}>{s.val}</div>
@@ -170,6 +151,20 @@ export default async function ToolsPage() {
               </div>
             ))}
           </div>
+
+          {trustClaims.length > 0 && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, maxWidth: 900, margin: '0 auto 32px' }}>
+              {trustClaims.map((claim) => (
+                <div key={`${claim.claim_text}-${claim.source_url}`} style={{ padding: 14, borderRadius: 12, background: 'rgba(15,23,42,0.72)', border: '1px solid rgba(148,163,184,0.16)', textAlign: 'left' }}>
+                  <div style={{ fontSize: 20, fontWeight: 900, color: '#C6923A' }}>{claim.source_count ?? 'Source'}</div>
+                  <div style={{ fontSize: 12, color: '#cbd5e1', lineHeight: 1.5 }}>{claim.claim_text}</div>
+                  {claim.last_verified_at && (
+                    <div style={{ fontSize: 10, color: '#64748b', marginTop: 6 }}>Verified {new Date(claim.last_verified_at).toLocaleDateString()}</div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Jump nav */}
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -200,8 +195,8 @@ export default async function ToolsPage() {
             const meta = FAMILIES[fam];
             if (!meta) return null;
             const familyTools = grouped[fam];
-            const activeTools = familyTools.filter(t => t.status !== 'coming_soon');
-            const comingSoonTools = familyTools.filter(t => t.status === 'coming_soon');
+            const activeTools = familyTools.filter(t => renderBlockedToolLabel(t.open_tool_block_reason) !== 'Coming Soon');
+            const comingSoonTools = familyTools.filter(t => renderBlockedToolLabel(t.open_tool_block_reason) === 'Coming Soon');
 
             return (
               <div key={fam} id={`family-${fam}`} style={{ marginBottom: 64, scrollMarginTop: 80 }}>
@@ -209,7 +204,7 @@ export default async function ToolsPage() {
                   <span style={{ fontSize: 24 }}>{meta.icon}</span>
                   <h2 style={{ fontSize: 22, fontWeight: 800, color: '#F5F5F0', margin: 0 }}>{meta.label}</h2>
                   <span style={{ fontSize: 11, fontWeight: 700, color: '#64748b', background: 'rgba(100,116,139,0.1)', padding: '3px 10px', borderRadius: 6 }}>
-                    {familyTools.length} tools
+                    {familyTools.length} registered
                   </span>
                 </div>
                 <p style={{ fontSize: 14, color: '#64748b', marginBottom: 24, marginLeft: 36, lineHeight: 1.5 }}>{meta.desc}</p>
@@ -219,20 +214,24 @@ export default async function ToolsPage() {
                     {activeTools.map(tool => {
                       const isOpen = isToolVerifiedOpen(tool);
                       const ctaLabel = toolCtaLabel(tool);
-                      const badge = isOpen ? STATUS_BADGE.verified : (STATUS_BADGE[tool.status] || STATUS_BADGE.coming_soon);
-                      return (
+                       const status = tool.status || 'coming_soon';
+                       const badge = isOpen ? STATUS_BADGE.verified : (STATUS_BADGE[status] || STATUS_BADGE.coming_soon);
+                       const blockLabel = renderBlockedToolLabel(tool.open_tool_block_reason);
+                       return (
                         <div
                           key={tool.slug}
                           className="hc-tool-card"
                           data-tool-card="true"
                           data-tool-slug={tool.slug}
-                          data-tool-family={tool.family}
-                          data-tool-status={tool.status}
+                          data-tool-family={tool.family || ''}
+                          data-tool-status={tool.status || ''}
                           data-tool-route-status={tool.route_status ?? ''}
                           data-tool-qa-status={tool.qa_status ?? ''}
                           data-tool-content-status={tool.content_status ?? ''}
                           data-tool-indexing-status={tool.indexing_status ?? ''}
                           data-tool-href={isOpen ? tool.page_url ?? '' : ''}
+                          data-tool-open-allowed={String(tool.open_tool_render_allowed === true)}
+                          data-tool-block-reason={tool.open_tool_block_reason || ''}
                           style={{ background: '#141820', borderRadius: 16, padding: 24, border: '1px solid #1e2530', transition: 'border-color 0.2s, transform 0.2s' }}
                         >
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
@@ -245,7 +244,7 @@ export default async function ToolsPage() {
                           </div>
                           <h3 style={{ fontSize: 16, fontWeight: 800, color: '#F5F5F0', margin: '0 0 8px' }}>{tool.name}</h3>
                           <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.6, margin: '0 0 16px', minHeight: 40 }}>
-                            {tool.short_desc || 'Free heavy haul intelligence tool.'}
+                            {tool.short_desc || 'Heavy haul intelligence tool.'}
                           </p>
                           {isOpen && tool.page_url ? (
                             <Link href={tool.page_url} data-tool-cta="open" style={{
@@ -263,7 +262,7 @@ export default async function ToolsPage() {
                               background: 'rgba(148,163,184,0.06)', color: '#64748b',
                               border: '1px solid rgba(148,163,184,0.1)',
                             }}>
-                              {ctaLabel}
+                              {blockLabel === 'Coming Soon' ? 'Coming Soon' : ctaLabel}
                             </span>
                           )}
                         </div>
@@ -284,19 +283,21 @@ export default async function ToolsPage() {
                           key={tool.slug}
                           data-tool-card="true"
                           data-tool-slug={tool.slug}
-                          data-tool-family={tool.family}
-                          data-tool-status={tool.status}
+                          data-tool-family={tool.family || ''}
+                          data-tool-status={tool.status || ''}
                           data-tool-route-status={tool.route_status ?? ''}
                           data-tool-qa-status={tool.qa_status ?? ''}
                           data-tool-content-status={tool.content_status ?? ''}
                           data-tool-indexing-status={tool.indexing_status ?? ''}
                           data-tool-href=""
+                          data-tool-open-allowed="false"
+                          data-tool-block-reason={tool.open_tool_block_reason || ''}
                           style={{ padding: '10px 14px', borderRadius: 8, background: 'rgba(148,163,184,0.04)', border: '1px solid rgba(148,163,184,0.06)' }}
                         >
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                             <h3 style={{ fontSize: 13, fontWeight: 700, color: '#94a3b8', margin: 0 }}>{tool.name}</h3>
                             <span data-tool-cta="blocked" style={{ fontSize: 9, fontWeight: 600, padding: '2px 7px', borderRadius: 4, background: 'rgba(148,163,184,0.08)', color: '#64748b', letterSpacing: '0.03em' }}>
-                              Soon
+                              {renderBlockedToolLabel(tool.open_tool_block_reason)}
                             </span>
                           </div>
                           {tool.short_desc && (
@@ -344,6 +345,10 @@ export default async function ToolsPage() {
             </div>
           </div>
         </section>
+
+        <footer style={{ borderTop: '1px solid #1e2530', padding: '18px 24px', textAlign: 'center', color: '#64748b', fontSize: 12 }}>
+          {counts.last_crawl_at ? `Verified live as of ${new Date(counts.last_crawl_at).toLocaleString()}` : 'Verified live count updates after the next tools crawler pass.'}
+        </footer>
 
         {/* FAQ */}
         <section style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 24px' }}>

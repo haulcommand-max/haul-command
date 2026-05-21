@@ -156,3 +156,54 @@ jobs:
           name: playwright-smoke-report
           path: playwright-report/
           retention-days: 14
+
+  tools-registry-gate:
+    name: "CI / Tools Registry Gate"
+    runs-on: ubuntu-latest
+    needs: [build]
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci --legacy-peer-deps
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+      - name: Build for tools registry gate
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          NEXT_PUBLIC_MAPBOX_TOKEN: ${{ secrets.NEXT_PUBLIC_MAPBOX_TOKEN }}
+          SENTRY_UPLOAD_SOURCEMAPS: 'false'
+      - name: Run tools registry e2e gate
+        shell: bash
+        env:
+          CI: true
+          PLAYWRIGHT_BASE_URL: 'http://127.0.0.1:3005'
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          npm exec next -- start -p 3005 > /tmp/haul-command-tools-registry.log 2>&1 &
+          SERVER_PID=$!
+          trap "kill $SERVER_PID" EXIT
+          for i in {1..45}; do
+            if curl -fsS http://127.0.0.1:3005/tools > /dev/null; then
+              npx playwright test tests/e2e/tools-registry.spec.ts --reporter=html
+              exit $?
+            fi
+            sleep 2
+          done
+          cat /tmp/haul-command-tools-registry.log
+          exit 1
+      - name: Upload tools registry Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tools-registry-playwright-report
+          path: playwright-report/
+          retention-days: 14

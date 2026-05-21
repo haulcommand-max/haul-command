@@ -73,6 +73,11 @@ describe("tool registry QA gate", () => {
     const page = readFileSync("app/(public)/tools/page.tsx", "utf8");
 
     expect(page).toContain("isToolVerifiedOpen(tool)");
+    expect(page).toContain("getToolCountsVerified");
+    expect(page).toContain("getToolRenderPackets");
+    expect(page).toContain("getApprovedToolTrustClaims");
+    expect(page).toContain("data-tool-open-allowed");
+    expect(page).toContain("open_tool_block_reason");
     expect(page).toContain("data-tool-card=\"true\"");
     expect(page).toContain("data-tool-cta=\"open\"");
     expect(page).toContain("Registered Concepts");
@@ -81,7 +86,11 @@ describe("tool registry QA gate", () => {
     expect(page).not.toContain("live globally");
 
     const sitemap = readFileSync("app/sitemap.xml/route.ts", "utf8");
-    expect(sitemap).toContain("!String(p.url_path || '').startsWith('/tools/')");
+    expect(sitemap).toContain("getSitemapMasterRows");
+    expect(sitemap).toContain("getSitemapToolEligible");
+    expect(sitemap).toContain("SITEMAP_CHUNK_MAX = 45_000");
+    expect(sitemap).toContain('path.startsWith("/tools/")');
+    expect(sitemap).toContain('changeFreq: "weekly"');
   });
 
   it("ships a crawler audit script that writes the required repair ledgers", () => {

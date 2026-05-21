@@ -1,130 +1,134 @@
-import { NextResponse } from 'next/server';
-import { createPublicClient } from '@/lib/supabase/server';
-import { isToolIndexable, type ToolQaRow } from '@/lib/tools/tool-qa';
+import { NextRequest, NextResponse } from "next/server";
 
-/**
- * WAVE-7 S7-02: Dynamic XML Sitemap Generator
- * Route: /sitemap.xml
- *
- * Sources: seo_page_registry (canonical source of truth)
- * Fallback: direct corridor + profile DB queries if registry is sparse
- * Standards: XML Sitemaps 0.9, changefreq, priority, lastmod
- * Crawl: refreshes every 6 hours via Next.js revalidation
- */
-export const revalidate = 21600; // 6 hours
+import {
+  getSitemapMasterRows,
+  getSitemapToolEligible,
+  siteUrl,
+  type SitemapMasterRow,
+} from "@/lib/tools/tool-substrate";
 
-export async function GET() {
-  const supabase = createPublicClient();
+export const revalidate = 21600;
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://haulcommand.com';
-  const now = new Date().toISOString().split('T')[0];
+const SITEMAP_CHUNK_MAX = 45_000;
 
-  // Fetch all indexed pages from registry
-  const { data: registryPages } = await supabase
-    .from('seo_page_registry')
-    .select('url_path, priority, change_freq, last_published')
-    .eq('noindex', false)
-    .order('last_published', { ascending: false })
-    .limit(50000);
+type SitemapEntry = {
+  url: string;
+  lastMod: string;
+  changeFreq: string;
+  priority?: string;
+};
 
-  // Static core pages
-  const staticPages = [
-    { url: '/', priority: '1.0', changeFreq: 'daily' },
-    { url: '/directory', priority: '0.95', changeFreq: 'hourly' },
-    { url: '/load-board', priority: '0.95', changeFreq: 'hourly' },
-    { url: '/broker', priority: '0.90', changeFreq: 'weekly' },
-    { url: '/advertise', priority: '0.90', changeFreq: 'weekly' },
-    { url: '/advertise/territory', priority: '0.85', changeFreq: 'weekly' },
-    { url: '/advertise/corridor', priority: '0.85', changeFreq: 'weekly' },
-    { url: '/hq', priority: '0.80', changeFreq: 'daily' },
-    { url: '/regulations', priority: '0.85', changeFreq: 'weekly' },
-    { url: '/glossary', priority: '0.80', changeFreq: 'weekly' },
-    { url: '/training', priority: '0.80', changeFreq: 'weekly' },
-    { url: '/tools', priority: '0.75', changeFreq: 'weekly' },
-    { url: '/about', priority: '0.50', changeFreq: 'monthly' },
-    { url: '/contact', priority: '0.50', changeFreq: 'monthly' },
-    { url: '/pricing', priority: '0.70', changeFreq: 'monthly' },
+function xmlEscape(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+function dateOnly(value: string | null | undefined) {
+  if (!value) return new Date().toISOString().slice(0, 10);
+  return value.split("T")[0] || value;
+}
+
+function rowPath(row: SitemapMasterRow) {
+  return row.canonical_url || row.page_url || row.url_path || "";
+}
+
+function absolute(pathOrUrl: string) {
+  if (/^https?:\/\//i.test(pathOrUrl)) return pathOrUrl;
+  return `${siteUrl()}${pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`}`;
+}
+
+function fallbackCoreEntries(): SitemapEntry[] {
+  const now = dateOnly(null);
+  return [
+    { url: `${siteUrl()}/`, lastMod: now, changeFreq: "daily", priority: "1.0" },
+    { url: `${siteUrl()}/tools`, lastMod: now, changeFreq: "weekly", priority: "0.75" },
+    { url: `${siteUrl()}/directory`, lastMod: now, changeFreq: "hourly", priority: "0.95" },
+    { url: `${siteUrl()}/regulations`, lastMod: now, changeFreq: "weekly", priority: "0.85" },
+    { url: `${siteUrl()}/glossary`, lastMod: now, changeFreq: "weekly", priority: "0.80" },
+    { url: `${siteUrl()}/training`, lastMod: now, changeFreq: "weekly", priority: "0.80" },
   ];
+}
 
-  const registryEntries = (registryPages || [])
-    .filter((p: any) => p.url_path !== '/tools' && !String(p.url_path || '').startsWith('/tools/'))
-    .map((p: any) => ({
-      url: `${siteUrl}${p.url_path}`,
-      lastMod: p.last_published ? p.last_published.split('T')[0] : now,
-      changeFreq: p.change_freq,
-      priority: p.priority?.toFixed(2),
+async function buildEntries(): Promise<SitemapEntry[]> {
+  const [masterRows, toolRows] = await Promise.all([
+    getSitemapMasterRows(),
+    getSitemapToolEligible(),
+  ]);
+  const now = dateOnly(null);
+  const masterEntries = masterRows
+    .map((row) => {
+      const path = rowPath(row);
+      if (!path || path.startsWith("/tools/")) return null;
+      return {
+        url: absolute(path),
+        lastMod: dateOnly(row.last_verified_at || row.last_published || row.updated_at),
+        changeFreq: row.change_freq || "weekly",
+        priority: row.priority == null ? undefined : Number(row.priority).toFixed(2),
+      };
+    })
+    .filter(Boolean) as SitemapEntry[];
+
+  const toolEntries = toolRows
+    .filter((row) => row.page_url)
+    .map((row) => ({
+      url: row.canonical_url || absolute(row.page_url || `/tools/${row.slug}`),
+      lastMod: dateOnly(row.last_verified_at || now),
+      changeFreq: "weekly",
+      priority: "0.70",
     }));
 
-  const staticEntries = staticPages.map(p => ({
-    url: `${siteUrl}${p.url}`,
-    lastMod: now,
-    changeFreq: p.changeFreq,
-    priority: p.priority,
-  }));
+  const entries = [...(masterEntries.length ? masterEntries : fallbackCoreEntries()), ...toolEntries];
+  const seen = new Set<string>();
+  return entries.filter((entry) => {
+    if (seen.has(entry.url)) return false;
+    seen.add(entry.url);
+    return true;
+  });
+}
 
-  const { data: verifiedTools } = await supabase
-    .from('hc_tool_registry')
-    .select('page_url, route_status, qa_status, content_status, indexing_status')
-    .not('page_url', 'is', null)
-    .eq('route_status', 200)
-    .eq('qa_status', 'pass')
-    .eq('content_status', 'valid')
-    .in('indexing_status', ['indexable_flagship', 'canonical_child']);
-
-  const toolEntries = ((verifiedTools || []) as ToolQaRow[])
-    .filter(isToolIndexable)
-    .map((t) => ({
-      url: `${siteUrl}${t.page_url}`,
-      lastMod: now,
-      changeFreq: 'weekly',
-      priority: '0.70',
-    }));
-
-  // Dynamically fetch 120-Country Market Hubs
-  const { data: markets } = await supabase
-    .from('mkt_markets')
-    .select('country, target_type');
-    
-  const marketEntries = (markets || [])
-    .filter(m => m.country)
-    .map((m: any) => ({
-      url: `${siteUrl}/${m.country.toLowerCase()}`,
-      lastMod: now,
-      changeFreq: 'weekly',
-      priority: '0.85',
-    }));
-
-  // Dynamically fetch Global Corridors
-  const { data: corridors } = await supabase
-    .from('mkt_corridors')
-    .select('id, origin, destination')
-    .limit(5000); // Batched constraint
-
-  const corridorEntries = (corridors || []).map((c: any) => ({
-      url: `${siteUrl}/corridors/${c.id}`,
-      lastMod: now,
-      changeFreq: 'daily',
-      priority: '0.90',
-  }));
-
-  const allEntries = [...staticEntries, ...registryEntries, ...toolEntries, ...marketEntries, ...corridorEntries];
-
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-${allEntries.map(e => `  <url>
-    <loc>${e.url}</loc>
-    <lastmod>${e.lastMod}</lastmod>
-    <changefreq>${e.changeFreq}</changefreq>
-    <priority>${e.priority}</priority>
-  </url>`).join('\n')}
+function renderUrlset(entries: SitemapEntry[]) {
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${entries.map((entry) => `  <url>
+    <loc>${xmlEscape(entry.url)}</loc>
+    <lastmod>${xmlEscape(entry.lastMod)}</lastmod>
+    <changefreq>${xmlEscape(entry.changeFreq)}</changefreq>${entry.priority ? `
+    <priority>${xmlEscape(entry.priority)}</priority>` : ""}
+  </url>`).join("\n")}
 </urlset>`;
+}
 
-  return new NextResponse(xml, {
+function renderSitemapIndex(totalEntries: number) {
+  const chunks = Math.ceil(totalEntries / SITEMAP_CHUNK_MAX);
+  const now = dateOnly(null);
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${Array.from({ length: chunks }, (_, index) => `  <sitemap>
+    <loc>${xmlEscape(`${siteUrl()}/sitemap.xml?chunk=${index}`)}</loc>
+    <lastmod>${now}</lastmod>
+  </sitemap>`).join("\n")}
+</sitemapindex>`;
+}
+
+export async function GET(request: NextRequest) {
+  const entries = await buildEntries();
+  const chunkParam = request.nextUrl.searchParams.get("chunk");
+  const chunk = chunkParam == null ? null : Number(chunkParam);
+  const body = chunk == null
+    ? entries.length > SITEMAP_CHUNK_MAX
+      ? renderSitemapIndex(entries.length)
+      : renderUrlset(entries)
+    : renderUrlset(entries.slice(chunk * SITEMAP_CHUNK_MAX, (chunk + 1) * SITEMAP_CHUNK_MAX));
+
+  return new NextResponse(body, {
     headers: {
-      'Content-Type': 'application/xml',
-      'Cache-Control': 'public, max-age=21600, s-maxage=21600',
-      'X-Robots-Tag': 'noindex', // sitemap itself should not be indexed as a page
+      "Content-Type": "application/xml",
+      "Cache-Control": "public, max-age=21600, s-maxage=21600",
+      "X-Robots-Tag": "noindex",
     },
   });
 }

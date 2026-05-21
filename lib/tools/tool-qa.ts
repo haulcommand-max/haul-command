@@ -6,6 +6,8 @@ export type ToolQaRow = {
   qa_status?: string | null;
   content_status?: string | null;
   indexing_status?: string | null;
+  open_tool_render_allowed?: boolean | null;
+  open_tool_block_reason?: string | null;
   canonical_tool_slug?: string | null;
   source_confidence?: string | null;
   last_verified_at?: string | null;
@@ -26,6 +28,8 @@ export function isRouteStatusOk(routeStatus: ToolQaRouteStatus): boolean {
 }
 
 export function isToolVerifiedOpen(row: ToolQaRow): boolean {
+  if (typeof row.open_tool_render_allowed === "boolean") return row.open_tool_render_allowed;
+
   return Boolean(
     row.page_url &&
       isRouteStatusOk(row.route_status) &&
@@ -52,6 +56,10 @@ export function isToolIndexable(row: ToolQaRow): boolean {
   );
 }
 
-export function toolCtaLabel(row: ToolQaRow): "Open Tool" | "In Development" {
-  return isToolVerifiedOpen(row) ? "Open Tool" : "In Development";
+export function toolCtaLabel(row: ToolQaRow): "Open Tool" | "In Development" | "Coming Soon" {
+  if (isToolVerifiedOpen(row)) return "Open Tool";
+  if (["placeholder_content", "placeholder_detected", "qa_pending"].includes(String(row.open_tool_block_reason || ""))) {
+    return "Coming Soon";
+  }
+  return "In Development";
 }
