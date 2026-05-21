@@ -107,6 +107,41 @@ const CATEGORY_FILTERS: Record<string, DirectoryCategoryFilter> = {
     entitySubtypes: ["truck_parking", "staging_yard", "industrial_yard"],
     searchTerms: ["truck parking", "staging yard", "laydown yard"],
   },
+  "truck-stops": {
+    entityFamily: "infrastructure",
+    entitySubtypes: ["truck_stop", "fuel_station", "cat_scale_location"],
+    searchTerms: ["truck stop", "fuel stop", "travel center", "scale"],
+  },
+  "rest-areas": {
+    entityFamily: "infrastructure",
+    entitySubtypes: ["rest_area"],
+    searchTerms: ["rest area", "pull off", "rest stop"],
+  },
+  "weigh-stations": {
+    entityFamily: "infrastructure",
+    entitySubtypes: ["weigh_station"],
+    searchTerms: ["weigh station", "scale", "inspection station"],
+  },
+  ports: {
+    entityFamily: "infrastructure",
+    entitySubtypes: ["port", "shipyard", "lng_terminal"],
+    searchTerms: ["port", "cargo gateway", "terminal"],
+  },
+  "rail-intermodal": {
+    entityFamily: "infrastructure",
+    entitySubtypes: ["rail_intermodal", "freight_terminal"],
+    searchTerms: ["rail intermodal", "intermodal terminal", "freight terminal"],
+  },
+  "border-crossings": {
+    entityFamily: "infrastructure",
+    entitySubtypes: ["border_crossing"],
+    searchTerms: ["border crossing", "customs", "cross border"],
+  },
+  tunnels: {
+    entityFamily: "infrastructure",
+    entitySubtypes: ["tunnel", "tunnel_authority"],
+    searchTerms: ["tunnel", "clearance", "tunnel authority"],
+  },
 };
 
 const CATEGORY_SURFACE_VIEWS: Record<string, DirectorySurfaceView[]> = {
@@ -122,6 +157,13 @@ const CATEGORY_SURFACE_VIEWS: Record<string, DirectorySurfaceView[]> = {
   "heavy-haul-carrier": ["v_directory_carriers"],
   "permit-service": ["v_directory_authorities", "v_directory_services"],
   "truck-parking": ["v_directory_support_locations", "v_directory_infrastructure"],
+  "truck-stops": ["v_directory_support_locations", "v_directory_infrastructure"],
+  "rest-areas": ["v_directory_support_locations", "v_directory_infrastructure"],
+  "weigh-stations": ["v_directory_support_locations", "v_directory_infrastructure"],
+  ports: ["v_directory_infrastructure"],
+  "rail-intermodal": ["v_directory_infrastructure"],
+  "border-crossings": ["v_directory_infrastructure", "v_directory_authorities"],
+  tunnels: ["v_directory_infrastructure", "v_directory_authorities"],
 };
 
 const CATEGORY_ALIASES: Record<string, string> = {
@@ -147,6 +189,34 @@ const CATEGORY_ALIASES: Record<string, string> = {
   "staging-yard": "truck-parking",
   "staging-yards": "truck-parking",
   "oversize-parking": "truck-parking",
+  "truck-stop": "truck-stops",
+  "truck-stops": "truck-stops",
+  "travel-center": "truck-stops",
+  "travel-centers": "truck-stops",
+  "fuel-stop": "truck-stops",
+  "fuel-stops": "truck-stops",
+  "cat-scale": "truck-stops",
+  "cat-scales": "truck-stops",
+  "rest-area": "rest-areas",
+  "rest-areas": "rest-areas",
+  "rest-stop": "rest-areas",
+  "rest-stops": "rest-areas",
+  "weigh-station": "weigh-stations",
+  "weigh-stations": "weigh-stations",
+  "scale-weigh-station-public": "weigh-stations",
+  port: "ports",
+  ports: "ports",
+  "rail-intermodal": "rail-intermodal",
+  "intermodal-terminal": "rail-intermodal",
+  "intermodal-terminals": "rail-intermodal",
+  "rail-terminal": "rail-intermodal",
+  "rail-terminals": "rail-intermodal",
+  "border-crossing": "border-crossings",
+  "border-crossings": "border-crossings",
+  tunnel: "tunnels",
+  tunnels: "tunnels",
+  "tunnel-authority": "tunnels",
+  "tunnel-authorities": "tunnels",
 };
 
 const REGION_MAP_BY_COUNTRY: Record<string, Record<string, string>> = {

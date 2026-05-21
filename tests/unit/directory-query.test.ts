@@ -72,6 +72,29 @@ describe("directory fallback query planning", () => {
     });
   });
 
+  it("normalizes route-support assets into the infrastructure family", () => {
+    expect(resolveDirectoryCategoryFilter("truck-stop")).toMatchObject({
+      entityFamily: "infrastructure",
+      entitySubtypes: ["truck_stop", "fuel_station", "cat_scale_location"],
+    });
+    expect(resolveDirectoryCategoryFilter("scale-weigh-station-public")).toMatchObject({
+      entityFamily: "infrastructure",
+      entitySubtypes: ["weigh_station"],
+    });
+    expect(resolveDirectoryCategoryFilter("rest-stop")).toMatchObject({
+      entityFamily: "infrastructure",
+      entitySubtypes: ["rest_area"],
+    });
+    expect(resolveDirectoryCategoryFilter("intermodal-terminal")).toMatchObject({
+      entityFamily: "infrastructure",
+      entitySubtypes: ["rail_intermodal", "freight_terminal"],
+    });
+    expect(resolveDirectoryCategoryFilter("tunnel-authority")).toMatchObject({
+      entityFamily: "infrastructure",
+      entitySubtypes: ["tunnel", "tunnel_authority"],
+    });
+  });
+
   it("keeps the default directory broad enough to include carrier and authority surfaces", () => {
     const surfaces = resolveDirectorySurfaceViews();
 

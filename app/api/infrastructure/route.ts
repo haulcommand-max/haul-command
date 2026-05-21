@@ -2,137 +2,138 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 /**
- * Infrastructure API — Band C Rank 2
- * 
- * Serves infrastructure location data for heavy haul support:
- *   - staging_yards, secure_parking, escort_meetup, oversize_hotels
- *   - installers, truck_repair, equipment_upfitters, route_support
- * 
- * Query params:
- *   - category: filter by infrastructure category
- *   - state: filter by state
- *   - corridor: filter by corridor relevance
- *   - lat/lng/radius: geo proximity search
- *   - limit: max results (default 50)
+ * Infrastructure API - route-support graph.
+ *
+ * Public infrastructure discovery reads the canonical directory_entities
+ * readiness view. Source tables such as truck_stops remain specialized
+ * inputs, not competing public directories.
  */
 
 export const dynamic = 'force-dynamic';
 
-const CATEGORIES = [
-    'staging_yard', 'secure_parking', 'escort_meetup', 'oversize_hotel',
-    'installer', 'truck_repair', 'equipment_upfitter', 'route_support',
-    'permit_support',
-];
+const CATEGORY_SUBTYPES: Record<string, string[]> = {
+  truck_stop: ['truck_stop', 'fuel_station', 'cat_scale_location'],
+  rest_area: ['rest_area'],
+  weigh_station: ['weigh_station'],
+  truck_parking: ['truck_parking', 'staging_yard', 'industrial_yard', 'drop_yard', 'secure_storage', 'escort_staging_zone'],
+  port: ['port', 'shipyard', 'lng_terminal'],
+  rail_intermodal: ['rail_intermodal', 'freight_terminal'],
+  border_crossing: ['border_crossing'],
+  tunnel: ['tunnel', 'tunnel_authority'],
+  truck_repair: ['truck_repair_shop', 'mobile_mechanic', 'tire_service', 'heavy_tow_service', 'truck_wash'],
+};
+
+const CATEGORIES = Object.keys(CATEGORY_SUBTYPES);
+
+function categoryForSubtype(subtype: string | null | undefined) {
+  const value = subtype || '';
+  return Object.entries(CATEGORY_SUBTYPES).find(([, subtypes]) => subtypes.includes(value))?.[0] || value || 'infrastructure';
+}
+
+function serviceLabels(row: any) {
+  return [
+    row.restrooms_available && 'Restrooms',
+    row.wifi_available && 'WiFi',
+    row.overnight_allowed && 'Overnight',
+    row.security_presence && row.security_presence !== 'unknown' && 'Security notes',
+    row.open_status && row.open_status !== 'unknown' && `Status: ${row.open_status}`,
+    row.approved_report_count > 0 && `${row.approved_report_count} field reports`,
+  ].filter(Boolean);
+}
 
 export async function GET(request: NextRequest) {
-    const { searchParams } = new URL(request.url);
-    const category = searchParams.get('category');
-    const state = searchParams.get('state');
-    const corridor = searchParams.get('corridor');
-    const limit = Math.min(parseInt(searchParams.get('limit') || '50'), 100);
+  const { searchParams } = new URL(request.url);
+  const category = searchParams.get('category');
+  const state = searchParams.get('state');
+  const corridor = searchParams.get('corridor');
+  const limit = Math.min(parseInt(searchParams.get('limit') || '50', 10), 100);
 
-    try {
-        const supabase = getSupabaseAdmin();
+  try {
+    const supabase = getSupabaseAdmin();
+    const categorySubtypes = category ? CATEGORY_SUBTYPES[category] : null;
 
-        // Try to query truck_stops table if it exists (existing infrastructure)
-        let locations: any[] = [];
-        let totalCount = 0;
+    let query = supabase
+      .from('v_hc_public_infrastructure_readiness')
+      .select(`
+        entity_id,
+        hc_id,
+        entity_subtype,
+        entity_family,
+        name,
+        display_name,
+        city,
+        admin1_code,
+        country_code,
+        claim_status,
+        is_claimable,
+        approved_report_count,
+        last_observed_at,
+        safety_rating,
+        cleanliness_rating,
+        lighting_rating,
+        open_status,
+        wifi_available,
+        restrooms_available,
+        overnight_allowed,
+        security_presence,
+        latest_oversized_access_notes,
+        latest_hazard_notes,
+        latest_amenity_notes,
+        readiness_state,
+        steward_claim_route
+      `, { count: 'exact' })
+      .limit(limit);
 
-        // Query existing truck_stops
-        try {
-            let query = supabase
-                .from('truck_stops')
-                .select('*', { count: 'exact' })
-                .limit(limit);
-
-            if (state) {
-                query = query.eq('region_code', state.toUpperCase());
-            }
-
-            const { data, count, error } = await query;
-            if (!error && data) {
-                locations = data.map((ts: any) => ({
-                    id: ts.id,
-                    name: ts.name,
-                    category: 'staging_yard',
-                    address: ts.address || '',
-                    city: ts.city || '',
-                    state: ts.region_code || '',
-                    lat: ts.latitude,
-                    lng: ts.longitude,
-                    is_claimed: false,
-                    is_verified: false,
-                    services: [
-                        ts.has_parking && 'Parking',
-                        ts.has_showers && 'Showers',
-                        ts.has_scales && 'Scales',
-                        ts.has_wifi && 'WiFi',
-                    ].filter(Boolean),
-                    fuel_lanes: ts.fuel_lanes || 0,
-                    oversize_friendly: ts.oversize_parking || false,
-                }));
-                totalCount = count || 0;
-            }
-        } catch { /* table may not exist */ }
-
-        // Query hotels if category matches
-        if (!category || category === 'oversize_hotel') {
-            try {
-                let hotelQuery = supabase
-                    .from('hotels')
-                    .select('*', { count: 'exact' })
-                    .limit(limit);
-
-                if (state) hotelQuery = hotelQuery.eq('state', state.toUpperCase());
-
-                const { data: hotels, count: hotelCount } = await hotelQuery;
-                if (hotels) {
-                    const mappedHotels = hotels.map((h: any) => ({
-                        id: h.id,
-                        name: h.name,
-                        category: 'oversize_hotel',
-                        address: h.address || '',
-                        city: h.city || '',
-                        state: h.state || '',
-                        lat: h.latitude,
-                        lng: h.longitude,
-                        is_claimed: false,
-                        is_verified: false,
-                        services: [
-                            h.oversize_parking && 'Oversize Parking',
-                            h.pet_friendly && 'Pet Friendly',
-                            h.restaurant && 'Restaurant',
-                        ].filter(Boolean),
-                        oversize_friendly: h.oversize_parking || false,
-                    }));
-                    locations = [...locations, ...mappedHotels];
-                    totalCount += hotelCount || 0;
-                }
-            } catch { /* table may not exist */ }
-        }
-
-        // Filter by category if specified
-        if (category && CATEGORIES.includes(category)) {
-            locations = locations.filter(l => l.category === category);
-        }
-
-        // Return categorized summary
-        const categorySummary: Record<string, number> = {};
-        locations.forEach(l => {
-            categorySummary[l.category] = (categorySummary[l.category] || 0) + 1;
-        });
-
-        return NextResponse.json({
-            locations: locations.slice(0, limit),
-            total: totalCount,
-            categories: CATEGORIES,
-            category_summary: categorySummary,
-            filters: { category, state, corridor },
-        });
-    } catch (error: any) {
-        return NextResponse.json(
-            { error: 'Infrastructure query failed', details: error?.message },
-            { status: 500 },
-        );
+    if (state) {
+      query = query.eq('admin1_code', state.toUpperCase());
     }
+
+    if (categorySubtypes) {
+      query = query.in('entity_subtype', categorySubtypes);
+    }
+
+    const { data, count, error } = await query;
+    if (error) throw error;
+
+    const locations = (data || []).map((row: any) => ({
+      id: row.entity_id,
+      hc_id: row.hc_id,
+      name: row.display_name || row.name,
+      category: categoryForSubtype(row.entity_subtype),
+      entity_subtype: row.entity_subtype,
+      city: row.city || '',
+      state: row.admin1_code || '',
+      country_code: row.country_code,
+      is_claimed: ['claimed', 'verified'].includes(String(row.claim_status || '')),
+      is_claimable: row.is_claimable,
+      services: serviceLabels(row),
+      oversize_friendly: Boolean(row.latest_oversized_access_notes || row.overnight_allowed),
+      readiness_state: row.readiness_state,
+      safety_rating: row.safety_rating,
+      lighting_rating: row.lighting_rating,
+      open_status: row.open_status,
+      oversized_access_notes: row.latest_oversized_access_notes,
+      hazard_notes: row.latest_hazard_notes,
+      steward_claim_route: row.steward_claim_route,
+    }));
+
+    const categorySummary: Record<string, number> = {};
+    locations.forEach((location) => {
+      categorySummary[location.category] = (categorySummary[location.category] || 0) + 1;
+    });
+
+    return NextResponse.json({
+      locations,
+      total: count || locations.length,
+      categories: CATEGORIES,
+      category_summary: categorySummary,
+      filters: { category, state, corridor },
+      source: 'v_hc_public_infrastructure_readiness',
+    });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: 'Infrastructure query failed', details: error?.message },
+      { status: 500 },
+    );
+  }
 }
