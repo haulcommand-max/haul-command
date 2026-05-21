@@ -1,6 +1,13 @@
 import React from 'react';
+import type { Metadata } from 'next';
 import ToolsSidebar from "@/components/tools/ToolsSidebar";
 import RelatedLinks from '@/components/seo/RelatedLinks';
+
+export const metadata: Metadata = {
+    title: 'Cost Calculator | Haul Command',
+    description: 'Planning placeholder for future oversize load cost calculator coverage.',
+    robots: { index: false, follow: false },
+};
 
 export default function CostCalculatorPage() {
     return (

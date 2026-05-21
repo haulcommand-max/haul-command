@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'Railroad Grade Crossing Profiler | Haul Command',
     description: 'Avoid high-center accidents using route ground clearance profiles.',
+    robots: { index: false, follow: false },
 };
 
 export default function RailroadProfilerPending() {

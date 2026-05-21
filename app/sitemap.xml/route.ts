@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createPublicClient } from '@/lib/supabase/server';
+import { isToolIndexable, type ToolQaRow } from '@/lib/tools/tool-qa';
 
 /**
  * WAVE-7 S7-02: Dynamic XML Sitemap Generator
@@ -45,12 +46,14 @@ export async function GET() {
     { url: '/pricing', priority: '0.70', changeFreq: 'monthly' },
   ];
 
-  const registryEntries = (registryPages || []).map((p: any) => ({
-    url: `${siteUrl}${p.url_path}`,
-    lastMod: p.last_published ? p.last_published.split('T')[0] : now,
-    changeFreq: p.change_freq,
-    priority: p.priority?.toFixed(2),
-  }));
+  const registryEntries = (registryPages || [])
+    .filter((p: any) => p.url_path !== '/tools' && !String(p.url_path || '').startsWith('/tools/'))
+    .map((p: any) => ({
+      url: `${siteUrl}${p.url_path}`,
+      lastMod: p.last_published ? p.last_published.split('T')[0] : now,
+      changeFreq: p.change_freq,
+      priority: p.priority?.toFixed(2),
+    }));
 
   const staticEntries = staticPages.map(p => ({
     url: `${siteUrl}${p.url}`,
@@ -58,6 +61,24 @@ export async function GET() {
     changeFreq: p.changeFreq,
     priority: p.priority,
   }));
+
+  const { data: verifiedTools } = await supabase
+    .from('hc_tool_registry')
+    .select('page_url, route_status, qa_status, content_status, indexing_status')
+    .not('page_url', 'is', null)
+    .eq('route_status', 200)
+    .eq('qa_status', 'pass')
+    .eq('content_status', 'valid')
+    .in('indexing_status', ['indexable_flagship', 'canonical_child']);
+
+  const toolEntries = ((verifiedTools || []) as ToolQaRow[])
+    .filter(isToolIndexable)
+    .map((t) => ({
+      url: `${siteUrl}${t.page_url}`,
+      lastMod: now,
+      changeFreq: 'weekly',
+      priority: '0.70',
+    }));
 
   // Dynamically fetch 120-Country Market Hubs
   const { data: markets } = await supabase
@@ -86,7 +107,7 @@ export async function GET() {
       priority: '0.90',
   }));
 
-  const allEntries = [...staticEntries, ...registryEntries, ...marketEntries, ...corridorEntries];
+  const allEntries = [...staticEntries, ...registryEntries, ...toolEntries, ...marketEntries, ...corridorEntries];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"

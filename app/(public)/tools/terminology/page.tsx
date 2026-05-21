@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'Dynamic Terminology Switcher | Haul Command',
     description: 'Region-aware localization converting industry terms for priority markets.',
+    robots: { index: false, follow: false },
 };
 
 export default function TerminologyPending() {

@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'CRC Black Box Recorder | Haul Command',
     description: 'Voice recording and transcription for critical operational commands.',
+    robots: { index: false, follow: false },
 };
 
 export default function CRCRecorderPending() {

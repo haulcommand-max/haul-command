@@ -4,13 +4,31 @@ import { createClient } from '@supabase/supabase-js';
 import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import '@/components/ai-search/answer-block.css';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
+import {
+  isToolSchemaEligible,
+  isToolVerifiedOpen,
+  toolCtaLabel,
+  type ToolQaRow,
+} from '@/lib/tools/tool-qa';
+import { STATIC_TOOL_CONCEPTS } from '@/lib/tools/static-tool-concepts';
 
 export const revalidate = 3600;
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+async function loadRegistryTools(): Promise<Tool[]> {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !serviceRoleKey) return STATIC_TOOL_CONCEPTS as Tool[];
+
+  const supabase = createClient(supabaseUrl, serviceRoleKey);
+  const { data: tools } = await supabase
+    .from('hc_tool_registry')
+    .select('*')
+    .neq('status', 'internal_only')
+    .order('name');
+
+  return ((tools?.length ? tools : STATIC_TOOL_CONCEPTS) ?? []) as Tool[];
+}
 
 const FAMILIES: Record<string, { label: string; desc: string; icon: string; color: string }> = {
   rates:          { label: 'Rates & Pricing',          desc: 'Benchmarks, cost calculators, and margin tools for every move.',                icon: '\u{1F4B2}', color: '#22c55e' },
@@ -29,13 +47,14 @@ const FAMILIES: Record<string, { label: string; desc: string; icon: string; colo
 };
 
 const STATUS_BADGE: Record<string, { label: string; bg: string; text: string; border: string }> = {
-  live_global:   { label: 'Available \u2014 120 Countries', bg: 'rgba(34,197,94,0.12)',  text: '#4ade80', border: 'rgba(34,197,94,0.3)' },
-  live_selected: { label: 'Available \u2014 Select Markets', bg: 'rgba(59,130,246,0.12)', text: '#60a5fa', border: 'rgba(59,130,246,0.3)' },
-  beta:          { label: 'Beta',                   bg: 'rgba(245,158,11,0.12)', text: '#fbbf24', border: 'rgba(245,158,11,0.3)' },
+  verified:      { label: 'Verified Live',          bg: 'rgba(34,197,94,0.12)',  text: '#4ade80', border: 'rgba(34,197,94,0.3)' },
+  live_global:   { label: 'Registered Concept',     bg: 'rgba(59,130,246,0.10)', text: '#93c5fd', border: 'rgba(59,130,246,0.22)' },
+  live_selected: { label: 'Registered Concept',     bg: 'rgba(59,130,246,0.10)', text: '#93c5fd', border: 'rgba(59,130,246,0.22)' },
+  beta:          { label: 'Beta / QA Pending',      bg: 'rgba(245,158,11,0.12)', text: '#fbbf24', border: 'rgba(245,158,11,0.3)' },
   coming_soon:   { label: 'Coming Soon',            bg: 'rgba(148,163,184,0.08)', text: '#94a3b8', border: 'rgba(148,163,184,0.15)' },
 };
 
-interface Tool {
+interface Tool extends ToolQaRow {
   slug: string;
   name: string;
   status: string;
@@ -66,13 +85,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ToolsPage() {
-  const { data: tools } = await supabase
-    .from('hc_tool_registry')
-    .select('slug, name, status, page_url, family, category, short_desc, tier, coverage_scope, is_free, requires_login, primary_audience')
-    .neq('status', 'internal_only')
-    .order('name');
-
-  const allTools: Tool[] = (tools ?? []) as Tool[];
+  const allTools = await loadRegistryTools();
 
   const grouped: Record<string, Tool[]> = {};
   for (const t of allTools) {
@@ -86,27 +99,28 @@ export default async function ToolsPage() {
   }
 
   const familyOrder = Object.keys(grouped).sort((a, b) => {
-    const aLive = grouped[a].filter(t => t.status !== 'coming_soon').length;
-    const bLive = grouped[b].filter(t => t.status !== 'coming_soon').length;
+    const aLive = grouped[a].filter(isToolVerifiedOpen).length;
+    const bLive = grouped[b].filter(isToolVerifiedOpen).length;
     if (bLive !== aLive) return bLive - aLive;
     return grouped[b].length - grouped[a].length;
   });
 
   const totalTools = allTools.length;
-  const liveCount = allTools.filter(t => t.status === 'live_global' || t.status === 'live_selected').length;
+  const verifiedLiveCount = allTools.filter(isToolVerifiedOpen).length;
   const betaCount = allTools.filter(t => t.status === 'beta').length;
+  const comingSoonCount = allTools.filter(t => t.status === 'coming_soon').length;
   const familyCount = familyOrder.length;
 
-  const liveTools = allTools.filter(t => t.page_url);
+  const schemaTools = allTools.filter(isToolSchemaEligible);
   const toolsSchema = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'Haul Command Tools & Calculators',
-    description: `${totalTools} free heavy haul logistics tools across ${familyCount} families.`,
+    description: `${totalTools} registered heavy haul logistics tool concepts across ${familyCount} families. Verified live tools require route and content QA.`,
     url: 'https://www.haulcommand.com/tools',
     mainEntity: {
       '@type': 'ItemList',
-      itemListElement: liveTools.map((t, i) => ({
+      itemListElement: schemaTools.map((t, i) => ({
         '@type': 'ListItem', position: i + 1, name: t.name,
         url: `https://www.haulcommand.com${t.page_url}`,
       })),
@@ -143,10 +157,12 @@ export default async function ToolsPage() {
           {/* Stats */}
           <div style={{ display: 'flex', gap: 24, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 40 }}>
             {[
-              { val: totalTools, label: 'Total Tools' },
-              { val: `${liveCount + betaCount}`, label: 'Available & Beta' },
+              { val: totalTools, label: 'Registered Concepts' },
+              { val: verifiedLiveCount, label: 'Verified Live' },
+              { val: betaCount, label: 'Beta / QA Pending' },
+              { val: comingSoonCount, label: 'Coming Soon' },
               { val: familyCount, label: 'Families' },
-              { val: '120', label: 'Countries' },
+              { val: 'Global', label: 'Country Framework' },
             ].map(s => (
               <div key={s.label} style={{ padding: '12px 20px', borderRadius: 12, background: 'rgba(198,146,58,0.06)', border: '1px solid rgba(198,146,58,0.15)' }}>
                 <div style={{ fontSize: 24, fontWeight: 800, color: '#C6923A' }}>{s.val}</div>
@@ -160,7 +176,7 @@ export default async function ToolsPage() {
             {familyOrder.map(fam => {
               const meta = FAMILIES[fam];
               if (!meta) return null;
-              const liveCnt = grouped[fam].filter(t => t.status !== 'coming_soon').length;
+              const liveCnt = grouped[fam].filter(isToolVerifiedOpen).length;
               return (
                 <a key={fam} href={`#family-${fam}`} style={{
                   display: 'inline-flex', alignItems: 'center', gap: 6,
@@ -201,9 +217,24 @@ export default async function ToolsPage() {
                 {activeTools.length > 0 && (
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16, marginBottom: comingSoonTools.length > 0 ? 20 : 0 }}>
                     {activeTools.map(tool => {
-                      const badge = STATUS_BADGE[tool.status] || STATUS_BADGE.coming_soon;
+                      const isOpen = isToolVerifiedOpen(tool);
+                      const ctaLabel = toolCtaLabel(tool);
+                      const badge = isOpen ? STATUS_BADGE.verified : (STATUS_BADGE[tool.status] || STATUS_BADGE.coming_soon);
                       return (
-                        <div key={tool.slug} className="hc-tool-card" style={{ background: '#141820', borderRadius: 16, padding: 24, border: '1px solid #1e2530', transition: 'border-color 0.2s, transform 0.2s' }}>
+                        <div
+                          key={tool.slug}
+                          className="hc-tool-card"
+                          data-tool-card="true"
+                          data-tool-slug={tool.slug}
+                          data-tool-family={tool.family}
+                          data-tool-status={tool.status}
+                          data-tool-route-status={tool.route_status ?? ''}
+                          data-tool-qa-status={tool.qa_status ?? ''}
+                          data-tool-content-status={tool.content_status ?? ''}
+                          data-tool-indexing-status={tool.indexing_status ?? ''}
+                          data-tool-href={isOpen ? tool.page_url ?? '' : ''}
+                          style={{ background: '#141820', borderRadius: 16, padding: 24, border: '1px solid #1e2530', transition: 'border-color 0.2s, transform 0.2s' }}
+                        >
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                             <span style={{ fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 6, background: badge.bg, color: badge.text, border: `1px solid ${badge.border}`, letterSpacing: '0.04em' }}>
                               {badge.label}
@@ -216,23 +247,23 @@ export default async function ToolsPage() {
                           <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.6, margin: '0 0 16px', minHeight: 40 }}>
                             {tool.short_desc || 'Free heavy haul intelligence tool.'}
                           </p>
-                          {tool.page_url ? (
-                            <Link href={tool.page_url} style={{
+                          {isOpen && tool.page_url ? (
+                            <Link href={tool.page_url} data-tool-cta="open" style={{
                               display: 'inline-flex', alignItems: 'center', gap: 6,
                               padding: '10px 20px', borderRadius: 10, fontSize: 13, fontWeight: 700,
                               background: 'rgba(198,146,58,0.12)', color: '#C6923A',
                               border: '1px solid rgba(198,146,58,0.25)', textDecoration: 'none',
                             }}>
-                              Open Tool &rarr;
+                              {ctaLabel} &rarr;
                             </Link>
                           ) : (
-                            <span style={{
+                            <span data-tool-cta="blocked" style={{
                               display: 'inline-flex', alignItems: 'center', gap: 6,
                               padding: '10px 20px', borderRadius: 10, fontSize: 13, fontWeight: 700,
                               background: 'rgba(148,163,184,0.06)', color: '#64748b',
                               border: '1px solid rgba(148,163,184,0.1)',
                             }}>
-                              In Development
+                              {ctaLabel}
                             </span>
                           )}
                         </div>
@@ -249,10 +280,22 @@ export default async function ToolsPage() {
                     </summary>
                     <div style={{ padding: '8px 20px 16px', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 8 }}>
                       {comingSoonTools.map(tool => (
-                        <div key={tool.slug} style={{ padding: '10px 14px', borderRadius: 8, background: 'rgba(148,163,184,0.04)', border: '1px solid rgba(148,163,184,0.06)' }}>
+                        <div
+                          key={tool.slug}
+                          data-tool-card="true"
+                          data-tool-slug={tool.slug}
+                          data-tool-family={tool.family}
+                          data-tool-status={tool.status}
+                          data-tool-route-status={tool.route_status ?? ''}
+                          data-tool-qa-status={tool.qa_status ?? ''}
+                          data-tool-content-status={tool.content_status ?? ''}
+                          data-tool-indexing-status={tool.indexing_status ?? ''}
+                          data-tool-href=""
+                          style={{ padding: '10px 14px', borderRadius: 8, background: 'rgba(148,163,184,0.04)', border: '1px solid rgba(148,163,184,0.06)' }}
+                        >
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <span style={{ fontSize: 13, fontWeight: 700, color: '#94a3b8' }}>{tool.name}</span>
-                            <span style={{ fontSize: 9, fontWeight: 600, padding: '2px 7px', borderRadius: 4, background: 'rgba(148,163,184,0.08)', color: '#64748b', letterSpacing: '0.03em' }}>
+                            <h3 style={{ fontSize: 13, fontWeight: 700, color: '#94a3b8', margin: 0 }}>{tool.name}</h3>
+                            <span data-tool-cta="blocked" style={{ fontSize: 9, fontWeight: 600, padding: '2px 7px', borderRadius: 4, background: 'rgba(148,163,184,0.08)', color: '#64748b', letterSpacing: '0.03em' }}>
                               Soon
                             </span>
                           </div>
@@ -306,7 +349,7 @@ export default async function ToolsPage() {
         <section style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 24px' }}>
           <StaticAnswerBlock
             question="What tools does Haul Command offer for heavy haul logistics?"
-            answer={`Haul Command provides ${totalTools} tools across ${familyCount} families for heavy haul logistics, with ${liveCount} live globally and ${betaCount} in beta. Categories include: ${faqCatText}. Tool coverage varies by market and no login is required for public calculators.`}
+            answer={`Haul Command tracks ${totalTools} registered tool concepts across ${familyCount} heavy-haul families. Only tools that pass route, content, and indexing QA are marked verified live; beta and unverified concepts stay gated until their pages work. Categories include: ${faqCatText}. Tool coverage varies by market and no login is required for verified public calculators.`}
             confidence="partially_verified"
             ctaLabel="Browse All Tools"
             ctaUrl="/tools"
@@ -319,7 +362,7 @@ export default async function ToolsPage() {
             { href: '/directory', icon: '\u{1F50D}', title: 'Find Verified Escorts', desc: 'Search by state and specialty', primary: true, color: '#D4A844' },
             { href: '/claim', icon: '\u2713', title: 'Claim Your Listing', desc: 'Free for operators', primary: true, color: '#22C55E' },
             { href: '/escort-requirements', icon: '\u2696', title: 'State Escort Rules', desc: 'Requirements by state' },
-            { href: '/regulations', icon: '\u{1F310}', title: 'Global Regulations', desc: '120 country rules' },
+            { href: '/regulations', icon: '\u{1F310}', title: 'Global Regulations', desc: 'Source-backed rule library' },
             { href: '/glossary/pilot-car', icon: '\u{1F4D6}', title: 'Pilot Car Glossary', desc: 'Terms and definitions' },
             { href: '/available-now', icon: '\u{1F7E2}', title: 'Available Now', desc: 'Operators broadcasting live' },
           ]}

@@ -14,6 +14,7 @@
         "typecheck:go-live": "tsc -p tsconfig.go-live.json --noEmit --pretty false",
         "audit:platform-readiness": "node scripts/audit-platform-readiness.mjs --write",
         "audit:media-governance": "node scripts/audit-media-governance.mjs --write",
+        "audit:tools": "node scripts/audit-tools.mjs",
         "media:starter-packets": "node scripts/media/generate-video-packets.mjs --write",
         "media:render-starter": "node scripts/media/render-starter-video.mjs",
         "discovery:work-queue": "node scripts/discovery/run-work-queue.mjs",

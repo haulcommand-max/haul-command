@@ -1,0 +1,37 @@
+name: Tools QA Gate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  tools-qa-source-gate:
+    name: Tools registry QA source gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --legacy-peer-deps
+      - run: npm test -- tests/unit/tool-qa-gate.test.ts tests/unit/escort-requirement-checker-routing.test.ts
+      - run: node --check scripts/audit-tools.mjs
+      - run: npm run build
+      - name: Run tools crawler audit
+        shell: bash
+        run: |
+          npm exec next -- start -p 3005 > /tmp/haul-command-tools-next.log 2>&1 &
+          SERVER_PID=$!
+          trap "kill $SERVER_PID" EXIT
+          for i in {1..45}; do
+            if curl -fsS http://127.0.0.1:3005/tools > /dev/null; then
+              npm run audit:tools -- --base-url=http://127.0.0.1:3005
+              exit $?
+            fi
+            sleep 2
+          done
+          cat /tmp/haul-command-tools-next.log
+          exit 1

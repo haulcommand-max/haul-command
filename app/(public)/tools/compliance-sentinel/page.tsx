@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'Geo-Fenced Compliance Sentinel | Haul Command',
     description: 'Real-time GPS-based compliance monitoring for escort vehicles.',
+    robots: { index: false, follow: false },
 };
 
 export default function ComplianceSentinelPending() {
@@ -19,7 +20,7 @@ export default function ComplianceSentinelPending() {
                 </div>
                 <p style={{ fontSize: 16, color: '#9ca3af', lineHeight: 1.6, marginBottom: 40 }}>
                     Real-time GPS-based compliance monitoring. Cross-references vehicle position against jurisdiction rules to detect violations before fines.
-                    This tool is currently being provisioned for the global global expansion.
+                    This tool is currently being provisioned for the global expansion.
                 </p>
                 <Link aria-label="Navigation Link" href="/tools" style={{
                     display: 'inline-block', padding: '12px 24px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',

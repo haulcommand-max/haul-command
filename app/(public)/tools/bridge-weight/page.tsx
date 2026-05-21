@@ -6,6 +6,7 @@ export const metadata: Metadata = {
     title: 'Bridge Weight Overlay | Heavy Haul Route Planning | Haul Command',
     description: 'Cross-reference axle weight against bridge load capacity ratings along your oversize route. NBI and DOT bridge data for heavy haul planning.',
     alternates: { canonical: 'https://haulcommand.com/tools/bridge-weight' },
+    robots: { index: false, follow: false },
 };
 
 export default function BridgeWeightPending() {
