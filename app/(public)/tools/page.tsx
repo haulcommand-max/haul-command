@@ -5,7 +5,10 @@ import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import '@/components/ai-search/answer-block.css';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
 
-export const revalidate = 3600;
+// This page is controlled by the live registry audit gate. Do not prerender it:
+// stale static output can re-expose hidden tools after the DB quarantines them.
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
