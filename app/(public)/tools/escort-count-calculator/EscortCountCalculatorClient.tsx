@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import type { ChangeEvent } from 'react';
 import { useMemo, useState } from 'react';
 import {
   calculateEscortCount,
@@ -26,24 +25,41 @@ const MATRIX = [
   { trigger: 'Superload-like size or weight', action: 'Plan route survey, agency review, and possible police escort.' },
 ];
 
+const FAQ_ITEMS = [
+  {
+    question: 'How many pilot cars does an oversize load need?',
+    answer:
+      'Pilot car count depends on width, height, length, route context, and permit conditions. A common planning pattern is one escort near the first width threshold, front and rear escorts at higher widths, high-pole support for tall loads, and police or traffic control for superload-like moves.',
+  },
+  {
+    question: 'Does a high-pole car count as an escort vehicle?',
+    answer:
+      'A high-pole car is usually an escort vehicle assigned to vertical clearance screening. Whether it counts as the required lead escort depends on the permit and jurisdiction.',
+  },
+  {
+    question: 'Can this replace the issued permit?',
+    answer:
+      'No. This calculator is a planning screen. The issued permit, route survey, and agency instructions control the final escort and traffic-control requirements.',
+  },
+];
+
 function formatNumber(value: number) {
   return new Intl.NumberFormat('en-US').format(value);
 }
 
-function numberFieldValue(value: number, setter: (value: number) => void) {
-  return {
-    value,
-    onChange: (event: ChangeEvent<HTMLInputElement>) => setter(Number(event.target.value)),
-  };
+function parseInput(value: string, fallback: number) {
+  if (value.trim() === '') return fallback;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
 }
 
 export function EscortCountCalculatorClient() {
   const [jurisdiction, setJurisdiction] = useState<OversizeJurisdictionCode>('US');
   const [roadContext, setRoadContext] = useState<EscortRoadContext>('interstate');
-  const [widthFeet, setWidthFeet] = useState(12);
-  const [heightFeet, setHeightFeet] = useState(14);
-  const [lengthFeet, setLengthFeet] = useState(80);
-  const [grossWeightLbs, setGrossWeightLbs] = useState(90000);
+  const [widthFeet, setWidthFeet] = useState('12');
+  const [heightFeet, setHeightFeet] = useState('14');
+  const [lengthFeet, setLengthFeet] = useState('80');
+  const [grossWeightLbs, setGrossWeightLbs] = useState('90000');
   const [hazmat, setHazmat] = useState(false);
 
   const result = useMemo(
@@ -51,10 +67,10 @@ export function EscortCountCalculatorClient() {
       calculateEscortCount({
         jurisdiction,
         roadContext,
-        widthFeet,
-        heightFeet,
-        lengthFeet,
-        grossWeightLbs,
+        widthFeet: parseInput(widthFeet, 1),
+        heightFeet: parseInput(heightFeet, 1),
+        lengthFeet: parseInput(lengthFeet, 1),
+        grossWeightLbs: parseInput(grossWeightLbs, 1),
         hazmat,
       }),
     [grossWeightLbs, hazmat, heightFeet, jurisdiction, lengthFeet, roadContext, widthFeet],
@@ -121,10 +137,10 @@ export function EscortCountCalculatorClient() {
               </label>
 
               {[
-                { label: 'Width (ft)', min: 1, step: 0.1, props: numberFieldValue(widthFeet, setWidthFeet) },
-                { label: 'Height (ft)', min: 1, step: 0.1, props: numberFieldValue(heightFeet, setHeightFeet) },
-                { label: 'Overall length (ft)', min: 1, step: 1, props: numberFieldValue(lengthFeet, setLengthFeet) },
-                { label: 'Gross weight (lb)', min: 1, step: 1000, props: numberFieldValue(grossWeightLbs, setGrossWeightLbs) },
+                { label: 'Width (ft)', value: widthFeet, set: setWidthFeet, min: 1, step: 0.1 },
+                { label: 'Height (ft)', value: heightFeet, set: setHeightFeet, min: 1, step: 0.1 },
+                { label: 'Overall length (ft)', value: lengthFeet, set: setLengthFeet, min: 1, step: 1 },
+                { label: 'Gross weight (lb)', value: grossWeightLbs, set: setGrossWeightLbs, min: 1, step: 1000 },
               ].map((field) => (
                 <label key={field.label} className="block">
                   <span className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-gray-500">{field.label}</span>
@@ -132,7 +148,8 @@ export function EscortCountCalculatorClient() {
                     type="number"
                     min={field.min}
                     step={field.step}
-                    {...field.props}
+                    value={field.value}
+                    onChange={(event) => field.set(event.target.value)}
                     className="w-full rounded-xl border border-white/10 bg-[#0B0F14] px-3 py-3 text-sm text-white outline-none focus:border-[#F1A91B]"
                   />
                 </label>
@@ -158,10 +175,10 @@ export function EscortCountCalculatorClient() {
                   key={preset.label}
                   type="button"
                   onClick={() => {
-                    setWidthFeet(preset.widthFeet);
-                    setHeightFeet(preset.heightFeet);
-                    setLengthFeet(preset.lengthFeet);
-                    setGrossWeightLbs(preset.grossWeightLbs);
+                    setWidthFeet(String(preset.widthFeet));
+                    setHeightFeet(String(preset.heightFeet));
+                    setLengthFeet(String(preset.lengthFeet));
+                    setGrossWeightLbs(String(preset.grossWeightLbs));
                   }}
                   className="rounded-xl border border-white/[0.08] bg-[#0B0F14] px-3 py-3 text-left text-sm text-gray-300 hover:border-[#F1A91B]/40 hover:text-white"
                 >
@@ -261,6 +278,18 @@ export function EscortCountCalculatorClient() {
                   ))}
                 </tbody>
               </table>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-white/[0.08] bg-[#111827] p-6">
+            <h2 className="mb-4 text-sm font-black uppercase tracking-wider">Escort Count FAQs</h2>
+            <div className="space-y-3">
+              {FAQ_ITEMS.map((item) => (
+                <details key={item.question} className="rounded-xl border border-white/[0.06] bg-[#0B0F14] p-4">
+                  <summary className="cursor-pointer text-sm font-bold text-white">{item.question}</summary>
+                  <p className="mt-3 text-sm leading-relaxed text-gray-400">{item.answer}</p>
+                </details>
+              ))}
             </div>
           </div>
 
