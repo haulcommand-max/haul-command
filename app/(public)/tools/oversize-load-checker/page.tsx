@@ -21,7 +21,7 @@ const SCHEMA = {
 
 export default function OversizeLoadCheckerPage() {
   return (
-    <div className="min-h-screen bg-[#0B0F14] text-white">
+    <div data-hc-topic-hero="manual" className="min-h-screen bg-[#0B0F14] text-white">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(SCHEMA) }} />
 
       {/* Command Surface Hero */}
