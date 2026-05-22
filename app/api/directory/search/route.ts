@@ -153,7 +153,14 @@ export async function GET(req: NextRequest) {
 
     hcQuery = hcQuery.range(startRange, endRange);
 
-    const { data: hcData, count: hcCount } = await hcQuery;
+    const { data: hcData, count: hcCount, error: hcError } = await hcQuery;
+    if (hcError) {
+      console.error('[directory-search] hc_places query failed:', hcError);
+      return NextResponse.json(
+        { error: 'Directory search failed to load places', source: 'hc_places' },
+        { status: 502 }
+      );
+    }
 
     // ═══ Available Now: fetch live operator IDs ═══
     let liveOperatorIds: Set<string> | null = null;
@@ -247,7 +254,14 @@ export async function GET(req: NextRequest) {
       }
 
       opQuery = opQuery.range(startRange, endRange);
-      const { data: opData, count: opTotal } = await opQuery;
+      const { data: opData, count: opTotal, error: opError } = await opQuery;
+      if (opError) {
+        console.error('[directory-search] hc_global_operators query failed:', opError);
+        return NextResponse.json(
+          { error: 'Directory search failed to load operators', source: 'hc_global_operators' },
+          { status: 502 }
+        );
+      }
       opCount = opTotal ?? 0;
 
       opResults = (opData || []).map((op: any, index: number) => ({
