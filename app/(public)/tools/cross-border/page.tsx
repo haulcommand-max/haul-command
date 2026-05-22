@@ -37,7 +37,7 @@ export default function CrossBorderCommandCenter() {
   ];
 
   return (
-    <div className=" bg-hc-bg text-hc-text font-display flex flex-col pt-[80px]">
+    <div data-hc-topic-hero="manual" className=" bg-hc-bg text-hc-text font-display flex flex-col pt-[80px]">
       {/* Header */}
       <div className="border-b border-hc-border bg-hc-surface/50 backdrop-blur-xl sticky top-[80px] z-30">
         <div className="max-w-7xl mx-auto px-4 py-8">
