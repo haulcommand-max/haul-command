@@ -29,7 +29,7 @@ export default function AvailabilityMapPage() {
     const filteredOrigins = selectedCountry === 'ALL' ? origins : origins.filter(o => o.country_code === selectedCountry);
 
     return (
-        <main className="flex-grow max-w-7xl mx-auto px-4 py-12 sm:py-16">
+        <main data-hc-topic-hero="manual" className="flex-grow max-w-7xl mx-auto px-4 py-12 sm:py-16">
             <header className="mb-8 sm:mb-12">
                 <div className="flex items-center space-x-4 mb-4"><span className="bg-green-500 text-white text-[10px] font-black px-2 py-0.5 rounded italic">LIVE MAP</span><span className="bg-[var(--color-accent)] text-white text-[10px] font-black px-2 py-0.5 rounded italic">{zones.length} ZONES</span></div>
                 <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white italic tracking-tighter">GLOBAL ESCORT <span className="text-[var(--color-accent)] underline decoration-4 underline-offset-4">DISCOVERY MAP</span></h1>
