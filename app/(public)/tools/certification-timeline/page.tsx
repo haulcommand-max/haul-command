@@ -36,7 +36,7 @@ export default async function CertificationTimelinePage() {
   return (
     <>
       <ProofStrip variant="bar" />
-      <div style={{ minHeight: '100vh', background: '#0a0914', color: '#e5e7eb', fontFamily: "'Inter', system-ui" }}>
+      <div data-hc-topic-hero="manual" style={{ minHeight: '100vh', background: '#0a0914', color: '#e5e7eb', fontFamily: "'Inter', system-ui" }}>
         
         {/* -- HERO -- */}
         <div style={{ position: 'relative', borderBottom: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden' }}>

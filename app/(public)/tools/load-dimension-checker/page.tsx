@@ -42,7 +42,7 @@ export default function LoadDimensionCheckerPage() {
     <>
       <JsonLd data={schema}/>
       <JsonLd data={faq}/>
-      <div className=" bg-[#07090d] text-[#f0f2f5]">
+      <div data-hc-topic-hero="manual" className=" bg-[#07090d] text-[#f0f2f5]">
         <div className="border-b border-[#131c28] bg-gradient-to-r from-[#0a1929] to-[#07090d]">
           <div className="px-4 lg:px-10 py-12 max-w-4xl mx-auto">
             <p className="text-[11px] tracking-[0.2em] text-[#22c55e] font-semibold mb-3">FREE TOOL · NO LOGIN REQUIRED</p>
@@ -64,7 +64,7 @@ export default function LoadDimensionCheckerPage() {
               ))}
             </div>
             <button className="w-full bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold py-3.5 rounded-xl text-sm transition-colors">Check My Load â†’</button>
-            <p className="text-[10px] text-[#3a5068] text-center mt-3">Interactive engine launching Q2 2026. Use the reference tables below for immediate guidance.</p>
+            <p className="text-[10px] text-[#3a5068] text-center mt-3">Use this screen as a planning check, then verify final permit and escort requirements with the issuing authority.</p>
           </div>
 
           {/* FEDERAL LIMITS QUICK REFERENCE */}
