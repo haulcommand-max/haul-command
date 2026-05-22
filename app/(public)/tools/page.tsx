@@ -1,16 +1,27 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { createClient } from '@supabase/supabase-js';
 import { StaticAnswerBlock } from '@/components/ai-search/AnswerBlock';
 import '@/components/ai-search/answer-block.css';
 import { NoDeadEndBlock } from '@/components/ui/NoDeadEndBlock';
+import { buildToolAssetControl } from '@/lib/tools/tool-asset-control';
+import {
+  buildToolDoorwayModel,
+  getToolCoverageLabel,
+  getToolLifecycleLabel,
+  getToolPublicHref,
+  getCanonicalToolFamily,
+  getToolFamilyHubByFamily,
+} from '@/lib/tools/tool-empire';
+import { fetchPublicToolIndex } from '@/lib/tools/tool-registry-server';
+import { HaulCommandTopicHero } from '@/components/topic-hero/HaulCommandTopicHero';
+import { TOPIC_HERO_PRESETS } from '@/lib/topic-hero/configs';
+import {
+  contractToCollectionJsonLd,
+  contractToMetadata,
+  definePageSeoContract,
+} from '@/lib/seo/page-seo-contract';
 
 export const revalidate = 3600;
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
 
 const FAMILIES: Record<string, { label: string; desc: string; icon: string; color: string }> = {
   rates:          { label: 'Rates & Pricing',          desc: 'Benchmarks, cost calculators, and margin tools for every move.',                icon: '\u{1F4B2}', color: '#22c55e' },
@@ -28,14 +39,78 @@ const FAMILIES: Record<string, { label: string; desc: string; icon: string; colo
   infrastructure: { label: 'Infrastructure',           desc: 'Smart corridors, fuel stops, crane yards, and port access.',                   icon: '\u{1F3D7}', color: '#94a3b8' },
 };
 
+const SEO_INTENT_LINKS = [
+  { label: 'Pilot car near me', href: '/directory?q=pilot%20car' },
+  { label: 'Escort count calculator', href: '/tools/escort-count-calculator' },
+  { label: 'Oversize permit cost', href: '/tools/permit-cost-calculator' },
+  { label: 'Route compliance checker', href: '/tools/route-iq' },
+  { label: 'Heavy haul rate advisor', href: '/tools/rate-advisor' },
+  { label: 'High-pole requirements', href: '/tools/oversize-load-checker' },
+  { label: 'Staging and parking support', href: '/directory?q=staging%20parking' },
+  { label: 'Move support packet', href: '/loads/post?intent=support-packet' },
+];
+
+const TOOLS_HUB_SEO_CONTRACT = definePageSeoContract({
+  path: '/tools',
+  pageType: 'tools_hub',
+  title: 'Free Heavy Haul Tools: Pilot Car, Permit, Escort & Route Calculators | Haul Command',
+  metaDescription: 'Use free heavy haul tools for pilot car requirements, oversize permits, escort counts, route checks, rates, staging, and support. Coverage varies by market.',
+  ogTitle: 'Free Heavy Haul Tools for Pilot Cars, Permits, Rates & Route Support',
+  ogDescription: 'Check pilot car requirements, oversize permits, route compliance, rates, and provider discovery from one heavy haul tools hub. Coverage varies by market.',
+  h1: 'Free Heavy Haul Tools for Pilot Cars, Permits, Rates, and Route Support',
+  eyebrow: 'Free oversize load calculators / pilot car requirements / route support workflows',
+  visibleIntro: 'Use Haul Command to answer the questions heavy haul teams search for every day: how many pilot cars are needed, what permits may apply, what a route might require, what support could cost, and where to find operators, staging, parking, repair, and route support near the move.',
+  quickAnswer: 'Haul Command tools help brokers, carriers, dispatchers, pilot car operators, permit teams, and support locations move from a messy oversize load question into a usable next step.',
+  h2Outline: [
+    'Pilot Car & Escort Requirement Tools',
+    'Oversize Permit & Compliance Tools',
+    'Heavy Haul Rate & Cost Calculators',
+    'Route Survey, High Pole & Clearance Tools',
+    'Staging, Parking, Repair & Support Tools',
+    'Country, State, Province & Corridor Tools',
+  ],
+  schemaTypes: ['CollectionPage', 'ItemList', 'BreadcrumbList'],
+  primaryKeyword: 'free heavy haul tools',
+  secondaryKeywords: [
+    'pilot car requirements',
+    'oversize permit calculator',
+    'escort count calculator',
+    'route compliance checker',
+    'heavy haul rate calculator',
+    'pilot car near me',
+  ],
+  entityTerms: ['pilot car', 'escort vehicle', 'oversize load', 'high pole', 'route survey', 'permit service'],
+  imageFilenamePattern: 'haul-command-heavy-haul-tools-dashboard.webp',
+  imageAltText: 'Haul Command heavy haul tools dashboard for pilot car, permit, route, and rate planning',
+  internalLinkSlots: [
+    { label: 'Pilot car near me', href: '/directory?q=pilot%20car', reason: 'near-me provider intent', pageFamily: 'directory_hub' },
+    { label: 'Escort count calculator', href: '/tools/escort-count-calculator', reason: 'highest-intent calculator', pageFamily: 'tool_detail' },
+    { label: 'Oversize permit cost', href: '/tools/permit-cost-calculator', reason: 'permit cost intent', pageFamily: 'tool_detail' },
+    { label: 'Route compliance checker', href: '/tools/route-iq', reason: 'route planning intent', pageFamily: 'tool_detail' },
+    { label: 'Heavy haul load board', href: '/loads', reason: 'demand and conversion path', pageFamily: 'load_board' },
+    { label: 'Global regulations', href: '/regulations', reason: 'authority and trust path', pageFamily: 'regulation' },
+  ],
+  conversionCtas: [
+    { label: 'Open HaulSuggest', href: '/tools/haulsuggest', intent: 'open_tool', primary: true },
+    { label: 'Find Support Records', href: '/directory', intent: 'find_provider' },
+    { label: 'Post a Load', href: '/loads/post', intent: 'post_load' },
+    { label: 'Sponsor Tool Inventory', href: '/advertise/buy?zone=tools_hub', intent: 'sponsor_market' },
+  ],
+  sourceBasis: 'Supabase hc_tool_registry with shared tool-family and asset-control modeling from lib/tools/tool-empire.',
+  updateFrequency: 'event_driven',
+  qualityStatus: 'indexable',
+  linkMagnetModules: ['embed_tool', 'share_result', 'download_checklist', 'citation_block', 'qr_code', 'share_card'],
+});
+
 const STATUS_BADGE: Record<string, { label: string; bg: string; text: string; border: string }> = {
-  live_global:   { label: 'Available \u2014 120 Countries', bg: 'rgba(34,197,94,0.12)',  text: '#4ade80', border: 'rgba(34,197,94,0.3)' },
-  live_selected: { label: 'Available \u2014 Select Markets', bg: 'rgba(59,130,246,0.12)', text: '#60a5fa', border: 'rgba(59,130,246,0.3)' },
+  live_global:   { label: 'Live global framework', bg: 'rgba(34,197,94,0.12)',  text: '#4ade80', border: 'rgba(34,197,94,0.3)' },
+  live_selected: { label: 'Live in selected markets', bg: 'rgba(59,130,246,0.12)', text: '#60a5fa', border: 'rgba(59,130,246,0.3)' },
   beta:          { label: 'Beta',                   bg: 'rgba(245,158,11,0.12)', text: '#fbbf24', border: 'rgba(245,158,11,0.3)' },
-  coming_soon:   { label: 'Coming Soon',            bg: 'rgba(148,163,184,0.08)', text: '#94a3b8', border: 'rgba(148,163,184,0.15)' },
+  coming_soon:   { label: 'In development',         bg: 'rgba(148,163,184,0.08)', text: '#94a3b8', border: 'rgba(148,163,184,0.15)' },
 };
 
 interface Tool {
+  id?: string;
   slug: string;
   name: string;
   status: string;
@@ -48,31 +123,51 @@ interface Tool {
   is_free: boolean;
   requires_login: boolean;
   primary_audience: string;
+  primary_intent?: string | null;
+  seo_score?: number | null;
+  monetization_score?: number | null;
+  trust_score?: number | null;
+  thin_risk?: number | null;
+  has_country_overlay?: boolean | null;
+  has_state_overlay?: boolean | null;
+  has_corridor_overlay?: boolean | null;
+  supported_countries?: string[] | null;
+  sponsor_eligible?: boolean | null;
+  related_tools?: string[] | null;
+  related_glossary?: string[] | null;
+  related_regulations?: string[] | null;
+  primary_role_targets?: string[] | null;
+  primary_cta?: string | null;
+  secondary_cta?: string | null;
+  confidence_state?: string | null;
+  schema_type?: string | null;
+  canonical_url?: string | null;
+  qa_status?: string | null;
+  content_status?: string | null;
+  placeholder_detected?: boolean | null;
+  intent_mismatch?: boolean | null;
 }
 
-export const metadata: Metadata = {
-  title: 'Heavy Haul Tools & Calculators | Haul Command',
-  description: 'Free heavy haul calculators and intelligence tools across 13 families: route compliance, escort requirements, permit costs, load analysis, market intelligence, and more. Coverage varies by market.',
-  keywords: 'heavy haul tools, oversize load calculator, escort cost estimator, permit cost calculator, route compliance checker, pilot car requirements, axle weight calculator, bridge formula, load dimension checker',
-  alternates: { canonical: 'https://www.haulcommand.com/tools' },
-  openGraph: {
-    title: 'Heavy Haul Tools & Calculators | Haul Command',
-    description: 'Free heavy haul intelligence tools across 13 families. Route compliance, escort requirements, permit planning, load analysis, market intelligence. Coverage varies by market.',
-    url: 'https://www.haulcommand.com/tools',
-    siteName: 'Haul Command',
-    type: 'website',
-  },
-  other: { 'color-scheme': 'dark' },
-};
+export const metadata: Metadata = contractToMetadata(TOOLS_HUB_SEO_CONTRACT);
 
 export default async function ToolsPage() {
-  const { data: tools } = await supabase
-    .from('hc_tool_registry')
-    .select('slug, name, status, page_url, family, category, short_desc, tier, coverage_scope, is_free, requires_login, primary_audience')
-    .neq('status', 'internal_only')
-    .order('name');
-
-  const allTools: Tool[] = (tools ?? []) as Tool[];
+  const registryTools = (await fetchPublicToolIndex()) as Tool[];
+  // Positive filter on audit fields. The previous broad public tooling path could
+  // leak broken-route, placeholder, duplicate, and moved-page rows.
+  const publicIndexTools = registryTools.filter((tool) => (
+    (tool.status === 'live_global' || tool.status === 'live_selected')
+    && tool.content_status === 'valid'
+    && tool.qa_status === 'pass'
+    && tool.placeholder_detected !== true
+    && tool.intent_mismatch !== true
+  ));
+  const activeToolsBySlug = new Set(publicIndexTools.map((tool) => tool.slug));
+  const allTools: Tool[] = publicIndexTools;
+  const toolControls = new Map(publicIndexTools.map((tool) => [tool.slug, buildToolAssetControl(tool)]));
+  const publicToolBySlug = new Map(publicIndexTools.map((tool) => [tool.slug, tool]));
+  const activeCatalogCount = publicIndexTools.length;
+  const indexReadyTools = publicIndexTools.filter((tool) => toolControls.get(tool.slug)?.indexable);
+  const sponsorReadyCount = publicIndexTools.filter((tool) => tool.sponsor_eligible).length;
 
   const grouped: Record<string, Tool[]> = {};
   for (const t of allTools) {
@@ -92,26 +187,38 @@ export default async function ToolsPage() {
     return grouped[b].length - grouped[a].length;
   });
 
-  const totalTools = allTools.length;
-  const liveCount = allTools.filter(t => t.status === 'live_global' || t.status === 'live_selected').length;
-  const betaCount = allTools.filter(t => t.status === 'beta').length;
+  const verifiedToolCount = activeCatalogCount;
   const familyCount = familyOrder.length;
-
-  const liveTools = allTools.filter(t => t.page_url);
-  const toolsSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    name: 'Haul Command Tools & Calculators',
-    description: `${totalTools} free heavy haul logistics tools across ${familyCount} families.`,
-    url: 'https://www.haulcommand.com/tools',
-    mainEntity: {
-      '@type': 'ItemList',
-      itemListElement: liveTools.map((t, i) => ({
-        '@type': 'ListItem', position: i + 1, name: t.name,
-        url: `https://www.haulcommand.com${t.page_url}`,
-      })),
-    },
+  const toolsHeroConfig = {
+    ...TOPIC_HERO_PRESETS.toolsHub,
+    quickChips: SEO_INTENT_LINKS,
+    internalLinks: TOOLS_HUB_SEO_CONTRACT.internalLinkSlots.map((link) => ({
+      label: link.label,
+      href: link.href,
+      intent: link.reason,
+    })),
+    statCards: [
+      { val: verifiedToolCount, label: 'Verified tools' },
+      { val: familyCount, label: 'Tool families' },
+      { val: sponsorReadyCount, label: 'Sponsor paths' },
+    ]
+      .filter((stat) => stat.val !== 0)
+      .map((stat) => ({ value: stat.val, label: stat.label })),
+    relatedNextSteps: [
+      { label: 'Find providers after calculating', href: '/directory', intent: 'provider_intent' },
+      { label: 'Save result to load packet', href: '/load-board/post?intent=support-packet', intent: 'load_post_intent' },
+      { label: 'Check related regulations', href: '/regulations', intent: 'regulation_intent' },
+      { label: 'Ask Haul Command', href: '#topic-hero-ask', intent: 'ask_intent' },
+      { label: 'View sponsor slots', href: '/advertise/buy?zone=tools_hub', intent: 'sponsor_intent' },
+      { label: 'Upgrade to Pro', href: '/pricing', intent: 'pro_intent' },
+    ],
   };
+
+  const schemaTools = indexReadyTools.filter((t) => toolControls.get(t.slug)?.sitemapEligible);
+  const toolsSchema = contractToCollectionJsonLd(
+    TOOLS_HUB_SEO_CONTRACT,
+    schemaTools.map((t) => ({ name: t.name, url: getToolPublicHref(t) }))
+  );
 
   const catCounts: Record<string, number> = {};
   for (const t of allTools) {
@@ -125,44 +232,20 @@ export default async function ToolsPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(toolsSchema) }} />
 
-      <div style={{ background: '#0B0F14', minHeight: '100vh', color: '#F5F5F0' }}>
+      <div style={{ background: 'transparent', minHeight: '100vh', color: '#F5F5F0' }}>
 
-        {/* Hero */}
-        <section style={{ maxWidth: 1200, margin: '0 auto', padding: '80px 24px 48px', textAlign: 'center' }}>
-          <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C6923A', marginBottom: 16 }}>
-            Free Tools &middot; No Login Required
-          </p>
-          <h1 style={{ fontSize: 'clamp(28px, 5vw, 48px)', fontWeight: 800, lineHeight: 1.15, marginBottom: 20, color: '#F5F5F0' }}>
-            Heavy Haul Intelligence Tools
-          </h1>
-          <p style={{ fontSize: 16, color: '#94a3b8', maxWidth: 680, margin: '0 auto 32px', lineHeight: 1.7 }}>
-            Route compliance, cost estimation, permit calculation, market intelligence,
-            and regulation monitoring across priority markets.
-          </p>
+        <HaulCommandTopicHero config={toolsHeroConfig} />
 
-          {/* Stats */}
-          <div style={{ display: 'flex', gap: 24, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 40 }}>
-            {[
-              { val: totalTools, label: 'Total Tools' },
-              { val: `${liveCount + betaCount}`, label: 'Available & Beta' },
-              { val: familyCount, label: 'Families' },
-              { val: '120', label: 'Countries' },
-            ].map(s => (
-              <div key={s.label} style={{ padding: '12px 20px', borderRadius: 12, background: 'rgba(198,146,58,0.06)', border: '1px solid rgba(198,146,58,0.15)' }}>
-                <div style={{ fontSize: 24, fontWeight: 800, color: '#C6923A' }}>{s.val}</div>
-                <div style={{ fontSize: 11, color: '#94a3b8', fontWeight: 600, letterSpacing: '0.04em' }}>{s.label}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Jump nav */}
+        {/* Jump nav */}
+        <section style={{ maxWidth: 1200, margin: '0 auto', padding: '28px 24px 44px' }}>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
             {familyOrder.map(fam => {
               const meta = FAMILIES[fam];
               if (!meta) return null;
-              const liveCnt = grouped[fam].filter(t => t.status !== 'coming_soon').length;
+              const liveCnt = grouped[fam].filter((tool) => activeToolsBySlug.has(tool.slug)).length;
+              const familyHub = getToolFamilyHubByFamily(fam);
               return (
-                <a key={fam} href={`#family-${fam}`} style={{
+                <a key={fam} href={familyHub ? `/tools/${familyHub.slug}` : `#family-${fam}`} style={{
                   display: 'inline-flex', alignItems: 'center', gap: 6,
                   padding: '6px 14px', borderRadius: 8, fontSize: 12, fontWeight: 700,
                   color: meta.color, textDecoration: 'none',
@@ -184,8 +267,8 @@ export default async function ToolsPage() {
             const meta = FAMILIES[fam];
             if (!meta) return null;
             const familyTools = grouped[fam];
-            const activeTools = familyTools.filter(t => t.status !== 'coming_soon');
-            const comingSoonTools = familyTools.filter(t => t.status === 'coming_soon');
+            const activeTools = familyTools.filter((tool) => activeToolsBySlug.has(tool.slug));
+            const comingSoonTools = familyTools.filter((tool) => !activeToolsBySlug.has(tool.slug));
 
             return (
               <div key={fam} id={`family-${fam}`} style={{ marginBottom: 64, scrollMarginTop: 80 }}>
@@ -199,25 +282,52 @@ export default async function ToolsPage() {
                 <p style={{ fontSize: 14, color: '#64748b', marginBottom: 24, marginLeft: 36, lineHeight: 1.5 }}>{meta.desc}</p>
 
                 {activeTools.length > 0 && (
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16, marginBottom: comingSoonTools.length > 0 ? 20 : 0 }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: 16, marginBottom: comingSoonTools.length > 0 ? 20 : 0 }}>
                     {activeTools.map(tool => {
                       const badge = STATUS_BADGE[tool.status] || STATUS_BADGE.coming_soon;
+                      const doorway = buildToolDoorwayModel(tool);
+                      const canonical = getCanonicalToolFamily(tool);
+                      const hasPublicDestination = Boolean(tool.page_url || tool.canonical_url);
+                      const publicDestination = getToolPublicHref(tool);
+                      const coverageLabel = getToolCoverageLabel(tool);
                       return (
-                        <div key={tool.slug} className="hc-tool-card" style={{ background: '#141820', borderRadius: 16, padding: 24, border: '1px solid #1e2530', transition: 'border-color 0.2s, transform 0.2s' }}>
+                        <div key={tool.slug} className="hc-tool-card" style={{ background: 'rgba(0,0,0,0.52)', borderRadius: 16, padding: 24, border: '1px solid rgba(198,146,58,0.16)', backdropFilter: 'blur(10px)', transition: 'border-color 0.2s, transform 0.2s, box-shadow 0.2s' }}>
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                             <span style={{ fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 6, background: badge.bg, color: badge.text, border: `1px solid ${badge.border}`, letterSpacing: '0.04em' }}>
-                              {badge.label}
+                              {getToolLifecycleLabel(tool)}
                             </span>
-                            {tool.coverage_scope === '120_countries' && (
-                              <span style={{ fontSize: 10, color: '#64748b' }}>Market coverage varies</span>
+                            {coverageLabel && (
+                              <span style={{ fontSize: 10, color: '#64748b' }}>{coverageLabel}</span>
                             )}
                           </div>
                           <h3 style={{ fontSize: 16, fontWeight: 800, color: '#F5F5F0', margin: '0 0 8px' }}>{tool.name}</h3>
+                          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 10 }}>
+                            <span style={{ fontSize: 10, color: '#d8c6a3', background: 'rgba(198,146,58,0.08)', border: '1px solid rgba(198,146,58,0.16)', borderRadius: 6, padding: '2px 7px' }}>
+                              {canonical.label}
+                            </span>
+                            <span style={{ fontSize: 10, color: '#94a3b8', background: 'rgba(148,163,184,0.06)', border: '1px solid rgba(148,163,184,0.12)', borderRadius: 6, padding: '2px 7px' }}>
+                              {doorway.indexState}
+                            </span>
+                          </div>
                           <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.6, margin: '0 0 16px', minHeight: 40 }}>
                             {tool.short_desc || 'Free heavy haul intelligence tool.'}
                           </p>
-                          {tool.page_url ? (
-                            <Link href={tool.page_url} style={{
+                          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
+                            {doorway.relatedTools.slice(0, 2).map((related) => {
+                              const relatedTool = publicToolBySlug.get(related);
+                              return relatedTool ? (
+                                <Link key={related} href={getToolPublicHref(relatedTool)} style={{ fontSize: 11, color: '#64748b', textDecoration: 'none' }}>
+                                  {related.replace(/-/g, ' ')}
+                                </Link>
+                              ) : (
+                                <span key={related} style={{ fontSize: 11, color: '#4b5563' }}>
+                                  {related.replace(/-/g, ' ')} coming soon
+                                </span>
+                              );
+                            })}
+                          </div>
+                          {hasPublicDestination ? (
+                            <Link href={publicDestination} style={{
                               display: 'inline-flex', alignItems: 'center', gap: 6,
                               padding: '10px 20px', borderRadius: 10, fontSize: 13, fontWeight: 700,
                               background: 'rgba(198,146,58,0.12)', color: '#C6923A',
@@ -242,12 +352,12 @@ export default async function ToolsPage() {
                 )}
 
                 {comingSoonTools.length > 0 && (
-                  <details style={{ background: '#111318', borderRadius: 12, border: '1px solid #1a1d23', overflow: 'hidden' }}>
+                  <details style={{ background: 'rgba(0,0,0,0.48)', borderRadius: 12, border: '1px solid rgba(198,146,58,0.14)', overflow: 'hidden', backdropFilter: 'blur(10px)' }}>
                     <summary style={{ padding: '14px 20px', cursor: 'pointer', fontSize: 13, fontWeight: 700, color: '#64748b', listStyle: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
                       <span className="hc-chevron" style={{ display: 'inline-block', width: 0, height: 0, borderLeft: '5px solid #64748b', borderTop: '4px solid transparent', borderBottom: '4px solid transparent', transition: 'transform 0.2s' }} />
                       {comingSoonTools.length} more tools coming soon in {meta.label}
                     </summary>
-                    <div style={{ padding: '8px 20px 16px', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 8 }}>
+                    <div style={{ padding: '8px 20px 16px', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 240px), 1fr))', gap: 8 }}>
                       {comingSoonTools.map(tool => (
                         <div key={tool.slug} style={{ padding: '10px 14px', borderRadius: 8, background: 'rgba(148,163,184,0.04)', border: '1px solid rgba(148,163,184,0.06)' }}>
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -270,14 +380,14 @@ export default async function ToolsPage() {
         </section>
 
         {/* Bottom CTA */}
-        <section style={{ borderTop: '1px solid #1e2530', background: '#111318' }}>
+        <section style={{ borderTop: '1px solid rgba(198,146,58,0.14)', background: 'rgba(0,0,0,0.48)', backdropFilter: 'blur(10px)' }}>
           <div style={{ maxWidth: 800, margin: '0 auto', padding: '64px 24px', textAlign: 'center' }}>
             <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 12, color: '#F5F5F0' }}>
               Need a custom solution?
             </h2>
             <p style={{ fontSize: 14, color: '#94a3b8', marginBottom: 24, lineHeight: 1.6 }}>
               Enterprise buyers can access Haul Command data via API, bulk exports,
-              and white-glove intelligence reports across priority markets.
+              and white-glove intelligence reports where source coverage and data quality support the market.
             </p>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
               <Link href="/data-products" style={{
@@ -292,11 +402,11 @@ export default async function ToolsPage() {
               <Link href="/directory" style={{
                 padding: '14px 32px', borderRadius: 12,
                 background: 'rgba(148,163,184,0.08)',
-                border: '1px solid #1e2530',
+                border: '1px solid rgba(198,146,58,0.14)',
                 color: '#94a3b8', fontWeight: 700, fontSize: 13,
                 textDecoration: 'none',
               }}>
-                Find Operators &rarr;
+                Find Support Records &rarr;
               </Link>
             </div>
           </div>
@@ -306,8 +416,8 @@ export default async function ToolsPage() {
         <section style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 24px' }}>
           <StaticAnswerBlock
             question="What tools does Haul Command offer for heavy haul logistics?"
-            answer={`Haul Command provides ${totalTools} tools across ${familyCount} families for heavy haul logistics, with ${liveCount} live globally and ${betaCount} in beta. Categories include: ${faqCatText}. Tool coverage varies by market and no login is required for public calculators.`}
-            confidence="partially_verified"
+            answer={`Haul Command currently exposes ${verifiedToolCount} public tools that pass the registry QA gate across ${familyCount} families. Categories include: ${faqCatText}. Country, state, province, and corridor overlays are controlled by each tool's data confidence, source support, canonical intent, and useful-data gate.`}
+            confidence="verified_current"
             ctaLabel="Browse All Tools"
             ctaUrl="/tools"
           />
@@ -316,20 +426,41 @@ export default async function ToolsPage() {
         <NoDeadEndBlock
           heading="Explore More Haul Command Resources"
           moves={[
-            { href: '/directory', icon: '\u{1F50D}', title: 'Find Verified Escorts', desc: 'Search by state and specialty', primary: true, color: '#D4A844' },
-            { href: '/claim', icon: '\u2713', title: 'Claim Your Listing', desc: 'Free for operators', primary: true, color: '#22C55E' },
+            { href: '/directory', icon: '\u{1F50D}', title: 'Find Support Records', desc: 'Search by role, market, and proof state', primary: true, color: '#D4A844' },
+            { href: '/claim', icon: '\u2713', title: 'Claim / Fix Profile', desc: 'Improve a claimable support record', primary: true, color: '#22C55E' },
             { href: '/escort-requirements', icon: '\u2696', title: 'State Escort Rules', desc: 'Requirements by state' },
             { href: '/regulations', icon: '\u{1F310}', title: 'Global Regulations', desc: '120 country rules' },
             { href: '/glossary/pilot-car', icon: '\u{1F4D6}', title: 'Pilot Car Glossary', desc: 'Terms and definitions' },
-            { href: '/available-now', icon: '\u{1F7E2}', title: 'Available Now', desc: 'Operators broadcasting live' },
+            { href: '/available-now', icon: '\u{1F7E2}', title: 'Available Now', desc: 'Claimed providers can broadcast availability' },
           ]}
         />
 
         <style dangerouslySetInnerHTML={{ __html: `
-          .hc-tool-card:hover { border-color: #C6923A !important; transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+          .hc-tool-card {
+            background:
+              linear-gradient(180deg, rgba(0,0,0,0.58), rgba(0,0,0,0.48)) !important;
+            border-color: rgba(198,146,58,0.18) !important;
+            box-shadow: 0 18px 48px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.035);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            animation: hcToolCardSettle 520ms ease-out both;
+          }
+          .hc-tool-card:hover {
+            border-color: rgba(198,146,58,0.56) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 22px 54px rgba(0,0,0,0.48), 0 0 0 1px rgba(198,146,58,0.08), 0 0 28px rgba(198,146,58,0.10);
+          }
           details[open] .hc-chevron { transform: rotate(90deg); }
           details summary::-webkit-details-marker { display: none; }
           details summary::marker { display: none; content: ''; }
+          @keyframes hcToolCardSettle {
+            from { opacity: 0.94; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .hc-tool-card { animation: none !important; }
+            .hc-tool-card:hover { transform: none; }
+          }
         `}} />
       </div>
     </>
