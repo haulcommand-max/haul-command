@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { searchOperators } from '@/lib/typesense/sync';
+import {
+  buildAliasAwareOrFilter,
+  resolveDirectorySearchAliases,
+} from '@/lib/directory/search-aliases';
 
 /**
  * GET /api/directory/search
@@ -39,6 +43,7 @@ export async function GET(req: NextRequest) {
     const startRange = (page - 1) * limit;
     const endRange = startRange + limit - 1;
     const sortBy = searchParams.get('sort') ?? 'rank';
+    const searchAliases = q ? await resolveDirectorySearchAliases(supabase, q, country) : [];
 
     // Public directory search never exposes raw phone values. A prior version
     // treated any Authorization header as trusted and uncensored contact data.
@@ -114,7 +119,12 @@ export async function GET(req: NextRequest) {
 
     if (q) {
       hcQuery = hcQuery.or(
-        `name.ilike.%${q}%,locality.ilike.%${q}%,admin1_code.ilike.%${q}%,description.ilike.%${q}%`
+        buildAliasAwareOrFilter(
+          ['name', 'locality', 'admin1_code', 'description'],
+          'surface_category_key',
+          q,
+          searchAliases,
+        )
       );
     }
     if (country) hcQuery = hcQuery.eq('country_code', country.toUpperCase());
@@ -218,7 +228,12 @@ export async function GET(req: NextRequest) {
 
       if (q) {
         opQuery = opQuery.or(
-          `name.ilike.%${q}%,city.ilike.%${q}%,admin1_code.ilike.%${q}%`
+          buildAliasAwareOrFilter(
+            ['name', 'city', 'admin1_code'],
+            'role_primary',
+            q,
+            searchAliases,
+          )
         );
       }
       if (country) opQuery = opQuery.eq('country_code', country.toUpperCase());
