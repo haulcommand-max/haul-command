@@ -188,6 +188,21 @@ function findFirstArray(value: unknown): unknown[] {
   return [];
 }
 
+function flattenRecord(value: Record<string, unknown>, prefix = ""): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+
+  for (const [key, val] of Object.entries(value)) {
+    const path = prefix ? `${prefix}.${key}` : key;
+    out[path] = val;
+
+    if (val && typeof val === "object" && !Array.isArray(val)) {
+      Object.assign(out, flattenRecord(val as Record<string, unknown>, path));
+    }
+  }
+
+  return out;
+}
+
 function firstProp(obj: Record<string, unknown>, keys: string[]): unknown {
   for (const key of keys) {
     if (obj[key] !== undefined && obj[key] !== null && obj[key] !== "") return obj[key];
@@ -219,20 +234,49 @@ function parseJsonItems(text: string, baseUrl: string): FeedItem[] {
   return uniqueItems(rows.map((entry) => {
     const raw = entry && typeof entry === "object" ? entry as Record<string, unknown> : {};
     const props = raw.properties && typeof raw.properties === "object" ? raw.properties as Record<string, unknown> : raw;
-    const eventType = normalizeTitle(firstProp(props, ["eventType", "EventType", "type", "Type"]));
-    const roadName = normalizeTitle(firstProp(props, ["roadName", "RoadwayName", "roadway", "route", "Route"]));
-    const direction = normalizeTitle(firstProp(props, ["direction", "DirectionOfTravel", "directionOfTravel"]));
-    const description = normalizeTitle(firstProp(props, ["description", "Description", "details", "Details", "comments", "Comment", "longDescription"]));
-    const directTitle = normalizeTitle(firstProp(props, ["title", "Title", "headline", "Headline", "name", "Name"]));
+    const flat = flattenRecord(props);
+    const eventType = normalizeTitle(firstProp(flat, ["eventType", "EventType", "event_type", "type", "Type", "event_subtype"]));
+    const roadName = normalizeTitle(firstProp(flat, ["roadName", "RoadwayName", "roadway", "route", "Route", "road_summary.road_name"]));
+    const direction = normalizeTitle(firstProp(flat, ["direction", "DirectionOfTravel", "directionOfTravel", "impact.direction"]));
+    const description = normalizeTitle(firstProp(flat, [
+      "description",
+      "Description",
+      "message",
+      "Message",
+      "alert_message",
+      "details",
+      "Details",
+      "comments",
+      "Comment",
+      "notes",
+      "Notes",
+      "longDescription",
+    ]));
+    const directTitle = normalizeTitle(firstProp(flat, ["title", "Title", "headline", "Headline", "name", "Name"]));
     const structuredTitle = roadName
       ? `${eventType || "Traffic event"} on ${roadName}${direction ? ` ${direction}` : ""}`
       : eventType;
     const title = directTitle || structuredTitle || description || "Authority alert";
     const summary = description || title;
-    const id = String(firstProp(props, ["id", "ID", "eventId", "EventId", "identifier", "guid", "objectId", "SourceId", "url", "link"]) ?? title);
-    const linkValue = firstProp(props, ["url", "URL", "link", "Link", "webUrl", "WebUrl"]);
+    const id = String(firstProp(flat, ["id", "ID", "eventId", "EventId", "identifier", "guid", "objectId", "SourceId", "url", "URL", "link", "web_link"]) ?? title);
+    const linkValue = firstProp(flat, ["url", "URL", "link", "Link", "webUrl", "WebUrl", "web_link"]);
     const link = typeof linkValue === "string" ? absoluteUrl(linkValue, baseUrl) : null;
-    const date = firstProp(props, ["published_at", "publishedAt", "pubDate", "updated", "updatedAt", "LastUpdated", "Reported", "StartDate", "created"]);
+    const date = firstProp(flat, [
+      "published_at",
+      "publishedAt",
+      "pubDate",
+      "published",
+      "updated",
+      "updatedAt",
+      "last_updated",
+      "LastUpdated",
+      "Reported",
+      "StartDate",
+      "startTime",
+      "StartTime",
+      "duration.start",
+      "created",
+    ]);
 
     return {
       title,
@@ -244,13 +288,22 @@ function parseJsonItems(text: string, baseUrl: string): FeedItem[] {
   }));
 }
 
-function parseHtmlItems(text: string, baseUrl: string): FeedItem[] {
+const HTML_SOURCE_PATHS: Record<string, RegExp> = {
+  "au_nhvr_news": /\/news\/\d{4}\/\d{2}\/\d{2}\//,
+  "us_fmcsa_news": /\/newsroom\/(?!press-releases(?:$|\?)|news-archive(?:$|\?))[a-z0-9-]+/,
+  "de_bast_news": /\/DE\/Presse\/Mitteilungen\/\d{4}\//,
+};
+
+function parseHtmlItems(text: string, baseUrl: string, sourceSlug?: string): FeedItem[] {
   const items: FeedItem[] = [];
   const anchorRe = /<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
+  const pathFilter = sourceSlug ? HTML_SOURCE_PATHS[sourceSlug] : undefined;
 
   for (const match of text.matchAll(anchorRe)) {
     const link = absoluteUrl(match[1], baseUrl);
     const title = normalizeTitle(match[2]);
+    const path = link ? new URL(link).pathname : "";
+    if (pathFilter && !pathFilter.test(path)) continue;
     if (!title || title.length < 8) continue;
     items.push({
       title,
@@ -273,15 +326,15 @@ function parseHtmlItems(text: string, baseUrl: string): FeedItem[] {
   return uniqueItems(items).slice(0, 40);
 }
 
-function parseItems(text: string, format: string | null, contentType: string, baseUrl: string): FeedItem[] {
+function parseItems(text: string, format: string | null, contentType: string, baseUrl: string, sourceSlug?: string): FeedItem[] {
   const normalized = (format || "").toLowerCase();
   const looksJson = contentType.includes("json") || /^\s*[\[{]/.test(text);
   const looksXml = contentType.includes("xml") || /<(rss|feed|item|entry)\b/i.test(text);
 
   if (normalized === "json_api" || looksJson) return parseJsonItems(text, baseUrl);
-  if (normalized === "html_scrape") return parseHtmlItems(text, baseUrl);
+  if (normalized === "html_scrape") return parseHtmlItems(text, baseUrl, sourceSlug);
   if (looksXml || normalized === "rss" || normalized === "atom") return parseXmlItems(text, baseUrl);
-  return parseHtmlItems(text, baseUrl);
+  return parseHtmlItems(text, baseUrl, sourceSlug);
 }
 
 function detectBotBlock(status: number, text: string): boolean {
@@ -389,7 +442,7 @@ async function alertSlug(source: AlertSource, item: FeedItem): Promise<string> {
 }
 
 async function processSource(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   source: AlertSource,
   options: { dryRun: boolean; force: boolean; maxItems: number; timeoutMs: number; now: Date },
 ): Promise<PollResult> {
@@ -419,14 +472,14 @@ async function processSource(
         .select("id")
         .maybeSingle();
       if (pollErr) throw pollErr;
-      rawPollId = rawPoll?.id ?? null;
+      rawPollId = (rawPoll as { id?: string } | null)?.id ?? null;
     }
 
     if (fetched.status < 200 || fetched.status >= 300) {
       throw new Error(`HTTP ${fetched.status}`);
     }
 
-    const parsed = parseItems(fetched.text, source.feed_format, fetched.contentType, source.feed_url)
+    const parsed = parseItems(fetched.text, source.feed_format, fetched.contentType, source.feed_url, source.source_slug)
       .slice(0, options.maxItems);
     let persisted = 0;
 
