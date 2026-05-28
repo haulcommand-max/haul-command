@@ -1,6 +1,4 @@
 import React from 'react';
-import { cookies } from 'next/headers';
-import { createServerClient } from '@supabase/ssr';
 import Link from 'next/link';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { LiveActivityFeed } from '@/components/feed/LiveActivityFeed';
@@ -18,6 +16,7 @@ import {
     resolveDirectoryCategoryFilter,
 } from '@/lib/directory/server-query';
 import { absoluteUrl, SITE_URL } from '@/lib/site-url';
+import { createClient as createSupabaseServerClient } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
 
@@ -83,20 +82,109 @@ const roleCoverage = [
     'Credentialed access labor',
 ];
 
-const roleCategoryLinks = [
-    { label: 'Pilot car operators', category: 'pilot-car' },
-    { label: 'Escort vehicles', category: 'escort' },
-    { label: 'High-pole escorts', category: 'high-pole' },
-    { label: 'Permit support', category: 'permit' },
-    { label: 'Route survey', category: 'route-survey' },
-    { label: 'Traffic control', category: 'traffic-control' },
-    { label: 'Staging yards', category: 'staging' },
-    { label: 'Truck stops', category: 'truck-stop' },
-    { label: 'Oversize parking', category: 'parking' },
-    { label: 'Mobile mechanics', category: 'repair' },
-    { label: 'Port support', category: 'port' },
-    { label: 'Weigh stations', category: 'weigh-station' },
-];
+type DirectoryRoleBrowseOption = {
+    key: string;
+    label: string;
+    family: string;
+    operators: number;
+    hasSupply: boolean;
+    source: 'supabase' | 'fallback';
+};
+
+function normalizeDirectoryRoleKey(value: unknown): string {
+    return String(value ?? '')
+        .trim()
+        .toLowerCase()
+        .replace(/[_\s]+/g, '-')
+        .replace(/[^a-z0-9-]/g, '')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+}
+
+function humanizeDirectoryRole(value: unknown): string {
+    const raw = String(value ?? '').trim();
+    if (!raw) return 'Heavy haul support';
+    return raw
+        .replace(/[_-]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function numberFromDirectoryRoleRow(row: any): number {
+    const value =
+        row?.operators ??
+        row?.operator_count ??
+        row?.entity_count ??
+        row?.source_backed_records ??
+        row?.listing_count ??
+        row?.record_count ??
+        row?.total_entities ??
+        0;
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function fallbackDirectoryRoleOptions(): DirectoryRoleBrowseOption[] {
+    return roleCoverage.map((label) => ({
+        key: normalizeDirectoryRoleKey(label),
+        label,
+        family: 'support_partner',
+        operators: 0,
+        hasSupply: false,
+        source: 'fallback',
+    }));
+}
+
+function mapDirectoryRoleBrowseRow(row: any): DirectoryRoleBrowseOption | null {
+    const key = normalizeDirectoryRoleKey(row?.role_key ?? row?.slug ?? row?.role_slug ?? row?.role);
+    const label = String(row?.display_name ?? row?.role_label ?? row?.label ?? row?.name ?? '').trim() || humanizeDirectoryRole(key);
+
+    if (!key || !label) return null;
+
+    const operators = numberFromDirectoryRoleRow(row);
+    return {
+        key,
+        label,
+        family: String(row?.role_family ?? row?.family ?? row?.category ?? 'support_partner'),
+        operators,
+        hasSupply: Boolean(row?.has_supply ?? row?.has_entities ?? operators > 0),
+        source: 'supabase',
+    };
+}
+
+async function loadDirectoryRoleBrowseOptions(supabase: ReturnType<typeof createSupabaseServerClient>): Promise<DirectoryRoleBrowseOption[]> {
+    try {
+        const { data, error } = await supabase
+            .from('v_hc_directory_role_browse')
+            .select('*')
+            .limit(520);
+
+        if (error) {
+            console.warn('[directory] role browse view unavailable, using fallback role chips:', error.message);
+            return fallbackDirectoryRoleOptions();
+        }
+
+        const seen = new Set<string>();
+        const roles = (data ?? [])
+            .map(mapDirectoryRoleBrowseRow)
+            .filter((role): role is DirectoryRoleBrowseOption => Boolean(role))
+            .filter((role) => {
+                if (seen.has(role.key)) return false;
+                seen.add(role.key);
+                return true;
+            })
+            .sort((a, b) => {
+                if (a.hasSupply !== b.hasSupply) return Number(b.hasSupply) - Number(a.hasSupply);
+                if (a.operators !== b.operators) return b.operators - a.operators;
+                return a.label.localeCompare(b.label);
+            });
+
+        return roles.length > 0 ? roles : fallbackDirectoryRoleOptions();
+    } catch (error) {
+        console.warn('[directory] role browse exception, using fallback role chips:', error);
+        return fallbackDirectoryRoleOptions();
+    }
+}
 
 const countryTiers = [
     { title: 'Tier A Gold', codes: [['US','United States'],['CA','Canada'],['AU','Australia'],['GB','United Kingdom'],['NZ','New Zealand'],['ZA','South Africa'],['DE','Germany'],['NL','Netherlands'],['AE','United Arab Emirates'],['BR','Brazil']] },
@@ -180,7 +268,7 @@ const faqs = [
     },
 ];
 
-function buildDirectoryJsonLd(providerCount: number) {
+function buildDirectoryJsonLd(providerCount: number, roleLabels: string[]) {
     return {
         '@context': 'https://schema.org',
         '@graph': [
@@ -211,7 +299,7 @@ function buildDirectoryJsonLd(providerCount: number) {
                 name: 'Heavy Haul Support Directory',
                 description: 'Search Haul Command for pilot cars, escort vehicles, permit support, route survey help, infrastructure, and heavy haul support providers by location, service type, and proof state.',
                 isPartOf: { '@id': `${SITE_URL}/#website` },
-                about: roleCoverage,
+                about: roleLabels.length > 0 ? roleLabels : roleCoverage,
                 numberOfItems: providerCount,
             },
             {
@@ -259,15 +347,12 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function GlobalDirectory({ searchParams }: { searchParams: Promise<{ country?: string, q?: string, category?: string }> }) {
     const resolvedParams = await searchParams;
-    const cookieStore = await cookies();
-    const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
-    );
+    const supabase = createSupabaseServerClient();
     const targetCountry = normalizeDirectoryCountry(resolvedParams.country);
     const queryLocation = resolvedParams.q || '';
     const queryCategory = resolvedParams.category || '';
+    const roleBrowseOptions = await loadDirectoryRoleBrowseOptions(supabase);
+    const roleCoverageLabels = roleBrowseOptions.map((role) => role.label);
 
     let providers: any[] = [];
     let usedTypesense = false;
@@ -317,7 +402,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                 .select('*');
 
             if (plan.countryCode) {
-                query = query.eq('country_code_inferred', plan.countryCode);
+                query = query.eq('country_code', plan.countryCode);
             }
 
             const locationOrFilter = buildDirectoryLocationOrFilter(
@@ -348,7 +433,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
             <script
                 type="application/ld+json"
                 suppressHydrationWarning
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(buildDirectoryJsonLd(providers.length)) }}
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(buildDirectoryJsonLd(providers.length, roleCoverageLabels.slice(0, 120))) }}
             />
             <div className="w-full bg-[#f8f9fa] border-b border-gray-200 py-12 px-4 shadow-sm">
                 <div className="max-w-7xl mx-auto">
@@ -429,16 +514,24 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                             </Link>
                         </div>
                         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                            {roleCategoryLinks.map((role) => (
+                            {roleBrowseOptions.slice(0, 60).map((role) => (
                                 <Link
-                                    key={role.label}
-                                    href={`/directory?category=${encodeURIComponent(role.category)}&q=${encodeURIComponent(role.label)}`}
+                                    key={role.key}
+                                    href={`/directory?q=${encodeURIComponent(role.label)}`}
                                     className="rounded-xl border border-gray-200 bg-gray-50 px-3 py-3 text-sm font-bold text-gray-800 transition-colors hover:border-[#C6923A] hover:bg-amber-50"
                                 >
-                                    {role.label}
+                                    <span className="block">{role.label}</span>
+                                    <span className="mt-1 block text-[10px] font-black uppercase tracking-[0.08em] text-gray-500">
+                                        {role.hasSupply ? `${role.operators.toLocaleString()} records` : 'capture demand'}
+                                    </span>
                                 </Link>
                             ))}
                         </div>
+                        {roleBrowseOptions.length > 60 && (
+                            <p className="mt-4 text-xs font-bold text-gray-500">
+                                Showing the first 60 role surfaces from the live role registry. Use search to reach the full {roleBrowseOptions.length.toLocaleString()}-role catalog.
+                            </p>
+                        )}
                     </section>
 
                     <section aria-labelledby="country-coverage" className="rounded-2xl border border-gray-200 bg-white p-5 md:p-7 shadow-sm">

@@ -44,6 +44,7 @@ export async function GET(req: NextRequest) {
     const endRange = startRange + limit - 1;
     const sortBy = searchParams.get('sort') ?? 'rank';
     const searchAliases = q ? await resolveDirectorySearchAliases(supabase, q, country) : [];
+    const sourceErrors: string[] = [];
 
     // Public directory search never exposes raw phone values. A prior version
     // treated any Authorization header as trusted and uncensored contact data.
@@ -154,12 +155,13 @@ export async function GET(req: NextRequest) {
     hcQuery = hcQuery.range(startRange, endRange);
 
     const { data: hcData, count: hcCount, error: hcError } = await hcQuery;
+    let safeHcData = hcData ?? [];
+    let safeHcCount = hcCount ?? 0;
     if (hcError) {
       console.error('[directory-search] hc_places query failed:', hcError);
-      return NextResponse.json(
-        { error: 'Directory search failed to load places', source: 'hc_places' },
-        { status: 502 }
-      );
+      sourceErrors.push('hc_places');
+      safeHcData = [];
+      safeHcCount = 0;
     }
 
     // ═══ Available Now: fetch live operator IDs ═══
@@ -175,7 +177,7 @@ export async function GET(req: NextRequest) {
     }
 
     // Map hc_places → unified shape
-    const hcResults = (hcData || []).map((row: any, index: number) => ({
+    const hcResults = safeHcData.map((row: any, index: number) => ({
       id: row.id,
       slug: row.slug,
       name: row.name || 'Service Business',
@@ -257,36 +259,33 @@ export async function GET(req: NextRequest) {
       const { data: opData, count: opTotal, error: opError } = await opQuery;
       if (opError) {
         console.error('[directory-search] hc_global_operators query failed:', opError);
-        return NextResponse.json(
-          { error: 'Directory search failed to load operators', source: 'hc_global_operators' },
-          { status: 502 }
-        );
+        sourceErrors.push('hc_global_operators');
+      } else {
+        opCount = opTotal ?? 0;
+        opResults = (opData || []).map((op: any, index: number) => ({
+          id: op.id,
+          slug: op.slug,
+          name: op.name || 'Escort Operator',
+          city: op.city,
+          state: op.admin1_code,
+          location: `${op.city}, ${op.admin1_code}`,
+          region_code: op.admin1_code,
+          country_code: op.country_code,
+          services: op.role_primary ? [op.role_primary] : [],
+          category: op.role_primary || 'pilot_car',
+          is_claimed: op.is_claimed === true,
+          rating: op.confidence_score ? (op.confidence_score / 20) : null,
+          review_count: 0,
+          rank_score: op.confidence_score ?? 0,
+          score: op.confidence_score ?? 50,
+          is_featured: (op.confidence_score ?? 0) > 80,
+          profile_completeness: 40,
+          source: 'operators',
+          badges: {},
+          equipment_tags: [],
+          is_available_now: false,
+        }));
       }
-      opCount = opTotal ?? 0;
-
-      opResults = (opData || []).map((op: any, index: number) => ({
-        id: op.id,
-        slug: op.slug,
-        name: op.name || 'Escort Operator',
-        city: op.city,
-        state: op.admin1_code,
-        location: `${op.city}, ${op.admin1_code}`,
-        region_code: op.admin1_code,
-        country_code: op.country_code,
-        services: op.role_primary ? [op.role_primary] : [],
-        category: op.role_primary || 'pilot_car',
-        is_claimed: op.is_claimed === true,
-        rating: op.confidence_score ? (op.confidence_score / 20) : null,
-        review_count: 0,
-        rank_score: op.confidence_score ?? 0,
-        score: op.confidence_score ?? 50,
-        is_featured: (op.confidence_score ?? 0) > 80,
-        profile_completeness: 40,
-        source: 'operators',
-        badges: {},
-        equipment_tags: [],
-        is_available_now: false,
-      }));
     }
 
     // ═════════════════════════════════════════
@@ -302,7 +301,7 @@ export async function GET(req: NextRequest) {
       return (b.rank_score ?? 0) - (a.rank_score ?? 0);
     });
 
-    const combinedTotal = (hcCount ?? 0) + opCount;
+    const combinedTotal = safeHcCount + opCount;
     const operators = allResults.slice(0, limit);
 
     return NextResponse.json({
@@ -313,7 +312,10 @@ export async function GET(req: NextRequest) {
       limit,
       total_pages: Math.ceil(combinedTotal / limit),
       has_more: (startRange + limit) < combinedTotal,
-      sources: { hc_places: hcCount ?? 0, operators: opCount },
+      sources: { hc_places: safeHcCount, operators: opCount },
+      data_issue: sourceErrors.length > 0
+        ? 'One or more directory sources could not be read. Results may be incomplete.'
+        : null,
       filters_applied: hasHardFilters ? {
         twic: filterTwic, hazmat: filterHazmat, highPole: filterHighPole,
         superload: filterSuperload, avCertified: filterAvCertified,
@@ -324,7 +326,8 @@ export async function GET(req: NextRequest) {
       headers: { 'Cache-Control': hasHardFilters ? 'private, no-cache' : 'public, s-maxage=60, stale-while-revalidate=120' },
     });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error('[directory-search] request failed:', error);
+    return NextResponse.json({ error: 'Directory search is temporarily unavailable.' }, { status: 500 });
   }
 }
 
