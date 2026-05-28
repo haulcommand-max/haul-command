@@ -13,6 +13,7 @@ import { stateFullName } from '@/lib/geo/state-names';
 import { DirectoryBackgroundShell } from '@/components/directory/DirectoryBackgroundShell';
 import {
   buildDirectoryMarketFilterPlan,
+  normalizeDirectoryCountry,
   type DirectoryMarketFilterPlan,
   type DirectorySurfaceView,
 } from '@/lib/directory/server-query';
@@ -62,6 +63,14 @@ function cityClaimHref(country: string, slug: string, listing?: string) {
 
 function rankDirectoryRecord(record: any) {
   return Number(record.rank_score ?? record.confidence_score ?? record.directory_quality_score ?? 0);
+}
+
+function displayRoleFromSlug(slug: string) {
+  return String(slug ?? '')
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
 function buildMarketDirectAnswer(input: {
@@ -189,6 +198,14 @@ export default async function CityDirectoryPage({ params }: PageProps) {
   const { country, slug } = await params;
   // Guard: if params resolution fails for any reason, 404 cleanly
   if (!country || !slug) { notFound(); }
+
+  const firstSegmentCountry = normalizeDirectoryCountry(country);
+  const secondSegmentCountry = normalizeDirectoryCountry(slug);
+  if (!firstSegmentCountry && secondSegmentCountry) {
+    const roleQuery = displayRoleFromSlug(country);
+    redirect(`/directory?country=${secondSegmentCountry}&q=${encodeURIComponent(roleQuery)}`);
+  }
+
   const plan = buildDirectoryMarketFilterPlan({ country, slug });
   const countryUpper = plan.countryCode ?? country.toUpperCase();
 
