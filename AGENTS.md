@@ -137,7 +137,142 @@ For 120-country/global work, do not let U.S. docs silently become the world mode
 
 ---
 
-## 6. Security Rule
+## 6. Firecrawl Agent Skills Policy
+
+Firecrawl Agent Skills are allowed for this repo when Codex, Claude Code, Cursor, Cline, Windsurf, or another coding agent needs search, scraping, interaction, crawl, map, docs-search, or repeatable web-data deliverables.
+
+Firecrawl has three separate usage modes. Pick the correct mode before doing work:
+
+| Mode | Use when | Where the work runs |
+| ---- | -------- | ------------------- |
+| Live CLI tools | The agent needs web data during the current session. | Agent terminal/session |
+| Build skills | The task is to add Firecrawl API calls to Haul Command product code. | Product code/backend/workers |
+| Workflow skills | The task is to produce a finished artifact such as a research brief, SEO audit, lead list, QA report, knowledge base, competitive intel digest, or design analysis. | Agent session/artifact output |
+
+Do not confuse these modes. Running `firecrawl scrape` during a coding session is not the same thing as wiring Firecrawl into Haul Command runtime code.
+
+---
+
+## 7. Firecrawl Setup for Local Agent Environments
+
+Install Firecrawl skills in the coding-agent environment, not inside the production app unless the task explicitly asks for a product integration:
+
+```bash
+npx -y firecrawl-cli@latest init --all --browser
+```
+
+This installs the Firecrawl CLI, CLI skills, build skills, workflow skills, and browser authorization flow.
+
+Verify the install before doing real web work:
+
+```bash
+mkdir -p .firecrawl
+firecrawl --status
+firecrawl scrape "https://firecrawl.dev" -o .firecrawl/install-check.md
+```
+
+Never commit `.firecrawl` output unless the user explicitly asks for a durable research artifact and the content is safe, original, and appropriate for the repo.
+
+Never commit `FIRECRAWL_API_KEY` or any other secret. Keep it in local shell exports, Vercel env vars, GitHub Actions secrets, Supabase secrets, or another approved secret store.
+
+---
+
+## 8. Firecrawl Path Selection
+
+Use this routing logic:
+
+### Path A: Live Web Tools
+
+Use when the agent needs web data during the current task:
+
+- `firecrawl search` for discovery.
+- `firecrawl scrape` when a URL is known.
+- `firecrawl interact` when a page requires clicks, forms, or navigation.
+- `firecrawl crawl` for bounded bulk extraction.
+- `firecrawl map` for URL discovery.
+- `firecrawl ask` when a Firecrawl job fails or returns unexpected output.
+- `firecrawl docs-search` for Firecrawl implementation questions grounded in current docs.
+
+Default flow: search first when discovery is needed, scrape known URLs, interact only when plain extraction is not enough, and use `firecrawl ask` with the failing job ID instead of guessing when a Firecrawl job fails.
+
+### Path B: Product Integration
+
+Use when the user wants Firecrawl built into Haul Command app code, backend services, scripts, agent loops, or pipelines.
+
+Before writing code, answer: **What should Firecrawl do in the product?**
+
+Route the implementation to the matching API capability:
+
+- `/search` for query-led discovery.
+- `/scrape` for known URL extraction.
+- `/interact` for browser actions.
+- `/parse` for local or non-public documents where appropriate.
+- `/crawl` for bounded site extraction.
+- `/map` for URL discovery.
+
+For product integration, inspect the existing repo first, use the existing API/secrets conventions, store `FIRECRAWL_API_KEY` safely, and run one real smoke test when possible.
+
+### Path C: Repeatable Deliverables
+
+Use when the goal is a finished artifact powered by Firecrawl web data, not product code.
+
+Examples:
+
+- Research brief.
+- SEO audit.
+- Lead list.
+- QA report.
+- Knowledge base.
+- Competitive intelligence digest.
+- Design clone/analysis.
+
+Default workflow: confirm the deliverable, collect traceable web evidence, run independent research units in parallel when available, synthesize the deliverable, and include a rerun-inputs block if the workflow could become repeatable automation.
+
+### Path D: Authorization or API Key
+
+Use when the human still needs to create an account, sign in, authorize access, or provide an API key.
+
+If a valid `FIRECRAWL_API_KEY` already exists in the local agent/session environment, skip this path. If not, use the browser auth flow from the Firecrawl CLI setup or ask the human to authorize/provide the key.
+
+### Path E: REST API Without Installing Skills
+
+Use only when the agent environment cannot install the CLI/skills but can make direct authenticated API requests.
+
+Base URL:
+
+```text
+https://api.firecrawl.dev/v2
+```
+
+Auth header:
+
+```text
+Authorization: Bearer $FIRECRAWL_API_KEY
+```
+
+Supported capabilities include `/search`, `/scrape`, `/interact`, `/support/ask`, and `/support/docs-search`.
+
+---
+
+## 9. Safe Firecrawl Defaults for Haul Command
+
+When using Firecrawl for Haul Command:
+
+- Start with search or map before crawl unless the exact URL set is known.
+- Keep crawls bounded by domain, path, page count, and purpose.
+- Prefer official sources for regulations, permits, public safety, government rules, and compliance.
+- Use competitor sites for benchmarking structure and gaps, not copying language or assets.
+- Do not scrape private, paywalled, credentialed, disallowed, or legally sensitive content.
+- Do not store raw scraped competitor content in public routes.
+- Transform findings into original, useful Haul Command tools, pages, audits, and workflows.
+- Preserve source URLs, date checked, jurisdiction, and confidence labels when findings affect product logic or content.
+- For 120-country work, do not let U.S. results silently define the global model.
+
+If Firecrawl output is used for SEO, AEO, directories, regulations, glossary, training, tools, or data products, verify that the result passes the Haul Command no-thin-content, no-fake-stats, global-readiness, and commercial-surface rules.
+
+---
+
+## 10. Security Rule
 
 Never commit:
 
@@ -158,7 +293,7 @@ If a committed secret is discovered:
 
 ---
 
-## 7. Verification Expectations
+## 11. Verification Expectations
 
 Use the strongest practical checks available for the change:
 
@@ -175,7 +310,7 @@ If verification cannot be run, say why and provide the exact command that should
 
 ---
 
-## 8. Final Report Format
+## 12. Final Report Format
 
 At the end of a task, Codex should report:
 
