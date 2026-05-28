@@ -41,6 +41,7 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters, dataIs
   const [filtered, setFiltered] = useState<any[] | null>(null);
   const displayItems = filtered ?? providers;
   const intentLanes = buildDirectoryIntentLanes(targetCountry);
+  const isUsMode = targetCountry === 'US';
 
   function getRecordId(record: any): string {
     return String(record.contact_id || record.id || record.entity_id || record.slug || record.company || record.name || '');
@@ -87,7 +88,8 @@ export function DirectoryGrid({ providers, targetCountry, initialFilters, dataIs
         items={providers}
         onFilter={setFiltered}
         placeholder="Search company, city, parking, repair, permit, route support..."
-        stateOptions={STATE_OPTIONS}
+        stateOptions={isUsMode ? STATE_OPTIONS : undefined}
+        searchFields={['company', 'name', 'company_name', 'city', 'city_inferred', 'home_base_city', 'state_inferred', 'state_code', 'state', 'country_code_inferred', 'country_code', 'primary_service_area', 'source', 'entity_family', 'entity_subtype']}
         surface="command"
         initialFilters={initialFilters}
       />

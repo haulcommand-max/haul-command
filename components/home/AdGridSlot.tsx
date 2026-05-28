@@ -1,7 +1,6 @@
 'use client';
 // components/home/AdGridSlot.tsx
-// Reads from hc_adgrid_inventory via /api/adgrid/serve.
-// Shows self-serve CTA when no ad is booked.
+// Reads from /api/adgrid/serve and leaves a monetizable fallback when inventory is empty.
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
@@ -38,7 +37,7 @@ export function AdGridSlot({ zone, className, showEmptyCta = true }: AdGridSlotP
 
   useEffect(() => {
     const role = (() => { try { return localStorage.getItem('hc_role'); } catch { return null; } })();
-    fetch(`/api/adgrid/serve?zone=${zone}${role ? `&role=${role}` : ''}`)
+    fetch(`/api/adgrid/serve?zone=${encodeURIComponent(zone)}${role ? `&role=${encodeURIComponent(role)}` : ''}`)
       .then(r => r.json())
       .then(d => { if (d.ad) setAd(d.ad); setLoaded(true); })
       .catch(() => { setLoaded(true); });
@@ -114,7 +113,7 @@ export function AdGridSlot({ zone, className, showEmptyCta = true }: AdGridSlotP
   if (loaded && showEmptyCta) {
     return (
       <Link
-        href={`/advertise/buy?zone=${zone}`}
+        href={`/advertise/buy?zone=${encodeURIComponent(zone)}`}
         className={`group block rounded-lg border border-dashed border-[#D1D5DB] bg-[#F9FAFB] p-5 text-center transition-all hover:border-[#C6923A] hover:bg-[#FFFBEB] ${className ?? ''}`}
         data-adgrid-zone={zone}
       >

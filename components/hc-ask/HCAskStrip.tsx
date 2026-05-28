@@ -3,44 +3,66 @@
 /**
  * components/hc-ask/HCAskStrip.tsx
  *
- * The main HC Ask utility bar for additive intelligence.
+ * The main HC Ask utility bar — additive intelligence strip.
  *
  * GUARDRAILS:
- *   1. No Google API calls are made on mount; only on explicit user submit.
- *   2. Results are pinned to the EXISTING Mapbox map instance via HCAskMapBridge.
- *   3. Clearing results removes ONLY the HC Ask layer; Traccar and load pins stay untouched.
- *   4. Mobile: collapses to icon + slide-up panel below 768px.
+ *   1. Directory context uses Haul Command directory search when no map/route context exists.
+ *   2. Google Places calls happen only for explicit route/map place searches.
+ *   3. Results are pinned to the EXISTING Mapbox map instance via HCAskMapBridge.
+ *   4. Clearing results removes ONLY the HC Ask layer — Traccar and load pins untouched.
+ *   5. Mobile: collapses to icon + slide-up panel below 768px.
  */
 
 import React, { useState, useCallback, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { HCAskChips } from "./HCAskChips";
 import { HCAskResults } from "./HCAskResults";
 import type { HCPlace } from "@/lib/google-places";
 
 interface HCAskStripProps {
-  /** Context page determines chip set and placeholder text */
+  /** Context page — determines chip set and placeholder text */
   context?: "directory" | "corridor";
-  /** Mapbox GL map instance passed down so HC Ask can add/remove its own layer */
+  /** Mapbox GL map instance — passed down so HC Ask can add/remove its own layer */
   mapInstance?: any; // mapbox-gl Map | null
-  /** Current map viewport bounds used to bias searches */
+  /** Current map viewport bounds — used to bias searches */
   viewportBounds?: {
     sw: { latitude: number; longitude: number };
     ne: { latitude: number; longitude: number };
   };
-  /** User current lat/lng used for chip-based nearby queries */
+  /** User's current lat/lng — used for chip-based nearby queries */
   userLocation?: { latitude: number; longitude: number };
 }
 
 type State = "idle" | "loading" | "results" | "error";
 
-const PLACEHOLDER_ROTATIONS = [
-  "Find fuel stops near this route...",
-  "Show hotels with truck parking...",
-  "Find weigh stations in this corridor...",
-  "Search rest areas along I-40...",
+const DIRECTORY_PLACEHOLDERS = [
+  "Search pilot cars, escorts, permits, yards, repair, parking…",
+  "Find high-pole escorts, route survey help, or staging support…",
+  "Search truck stops, oversize parking, mobile mechanics, port support…",
+  "Look up a role, company, city, country, route need, or support gap…",
 ];
 
-const DIRECTORY_PLACEHOLDER = "Search operators, roles, or routes in 120 countries...";
+const CORRIDOR_PLACEHOLDERS = [
+  "Find fuel stops near this route…",
+  "Show hotels with truck parking…",
+  "Find weigh stations in this corridor…",
+  "Search rest areas along I-40…",
+];
+
+const DIRECTORY_CATEGORY_MAP: Record<string, string> = {
+  "Pilot Car Operators": "pilot-car",
+  "Escort Vehicles": "escort",
+  "High-Pole Escorts": "high-pole",
+  "Permit Support": "permit",
+  "Route Survey": "route-survey",
+  "Traffic Control": "traffic-control",
+  "Staging Yards": "staging",
+  "Truck Stops": "truck-stop",
+  "Oversize Parking": "parking",
+  "Mobile Mechanics": "repair",
+  "Port Support": "port",
+  "Weigh Stations": "weigh-station",
+};
 
 export function HCAskStrip({
   context = "directory",
@@ -48,31 +70,45 @@ export function HCAskStrip({
   viewportBounds,
   userLocation,
 }: HCAskStripProps) {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [state, setState] = useState<State>("idle");
   const [places, setPlaces] = useState<HCPlace[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false); // mobile expand
-  const [placeholder, setPlaceholder] = useState(
-    context === "directory" ? DIRECTORY_PLACEHOLDER : PLACEHOLDER_ROTATIONS[0]
-  );
+  const [placeholder, setPlaceholder] = useState(DIRECTORY_PLACEHOLDERS[0]);
   const inputRef = useRef<HTMLInputElement>(null);
   const placeholderIdx = useRef(0);
 
-  // Rotate placeholder text every 4s for visual engagement
+  // Rotate placeholder text every 4s for visual engagement.
   useEffect(() => {
-    if (context === "directory") {
-      setPlaceholder(DIRECTORY_PLACEHOLDER);
-      return;
-    }
+    const rotations = context === "directory" ? DIRECTORY_PLACEHOLDERS : CORRIDOR_PLACEHOLDERS;
+    placeholderIdx.current = 0;
+    setPlaceholder(rotations[0]);
     const id = setInterval(() => {
-      placeholderIdx.current = (placeholderIdx.current + 1) % PLACEHOLDER_ROTATIONS.length;
-      setPlaceholder(PLACEHOLDER_ROTATIONS[placeholderIdx.current]);
+      placeholderIdx.current = (placeholderIdx.current + 1) % rotations.length;
+      setPlaceholder(rotations[placeholderIdx.current]);
     }, 4000);
     return () => clearInterval(id);
   }, [context]);
 
-  // Map layer management.
+  const routeDirectorySearch = useCallback((searchQuery: string, chip?: string) => {
+    const clean = (chip || searchQuery).trim();
+    if (!clean) return;
+
+    const params = new URLSearchParams();
+    const category = chip ? DIRECTORY_CATEGORY_MAP[chip] : undefined;
+    if (category) {
+      params.set("category", category);
+      params.set("q", clean);
+    } else {
+      params.set("q", clean);
+    }
+
+    router.push(`/directory?${params.toString()}`);
+  }, [router]);
+
+  // ── Map layer management ──────────────────────────────────────────────────
 
   const addMapPins = useCallback(
     (pins: HCPlace[]) => {
@@ -101,14 +137,14 @@ export function HCAskStrip({
 
         mapInstance.addSource("hc-ask-places", { type: "geojson", data: geojson });
 
-        // HC Ask pins: amber teal, distinct from Traccar blue / load red.
+        // HC Ask pins — teal, distinct from Traccar blue / load red
         mapInstance.addLayer({
           id: "hc-ask-pins",
           type: "circle",
           source: "hc-ask-places",
           paint: {
             "circle-radius": ["interpolate", ["linear"], ["zoom"], 4, 7, 10, 12],
-            "circle-color": "#14B8A6",        // teal, distinct from existing layers
+            "circle-color": "#14B8A6",
             "circle-stroke-width": 2.5,
             "circle-stroke-color": "#ffffff",
             "circle-opacity": 0.92,
@@ -147,17 +183,20 @@ export function HCAskStrip({
     } catch (_) {}
   }, [mapInstance]);
 
-  // Query execution.
+  // ── Query execution ────────────────────────────────────────────────────
 
   const executeSearch = useCallback(
     async (searchQuery: string, chip?: string) => {
       if (!searchQuery.trim() && !chip) return;
-      if (context === "directory") {
-        const params = new URLSearchParams();
-        params.set("q", chip || searchQuery.trim());
-        window.location.assign(`/directory?${params.toString()}`);
+
+      // Directory pages already have Supabase/Typesense-backed results. Do not
+      // call Google Places from a standalone directory search bar, because that
+      // creates avoidable API cost/errors and ignores Haul Command's own data.
+      if (context === "directory" && !mapInstance && !viewportBounds && !userLocation) {
+        routeDirectorySearch(searchQuery, chip);
         return;
       }
+
       setState("loading");
       setError(null);
 
@@ -198,7 +237,7 @@ export function HCAskStrip({
         setState("error");
       }
     },
-    [context, viewportBounds, userLocation, addMapPins]
+    [context, mapInstance, viewportBounds, userLocation, routeDirectorySearch, addMapPins]
   );
 
   const handleSubmit = useCallback(
@@ -227,15 +266,18 @@ export function HCAskStrip({
   }, [clearMapPins]);
 
   const isLoading = state === "loading";
+  const searchLabel = context === "directory"
+    ? "Search Haul Command support directory"
+    : "Ask HC about places near your route or region";
 
-  // Render.
+  // ── Render ──────────────────────────────────────────────────────────────
 
   return (
     <div
-      className={`hc-ask-strip hc-ask-strip--${context}${isExpanded ? " hc-ask-strip--expanded" : ""}`}
+      className={`hc-ask-strip${isExpanded ? " hc-ask-strip--expanded" : ""}`}
       id="hc-ask-strip"
       role="search"
-      aria-label="HC Ask place intelligence search"
+      aria-label={searchLabel}
     >
       {/* Mobile toggle button */}
       <button
@@ -246,10 +288,10 @@ export function HCAskStrip({
         aria-expanded={isExpanded}
         aria-controls="hc-ask-panel"
       >
-        <span className="hc-ask-mobile-toggle-icon" aria-hidden="true">Search</span>
+        <span className="hc-ask-mobile-toggle-icon" aria-hidden="true">🔍</span>
         <span>HC Ask</span>
         <span className="hc-ask-mobile-toggle-chevron" aria-hidden="true">
-          {isExpanded ? "Up" : "Down"}
+          {isExpanded ? "▲" : "▼"}
         </span>
       </button>
 
@@ -257,7 +299,7 @@ export function HCAskStrip({
       <div className="hc-ask-panel" id="hc-ask-panel">
         <form onSubmit={handleSubmit} className="hc-ask-form" noValidate>
           <div className="hc-ask-input-row">
-            <span className="hc-ask-input-prefix" aria-hidden="true">Search</span>
+            <span className="hc-ask-input-prefix" aria-hidden="true">🔍</span>
             <input
               ref={inputRef}
               id="hc-ask-input"
@@ -266,7 +308,7 @@ export function HCAskStrip({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={placeholder}
-              aria-label={context === "directory" ? "Search Haul Command directory records" : "Ask HC about places near your route or region"}
+              aria-label={searchLabel}
               disabled={isLoading}
               autoComplete="off"
               spellCheck={false}
@@ -279,7 +321,7 @@ export function HCAskStrip({
                 onClick={handleClear}
                 aria-label="Clear query"
               >
-                X
+                ✕
               </button>
             )}
             <button
@@ -307,7 +349,7 @@ export function HCAskStrip({
         {/* Error state */}
         {state === "error" && error && (
           <div className="hc-ask-error" role="alert">
-            <span aria-hidden="true">Alert</span> {error}
+            <span aria-hidden="true">⚠️</span> {error}
             <button
               type="button"
               id="hc-ask-error-clear"
@@ -333,12 +375,10 @@ export function HCAskStrip({
           </div>
         )}
 
-        {/* Attribution required by Google Places ToS */}
+        {/* Attribution — required by Google Places ToS */}
         {state === "results" && places.length > 0 && (
-          <p className="hc-ask-attribution" aria-label="HC Ask result source">
-            {places.some((place) => place.source?.startsWith("haul_command"))
-              ? "Results from Haul Command directory intelligence"
-              : "Results via Google Places"} - Traccar &amp; Mapbox unaffected
+          <p className="hc-ask-attribution" aria-label="Powered by Google Places">
+            Results via Google Places · Traccar &amp; Mapbox unaffected
           </p>
         )}
       </div>
