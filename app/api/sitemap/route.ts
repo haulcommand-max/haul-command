@@ -5,6 +5,7 @@ import { shouldIndexDirectoryOperator } from '@/lib/directory/operator-profile-s
 const MAX_URLS_PER_SITEMAP = 50000;
 const MAX_DYNAMIC_URLS_PER_SITEMAP = 45000;
 const MAX_CHUNK_ZERO_EXTRA_URLS = MAX_URLS_PER_SITEMAP - MAX_DYNAMIC_URLS_PER_SITEMAP;
+const SUPABASE_PAGE_SIZE = 1000;
 const BASE = 'https://www.haulcommand.com';
 
 const CANONICAL_STATIC_PATHS = [
@@ -120,30 +121,50 @@ async function fetchRoleCountrySitemapUrls(
 ) {
     if (endIndex < startIndex) return [];
 
-    const fromCoverage = await supabase
-        .from('hc_role_country_coverage')
-        .select('page_url, data_as_of')
-        .eq('index_verdict', 'index_now')
-        .not('page_url', 'is', null)
-        .order('page_url', { ascending: true })
-        .range(startIndex, endIndex);
+    const coverageRows: SitemapPageRow[] = [];
+    let coverageFailed = false;
+    for (let from = startIndex; from <= endIndex; from += SUPABASE_PAGE_SIZE) {
+        const to = Math.min(from + SUPABASE_PAGE_SIZE - 1, endIndex);
+        const { data, error } = await supabase
+            .from('hc_role_country_coverage')
+            .select('page_url, data_as_of')
+            .eq('index_verdict', 'index_now')
+            .not('page_url', 'is', null)
+            .order('page_url', { ascending: true })
+            .range(from, to);
 
-    if (!fromCoverage.error) {
-        return ((fromCoverage.data ?? []) as SitemapPageRow[])
+        if (error) {
+            coverageFailed = true;
+            break;
+        }
+
+        coverageRows.push(...((data ?? []) as SitemapPageRow[]));
+        if ((data?.length ?? 0) < to - from + 1) break;
+    }
+
+    if (!coverageFailed) {
+        return coverageRows
             .map((row) => toHaulCommandUrl(row.page_url))
             .filter((url): url is string => Boolean(url));
     }
 
-    const fromEligibleView = await supabase
-        .from('v_hc_sitemap_eligible_pages' as never)
-        .select('page_url, last_updated')
-        .like('page_url', '/directory/%/%')
-        .order('page_url', { ascending: true })
-        .range(startIndex, endIndex);
+    const viewRows: SitemapPageRow[] = [];
+    for (let from = startIndex; from <= endIndex; from += SUPABASE_PAGE_SIZE) {
+        const to = Math.min(from + SUPABASE_PAGE_SIZE - 1, endIndex);
+        const { data, error } = await supabase
+            .from('v_hc_sitemap_eligible_pages' as never)
+            .select('page_url, last_updated')
+            .like('page_url', '/directory/%/%')
+            .order('page_url', { ascending: true })
+            .range(from, to);
 
-    if (fromEligibleView.error) return [];
+        if (error) return [];
 
-    return ((fromEligibleView.data ?? []) as SitemapPageRow[])
+        viewRows.push(...((data ?? []) as SitemapPageRow[]));
+        if ((data?.length ?? 0) < to - from + 1) break;
+    }
+
+    return viewRows
         .map((row) => toHaulCommandUrl(row.page_url))
         .filter((url): url is string => Boolean(url));
 }
