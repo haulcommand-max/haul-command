@@ -103,15 +103,6 @@ function toHaulCommandUrl(pathOrUrl?: string | null) {
 }
 
 async function countRoleCountrySitemapUrls(supabase: SupabaseClient) {
-    const sitemapViewCount = await supabase
-        .from('v_hc_sitemap_eligible_pages' as never)
-        .select('page_url', { count: 'estimated', head: true })
-        .like('page_url', '/directory/%/%');
-
-    if (!sitemapViewCount.error) {
-        return sitemapViewCount.count ?? 0;
-    }
-
     const coverageCount = await supabase
         .from('hc_role_country_coverage')
         .select('page_url', { count: 'estimated', head: true })
@@ -129,19 +120,6 @@ async function fetchRoleCountrySitemapUrls(
 ) {
     if (endIndex < startIndex) return [];
 
-    const fromEligibleView = await supabase
-        .from('v_hc_sitemap_eligible_pages' as never)
-        .select('page_url, last_updated')
-        .like('page_url', '/directory/%/%')
-        .order('page_url', { ascending: true })
-        .range(startIndex, endIndex);
-
-    if (!fromEligibleView.error) {
-        return ((fromEligibleView.data ?? []) as SitemapPageRow[])
-            .map((row) => toHaulCommandUrl(row.page_url))
-            .filter((url): url is string => Boolean(url));
-    }
-
     const fromCoverage = await supabase
         .from('hc_role_country_coverage')
         .select('page_url, data_as_of')
@@ -150,9 +128,22 @@ async function fetchRoleCountrySitemapUrls(
         .order('page_url', { ascending: true })
         .range(startIndex, endIndex);
 
-    if (fromCoverage.error) return [];
+    if (!fromCoverage.error) {
+        return ((fromCoverage.data ?? []) as SitemapPageRow[])
+            .map((row) => toHaulCommandUrl(row.page_url))
+            .filter((url): url is string => Boolean(url));
+    }
 
-    return ((fromCoverage.data ?? []) as SitemapPageRow[])
+    const fromEligibleView = await supabase
+        .from('v_hc_sitemap_eligible_pages' as never)
+        .select('page_url, last_updated')
+        .like('page_url', '/directory/%/%')
+        .order('page_url', { ascending: true })
+        .range(startIndex, endIndex);
+
+    if (fromEligibleView.error) return [];
+
+    return ((fromEligibleView.data ?? []) as SitemapPageRow[])
         .map((row) => toHaulCommandUrl(row.page_url))
         .filter((url): url is string => Boolean(url));
 }
