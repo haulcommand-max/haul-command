@@ -71,6 +71,14 @@ function rankDirectoryRecord(record: any) {
   return Number(record.rank_score ?? record.confidence_score ?? record.directory_quality_score ?? 0);
 }
 
+function normalizeRegionCode(value: unknown) {
+  return String(value ?? '').trim().toUpperCase();
+}
+
+function normalizeMarketText(value: unknown) {
+  return String(value ?? '').trim().toLowerCase();
+}
+
 function displayRoleFromSlug(slug: string) {
   return String(slug ?? '')
     .replace(/[_-]+/g, ' ')
@@ -416,6 +424,153 @@ async function fetchDirectoryMarketRecords(
   };
 }
 
+function applyMarketScopeToHcPlacesQuery(query: any, plan: DirectoryMarketFilterPlan) {
+  if (plan.scope.type === 'region') {
+    return query.eq('admin1_code', plan.scope.code);
+  }
+
+  const marketName = plan.scope.name;
+  return query.or(`locality.ilike.%${marketName}%,admin2_name.ilike.%${marketName}%,name.ilike.%${marketName}%`);
+}
+
+function applyMarketScopeToGlobalOperatorsQuery(query: any, plan: DirectoryMarketFilterPlan) {
+  if (plan.scope.type === 'region') {
+    return query.eq('admin1_code', plan.scope.code);
+  }
+
+  const marketName = plan.scope.name;
+  return query.or(`city.ilike.%${marketName}%,service_area.ilike.%${marketName}%,name.ilike.%${marketName}%`);
+}
+
+function mapHcPlaceMarketRecord(row: any) {
+  return {
+    id: row.id,
+    contact_id: row.id,
+    name: row.name,
+    company: row.name,
+    slug: row.slug,
+    city: row.locality,
+    city_inferred: row.locality,
+    admin1_code: row.admin1_code,
+    state: row.admin1_code,
+    country_code: row.country_code,
+    lat: row.lat,
+    lon: row.lng,
+    website: row.website,
+    phone_raw: row.phone,
+    entity_family: 'support_place',
+    entity_subtype: row.surface_category_key,
+    role_primary: row.surface_category_key,
+    claim_status: row.claim_status,
+    verification_status: row.hc_verified ? 'verified' : null,
+    confidence_score: row.source_confidence ?? row.demand_score ?? 0,
+    rank_score: row.demand_score ?? row.source_confidence ?? 0,
+    profile_url: row.slug ? `/directory/dossier/${row.id}` : null,
+    source_view: 'hc_places',
+  };
+}
+
+function mapGlobalOperatorMarketRecord(row: any) {
+  return {
+    id: row.id,
+    contact_id: row.id,
+    name: row.name,
+    company: row.business_name || row.name,
+    slug: row.slug,
+    city: row.city,
+    city_inferred: row.city,
+    admin1_code: row.admin1_code,
+    state: row.admin1_code,
+    country_code: row.country_code,
+    lat: row.lat,
+    lon: row.lng,
+    phone_raw: row.phone_normalized,
+    email: row.email,
+    website: row.website_url,
+    entity_family: row.entity_family || 'operator',
+    entity_subtype: row.role_primary,
+    role_primary: row.role_primary,
+    claim_status: row.claim_status ?? (row.is_claimed ? 'claimed' : null),
+    verification_status: row.verification_status ?? (row.is_verified ? 'verified' : null),
+    confidence_score: row.confidence_score ?? row.trust_score ?? 0,
+    rank_score: row.trust_score ?? row.confidence_score ?? 0,
+    profile_url: row.slug ? `/directory/dossier/${row.id}` : null,
+    source_view: 'hc_global_operators',
+  };
+}
+
+async function fetchDirectoryMarketSourceFallback(
+  supabase: ReturnType<typeof createClient>,
+  plan: DirectoryMarketFilterPlan,
+  countryUpper: string,
+) {
+  const sourceLimit = Math.max(12, Math.ceil(plan.limit / 2));
+
+  let placesQuery = supabase
+    .from('hc_places')
+    .select('id,name,slug,surface_category_key,country_code,admin1_code,admin2_name,locality,lat,lng,phone,website,source_confidence,status,is_search_indexable,claim_status,demand_score,hc_verified', { count: 'exact' })
+    .eq('status', 'published')
+    .eq('is_search_indexable', true)
+    .eq('country_code', countryUpper)
+    .or('name.ilike.%pilot%,name.ilike.%escort%,surface_category_key.ilike.%pilot%,surface_category_key.ilike.%escort%')
+    .order('demand_score', { ascending: false, nullsFirst: false })
+    .limit(sourceLimit);
+
+  placesQuery = applyMarketScopeToHcPlacesQuery(placesQuery, plan);
+
+  let operatorsQuery = supabase
+    .from('hc_global_operators')
+    .select('id,name,business_name,slug,country_code,admin1_code,city,phone_normalized,email,website_url,is_claimed,is_verified,role_primary,confidence_score,trust_score,claim_status,verification_status,entity_family,lat,lng,service_area', { count: 'exact' })
+    .eq('country_code', countryUpper)
+    .not('admin1_code', 'is', null)
+    .not('city', 'is', null)
+    .or('name.ilike.%pilot%,name.ilike.%escort%,business_name.ilike.%pilot%,business_name.ilike.%escort%,role_primary.ilike.%pilot%,role_primary.ilike.%escort%')
+    .order('confidence_score', { ascending: false, nullsFirst: false })
+    .limit(sourceLimit);
+
+  operatorsQuery = applyMarketScopeToGlobalOperatorsQuery(operatorsQuery, plan);
+
+  const [placesResult, operatorsResult] = await Promise.all([placesQuery, operatorsQuery]);
+
+  if (placesResult.error) {
+    console.warn(`[directory-city] hc_places fallback failed for ${countryUpper}/${plan.marketName}:`, placesResult.error.message);
+  }
+  if (operatorsResult.error) {
+    console.warn(`[directory-city] hc_global_operators fallback failed for ${countryUpper}/${plan.marketName}:`, operatorsResult.error.message);
+  }
+
+  const seen = new Set<string>();
+  const records = [
+    ...((placesResult.data ?? []) as any[]).map(mapHcPlaceMarketRecord),
+    ...((operatorsResult.data ?? []) as any[]).map(mapGlobalOperatorMarketRecord),
+  ]
+    .filter((record) => {
+      const id = recordId(record);
+      if (!id || seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    })
+    .filter((record) => {
+      if (plan.scope.type === 'region') {
+        return normalizeRegionCode(record.admin1_code || record.state) === plan.scope.code;
+      }
+      const market = normalizeMarketText(plan.scope.name);
+      return [
+        record.city,
+        record.city_inferred,
+        record.company,
+        record.name,
+      ].some((value) => normalizeMarketText(value).includes(market));
+    })
+    .sort((a: any, b: any) => rankDirectoryRecord(b) - rankDirectoryRecord(a))
+    .slice(0, plan.limit);
+
+  return {
+    records,
+    totalCount: (placesResult.count ?? 0) + (operatorsResult.count ?? 0),
+  };
+}
+
 async function RoleCountryDirectoryPage({
   country,
   slug,
@@ -702,7 +857,11 @@ export async function generateMetadata({ params }: PageProps) {
   const countryUpper = plan.countryCode ?? country.toUpperCase();
   const marketName = plan.marketName;
   const supabase = createClient();
-  const count = await countDirectoryMarketRecords(supabase, plan, countryUpper);
+  let count = await countDirectoryMarketRecords(supabase, plan, countryUpper);
+  if (count === 0) {
+    const fallback = await fetchDirectoryMarketSourceFallback(supabase, plan, countryUpper);
+    count = fallback.totalCount || fallback.records.length;
+  }
 
   return contractToMetadata(buildDirectoryMarketSeoContract({
     countryCode: countryUpper,
@@ -770,7 +929,12 @@ export default async function CityDirectoryPage({ params }: PageProps) {
   const marketKind = plan.scope.type === 'region' ? 'region' : plan.scope.type === 'metro' ? 'metro' : 'city';
 
   // Fetch public directory records in this market through the directory surface facade.
-  const { records: ops, totalCount } = await fetchDirectoryMarketRecords(supabase, plan, countryUpper);
+  let { records: ops, totalCount } = await fetchDirectoryMarketRecords(supabase, plan, countryUpper);
+  if (totalCount === 0) {
+    const fallback = await fetchDirectoryMarketSourceFallback(supabase, plan, countryUpper);
+    ops = fallback.records;
+    totalCount = fallback.totalCount;
+  }
   const opCount = totalCount || ops.length;
 
   // If absolutely no operators found, still render the page (SEO value)

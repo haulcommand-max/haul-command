@@ -152,6 +152,57 @@ function mapDirectoryRoleBrowseRow(row: any): DirectoryRoleBrowseOption | null {
     };
 }
 
+function mapHcPlaceHomepageProvider(row: any) {
+    return {
+        id: row.id,
+        contact_id: row.id,
+        name: row.name,
+        company: row.name,
+        slug: row.slug,
+        city: row.locality,
+        city_inferred: row.locality,
+        state: row.admin1_code,
+        state_inferred: row.admin1_code,
+        country_code: row.country_code,
+        phone_raw: row.phone,
+        website: row.website,
+        entity_family: 'support_place',
+        entity_subtype: row.surface_category_key,
+        role_primary: row.surface_category_key,
+        claim_status: row.claim_status,
+        verification_status: row.hc_verified ? 'verified' : null,
+        confidence_score: row.source_confidence ?? row.demand_score ?? 0,
+        rank_score: row.demand_score ?? row.source_confidence ?? 0,
+        source: 'hc_places',
+    };
+}
+
+function mapGlobalOperatorHomepageProvider(row: any) {
+    return {
+        id: row.id,
+        contact_id: row.id,
+        name: row.name,
+        company: row.business_name || row.name,
+        slug: row.slug,
+        city: row.city,
+        city_inferred: row.city,
+        state: row.admin1_code,
+        state_inferred: row.admin1_code,
+        country_code: row.country_code,
+        phone_raw: row.phone_normalized,
+        email: row.email,
+        website: row.website_url,
+        entity_family: row.entity_family || 'operator',
+        entity_subtype: row.role_primary,
+        role_primary: row.role_primary,
+        claim_status: row.claim_status ?? (row.is_claimed ? 'claimed' : null),
+        verification_status: row.verification_status ?? (row.is_verified ? 'verified' : null),
+        confidence_score: row.confidence_score ?? row.trust_score ?? 0,
+        rank_score: row.trust_score ?? row.confidence_score ?? 0,
+        source: 'hc_global_operators',
+    };
+}
+
 async function loadDirectoryRoleBrowseOptions(supabase: ReturnType<typeof createSupabaseServerClient>): Promise<DirectoryRoleBrowseOption[]> {
     try {
         const { data, error } = await supabase
@@ -184,6 +235,52 @@ async function loadDirectoryRoleBrowseOptions(supabase: ReturnType<typeof create
         console.warn('[directory] role browse exception, using fallback role chips:', error);
         return fallbackDirectoryRoleOptions();
     }
+}
+
+async function loadDirectoryHomepageFallbackProviders(
+    supabase: ReturnType<typeof createSupabaseServerClient>,
+    targetCountry: string | null,
+) {
+    const placesQuery = supabase
+        .from('hc_places')
+        .select('id,name,slug,surface_category_key,country_code,admin1_code,locality,phone,website,source_confidence,status,is_search_indexable,claim_status,demand_score,hc_verified')
+        .eq('status', 'published')
+        .eq('is_search_indexable', true)
+        .order('demand_score', { ascending: false, nullsFirst: false })
+        .limit(36);
+
+    const operatorsQuery = supabase
+        .from('hc_global_operators')
+        .select('id,name,business_name,slug,country_code,admin1_code,city,phone_normalized,email,website_url,is_claimed,is_verified,role_primary,confidence_score,trust_score,claim_status,verification_status,entity_family')
+        .not('admin1_code', 'is', null)
+        .not('city', 'is', null)
+        .order('confidence_score', { ascending: false, nullsFirst: false })
+        .limit(24);
+
+    const scopedPlacesQuery = targetCountry ? placesQuery.eq('country_code', targetCountry) : placesQuery;
+    const scopedOperatorsQuery = targetCountry ? operatorsQuery.eq('country_code', targetCountry) : operatorsQuery;
+    const [placesResult, operatorsResult] = await Promise.all([scopedPlacesQuery, scopedOperatorsQuery]);
+
+    if (placesResult.error) {
+        console.warn('[directory] hc_places homepage fallback failed:', placesResult.error.message);
+    }
+    if (operatorsResult.error) {
+        console.warn('[directory] hc_global_operators homepage fallback failed:', operatorsResult.error.message);
+    }
+
+    const seen = new Set<string>();
+    return [
+        ...((placesResult.data ?? []) as any[]).map(mapHcPlaceHomepageProvider),
+        ...((operatorsResult.data ?? []) as any[]).map(mapGlobalOperatorHomepageProvider),
+    ]
+        .filter((record) => {
+            const id = String(record.contact_id || record.id || record.slug || record.name || '').trim();
+            if (!id || seen.has(id)) return false;
+            seen.add(id);
+            return true;
+        })
+        .sort((a, b) => Number(b.rank_score ?? 0) - Number(a.rank_score ?? 0))
+        .slice(0, 50);
 }
 
 const countryTiers = [
@@ -426,6 +523,10 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
         } catch (e) {
             console.warn('[directory] Supabase query failed:', e);
         }
+    }
+
+    if (providers.length === 0) {
+        providers = await loadDirectoryHomepageFallbackProviders(supabase, targetCountry);
     }
 
     return (

@@ -12,6 +12,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { isMissingOptionalSupabaseRelation } from '@/lib/supabase/optional-relations';
 
 export const dynamic = 'force-dynamic';
 
@@ -157,7 +158,7 @@ export async function GET(req: NextRequest) {
         }
     }
 
-    const { data: alerts } = await supabase
+    const { data: alerts, error: alertsError } = await supabase
         .from('supply_alerts')
         .select('id,city,state_code,corridor_id,alert_type,available_count,message,expires_at')
         .eq('active', true)
@@ -165,7 +166,9 @@ export async function GET(req: NextRequest) {
         .limit(12);
 
     const normalizedValue = (value || h3Cell).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
-    supplyAlerts = (alerts ?? [])
+    const marketAlerts = alertsError && isMissingOptionalSupabaseRelation(alertsError) ? [] : (alerts ?? []);
+
+    supplyAlerts = marketAlerts
         .filter((alert: any) => {
             const expiresAt = alert.expires_at ? new Date(alert.expires_at).getTime() : null;
             if (expiresAt && expiresAt <= Date.now()) return false;
