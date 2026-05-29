@@ -10,14 +10,17 @@ import { ProofStrip } from '@/components/ui/ProofStrip';
 import { Shield, MapPin, ArrowRight, ChevronRight, Users } from 'lucide-react';
 import { notFound, redirect } from 'next/navigation';
 import { stateFullName } from '@/lib/geo/state-names';
+import { getCountry } from '@/lib/config/country-registry';
 import { DirectoryBackgroundShell } from '@/components/directory/DirectoryBackgroundShell';
 import {
   buildDirectoryMarketFilterPlan,
   normalizeDirectoryCountry,
+  slugifyDirectoryMarket,
   type DirectoryMarketFilterPlan,
   type DirectorySurfaceView,
 } from '@/lib/directory/server-query';
 import { buildDirectoryMarketSeoContract } from '@/lib/directory/presentation';
+import { generatePageMetadata } from '@/lib/seo/metadataFactory';
 import { buildFAQPageJsonLd, buildQAPageJsonLd } from '@/lib/seo/jsonld';
 import { getPageSeoContract, metadataFromDbPageSeoContract } from '@/lib/seo/page-seo-contract-db';
 
@@ -31,6 +34,9 @@ import { getPageSeoContract, metadataFromDbPageSeoContract } from '@/lib/seo/pag
 interface PageProps {
   params: Promise<{ country: string; slug: string }>;
 }
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 function displayName(op: any) {
   return op.company_name || op.company || op.name || op.display_name || 'Indexed support record';
@@ -73,6 +79,211 @@ function displayRoleFromSlug(slug: string) {
     .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
+type RoleCountryCoverage = {
+  role_key: string;
+  country_code: string;
+  country_tier: string | null;
+  page_url: string | null;
+  entity_count: number | null;
+  claimed_count: number | null;
+  verified_count: number | null;
+  region_count: number | null;
+  index_verdict: string | null;
+  coverage_state: string | null;
+  primary_cta_label: string | null;
+  primary_cta_path: string | null;
+  data_as_of: string | null;
+};
+
+type DirectoryRoleBrowseRow = {
+  role_key: string;
+  display_name: string | null;
+  role_family: string | null;
+  ux_bucket: string | null;
+  all_aliases: string[] | null;
+  slang_names: string[] | null;
+  country_variants: string[] | null;
+  role_hub_path: string | null;
+  cta_primary: string | null;
+  operators: number | null;
+  countries_with_supply: number | null;
+  claimed: number | null;
+  verified: number | null;
+  has_supply: boolean | null;
+  role_class: string | null;
+  monetization_class: string | null;
+};
+
+type RoleCountryPageData = {
+  coverage: RoleCountryCoverage;
+  role: DirectoryRoleBrowseRow;
+};
+
+function countryDisplayName(countryCode: string) {
+  return getCountry(countryCode.toUpperCase())?.name ?? countryCode.toUpperCase();
+}
+
+function roleKeyCandidatesFromSlug(slug: string) {
+  const normalized = slugifyDirectoryMarket(slug).replace(/-/g, '_');
+  const candidates = new Set([normalized]);
+  for (const suffix of ['_operator', '_provider', '_developer', '_service', '_services']) {
+    if (normalized.endsWith(suffix)) candidates.add(normalized.slice(0, -suffix.length));
+  }
+  return [...candidates].filter(Boolean);
+}
+
+function roleSlugFromKey(roleKey: string) {
+  return slugifyDirectoryMarket(roleKey.replace(/_/g, '-'));
+}
+
+async function getRoleCountryPageData(
+  supabase: ReturnType<typeof createClient>,
+  countryUpper: string,
+  slug: string,
+): Promise<RoleCountryPageData | null> {
+  const canonicalPath = `/directory/${countryUpper.toLowerCase()}/${slugifyDirectoryMarket(slug)}`;
+  const coverageSelect = 'role_key, country_code, country_tier, page_url, entity_count, claimed_count, verified_count, region_count, index_verdict, coverage_state, primary_cta_label, primary_cta_path, data_as_of';
+  const roleCandidates = roleKeyCandidatesFromSlug(slug);
+  const slugFromRoute = slugifyDirectoryMarket(slug);
+  let coverage: RoleCountryCoverage | null = null;
+
+  const exactCoverage = await supabase
+    .from('hc_role_country_coverage')
+    .select(coverageSelect)
+    .eq('country_code', countryUpper)
+    .eq('page_url', canonicalPath)
+    .maybeSingle();
+
+  if (exactCoverage.error) {
+    console.warn(`[directory-role-country] Coverage page_url lookup failed for ${canonicalPath}:`, exactCoverage.error.message);
+  } else if (exactCoverage.data?.role_key) {
+    coverage = exactCoverage.data as RoleCountryCoverage;
+  }
+
+  if (!coverage && roleCandidates.length > 0) {
+    const roleCoverage = await supabase
+      .from('hc_role_country_coverage')
+      .select(coverageSelect)
+      .eq('country_code', countryUpper)
+      .in('role_key', roleCandidates)
+      .order('entity_count', { ascending: false, nullsFirst: false })
+      .limit(5);
+
+    if (roleCoverage.error) {
+      console.warn(`[directory-role-country] Coverage role_key lookup failed for ${countryUpper}/${slug}:`, roleCoverage.error.message);
+    } else {
+      coverage = ((roleCoverage.data ?? []) as RoleCountryCoverage[])
+        .find((row) => slugFromRoute === roleSlugFromKey(row.role_key)) ?? null;
+    }
+  }
+
+  if (!coverage?.role_key) {
+    return null;
+  }
+
+  if (slugFromRoute !== roleSlugFromKey(coverage.role_key)) {
+    console.warn(
+      `[directory-role-country] Ignoring coverage row with non-role slug: ${canonicalPath} -> ${coverage.role_key}`,
+    );
+    return null;
+  }
+
+  const { data: role, error: roleError } = await supabase
+    .from('v_hc_directory_role_browse')
+    .select('role_key, display_name, role_family, ux_bucket, all_aliases, slang_names, country_variants, role_hub_path, cta_primary, operators, countries_with_supply, claimed, verified, has_supply, role_class, monetization_class')
+    .eq('role_key', coverage.role_key)
+    .maybeSingle();
+
+  if (roleError || !role?.role_key) {
+    return {
+      coverage: coverage as RoleCountryCoverage,
+      role: {
+        role_key: coverage.role_key,
+        display_name: displayRoleFromSlug(slug),
+        role_family: null,
+        ux_bucket: null,
+        all_aliases: null,
+        slang_names: null,
+        country_variants: null,
+        role_hub_path: null,
+        cta_primary: null,
+        operators: null,
+        countries_with_supply: null,
+        claimed: null,
+        verified: null,
+        has_supply: null,
+        role_class: null,
+        monetization_class: null,
+      },
+    };
+  }
+
+  return {
+    coverage: coverage as RoleCountryCoverage,
+    role: role as DirectoryRoleBrowseRow,
+  };
+}
+
+async function fetchRoleCountryRecords(
+  supabase: ReturnType<typeof createClient>,
+  countryUpper: string,
+  roleKey: string,
+  limit = 36,
+) {
+  const terms = roleKeyCandidatesFromSlug(roleKey.replace(/_/g, '-'));
+  const byPrimaryRole = await supabase
+    .from('v_directory_publishable')
+    .select('*')
+    .eq('country_code', countryUpper)
+    .in('role_primary', terms)
+    .order('rank_score', { ascending: false, nullsFirst: false })
+    .order('confidence_score', { ascending: false, nullsFirst: false })
+    .limit(limit);
+
+  if (byPrimaryRole.error) {
+    console.warn(`[directory-role-country] Primary-role query failed for ${countryUpper}/${roleKey}:`, byPrimaryRole.error.message);
+  }
+
+  if ((byPrimaryRole.data?.length ?? 0) > 0) {
+    return byPrimaryRole.data ?? [];
+  }
+
+  const bySubtype = await supabase
+    .from('v_directory_publishable')
+    .select('*')
+    .eq('country_code', countryUpper)
+    .in('entity_subtype', terms)
+    .order('rank_score', { ascending: false, nullsFirst: false })
+    .order('confidence_score', { ascending: false, nullsFirst: false })
+    .limit(limit);
+
+  if (bySubtype.error) {
+    console.warn(`[directory-role-country] Subtype query failed for ${countryUpper}/${roleKey}:`, bySubtype.error.message);
+  }
+
+  if ((bySubtype.data?.length ?? 0) > 0) {
+    return bySubtype.data ?? [];
+  }
+
+  const byListingSubtype = await supabase
+    .from('directory_listings')
+    .select('id, canonical_entity_id, name, city, admin1_code, country_code, entity_subtype, primary_role, claim_status, verification_status, rank_score, confidence_score, profile_url')
+    .eq('country_code', countryUpper)
+    .in('entity_subtype', terms)
+    .or('is_visible.is.true,is_visible.is.null')
+    .or('opted_out.is.false,opted_out.is.null')
+    .order('rank_score', { ascending: false, nullsFirst: false })
+    .order('confidence_score', { ascending: false, nullsFirst: false })
+    .limit(limit);
+
+  if (byListingSubtype.error) {
+    console.warn(`[directory-role-country] Listing-subtype query failed for ${countryUpper}/${roleKey}:`, byListingSubtype.error.message);
+    return [];
+  }
+
+  return byListingSubtype.data ?? [];
+}
+
 function buildMarketDirectAnswer(input: {
   cityName: string;
   countryUpper: string;
@@ -95,6 +306,39 @@ function buildMarketDirectAnswer(input: {
       ? `/loads/post?country=${input.countryUpper}&market=${encodeURIComponent(input.slug)}&intent=city-support`
       : `/claim?country=${input.countryUpper}&market=${encodeURIComponent(input.slug)}&intent=city-market-claim&source=directory-city`,
     ctaLabel: hasCoverage ? 'Build support packet' : 'Claim this market',
+  };
+}
+
+function buildRoleCountryDirectAnswer(input: {
+  roleLabel: string;
+  countryName: string;
+  countryUpper: string;
+  entityCount: number;
+  claimedCount: number;
+  verifiedCount: number;
+  regionCount: number;
+  indexVerdict: string;
+  coverageState: string;
+  canonicalPath: string;
+  visibleCount: number;
+}) {
+  const hasCoverage = input.entityCount > 0;
+  const hasVisibleRecords = input.visibleCount > 0;
+  const question = `Who provides ${input.roleLabel.toLowerCase()} support in ${input.countryName}?`;
+
+  return {
+    question,
+    answer: hasVisibleRecords
+      ? `Haul Command indexes ${input.entityCount.toLocaleString()} ${input.roleLabel.toLowerCase()} record${input.entityCount === 1 ? '' : 's'} across ${input.countryName}, with coverage signals across ${input.regionCount.toLocaleString()} region${input.regionCount === 1 ? '' : 's'}. Use each record's claim, proof, freshness, and contact state before dispatch.`
+      : hasCoverage
+        ? `Haul Command has ${input.entityCount.toLocaleString()} ${input.roleLabel.toLowerCase()} coverage signal${input.entityCount === 1 ? '' : 's'} for ${input.countryName}, but no public records are renderable from the directory facade yet. Treat this as a mapped supply cell that still needs profile cleanup before dispatch.`
+      : `Haul Command has the ${input.roleLabel} role mapped for ${input.countryName}, but this role-country cell still needs source-backed supply before it should be treated as covered.`,
+    confidenceLabel: hasVisibleRecords ? 'Role-country records rendered' : hasCoverage ? 'Mapped coverage - profile cleanup needed' : 'Mapped role - supply gap',
+    sourceHref: `${input.canonicalPath}?source=coverage`,
+    ctaHref: hasVisibleRecords
+      ? `/directory?country=${input.countryUpper}&q=${encodeURIComponent(input.roleLabel)}`
+      : `/claim?country=${input.countryUpper}&role=${encodeURIComponent(input.roleLabel)}&intent=role-country-supply`,
+    ctaLabel: hasVisibleRecords ? `Search ${input.roleLabel}` : 'Claim or submit supply',
   };
 }
 
@@ -172,8 +416,284 @@ async function fetchDirectoryMarketRecords(
   };
 }
 
+async function RoleCountryDirectoryPage({
+  country,
+  slug,
+  countryUpper,
+  roleCountry,
+}: {
+  country: string;
+  slug: string;
+  countryUpper: string;
+  roleCountry: RoleCountryPageData;
+}) {
+  const roleLabel = roleCountry.role.display_name ?? displayRoleFromSlug(slug);
+  const countryName = countryDisplayName(countryUpper);
+  const canonicalPath = roleCountry.coverage.page_url ?? `/directory/${country.toLowerCase()}/${slug}`;
+  const entityCount = Number(roleCountry.coverage.entity_count ?? 0);
+  const claimedCount = Number(roleCountry.coverage.claimed_count ?? 0);
+  const verifiedCount = Number(roleCountry.coverage.verified_count ?? 0);
+  const regionCount = Number(roleCountry.coverage.region_count ?? 0);
+  const indexVerdict = roleCountry.coverage.index_verdict ?? 'request_coverage';
+  const coverageState = roleCountry.coverage.coverage_state ?? (entityCount > 0 ? 'has_supply' : 'supply_gap');
+  const records = await fetchRoleCountryRecords(createClient(), countryUpper, roleCountry.coverage.role_key);
+  const visibleCount = records.length;
+  const directAnswer = buildRoleCountryDirectAnswer({
+    roleLabel,
+    countryName,
+    countryUpper,
+    entityCount,
+    claimedCount,
+    verifiedCount,
+    regionCount,
+    indexVerdict,
+    coverageState,
+    canonicalPath,
+    visibleCount,
+  });
+  const visibleFaqs = [
+    {
+      question: `How many ${roleLabel.toLowerCase()} records are indexed in ${countryName}?`,
+      answer: entityCount > 0
+        ? `Haul Command currently tracks ${entityCount.toLocaleString()} ${roleLabel.toLowerCase()} records for ${countryName}, with ${regionCount.toLocaleString()} region signals attached.`
+        : `This role is mapped for ${countryName}, but source-backed supply still needs to be attached before the market is treated as covered.`,
+    },
+    {
+      question: `Can I dispatch directly from this ${roleLabel.toLowerCase()} page?`,
+      answer: 'Use this page as a discovery and proof screen first. Check claim state, contact path, source freshness, route fit, and any required permits or credentials before dispatch.',
+    },
+    {
+      question: `What should a ${roleLabel.toLowerCase()} provider do next?`,
+      answer: `Claim or correct the listing, add service areas and equipment, and attach proof so brokers can evaluate the ${countryName} support market without relying on stale directory data.`,
+    },
+  ];
+
+  const itemListJsonLd = visibleCount > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `${roleLabel} visible records in ${countryName}`,
+    description: `${roleLabel} role-country directory records currently rendered for ${countryName}`,
+    numberOfItems: visibleCount,
+    itemListElement: records.slice(0, 10).map((record: any, index: number) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'LocalBusiness',
+        name: displayName(record),
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: record.city_inferred || record.city,
+          addressRegion: record.state_inferred || record.admin1_code || record.state,
+          addressCountry: countryUpper,
+        },
+      },
+    })),
+  } : null;
+  const faqJsonLd = buildFAQPageJsonLd({
+    url: `https://www.haulcommand.com${canonicalPath}`,
+    faqs: visibleFaqs.map((faq) => ({ ...faq, visible: true })),
+  });
+  const qaJsonLd = buildQAPageJsonLd({
+    url: `https://www.haulcommand.com${canonicalPath}`,
+    question: directAnswer.question,
+    answer: directAnswer.answer,
+    visible: true,
+  });
+
+  return (
+    <>
+      <PageSeoContractJsonLd path={canonicalPath} />
+      <JsonLd data={[...(itemListJsonLd ? [itemListJsonLd] : []), ...(qaJsonLd ? [qaJsonLd] : []), ...(faqJsonLd ? [faqJsonLd] : [])]} />
+      <ProofStrip variant="bar" />
+      <DirectoryBackgroundShell>
+        <div style={{ borderBottom: '1px solid #E5E7EB', background: 'var(--hc-graphite)' }}>
+          <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem 1.5rem 2.5rem' }}>
+            <nav style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#6b7280', marginBottom: 16, textTransform: 'uppercase', letterSpacing: 1, fontWeight: 700 }}>
+              <Link href="/directory" style={{ color: '#9ca3af', textDecoration: 'none' }}>Directory</Link>
+              <ChevronRight style={{ width: 12, height: 12 }} />
+              <Link href={`/directory/${country.toLowerCase()}`} style={{ color: '#9ca3af', textDecoration: 'none' }}>{countryName}</Link>
+              <ChevronRight style={{ width: 12, height: 12 }} />
+              <span style={{ color: '#C6923A' }}>{roleLabel}</span>
+            </nav>
+
+            <div className="inline-flex rounded-full border border-[#C6923A]/30 bg-[#C6923A]/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[#C6923A]">
+              Role-country directory surface
+            </div>
+            <h1 style={{ margin: '12px 0 8px', fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: 900, color: '#f9fafb', letterSpacing: '-0.02em' }}>
+              {roleLabel} Directory in <span style={{ color: '#C6923A' }}>{countryName}</span>
+            </h1>
+            <p style={{ margin: 0, fontSize: 15, color: '#9ca3af', lineHeight: 1.6, maxWidth: 720 }}>
+              {entityCount > 0
+                ? `${entityCount.toLocaleString()} source-backed ${roleLabel.toLowerCase()} records are mapped for ${countryName}. This page is driven by Supabase role-country coverage, not a city-name guess.`
+                : `${roleLabel} is a valid role in the Haul Command taxonomy for ${countryName}, but this market still needs source-backed supply before it is treated as covered.`}
+            </p>
+
+            <div style={{ display: 'flex', gap: 20, marginTop: 20, flexWrap: 'wrap' }}>
+              {[
+                { icon: Users, val: entityCount, label: 'Mapped records' },
+                { icon: Shield, val: claimedCount, label: 'Claimed' },
+                { icon: Shield, val: verifiedCount, label: 'Verified' },
+                { icon: MapPin, val: regionCount, label: 'Regions' },
+              ].map((stat) => (
+                <div key={stat.label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <stat.icon style={{ width: 14, height: 14, color: '#C6923A' }} />
+                  <span style={{ fontSize: 18, fontWeight: 900, color: '#f9fafb' }}>{stat.val.toLocaleString()}</span>
+                  <span style={{ fontSize: 10, fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 1 }}>{stat.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem 1.5rem', display: 'grid', gridTemplateColumns: '1fr', gap: 24 }} className="md:!grid-cols-[1fr_320px]">
+          <div>
+            <div style={{ marginBottom: 16 }}>
+              <AeoAnswerCard
+                question={directAnswer.question}
+                answer={directAnswer.answer}
+                confidenceLabel={directAnswer.confidenceLabel}
+                sourceLabel="Supabase role-country coverage"
+                sourceHref={directAnswer.sourceHref}
+                ctaLabel={directAnswer.ctaLabel}
+                ctaHref={directAnswer.ctaHref}
+                facts={[
+                  { label: 'Coverage state', value: coverageState.replace(/_/g, ' ') },
+                  { label: 'Index verdict', value: indexVerdict.replace(/_/g, ' ') },
+                  { label: 'Data as of', value: roleCountry.coverage.data_as_of ?? 'source-dependent' },
+                ]}
+              />
+            </div>
+
+            {visibleCount === 0 ? (
+              <div style={{ background: '#111114', border: '1px solid rgba(241,169,27,0.22)', borderRadius: 16, padding: 40, textAlign: 'center' }}>
+                <MapPin style={{ width: 32, height: 32, color: '#C6923A', margin: '0 auto 12px' }} />
+                <h2 style={{ fontSize: 20, fontWeight: 900, color: '#f9fafb', marginBottom: 8 }}>Supply gap: {roleLabel} in {countryName}</h2>
+                <p style={{ fontSize: 14, color: '#d1d5db', marginBottom: 24 }}>This role-country cell exists in the coverage map, but no renderable public records came back from the directory facade. Claim, submit, or source records to strengthen this market.</p>
+                <Link href={`/claim?country=${countryUpper}&role=${encodeURIComponent(roleLabel)}&intent=role-country-supply`} style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 10, padding: '14px 28px',
+                  borderRadius: 12, background: '#F1A91B',
+                  color: '#111827', fontSize: 15, fontWeight: 900, textDecoration: 'none',
+                }}>
+                  Add or claim supply <ArrowRight style={{ width: 16, height: 16 }} />
+                </Link>
+              </div>
+            ) : (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>
+                {records.map((record: any) => (
+                  <div key={recordId(record)} style={{
+                    background: 'var(--hc-graphite)', border: '1px solid rgba(255,255,255,0.06)',
+                    borderRadius: 12, padding: 20, display: 'flex', flexDirection: 'column', gap: 8,
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
+                      <h3 style={{ fontSize: 16, fontWeight: 800, color: '#f9fafb', margin: 0, lineHeight: 1.3 }}>
+                        {displayName(record)}
+                      </h3>
+                      {record.rank_score && (
+                        <span style={{ fontSize: 11, fontWeight: 900, padding: '4px 8px', borderRadius: 8, background: '#FEF9C3', color: '#854D0E', border: '1px solid #FEF08A' }}>
+                          {Math.round(Number(record.rank_score))}
+                        </span>
+                      )}
+                    </div>
+                    <div style={{ fontSize: 12, color: '#9ca3af', fontWeight: 500 }}>
+                      <MapPin style={{ width: 12, height: 12, display: 'inline', marginRight: 4, color: '#6b7280' }} />
+                      {[record.city_inferred || record.city, stateFullName(record.state_inferred || record.admin1_code || record.state)].filter(Boolean).join(', ') || countryName}
+                    </div>
+                    <div style={{ display: 'flex', gap: 8, marginTop: 'auto', paddingTop: 8 }}>
+                      <Link href={`/directory/dossier/${recordId(record)}`} style={{
+                        flex: 1, textAlign: 'center', padding: '8px', borderRadius: 8,
+                        background: '#111827', border: '1px solid rgba(255,255,255,0.12)',
+                        color: '#f9fafb', fontSize: 12, fontWeight: 700, textDecoration: 'none',
+                      }}>
+                        View Profile
+                      </Link>
+                      <Link href={`/loads/post?intent=role-country-support&country=${countryUpper}&role=${encodeURIComponent(roleLabel)}&listing=${encodeURIComponent(recordId(record))}`} style={{
+                        flex: 1, textAlign: 'center', padding: '8px', borderRadius: 8,
+                        background: '#C6923A', border: '1px solid #B45309',
+                        color: '#111827', fontSize: 12, fontWeight: 800, textDecoration: 'none',
+                      }}>
+                        Build packet
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <AdGridSlot zone={`role_${countryUpper.toLowerCase()}_${roleCountry.coverage.role_key}_sponsor`} />
+            <div style={{ background: 'var(--hc-graphite)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, padding: 20 }}>
+              <h3 style={{ fontSize: 14, fontWeight: 800, color: '#f9fafb', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 16 }}>
+                Role-country actions
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {[
+                  { href: `/directory?country=${countryUpper}&q=${encodeURIComponent(roleLabel)}`, label: `Search ${roleLabel}` },
+                  { href: `/claim?country=${countryUpper}&role=${encodeURIComponent(roleLabel)}`, label: 'Claim or correct a record' },
+                  { href: `/loads/post?country=${countryUpper}&role=${encodeURIComponent(roleLabel)}`, label: 'Post a support request' },
+                  { href: `/regulations/${country.toLowerCase()}`, label: `${countryName} requirements` },
+                  { href: `/directory/${country.toLowerCase()}`, label: `Browse ${countryName}` },
+                ].map((link) => (
+                  <Link key={link.href} href={link.href} style={{ display: 'block', padding: '10px 12px', borderRadius: 8, fontSize: 13, color: '#d1d5db', textDecoration: 'none', background: 'rgba(255,255,255,0.04)' }}>
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div style={{ background: 'var(--hc-graphite)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, padding: 20 }}>
+              <h3 style={{ fontSize: 14, fontWeight: 800, color: '#f9fafb', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 16 }}>FAQ</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                {visibleFaqs.map((faq) => (
+                  <div key={faq.question}>
+                    <h4 style={{ fontSize: 13, fontWeight: 800, color: '#f9fafb', marginBottom: 4 }}>{faq.question}</h4>
+                    <p style={{ fontSize: 12, color: '#9ca3af', lineHeight: 1.5, margin: 0 }}>{faq.answer}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 1.5rem 3rem' }}>
+          <NoDeadEndBlock
+            heading={`Keep building ${roleLabel} coverage in ${countryName}`}
+            moves={[
+              { href: '/directory', icon: '', title: 'Full Directory', desc: 'Search all support records', primary: true, color: '#0a66c2' },
+              { href: `/claim?country=${countryUpper}&role=${encodeURIComponent(roleLabel)}`, icon: '', title: 'Claim / Fix Profile', desc: 'Improve a claimable record', primary: true, color: '#86198F' },
+              { href: `/loads/post?country=${countryUpper}&role=${encodeURIComponent(roleLabel)}`, icon: '', title: 'Post Request', desc: 'Create demand signal' },
+              { href: '/corridors', icon: '', title: 'Corridors', desc: 'Route intelligence' },
+              { href: '/escort-requirements', icon: '', title: 'Requirements', desc: 'Escort rules' },
+              { href: '/training', icon: '', title: 'Get Certified', desc: 'HC training program' },
+            ]}
+          />
+        </div>
+      </DirectoryBackgroundShell>
+    </>
+  );
+}
+
 export async function generateMetadata({ params }: PageProps) {
   const { country, slug } = await params;
+  const normalizedCountry = normalizeDirectoryCountry(country);
+  if (normalizedCountry) {
+    const supabase = createClient();
+    const roleCountry = await getRoleCountryPageData(supabase, normalizedCountry, slug);
+    if (roleCountry) {
+      const roleLabel = roleCountry.role.display_name ?? displayRoleFromSlug(slug);
+      const marketName = countryDisplayName(normalizedCountry);
+      const count = Number(roleCountry.coverage.entity_count ?? 0);
+      return generatePageMetadata({
+        title: `${marketName} ${roleLabel} Directory`,
+        description: count > 0
+          ? `Find ${count.toLocaleString()} source-backed ${roleLabel.toLowerCase()} records in ${marketName}. Compare claim state, proof, contact paths, and support actions before dispatch.`
+          : `${roleLabel} is mapped for ${marketName}, but Haul Command marks this role-country market as a supply gap until source-backed records are attached.`,
+        canonicalPath: roleCountry.coverage.page_url ?? canonicalPath,
+        countryCode: normalizedCountry.toLowerCase(),
+        noIndex: roleCountry.coverage.index_verdict !== 'index_now',
+      });
+    }
+  }
+
   const canonicalPath = `/directory/${country}/${slug}`;
   const dbContract = await getPageSeoContract(canonicalPath);
   if (dbContract) return metadataFromDbPageSeoContract(dbContract, canonicalPath);
@@ -210,6 +730,15 @@ export default async function CityDirectoryPage({ params }: PageProps) {
   const countryUpper = plan.countryCode ?? country.toUpperCase();
 
   const supabase = createClient();
+  const roleCountry = await getRoleCountryPageData(supabase, countryUpper, slug);
+  if (roleCountry) {
+    return await RoleCountryDirectoryPage({
+      country,
+      slug,
+      countryUpper,
+      roleCountry,
+    });
+  }
 
   //  OPERATOR-FIRST RESOLUTION
   // P0 FIX: Check if this slug matches an operator before treating
