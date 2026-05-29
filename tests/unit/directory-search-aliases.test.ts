@@ -25,7 +25,7 @@ describe("directory search aliases", () => {
 
   it("adds canonical role/category terms without losing the user query", () => {
     expect(getAliasAwareSearchTerms("rest area", [restAreaAlias])).toEqual([
-      "rest area",
+      "rest%area",
       "rest_area",
     ]);
     expect(getAliasCanonicalTargets([restAreaAlias])).toEqual(["rest_area"]);
@@ -37,7 +37,7 @@ describe("directory search aliases", () => {
         restAreaAlias,
       ]),
     ).toBe(
-      "name.ilike.%rest area%,name.ilike.%rest_area%,locality.ilike.%rest area%,locality.ilike.%rest_area%,surface_category_key.eq.rest_area",
+      "name.ilike.%rest%area%,name.ilike.%rest_area%,locality.ilike.%rest%area%,locality.ilike.%rest_area%,surface_category_key.eq.rest_area",
     );
   });
 });
