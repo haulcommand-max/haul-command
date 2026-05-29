@@ -8,6 +8,7 @@ import { LiveActivityFeed } from '@/components/feed/LiveActivityFeed';
 import { FreshnessBadge } from '@/components/ui/FreshnessBadge';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { stateFullName } from '@/lib/geo/state-names';
+import { isMissingOptionalSupabaseRelation } from '@/lib/supabase/optional-relations';
 
 // ===============================================================
 // /available-now — escort availability broadcast surface.
@@ -144,7 +145,11 @@ async function getAvailabilityData() {
     console.warn('[available-now] v_available_escorts query failed:', viewError.message);
   }
 
-  if (alertError && !alertError.message?.toLowerCase().includes('fetch failed')) {
+  if (
+    alertError &&
+    !alertError.message?.toLowerCase().includes('fetch failed') &&
+    !isMissingOptionalSupabaseRelation(alertError)
+  ) {
     console.warn('[available-now] supply_alerts query failed:', alertError.message);
   }
 

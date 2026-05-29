@@ -6,6 +6,19 @@ import {
   resolveDirectorySearchAliases,
 } from '@/lib/directory/search-aliases';
 
+function cleanLocationPart(value: unknown) {
+  return String(value ?? '')
+    .trim()
+    .replace(/\s+/g, ' ')
+    .replace(/\s*,\s*[A-Z]{2}\s*$/i, '');
+}
+
+function formatDirectoryLocation(city: unknown, region: unknown) {
+  const cleanCity = cleanLocationPart(city);
+  const cleanRegion = String(region ?? '').trim().toUpperCase();
+  return [cleanCity, cleanRegion].filter(Boolean).join(', ');
+}
+
 /**
  * GET /api/directory/search
  *
@@ -72,7 +85,7 @@ export async function GET(req: NextRequest) {
               name: doc.company_name || doc.display_name || 'Operator',
               city: doc.city,
               state: doc.state || doc.state_province,
-              location: `${doc.city || ''}, ${doc.state || doc.state_province || ''}`,
+              location: formatDirectoryLocation(doc.city, doc.state || doc.state_province),
               region_code: doc.state || doc.state_province,
               country_code: doc.country || doc.country_code,
               services: doc.service_categories || [],
@@ -183,7 +196,7 @@ export async function GET(req: NextRequest) {
       name: row.name || 'Service Business',
       city: row.locality,
       state: row.admin1_code,
-      location: `${row.locality}, ${row.admin1_code}`,
+      location: formatDirectoryLocation(row.locality, row.admin1_code),
       region_code: row.admin1_code,
       country_code: row.country_code,
       services: [row.surface_category_key].filter(Boolean),
@@ -268,7 +281,7 @@ export async function GET(req: NextRequest) {
           name: op.name || 'Escort Operator',
           city: op.city,
           state: op.admin1_code,
-          location: `${op.city}, ${op.admin1_code}`,
+          location: formatDirectoryLocation(op.city, op.admin1_code),
           region_code: op.admin1_code,
           country_code: op.country_code,
           services: op.role_primary ? [op.role_primary] : [],

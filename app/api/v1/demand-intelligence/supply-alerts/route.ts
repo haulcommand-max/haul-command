@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
+import { isMissingOptionalSupabaseRelation } from "@/lib/supabase/optional-relations";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -42,12 +43,14 @@ export async function GET(req: Request) {
   const { data, error } = await query;
 
   if (error) {
+    const sourceStatus = isMissingOptionalSupabaseRelation(error) ? "not_configured" : "unavailable";
+
     return NextResponse.json(
       {
         ok: false,
         alerts_count: 0,
         alerts: [],
-        source_status: "unavailable",
+        source_status: sourceStatus,
       },
       { headers: { "Cache-Control": "public, max-age=60, stale-while-revalidate=120" } },
     );
