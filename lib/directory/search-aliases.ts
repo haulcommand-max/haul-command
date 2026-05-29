@@ -16,7 +16,7 @@ export function normalizeDirectoryAliasQuery(value: string): string {
 }
 
 function cleanPostgrestTerm(value: string): string {
-  return value.trim().replace(/[%,()]/g, " ").replace(/\s+/g, " ");
+  return value.trim().replace(/[%,()]/g, " ").replace(/\s+/g, "%");
 }
 
 function cleanPostgrestEquality(value: string): string {

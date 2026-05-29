@@ -512,7 +512,6 @@ async function fetchDirectoryMarketSourceFallback(
     .eq('status', 'published')
     .eq('is_search_indexable', true)
     .eq('country_code', countryUpper)
-    .or('name.ilike.%pilot%,name.ilike.%escort%,surface_category_key.ilike.%pilot%,surface_category_key.ilike.%escort%')
     .order('demand_score', { ascending: false, nullsFirst: false })
     .limit(sourceLimit);
 
@@ -524,7 +523,6 @@ async function fetchDirectoryMarketSourceFallback(
     .eq('country_code', countryUpper)
     .not('admin1_code', 'is', null)
     .not('city', 'is', null)
-    .or('name.ilike.%pilot%,name.ilike.%escort%,business_name.ilike.%pilot%,business_name.ilike.%escort%,role_primary.ilike.%pilot%,role_primary.ilike.%escort%')
     .order('confidence_score', { ascending: false, nullsFirst: false })
     .limit(sourceLimit);
 
