@@ -2,7 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import { AdGridSlot } from '@/components/home/AdGridSlot';
 import { LiveActivityFeed } from '@/components/feed/LiveActivityFeed';
-import { HCAskStrip } from '@/components/hc-ask/HCAskStrip';
 import { DirectoryGrid } from '@/components/directory/DirectoryGrid';
 
 import { HCContentPageShell, HCContentSection } from "@/components/content-system/shell/HCContentPageShell";
@@ -11,7 +10,6 @@ import { Metadata } from 'next';
 import { getTypesenseSearch, OPERATORS_COLLECTION } from '@/lib/typesense/client';
 import {
     buildDirectoryFallbackFilterPlan,
-    buildDirectoryLocationOrFilter,
     normalizeDirectoryCountry,
     resolveDirectoryCategoryFilter,
 } from '@/lib/directory/server-query';
@@ -122,6 +120,47 @@ function numberFromDirectoryRoleRow(row: any): number {
         0;
     const parsed = Number(value);
     return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function escapeDirectoryLike(value: string): string {
+    return value.replace(/[%_,]/g, (char) => `\\${char}`);
+}
+
+function buildHcPlacesSearchOrFilter(plan?: ReturnType<typeof buildDirectoryFallbackFilterPlan>): string | null {
+    const tokens = [plan?.locationSearch ?? '', ...(plan?.category?.searchTerms ?? [])]
+        .map((term) => term.trim())
+        .filter(Boolean)
+        .slice(0, 8);
+    if (tokens.length === 0) return null;
+
+    const filters = new Set<string>();
+    for (const token of tokens) {
+        const escaped = escapeDirectoryLike(token);
+        filters.add(`name.ilike.%${escaped}%`);
+        filters.add(`locality.ilike.%${escaped}%`);
+        filters.add(`admin1_code.ilike.%${escaped}%`);
+        filters.add(`surface_category_key.ilike.%${escaped}%`);
+    }
+    return Array.from(filters).join(',');
+}
+
+function buildGlobalOperatorsSearchOrFilter(plan?: ReturnType<typeof buildDirectoryFallbackFilterPlan>): string | null {
+    const tokens = [plan?.locationSearch ?? '', ...(plan?.category?.searchTerms ?? [])]
+        .map((term) => term.trim())
+        .filter(Boolean)
+        .slice(0, 8);
+    if (tokens.length === 0) return null;
+
+    const filters = new Set<string>();
+    for (const token of tokens) {
+        const escaped = escapeDirectoryLike(token);
+        filters.add(`name.ilike.%${escaped}%`);
+        filters.add(`business_name.ilike.%${escaped}%`);
+        filters.add(`city.ilike.%${escaped}%`);
+        filters.add(`admin1_code.ilike.%${escaped}%`);
+        filters.add(`role_primary.ilike.%${escaped}%`);
+    }
+    return Array.from(filters).join(',');
 }
 
 function fallbackDirectoryRoleOptions(): DirectoryRoleBrowseOption[] {
@@ -240,6 +279,7 @@ async function loadDirectoryRoleBrowseOptions(supabase: ReturnType<typeof create
 async function loadDirectoryHomepageFallbackProviders(
     supabase: ReturnType<typeof createSupabaseServerClient>,
     targetCountry: string | null,
+    plan?: ReturnType<typeof buildDirectoryFallbackFilterPlan>,
 ) {
     const placesQuery = supabase
         .from('hc_places')
@@ -257,8 +297,23 @@ async function loadDirectoryHomepageFallbackProviders(
         .order('confidence_score', { ascending: false, nullsFirst: false })
         .limit(24);
 
-    const scopedPlacesQuery = targetCountry ? placesQuery.eq('country_code', targetCountry) : placesQuery;
-    const scopedOperatorsQuery = targetCountry ? operatorsQuery.eq('country_code', targetCountry) : operatorsQuery;
+    const scopedCountry = plan?.countryCode ?? targetCountry;
+    let scopedPlacesQuery = scopedCountry ? placesQuery.eq('country_code', scopedCountry) : placesQuery;
+    let scopedOperatorsQuery = scopedCountry ? operatorsQuery.eq('country_code', scopedCountry) : operatorsQuery;
+
+    const placesOrFilter = buildHcPlacesSearchOrFilter(plan);
+    const operatorsOrFilter = buildGlobalOperatorsSearchOrFilter(plan);
+    if (placesOrFilter) {
+        scopedPlacesQuery = scopedPlacesQuery.or(placesOrFilter);
+    }
+    if (operatorsOrFilter) {
+        scopedOperatorsQuery = scopedOperatorsQuery.or(operatorsOrFilter);
+    }
+
+    if (plan?.category?.entityFamily) {
+        scopedOperatorsQuery = scopedOperatorsQuery.eq('entity_family', plan.category.entityFamily);
+    }
+
     const [placesResult, operatorsResult] = await Promise.all([scopedPlacesQuery, scopedOperatorsQuery]);
 
     if (placesResult.error) {
@@ -454,6 +509,11 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
     let providers: any[] = [];
     let usedTypesense = false;
     const searchQuery = [queryLocation, queryCategory].filter(Boolean).join(' ').trim();
+    const fallbackPlan = buildDirectoryFallbackFilterPlan({
+        country: resolvedParams.country,
+        category: queryCategory,
+        q: queryLocation,
+    });
     
     if (searchQuery) {
         try {
@@ -489,37 +549,7 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
 
     if (!usedTypesense) {
         try {
-            const plan = buildDirectoryFallbackFilterPlan({
-                country: resolvedParams.country,
-                category: queryCategory,
-                q: queryLocation,
-            });
-            let query = supabase
-                .from('v_directory_publishable')
-                .select('*');
-
-            if (plan.countryCode) {
-                query = query.eq('country_code', plan.countryCode);
-            }
-
-            const locationOrFilter = buildDirectoryLocationOrFilter(
-                plan.locationSearch,
-                plan.category?.searchTerms ?? []
-            );
-            if (locationOrFilter) {
-                query = query.or(locationOrFilter);
-            }
-
-            for (const order of plan.order) {
-                query = query.order(order.column, {
-                    ascending: order.ascending,
-                    nullsFirst: false,
-                });
-            }
-
-            const { data, error } = await query.limit(plan.limit);
-            if (error) throw error;
-            providers = data ?? [];
+            providers = await loadDirectoryHomepageFallbackProviders(supabase, targetCountry, fallbackPlan);
         } catch (e) {
             console.warn('[directory] Supabase query failed:', e);
         }
@@ -560,8 +590,6 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
 
             <HCContentSection pad="section_balanced_pad">
                 <div className="max-w-7xl mx-auto">
-                    <div className="mb-6"><HCAskStrip context="directory" /></div>
-
                     <section aria-labelledby="what-is-haul-command" className="mb-8 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
                         <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr]">
                             <div className="p-5 md:p-7">
@@ -615,10 +643,10 @@ export default async function GlobalDirectory({ searchParams }: { searchParams: 
                             </Link>
                         </div>
                         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                            {roleBrowseOptions.slice(0, 60).map((role) => (
+                            {roleBrowseOptions.map((role) => (
                                 <Link
                                     key={role.key}
-                                    href={`/directory?q=${encodeURIComponent(role.label)}`}
+                                    href={targetCountry ? `/directory/${targetCountry.toLowerCase()}/${role.key}` : `/directory?q=${encodeURIComponent(role.label)}`}
                                     className="rounded-xl border border-gray-200 bg-gray-50 px-3 py-3 text-sm font-bold text-gray-800 transition-colors hover:border-[#C6923A] hover:bg-amber-50"
                                 >
                                     <span className="block">{role.label}</span>
