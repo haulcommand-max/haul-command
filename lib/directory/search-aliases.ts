@@ -88,7 +88,7 @@ export async function resolveDirectorySearchAliases(
     return [];
   }
 
-  const requestedCountry = countryCode.trim().toUpperCase();
+  const requestedCountry = String(countryCode ?? "").trim().toUpperCase();
   return (data as DirectorySearchAlias[]).filter((alias) => {
     if (!requestedCountry) return true;
     return !alias.country_code || alias.country_code.toUpperCase() === requestedCountry;

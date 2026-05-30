@@ -4,6 +4,7 @@ import {
   getAliasAwareSearchTerms,
   getAliasCanonicalTargets,
   normalizeDirectoryAliasQuery,
+  resolveDirectorySearchAliases,
   type DirectorySearchAlias,
 } from "@/lib/directory/search-aliases";
 
@@ -39,5 +40,24 @@ describe("directory search aliases", () => {
     ).toBe(
       "name.ilike.%rest%area%,name.ilike.%rest_area%,locality.ilike.%rest%area%,locality.ilike.%rest_area%,surface_category_key.eq.rest_area",
     );
+  });
+
+  it("allows alias resolution without a country filter", async () => {
+    const aliases = [restAreaAlias];
+    const supabase = {
+      from: () => ({
+        select: () => ({
+          eq: () => ({
+            eq: () => ({
+              order: () => ({
+                limit: async () => ({ data: aliases, error: null }),
+              }),
+            }),
+          }),
+        }),
+      }),
+    };
+
+    await expect(resolveDirectorySearchAliases(supabase, "rest area")).resolves.toEqual(aliases);
   });
 });
