@@ -1,85 +1,85 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { recordAdGridEvent, type AdGridEventType } from '@/lib/adgrid/adGridEvents';
 
-/**
- * POST /api/adgrid/event
- * Track ad impressions, clicks, conversions
- */
-export async function POST(req: NextRequest) {
+export const runtime = 'nodejs';
+
+export async function POST(request: NextRequest) {
+    const body = await readJsonBody(request);
+    const eventType = normalizeEventType(body.eventType ?? body.event_type);
+    if (!eventType) return NextResponse.json({ ok: false, error: 'Invalid AdGrid event type.' }, { status: 400 });
+
+    const result = await recordAdGridEvent({
+        eventType,
+        campaignId: stringValue(body.campaignId ?? body.campaign_id),
+        slotId: stringValue(body.slotId ?? body.slot_id),
+        placementKey: stringValue(body.placementKey ?? body.placement_key ?? body.surface),
+        pageKind: stringValue(body.pageKind ?? body.page_kind),
+        pagePath: stringValue(body.pagePath ?? body.page_path) ?? request.headers.get('x-haul-command-page-path'),
+        countryCode: stringValue(body.countryCode ?? body.country_code),
+        stateCode: stringValue(body.stateCode ?? body.state_code),
+        corridorSlug: stringValue(body.corridorSlug ?? body.corridor_code),
+        audienceRole: stringValue(body.audienceRole ?? body.audience_role),
+        variant: stringValue(body.variant),
+        referrer: request.headers.get('referer') ?? stringValue(body.referrer),
+        outcomeEvent: stringValue(body.outcomeEvent ?? body.outcome_event),
+        outcomeValueCents: numberValue(body.outcomeValueCents ?? body.outcome_value_cents),
+    });
+
+    return NextResponse.json({
+        ok: result.ok,
+        eventType: result.eventType,
+        campaignId: result.campaignId,
+        slotId: result.slotId,
+        eventId: result.eventId,
+        error: result.ok ? undefined : result.error,
+    }, { status: result.ok ? 200 : 202 });
+}
+
+export async function GET(request: NextRequest) {
+    const eventType = normalizeEventType(request.nextUrl.searchParams.get('eventType') ?? request.nextUrl.searchParams.get('event_type')) as AdGridEventType | null;
+    if (!eventType) return new Response(null, { status: 204 });
+
+    const result = await recordAdGridEvent({
+        eventType,
+        campaignId: request.nextUrl.searchParams.get('campaignId') ?? request.nextUrl.searchParams.get('campaign_id'),
+        slotId: request.nextUrl.searchParams.get('slotId') ?? request.nextUrl.searchParams.get('slot_id'),
+        placementKey: request.nextUrl.searchParams.get('placementKey') ?? request.nextUrl.searchParams.get('placement_key'),
+        pageKind: request.nextUrl.searchParams.get('pageKind') ?? request.nextUrl.searchParams.get('page_kind'),
+        pagePath: request.nextUrl.searchParams.get('pagePath') ?? request.nextUrl.searchParams.get('page_path'),
+        countryCode: request.nextUrl.searchParams.get('countryCode') ?? request.nextUrl.searchParams.get('country_code'),
+        stateCode: request.nextUrl.searchParams.get('stateCode') ?? request.nextUrl.searchParams.get('state_code'),
+        corridorSlug: request.nextUrl.searchParams.get('corridorSlug') ?? request.nextUrl.searchParams.get('corridor_code'),
+        audienceRole: request.nextUrl.searchParams.get('audienceRole') ?? request.nextUrl.searchParams.get('audience_role'),
+        variant: request.nextUrl.searchParams.get('variant'),
+        referrer: request.headers.get('referer'),
+        outcomeEvent: request.nextUrl.searchParams.get('outcomeEvent') ?? request.nextUrl.searchParams.get('outcome_event'),
+        outcomeValueCents: numberValue(request.nextUrl.searchParams.get('outcomeValueCents') ?? request.nextUrl.searchParams.get('outcome_value_cents')),
+    });
+
+    return NextResponse.json({ ok: result.ok }, { status: result.ok ? 200 : 202 });
+}
+
+async function readJsonBody(request: NextRequest): Promise<Record<string, unknown>> {
     try {
-        const supabaseAdmin = getSupabaseAdmin();
-        const body = await req.json();
-        const { creative_id, campaign_id, advertiser_id, event_type, surface, corridor_code, country_code, operator_id, session_id, revenue_usd } = body;
-
-        if (!event_type) {
-            return NextResponse.json({ error: 'event_type required' }, { status: 400 });
-        }
-
-        const { error } = await supabaseAdmin
-            .from('hc_ad_events')
-            .insert({
-                creative_id,
-                campaign_id,
-                advertiser_id,
-                event_type,
-                surface: surface || 'unknown',
-                corridor_code,
-                country_code: country_code || 'US',
-                operator_id,
-                session_id,
-                revenue_usd: revenue_usd || 0,
-            });
-
-        if (error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
-        }
-
-        // If it's a click, update campaign spend (non-critical)
-        if (event_type === 'click' && campaign_id && revenue_usd) {
-            try {
-                await supabaseAdmin.rpc('increment_campaign_spend', {
-                    p_campaign_id: campaign_id,
-                    p_amount: revenue_usd,
-                });
-            } catch {
-                // Silently fail — spend tracking is non-critical
-            }
-        }
-
-        return NextResponse.json({ success: true });
-    } catch (error) {
-        return NextResponse.json({ error: 'Event tracking failed' }, { status: 500 });
+        const body = await request.json();
+        return body && typeof body === 'object' && !Array.isArray(body) ? body as Record<string, unknown> : {};
+    } catch {
+        return {};
     }
 }
 
-/**
- * GET /api/adgrid/event?campaign_id=xxx
- * Get event stats for a campaign
- */
-export async function GET(req: NextRequest) {
-    const campaignId = req.nextUrl.searchParams.get('campaign_id');
-    if (!campaignId) {
-        return NextResponse.json({ error: 'campaign_id required' }, { status: 400 });
-    }
+function normalizeEventType(value: unknown): AdGridEventType | null {
+    if (value === 'click') return 'click';
+    if (value === 'impression') return 'impression';
+    if (value === 'outcome' || value === 'conversion') return 'outcome';
+    return null;
+}
 
-    const supabaseAdmin = getSupabaseAdmin();
-    const { data, error } = await supabaseAdmin
-        .from('hc_ad_events')
-        .select('event_type, revenue_usd, created_at')
-        .eq('campaign_id', campaignId)
-        .order('created_at', { ascending: false })
-        .limit(1000);
+function stringValue(value: unknown) {
+    return typeof value === 'string' && value.trim() ? value.trim() : null;
+}
 
-    if (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    const stats = {
-        impressions: data?.filter(e => e.event_type === 'impression').length || 0,
-        clicks: data?.filter(e => e.event_type === 'click').length || 0,
-        conversions: data?.filter(e => e.event_type === 'conversion').length || 0,
-        total_revenue: data?.reduce((sum, e) => sum + (e.revenue_usd || 0), 0) || 0,
-    };
-
-    return NextResponse.json({ success: true, stats, events: data });
+function numberValue(value: unknown) {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : null;
 }
