@@ -180,3 +180,38 @@ export function buildAdgridEventInsert(input: {
     },
   };
 }
+
+export function buildAdgridOutcomeInsert(input: {
+  outcomeEvent: string;
+  campaignId?: string | null;
+  creativeId?: string | null;
+  advertiserId?: string | null;
+  sessionId?: string | null;
+  userId?: string | null;
+  attributedImpressionId?: string | null;
+  attributedClickId?: string | null;
+  outcomeValueCents?: number | null;
+  billedAmountCents?: number | null;
+  billingStatus?: string | null;
+  attributionWindowHours?: number | null;
+  metadata?: Record<string, unknown> | null;
+}) {
+  return {
+    table: "hc_adgrid_outcome_events" as const,
+    payload: {
+      campaign_id: adgridUuidOrNull(input.campaignId),
+      creative_id: adgridUuidOrNull(input.creativeId),
+      advertiser_id: adgridUuidOrNull(input.advertiserId),
+      outcome_event: input.outcomeEvent,
+      user_session_id: input.sessionId ?? null,
+      user_id: adgridUuidOrNull(input.userId),
+      attribution_window_hours: input.attributionWindowHours ?? 720,
+      attributed_impression_id: adgridUuidOrNull(input.attributedImpressionId),
+      attributed_click_id: adgridUuidOrNull(input.attributedClickId),
+      outcome_value_cents: input.outcomeValueCents ?? null,
+      billed_amount_cents: input.billedAmountCents ?? null,
+      billing_status: input.billingStatus ?? "pending",
+      metadata: input.metadata ?? null,
+    },
+  };
+}

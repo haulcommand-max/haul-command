@@ -5,6 +5,7 @@ import {
   buildAdgridClickInsert,
   buildAdgridEventInsert,
   buildAdgridImpressionInsert,
+  buildAdgridOutcomeInsert,
   buildAdgridPlacementKey,
   creativeMatchesAdgridContext,
   normalizeAdgridCreative,
@@ -81,6 +82,38 @@ describe("AdGrid serving contract", () => {
     });
   });
 
+  it("builds canonical AdGrid outcome rows for conversion attribution", () => {
+    expect(
+      buildAdgridOutcomeInsert({
+        outcomeEvent: "claim",
+        campaignId: "00000000-0000-4000-8000-000000000001",
+        creativeId: "not-a-uuid",
+        advertiserId: "00000000-0000-4000-8000-000000000002",
+        sessionId: "session-123",
+        outcomeValueCents: 12900,
+        billedAmountCents: 12900,
+        metadata: { slot_id: "slot-123", page_type: "directory" },
+      }),
+    ).toEqual({
+      table: "hc_adgrid_outcome_events",
+      payload: {
+        campaign_id: "00000000-0000-4000-8000-000000000001",
+        creative_id: null,
+        advertiser_id: "00000000-0000-4000-8000-000000000002",
+        outcome_event: "claim",
+        user_session_id: "session-123",
+        user_id: null,
+        attribution_window_hours: 720,
+        attributed_impression_id: null,
+        attributed_click_id: null,
+        outcome_value_cents: 12900,
+        billed_amount_cents: 12900,
+        billing_status: "pending",
+        metadata: { slot_id: "slot-123", page_type: "directory" },
+      },
+    });
+  });
+
   it("does not try to log an impression without a campaign id", () => {
     expect(
       buildAdgridImpressionInsert(
@@ -152,6 +185,34 @@ describe("AdGrid serving contract", () => {
     expect(route).toContain('from(event.table)');
     expect(helper).toContain('"hc_adgrid_events"');
     expect(route).not.toContain('from("adgrid_events")');
+  });
+
+  it("keeps attribution and admin reporting on canonical AdGrid tables", () => {
+    const attribution = read("app/api/adgrid/attribution/route.ts");
+    const adminStats = read("app/api/adgrid/admin-stats/route.ts");
+    const adminCampaigns = read("app/api/adgrid/admin-campaigns/route.ts");
+    const rollup = read("app/api/cron/ad-revenue-rollup/route.ts");
+    const helper = read("lib/monetization/adgrid-serving.ts");
+
+    expect(attribution).toContain("buildAdgridOutcomeInsert");
+    expect(attribution).toContain("buildAdgridEventInsert");
+    expect(helper).toContain('"hc_adgrid_outcome_events"');
+    expect(helper).toContain('"hc_adgrid_events"');
+    expect(attribution).not.toContain("adgrid_attribution");
+    expect(attribution).not.toContain('from("adgrid_events")');
+
+    for (const route of [adminStats, adminCampaigns, rollup]) {
+      expect(route).toContain("hc_adgrid_events");
+      expect(route).not.toContain("hc_ad_events");
+      expect(route).not.toContain("fn_rollup_ad_revenue_daily");
+    }
+    expect(rollup).toContain("hc_revenue_daily_rollup");
+  });
+
+  it("passes slot ids through the serve route for joinable impression events", () => {
+    const route = read("app/api/adgrid/serve/route.ts");
+
+    expect(route).toContain("slotId: req.nextUrl.searchParams.get('slot_id')");
   });
 
   it("keeps legacy ads click compatibility on canonical AdGrid tables", () => {

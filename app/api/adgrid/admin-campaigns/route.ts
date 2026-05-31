@@ -5,25 +5,42 @@
  * PATCH /api/adgrid/admin-campaigns — update campaign status
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/utils/supabase/server';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
+
+type AdgridCampaignAdminRow = {
+  campaign_id: string;
+  advertiser_id: string | null;
+  name: string | null;
+  campaign_type: string | null;
+  status: string;
+  budget_daily_cents: number | null;
+  daily_budget_cents: number | null;
+  budget_total_cents: number | null;
+  total_budget_cents: number | null;
+  spend_total_cents: number | null;
+  spend_cents: number | null;
+  start_date: string | null;
+  end_date: string | null;
+  created_at: string;
+};
 
 export async function GET() {
-  const supabase = await createClient();
+  const supabase = getSupabaseAdmin();
 
   // Campaigns with spend rollup
   const { data: campaigns } = await supabase
-    .from('ad_campaigns')
+    .from('hc_ad_campaigns')
     .select(`
-      id, name, status, plan_type, plan_monthly_fee, spend_to_date,
-      start_date, created_at,
-      ad_advertisers!inner(company_name, contact_email)
+      campaign_id, advertiser_id, name, campaign_type, status,
+      budget_daily_cents, daily_budget_cents, budget_total_cents, total_budget_cents,
+      spend_total_cents, spend_cents, start_date, end_date, created_at
     `)
     .order('created_at', { ascending: false })
     .limit(200);
 
   // Impression/click totals per placement & per campaign
   const { data: placementStats } = await supabase
-    .from('hc_ad_events')
+    .from('hc_adgrid_events')
     .select('surface, event_type, campaign_id')
     .limit(50000);
 
@@ -50,11 +67,15 @@ export async function GET() {
   })).sort((a, b) => b.impressions - a.impressions).slice(0, 6);
 
   // Flatten campaigns for response
-  const flatCampaigns = (campaigns || []).map((c: any) => ({
+  const flatCampaigns = ((campaigns || []) as AdgridCampaignAdminRow[]).map((c) => ({
     ...c,
-    company_name: c.ad_advertisers?.company_name || '',
-    impressions: campaignStats[c.id]?.impressions || 0,
-    clicks: campaignStats[c.id]?.clicks || 0,
+    id: c.campaign_id,
+    company_name: '',
+    plan_type: c.campaign_type,
+    plan_monthly_fee: (c.budget_daily_cents ?? c.daily_budget_cents ?? 0) * 30 / 100,
+    spend_to_date: (c.spend_total_cents ?? c.spend_cents ?? 0) / 100,
+    impressions: campaignStats[c.campaign_id]?.impressions || 0,
+    clicks: campaignStats[c.campaign_id]?.clicks || 0,
   }));
 
   return NextResponse.json({ campaigns: flatCampaigns, top_placements: topPlacements });
@@ -69,18 +90,18 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: 'campaign_id and valid status required' }, { status: 400 });
   }
 
-  const supabase = await createClient();
+  const supabase = getSupabaseAdmin();
 
   const { error } = await supabase
-    .from('ad_campaigns')
+    .from('hc_ad_campaigns')
     .update({ status, updated_at: new Date().toISOString() })
-    .eq('id', campaign_id);
+    .eq('campaign_id', campaign_id);
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
   // If approving, also approve the pending creatives
   if (status === 'active') {
-    await supabase.from('ad_creatives').update({ status: 'approved' }).eq('campaign_id', campaign_id).eq('status', 'pending');
+    await supabase.from('hc_ad_creatives').update({ status: 'approved' }).eq('campaign_id', campaign_id).eq('status', 'pending_review');
   }
 
   return NextResponse.json({ ok: true });

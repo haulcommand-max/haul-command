@@ -38,6 +38,7 @@ export async function GET(req: NextRequest) {
             state,
             corridor,
             role,
+            slotId: req.nextUrl.searchParams.get('slot_id'),
         });
         if (!impression) return { logged: false, reason: 'missing_campaign_id' };
 
@@ -45,6 +46,7 @@ export async function GET(req: NextRequest) {
         const event = buildAdgridEventInsert({
             eventType: 'impression',
             campaignId: ad.campaign_id,
+            slotId: req.nextUrl.searchParams.get('slot_id'),
             surface: surface || zone || placementKey,
             zone,
             countryCode: country,

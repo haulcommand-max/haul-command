@@ -4,8 +4,10 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import {
+    buildAdgridEventInsert,
+    buildAdgridOutcomeInsert,
+} from "@/lib/monetization/adgrid-serving";
 
 const VALID_CONVERSION_TYPES = new Set([
     "claim",
@@ -16,13 +18,6 @@ const VALID_CONVERSION_TYPES = new Set([
 ]);
 
 export async function POST(req: NextRequest) {
-    const cookieStore = await cookies();
-    const svc = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { cookies: { getAll: () => cookieStore.getAll() } }
-    );
-
     let body: Record<string, unknown>;
     try {
         body = await req.json();
@@ -30,10 +25,25 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
     }
 
-    const { campaign_id, slot_id, page_type, page_context, conversion_type, entity_id,
-        visitor_id, session_id, revenue_cents } = body as {
+    const {
+        campaign_id,
+        slot_id,
+        creative_id,
+        advertiser_id,
+        page_type,
+        page_context,
+        conversion_type,
+        entity_id,
+        visitor_id,
+        session_id,
+        revenue_cents,
+        attributed_impression_id,
+        attributed_click_id,
+    } = body as {
             campaign_id?: string;
             slot_id?: string;
+            creative_id?: string;
+            advertiser_id?: string;
             page_type?: string;
             page_context?: Record<string, unknown>;
             conversion_type?: string;
@@ -41,6 +51,8 @@ export async function POST(req: NextRequest) {
             visitor_id?: string;
             session_id?: string;
             revenue_cents?: number;
+            attributed_impression_id?: string;
+            attributed_click_id?: string;
         };
 
     if (!slot_id || !conversion_type) {
@@ -50,34 +62,55 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Invalid conversion_type" }, { status: 400 });
     }
 
-    const { error } = await svc.from("adgrid_attribution").insert({
-        campaign_id: campaign_id ?? null,
-        slot_id,
-        page_type: page_type ?? null,
-        page_context: page_context ?? {},
-        conversion_type,
-        entity_id: entity_id ?? null,
-        visitor_id: visitor_id ?? null,
-        session_id: session_id ?? null,
-        revenue_cents: revenue_cents ?? null,
+    const svc = getSupabaseAdmin();
+    const outcome = buildAdgridOutcomeInsert({
+        outcomeEvent: conversion_type,
+        campaignId: campaign_id,
+        creativeId: creative_id,
+        advertiserId: advertiser_id,
+        sessionId: session_id ?? visitor_id ?? null,
+        attributedImpressionId: attributed_impression_id,
+        attributedClickId: attributed_click_id,
+        outcomeValueCents: revenue_cents ?? null,
+        billedAmountCents: revenue_cents ?? null,
+        metadata: {
+            slot_id,
+            page_type: page_type ?? null,
+            page_context: page_context ?? {},
+            entity_id: entity_id ?? null,
+            visitor_id: visitor_id ?? null,
+        },
     });
+
+    const { data: outcomeRow, error } = await svc
+        .from(outcome.table)
+        .insert(outcome.payload)
+        .select('id')
+        .single();
 
     if (error) {
         console.error("[adgrid/attribution POST]", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    // Also fire an event for analytics joining
-    try {
-        await svc.from("adgrid_events").insert({
-            slot_id,
-            event_type: "conversion",
-            entity_id: entity_id ?? null,
-            campaign_id: campaign_id ?? null,
-            session_id: session_id ?? null,
-            meta: { conversion_type, page_type, revenue_cents },
-        });
-    } catch { /* non-critical */ }
+    const event = buildAdgridEventInsert({
+        eventType: "conversion",
+        campaignId: campaign_id,
+        advertiserId: advertiser_id,
+        slotId: slot_id,
+        surface: page_type ?? "adgrid-conversion",
+        zone: page_type ?? null,
+        sessionId: session_id ?? visitor_id ?? null,
+        billingAmountCents: revenue_cents ?? null,
+        userAgentSummary: req.headers.get("user-agent")?.slice(0, 180) ?? null,
+    });
+    const { error: eventError } = await svc.from(event.table).insert(event.payload);
+    if (eventError) {
+        console.warn("[adgrid/attribution event]", eventError.message);
+    }
 
-    return NextResponse.json({ ok: true, conversion_type }, { status: 201 });
+    return NextResponse.json(
+        { ok: true, conversion_type, outcome_id: outcomeRow?.id ?? null, event_logged: !eventError },
+        { status: 201 },
+    );
 }
