@@ -1,12 +1,11 @@
 import { Suspense } from 'react';
 import AdGridEventBeacon from '@/components/adgrid/AdGridEventBeacon';
 import MobileAdGrid from '@/components/mobile/screens/MobileAdGrid';
-import { getAdGridCreativeCatalog } from '@/lib/adgrid/roleTemplateAssets';
 
 export const metadata = {
     title: 'AdGrid Creative Templates | Haul Command',
     description:
-        'Browse motion-ready sponsor creative templates for heavy-haul corridors, city markets, role directories, load urgency, permits, and partner offers.',
+        'Browse sponsor placements for heavy-haul corridors, city markets, role directories, load urgency, permits, and partner offers.',
     alternates: {
         canonical: '/adgrid',
     },
@@ -14,9 +13,7 @@ export const metadata = {
 
 export const revalidate = 300;
 
-export default async function AdGridPage() {
-    const catalog = await getAdGridCreativeCatalog();
-
+export default function AdGridPage() {
     return (
         <Suspense fallback={<div style={{ minHeight: '100dvh', background: '#060b12' }} />}>
             <AdGridEventBeacon
@@ -25,9 +22,9 @@ export default async function AdGridPage() {
                 pagePath="/adgrid"
                 countryCode="GLOBAL"
                 audienceRole="sponsor"
-                variant={catalog.source}
+                variant="featured-providers"
             />
-            <MobileAdGrid catalog={catalog} />
+            <MobileAdGrid />
         </Suspense>
     );
 }
