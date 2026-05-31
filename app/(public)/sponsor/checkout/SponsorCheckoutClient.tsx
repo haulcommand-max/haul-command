@@ -26,6 +26,13 @@ const PRODUCT_HIGHLIGHTS: Record<string, string[]> = {
     'corridor_sponsor': ['Full corridor coverage', 'Premium banner + map pin', 'Leaderboard integration', 'Lead analytics + alerts'],
 };
 
+function sponsorZoneForProduct(productKey: string) {
+    if (productKey.includes('corridor')) return 'corridor';
+    if (productKey.includes('country')) return 'country';
+    if (productKey.includes('port')) return 'port';
+    return 'territory';
+}
+
 export default function SponsorCheckoutClient() {
     const searchParams = useSearchParams();
     const cityParam = searchParams.get('city') || '';
@@ -63,49 +70,28 @@ export default function SponsorCheckoutClient() {
         setError('');
 
         try {
-            const supabase = createClient();
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) {
-                window.location.href = '/login?return=/sponsor/checkout';
-                return;
-            }
-
-            // Create order in DB
-            const { data: order, error: orderErr } = await supabase
-                .from('sponsorship_orders')
-                .insert({
-                    user_id: user.id,
-                    product_key: selectedProduct.product_key,
-                    geo_key: geoKey.trim(),
-                    status: 'pending',
-                })
-                .select('id')
-                .single();
-
-            if (orderErr) throw orderErr;
-
-            // Call edge function to create Stripe checkout session
-            const { data: session, error: stripeErr } = await supabase.functions.invoke('hc_webhook_stripe', {
-                body: {
-                    action: 'create_checkout',
-                    order_id: order.id,
-                    product_key: selectedProduct.product_key,
-                    amount: selectedProduct.amount,
-                    currency: selectedProduct.currency,
-                    geo_key: geoKey.trim(),
-                },
+            const response = await fetch('/api/monetization/sponsor-checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    zone: sponsorZoneForProduct(selectedProduct.product_key),
+                    geo: geoKey.trim(),
+                    priceMonthly: Number(selectedProduct.amount),
+                    label: selectedProduct.name,
+                    returnUrl: window.location.href,
+                }),
             });
 
-            if (stripeErr) throw stripeErr;
+            const session = await response.json().catch(() => null);
+            if (!response.ok) throw new Error(session?.error || 'Unable to start sponsor checkout.');
 
-            if (session?.checkout_url) {
-                window.location.href = session.checkout_url;
+            if (session?.sessionUrl) {
+                window.location.href = session.sessionUrl;
             } else {
-                // Fallback: go to success page (for demo without Stripe keys)
-                window.location.href = `/sponsor/success?order_id=${order.id}`;
+                window.location.href = `/sponsor/success?order_id=${session?.orderId ?? ''}`;
             }
-        } catch (e: any) {
-            setError(e.message || 'Something went wrong. Please try again.');
+        } catch (e: unknown) {
+            setError(e instanceof Error ? e.message : 'Something went wrong. Please try again.');
         } finally {
             setSubmitting(false);
         }
@@ -124,7 +110,7 @@ export default function SponsorCheckoutClient() {
                         Own Your Territory
                     </h1>
                     <p className="text-slate-400 mt-4 max-w-lg mx-auto">
-                        Get exclusive placement on Haul Command's highest-traffic pages. Brokers and carriers see you <strong className="text-white">first</strong>.
+                        Get exclusive placement on Haul Command&apos;s highest-traffic pages. Brokers and carriers see you <strong className="text-white">first</strong>.
                     </p>
                 </div>
 
