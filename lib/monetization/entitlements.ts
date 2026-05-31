@@ -4,9 +4,20 @@ import Stripe from 'stripe';
 export type StripeEventContext = {
     id: string;
     type: string;
-    payload: any;
+    payload: unknown;
     receivedAt: string;
 };
+
+type StripeSubscriptionWithPeriods = Stripe.Subscription & {
+    current_period_start?: number;
+    current_period_end?: number;
+};
+
+function invoiceId(invoice: Stripe.Subscription['latest_invoice']) {
+    if (!invoice) return null;
+    if (typeof invoice === 'string') return invoice;
+    return 'id' in invoice ? invoice.id : null;
+}
 
 // ============================================================================
 // ENGINE 1 — BILLING & ENTITLEMENTS ENGINE
@@ -45,11 +56,12 @@ export class EntitlementEngine {
             await processor();
             await this.supabase.from('webhook_inbox').update({ status: 'processed', processed_at: new Date().toISOString() }).eq('id', inboxId);
             return { handled: true, skipped: false };
-        } catch (err: any) {
+        } catch (err: unknown) {
+            const message = err instanceof Error ? err.message : 'Unknown processing error';
             console.error(`[EntitlementEngine] FATAL EVENT FAILURE: ${event.id}`, err);
             await this.supabase.from('webhook_inbox').update({ 
                 status: 'failed', 
-                processing_error: err.message || 'Unknown processing error',
+                processing_error: message,
             }).eq('id', inboxId);
             throw err;
         }
@@ -100,6 +112,7 @@ export class EntitlementEngine {
     // ── 3. Canonical Subscription Activation ────────────────────────────────
     private async syncCanonicalSubscription(sub: Stripe.Subscription) {
         const customerId = typeof sub.customer === 'string' ? sub.customer : sub.customer.id;
+        const subWithPeriods = sub as StripeSubscriptionWithPeriods;
 
         // Fetch User Identity via Customer
         const { data: profile } = await this.supabase.from('profiles').select('id').eq('stripe_customer_id', customerId).single();
@@ -115,10 +128,10 @@ export class EntitlementEngine {
             price_key: priceKey,
             plan_id: priceKey,
             status: sub.status,
-            current_period_start: new Date(((sub as any).current_period_start ?? 0) * 1000).toISOString(),
-            current_period_end: new Date(((sub as any).current_period_end ?? 0) * 1000).toISOString(),
+            current_period_start: new Date((subWithPeriods.current_period_start ?? 0) * 1000).toISOString(),
+            current_period_end: new Date((subWithPeriods.current_period_end ?? 0) * 1000).toISOString(),
             cancel_at_period_end: sub.cancel_at_period_end,
-            latest_invoice_id: typeof sub.latest_invoice === 'string' ? sub.latest_invoice : (sub.latest_invoice as any)?.id
+            latest_invoice_id: invoiceId(sub.latest_invoice),
         }, { onConflict: 'user_id' });
 
         // 2. Derive to Profiles Cache (ReadOnly / Display Mode)
@@ -172,18 +185,23 @@ export class EntitlementEngine {
         const campaignId = session.metadata?.campaign_id;
         if (!campaignId) return;
 
-        await this.supabase.from('ad_campaigns').update({
+        await this.supabase.from('hc_ad_campaigns').update({
             status: 'active',
-            payment_confirmed_at: new Date().toISOString(),
-            stripe_session_id: session.id,
-        }).eq('id', campaignId);
+            updated_at: new Date().toISOString(),
+        }).eq('campaign_id', campaignId);
+
+        await this.supabase.from('hc_ad_creatives').update({
+            status: 'approved',
+            active: true,
+            updated_at: new Date().toISOString(),
+        }).eq('campaign_id', campaignId).eq('status', 'pending_review');
 
         // Swarm attribution
         ;(async () => { try { await this.supabase.from('swarm_activity_log').insert({
             agent_name: 'adgrid_creative_agent',
             trigger_reason: 'campaign_payment_confirmed',
             action_taken: `Campaign ${campaignId} activated after Stripe payment`,
-            surfaces_touched: ['ad_campaigns'],
+            surfaces_touched: ['hc_ad_campaigns', 'hc_ad_creatives'],
             revenue_impact: (session.amount_total ?? 0) / 100,
             status: 'completed',
         }); } catch {} })();

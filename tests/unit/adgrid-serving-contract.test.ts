@@ -215,6 +215,40 @@ describe("AdGrid serving contract", () => {
     expect(route).toContain("slotId: req.nextUrl.searchParams.get('slot_id')");
   });
 
+  it("keeps campaign creation and Stripe fulfillment on canonical AdGrid tables", () => {
+    const campaignRoute = read("app/api/adgrid/campaigns/route.ts");
+    const campaignCreateRoute = read("app/api/adgrid/campaign-create/route.ts");
+    const entitlementEngine = read("lib/monetization/entitlements.ts");
+    const helper = read("lib/monetization/adgrid-campaigns.ts");
+
+    for (const source of [campaignRoute, campaignCreateRoute]) {
+      expect(source).toContain("ensureCanonicalAdgridAdvertiser");
+      expect(source).toContain("createCanonicalAdgridCampaign");
+      expect(source).toContain("createCanonicalAdgridCreative");
+      expect(source).not.toContain('from("ad_campaigns")');
+      expect(source).not.toContain("from('ad_campaigns')");
+      expect(source).not.toContain('from("ad_creatives")');
+      expect(source).not.toContain("from('ad_creatives')");
+      expect(source).not.toContain('from("hc_adgrid_campaign")');
+      expect(source).not.toContain("from('hc_adgrid_campaign')");
+    }
+
+    expect(helper).toContain("hc_adgrid_advertiser");
+    expect(helper).toContain("hc_ad_campaigns");
+    expect(helper).toContain("hc_ad_creatives");
+    expect(helper).not.toContain('from("ad_campaigns")');
+    expect(helper).not.toContain("from('ad_campaigns')");
+    expect(helper).not.toContain('from("ad_creatives")');
+    expect(helper).not.toContain("from('ad_creatives')");
+    expect(helper).not.toContain('from("hc_adgrid_campaign")');
+    expect(helper).not.toContain("from('hc_adgrid_campaign')");
+
+    expect(entitlementEngine).toContain("hc_ad_campaigns");
+    expect(entitlementEngine).toContain("hc_ad_creatives");
+    expect(entitlementEngine).not.toContain("from('ad_campaigns')");
+    expect(entitlementEngine).not.toContain("from('ad_creatives')");
+  });
+
   it("keeps legacy ads click compatibility on canonical AdGrid tables", () => {
     const route = read("app/api/ads/click/route.ts");
 
