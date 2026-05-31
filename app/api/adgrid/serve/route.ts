@@ -1,5 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import {
+    buildAdgridImpressionInsert,
+    buildAdgridPlacementKey,
+    buildAdgridEventInsert,
+    creativeMatchesAdgridContext,
+    normalizeAdgridCreative,
+} from '@/lib/monetization/adgrid-serving';
+import { pickHouseAd } from '@/lib/ads/house-ads';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,9 +24,42 @@ export async function GET(req: NextRequest) {
     const zone = req.nextUrl.searchParams.get('zone');
     const corridor = req.nextUrl.searchParams.get('corridor');
     const country = req.nextUrl.searchParams.get('country') || 'US';
+    const state = req.nextUrl.searchParams.get('state');
     const role = req.nextUrl.searchParams.get('role');
+    const pagePath = req.nextUrl.searchParams.get('page_path') || req.nextUrl.searchParams.get('path');
 
     const supabaseAdmin = getSupabaseAdmin();
+    const placementKey = buildAdgridPlacementKey({ surface, zone, corridor, country, role });
+
+    async function recordServedAd(ad: { campaign_id?: string | null; creative_id?: string | null; ab_variant?: string | null }, source: string) {
+        const impression = buildAdgridImpressionInsert(ad, {
+            placementKey: pagePath || placementKey,
+            country,
+            state,
+            corridor,
+            role,
+        });
+        if (!impression) return { logged: false, reason: 'missing_campaign_id' };
+
+        const { error: impressionError } = await supabaseAdmin.from(impression.table).insert(impression.payload);
+        const event = buildAdgridEventInsert({
+            eventType: 'impression',
+            campaignId: ad.campaign_id,
+            surface: surface || zone || placementKey,
+            zone,
+            countryCode: country,
+            corridorSlug: corridor,
+            sessionId: req.nextUrl.searchParams.get('session_id'),
+            userAgentSummary: req.headers.get('user-agent')?.slice(0, 180) ?? null,
+        });
+        const { error: eventError } = await supabaseAdmin.from(event.table).insert(event.payload);
+
+        return {
+            logged: !impressionError && !eventError,
+            reason: impressionError?.message || eventError?.message || null,
+            source,
+        };
+    }
 
     try {
         // ── PATH A: legacy RPC approach (strongest — uses bid ranking) ──
@@ -30,51 +71,44 @@ export async function GET(req: NextRequest) {
             });
 
             if (!error && data && Object.keys(data).length > 0) {
-                // Track impression
-                if (data.creative_id) {
-                    supabaseAdmin.from('hc_ad_events').insert({
-                        creative_id: data.creative_id,
-                        campaign_id: data.campaign_id,
-                        event_type: 'impression',
-                        surface,
-                        corridor_code: corridor,
-                        country_code: country,
-                    }).then(() => {});
-                }
-                return NextResponse.json({ ad: data, source: 'adgrid' });
+                const tracking = await recordServedAd(data, 'adgrid');
+                return NextResponse.json({ ad: data, source: 'adgrid', tracking });
             }
         }
 
         // ── PATH B: zone-based query (new — for AdGridSlot component) ──
-        const queryZone = zone ?? surface ?? 'homepage_hero';
+        const { data: creativeRows } = await supabaseAdmin
+            .from('hc_ad_creatives')
+            .select(
+                'campaign_id, creative_id, headline, description, body, subhead, cta_text, cta_label, cta_url, image_url, image_landscape_url, image_square_url, sponsor_label, advertiser_name, page_types, country_slugs, corridor_slugs, service_slugs, ab_variant',
+            )
+            .eq('active', true)
+            .in('status', ['approved', 'active'])
+            .limit(20);
 
-        let query = supabaseAdmin
-            .from('hc_adgrid_inventory')
-            .select('id, headline, body, cta_label, cta_url, advertiser_name')
-            .eq('zone', queryZone)
-            .limit(5);
+        const ads = (creativeRows ?? [])
+            .map(normalizeAdgridCreative)
+            .filter((creative) => creativeMatchesAdgridContext(creative, { surface, zone, corridor, country, role }));
 
-        if (role) {
-            query = query.or(`role_targeting.is.null,role_targeting.cs.{${role}}`);
-        }
-
-        const { data: ads } = await query;
-
-        if (ads && ads.length > 0) {
+        if (ads.length > 0) {
             const ad = ads[Math.floor(Math.random() * ads.length)];
-            // Log impression async
-            supabaseAdmin.from('hc_adgrid_impressions').insert({
-                inventory_id: ad.id,
-                zone: queryZone,
-                role,
-                timestamp: new Date().toISOString(),
-            }).then(() => {});
-            return NextResponse.json({ ad, source: 'inventory' });
+            const tracking = await recordServedAd(ad, 'inventory');
+            return NextResponse.json({ ad, source: 'inventory', tracking });
         }
 
         // ── PATH C: no ads available ──
-        return NextResponse.json({ ad: null, source: 'none' });
+        const houseAd = pickHouseAd({
+            surface: surface ?? zone ?? placementKey,
+            placementId: placementKey,
+            role: role ?? undefined,
+        });
+        return NextResponse.json({ ad: houseAd, source: 'house', tracking: { logged: false, reason: 'house_ad' } });
     } catch {
-        return NextResponse.json({ ad: null, source: 'none' });
+        const houseAd = pickHouseAd({
+            surface: surface ?? zone ?? placementKey,
+            placementId: placementKey,
+            role: role ?? undefined,
+        });
+        return NextResponse.json({ ad: houseAd, source: 'house', tracking: { logged: false, reason: 'serve_failed_house_fallback' } });
     }
 }

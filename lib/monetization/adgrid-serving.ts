@@ -4,7 +4,10 @@ export type AdgridServeContext = {
   zone?: string | null;
   corridor?: string | null;
   country?: string | null;
+  state?: string | null;
   role?: string | null;
+  pagePath?: string | null;
+  slotId?: string | null;
 };
 
 export type AdgridCreativeRow = {
@@ -48,6 +51,13 @@ export type NormalizedAdgridCreative = {
 
 function compactSlug(value?: string | null) {
   return value?.trim().toLowerCase() || "";
+}
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+export function adgridUuidOrNull(value?: string | null) {
+  if (!value) return null;
+  return UUID_RE.test(value) ? value : null;
 }
 
 function matchesTarget(targets: string[], value?: string | null) {
@@ -94,19 +104,79 @@ export function creativeMatchesAdgridContext(
 }
 
 export function buildAdgridImpressionInsert(
-  ad: Pick<AdgridCreativeRow, "campaign_id" | "creative_id">,
-  context: { placementKey: string; country?: string | null },
+  ad: Pick<AdgridCreativeRow, "campaign_id" | "creative_id" | "ab_variant">,
+  context: { placementKey: string; country?: string | null; state?: string | null; corridor?: string | null; role?: string | null; slotId?: string | null },
 ) {
   if (!ad.campaign_id) return null;
 
   return {
-    table: "hc_ad_impressions" as const,
+    table: "hc_adgrid_impressions" as const,
     payload: {
       campaign_id: ad.campaign_id,
-      creative_id: ad.creative_id ?? null,
-      placement_key: context.placementKey,
-      viewer_country: context.country ?? null,
-      viewable: false,
+      slot_id: adgridUuidOrNull(context.slotId),
+      page_path: context.placementKey,
+      country_code: context.country?.toUpperCase() ?? null,
+      state_code: context.state ?? null,
+      corridor_slug: context.corridor ?? null,
+      audience_role: context.role ?? null,
+      variant: ad.ab_variant ?? null,
+    },
+  };
+}
+
+export function buildAdgridClickInsert(
+  ad: Pick<AdgridCreativeRow, "campaign_id" | "ab_variant">,
+  context: { placementKey: string; country?: string | null; state?: string | null; role?: string | null; slotId?: string | null; referrer?: string | null },
+) {
+  if (!ad.campaign_id) return null;
+
+  return {
+    table: "hc_adgrid_clicks" as const,
+    payload: {
+      campaign_id: ad.campaign_id,
+      slot_id: adgridUuidOrNull(context.slotId),
+      page_path: context.placementKey,
+      country_code: context.country?.toUpperCase() ?? null,
+      state_code: context.state ?? null,
+      audience_role: context.role ?? null,
+      variant: ad.ab_variant ?? null,
+      referrer: context.referrer ?? null,
+    },
+  };
+}
+
+export function buildAdgridEventInsert(input: {
+  eventType: string;
+  campaignId?: string | null;
+  advertiserId?: string | null;
+  slotId?: string | null;
+  surface?: string | null;
+  zone?: string | null;
+  countryCode?: string | null;
+  corridorSlug?: string | null;
+  citySlug?: string | null;
+  userId?: string | null;
+  sessionId?: string | null;
+  userAgentSummary?: string | null;
+  billingAmountCents?: number | null;
+}) {
+  return {
+    table: "hc_adgrid_events" as const,
+    payload: {
+      event_type: input.eventType,
+      slot_id: adgridUuidOrNull(input.slotId),
+      campaign_id: adgridUuidOrNull(input.campaignId),
+      advertiser_id: adgridUuidOrNull(input.advertiserId),
+      surface: input.surface || input.zone || "unknown",
+      zone: input.zone ?? null,
+      country_code: input.countryCode?.toUpperCase() ?? null,
+      corridor_slug: input.corridorSlug ?? null,
+      city_slug: input.citySlug ?? null,
+      user_id: adgridUuidOrNull(input.userId),
+      session_id: input.sessionId ?? null,
+      user_agent_summary: input.userAgentSummary ?? null,
+      billing_amount_cents: input.billingAmountCents ?? null,
+      billing_currency: "USD",
     },
   };
 }

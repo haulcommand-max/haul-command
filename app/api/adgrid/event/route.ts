@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { buildAdgridClickInsert, buildAdgridEventInsert } from '@/lib/monetization/adgrid-serving';
 
 const supabaseAdmin = getSupabaseAdmin();
 
@@ -10,29 +11,44 @@ const supabaseAdmin = getSupabaseAdmin();
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const { creative_id, campaign_id, advertiser_id, event_type, surface, corridor_code, country_code, operator_id, session_id, revenue_usd } = body;
+        const { campaign_id, advertiser_id, event_type, surface, zone, corridor_code, country_code, session_id, revenue_usd, placement_id, role, variant } = body;
 
         if (!event_type) {
             return NextResponse.json({ error: 'event_type required' }, { status: 400 });
         }
 
-        const { error } = await supabaseAdmin
-            .from('hc_ad_events')
-            .insert({
-                creative_id,
-                campaign_id,
-                advertiser_id,
-                event_type,
-                surface: surface || 'unknown',
-                corridor_code,
-                country_code: country_code || 'US',
-                operator_id,
-                session_id,
-                revenue_usd: revenue_usd || 0,
-            });
+        const event = buildAdgridEventInsert({
+            eventType: event_type,
+            campaignId: campaign_id,
+            advertiserId: advertiser_id,
+            surface,
+            zone,
+            countryCode: country_code || 'US',
+            corridorSlug: corridor_code,
+            sessionId: session_id,
+            billingAmountCents: revenue_usd ? Math.round(Number(revenue_usd) * 100) : null,
+            userAgentSummary: req.headers.get('user-agent')?.slice(0, 180) ?? null,
+        });
+        const { error } = await supabaseAdmin.from(event.table).insert(event.payload);
 
         if (error) {
             return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+
+        if ((event_type === 'click' || event_type === 'sponsor_cta_click') && campaign_id) {
+            const click = buildAdgridClickInsert(
+                { campaign_id, ab_variant: variant },
+                {
+                    placementKey: surface || zone || 'unknown',
+                    country: country_code || 'US',
+                    role,
+                    slotId: placement_id,
+                    referrer: req.headers.get('referer'),
+                },
+            );
+            if (click) {
+                await supabaseAdmin.from(click.table).insert(click.payload);
+            }
         }
 
         // If it's a click, update campaign spend (non-critical)
@@ -48,7 +64,7 @@ export async function POST(req: NextRequest) {
         }
 
         return NextResponse.json({ success: true });
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: 'Event tracking failed' }, { status: 500 });
     }
 }
@@ -64,8 +80,8 @@ export async function GET(req: NextRequest) {
     }
 
     const { data, error } = await supabaseAdmin
-        .from('hc_ad_events')
-        .select('event_type, revenue_usd, created_at')
+        .from('hc_adgrid_events')
+        .select('event_type, billing_amount_cents, created_at')
         .eq('campaign_id', campaignId)
         .order('created_at', { ascending: false })
         .limit(1000);
@@ -78,7 +94,7 @@ export async function GET(req: NextRequest) {
         impressions: data?.filter(e => e.event_type === 'impression').length || 0,
         clicks: data?.filter(e => e.event_type === 'click').length || 0,
         conversions: data?.filter(e => e.event_type === 'conversion').length || 0,
-        total_revenue: data?.reduce((sum, e) => sum + (e.revenue_usd || 0), 0) || 0,
+        total_revenue: (data?.reduce((sum, e) => sum + (e.billing_amount_cents || 0), 0) || 0) / 100,
     };
 
     return NextResponse.json({ success: true, stats, events: data });
