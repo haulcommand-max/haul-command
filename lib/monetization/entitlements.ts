@@ -86,7 +86,7 @@ export class EntitlementEngine {
                     const session = event.data.object as Stripe.Checkout.Session;
                     // Legacy type-keyed routes
                     if (session.metadata?.type === 'ad_boost') await this.activateAdGrid(session);
-                    if (session.metadata?.type === 'data_purchase') await this.activateDataProduct(session);
+                    if (session.metadata?.type === 'data_purchase' || session.metadata?.type === 'data_product_purchase') await this.activateDataProduct(session);
                     if (session.metadata?.type === 'tier2_claim') await this.activateProfileClaim(session);
                     // New creative factory campaigns (/api/ads/campaigns)
                     if (session.metadata?.campaign_id) await this.activateCampaign(session);
@@ -158,6 +158,7 @@ export class EntitlementEngine {
         const { data: purchase, error } = await this.supabase.from('data_purchases').select('*')
             .eq('user_id', session.metadata.user_id)
             .eq('product_id', session.metadata.product_id)
+            .eq('stripe_session_id', session.id)
             .eq('status', 'pending')
             .maybeSingle();
 
@@ -166,7 +167,35 @@ export class EntitlementEngine {
         // 2. Fulfill actual data asset (Generate Secure Signed Download Link)
         // e.g. CSVs generated inside private /data-assets bucket. Expiration: 7 Days.
         const objectPath = `enterprise/${purchase.country_code}/${purchase.product_id}_matrix.csv`;
-        const { data: downloadAsset } = await this.supabase.storage.from('data-assets').createSignedUrl(objectPath, 60 * 60 * 24 * 7);
+        const { data: downloadAsset, error: signedUrlError } = await this.supabase.storage.from('data-assets').createSignedUrl(objectPath, 60 * 60 * 24 * 7);
+
+        if (!downloadAsset?.signedUrl) {
+            await this.supabase.from('data_purchases').update({
+                status: 'pending',
+                stripe_session_id: session.id,
+                metadata: {
+                    ...(purchase.metadata && typeof purchase.metadata === 'object' ? purchase.metadata : {}),
+                    fulfillment_status: 'data_product_fulfillment_required',
+                    fulfillment_error: signedUrlError?.message || 'storage_signed_url_failed',
+                    storage_path: objectPath,
+                    paid_at: new Date().toISOString(),
+                },
+            }).eq('id', purchase.id);
+
+            await this.supabase.from('hc_events').insert({
+                event_type: 'data_product_fulfillment_required',
+                properties: {
+                    user_id: session.metadata.user_id,
+                    product_id: purchase.product_id,
+                    purchase_id: purchase.id,
+                    stripe_session_id: session.id,
+                    storage_path: objectPath,
+                    reason: signedUrlError?.message || 'storage_signed_url_failed',
+                },
+            });
+
+            return;
+        }
 
         // 3. Mark Active & Inject Fulfillment URI
         await this.supabase.from('data_purchases').update({
@@ -174,8 +203,8 @@ export class EntitlementEngine {
             stripe_session_id: session.id,
             expires_at: new Date(Date.now() + (1000 * 60 * 60 * 24 * 30)).toISOString(), // 30 day enterprise access
             metadata: { 
-                fulfillment_url: downloadAsset?.signedUrl || 'GENERATING', 
-                storage_path: objectPath 
+                fulfillment_url: downloadAsset.signedUrl,
+                storage_path: objectPath
             }
         }).eq('id', purchase.id);
     }
