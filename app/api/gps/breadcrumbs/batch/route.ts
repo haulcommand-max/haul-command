@@ -19,11 +19,22 @@ interface BreadcrumbInput {
   operator_id?: string;
   lat?: number;
   lng?: number;
+  accuracy?: number;
   accuracy_m?: number;
+  source?: string;
+  timestamp?: string;
 }
 
 function isFiniteNumber(value: unknown): value is number {
   return typeof value === 'number' && Number.isFinite(value);
+}
+
+function normalizeAccuracy(breadcrumb: BreadcrumbInput) {
+  return isFiniteNumber(breadcrumb.accuracy_m) ? breadcrumb.accuracy_m : breadcrumb.accuracy;
+}
+
+function isValidLatLng(lat: number, lng: number) {
+  return lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
 }
 
 export async function POST(req: NextRequest) {
@@ -45,8 +56,14 @@ export async function POST(req: NextRequest) {
     const authorizedJobs = new Map<string, boolean>();
 
     for (const b of breadcrumbs as BreadcrumbInput[]) {
-      if (!b.job_id || !isFiniteNumber(b.lat) || !isFiniteNumber(b.lng) || !isFiniteNumber(b.accuracy_m)) {
-        rejected.push({ job_id: b.job_id ?? 'unknown', reason: 'job_id, lat, lng, and accuracy_m are required' });
+      const accuracyM = normalizeAccuracy(b);
+      if (!b.job_id || !isFiniteNumber(b.lat) || !isFiniteNumber(b.lng) || !isFiniteNumber(accuracyM)) {
+        rejected.push({ job_id: b.job_id ?? 'unknown', reason: 'job_id, lat, lng, and accuracy_m or accuracy are required' });
+        continue;
+      }
+
+      if (!isValidLatLng(b.lat, b.lng)) {
+        rejected.push({ job_id: b.job_id, reason: 'lat/lng must be within valid GPS ranges' });
         continue;
       }
 
@@ -70,8 +87,8 @@ export async function POST(req: NextRequest) {
         continue;
       }
 
-      if (b.accuracy_m > 50) {
-        rejected.push({ job_id: b.job_id, reason: `accuracy_m=${b.accuracy_m} exceeds 50m threshold` });
+      if (accuracyM <= 0 || accuracyM > 50) {
+        rejected.push({ job_id: b.job_id, reason: `accuracy_m=${accuracyM} must be between 0 and 50 meters` });
         continue;
       }
 
@@ -80,7 +97,9 @@ export async function POST(req: NextRequest) {
         user.id,
         b.lat,
         b.lng,
-        b.accuracy_m,
+        accuracyM,
+        b.timestamp,
+        b.source,
       );
 
       results.push({ job_id: b.job_id, outcome: outcome || 'RECORDED' });

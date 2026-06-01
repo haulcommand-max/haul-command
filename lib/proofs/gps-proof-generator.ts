@@ -3,8 +3,8 @@
  * Haul Command — GPS Proof Packet Generator
  *
  * Reads the breadcrumb trail for a job, computes coverage percentage,
- * generates a signed JSON proof artifact, uploads to Supabase storage,
- * and writes proof_packet_url back to the job record.
+ * generates a JSON proof artifact, uploads to private Supabase storage,
+ * and writes the storage path back to the job record.
  *
  * Used by: dispute-auto-resolve edge function
  * Called for: any job entering dispute or post-job verification
@@ -38,7 +38,7 @@ function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): nu
 
 /**
  * Generate a proof packet for a given job.
- * Returns the packet and the storage URL.
+ * Returns the packet and private storage path.
  */
 export async function generateProofPacket(jobId: string): Promise<{
   packet: ProofPacket;
@@ -62,7 +62,7 @@ export async function generateProofPacket(jobId: string): Promise<{
   // ── Fetch breadcrumbs for this job ──
   const { data: breadcrumbs } = await supabase
     .from('gps_breadcrumbs')
-    .select('lat, lng, accuracy_m, recorded_at')
+    .select('lat, lng, accuracy, recorded_at')
     .eq('job_id', jobId)
     .order('recorded_at', { ascending: true });
 
@@ -150,12 +150,7 @@ export async function generateProofPacket(jobId: string): Promise<{
     console.error('[gps-proof-generator] Upload error:', uploadErr);
   }
 
-  // ── Get public URL ──
-  const { data: publicUrl } = supabase.storage
-    .from('artifacts')
-    .getPublicUrl(storagePath);
-
-  const packetUrl = publicUrl?.publicUrl || storagePath;
+  const packetUrl = storagePath;
 
   // ── Write proof_packets record ──
   const { data: proofRecord } = await supabase

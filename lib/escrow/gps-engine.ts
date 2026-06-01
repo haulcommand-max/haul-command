@@ -27,7 +27,15 @@ export class GPSProofEngine {
     /**
      * OPUS-02 RULE: Check-in accuracy hard stop
      */
-    static async recordBreadcrumb(jobId: string, operatorId: string, lat: number, lng: number, accuracyM: number) {
+    static async recordBreadcrumb(
+        jobId: string,
+        operatorId: string,
+        lat: number,
+        lng: number,
+        accuracyM: number,
+        recordedAt?: string,
+        source?: string,
+    ) {
         if (accuracyM > 50) {
             console.error(`[GPS Engine] Rejecting breadcrumb: Accuracy ${accuracyM}m exceeds 50m threshold.`);
             // In real app, log to fraud_events if repeated
@@ -40,7 +48,9 @@ export class GPSProofEngine {
             operator_id: operatorId,
             lat,
             lng,
-            accuracy_m: accuracyM
+            accuracy: accuracyM,
+            recorded_at: recordedAt || new Date().toISOString(),
+            source: source || 'phone_gps',
         });
 
         // Trigger Geofence Match Validation

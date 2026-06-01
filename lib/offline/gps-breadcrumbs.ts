@@ -90,7 +90,7 @@ export async function uploadBreadcrumbs(): Promise<{ uploaded: number; failed: n
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ breadcrumbs: batch.map(c => ({
           job_id: c.job_id, operator_id: c.operator_id,
-          lat: c.lat, lng: c.lng, accuracy: c.accuracy,
+          lat: c.lat, lng: c.lng, accuracy_m: c.accuracy,
           heading: c.heading, speed: c.speed, timestamp: c.timestamp,
         })) }),
       });
