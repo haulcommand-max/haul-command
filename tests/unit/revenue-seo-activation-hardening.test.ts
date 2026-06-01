@@ -60,11 +60,43 @@ describe("revenue and SEO activation hardening", () => {
     expect(checkoutButton).toContain("reason === 'production_test_keys_blocked'");
   });
 
+  it("routes AdGrid booked-slot checkout success to an existing sponsor receipt page", () => {
+    const route = read("app/api/adgrid/book-slot/route.ts");
+
+    expect(route).toContain("/sponsor/success?type=adgrid&slot=");
+    expect(route).not.toContain("/advertise/success");
+  });
+
   it("accepts the newer data product purchase metadata key in the canonical entitlement engine", () => {
     const entitlements = read("lib/monetization/entitlements.ts");
 
     expect(entitlements).toContain("data_product_purchase");
     expect(entitlements).toContain("activateDataProduct(session)");
+  });
+
+  it("records data product checkout intent even when Stripe is blocked", () => {
+    const route = read("app/api/data/buy/route.ts");
+    const stripeDataCheckout = read("app/api/stripe/data-checkout/route.ts");
+
+    expect(route).toContain("recordCheckoutIntent");
+    expect(route).toContain("getStripeCheckoutBlockReason");
+    expect(route).toContain("recordDataProductCheckoutIntent");
+    expect(route).toContain("checkoutUnavailableReason: stripeBlockReason");
+    expect(route).toContain("productKind: 'data_product'");
+    expect(route).toContain("buyerRole: 'data_buyer'");
+    expect(route).toContain("checkout_intent_id: checkoutTracking.checkoutIntentId");
+    expect(route).toContain("crm_opportunity_id: checkoutTracking.crmOpportunityId");
+    expect(route).toContain("checkout_tracking_recorded: checkoutTracking.ok");
+    expect(route).toContain("No data access was unlocked.");
+
+    expect(stripeDataCheckout).toContain("recordCheckoutIntent");
+    expect(stripeDataCheckout.indexOf("await req.json()")).toBeLessThan(
+      stripeDataCheckout.indexOf("getStripeCheckoutBlockReason()"),
+    );
+    expect(stripeDataCheckout).toContain("sourcePath: '/api/stripe/data-checkout'");
+    expect(stripeDataCheckout).toContain("checkout_unavailable_reason: blockReason");
+    expect(stripeDataCheckout).toContain("checkout_intent_id: checkoutTracking.checkoutIntentId");
+    expect(stripeDataCheckout).toContain("crm_opportunity_id: checkoutTracking.crmOpportunityId");
   });
 
   it("guards service-role SEO and AI image webhook write surfaces", () => {

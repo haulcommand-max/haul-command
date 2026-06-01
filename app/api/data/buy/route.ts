@@ -1,62 +1,138 @@
 // app/api/data/buy/route.ts
-// POST /api/data/buy
-// Handles data product purchase initiation + revenue attribution
-//
-// Flow:
-//  1. Validate productId + user session
-//  2. Initiate Stripe checkout (or redirect to Stripe)
-//  3. Attribute revenue to data_product_agent
-//  4. Return checkout URL or success
+// Starts a Stripe checkout for data products. Access unlocks through webhook fulfillment.
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
-import { DATA_PRODUCT_CATALOG } from '@/lib/monetization/data-product-engine';
+import { cookies } from 'next/headers';
+import { createServerClient } from '@supabase/ssr';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { DataProductEngine, DATA_PRODUCT_CATALOG, type DataProduct } from '@/lib/monetization/data-product-engine';
 import { attributeDataSaleRevenue } from '@/lib/swarm/revenue-attribution';
+import { getStripeCheckoutBlockReason } from '@/lib/launch/production-guards';
+import { recordCheckoutIntent } from '@/lib/revenue/checkout-intent';
+import type { User } from '@supabase/supabase-js';
+
+async function getAuthenticatedUser() {
+    const cookieStore = await cookies();
+    const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+            cookies: {
+                getAll() { return cookieStore.getAll(); },
+                setAll() {},
+            },
+        },
+    );
+
+    const { data: { user } } = await supabase.auth.getUser();
+    return user;
+}
+
+async function recordDataProductCheckoutIntent(input: {
+    user: User;
+    product: DataProduct;
+    geo: string;
+    stripeSessionId?: string | null;
+    checkoutUnavailableReason?: string | null;
+}) {
+    return recordCheckoutIntent({
+        userId: input.user.id,
+        userEmail: input.user.email ?? null,
+        buyerRole: 'data_buyer',
+        productKind: 'data_product',
+        productKey: input.product.id,
+        priceCents: Math.round(input.product.price_usd * 100),
+        currency: 'usd',
+        countryCode: input.geo,
+        stripeSessionId: input.stripeSessionId ?? null,
+        sourcePath: '/api/data/buy',
+        recommendation: `Follow up on data product checkout intent for ${input.product.name}.`,
+        meta: {
+            product_type: input.product.type,
+            purchase_type: input.product.purchase_type,
+            checkout_unavailable_reason: input.checkoutUnavailableReason ?? null,
+        },
+    });
+}
 
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
         const { productId, geo } = body as { productId: string; geo?: string };
+        const geoCode = (geo ?? 'US').toUpperCase();
 
         if (!productId) {
             return NextResponse.json({ error: 'productId required' }, { status: 400 });
         }
 
-        // Find product in catalog
         const product = DATA_PRODUCT_CATALOG.find(p => p.id === productId && p.active);
         if (!product) {
             return NextResponse.json({ error: 'Product not found or inactive' }, { status: 404 });
         }
 
-        // Get user session (optional — some products allow anonymous purchase)
-        const supabase = await createClient();
-        const { data: { user } } = await supabase.auth.getUser();
-
-        // For enterprise tier, require auth
-        if (product.tier_required === 'enterprise' && !user) {
+        const user = await getAuthenticatedUser();
+        if (!user) {
             return NextResponse.json({
                 error: 'auth_required',
-                message: 'Enterprise products require an account. Please sign in or register.',
+                message: 'Data products require an account so Stripe fulfillment can attach to the right buyer.',
                 redirect: '/auth/register?intent=data_purchase&product=' + productId,
             }, { status: 401 });
         }
 
-        // ── Revenue Attribution (fire-and-forget) ──
-        // Attribute to data_product_agent regardless of whether payment completes
-        // (tracks intent; actual completion tracked via Stripe webhook)
         attributeDataSaleRevenue(
             'data_product_agent',
             productId,
             product.price_usd,
-            'US'
+            geoCode,
         ).catch(() => {});
 
-        // ── Stripe Checkout Session ──
-        // STRIPE_SECRET_KEY is in .env.local — sk_test_ is live
+        if (product.price_usd <= 0) {
+            const purchase = await new DataProductEngine(getSupabaseAdmin()).purchaseProduct(
+                user.id,
+                product.id,
+                geoCode,
+            );
+
+            if (!purchase.ok) {
+                return NextResponse.json({ error: purchase.error }, { status: 400 });
+            }
+
+            return NextResponse.json({
+                ok: true,
+                product: { id: product.id, name: product.name, price_usd: product.price_usd },
+                purchase_id: purchase.purchase_id,
+                status: 'active',
+            });
+        }
+
         const origin = req.headers.get('origin') ?? 'https://www.haulcommand.com';
+        const stripeBlockReason = getStripeCheckoutBlockReason();
+        if (stripeBlockReason) {
+            const checkoutTracking = await recordDataProductCheckoutIntent({
+                user,
+                product,
+                geo: geoCode,
+                checkoutUnavailableReason: stripeBlockReason,
+            });
+
+            return NextResponse.json({
+                ok: false,
+                payments_disabled: true,
+                product: { id: product.id, name: product.name, price_usd: product.price_usd },
+                error: 'Stripe checkout unavailable. No data access was unlocked.',
+                reason: stripeBlockReason,
+                geo: geoCode,
+                checkout_intent_id: checkoutTracking.checkoutIntentId ?? null,
+                crm_opportunity_id: checkoutTracking.crmOpportunityId ?? null,
+                checkout_tracking_recorded: checkoutTracking.ok,
+                checkout_tracking_errors: checkoutTracking.errors,
+            }, { status: 503 });
+        }
 
         try {
-            const stripe = await import('stripe').then(m => new m.default(process.env.STRIPE_SECRET_KEY!)).catch(() => null);
+            const stripe = await import('stripe')
+                .then(m => new m.default(process.env.STRIPE_SECRET_KEY!))
+                .catch(() => null);
 
             if (stripe) {
                 const mode = product.purchase_type === 'subscription' ? 'subscription' : 'payment';
@@ -76,47 +152,83 @@ export async function POST(req: NextRequest) {
                         } as any,
                         quantity: 1,
                     }],
-
-                    customer_email: user?.email,
-                    client_reference_id: user?.id ?? `anon-${Date.now()}`,
-                    metadata: { product_id: product.id, geo: geo ?? 'US', user_id: user?.id ?? '' },
-                    success_url: `${origin}/data/purchase-success?product=${productId}&session_id={CHECKOUT_SESSION_ID}`,
+                    customer_email: user.email,
+                    client_reference_id: user.id,
+                    metadata: {
+                        type: 'data_purchase',
+                        product_id: product.id,
+                        geo: geo ?? 'US',
+                        user_id: user.id,
+                    },
+                    success_url: `${origin}/data?purchased=${productId}&session_id={CHECKOUT_SESSION_ID}`,
                     cancel_url: `${origin}/data?cancelled=1`,
                     allow_promotion_codes: true,
                 });
+
+                const pendingPurchase = await new DataProductEngine(getSupabaseAdmin()).purchaseProduct(
+                    user.id,
+                    product.id,
+                    geoCode,
+                    undefined,
+                    session.id,
+                );
+
+                if (!pendingPurchase.ok) {
+                    return NextResponse.json({ error: pendingPurchase.error }, { status: 400 });
+                }
+
+                const checkoutTracking = await recordDataProductCheckoutIntent({
+                    user,
+                    product,
+                    geo: geoCode,
+                    stripeSessionId: session.id,
+                });
+                if (!checkoutTracking.ok) {
+                    console.error('[/api/data/buy] Checkout tracking failed:', checkoutTracking.errors);
+                }
 
                 return NextResponse.json({
                     ok: true,
                     product: { id: product.id, name: product.name, price_usd: product.price_usd },
                     checkout_url: session.url,
                     session_id: session.id,
+                    purchase_id: pendingPurchase.purchase_id,
+                    checkout_intent_id: checkoutTracking.checkoutIntentId ?? null,
+                    crm_opportunity_id: checkoutTracking.crmOpportunityId ?? null,
+                    checkout_tracking_recorded: checkoutTracking.ok,
+                    checkout_tracking_errors: checkoutTracking.errors,
                     mode,
                 });
             }
         } catch (stripeErr) {
             console.error('[/api/data/buy] Stripe error:', stripeErr);
-            // Fall through to stub response
         }
 
-        // Fallback: Stripe package not installed — return stub + install instructions
-        // Run: npm install stripe
-        return NextResponse.json({
-            ok: true,
-            product: { id: product.id, name: product.name, price_usd: product.price_usd },
-            checkout_url: `/checkout?product=${productId}&price=${product.price_usd}`,
-            checkout_stub: true,
-            install_hint: 'Run: npm install stripe  (STRIPE_SECRET_KEY is already configured)',
-            user_id: user?.id ?? null,
-            geo: geo ?? 'US',
+        const checkoutTracking = await recordDataProductCheckoutIntent({
+            user,
+            product,
+            geo: geoCode,
+            checkoutUnavailableReason: 'stripe_unavailable',
         });
+
+        return NextResponse.json({
+            ok: false,
+            payments_disabled: true,
+            product: { id: product.id, name: product.name, price_usd: product.price_usd },
+            error: 'Stripe checkout unavailable. No data access was unlocked.',
+            reason: 'stripe_unavailable',
+            geo: geoCode,
+            checkout_intent_id: checkoutTracking.checkoutIntentId ?? null,
+            crm_opportunity_id: checkoutTracking.crmOpportunityId ?? null,
+            checkout_tracking_recorded: checkoutTracking.ok,
+            checkout_tracking_errors: checkoutTracking.errors,
+        }, { status: 503 });
     } catch (err) {
         console.error('[/api/data/buy]', err);
         return NextResponse.json({ error: 'Internal error' }, { status: 500 });
     }
 }
 
-
-// GET /api/data/buy — return available products for a given role/tier
 export async function GET(req: NextRequest) {
     const tier = req.nextUrl.searchParams.get('tier') ?? 'free';
     const geo = req.nextUrl.searchParams.get('geo') ?? 'US';

@@ -90,8 +90,8 @@ export async function POST(req: NextRequest) {
         mode: 'payment',
         line_items: [{ price: priceId, quantity: 1 }],
         metadata: { adgrid_slot_id: slot.id, surface, corridor_slug: corridor_slug ?? '' },
-        success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/advertise/success?slot=${slot.id}`,
-        cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/advertise?surface=${surface}`,
+        success_url: `${process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin}/sponsor/success?type=adgrid&slot=${slot.id}`,
+        cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin}/advertise?surface=${surface}`,
       });
 
       return NextResponse.json({ checkout_url: session.url, slot_id: slot.id });
@@ -102,8 +102,9 @@ export async function POST(req: NextRequest) {
       slot_id: slot.id,
       message: 'Slot reserved — our team will contact you to finalize payment.',
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Server error';
     console.error('[adgrid/book-slot]', err);
-    return NextResponse.json({ error: err.message ?? 'Server error' }, { status: 500 });
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

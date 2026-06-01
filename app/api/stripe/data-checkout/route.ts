@@ -13,6 +13,7 @@ import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createServerComponentClient } from '@/lib/supabase/server-auth';
 import { getStripeCheckoutBlockReason } from '@/lib/launch/production-guards';
 import { DATA_PRODUCT_CATALOG, type DataProduct } from '@/lib/monetization/data-product-engine';
+import { recordCheckoutIntent } from '@/lib/revenue/checkout-intent';
 
 function buildLineItem(product: DataProduct): Stripe.Checkout.SessionCreateParams.LineItem {
     return {
@@ -47,14 +48,6 @@ function normalizeCorridorCode(value: unknown) {
 
 export async function POST(req: NextRequest) {
     try {
-        const blockReason = getStripeCheckoutBlockReason();
-        if (blockReason) {
-            return NextResponse.json(
-                { error: 'Data product checkout is temporarily unavailable.', reason: blockReason },
-                { status: 503 },
-            );
-        }
-
         const body = await req.json();
         const { product_id, success_url, cancel_url } = body as {
             product_id?: string;
@@ -90,6 +83,39 @@ export async function POST(req: NextRequest) {
         const countryCode = normalizeCountryCode(body.country_code);
         const corridorCode = normalizeCorridorCode(body.corridor_code);
         const admin = getSupabaseAdmin();
+        const blockReason = getStripeCheckoutBlockReason();
+        if (blockReason) {
+            const checkoutTracking = await recordCheckoutIntent({
+                userId: user.id,
+                userEmail: user.email ?? null,
+                buyerRole: 'data_buyer',
+                productKind: 'data_product',
+                productKey: product.id,
+                priceCents: Math.round(product.price_usd * 100),
+                currency: 'usd',
+                countryCode,
+                targetCorridorKey: corridorCode,
+                sourcePath: '/api/stripe/data-checkout',
+                recommendation: `Follow up on data product checkout intent for ${product.name}.`,
+                meta: {
+                    product_type: product.type,
+                    purchase_type: product.purchase_type,
+                    checkout_unavailable_reason: blockReason,
+                },
+            });
+
+            return NextResponse.json(
+                {
+                    error: 'Data product checkout is temporarily unavailable.',
+                    reason: blockReason,
+                    checkout_intent_id: checkoutTracking.checkoutIntentId ?? null,
+                    crm_opportunity_id: checkoutTracking.crmOpportunityId ?? null,
+                    checkout_tracking_recorded: checkoutTracking.ok,
+                    checkout_tracking_errors: checkoutTracking.errors,
+                },
+                { status: 503 },
+            );
+        }
 
         let query = admin
             .from('data_purchases')
