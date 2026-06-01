@@ -7,6 +7,14 @@
  *        + (0.08 × trust) + (0.07 × quality) - (0.35 × fraud)
  */
 
+import {
+    adgridUuidOrNull,
+    buildAdgridEventInsert,
+    buildAdgridImpressionInsert,
+    creativeMatchesAdgridContext,
+    normalizeAdgridCreative,
+} from '@/lib/monetization/adgrid-serving';
+
 export const ADRANK_WEIGHTS = {
     bid_norm: 0.55,
     ctr_pred: 0.20,
@@ -180,65 +188,61 @@ export async function serveAds(ctx: AuctionContext): Promise<ServedAd[]> {
 
     try {
         // Lazy-import admin to avoid bundling on client
-        const { getSupabaseAdmin } = await import('@/lib/enterprise/supabase/admin');
+        const { getSupabaseAdmin } = await import('@/lib/supabase/admin');
         const admin = getSupabaseAdmin();
 
-        const { data: campaigns } = await admin
-            .from('ad_campaigns')
-            .select('*')
-            .eq('status', 'active')
-            .lte('start_date', new Date().toISOString());
+        const { data: creativeRows } = await admin
+            .from('hc_ad_creatives')
+            .select(
+                'campaign_id, creative_id, headline, description, body, subhead, cta_text, cta_label, cta_url, image_url, image_landscape_url, image_square_url, sponsor_label, advertiser_name, page_types, country_slugs, corridor_slugs, service_slugs, ab_variant',
+            )
+            .eq('active', true)
+            .in('status', ['approved', 'active'])
+            .limit(Math.max(limit * 5, 20));
 
-        if (!campaigns || campaigns.length === 0) {
+        if (!creativeRows || creativeRows.length === 0) {
             return getTopHouseAds(limit, { surface: ctx.zone, role: ctx.role });
         }
 
-        // Score each campaign with AdRank formula
-        const scored = campaigns
-            .filter((c: Record<string, unknown>) => !c.paused)
-            .filter((c: Record<string, unknown>) => {
-                // Zone filter
-                if (!c.target_zone || (c.target_zone as string[]).length === 0) return true;
-                return (c.target_zone as string[]).includes(ctx.zone);
-            })
-            .map((c: Record<string, unknown>) => {
-                const bid = Number(c.bid_cpm ?? c.bid_cpc ?? ((c.bid_flat as number) ? (c.bid_flat as number) / 300 : 0));
-                const quality = Number(c.quality_score ?? 0.5);
-                // Geo relevance
-                const geoMatch = !ctx.geo || !(c.target_geo as string[])?.length
-                    ? 0.5 : (c.target_geo as string[]).includes(ctx.geo) ? 1.0 : 0.3;
-                // Role relevance
-                const roleMatch = !ctx.role || !(c.target_role as string[])?.length
-                    ? 0.5 : (c.target_role as string[]).includes(ctx.role) ? 1.0 : 0.2;
-
-                const rank = computeAdRank({
-                    bid_norm: Math.min(bid / 50, 1),
-                    ctr_pred: quality,
-                    relevance: (geoMatch + roleMatch) / 2,
-                    adv_trust: Number(c.advertiser_trust ?? 0.7),
-                    ad_quality: quality,
-                    fraud_risk: Number(c.fraud_risk ?? 0),
-                });
-
-                return { c, rank, geoMatch, roleMatch };
-            })
-            .sort((a: { rank: number }, b: { rank: number }) => b.rank - a.rank)
+        const scored = creativeRows
+            .map(normalizeAdgridCreative)
+            .filter((creative) => creative.campaign_id)
+            .filter((creative) =>
+                creativeMatchesAdgridContext(creative, {
+                    surface: ctx.zone,
+                    zone: ctx.zone,
+                    country: ctx.geo,
+                    role: ctx.role,
+                }),
+            )
+            .map((creative) => ({
+                creative,
+                rank: computeAdRank({
+                    bid_norm: 0.5,
+                    ctr_pred: 0.5,
+                    relevance: 0.8,
+                    adv_trust: 0.7,
+                    ad_quality: 0.65,
+                    fraud_risk: 0,
+                }),
+            }))
+            .sort((a, b) => b.rank - a.rank)
             .slice(0, limit);
 
         if (scored.length === 0) return getTopHouseAds(limit, { surface: ctx.zone, role: ctx.role });
 
-        return scored.map(({ c, rank }: { c: Record<string, unknown>, rank: number }) => ({
-            ad_id: `${c.id}-${Date.now()}`,
-            campaign_id: String(c.id),
-            creative_id: String(c.creative_id ?? c.id),
-            headline: String(c.headline ?? ''),
-            body: c.body ? String(c.body) : null,
-            cta_text: String(c.cta_text ?? 'Learn More'),
-            cta_url: String(c.cta_url ?? '/'),
-            image_url: c.image_url ? String(c.image_url) : null,
-            creative_type: String(c.creative_type ?? 'text'),
-            impression_token: `tok_${c.id}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
-            price_model: String(c.price_model ?? 'cpm'),
+        return scored.map(({ creative, rank }) => ({
+            ad_id: creative.creative_id ?? creative.campaign_id ?? `adgrid-${Date.now()}`,
+            campaign_id: creative.campaign_id ?? '',
+            creative_id: creative.creative_id ?? creative.campaign_id ?? '',
+            headline: creative.headline,
+            body: creative.body || null,
+            cta_text: creative.cta_label || 'Learn More',
+            cta_url: creative.cta_url ?? '/',
+            image_url: creative.image_url,
+            creative_type: 'native_image',
+            impression_token: `adgrid_${creative.campaign_id}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+            price_model: 'cpm',
             ad_rank: rank,
         }));
 
@@ -254,20 +258,32 @@ export async function recordImpression(
     ctx: { zone: string; geo?: string; role?: string; user_id?: string },
 ): Promise<void> {
     try {
-        const { getSupabaseAdmin } = await import('@/lib/enterprise/supabase/admin');
+        const campaignId = adgridUuidOrNull(ad.campaign_id);
+        if (!campaignId) return;
+
+        const { getSupabaseAdmin } = await import('@/lib/supabase/admin');
         const admin = getSupabaseAdmin();
-        await admin.from('ad_impressions').insert({
-            campaign_id: ad.campaign_id,
+        const impression = buildAdgridImpressionInsert({
+            campaign_id: campaignId,
             creative_id: ad.creative_id,
-            impression_token: ad.impression_token,
-            zone: ctx.zone,
-            geo: ctx.geo,
+        }, {
+            placementKey: ctx.zone,
+            country: ctx.geo,
             role: ctx.role,
-            user_id: ctx.user_id ?? null,
-            price_model: ad.price_model,
-            ad_rank: ad.ad_rank,
-            served_at: new Date().toISOString(),
         });
+        if (impression) await admin.from(impression.table).insert(impression.payload);
+
+        const event = buildAdgridEventInsert({
+            eventType: 'impression',
+            campaignId,
+            surface: ctx.zone,
+            zone: ctx.zone,
+            countryCode: ctx.geo,
+            userId: ctx.user_id,
+            sessionId: ad.impression_token,
+            userAgentSummary: 'legacy_ads_serve',
+        });
+        await admin.from(event.table).insert(event.payload);
     } catch {
         // Best-effort — never block render
     }

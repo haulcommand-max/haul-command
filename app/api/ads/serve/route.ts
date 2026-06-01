@@ -1,5 +1,10 @@
 import { serveAds, recordImpression } from '@/lib/ads/adrank';
-import { getSupabaseAdmin } from '@/lib/enterprise/supabase/admin';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import {
+    adgridUuidOrNull,
+    buildAdgridClickInsert,
+    buildAdgridEventInsert,
+} from '@/lib/monetization/adgrid-serving';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,11 +35,42 @@ export async function GET(req: Request) {
 // Click tracking
 export async function POST(req: Request) {
     const { searchParams } = new URL(req.url);
-    const id = searchParams.get('id');
-    if (!id) return new Response('Missing id', { status: 400 });
+    const body = await req.json().catch(() => ({})) as Record<string, unknown>;
+    const campaignId = adgridUuidOrNull(
+        (body.campaign_id as string | undefined) ?? searchParams.get('campaign_id') ?? searchParams.get('id'),
+    );
+    if (!campaignId) {
+        return Response.json({ recorded: false, reason: 'valid_campaign_id_required' }, { status: 400 });
+    }
 
-    // Fire-and-forget click log
     const supabase = getSupabaseAdmin();
-    await supabase.from('ad_click_log').insert({ placement_id: id, clicked_at: new Date().toISOString() });
-    return Response.json({ ok: true });
+    const placementKey = (body.placement_id as string | undefined) ?? searchParams.get('placement') ?? 'legacy_ads_serve';
+    const slotId = (body.slot_id as string | undefined) ?? searchParams.get('slot_id') ?? searchParams.get('placement');
+    const country = (body.country_code as string | undefined) ?? searchParams.get('country_code') ?? searchParams.get('geo');
+    const role = (body.role as string | undefined) ?? searchParams.get('role');
+
+    const click = buildAdgridClickInsert(
+        { campaign_id: campaignId, ab_variant: body.variant as string | undefined },
+        {
+            placementKey,
+            country,
+            role,
+            slotId,
+            referrer: req.headers.get('referer'),
+        },
+    );
+    if (click) await supabase.from(click.table).insert(click.payload);
+
+    const event = buildAdgridEventInsert({
+        eventType: 'click',
+        campaignId,
+        slotId,
+        surface: placementKey,
+        countryCode: country,
+        sessionId: (body.session_id as string | undefined) ?? null,
+        userAgentSummary: req.headers.get('user-agent')?.slice(0, 180) ?? null,
+    });
+    await supabase.from(event.table).insert(event.payload);
+
+    return Response.json({ recorded: true });
 }

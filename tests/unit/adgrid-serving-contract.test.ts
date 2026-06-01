@@ -257,4 +257,28 @@ describe("AdGrid serving contract", () => {
     expect(route).not.toContain("ad_clicks");
     expect(route).not.toContain("ad_traffic_events");
   });
+
+  it("keeps legacy ads serve compatibility on canonical AdGrid tables", () => {
+    const route = read("app/api/ads/serve/route.ts");
+    const adrank = read("lib/ads/adrank.ts");
+    const slot = read("components/monetization/AdSlot.tsx");
+
+    expect(adrank).toContain("hc_ad_creatives");
+    expect(adrank).toContain("buildAdgridImpressionInsert");
+    expect(adrank).toContain("buildAdgridEventInsert");
+    expect(adrank).toContain("admin.from(impression.table).insert(impression.payload)");
+    expect(adrank).not.toContain("from('ad_campaigns')");
+    expect(adrank).not.toContain("from('ad_impressions')");
+    expect(adrank).not.toContain("@/lib/enterprise/supabase/admin");
+
+    expect(route).toContain("buildAdgridClickInsert");
+    expect(route).toContain("buildAdgridEventInsert");
+    expect(route).toContain("valid_campaign_id_required");
+    expect(route).not.toContain("ad_click_log");
+    expect(route).not.toContain("@/lib/enterprise/supabase/admin");
+
+    expect(slot).toContain("Array.isArray(data) ? data[0] : data?.ad ?? data");
+    expect(slot).toContain("campaign_id: ad.campaign_id");
+    expect(slot).not.toContain("fetch(`/api/ads/click?id=");
+  });
 });
