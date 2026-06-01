@@ -76,4 +76,20 @@ describe("revenue and SEO activation hardening", () => {
       expect(route).toContain("if (authFailure) return authFailure");
     }
   });
+
+  it("writes payment intents to the generated hc_payment_intents schema", () => {
+    const route = read("app/api/payments/intent/route.ts");
+
+    expect(route).toContain("isEmailConfirmed(user)");
+    expect(route).toContain("getStripeCheckoutBlockReason");
+    expect(route).toContain("amount_cents must be an integer of at least 50");
+    expect(route).toContain(".from('hc_payment_intents')");
+    expect(route).toContain("amount_cents: amountCents");
+    expect(route).toContain("from_entity_id: user.id");
+    expect(route).toContain("to_entity_id: operatorId ?? null");
+    expect(route).toContain("booking_id: bookingId ?? null");
+    expect(route).toContain("stripe.paymentIntents.cancel(paymentIntent.id)");
+    expect(route).not.toContain("operator_id,");
+    expect(route).not.toContain("load_id,");
+  });
 });
