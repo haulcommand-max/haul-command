@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createClient } from '@/lib/supabase/server';
+import { finalizeClaimOwnership } from '@/lib/claims/finalize-claim-ownership';
 
 // ═══════════════════════════════════════════════════════════════
 // POST /api/identity/claim — Operator profile claim funnel
@@ -104,19 +105,13 @@ export async function POST(req: Request) {
       );
     }
 
-    // ── Upgrade operator claim status and link user_id ──
-    const { error: updateError } = await sb
-      .from('hc_global_operators')
-      .update({
-        claim_status: 'verified',
-        user_id: verifiedUserId,
-        primary_trust_source: 'Supabase Email OTP',
-        claimed_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', operatorId);
-
-    if (updateError) throw updateError;
+    // ── Upgrade layered operator/directory ownership state ──
+    await finalizeClaimOwnership(sb, {
+      entityId: operatorId,
+      userId: verifiedUserId,
+      source: 'Supabase Email OTP',
+      primaryTable: 'hc_global_operators',
+    });
 
     // ── Mark claim attempts as resolved ──
     await sb
@@ -131,8 +126,9 @@ export async function POST(req: Request) {
       redirectUrl: `/dashboard/operator`,
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[CLAIM_API_ERROR]', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Failed to process claim.';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

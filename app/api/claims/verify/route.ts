@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { finalizeClaimOwnership } from '@/lib/claims/finalize-claim-ownership';
 import { sendRoutedNotification } from '@/lib/notifications/channelRouter';
 
 // POST /api/claims/verify
@@ -34,15 +35,16 @@ export async function POST(req: NextRequest) {
       })
       .eq('id', claim.id);
 
-    // Update directory listing
-    await supabase
-      .from('hc_global_operators')
-      .update({
-        claimed: true,
-        claimed_by: claim.user_id,
-        verified: true,
-      })
-      .eq('id', claim.listing_id);
+    await finalizeClaimOwnership(supabase, {
+      entityId: claim.listing_id,
+      userId: claim.user_id,
+      source: 'listing_claims token verification',
+      primaryTable: 'hc_global_operators',
+      metadata: {
+        claim_id: claim.id,
+        route: '/api/claims/verify',
+      },
+    });
 
     // Notify user via Smart Channel Router
     if (claim.user_id) {
@@ -56,8 +58,9 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ status: 'verified', listing_id: claim.listing_id });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Claim verify error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Claim verification failed';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
