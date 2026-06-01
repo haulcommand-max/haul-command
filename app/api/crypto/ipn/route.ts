@@ -4,6 +4,41 @@ import { verifyIPNSignature } from '@/lib/crypto/nowpayments';
 
 const supabaseAdmin = getSupabaseAdmin();
 
+function isConfirmedPaymentStatus(status: unknown) {
+    return status === 'confirmed' || status === 'finished';
+}
+
+function cleanIdentifier(value: unknown) {
+    if (typeof value !== 'string' && typeof value !== 'number') return null;
+    const clean = String(value).replace(/[^\w:-]/g, '').slice(0, 160);
+    return clean || null;
+}
+
+function isUuid(value: string) {
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
+}
+
+function mergeCryptoPaymentMetadata(existing: unknown, payment: {
+    payment_id: unknown;
+    pay_currency: unknown;
+    actually_paid: unknown;
+    payment_status: unknown;
+}) {
+    const existingRecord =
+        existing && typeof existing === 'object' && !Array.isArray(existing)
+            ? existing as Record<string, unknown>
+            : {};
+
+    return {
+        ...existingRecord,
+        crypto_payment_id: payment.payment_id,
+        crypto_payment_status: payment.payment_status,
+        crypto_pay_currency: payment.pay_currency,
+        crypto_actually_paid: payment.actually_paid ?? 0,
+        crypto_confirmed_at: new Date().toISOString(),
+    };
+}
+
 /**
  * POST /api/crypto/ipn
  * Handle NOWPayments IPN (Instant Payment Notification) webhook
@@ -13,8 +48,8 @@ export async function POST(req: NextRequest) {
         const body = await req.text();
         const signature = req.headers.get('x-nowpayments-sig') || '';
 
-        // Verify signature
-        if (signature && !verifyIPNSignature(body, signature)) {
+        // Verify signature. Unsigned crypto payment callbacks must fail closed.
+        if (!signature || !verifyIPNSignature(body, signature)) {
             return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
         }
 
@@ -63,20 +98,50 @@ export async function POST(req: NextRequest) {
 
         if (error) {
             console.error('[IPN] Supabase error:', error);
+            return NextResponse.json({ error: 'IPN record failed' }, { status: 500 });
         }
 
         // If payment is confirmed, update the booking/order
-        if (payment_status === 'confirmed' || payment_status === 'finished') {
-            // Update the corresponding hc_payment_intents or direct booking
-            if (order_id) {
-                await supabaseAdmin
-                    .from('hc_payment_intents')
-                    .update({
-                        status: 'succeeded',
-                        paid_at: new Date().toISOString(),
-                        metadata: { crypto_payment_id: payment_id, pay_currency, actually_paid }
-                    })
-                    .eq('id', order_id);
+        if (isConfirmedPaymentStatus(payment_status)) {
+            const paymentIntentKey = cleanIdentifier(order_id);
+            if (paymentIntentKey) {
+                let paymentIntent =
+                    (await supabaseAdmin
+                        .from('hc_payment_intents')
+                        .select('id, metadata')
+                        .eq('booking_id', paymentIntentKey)
+                        .maybeSingle()).data;
+
+                if (!paymentIntent && isUuid(paymentIntentKey)) {
+                    paymentIntent =
+                        (await supabaseAdmin
+                            .from('hc_payment_intents')
+                            .select('id, metadata')
+                            .eq('id', paymentIntentKey)
+                            .maybeSingle()).data;
+                }
+
+                if (paymentIntent?.id) {
+                    const { error: paymentIntentError } = await supabaseAdmin
+                        .from('hc_payment_intents')
+                        .update({
+                            status: 'succeeded',
+                            updated_at: new Date().toISOString(),
+                            metadata: mergeCryptoPaymentMetadata(paymentIntent.metadata, {
+                                payment_id,
+                                pay_currency,
+                                actually_paid,
+                                payment_status,
+                            }),
+                        })
+                        .eq('id', paymentIntent.id);
+
+                    if (paymentIntentError) {
+                        console.error('[IPN] hc_payment_intents update failed:', paymentIntentError.message);
+                    }
+                } else {
+                    console.warn('[IPN] No hc_payment_intents row found for order_id:', paymentIntentKey);
+                }
             }
         }
 

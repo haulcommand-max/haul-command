@@ -92,4 +92,17 @@ describe("revenue and SEO activation hardening", () => {
     expect(route).not.toContain("operator_id,");
     expect(route).not.toContain("load_id,");
   });
+
+  it("keeps NOWPayments IPN updates fail-closed and schema-safe", () => {
+    const route = read("app/api/crypto/ipn/route.ts");
+
+    expect(route).toContain("if (!signature || !verifyIPNSignature(body, signature))");
+    expect(route).toContain("return NextResponse.json({ error: 'IPN record failed' }");
+    expect(route).toContain(".from('hc_payment_intents')");
+    expect(route).toContain(".eq('booking_id', paymentIntentKey)");
+    expect(route).toContain("isUuid(paymentIntentKey)");
+    expect(route).toContain("updated_at: new Date().toISOString()");
+    expect(route).toContain("mergeCryptoPaymentMetadata");
+    expect(route).not.toContain("paid_at:");
+  });
 });
