@@ -37,6 +37,15 @@ export function getStripeCheckoutBlockReason(): string | null {
   return 'stripe_misconfigured';
 }
 
+export function getCryptoCheckoutBlockReason(): string | null {
+  if (process.env.PAYMENTS_ENABLED === 'false') return 'payments_disabled';
+  if (process.env.CRYPTO_PAYMENTS_ENABLED === 'false') return 'crypto_payments_disabled';
+  if (!process.env.NOWPAYMENTS_API_KEY) return 'nowpayments_key_missing';
+  if (!process.env.NOWPAYMENTS_IPN_SECRET) return 'nowpayments_ipn_secret_missing';
+  if (isProductionRuntime() && isLocalUrl(process.env.NEXT_PUBLIC_APP_URL)) return 'app_url_misconfigured';
+  return null;
+}
+
 export function getPaperclipStatus(): ServiceStatus {
   if (process.env.PAPERCLIP_ENABLED === 'false') return 'disabled';
   const url = process.env.PAPERCLIP_DATABASE_URL;

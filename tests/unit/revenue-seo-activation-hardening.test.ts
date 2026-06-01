@@ -105,4 +105,21 @@ describe("revenue and SEO activation hardening", () => {
     expect(route).toContain("mergeCryptoPaymentMetadata");
     expect(route).not.toContain("paid_at:");
   });
+
+  it("guards crypto checkout and records pending payments", () => {
+    const route = read("app/api/crypto/checkout/route.ts");
+    const guards = read("lib/launch/production-guards.ts");
+
+    expect(guards).toContain("getCryptoCheckoutBlockReason");
+    expect(guards).toContain("NOWPAYMENTS_API_KEY");
+    expect(guards).toContain("NOWPAYMENTS_IPN_SECRET");
+    expect(route).toContain("getCryptoCheckoutBlockReason");
+    expect(route).toContain("isEmailConfirmed(user)");
+    expect(route).toContain("amount and order_id are required");
+    expect(route).toContain(".from('hc_crypto_payment')");
+    expect(route).toContain("booking_id: orderId");
+    expect(route).toContain("entity_id: user.id");
+    expect(route).toContain("ipn_verified: false");
+    expect(route).toContain("payment_rail: 'nowpayments'");
+  });
 });
