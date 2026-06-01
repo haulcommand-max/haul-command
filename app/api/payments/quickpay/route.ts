@@ -22,17 +22,31 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { getStripeClient } from '@/lib/stripe/client';
+import { resolvePayoutReadyConnectAccount } from '@/lib/stripe/connect-readiness';
+import { EMAIL_CONFIRMATION_REQUIRED, isEmailConfirmed } from '@/lib/auth/confirmed-user';
+import { getStripeCheckoutBlockReason } from '@/lib/launch/production-guards';
 
 const QUICKPAY_FEE_PERCENTAGE = 2.50;
 const MAX_QUICKPAY_CENTS = 1_000_000; // $10,000 cap
 
 export async function POST(request: NextRequest) {
     try {
+        const blockReason = getStripeCheckoutBlockReason();
+        if (blockReason) {
+            return NextResponse.json(
+                { error: 'QuickPay is temporarily unavailable.', reason: blockReason },
+                { status: 503 },
+            );
+        }
+
         const supabase = await createClient();
         const { data: { user }, error: authError } = await supabase.auth.getUser();
 
         if (authError || !user) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+        if (!isEmailConfirmed(user)) {
+            return NextResponse.json(EMAIL_CONFIRMATION_REQUIRED, { status: 403 });
         }
 
         const body = await request.json();
@@ -66,20 +80,17 @@ export async function POST(request: NextRequest) {
         }
 
         // ── 1. Get operator's Stripe Connect account ──
-        const { data: profile } = await supabase
-            .from('profiles')
-            .select('stripe_connect_account_id, display_name')
-            .eq('id', user.id)
-            .single();
+        const connectAccount = await resolvePayoutReadyConnectAccount(user.id);
 
-        if (!profile?.stripe_connect_account_id) {
+        if (!connectAccount.ok) {
             return NextResponse.json(
                 {
-                    error: 'No Stripe Connect account linked. Complete onboarding first.',
-                    action: 'connect_onboarding',
-                    redirect: '/operator/connect-stripe',
+                    error: connectAccount.error,
+                    action: connectAccount.action,
+                    redirect: connectAccount.redirect,
+                    requirements_due: connectAccount.requirementsDue ?? [],
                 },
-                { status: 400 },
+                { status: connectAccount.status },
             );
         }
 
@@ -113,7 +124,7 @@ export async function POST(request: NextRequest) {
                 risk_flags: riskData?.risk_flags || [],
                 broker_payment_history_ok: false,
                 broker_dispute_count: riskData?.dispute_count || 0,
-                stripe_connect_account: profile.stripe_connect_account_id,
+                stripe_connect_account: connectAccount.accountId,
             });
 
             return NextResponse.json(
@@ -131,7 +142,34 @@ export async function POST(request: NextRequest) {
         const feeCents = Math.round(gross_amount_cents * (QUICKPAY_FEE_PERCENTAGE / 100));
         const netPayoutCents = gross_amount_cents - feeCents;
 
-        // ── 4. Create Stripe Transfer to operator's Connect account ──
+        // ── 4. Reserve a durable QuickPay row before external money movement ──
+        const { data: pendingTxn, error: pendingTxnError } = await supabase.from('quickpay_transactions').insert({
+            operator_id: user.id,
+            broker_id,
+            booking_id,
+            gross_amount_cents,
+            fee_amount_cents: feeCents,
+            net_payout_cents: netPayoutCents,
+            fee_percentage: QUICKPAY_FEE_PERCENTAGE,
+            currency,
+            stripe_connect_account: connectAccount.accountId,
+            status: 'pending_transfer',
+            risk_score: riskData?.risk_score || 0,
+            risk_flags: riskData?.risk_flags || [],
+            broker_payment_history_ok: true,
+            broker_dispute_count: riskData?.dispute_count || 0,
+            approved_at: new Date().toISOString(),
+        }).select('id').single();
+
+        if (pendingTxnError || !pendingTxn?.id) {
+            console.error('[QuickPay] Transaction reservation failed:', pendingTxnError);
+            return NextResponse.json(
+                { error: 'QuickPay already exists or could not be reserved for this booking.' },
+                { status: pendingTxnError?.code === '23505' ? 409 : 500 },
+            );
+        }
+
+        // ── 5. Create Stripe Transfer to operator's Connect account ──
         const stripe = getStripeClient();
         let transfer;
 
@@ -139,37 +177,29 @@ export async function POST(request: NextRequest) {
             transfer = await stripe.transfers.create({
                 amount: netPayoutCents,
                 currency,
-                destination: profile.stripe_connect_account_id,
+                destination: connectAccount.accountId,
                 description: `QuickPay: Booking ${booking_id}`,
                 metadata: {
                     booking_id,
                     broker_id,
                     operator_id: user.id,
+                    quickpay_transaction_id: pendingTxn.id,
                     fee_cents: feeCents.toString(),
                     gross_cents: gross_amount_cents.toString(),
                     type: 'quickpay',
+                    connect_source: connectAccount.source,
                 },
             });
-        } catch (stripeError: any) {
+        } catch (stripeError: unknown) {
+            const stripeMessage = stripeError instanceof Error ? stripeError.message : 'Stripe transfer failed';
             console.error('[QuickPay] Stripe transfer failed:', stripeError);
 
-            await supabase.from('quickpay_transactions').insert({
-                operator_id: user.id,
-                broker_id,
-                booking_id,
-                gross_amount_cents,
-                fee_amount_cents: feeCents,
-                net_payout_cents: netPayoutCents,
-                fee_percentage: QUICKPAY_FEE_PERCENTAGE,
-                currency,
+            await supabase.from('quickpay_transactions').update({
                 status: 'failed',
-                risk_score: riskData?.risk_score || 0,
-                risk_flags: riskData?.risk_flags || [],
-                broker_payment_history_ok: true,
-                stripe_connect_account: profile.stripe_connect_account_id,
-                failure_reason: stripeError.message,
+                failure_reason: stripeMessage,
+                updated_at: new Date().toISOString(),
                 failed_at: new Date().toISOString(),
-            });
+            }).eq('id', pendingTxn.id);
 
             return NextResponse.json(
                 { error: 'Payment transfer failed. Please try again or contact support.' },
@@ -177,7 +207,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // ── 5. Attempt instant payout (if the Connect account supports it) ──
+        // ── 6. Attempt instant payout (if the Connect account supports it) ──
         let payout = null;
         try {
             payout = await stripe.payouts.create(
@@ -187,7 +217,7 @@ export async function POST(request: NextRequest) {
                     method: 'instant',
                     description: `QuickPay instant payout: ${booking_id}`,
                 },
-                { stripeAccount: profile.stripe_connect_account_id },
+                { stripeAccount: connectAccount.accountId },
             );
         } catch {
             // Instant payout not available — will use standard (1-2 business days)
@@ -195,28 +225,15 @@ export async function POST(request: NextRequest) {
             console.log('[QuickPay] Instant payout not available, using standard payout schedule');
         }
 
-        // ── 6. Log transaction ──
-        const { data: txn, error: txnError } = await supabase.from('quickpay_transactions').insert({
-            operator_id: user.id,
-            broker_id,
-            booking_id,
-            gross_amount_cents,
-            fee_amount_cents: feeCents,
-            net_payout_cents: netPayoutCents,
-            fee_percentage: QUICKPAY_FEE_PERCENTAGE,
-            currency,
+        // ── 7. Finalize transaction record ──
+        const { data: txn, error: txnError } = await supabase.from('quickpay_transactions').update({
             stripe_transfer_id: transfer.id,
             stripe_payout_id: payout?.id || null,
-            stripe_connect_account: profile.stripe_connect_account_id,
             status: payout ? 'completed' : 'transferring',
-            risk_score: riskData?.risk_score || 0,
-            risk_flags: riskData?.risk_flags || [],
-            broker_payment_history_ok: true,
-            broker_dispute_count: riskData?.dispute_count || 0,
-            approved_at: new Date().toISOString(),
             transferred_at: new Date().toISOString(),
             completed_at: payout ? new Date().toISOString() : null,
-        }).select().single();
+            updated_at: new Date().toISOString(),
+        }).eq('id', pendingTxn.id).select().single();
 
         if (txnError) {
             console.error('[QuickPay] Transaction log failed:', txnError);
@@ -236,7 +253,7 @@ export async function POST(request: NextRequest) {
             stripe_payout_id: payout?.id || null,
         });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('[QuickPay] Unhandled error:', error);
         return NextResponse.json(
             { error: 'Internal server error' },
