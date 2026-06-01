@@ -13,9 +13,29 @@
  */
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
+import { createHash } from 'node:crypto';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { parseLoadAlertBatch } from '@/lib/load-alert-parser';
 
+const US_STATES = new Set([
+    'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA',
+    'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
+    'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT',
+    'VA', 'WA', 'WV', 'WI', 'WY', 'DC',
+]);
+
+function inferCountryCode(region?: string | null) {
+    if (!region) return null;
+    return US_STATES.has(region.toUpperCase()) ? 'US' : 'CA';
+}
+
+function loadTextHash(text: string) {
+    return createHash('sha256').update(text).digest('hex');
+}
+
+function corridorKey(alert: { origin_state?: string | null; destination_state?: string | null }) {
+    return alert.origin_state && alert.destination_state ? `${alert.origin_state}-${alert.destination_state}` : null;
+}
 
 export async function POST(req: NextRequest) {
     // Admin-only
@@ -36,9 +56,67 @@ export async function POST(req: NextRequest) {
         const supabase = getSupabaseAdmin();
         const batchId = crypto.randomUUID();
         const now = new Date().toISOString();
+        const batchDate = now.slice(0, 10);
+
+        // Preserve the raw batch so append-only market observations can reference it.
+        const { error: batchErr } = await supabase.from('hc_ingestion_batches').insert({
+            id: batchId,
+            raw_text: text,
+            text_hash: loadTextHash(text),
+            source_name: source || 'load_board_alert',
+            source_type: 'load_board_alert',
+            source_classification: 'load_alert_demand',
+            batch_date: batchDate,
+            ingested_at: now,
+            total_lines: stats.total,
+            parsed_lines: stats.parsed,
+            partial_lines: 0,
+            unparsed_lines: stats.failed,
+        });
+        if (batchErr) {
+            console.error('[LOAD_INGEST] Batch insert error:', batchErr);
+        }
 
         // 1. Store parsed load alerts
         if (parsed.length > 0) {
+            const observationRecords = parsed.map(alert => {
+                const corridor = corridorKey(alert);
+                return {
+                    batch_id: batchId,
+                    source_name: source || alert.source,
+                    source_type: 'load_board_alert',
+                    raw_line: alert.raw,
+                    observed_date: batchDate,
+                    ingested_at: now,
+                    parsed_name_or_company: alert.company_name,
+                    raw_phone: alert.phone,
+                    normalized_phone: alert.phone_normalized,
+                    origin_raw: [alert.origin_city, alert.origin_state].filter(Boolean).join(', ') || null,
+                    origin_city: alert.origin_city || null,
+                    origin_region: alert.origin_state || null,
+                    destination_raw: [alert.destination_city, alert.destination_state].filter(Boolean).join(', ') || null,
+                    destination_city: alert.destination_city || null,
+                    destination_region: alert.destination_state || null,
+                    service_type: alert.position_type !== 'unknown' ? alert.position_type : 'load_alert',
+                    urgency: alert.recency_label ? 'recent' : 'unknown',
+                    payment_terms: alert.is_quick_pay ? 'quick_pay' : alert.rate_type || 'unknown',
+                    role_candidates: [alert.position_type].filter(role => role !== 'unknown'),
+                    reputation_signal: alert.is_verified ? 'verified_source' : 'none',
+                    truncation_flag: false,
+                    parse_confidence: alert.origin_state && alert.destination_state ? 0.85 : 0.55,
+                    country_code_if_known: inferCountryCode(alert.origin_state),
+                    corridor_key: corridor,
+                    route_cluster_key: corridor,
+                };
+            });
+
+            const { error: obsErr } = await supabase
+                .from('hc_market_observations')
+                .insert(observationRecords);
+            if (obsErr) {
+                console.error('[LOAD_INGEST] Observation insert error:', obsErr);
+            }
+
             const loadRecords = parsed.map(alert => ({
                 id: crypto.randomUUID(),
                 batch_id: batchId,
@@ -51,8 +129,7 @@ export async function POST(req: NextRequest) {
                 position_type: alert.position_type,
                 rate_amount: alert.rate_amount,
                 rate_type: alert.rate_type,
-                corridor: alert.origin_state && alert.destination_state
-                    ? `${alert.origin_state}-${alert.destination_state}` : null,
+                corridor: corridorKey(alert),
                 dedup_key: alert.dedup_key,
                 source: source || alert.source,
                 raw_text: alert.raw,
@@ -124,10 +201,50 @@ export async function POST(req: NextRequest) {
 
         // 3. Corridor demand signals
         const corridorDemand = new Map<string, number>();
+        const corridorActors = new Map<string, Set<string>>();
         for (const alert of parsed) {
             if (alert.origin_state && alert.destination_state) {
                 const corridor = `${alert.origin_state}-${alert.destination_state}`;
                 corridorDemand.set(corridor, (corridorDemand.get(corridor) || 0) + 1);
+                if (!corridorActors.has(corridor)) corridorActors.set(corridor, new Set());
+                corridorActors.get(corridor)?.add(alert.phone_normalized);
+            }
+        }
+
+        for (const [corridor, count] of corridorDemand) {
+            const sample = parsed.find(alert => corridorKey(alert) === corridor);
+            if (!sample) continue;
+
+            const { data: existing } = await supabase
+                .from('hc_corridor_intelligence')
+                .select('observation_count, unique_actor_count')
+                .eq('corridor_key', corridor)
+                .maybeSingle();
+
+            const previousObservations = Number(existing?.observation_count ?? 0);
+            const previousActors = Number(existing?.unique_actor_count ?? 0);
+
+            const { error: corridorErr } = await supabase
+                .from('hc_corridor_intelligence')
+                .upsert({
+                    corridor_key: corridor,
+                    origin_region: sample.origin_state,
+                    origin_city: sample.origin_city || null,
+                    destination_region: sample.destination_state,
+                    destination_city: sample.destination_city || null,
+                    country_code: inferCountryCode(sample.origin_state),
+                    observation_count: previousObservations + count,
+                    unique_actor_count: previousActors + (corridorActors.get(corridor)?.size ?? 0),
+                    last_seen_at: now,
+                    service_type_mix: { load_alert: count },
+                    urgency_mix: { recent: count },
+                    payment_mix: { load_alert: count },
+                    corridor_strength_score: Math.min(previousObservations + count, 100),
+                    is_emerging: previousObservations + count < 10,
+                }, { onConflict: 'corridor_key' });
+
+            if (corridorErr) {
+                console.error('[LOAD_INGEST] Corridor intelligence upsert error:', corridorErr);
             }
         }
 
