@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
+import { requireInternalRequest } from "@/lib/security/internal-request-auth";
 import { processAgentQueue } from "@/workers/agentRunner";
 import {
   buildWorkerContext,
@@ -10,6 +11,9 @@ import {
 const WORKER_NAME = "agent_job_runner";
 
 export async function POST(request: NextRequest) {
+  const authFailure = requireInternalRequest(request);
+  if (authFailure) return authFailure;
+
   const request_id =
     request.headers.get("x-request-id") ?? crypto.randomUUID();
   const actor =
