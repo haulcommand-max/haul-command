@@ -19,6 +19,19 @@ import { sendRoutedNotification } from '@/lib/notifications/channelRouter';
 
 export const runtime = 'nodejs';
 
+type NowPaymentsIpn = {
+    payment_id?: string | number;
+    payment_status?: string;
+    actually_paid?: string | number | null;
+    outcome_amount?: string | number | null;
+};
+
+function isDuplicateLedgerWrite(error: unknown): boolean {
+    if (!(error instanceof Error)) return false;
+    return error.message.includes('duplicate key') ||
+        error.message.includes('hc_pay_ledger_nowpayments_payment_id_unique');
+}
+
 export async function POST(req: NextRequest) {
     const rawBody = await req.text();
     const sig = req.headers.get('x-nowpayments-sig') ?? '';
@@ -30,11 +43,15 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
     }
 
-    let ipn: any;
+    let ipn: NowPaymentsIpn;
     try {
-        ipn = JSON.parse(rawBody);
+        ipn = JSON.parse(rawBody) as NowPaymentsIpn;
     } catch {
         return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+    }
+
+    if (!ipn.payment_id || typeof ipn.payment_status !== 'string') {
+        return NextResponse.json({ error: 'payment_id and payment_status required' }, { status: 400 });
     }
 
     const supabase = getSupabaseAdmin();
@@ -52,7 +69,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Update payment status + store raw IPN
-    const updateFields: Record<string, any> = {
+    const updateFields: Record<string, unknown> = {
         status: ipn.payment_status,
         actually_paid: ipn.actually_paid ?? null,
         outcome_amount_usd: ipn.outcome_amount ?? null,
@@ -97,23 +114,32 @@ export async function POST(req: NextRequest) {
     if (payment.payee_user_id) {
         const wallet = await getOrCreateWallet(payment.payee_user_id);
 
-        const entryId = await writeLedgerEntry({
-            walletId: wallet.id,
-            userId: payment.payee_user_id,
-            entryType: 'payment_received',
-            amountUsd: netToOperator,
-            direction: 'credit',
-            referenceType: payment.reference_type,
-            referenceId: payment.reference_id,
-            counterpartyUserId: payment.payer_user_id,
-            feeUsd: hcFee,
-            cryptoCoin: payment.pay_currency,
-            cryptoNetwork: payment.pay_network,
-            cryptoAmount: parseFloat(ipn.actually_paid ?? payment.pay_amount),
-            cryptoRateUsd: outcomeUsd / parseFloat(ipn.actually_paid || '1'),
-            nowpaymentsPaymentId: String(ipn.payment_id),
-            metadata: { ipn_status: ipn.payment_status, outcome_usd: outcomeUsd },
-        });
+        let entryId: string;
+        try {
+            entryId = await writeLedgerEntry({
+                walletId: wallet.id,
+                userId: payment.payee_user_id,
+                entryType: 'payment_received',
+                amountUsd: netToOperator,
+                direction: 'credit',
+                referenceType: payment.reference_type,
+                referenceId: payment.reference_id,
+                counterpartyUserId: payment.payer_user_id,
+                feeUsd: hcFee,
+                cryptoCoin: payment.pay_currency,
+                cryptoNetwork: payment.pay_network,
+                cryptoAmount: parseFloat(ipn.actually_paid ?? payment.pay_amount),
+                cryptoRateUsd: outcomeUsd / parseFloat(ipn.actually_paid || '1'),
+                nowpaymentsPaymentId: String(ipn.payment_id),
+                metadata: { ipn_status: ipn.payment_status, outcome_usd: outcomeUsd },
+            });
+        } catch (error: unknown) {
+            if (isDuplicateLedgerWrite(error)) {
+                console.log('[HC Pay IPN] Idempotent ledger conflict skip:', ipn.payment_id);
+                return NextResponse.json({ received: true, idempotent: true });
+            }
+            throw error;
+        }
 
         // Record HC Pay revenue
         await recordRevenue({

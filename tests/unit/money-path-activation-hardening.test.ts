@@ -13,6 +13,8 @@ describe("money path activation hardening", () => {
     const helper = read("lib/stripe/connect-readiness.ts");
     const hcPay = read("app/api/hc-pay/payout/route.ts");
     const quickPay = read("app/api/payments/quickpay/route.ts");
+    const migration = read("supabase/migrations/20260601120500_hc_pay_money_path_status_hardening.sql");
+    const payoutRepair = read("supabase/migrations/20260601122000_hc_pay_payouts_table_repair.sql");
 
     expect(helper).toContain('.from("hc_stripe_accounts")');
     expect(helper).toContain('.from("profiles")');
@@ -39,6 +41,36 @@ describe("money path activation hardening", () => {
     expect(hcPay).toContain("entryType: 'payout_reversal'");
     expect(hcPay).toContain("Payout transfer failed. Wallet debit was reversed.");
     expect(hcPay).toContain("payout_id: payout.id");
+
+    expect(migration).toContain("'pending_transfer'");
+    expect(migration).toContain("'payout_reversal'");
+    expect(payoutRepair).toContain("create table if not exists public.hc_pay_payouts");
+    expect(payoutRepair).toContain("'pending_transfer'");
+    expect(payoutRepair).toContain("enable row level security");
+  });
+
+  it("keeps HC Pay checkout fail-closed and prevents caller-owned payees", () => {
+    const checkout = read("app/api/hc-pay/checkout/route.ts");
+    const ipn = read("app/api/hc-pay/ipn/route.ts");
+    const migration = read("supabase/migrations/20260601120500_hc_pay_money_path_status_hardening.sql");
+
+    expect(checkout).toContain("getCryptoCheckoutBlockReason");
+    expect(checkout).toContain("getStripeCheckoutBlockReason");
+    expect(checkout).toContain("isEmailConfirmed(user)");
+    expect(checkout).toContain("payeeUserId must be resolved server-side");
+    expect(checkout).toContain("PAYEE_REQUIRED_REFERENCES");
+    expect(checkout).toContain("resolveAppUrl");
+    expect(checkout).toContain("pendingPaymentId");
+    expect(checkout).toContain("orderId: reservation.id");
+    expect(checkout).toContain(".eq('id', reservation.id)");
+    expect(checkout).not.toContain("payee_user_id: payeeUserId");
+    expect(checkout).not.toContain("? `https://${process.env.VERCEL_URL}`");
+
+    expect(ipn).toContain("isDuplicateLedgerWrite");
+    expect(ipn).toContain("hc_pay_ledger_nowpayments_payment_id_unique");
+    expect(ipn).toContain("Idempotent ledger conflict skip");
+    expect(migration).toContain("hc_pay_ledger_nowpayments_payment_id_unique");
+    expect(migration).toContain("where nowpayments_payment_id is not null");
   });
 
   it("disables legacy QuickPay mutation endpoints in favor of canonical QuickPay", () => {
