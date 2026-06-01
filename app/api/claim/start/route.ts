@@ -1,20 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
+import { EMAIL_CONFIRMATION_REQUIRED, isEmailConfirmed } from "@/lib/auth/confirmed-user";
 import { ClaimService } from "@/server/services/claimService";
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { entity_id, user_id } = body;
+    const auth = createClient();
+    const { data: { user } } = await auth.auth.getUser();
+    if (!isEmailConfirmed(user)) {
+      return NextResponse.json(EMAIL_CONFIRMATION_REQUIRED, { status: 403 });
+    }
 
-    if (!entity_id || !user_id) {
+    const body = await request.json();
+    const { entity_id } = body;
+
+    if (!entity_id) {
       return NextResponse.json(
-        { ok: false, error: { code: "missing_fields", message: "entity_id and user_id required." } },
+        { ok: false, error: { code: "missing_fields", message: "entity_id required." } },
         { status: 400 }
       );
     }
 
-    const session = await ClaimService.startClaimSession(entity_id, user_id);
+    const session = await ClaimService.startClaimSession(entity_id, user.id);
 
     // Track claim_started event (non-blocking)
     try {
@@ -34,9 +41,10 @@ export async function POST(request: NextRequest) {
       data: session,
       meta: { server_time: new Date().toISOString() },
     });
-  } catch (e: any) {
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : "Failed to start claim.";
     return NextResponse.json(
-      { ok: false, error: { code: "claim_start_failed", message: e.message || "Failed to start claim." } },
+      { ok: false, error: { code: "claim_start_failed", message } },
       { status: 500 }
     );
   }

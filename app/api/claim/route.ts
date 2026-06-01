@@ -1,14 +1,22 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { createClient } from '@/lib/supabase/server';
+import { EMAIL_CONFIRMATION_REQUIRED, isEmailConfirmed } from '@/lib/auth/confirmed-user';
 
 export async function POST(req: NextRequest) {
     try {
-        const body = await req.json();
-        const { hash, userId } = body;
+        const auth = createClient();
+        const { data: { user } } = await auth.auth.getUser();
+        if (!isEmailConfirmed(user)) {
+            return NextResponse.json(EMAIL_CONFIRMATION_REQUIRED, { status: 403 });
+        }
 
-        if (!hash || !userId) {
-            return NextResponse.json({ error: 'Missing hash or userId' }, { status: 400 });
+        const body = await req.json();
+        const { hash } = body;
+
+        if (!hash) {
+            return NextResponse.json({ error: 'Missing hash' }, { status: 400 });
         }
 
         // Must use service role to reassign user_id on the row
@@ -39,7 +47,7 @@ export async function POST(req: NextRequest) {
         const { error: updateError } = await supabase
             .from('hc_global_operators')
             .update({
-                user_id: userId,
+                user_id: user.id,
                 is_seeded: false,
                 claim_hash: null,
                 claimed_at: new Date().toISOString(),
@@ -54,13 +62,14 @@ export async function POST(req: NextRequest) {
 
         // 3. Clean up the old temporary profile row if needed
         // (Assuming you created a dummy row in 'profiles' for the seed)
-        if (oldTempId && oldTempId !== userId) {
+        if (oldTempId && oldTempId !== user.id) {
             await supabase.from('profiles').delete().eq('id', oldTempId);
         }
 
         return NextResponse.json({ success: true, profileId: profile.id });
 
-    } catch (err: any) {
-        return NextResponse.json({ error: err.message }, { status: 500 });
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Claim failed';
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }

@@ -7,6 +7,16 @@ export class ClaimService {
      * and running the pre-score calculation.
      */
     static async startClaimSession(entity_id: string, user_id: string) {
+        const { data: entity, error: entityError } = await supabaseAdmin
+            .from("hc_entities")
+            .select("id, owner_user_id, claim_status")
+            .eq("id", entity_id)
+            .is("owner_user_id", null)
+            .maybeSingle();
+
+        if (entityError || !entity) {
+            throw new Error("Entity is not claimable or is already owned.");
+        }
         
         // 1. Snapshot the "before" score to show the delta later.
         const { data: scoreBefore } = await supabaseAdmin
@@ -35,10 +45,10 @@ export class ClaimService {
             throw new Error("Failed to start claim session.");
         }
 
-        // 3. Mark entity as claim_started
+        // 3. Mark entity as claim_started. Ownership is granted only after verification/approval.
         await supabaseAdmin
             .from("hc_entities")
-            .update({ claim_status: "claim_started", owner_user_id: user_id })
+            .update({ claim_status: "claim_started" })
             .eq("id", entity_id);
 
         return session;
@@ -48,7 +58,8 @@ export class ClaimService {
      * Complete a step and update the target entity objects 
      * based on exact data passed into the wizard payload.
      */
-    static async submitClaimStep(session_id: string, step_name: string, payload: any) {
+    static async submitClaimStep(session_id: string, user_id: string, step_name: string, payload: Record<string, unknown>) {
+        void payload;
         // Logic will depend strictly on the step_name:
         // identity_verification -> write to hc_entities
         // service_declaration -> generate hc_entity_attributes
@@ -59,6 +70,7 @@ export class ClaimService {
             .from("hc_claim_sessions")
             .select("entity_id")
             .eq("id", session_id)
+            .eq("user_id", user_id)
             .single();
             
         if (session) {
