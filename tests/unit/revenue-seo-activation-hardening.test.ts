@@ -34,6 +34,7 @@ describe("revenue and SEO activation hardening", () => {
 
   it("routes generic AdGrid checkout clicks through sponsorship orders before Stripe redirect", () => {
     const route = read("app/api/stripe/checkout/route.ts");
+    const checkoutButton = read("app/(public)/advertise/buy/CheckoutButton.tsx");
 
     expect(route).toContain("SPONSOR_PRICE_KEYS");
     expect(route).toContain("'corridor_sponsor_monthly'");
@@ -53,6 +54,10 @@ describe("revenue and SEO activation hardening", () => {
     expect(route).toContain("subscription_data");
     expect(route).toContain("metadata: stripeMetadata");
     expect(route).toContain("stripe_checkout_session_id: session.id");
+
+    expect(checkoutButton).toContain("shouldFallbackToContact");
+    expect(checkoutButton).toContain("reason === 'payments_disabled'");
+    expect(checkoutButton).toContain("reason === 'production_test_keys_blocked'");
   });
 
   it("accepts the newer data product purchase metadata key in the canonical entitlement engine", () => {
