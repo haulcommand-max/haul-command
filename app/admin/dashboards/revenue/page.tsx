@@ -1,170 +1,186 @@
-'use client';
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
+import { AlertTriangle, CircleDollarSign, Database, Globe2, ReceiptText, TrendingUp } from "lucide-react";
+import { getRevenueCommandReadModel } from "@/lib/admin/revenue/read-model";
 
-/**
- * ADMIN REVENUE DASHBOARD
- *
- * Real-time revenue overview across all monetization surfaces.
- * Shows: ad revenue, subscriptions, sponsorships, data products,
- * boosts, match fees — broken down by country and time period.
- */
+export const metadata: Metadata = {
+  title: "Revenue Command Dashboard - Haul Command Admin",
+  description: "Server-side monetization command surface for AdGrid, data products, HC Pay, checkout intent, abandoned checkout, billing, and payment rails.",
+};
 
-import { useState, useEffect } from 'react';
+export const dynamic = "force-dynamic";
 
-interface RevenueRow {
-    surface: string;
-    today: number;
-    week: number;
-    month: number;
-    total: number;
-    trend: 'up' | 'down' | 'flat';
+const money = (value: number) => `$${value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+const trendGlyph = (value: string) => (value === "up" ? "UP" : value === "down" ? "DOWN" : "FLAT");
+const statusColor = (status: string) => {
+  if (status === "live") return "#22C55E";
+  if (status === "pipeline") return "#F59E0B";
+  if (status === "planned") return "#38BDF8";
+  return "#EF4444";
+};
+
+function kpi(label: string, value: string, sub: string, color: string) {
+  return (
+    <div style={{ padding: 18, borderRadius: 12, border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.025)" }}>
+      <div style={{ color, fontSize: 10, fontWeight: 850, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 8 }}>{label}</div>
+      <div style={{ color: "#fff", fontSize: 27, fontWeight: 900 }}>{value}</div>
+      <div style={{ color: "#8a93a3", fontSize: 11, marginTop: 4 }}>{sub}</div>
+    </div>
+  );
 }
 
-interface CountryRevenue {
-    code: string;
-    name: string;
-    revenue_usd: number;
-    mode: string;
-}
+export default async function RevenueDashboard() {
+  const model = await getRevenueCommandReadModel();
 
-export default function RevenueDashboard() {
-    const [rows, setRows] = useState<RevenueRow[]>([]);
-    const [countries, setCountries] = useState<CountryRevenue[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [period, setPeriod] = useState<'today' | 'week' | 'month'>('month');
-
-    useEffect(() => {
-        // Fetch revenue data from admin API
-        Promise.all([
-            fetch('/api/admin/revenue').then(r => r.ok ? r.json() : null),
-            fetch('/api/admin/revenue?by=country').then(r => r.ok ? r.json() : null),
-        ]).then(([revenueData, countryData]) => {
-            if (revenueData?.surfaces) setRows(revenueData.surfaces);
-            if (countryData?.countries) setCountries(countryData.countries);
-            setLoading(false);
-        }).catch(() => {
-            // Use placeholder data for initial render
-            setRows([
-                { surface: 'Ad Impressions (CPM)', today: 0, week: 0, month: 0, total: 0, trend: 'flat' },
-                { surface: 'Ad Clicks (CPC)', today: 0, week: 0, month: 0, total: 0, trend: 'flat' },
-                { surface: 'Sponsor Packages', today: 0, week: 0, month: 0, total: 0, trend: 'flat' },
-                { surface: 'Subscriptions (Escort Pro)', today: 0, week: 0, month: 0, total: 0, trend: 'flat' },
-                { surface: 'Subscriptions (Broker Seat)', today: 0, week: 0, month: 0, total: 0, trend: 'flat' },
-                { surface: 'Load Boosts', today: 0, week: 0, month: 0, total: 0, trend: 'flat' },
-                { surface: 'Match Fees', today: 0, week: 0, month: 0, total: 0, trend: 'flat' },
-                { surface: 'Data Products', today: 0, week: 0, month: 0, total: 0, trend: 'flat' },
-                { surface: 'API Access', today: 0, week: 0, month: 0, total: 0, trend: 'flat' },
-                { surface: 'Premium Badges', today: 0, week: 0, month: 0, total: 0, trend: 'flat' },
-            ]);
-            setLoading(false);
-        });
-    }, []);
-
-    const totalRevenue = rows.reduce((s, r) => s + r[period], 0);
-    const trendIcon = (t: string) => t === 'up' ? 'â†‘' : t === 'down' ? 'â†“' : 'â†’';
-    const trendColor = (t: string) => t === 'up' ? '#22C55E' : t === 'down' ? '#EF4444' : '#888';
-
-    return (
-        <div style={{ padding: 24, maxWidth: 1200, margin: '0 auto' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-                <div>
-                    <h1 style={{ fontSize: 24, fontWeight: 900, color: '#fff', margin: 0 }}>Revenue Dashboard</h1>
-                    <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>All monetization surfaces "¢ Real-time</p>
-                </div>
-                <div style={{ display: 'flex', gap: 8 }}>
-                    {(['today', 'week', 'month'] as const).map(p => (
-                        <button aria-label="Interactive Button"
-                            key={p}
-                            onClick={() => setPeriod(p)}
-                            style={{
-                                padding: '6px 16px', borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: 'pointer',
-                                border: p === period ? '1px solid #F1A91B' : '1px solid rgba(255,255,255,0.1)',
-                                background: p === period ? 'rgba(241,169,27,0.1)' : 'transparent',
-                                color: p === period ? '#F1A91B' : '#888',
-                            }}
-                        >
-                            {p.charAt(0).toUpperCase() + p.slice(1)}
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            {/* Total Revenue Card */}
-            <div style={{
-                padding: '24px 32px', borderRadius: 18, marginBottom: 24,
-                background: 'linear-gradient(135deg, rgba(241,169,27,0.08), rgba(241,169,27,0.02))',
-                border: '1px solid rgba(241,169,27,0.15)',
-            }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: '#888', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                    Total Revenue ({period})
-                </div>
-                <div style={{ fontSize: 42, fontWeight: 900, color: '#F1A91B', marginTop: 4 }}>
-                    ${totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                </div>
-            </div>
-
-            {/* Revenue by Surface */}
-            <div style={{
-                borderRadius: 16, overflow: 'hidden',
-                border: '1px solid rgba(255,255,255,0.06)',
-                background: 'rgba(255,255,255,0.02)',
-            }}>
-                <div style={{ padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                    <div style={{ fontSize: 14, fontWeight: 800, color: '#fff' }}>Revenue by Surface</div>
-                </div>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                    <thead>
-                        <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                            <th style={{ padding: '10px 20px', textAlign: 'left', fontSize: 10, fontWeight: 700, color: '#888', textTransform: 'uppercase' }}>Surface</th>
-                            <th style={{ padding: '10px 20px', textAlign: 'right', fontSize: 10, fontWeight: 700, color: '#888', textTransform: 'uppercase' }}>Today</th>
-                            <th style={{ padding: '10px 20px', textAlign: 'right', fontSize: 10, fontWeight: 700, color: '#888', textTransform: 'uppercase' }}>Week</th>
-                            <th style={{ padding: '10px 20px', textAlign: 'right', fontSize: 10, fontWeight: 700, color: '#888', textTransform: 'uppercase' }}>Month</th>
-                            <th style={{ padding: '10px 20px', textAlign: 'right', fontSize: 10, fontWeight: 700, color: '#888', textTransform: 'uppercase' }}>Trend</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {rows.map((row, i) => (
-                            <tr key={row.surface} style={{ borderBottom: '1px solid rgba(255,255,255,0.02)' }}>
-                                <td style={{ padding: '12px 20px', fontSize: 13, fontWeight: 600, color: '#fff' }}>{row.surface}</td>
-                                <td style={{ padding: '12px 20px', textAlign: 'right', fontSize: 13, color: '#ccc', fontVariantNumeric: 'tabular-nums' }}>${row.today.toFixed(2)}</td>
-                                <td style={{ padding: '12px 20px', textAlign: 'right', fontSize: 13, color: '#ccc', fontVariantNumeric: 'tabular-nums' }}>${row.week.toFixed(2)}</td>
-                                <td style={{ padding: '12px 20px', textAlign: 'right', fontSize: 13, color: '#ccc', fontVariantNumeric: 'tabular-nums' }}>${row.month.toFixed(2)}</td>
-                                <td style={{ padding: '12px 20px', textAlign: 'right', fontSize: 14, fontWeight: 800, color: trendColor(row.trend) }}>{trendIcon(row.trend)}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-
-            {/* Revenue by Country */}
-            {countries.length > 0 && (
-                <div style={{
-                    borderRadius: 16, overflow: 'hidden', marginTop: 24,
-                    border: '1px solid rgba(255,255,255,0.06)',
-                    background: 'rgba(255,255,255,0.02)',
-                }}>
-                    <div style={{ padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                        <div style={{ fontSize: 14, fontWeight: 800, color: '#fff' }}>Revenue by Country</div>
-                    </div>
-                    <div style={{ padding: 20, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 10 }}>
-                        {countries.map(c => (
-                            <div key={c.code} style={{
-                                padding: '14px', borderRadius: 12,
-                                background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)',
-                            }}>
-                                <div style={{ fontSize: 12, fontWeight: 800, color: '#fff' }}>{c.code} — {c.name}</div>
-                                <div style={{ fontSize: 20, fontWeight: 900, color: '#F1A91B', marginTop: 4 }}>${c.revenue_usd.toFixed(2)}</div>
-                                <div style={{
-                                    fontSize: 9, fontWeight: 700, marginTop: 4, padding: '2px 8px', borderRadius: 6, display: 'inline-block',
-                                    background: c.mode === 'live' ? 'rgba(34,197,94,0.1)' : c.mode === 'seed' ? 'rgba(59,130,246,0.1)' : 'rgba(255,255,255,0.05)',
-                                    color: c.mode === 'live' ? '#22C55E' : c.mode === 'seed' ? '#3B82F6' : '#888',
-                                }}>
-                                    {c.mode.toUpperCase()}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
+  return (
+    <main style={{ padding: 24, maxWidth: 1320, margin: "0 auto", color: "#fff" }}>
+      <header style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "flex-start", marginBottom: 24 }}>
+        <div>
+          <h1 style={{ fontSize: 24, lineHeight: 1.1, fontWeight: 900, margin: 0 }}>Revenue Command</h1>
+          <p style={{ margin: "6px 0 0", color: "#8a93a3", fontSize: 12 }}>
+            Server-side money telemetry from <code>hc_adgrid_events</code>, <code>data_purchases</code>, <code>hc_pay_revenue</code>, <code>hc_checkout_intents</code>, <code>hc_abandoned_checkouts</code>, <code>hc_billing_prices</code>, and <code>payments</code>.
+          </p>
         </div>
-    );
+        <div style={{ textAlign: "right", color: "#8a93a3", fontSize: 11 }}>
+          <div>Updated {new Date(model.asOf).toLocaleString()}</div>
+          <div>{model.sourceTables.length} money tables monitored</div>
+        </div>
+      </header>
+
+      {model.activationGaps.length > 0 && (
+        <section style={{ display: "grid", gap: 8, marginBottom: 18 }}>
+          {model.activationGaps.slice(0, 6).map((gap) => (
+            <div key={gap} style={{ display: "flex", gap: 10, alignItems: "center", padding: 12, borderRadius: 10, border: "1px solid rgba(245,158,11,0.3)", background: "rgba(245,158,11,0.07)", color: "#F59E0B", fontSize: 12 }}>
+              <AlertTriangle size={15} />
+              {gap}
+            </div>
+          ))}
+        </section>
+      )}
+
+      <section style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: 12, marginBottom: 24 }}>
+        {kpi("Earned Today", money(model.totals.todayUsd), "recognized live money rows", "#22C55E")}
+        {kpi("Earned 7 Days", money(model.totals.weekUsd), "AdGrid, data, HC Pay, payments", "#3B82F6")}
+        {kpi("Earned 30 Days", money(model.totals.monthUsd), "server-read canonical rails", "#C6923A")}
+        {kpi("Total Earned", money(model.totals.totalUsd), "not counting planned pipeline", "#A78BFA")}
+        {kpi("Pipeline / Planned", money(model.totals.pendingUsd), "checkout, abandoned, price readiness", "#F59E0B")}
+        {kpi("Gaps", model.totals.gapCount.toLocaleString(), "unreadable or empty rails", "#EF4444")}
+      </section>
+
+      <section style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) minmax(320px, 420px)", gap: 16, marginBottom: 18 }}>
+        <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.025)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "14px 18px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+            <CircleDollarSign size={16} color="#C6923A" />
+            <h2 style={{ fontSize: 15, fontWeight: 850, margin: 0 }}>Revenue by Surface</h2>
+          </div>
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 860 }}>
+              <thead>
+                <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                  {["Surface", "Today", "7 Days", "30 Days", "Total", "Pipeline", "State", "Trend"].map((heading) => (
+                    <th key={heading} style={{ padding: "9px 12px", fontSize: 9, fontWeight: 850, color: "#8a93a3", textTransform: "uppercase", textAlign: heading === "Surface" ? "left" : "right" }}>{heading}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {model.surfaces.map((row) => (
+                  <tr key={row.surface} style={{ borderBottom: "1px solid rgba(255,255,255,0.035)" }}>
+                    <td style={{ padding: "11px 12px" }}>
+                      <div style={{ color: "#fff", fontWeight: 850, fontSize: 13 }}>{row.surface}</div>
+                      <div style={{ color: "#8a93a3", fontSize: 10 }}>{row.sourceTable}</div>
+                      <div style={{ color: "#64748b", fontSize: 10 }}>{row.basis}</div>
+                    </td>
+                    <td style={cellStyle}>{money(row.todayUsd)}</td>
+                    <td style={cellStyle}>{money(row.weekUsd)}</td>
+                    <td style={cellStyle}>{money(row.monthUsd)}</td>
+                    <td style={cellStyle}>{money(row.totalUsd)}</td>
+                    <td style={cellStyle}>{money(row.pendingUsd)}</td>
+                    <td style={{ ...cellStyle, color: statusColor(row.status), fontWeight: 850 }}>{row.status.toUpperCase()}</td>
+                    <td style={{ ...cellStyle, color: row.trend === "up" ? "#22C55E" : row.trend === "down" ? "#EF4444" : "#8a93a3", fontWeight: 850 }}>{trendGlyph(row.trend)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <aside style={{ display: "grid", gap: 12 }}>
+          <OpsCard icon={<ReceiptText size={15} />} label="Live Surfaces" value={model.totals.liveSurfaces.toLocaleString()} body="Surfaces with readable earned-revenue telemetry." />
+          <OpsCard icon={<TrendingUp size={15} />} label="Pipeline Surfaces" value={model.totals.pipelineSurfaces.toLocaleString()} body="Checkout intent, abandoned checkout, and price-readiness pools that need conversion follow-up." />
+          <OpsCard icon={<Database size={15} />} label="Source Tables" value={model.sourceTables.length.toLocaleString()} body="Canonical money rails monitored without browser admin-secret fetches or placeholder zero rows." />
+        </aside>
+      </section>
+
+      <section style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)", gap: 16 }}>
+        <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.025)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "14px 18px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+            <Globe2 size={16} color="#38BDF8" />
+            <h2 style={{ fontSize: 15, fontWeight: 850, margin: 0 }}>Country Money Signals</h2>
+          </div>
+          {model.countries.length === 0 ? (
+            <p style={{ margin: 0, padding: 18, color: "#8a93a3", fontSize: 12 }}>No country-tagged checkout or data-product money signals are visible yet.</p>
+          ) : (
+            <div style={{ display: "grid", gap: 8, padding: 14 }}>
+              {model.countries.map((country) => (
+                <div key={country.code} style={{ display: "grid", gridTemplateColumns: "70px 1fr 1fr 70px", gap: 10, alignItems: "center", padding: 10, borderRadius: 10, background: "rgba(255,255,255,0.03)" }}>
+                  <div style={{ color: "#fff", fontWeight: 900 }}>{country.code}</div>
+                  <div style={{ color: "#22C55E", fontSize: 12 }}>Earned {money(country.revenueUsd)}</div>
+                  <div style={{ color: "#F59E0B", fontSize: 12 }}>Pipeline {money(country.pendingUsd)}</div>
+                  <div style={{ color: "#8a93a3", fontSize: 11, textAlign: "right" }}>{country.records} rows</div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.025)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "14px 18px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+            <Database size={16} color="#A78BFA" />
+            <h2 style={{ fontSize: 15, fontWeight: 850, margin: 0 }}>Money Table Health</h2>
+          </div>
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 520 }}>
+              <thead>
+                <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                  {["Table", "Rows", "State", "Basis"].map((heading) => (
+                    <th key={heading} style={{ padding: "9px 12px", fontSize: 9, fontWeight: 850, color: "#8a93a3", textTransform: "uppercase", textAlign: heading === "Table" ? "left" : "right" }}>{heading}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {model.tableHealth.map((table) => (
+                  <tr key={table.table} style={{ borderBottom: "1px solid rgba(255,255,255,0.035)" }}>
+                    <td style={{ padding: "11px 12px", color: "#fff", fontSize: 12, fontWeight: 850 }}>{table.table}</td>
+                    <td style={cellStyle}>{table.records.toLocaleString()}</td>
+                    <td style={{ ...cellStyle, color: table.state === "live" ? "#22C55E" : "#EF4444", fontWeight: 850 }}>{table.state.toUpperCase()}</td>
+                    <td style={cellStyle}>{table.note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
 }
+
+function OpsCard({ icon, label, value, body }: { icon: ReactNode; label: string; value: string; body: string }) {
+  return (
+    <div style={{ padding: 16, borderRadius: 12, border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.025)" }}>
+      <div style={{ display: "flex", gap: 8, alignItems: "center", color: "#C6923A", fontSize: 11, fontWeight: 850, textTransform: "uppercase", marginBottom: 8 }}>
+        {icon}
+        {label}
+      </div>
+      <div style={{ color: "#fff", fontSize: 24, fontWeight: 900, marginBottom: 6 }}>{value}</div>
+      <p style={{ color: "#8a93a3", fontSize: 12, lineHeight: 1.45, margin: 0 }}>{body}</p>
+    </div>
+  );
+}
+
+const cellStyle = {
+  padding: "11px 12px",
+  textAlign: "right" as const,
+  fontSize: 12,
+  color: "#cbd5e1",
+};
