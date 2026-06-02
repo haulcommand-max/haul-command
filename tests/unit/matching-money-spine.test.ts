@@ -110,6 +110,8 @@ describe("matching money spine contracts", () => {
     const bodyOfferAccept = read("app/api/offers/accept/route.ts");
     const marketplaceRespond = read("app/api/v1/marketplace/offers/[offerId]/respond/route.ts");
     const inboxPage = read("app/offers/inbox/page.tsx");
+    const offersPage = read("app/offers/page.tsx");
+    const notifications = read("lib/marketplace/notifications.ts");
 
     expect(bodyOfferAccept).toContain("auth.getUser()");
     expect(bodyOfferAccept).toContain("match_offers");
@@ -127,6 +129,30 @@ describe("matching money spine contracts", () => {
     expect(inboxPage).toContain(".from('match_offers')");
     expect(inboxPage).toContain("offer-decline");
     expect(inboxPage).not.toContain(".from('offers')");
+
+    expect(offersPage).toContain('redirect("/offers/inbox")');
+    expect(offersPage).not.toContain("OffersClient");
+    expect(notifications).toContain("/offers/inbox?offer=");
+    expect(notifications).toContain("/offers/inbox?request=");
+    expect(notifications).not.toContain("/offers/${notif.offer_id}");
+  });
+
+  it("retires legacy offer expiry cascade so it cannot create old offers", () => {
+    const expireRoute = read("app/api/v1/marketplace/offers/expire/route.ts");
+
+    expect(expireRoute).toContain("Legacy marketplace offer expiry is retired");
+    expect(expireRoute).toContain("canonical_match_offers_required");
+    expect(expireRoute).toContain('canonical_table: "match_offers"');
+    expect(expireRoute).toContain('canonical_inbox: "/offers/inbox"');
+    expect(expireRoute).toContain("status: 410");
+    expect(expireRoute).not.toContain("getSupabaseAdmin");
+    expect(expireRoute).not.toContain("runMatchPipeline");
+    expect(expireRoute).not.toContain("cascadeFallback");
+    expect(expireRoute).not.toContain("rankCandidates");
+    expect(expireRoute).not.toContain("determineOfferStrategy");
+    expect(expireRoute).not.toContain("load_requests");
+    expect(expireRoute).not.toContain("match_runs");
+    expect(expireRoute).not.toContain('.from("offers")');
   });
 
   it("blocks unpaid emergency and broadcast dispatch paths behind the canonical spine", () => {

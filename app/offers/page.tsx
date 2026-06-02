@@ -1,11 +1,11 @@
-import type { Metadata } from 'next';
-import OffersClient from './OffersClient';
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: 'Your Offers — Haul Command Dispatch',
-  description: 'View and respond to escort job offers. Accept or decline incoming dispatch requests.',
+  title: "Offer Inbox - Haul Command Dispatch",
+  description: "View and respond to canonical Haul Command match offers.",
 };
 
 export default function OffersPage() {
-  return <OffersClient />;
+  redirect("/offers/inbox");
 }

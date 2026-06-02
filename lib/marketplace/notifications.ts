@@ -48,6 +48,28 @@ export interface NotificationResult {
 type Channel = "push" | "in_app" | "email" | "sms";
 const CHANNEL_PRIORITY: Channel[] = ["push", "in_app", "email", "sms"];
 
+type PushTokenRow = {
+    profile_id: string;
+};
+
+type SmsProfileRow = {
+    id: string;
+    phone: string | null;
+};
+
+type ReviewInsert = {
+    job_id: string;
+    reviewer_id: string;
+    reviewer_role: "broker" | "operator";
+    reviewee_id: string;
+    status: "sent";
+    request_sent_at: string;
+};
+
+function errorMessage(error: unknown): string {
+    return error instanceof Error ? error.message : String(error);
+}
+
 /** Send push to multiple users — fire-and-forget */
 async function pushToUsers(userIds: string[], payload: PushPayload): Promise<void> {
     await Promise.allSettled(
@@ -114,7 +136,7 @@ export async function sendOfferNotifications(
                     await sendPushToUser(notif.operator_id, {
                         title: payload.title,
                         body: payload.body,
-                        url: `/offers/${notif.offer_id}`,
+                        url: `/offers/inbox?offer=${encodeURIComponent(notif.offer_id)}`,
                         meta: payload.data,
                     });
                     sent = true;
@@ -182,8 +204,8 @@ export async function sendOfferNotifications(
                         continue;
                     }
                 }
-            } catch (err: any) {
-                console.error(`[Notification] Failed on channel ${channel} for ${notif.operator_id}:`, err.message);
+            } catch (err: unknown) {
+                console.error(`[Notification] Failed on channel ${channel} for ${notif.operator_id}:`, errorMessage(err));
                 continue;
             }
         }
@@ -218,7 +240,7 @@ export async function notifyOffersCreated(params: {
     await pushToUsers(params.operator_ids, {
         title: '🚛 New escort job available',
         body: `${params.load_summary} — ${params.rate_offered ? `$${params.rate_offered} ${params.currency}` : 'Rate TBD'} — Respond in ${Math.round(params.timeout_seconds / 60)} min`,
-        url: `/offers?request=${params.request_id}`,
+        url: `/offers/inbox?request=${encodeURIComponent(params.request_id)}`,
         meta: { type: 'offer', request_id: params.request_id },
     });
 
@@ -230,8 +252,8 @@ export async function notifyOffersCreated(params: {
                 .from('profiles').select('id, phone').in('id', params.operator_ids);
             const { data: pushOps } = await supabase
                 .from('push_tokens').select('profile_id').in('profile_id', params.operator_ids).eq('enabled', true);
-            const pushUserIds = new Set((pushOps ?? []).map((p: any) => p.profile_id));
-            const smsTargets = (allOps ?? []).filter((o: any) => !pushUserIds.has(o.id) && o.phone);
+            const pushUserIds = new Set((pushOps ?? [] as PushTokenRow[]).map((p) => p.profile_id));
+            const smsTargets = (allOps ?? [] as SmsProfileRow[]).filter((o) => !pushUserIds.has(o.id) && o.phone);
             for (const target of smsTargets.slice(0, 10)) {
                 await sendSMS({
                     to: target.phone,
@@ -331,7 +353,7 @@ export async function requestReviews(params: {
 }): Promise<void> {
     const supabase = getSupabaseAdmin();
 
-    const reviewInserts: any[] = [];
+    const reviewInserts: ReviewInsert[] = [];
     for (const escort_id of params.escort_ids) {
         reviewInserts.push({
             job_id: params.job_id,
