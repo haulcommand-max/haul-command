@@ -31,6 +31,13 @@ const DASHBOARDS = [
         color: '#22C55E',
     },
     {
+        name: 'Claims Ops',
+        description: 'Claim coverage, pending review, pressure targets, outreach guardrails',
+        href: '/admin/dashboards/claims-ops',
+        icon: 'CL',
+        color: '#3B82F6',
+    },
+    {
         name: 'Creative Performance',
         description: 'Gemini output "¢ A/B tests "¢ Winner detection',
         href: '/admin/dashboards/creative-performance',
