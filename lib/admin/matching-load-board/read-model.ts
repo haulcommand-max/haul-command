@@ -2,14 +2,23 @@ import { getSupabaseAdmin } from "@/lib/supabase/admin";
 
 type StatusRow = {
   id?: string | null;
+  load_id?: string | null;
   status?: string | null;
   created_at?: string | null;
+  uncovered_since?: string | null;
   offered_at?: string | null;
   sent_at?: string | null;
   responded_at?: string | null;
   expires_at?: string | null;
   outcome?: string | null;
+  alert_tier?: string | null;
+  notified?: boolean | null;
+  resolved_at?: string | null;
+  candidate_kind?: string | null;
   candidate_count?: number | null;
+  match_score?: number | null;
+  notification_sent?: boolean | null;
+  responded?: boolean | null;
   origin_country?: string | null;
   dest_country?: string | null;
   origin_state?: string | null;
@@ -35,6 +44,18 @@ export type MatchingLoadBoardReadModel = {
     acceptedMatches: number;
     staleOffers: number;
     staleMatchRequests: number;
+    matchingQueueRows: number;
+    queuedLoads: number;
+    uncoveredMarketGapRows: number;
+    unrespondedQueueRows: number;
+    notificationPendingQueueRows: number;
+    queueResponseRate: number;
+    avgMatchScore: number | null;
+    queueScoreBands: Record<string, number>;
+    uncoveredAlerts: number;
+    criticalUncoveredAlerts: number;
+    unnotifiedUncoveredAlerts: number;
+    staleUncoveredAlerts: number;
     declinedLastHour: number;
     outcomesLastHour: number;
     declineRateLastHour: number;
@@ -47,6 +68,14 @@ export type MatchingLoadBoardReadModel = {
     service: string;
     createdAt: string | null;
   }>;
+  uncoveredMarkets: Array<{
+    loadRef: string;
+    tier: string;
+    ageMinutes: number;
+    notified: boolean;
+    nextAction: string;
+    createdAt: string | null;
+  }>;
   activationGaps: string[];
 };
 
@@ -55,6 +84,8 @@ const TABLES = [
   { table: "match_offers", label: "Canonical match offers" },
   { table: "matches", label: "Accepted matches" },
   { table: "match_requests", label: "Match request queue" },
+  { table: "hc_load_matching_queue", label: "Load matching candidates" },
+  { table: "uncovered_load_alerts", label: "Uncovered load alerts" },
   { table: "match_outcomes", label: "Match outcomes" },
   { table: "hc_pay_revenue", label: "Revenue attribution" },
 ] as const;
@@ -94,6 +125,46 @@ function lane(row: StatusRow) {
   return `${origin || "unknown"} -> ${destination || "unknown"}`;
 }
 
+function activeAlert(row: StatusRow) {
+  return !row.resolved_at;
+}
+
+function alertAgeMinutes(row: StatusRow, nowMs: number) {
+  const start = parseTime(row.uncovered_since ?? row.created_at);
+  if (start === null) return 0;
+  return Math.max(0, Math.floor((nowMs - start) / 60000));
+}
+
+function nextActionForAlert(row: StatusRow, nowMs: number) {
+  if (row.notified) return "Monitor response and promote if still uncovered.";
+  const tier = row.alert_tier ?? "warning";
+  if (tier === "emergency" || tier === "critical" || alertAgeMinutes(row, nowMs) > 60) {
+    return "Notify operators and create provider recruitment task.";
+  }
+  return "Send first uncovered-load notification.";
+}
+
+function loadRef(value?: string | null) {
+  if (!value) return "unknown";
+  return `load-${value.slice(-8)}`;
+}
+
+function scoreBand(score?: number | null) {
+  if (score === null || score === undefined) return "unscored";
+  if (score <= 0) return "0";
+  if (score < 50) return "1-49";
+  if (score < 75) return "50-74";
+  return "75+";
+}
+
+function queueScoreBands(rows: StatusRow[]) {
+  return rows.reduce<Record<string, number>>((acc, row) => {
+    const band = scoreBand(row.match_score);
+    acc[band] = (acc[band] ?? 0) + 1;
+    return acc;
+  }, {});
+}
+
 async function readRows(table: string, select: string, orderColumn = "created_at", limit = 5000) {
   const supabase = getSupabaseAdmin();
   const { data, error, count } = await supabase
@@ -109,15 +180,31 @@ async function readRows(table: string, select: string, orderColumn = "created_at
   };
 }
 
+async function readQueueRows() {
+  const supabase = getSupabaseAdmin();
+  const { data, error, count } = await supabase
+    .from("hc_load_matching_queue" as never)
+    .select("load_id,candidate_kind,match_score,notification_sent,responded", { count: "exact" })
+    .limit(5000);
+
+  return {
+    rows: (data ?? []) as StatusRow[],
+    error: error?.message,
+    count: count ?? (data?.length ?? 0),
+  };
+}
+
 export async function getMatchingLoadBoardReadModel(): Promise<MatchingLoadBoardReadModel> {
   const now = Date.now();
   const asOf = new Date(now).toISOString();
 
-  const [loads, offers, matches, requests, outcomes, revenue] = await Promise.all([
+  const [loads, offers, matches, requests, matchingQueue, uncoveredAlerts, outcomes, revenue] = await Promise.all([
     readRows("loads", "id,status,created_at,origin_country,origin_state,dest_country,dest_state,service_required", "created_at", 5000),
     readRows("match_offers", "id,status,offered_at,sent_at,responded_at,expires_at", "offered_at", 5000),
     readRows("matches", "id,status,created_at", "created_at", 5000),
     readRows("match_requests", "id,status,created_at,candidate_count", "created_at", 5000),
+    readQueueRows(),
+    readRows("uncovered_load_alerts", "id,load_id,uncovered_since,duration_minutes,alert_tier,notified,resolved_at,created_at", "created_at", 5000),
     readRows("match_outcomes", "id,outcome,created_at", "created_at", 5000),
     readRows("hc_pay_revenue", "id,status,created_at", "created_at", 5000),
   ]);
@@ -127,6 +214,8 @@ export async function getMatchingLoadBoardReadModel(): Promise<MatchingLoadBoard
     { table: "match_offers", label: "Canonical match offers", total: offers.count, statusCounts: countStatuses(offers.rows), error: offers.error },
     { table: "matches", label: "Accepted matches", total: matches.count, statusCounts: countStatuses(matches.rows), error: matches.error },
     { table: "match_requests", label: "Match request queue", total: requests.count, statusCounts: countStatuses(requests.rows), error: requests.error },
+    { table: "hc_load_matching_queue", label: "Load matching candidates", total: matchingQueue.count, statusCounts: countStatuses(matchingQueue.rows, "candidate_kind"), error: matchingQueue.error },
+    { table: "uncovered_load_alerts", label: "Uncovered load alerts", total: uncoveredAlerts.count, statusCounts: countStatuses(uncoveredAlerts.rows, "alert_tier"), error: uncoveredAlerts.error },
     { table: "match_outcomes", label: "Match outcomes", total: outcomes.count, statusCounts: countStatuses(outcomes.rows, "outcome"), error: outcomes.error },
     { table: "hc_pay_revenue", label: "Revenue attribution", total: revenue.count, statusCounts: countStatuses(revenue.rows), error: revenue.error },
   ];
@@ -150,7 +239,15 @@ export async function getMatchingLoadBoardReadModel(): Promise<MatchingLoadBoard
   }
   if (!offers.error && offers.count === 0) activationGaps.push("No canonical match_offers records are visible yet.");
   if (!matches.error && matches.count === 0) activationGaps.push("No accepted matches are visible yet.");
+  if (!matchingQueue.error && matchingQueue.count === 0) activationGaps.push("No hc_load_matching_queue rows are visible, so failed-fill candidate routing is not measurable yet.");
+  if (!uncoveredAlerts.error && uncoveredAlerts.count === 0) activationGaps.push("No uncovered_load_alerts rows are visible, so open-load supply gaps are not being surfaced to ops yet.");
   if (!revenue.error && revenue.count === 0) activationGaps.push("No hc_pay_revenue attribution rows are visible for matching yet.");
+
+  const activeUncoveredAlerts = uncoveredAlerts.rows.filter(activeAlert);
+  const criticalUncoveredAlerts = activeUncoveredAlerts.filter((row) => row.alert_tier === "critical" || row.alert_tier === "emergency");
+  const scoredQueueRows = matchingQueue.rows.filter((row) => typeof row.match_score === "number");
+  const queueResponses = matchingQueue.rows.filter((row) => row.responded).length;
+  const queuedLoadIds = new Set(matchingQueue.rows.map((row) => row.load_id).filter(Boolean));
 
   return {
     asOf,
@@ -165,6 +262,20 @@ export async function getMatchingLoadBoardReadModel(): Promise<MatchingLoadBoard
         const createdAt = parseTime(row.created_at);
         return row.status === "scored" && createdAt !== null && now - createdAt > RESPONSE_TIMEOUT_MS;
       }).length,
+      matchingQueueRows: matchingQueue.count,
+      queuedLoads: queuedLoadIds.size,
+      uncoveredMarketGapRows: matchingQueue.rows.filter((row) => row.candidate_kind === "uncovered_market_gap").length,
+      unrespondedQueueRows: matchingQueue.rows.filter((row) => !row.responded).length,
+      notificationPendingQueueRows: matchingQueue.rows.filter((row) => !row.notification_sent).length,
+      queueResponseRate: matchingQueue.rows.length > 0 ? queueResponses / matchingQueue.rows.length : 0,
+      avgMatchScore: scoredQueueRows.length > 0
+        ? scoredQueueRows.reduce((sum, row) => sum + (row.match_score ?? 0), 0) / scoredQueueRows.length
+        : null,
+      queueScoreBands: queueScoreBands(matchingQueue.rows),
+      uncoveredAlerts: activeUncoveredAlerts.length,
+      criticalUncoveredAlerts: criticalUncoveredAlerts.length,
+      unnotifiedUncoveredAlerts: activeUncoveredAlerts.filter((row) => !row.notified).length,
+      staleUncoveredAlerts: activeUncoveredAlerts.filter((row) => alertAgeMinutes(row, now) > 60).length,
       declinedLastHour,
       outcomesLastHour: recentOutcomes.length,
       declineRateLastHour: recentOutcomes.length ? declinedLastHour / recentOutcomes.length : 0,
@@ -176,6 +287,14 @@ export async function getMatchingLoadBoardReadModel(): Promise<MatchingLoadBoard
       lane: lane(row),
       service: row.service_required ?? "unspecified",
       createdAt: row.created_at ?? null,
+    })),
+    uncoveredMarkets: activeUncoveredAlerts.slice(0, 8).map((row) => ({
+      loadRef: loadRef(row.load_id),
+      tier: row.alert_tier ?? "warning",
+      ageMinutes: alertAgeMinutes(row, now),
+      notified: Boolean(row.notified),
+      nextAction: nextActionForAlert(row, now),
+      createdAt: row.created_at ?? row.uncovered_since ?? null,
     })),
     activationGaps,
   };

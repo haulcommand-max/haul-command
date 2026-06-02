@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { AlertTriangle, CircleDollarSign, Clock, RadioTower, Route, Truck } from "lucide-react";
+import { AlertTriangle, BellRing, CircleDollarSign, Clock, RadioTower, Route, Truck } from "lucide-react";
 import { getMatchingLoadBoardReadModel } from "@/lib/admin/matching-load-board/read-model";
 
 export const metadata: Metadata = {
@@ -12,6 +12,10 @@ export const dynamic = "force-dynamic";
 
 function percent(value: number) {
   return `${(value * 100).toFixed(1)}%`;
+}
+
+function score(value: number | null) {
+  return value === null ? "Unscored" : value.toFixed(1);
 }
 
 function kpi(label: string, value: string, sub: string, color: string) {
@@ -33,7 +37,7 @@ export default async function MatchingLoadBoardDashboard() {
         <div>
           <h1 style={{ fontSize: 24, lineHeight: 1.1, fontWeight: 900, margin: 0 }}>Matching Load Board Activation</h1>
           <p style={{ margin: "6px 0 0", color: "#8a93a3", fontSize: 12 }}>
-            Real ops telemetry from <code>loads</code>, <code>match_offers</code>, <code>matches</code>, <code>match_requests</code>, <code>match_outcomes</code>, and <code>hc_pay_revenue</code>.
+            Real ops telemetry from <code>loads</code>, <code>match_offers</code>, <code>hc_load_matching_queue</code>, <code>uncovered_load_alerts</code>, and revenue attribution.
           </p>
         </div>
         <div style={{ textAlign: "right", color: "#8a93a3", fontSize: 11 }}>
@@ -57,7 +61,8 @@ export default async function MatchingLoadBoardDashboard() {
         {kpi("Open Loads", model.totals.openLoads.toLocaleString(), "load-board demand visible now", "#3B82F6")}
         {kpi("Pending Offers", model.totals.pendingOffers.toLocaleString(), "canonical match_offers open/viewed", "#C6923A")}
         {kpi("Accepted Matches", model.totals.acceptedMatches.toLocaleString(), "matches accepted/in progress/completed", "#22C55E")}
-        {kpi("Stale Work", (model.totals.staleOffers + model.totals.staleMatchRequests).toLocaleString(), "offers or scored requests past 45 minutes", "#F59E0B")}
+        {kpi("Uncovered Loads", model.totals.uncoveredAlerts.toLocaleString(), `${model.totals.criticalUncoveredAlerts.toLocaleString()} critical/emergency`, "#EF4444")}
+        {kpi("Stale Work", (model.totals.staleOffers + model.totals.staleMatchRequests + model.totals.staleUncoveredAlerts).toLocaleString(), "offers, scored requests, or alerts past SLA", "#F59E0B")}
         {kpi("Decline Rate", percent(model.totals.declineRateLastHour), `${model.totals.outcomesLastHour} outcomes last hour`, "#EF4444")}
         {kpi("Countries", model.totals.countriesTouched.toLocaleString(), "load origin/destination coverage", "#A78BFA")}
       </section>
@@ -97,8 +102,35 @@ export default async function MatchingLoadBoardDashboard() {
         <aside style={{ display: "grid", gap: 12 }}>
           <OpsCard icon={<Clock size={15} />} label="Stale Offer Watch" value={model.totals.staleOffers.toLocaleString()} body="Open/viewed offers that are expired or have sat past the 45-minute response window." />
           <OpsCard icon={<Route size={15} />} label="Stale Match Queue" value={model.totals.staleMatchRequests.toLocaleString()} body="Scored match requests that have not moved to accepted matches fast enough." />
+          <OpsCard icon={<BellRing size={15} />} label="Unnotified Gaps" value={model.totals.unnotifiedUncoveredAlerts.toLocaleString()} body="Uncovered load alerts that have not produced an operator notification or provider recruitment action yet." />
+          <OpsCard icon={<RadioTower size={15} />} label="Candidate Queue" value={model.totals.matchingQueueRows.toLocaleString()} body={`${model.totals.queuedLoads.toLocaleString()} loads queued; ${model.totals.uncoveredMarketGapRows.toLocaleString()} market-gap rows; ${model.totals.notificationPendingQueueRows.toLocaleString()} notifications pending.`} />
+          <OpsCard icon={<Truck size={15} />} label="Queue Response" value={percent(model.totals.queueResponseRate)} body={`Average score ${score(model.totals.avgMatchScore)} across candidate rows. Score bands: ${topStatuses(model.totals.queueScoreBands)}.`} />
           <OpsCard icon={<CircleDollarSign size={15} />} label="Revenue Attribution" value={(model.tables.find((table) => table.table === "hc_pay_revenue")?.total ?? 0).toLocaleString()} body="Rows available to prove match-to-money conversion instead of decorative marketplace activity." />
         </aside>
+      </section>
+
+      <section style={{ borderRadius: 12, border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.025)", padding: 18, marginBottom: 18 }}>
+        <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 14 }}>
+          <BellRing size={16} color="#EF4444" />
+          <h2 style={{ fontSize: 15, fontWeight: 850, margin: 0 }}>Uncovered Load Queue</h2>
+        </div>
+        {model.uncoveredMarkets.length === 0 ? (
+          <div style={{ color: "#8a93a3", fontSize: 13 }}>No active uncovered-load alerts are visible.</div>
+        ) : (
+          <div style={{ display: "grid", gap: 8 }}>
+            {model.uncoveredMarkets.map((alert) => (
+              <div key={`${alert.loadRef}-${alert.createdAt ?? "unknown"}`} style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 100px 110px 150px", gap: 10, alignItems: "center", padding: 12, borderRadius: 10, background: "rgba(255,255,255,0.03)" }}>
+                <div>
+                  <div style={{ color: "#fff", fontSize: 13, fontWeight: 850 }}>{alert.nextAction}</div>
+                  <div style={{ color: "#8a93a3", fontSize: 10 }}>{alert.loadRef}</div>
+                </div>
+                <div style={{ color: alert.tier === "critical" || alert.tier === "emergency" ? "#EF4444" : "#F59E0B", fontSize: 12, fontWeight: 850, textAlign: "right" }}>{alert.tier}</div>
+                <div style={{ color: "#cbd5e1", fontSize: 12, textAlign: "right" }}>{alert.ageMinutes.toLocaleString()} min</div>
+                <div style={{ color: alert.notified ? "#22C55E" : "#C6923A", fontSize: 12, fontWeight: 850, textAlign: "right" }}>{alert.notified ? "Notified" : "Needs notification"}</div>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       <section style={{ borderRadius: 12, border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.025)", padding: 18 }}>
