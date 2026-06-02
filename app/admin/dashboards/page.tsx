@@ -31,6 +31,27 @@ const DASHBOARDS = [
         color: '#22C55E',
     },
     {
+        name: 'Directory Truth',
+        description: 'Directory coverage, claim pressure, queues, ingestion, and index activation',
+        href: '/admin/directory/health',
+        icon: 'DT',
+        color: '#60A5FA',
+    },
+    {
+        name: 'Matching Load Board',
+        description: 'Loads, match offers, stale queues, outcomes, and revenue attribution',
+        href: '/admin/dashboards/matching-load-board',
+        icon: 'ML',
+        color: '#C6923A',
+    },
+    {
+        name: 'RouteIntel and GPS',
+        description: 'GPS breadcrumbs, route events, Motive, Traccar, and benchmark blockers',
+        href: '/admin/dashboards/routeintel',
+        icon: 'RT',
+        color: '#38BDF8',
+    },
+    {
         name: 'Claims Ops',
         description: 'Claim coverage, pending review, pressure targets, outreach guardrails',
         href: '/admin/dashboards/claims-ops',
