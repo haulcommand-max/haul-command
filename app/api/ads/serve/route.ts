@@ -5,8 +5,42 @@ import {
     buildAdgridClickInsert,
     buildAdgridEventInsert,
 } from '@/lib/monetization/adgrid-serving';
+import { getHouseAds } from '@/lib/ads/house-ads';
 
 export const dynamic = 'force-dynamic';
+
+async function recordServeEvent(input: {
+    eventType: 'request' | 'no_fill';
+    zone: string;
+    geo?: string;
+    sessionId?: string | null;
+    userAgentSummary?: string | null;
+    count?: number;
+}) {
+    try {
+        const supabase = getSupabaseAdmin();
+        const eventCount = Math.max(1, input.count ?? 1);
+        const events = Array.from({ length: eventCount }, () =>
+            buildAdgridEventInsert({
+                eventType: input.eventType,
+                surface: input.zone,
+                zone: input.zone,
+                countryCode: input.geo,
+                sessionId: input.sessionId,
+                userAgentSummary: input.userAgentSummary,
+            }),
+        );
+        await Promise.all(events.map((event) => supabase.from(event.table).insert(event.payload)));
+    } catch {
+        // Best-effort telemetry should never block serving house or paid ads.
+    }
+}
+
+function parseServeLimit(value: string | null) {
+    const parsed = Number.parseInt(value ?? '3', 10);
+    if (!Number.isFinite(parsed) || parsed < 1) return 3;
+    return Math.min(parsed, 10);
+}
 
 // GET /api/ads/serve?zone=hero_billboard&geo=US&role=pilot_car_operator&limit=3
 // Returns ServedAd[] — always returns at least house ads, never empty.
@@ -16,9 +50,18 @@ export async function GET(req: Request) {
     const zone = searchParams.get('zone') ?? searchParams.get('placement') ?? 'hero_billboard';
     const geo = searchParams.get('geo') || undefined;
     const role = searchParams.get('role') || undefined;
-    const limit = Math.min(parseInt(searchParams.get('limit') ?? '3'), 10);
+    const limit = parseServeLimit(searchParams.get('limit'));
+    const sessionId = searchParams.get('session_id') ?? null;
+    const userAgentSummary = req.headers.get('user-agent')?.slice(0, 180) ?? null;
 
-    const ads = await serveAds({ zone, geo, role, limit });
+    await recordServeEvent({ eventType: 'request', zone, geo, sessionId, userAgentSummary, count: limit });
+    const ads = await serveAds({ zone, geo, role, limit }).catch(() => getHouseAds({ limit, surface: zone, role }));
+    const paidFillCount = ads.filter((ad) => Boolean(adgridUuidOrNull(ad.campaign_id))).length;
+    const noFillCount = Math.max(0, limit - paidFillCount);
+
+    if (noFillCount > 0) {
+        await recordServeEvent({ eventType: 'no_fill', zone, geo, sessionId, userAgentSummary, count: noFillCount });
+    }
 
     // Fire impression records (best-effort, don't await)
     ads.forEach(ad => {

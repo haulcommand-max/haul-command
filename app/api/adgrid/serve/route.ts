@@ -28,8 +28,31 @@ export async function GET(req: NextRequest) {
     const role = req.nextUrl.searchParams.get('role');
     const pagePath = req.nextUrl.searchParams.get('page_path') || req.nextUrl.searchParams.get('path');
 
-    const supabaseAdmin = getSupabaseAdmin();
     const placementKey = buildAdgridPlacementKey({ surface, zone, corridor, country, role });
+    const slotId = req.nextUrl.searchParams.get('slot_id');
+    const sessionId = req.nextUrl.searchParams.get('session_id');
+    const userAgentSummary = req.headers.get('user-agent')?.slice(0, 180) ?? null;
+    let supabaseAdmin: ReturnType<typeof getSupabaseAdmin> | null = null;
+
+    function getAdmin() {
+        supabaseAdmin ??= getSupabaseAdmin();
+        return supabaseAdmin;
+    }
+
+    async function recordServeEvent(eventType: 'request' | 'no_fill') {
+        const event = buildAdgridEventInsert({
+            eventType,
+            slotId,
+            surface: surface || zone || placementKey,
+            zone,
+            countryCode: country,
+            corridorSlug: corridor,
+            sessionId,
+            userAgentSummary,
+        });
+        const { error } = await getAdmin().from(event.table).insert(event.payload);
+        return { logged: !error, reason: error?.message ?? null, eventType };
+    }
 
     async function recordServedAd(ad: { campaign_id?: string | null; creative_id?: string | null; ab_variant?: string | null }, source: string) {
         const impression = buildAdgridImpressionInsert(ad, {
@@ -38,23 +61,23 @@ export async function GET(req: NextRequest) {
             state,
             corridor,
             role,
-            slotId: req.nextUrl.searchParams.get('slot_id'),
+            slotId,
         });
         if (!impression) return { logged: false, reason: 'missing_campaign_id' };
 
-        const { error: impressionError } = await supabaseAdmin.from(impression.table).insert(impression.payload);
+        const { error: impressionError } = await getAdmin().from(impression.table).insert(impression.payload);
         const event = buildAdgridEventInsert({
             eventType: 'impression',
             campaignId: ad.campaign_id,
-            slotId: req.nextUrl.searchParams.get('slot_id'),
+            slotId,
             surface: surface || zone || placementKey,
             zone,
             countryCode: country,
             corridorSlug: corridor,
-            sessionId: req.nextUrl.searchParams.get('session_id'),
-            userAgentSummary: req.headers.get('user-agent')?.slice(0, 180) ?? null,
+            sessionId,
+            userAgentSummary,
         });
-        const { error: eventError } = await supabaseAdmin.from(event.table).insert(event.payload);
+        const { error: eventError } = await getAdmin().from(event.table).insert(event.payload);
 
         return {
             logged: !impressionError && !eventError,
@@ -64,9 +87,14 @@ export async function GET(req: NextRequest) {
     }
 
     try {
+        const requestTracking = await recordServeEvent('request').catch((error) => ({
+            logged: false,
+            reason: error instanceof Error ? error.message : String(error),
+            eventType: 'request' as const,
+        }));
         // ── PATH A: legacy RPC approach (strongest — uses bid ranking) ──
         if (surface) {
-            const { data, error } = await supabaseAdmin.rpc('serve_adgrid_ad', {
+            const { data, error } = await getAdmin().rpc('serve_adgrid_ad', {
                 p_surface: surface,
                 p_corridor: corridor,
                 p_country: country,
@@ -74,12 +102,12 @@ export async function GET(req: NextRequest) {
 
             if (!error && data && Object.keys(data).length > 0) {
                 const tracking = await recordServedAd(data, 'adgrid');
-                return NextResponse.json({ ad: data, source: 'adgrid', tracking });
+                return NextResponse.json({ ad: data, source: 'adgrid', tracking: { ...tracking, request: requestTracking } });
             }
         }
 
         // ── PATH B: zone-based query (new — for AdGridSlot component) ──
-        const { data: creativeRows } = await supabaseAdmin
+        const { data: creativeRows } = await getAdmin()
             .from('hc_ad_creatives')
             .select(
                 'campaign_id, creative_id, headline, description, body, subhead, cta_text, cta_label, cta_url, image_url, image_landscape_url, image_square_url, sponsor_label, advertiser_name, page_types, country_slugs, corridor_slugs, service_slugs, ab_variant',
@@ -95,22 +123,32 @@ export async function GET(req: NextRequest) {
         if (ads.length > 0) {
             const ad = ads[Math.floor(Math.random() * ads.length)];
             const tracking = await recordServedAd(ad, 'inventory');
-            return NextResponse.json({ ad, source: 'inventory', tracking });
+            return NextResponse.json({ ad, source: 'inventory', tracking: { ...tracking, request: requestTracking } });
         }
 
         // ── PATH C: no ads available ──
+        const noFillTracking = await recordServeEvent('no_fill').catch((error) => ({
+            logged: false,
+            reason: error instanceof Error ? error.message : String(error),
+            eventType: 'no_fill' as const,
+        }));
         const houseAd = pickHouseAd({
             surface: surface ?? zone ?? placementKey,
             placementId: placementKey,
             role: role ?? undefined,
         });
-        return NextResponse.json({ ad: houseAd, source: 'house', tracking: { logged: false, reason: 'house_ad' } });
+        return NextResponse.json({ ad: houseAd, source: 'house', tracking: { request: requestTracking, noFill: noFillTracking, reason: 'house_ad' } });
     } catch {
+        const noFillTracking = await recordServeEvent('no_fill').catch((error) => ({
+            logged: false,
+            reason: error instanceof Error ? error.message : String(error),
+            eventType: 'no_fill' as const,
+        }));
         const houseAd = pickHouseAd({
             surface: surface ?? zone ?? placementKey,
             placementId: placementKey,
             role: role ?? undefined,
         });
-        return NextResponse.json({ ad: houseAd, source: 'house', tracking: { logged: false, reason: 'serve_failed_house_fallback' } });
+        return NextResponse.json({ ad: houseAd, source: 'house', tracking: { noFill: noFillTracking, reason: 'serve_failed_house_fallback' } });
     }
 }

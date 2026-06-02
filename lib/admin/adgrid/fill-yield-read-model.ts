@@ -26,6 +26,7 @@ type AdgridCampaignRow = {
 export type AdgridFillYieldSurfaceRow = {
   surface: string;
   trackedRequests: number;
+  noFillEvents: number;
   filledImpressions: number;
   fillRate: number | null;
   totalImpressions: number;
@@ -42,10 +43,11 @@ export type AdgridFillYieldReadModel = {
     eventsTable: "hc_adgrid_events";
     outcomesTable: "hc_adgrid_outcome_events";
     campaignsTable: "hc_ad_campaigns";
-    revenueBasis: "event_billing_plus_outcomes_or_campaign_spend_fallback";
+    revenueBasis: "event_billing_or_outcomes_or_campaign_spend_fallback";
   };
   totals: {
     trackedRequests: number;
+    noFillEvents: number;
     impressions: number;
     clicks: number;
     ctr: number;
@@ -61,6 +63,7 @@ export type AdgridFillYieldReadModel = {
 };
 
 const REQUEST_EVENTS = new Set(["request", "ad_request", "serve_request"]);
+const NO_FILL_EVENTS = new Set(["no_fill", "house_fallback", "serve_failed_house_fallback"]);
 const IMPRESSION_EVENTS = new Set(["impression", "ad_impression"]);
 const CLICK_EVENTS = new Set(["click", "ad_click", "sponsor_cta_click"]);
 
@@ -79,10 +82,11 @@ function emptyModel(asOf = new Date().toISOString()): AdgridFillYieldReadModel {
       eventsTable: "hc_adgrid_events",
       outcomesTable: "hc_adgrid_outcome_events",
       campaignsTable: "hc_ad_campaigns",
-      revenueBasis: "event_billing_plus_outcomes_or_campaign_spend_fallback",
+      revenueBasis: "event_billing_or_outcomes_or_campaign_spend_fallback",
     },
     totals: {
       trackedRequests: 0,
+      noFillEvents: 0,
       impressions: 0,
       clicks: 0,
       ctr: 0,
@@ -128,6 +132,7 @@ export async function getAdgridFillYieldReadModel(): Promise<AdgridFillYieldRead
     const outcomeRows = (outcomes ?? []) as AdgridOutcomeRow[];
     const campaignRows = (campaigns ?? []) as AdgridCampaignRow[];
     let campaignSpendUsd = 0;
+    let eventBillingUsd = 0;
     let outcomeRevenueUsd = 0;
 
     for (const campaign of campaignRows) {
@@ -143,6 +148,7 @@ export async function getAdgridFillYieldReadModel(): Promise<AdgridFillYieldRead
       const current = surfaceMap.get(surface) ?? {
         surface,
         trackedRequests: 0,
+        noFillEvents: 0,
         filledImpressions: 0,
         fillRate: null,
         totalImpressions: 0,
@@ -158,6 +164,10 @@ export async function getAdgridFillYieldReadModel(): Promise<AdgridFillYieldRead
         current.trackedRequests += 1;
         model.totals.trackedRequests += 1;
       }
+      if (NO_FILL_EVENTS.has(type)) {
+        current.noFillEvents += 1;
+        model.totals.noFillEvents += 1;
+      }
       if (IMPRESSION_EVENTS.has(type)) {
         current.filledImpressions += 1;
         current.totalImpressions += 1;
@@ -167,15 +177,20 @@ export async function getAdgridFillYieldReadModel(): Promise<AdgridFillYieldRead
         current.totalClicks += 1;
         model.totals.clicks += 1;
       }
-      current.estimatedRevenueUsd += dollars(row.billing_amount_cents);
-      model.totals.estimatedRevenueUsd += dollars(row.billing_amount_cents);
+      const eventBillingForRow = dollars(row.billing_amount_cents);
+      current.estimatedRevenueUsd += eventBillingForRow;
+      eventBillingUsd += eventBillingForRow;
       surfaceMap.set(surface, current);
     }
 
     for (const outcome of outcomeRows) {
       outcomeRevenueUsd += dollars(outcome.billed_amount_cents ?? outcome.outcome_value_cents);
     }
-    model.totals.estimatedRevenueUsd += outcomeRevenueUsd > 0 ? outcomeRevenueUsd : campaignSpendUsd;
+    model.totals.estimatedRevenueUsd = eventBillingUsd > 0
+      ? eventBillingUsd
+      : outcomeRevenueUsd > 0
+        ? outcomeRevenueUsd
+        : campaignSpendUsd;
 
     const surfaces = Array.from(surfaceMap.values()).map((surface) => {
       const fillRate = surface.trackedRequests > 0 ? (surface.filledImpressions / surface.trackedRequests) * 100 : null;

@@ -212,7 +212,21 @@ describe("AdGrid serving contract", () => {
   it("passes slot ids through the serve route for joinable impression events", () => {
     const route = read("app/api/adgrid/serve/route.ts");
 
-    expect(route).toContain("slotId: req.nextUrl.searchParams.get('slot_id')");
+    expect(route).toContain("const slotId = req.nextUrl.searchParams.get('slot_id')");
+    expect(route).toContain("slotId,");
+  });
+
+  it("records canonical request and no-fill events in the AdGrid serve route", () => {
+    const route = read("app/api/adgrid/serve/route.ts");
+
+    expect(route).toContain("recordServeEvent(eventType: 'request' | 'no_fill')");
+    expect(route).toContain("function getAdmin()");
+    expect(route).toContain("recordServeEvent('request')");
+    expect(route).toContain("recordServeEvent('no_fill')");
+    expect(route).toContain("await getAdmin().from(event.table).insert(event.payload)");
+    expect(route).toContain("request: requestTracking");
+    expect(route).toContain("noFill: noFillTracking");
+    expect(route).not.toContain('from("adgrid_events")');
   });
 
   it("keeps campaign creation and Stripe fulfillment on canonical AdGrid tables", () => {
@@ -273,6 +287,14 @@ describe("AdGrid serving contract", () => {
 
     expect(route).toContain("buildAdgridClickInsert");
     expect(route).toContain("buildAdgridEventInsert");
+    expect(route).toContain("parseServeLimit(searchParams.get('limit'))");
+    expect(route).toContain("Number.parseInt(value ?? '3', 10)");
+    expect(route).toContain("recordServeEvent({ eventType: 'request'");
+    expect(route).toContain("recordServeEvent({ eventType: 'no_fill'");
+    expect(route).toContain("count: limit");
+    expect(route).toContain("count: noFillCount");
+    expect(route).toContain("getHouseAds({ limit, surface: zone, role })");
+    expect(route).toContain("await supabase.from(event.table).insert(event.payload)");
     expect(route).toContain("valid_campaign_id_required");
     expect(route).not.toContain("ad_click_log");
     expect(route).not.toContain("@/lib/enterprise/supabase/admin");

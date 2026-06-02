@@ -17,7 +17,9 @@ describe("AdGrid fill/yield dashboard contract", () => {
     expect(page).toContain('dynamic = "force-dynamic"');
     expect(page).toContain("Real telemetry");
     expect(page).toContain("Unmeasured");
+    expect(page).toContain("No Fill");
     expect(page).toContain("measurementGaps");
+    expect(page).toContain("model.totals.noFillEvents");
     expect(page).not.toContain("'use client'");
     expect(page).not.toContain("useEffect");
     expect(page).not.toContain("setFillData");
@@ -27,7 +29,10 @@ describe("AdGrid fill/yield dashboard contract", () => {
     expect(readModel).toContain('.from("hc_adgrid_events")');
     expect(readModel).toContain('.from("hc_adgrid_outcome_events")');
     expect(readModel).toContain('.from("hc_ad_campaigns")');
-    expect(readModel).toContain("event_billing_plus_outcomes_or_campaign_spend_fallback");
+    expect(readModel).toContain('NO_FILL_EVENTS = new Set(["no_fill", "house_fallback", "serve_failed_house_fallback"])');
+    expect(readModel).toContain("noFillEvents");
+    expect(readModel).toContain("event_billing_or_outcomes_or_campaign_spend_fallback");
+    expect(readModel).toContain("eventBillingUsd > 0");
     expect(readModel).toContain("AdGrid request events are not being recorded yet");
     expect(readModel).not.toContain("Math.random");
   });

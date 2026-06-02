@@ -72,7 +72,8 @@ export default async function FillYieldDashboard() {
         {kpi("Impressions", model.totals.impressions.toLocaleString(), "Canonical impression events", "#3B82F6")}
         {kpi("Clicks", model.totals.clicks.toLocaleString(), `${percent(model.totals.ctr)} CTR`, "#22C55E")}
         {kpi("Fill Rate", percent(model.totals.avgFillRate), `${model.totals.trackedRequests.toLocaleString()} request events`, "#F59E0B")}
-        {kpi("Estimated Yield", money(model.totals.estimatedRevenueUsd), "Campaign spend + billed outcomes", "#C6923A")}
+        {kpi("No Fill", model.totals.noFillEvents.toLocaleString(), "House ad or fallback serves", "#EF4444")}
+        {kpi("Estimated Yield", money(model.totals.estimatedRevenueUsd), "Event billing or billed fallback", "#C6923A")}
         {kpi("Active Campaigns", model.totals.activeCampaigns.toLocaleString(), `${model.totals.campaignCount.toLocaleString()} total campaigns`, "#A78BFA")}
       </section>
 
@@ -85,7 +86,7 @@ export default async function FillYieldDashboard() {
           <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 820 }}>
             <thead>
               <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-                {["Surface", "Requests", "Filled", "Fill", "Impressions", "Clicks", "CTR", "CPM", "CPC", "Yield"].map((heading) => (
+                {["Surface", "Requests", "No Fill", "Filled", "Fill", "Impressions", "Clicks", "CTR", "CPM", "CPC", "Yield"].map((heading) => (
                   <th key={heading} style={{ padding: "9px 12px", fontSize: 9, fontWeight: 850, color: "#8a93a3", textTransform: "uppercase", textAlign: heading === "Surface" ? "left" : "right" }}>
                     {heading}
                   </th>
@@ -95,12 +96,13 @@ export default async function FillYieldDashboard() {
             <tbody>
               {model.surfaces.length === 0 ? (
                 <tr>
-                  <td colSpan={10} style={{ padding: 24, color: "#8a93a3", fontSize: 13 }}>No AdGrid events have been recorded yet.</td>
+                  <td colSpan={11} style={{ padding: 24, color: "#8a93a3", fontSize: 13 }}>No AdGrid events have been recorded yet.</td>
                 </tr>
               ) : model.surfaces.map((surface) => (
                 <tr key={surface.surface} style={{ borderBottom: "1px solid rgba(255,255,255,0.035)" }}>
                   <td style={{ padding: "11px 12px", fontSize: 13, fontWeight: 800, color: "#fff" }}>{surface.surface}</td>
                   <td style={cellStyle}>{surface.trackedRequests.toLocaleString()}</td>
+                  <td style={{ ...cellStyle, color: surface.noFillEvents > 0 ? "#EF4444" : "#cbd5e1", fontWeight: 850 }}>{surface.noFillEvents.toLocaleString()}</td>
                   <td style={cellStyle}>{surface.filledImpressions.toLocaleString()}</td>
                   <td style={{ ...cellStyle, color: surface.fillRate === null ? "#8a93a3" : "#F59E0B", fontWeight: 850 }}>{percent(surface.fillRate)}</td>
                   <td style={cellStyle}>{surface.totalImpressions.toLocaleString()}</td>
@@ -143,10 +145,10 @@ export default async function FillYieldDashboard() {
         <div style={{ padding: 16, borderRadius: 12, border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.025)" }}>
           <div style={{ display: "flex", gap: 8, alignItems: "center", color: "#3B82F6", fontSize: 11, fontWeight: 850, textTransform: "uppercase", marginBottom: 10 }}>
             <MousePointerClick size={14} />
-            Next Instrumentation
+            Current Instrumentation
           </div>
           <p style={{ margin: 0, color: "#8a93a3", fontSize: 12, lineHeight: 1.5 }}>
-            Record explicit AdGrid request events in the serve path when you need true no-fill and fill-rate accounting across house ads, paid inventory, and blocked campaigns.
+            Serve routes now record explicit request and no-fill events, so house ads, paid inventory, and fallback paths can be measured without inferring fill from impressions alone.
           </p>
         </div>
       </section>
