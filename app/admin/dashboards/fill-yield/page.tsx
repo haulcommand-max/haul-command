@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: "Supabase-backed AdGrid request, impression, click, and yield readiness dashboard.",
 };
 
+export const dynamic = "force-dynamic";
+
 function money(value: number | null) {
   if (value === null) return "Unmeasured";
   return `$${value.toFixed(value >= 100 ? 0 : 2)}`;

@@ -14,6 +14,7 @@ describe("AdGrid fill/yield dashboard contract", () => {
     const readModel = read("lib/admin/adgrid/fill-yield-read-model.ts");
 
     expect(page).toContain("getAdgridFillYieldReadModel");
+    expect(page).toContain('dynamic = "force-dynamic"');
     expect(page).toContain("Real telemetry");
     expect(page).toContain("Unmeasured");
     expect(page).toContain("measurementGaps");

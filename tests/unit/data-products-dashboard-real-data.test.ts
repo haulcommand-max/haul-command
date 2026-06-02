@@ -14,6 +14,7 @@ describe("data products admin dashboard real-data contract", () => {
     const readModel = read("lib/admin/data-products/read-model.ts");
 
     expect(page).toContain("getDataProductsDashboardReadModel");
+    expect(page).toContain('dynamic = "force-dynamic"');
     expect(page).toContain("Real purchase telemetry");
     expect(page).toContain("catalog-derived");
     expect(page).not.toContain("Math.random");

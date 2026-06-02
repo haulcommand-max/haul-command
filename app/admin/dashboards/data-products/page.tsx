@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: "Supabase-backed data product purchase, fulfillment, and revenue readiness dashboard.",
 };
 
+export const dynamic = "force-dynamic";
+
 function money(value: number) {
   return `$${Math.round(value).toLocaleString()}`;
 }
