@@ -1,0 +1,188 @@
+/*
+  Haul Command mobile homepage viewport fixes
+  Source: Android screenshot audit 2026-04-28.
+
+  Purpose:
+  - Stop the homepage hero/search stack from feeling clipped on real mobile devices.
+  - Keep the first screen premium, readable, and tappable.
+  - Preserve existing desktop layout and existing component architecture.
+*/
+
+@media (max-width: 640px) {
+  /* The landing page uses a dark visual shell; keep the mobile viewport locked without
+     letting hero internals create side gutters or phantom horizontal scroll. */
+  html,
+  body {
+    width: 100%;
+    min-width: 0;
+    overflow-x: clip;
+  }
+
+  /* Homepage hero shell */
+  section:first-of-type {
+    overflow: visible;
+  }
+
+  section:first-of-type > .max-w-6xl {
+    padding-top: 2rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  section:first-of-type h1 {
+    max-width: 22rem;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: clamp(2.35rem, 10.8vw, 3rem);
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    text-wrap: balance;
+  }
+
+  section:first-of-type h1 + p {
+    max-width: 21rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.9rem;
+    margin-bottom: 1.15rem;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: rgba(255, 226, 166, 0.74);
+    text-wrap: balance;
+  }
+
+  /* Target the hero image/search card without requiring a JSX rewrite. */
+  section:first-of-type [style*="linear-gradient(135deg, #0B0F14"] {
+    height: auto !important;
+    min-height: 31.5rem;
+    border-radius: 1.5rem;
+    overflow: hidden;
+  }
+
+  section:first-of-type [style*="linear-gradient(135deg, #0B0F14"] > .absolute.inset-0.flex {
+    position: relative !important;
+    min-height: 31.5rem;
+    justify-content: flex-start;
+    padding: 3.85rem 1rem 1.25rem;
+  }
+
+  /* Keep the live ticker readable but do not let it crash into the rounded card edge. */
+  section:first-of-type [style*="linear-gradient(135deg, #0B0F14"] > .absolute.top-3 {
+    left: 0.85rem;
+    right: 0.85rem;
+  }
+
+  section:first-of-type [style*="linear-gradient(135deg, #0B0F14"] > .absolute.top-3 > div {
+    max-width: 100%;
+    min-height: 2.45rem;
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+    font-size: 0.78rem;
+  }
+
+  /* Primary intent buttons: equal width, clean rhythm, no overflow. */
+  section:first-of-type [style*="linear-gradient(135deg, #0B0F14"] > .absolute.inset-0.flex > .flex.gap-2 {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    width: 100%;
+    gap: 0.65rem;
+  }
+
+  section:first-of-type [style*="linear-gradient(135deg, #0B0F14"] > .absolute.inset-0.flex > .flex.gap-2 > button {
+    width: 100%;
+    min-height: 3.05rem;
+    padding: 0.65rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.86rem;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  /* Homepage directory search form: stacked mobile command card with proper clipping. */
+  form[action="/directory"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    border-radius: 1.25rem !important;
+    overflow: hidden !important;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(255, 255, 255, 0.72) !important;
+  }
+
+  form[action="/directory"] > div {
+    width: 100%;
+    min-width: 0;
+    padding: 0.95rem 1rem !important;
+    border-right: 0 !important;
+  }
+
+  form[action="/directory"] select,
+  form[action="/directory"] input {
+    width: 100%;
+    min-width: 0;
+    font-size: 1rem !important;
+    line-height: 1.35;
+    text-overflow: ellipsis;
+  }
+
+  form[action="/directory"] svg {
+    flex: 0 0 auto;
+  }
+
+  form[action="/directory"] button[type="submit"] {
+    min-height: 3.55rem;
+    width: 100%;
+    border-radius: 0 !important;
+    font-size: 1rem;
+    font-weight: 900;
+  }
+
+  /* Role router: enforce a clean two-column mobile grid instead of uneven pill rows. */
+  section:nth-of-type(2) .flex.flex-wrap.justify-center.gap-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    gap: 0.7rem;
+  }
+
+  section:nth-of-type(2) .flex.flex-wrap.justify-center.gap-2 > button {
+    width: 100%;
+    min-width: 0;
+    min-height: 3.25rem;
+    justify-content: flex-start;
+    padding: 0.75rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    line-height: 1.15;
+    text-align: left;
+  }
+
+  section:nth-of-type(2) .flex.flex-wrap.justify-center.gap-2 > button svg {
+    flex: 0 0 auto;
+  }
+}
+
+@media (max-width: 380px) {
+  section:first-of-type h1 {
+    font-size: 2.15rem;
+  }
+
+  section:first-of-type [style*="linear-gradient(135deg, #0B0F14"] {
+    min-height: 32.5rem;
+  }
+
+  section:first-of-type [style*="linear-gradient(135deg, #0B0F14"] > .absolute.inset-0.flex {
+    min-height: 32.5rem;
+  }
+
+  section:first-of-type [style*="linear-gradient(135deg, #0B0F14"] > .absolute.inset-0.flex > .flex.gap-2 > button {
+    font-size: 0.78rem;
+  }
+
+  section:nth-of-type(2) .flex.flex-wrap.justify-center.gap-2 > button {
+    font-size: 0.76rem;
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+  }
+}

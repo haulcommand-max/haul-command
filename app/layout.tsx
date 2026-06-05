@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import './mobile-homepage-fixes.css';
 import { DynamicBackgroundEngine } from '@/components/ui/DynamicBackgroundEngine';
 import { GlobalCommandBar } from '@/components/layout/GlobalCommandBar';
 import { PwaRegistry } from '@/components/layout/PwaRegistry';
