@@ -64,7 +64,7 @@ export function AdGridOutcomeBeacon(props: AdGridEventBeaconProps) {
 
 async function recordAdGridEvent(eventType: 'impression' | 'click' | 'outcome', props: AdGridEventBeaconProps) {
     try {
-        await fetch('/api/adgrid/event', {
+        await fetch('/api/adgrid/events', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             keepalive: true,
