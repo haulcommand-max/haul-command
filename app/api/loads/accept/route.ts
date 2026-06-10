@@ -6,9 +6,16 @@ export async function POST(req: Request) {
   // Mobile app passes payload and a signature
   const { payload, signature } = await req.json();
 
-  // 1. Swipe-To-Accept Cryptography verification
+  const secretKey = process.env.PAYLOAD_SIGNING_SECRET;
+  if (!secretKey) {
+    return NextResponse.json(
+      { error: 'Load acceptance signing is not configured.' },
+      { status: 503 }
+    );
+  }
+
+  // 1. Swipe-To-Accept cryptography verification
   // Reconstruct hash to ensure broker/operator hasn't spoofed payload
-  const secretKey = process.env.PAYLOAD_SIGNING_SECRET || 'fallback_dev_secret';
   const expectedSig = crypto
       .createHmac('sha256', secretKey)
       .update(JSON.stringify(payload))
