@@ -256,6 +256,38 @@ serve(async (req: Request) => {
                     }
                 }
 
+                // ── grant_paid_entitlement for data-product purchases ──
+                // Handles: /api/data/buy and /api/stripe/data-checkout where metadata.type=data_purchase
+                const sessionType = session?.metadata?.type;
+                const dataProductId = session?.metadata?.product_id;
+                const dataGeoKey = session?.metadata?.geo_key || session?.metadata?.country_code || session?.metadata?.geo || null;
+                if ((sessionType === 'data_purchase' || sessionType === 'data_product_purchase') && dataProductId) {
+                    try {
+                        await supabase.rpc('grant_paid_entitlement', {
+                            p_session_id:      session.id,
+                            p_user_id:         (userId && userId !== 'anonymous') ? userId : null,
+                            p_price_key:       dataProductId,
+                            p_amount_cents:    session.amount_total || 0,
+                            p_currency:        session.currency || 'usd',
+                            p_payment_intent:  session.payment_intent || null,
+                            p_subscription_id: session.subscription || null,
+                            p_customer_id:     session.customer || null,
+                            p_geo_key:         dataGeoKey,
+                            p_metadata:        {
+                                type:         sessionType,
+                                product_id:   dataProductId,
+                                product_type: session.metadata?.product_type || null,
+                                source:       session.metadata?.source || 'data_purchase',
+                                session_id:   session.id,
+                            },
+                        });
+                        console.log('[Stripe Webhook] grant_paid_entitlement OK for data product:', dataProductId);
+                    } catch (grantDataErr) {
+                        // Non-fatal — can be granted manually from admin queue
+                        console.error('[Stripe Webhook] grant_paid_entitlement data product error:', grantDataErr);
+                    }
+                }
+
                 // Mark processed in stripe_events (dedupe log)
                 await supabase.from('stripe_events').upsert({
                     stripe_event_id: body.id,
