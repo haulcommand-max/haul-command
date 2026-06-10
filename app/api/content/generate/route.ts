@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Anthropic from '@anthropic-ai/sdk';
+import OpenAI from 'openai';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
-const anthropic = new Anthropic({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const TIER_QUOTA: Record<string, number> = {
   us: 8, au: 4, gb: 4, ca: 4, de: 4, ae: 4, nz: 4, za: 4, nl: 4, br: 4,
@@ -25,21 +25,23 @@ async function generateArticle(topic: string, keyword: string, audience: string,
   const prompt = `Write a comprehensive, expert-level blog article for ${audienceMap[audience] || audienceMap.general_public} about: "${topic}"
 
 Primary SEO keyword: "${keyword}"
-Requirements: 1,200+ words, specific regulations/rates/corridor names, H2 subheadings, FAQ section, CTA to haulcommand.com.${countryCtx}
+Requirements: 1,200+ words, specific regulations/rates/corridor names, H2 subheadings, FAQ section, CTA to haulcommand.com.${countryCtx}`;
 
-Respond ONLY with valid JSON:
-{"title":"<60 char SEO title>","meta_description":"<155 char description>","summary":"<2-sentence social summary>","content":"<full markdown>"}`;
-
-  const response = await anthropic.messages.create({
-    model: 'claude-opus-4-5',
-    max_tokens: 4096,
-    messages: [{ role: 'user', content: prompt }],
+  const response = await openai.chat.completions.create({
+    model: 'gpt-4o',
+    temperature: 0.3,
+    response_format: { type: 'json_object' },
+    messages: [
+      {
+        role: 'system',
+        content: 'You write Haul Command SEO content. Respond only with valid JSON: {"title":"<60 char SEO title>","meta_description":"<155 char description>","summary":"<2-sentence social summary>","content":"<full markdown>"}',
+      },
+      { role: 'user', content: prompt },
+    ],
   });
 
-  const text = response.content[0].type === 'text' ? response.content[0].text : '{}';
-  const jsonMatch = text.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) throw new Error('No JSON in Claude response');
-  const parsed = JSON.parse(jsonMatch[0]);
+  const text = response.choices[0]?.message?.content || '{}';
+  const parsed = JSON.parse(text);
   return { ...parsed, word_count: parsed.content?.split(/\s+/).length || 0 };
 }
 
@@ -74,7 +76,6 @@ export async function POST(req: NextRequest) {
 
   if (!topicRow) return NextResponse.json({ error: 'No pending topics found' }, { status: 404 });
 
-  // Country tier quota check
   if (topicRow.country_code) {
     const monthStart = new Date(); monthStart.setDate(1); monthStart.setHours(0, 0, 0, 0);
     const { count } = await supabase.from('blog_posts').select('*', { count: 'exact', head: true })
