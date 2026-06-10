@@ -65,6 +65,16 @@ export async function POST(req: NextRequest) {
             const stripe = await import('stripe').then(m => new m.default(process.env.STRIPE_SECRET_KEY!));
 
             const mode = product.purchase_type === 'subscription' ? 'subscription' : 'payment';
+            const metadata = {
+                type: 'data_purchase',
+                product_id: product.id,
+                product_type: product.type,
+                geo: geo ?? 'US',
+                country_code: geo ?? 'US',
+                user_id: user?.id ?? '',
+                source: 'data_buy',
+            };
+
             const session = await stripe.checkout.sessions.create({
                 mode,
                 line_items: [{
@@ -73,7 +83,7 @@ export async function POST(req: NextRequest) {
                         product_data: {
                             name: product.name,
                             description: product.description,
-                            metadata: { product_id: product.id, geo: geo ?? 'US' },
+                            metadata,
                         },
                         unit_amount: Math.round(product.price_usd * 100),
                         ...(mode === 'subscription' ? { recurring: { interval: 'month' as const } } : {}),
@@ -84,7 +94,7 @@ export async function POST(req: NextRequest) {
 
                 customer_email: user?.email,
                 client_reference_id: user?.id ?? `anon-${Date.now()}`,
-                metadata: { product_id: product.id, geo: geo ?? 'US', user_id: user?.id ?? '' },
+                metadata,
                 success_url: `${origin}/data/purchase-success?product=${productId}&session_id={CHECKOUT_SESSION_ID}`,
                 cancel_url: `${origin}/data?cancelled=1`,
                 allow_promotion_codes: true,
