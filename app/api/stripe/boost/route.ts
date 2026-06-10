@@ -59,6 +59,7 @@ export async function POST(req: NextRequest) {
         user_id: user?.id || 'anonymous',
         load_id: loadId,
         type: 'load_boost',
+        price_key: 'load_boost',
       },
     });
 
