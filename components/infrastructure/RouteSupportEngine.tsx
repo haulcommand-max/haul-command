@@ -23,6 +23,12 @@ const catIcons: Record<string, { icon: string; color: string; label: string }> =
     truck_repair: { icon: '🔩', color: '#EF4444', label: 'Repair' },
 };
 
+const bundleRequestType: Record<string, string> = {
+    route: 'route_survey',
+    preflight: 'escort_lead',
+    readiness: 'pilot_car_equipment_check',
+};
+
 export function NearbySupportModule({ state, corridor, limit = 6, title = 'Route Support Nearby' }: {
     state?: string; corridor?: string; limit?: number; title?: string;
 }) {
@@ -74,12 +80,51 @@ export function NearbySupportModule({ state, corridor, limit = 6, title = 'Route
 export function SupportBundleCTA({ bundleType = 'route', corridor, state }: {
     bundleType?: 'route' | 'preflight' | 'readiness'; corridor?: string; state?: string;
 }) {
-    const bundles: Record<string, { title: string; items: string[]; icon: string; color: string }> = {
-        route: { title: 'Route Support Pack', icon: '🛣', color: '#6366F1', items: ['Staging yards', 'Secure parking', 'Escort meetup zones', 'Repair options'] },
-        preflight: { title: 'Corridor Preflight', icon: '✈️', color: '#22C55E', items: ['State requirements', 'Installer locations', 'Escort availability', 'Rate intel'] },
-        readiness: { title: 'Operator Readiness', icon: '⚡', color: '#F59E0B', items: ['Equipment check', 'Cert verification', 'Insurance status', 'Market visibility'] },
+    const [submitting, setSubmitting] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+
+    const bundles: Record<string, { title: string; items: string[]; icon: string; color: string; description: string }> = {
+        route: { title: 'Route Support Pack', icon: '🛣', color: '#6366F1', description: 'Route support requested from route support pack.', items: ['Staging yards', 'Secure parking', 'Escort meetup zones', 'Repair options'] },
+        preflight: { title: 'Corridor Preflight', icon: '✈️', color: '#22C55E', description: 'Corridor preflight support requested.', items: ['State requirements', 'Installer locations', 'Escort availability', 'Rate intel'] },
+        readiness: { title: 'Operator Readiness', icon: '⚡', color: '#F59E0B', description: 'Operator readiness support requested.', items: ['Equipment check', 'Cert verification', 'Insurance status', 'Market visibility'] },
     };
     const b = bundles[bundleType];
+
+    async function requestSupport() {
+        if (submitting) return;
+        setSubmitting(true);
+        track('support_bundle_requested' as any, { metadata: { bundleType, corridor, state } });
+
+        try {
+            const response = await fetch('/api/infrastructure/support-request', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    bundleType,
+                    request_type_key: bundleRequestType[bundleType] || 'escort_lead',
+                    title: b.title,
+                    description: `${b.description} ${corridor ? `Corridor: ${corridor}.` : ''} ${state ? `State/region: ${state}.` : ''}`.trim(),
+                    country_code: 'US',
+                    region_code: state,
+                    corridor_slug: corridor,
+                    visibility: 'internal',
+                    source: 'SupportBundleCTA',
+                }),
+            });
+
+            if (response.ok) {
+                setSubmitted(true);
+                track('support_bundle_request_created' as any, { metadata: { bundleType, corridor, state } });
+            } else {
+                track('support_bundle_request_failed' as any, { metadata: { bundleType, corridor, state, status: response.status } });
+            }
+        } catch {
+            track('support_bundle_request_failed' as any, { metadata: { bundleType, corridor, state, status: 'network_error' } });
+        } finally {
+            setSubmitting(false);
+        }
+    }
+
     return (
         <div style={{ padding: '16px 18px', borderRadius: 16, background: `${b.color}04`, border: `1px solid ${b.color}10` }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
@@ -95,8 +140,16 @@ export function SupportBundleCTA({ bundleType = 'route', corridor, state }: {
                     <span style={{ fontSize: 11, color: '#bbb' }}>{item}</span>
                 </div>
             ))}
+            <button
+                type="button"
+                disabled={submitting || submitted}
+                onClick={requestSupport}
+                style={{ display: 'inline-flex', marginTop: 10, padding: '8px 16px', borderRadius: 10, background: `${b.color}10`, border: `1px solid ${b.color}20`, color: b.color, fontWeight: 800, fontSize: 11, cursor: submitting || submitted ? 'default' : 'pointer' }}
+            >
+                {submitted ? 'Support Request Captured' : submitting ? 'Capturing Request...' : 'Request Support'}
+            </button>
             <Link aria-label="Navigation Link" href={`/infrastructure${state ? `?state=${state}` : ''}`} onClick={() => track('support_bundle_clicked' as any, { metadata: { bundleType, corridor, state } })}
-                style={{ display: 'inline-flex', marginTop: 10, padding: '8px 16px', borderRadius: 10, background: `${b.color}10`, border: `1px solid ${b.color}20`, color: b.color, fontWeight: 800, fontSize: 11, textDecoration: 'none' }}>
+                style={{ display: 'inline-flex', marginTop: 10, marginLeft: 8, padding: '8px 16px', borderRadius: 10, background: `${b.color}06`, border: `1px solid ${b.color}12`, color: b.color, fontWeight: 800, fontSize: 11, textDecoration: 'none' }}>
                 Browse Support →
             </Link>
         </div>
