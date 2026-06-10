@@ -10,6 +10,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'corridorId and monthlyPriceCents required' }, { status: 400 });
     }
 
+    const priceKey = 'corridor_sponsorship';
+    const metadata = {
+      corridorId,
+      corridor_id: corridorId,
+      userId: userId || '',
+      user_id: userId || '',
+      type: 'corridor_sponsorship',
+      price_key: priceKey,
+      geo_key: corridorId,
+    };
+
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
       payment_method_types: ['card'],
@@ -21,11 +32,13 @@ export async function POST(req: NextRequest) {
           product_data: {
             name: `Corridor Sponsorship: ${corridorName || corridorId}`,
             description: 'Monthly corridor sponsorship on Haul Command',
+            metadata,
           },
         },
         quantity: 1,
       }],
-      metadata: { corridorId, userId: userId || '', type: 'corridor_sponsorship' },
+      metadata,
+      subscription_data: { metadata },
       success_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://haulcommand.com'}/ads/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://haulcommand.com'}/ads`,
     });
