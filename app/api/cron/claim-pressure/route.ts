@@ -1,9 +1,26 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
+
+function requireCron(req: NextRequest) {
+    const cronSecret = process.env.CRON_SECRET;
+    const bearer = req.headers.get('authorization');
+    const headerSecret = req.headers.get('x-cron-secret');
+
+    if (!cronSecret) {
+        return NextResponse.json({ error: 'Cron secret not configured' }, { status: 503 });
+    }
+
+    if (bearer !== `Bearer ${cronSecret}` && headerSecret !== cronSecret) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    return null;
+}
 
 /**
  * POST /api/cron/claim-pressure
  * Runs nightly to advance claim pressure stages based on aging + signals.
+ * Requires CRON_SECRET via Authorization: Bearer <secret> or x-cron-secret.
  *
  * Stage progression logic:
  *   Stage 0 → 1: shell_age_days ≥ 30 AND page_indexed = true
@@ -11,7 +28,10 @@ import { getSupabaseAdmin } from '@/lib/supabase/admin';
  *   Stage 2 → 3: shell_age_days ≥ 90 AND (nearby_competitor_claims ≥ 1 OR demand_activity_touches ≥ 3)
  *   Stage 3 → 4: shell_age_days ≥ 120 AND (profile_views ≥ 25 OR saved_search_touches ≥ 5)
  */
-export async function POST() {
+export async function POST(req: NextRequest) {
+    const authError = requireCron(req);
+    if (authError) return authError;
+
     const supabase = getSupabaseAdmin();
     const results = { stage_0_to_1: 0, stage_1_to_2: 0, stage_2_to_3: 0, stage_3_to_4: 0, errors: [] as string[] };
 
