@@ -5,15 +5,44 @@ import { tracked } from '@/lib/ai/tracker';
 
 export const dynamic = 'force-dynamic';
 
+function isAuthorizedCron(req: NextRequest) {
+  const authHeader = req.headers.get('authorization');
+  const cronSecret = process.env.CRON_SECRET;
+  return Boolean(cronSecret && authHeader === `Bearer ${cronSecret}`);
+}
+
+async function requireAdminOrCron(req: NextRequest) {
+  if (isAuthorizedCron(req)) return { ok: true as const };
+
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return { ok: false as const, response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) };
+  }
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role, is_admin')
+    .eq('id', user.id)
+    .maybeSingle();
+
+  const role = String(profile?.role ?? '').toLowerCase();
+  const isAdmin = profile?.is_admin === true || ['admin', 'owner', 'staff', 'super_admin'].includes(role);
+  if (!isAdmin) {
+    return { ok: false as const, response: NextResponse.json({ error: 'Forbidden' }, { status: 403 }) };
+  }
+
+  return { ok: true as const };
+}
+
 /**
  * POST /api/admin/claim-analysis
  * Body: { listing_id?: string, batch_limit?: number, min_risk?: number }
  *
- * UPGRADED: Hybrid 2-brain approach
- *   - 👁️ Gemini SEE (nano) → generate email/SMS copy (fast + cheap: $0.0003/call)
- *   - 🧠 Claude THINK (nano) → risk assessment reasoning only ($0.0002/call)
- *   - Combined cost: ~$0.0005/listing vs. $0.003 Claude-only = 6× cheaper
- *   - Full 7,745 sweep: ~$3.87 total (vs. ~$23 Claude-only)
+ * Admin/cron only.
+ * Hybrid 2-brain approach:
+ *   - Gemini SEE (nano) → generate email/SMS copy
+ *   - OpenAI THINK (nano) → risk assessment reasoning
  *
  * Single listing: { listing_id: "uuid" }
  * Batch sweep:    { batch_limit: 50, min_review_count: 5 } — prioritizes high-traffic unclaimed
@@ -21,10 +50,8 @@ export const dynamic = 'force-dynamic';
  * GET ?limit=50&min_risk=7 → Returns pre-computed outreach sorted by steal_risk_score
  */
 export async function POST(req: NextRequest) {
-  const authHeader = req.headers.get('authorization');
-  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const gate = await requireAdminOrCron(req);
+  if (!gate.ok) return gate.response;
 
   const body = await req.json().catch(() => ({}));
   const supabase = createClient();
@@ -83,6 +110,9 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
+  const gate = await requireAdminOrCron(req);
+  if (!gate.ok) return gate.response;
+
   const { searchParams } = new URL(req.url);
   const limit = Math.min(parseInt(searchParams.get('limit') ?? '50', 10), 200);
   const minRisk = parseInt(searchParams.get('min_risk') ?? '0', 10);
@@ -164,17 +194,17 @@ Views: ${listing.view_count ?? 'unknown'}/month
 Contact attempts: ${listing.contact_count ?? 0}
 Claim URL: https://haulcommand.com/claim/${listing.id}`;
 
-  // Run Gemini (copy) and Claude (risk) in parallel — saves time + cost
+  // Run Gemini (copy) and OpenAI (risk) in parallel — saves time + cost
   const [copyRes, riskRes] = await Promise.allSettled([
-    // 👁️ Gemini SEE: Generate email + SMS copy (nano — $0.0003)
+    // Gemini SEE: Generate email + SMS copy
     tracked('claim_copy_gemini', () => see(
       `You write B2B outreach for Haul Command (haulcommand.com), a platform for heavy haul escort operators.\n\nUnclaimed listing:\n${listingContext}\n\nGenerate personalized claim outreach:\n1. EMAIL_SUBJECT: Max 45 chars. Specific to their name/location.
 2. EMAIL_BODY: 120-150 words. Peer tone. Specific to their services. End: 'Claim free at https://haulcommand.com/claim/${listing.id}'
 3. SMS_TEXT: Max 160 chars. Direct.\n4. OUTREACH_REASON: 1 sentence. Why claim NOW.\n\nOutput JSON: { email_subject, email_body, sms_text, outreach_reason }`,
       { tier: 'nano', json: true }
     )),
-    // 🧠 Claude THINK: Risk reasoning only (nano — $0.0002)
-    tracked('claim_risk_claude', () => think(
+    // OpenAI THINK: Risk reasoning
+    tracked('claim_risk_openai', () => think(
       `Rate steal risk (1-10) for this unclaimed escort operator listing.\n${listingContext}\n\nConsider: competitor poaching likelihood, visibility, revenue at risk.\nOutput JSON: { steal_risk_score: number, risk_explanation: string }`,
       { tier: 'nano', json: true }
     )),
