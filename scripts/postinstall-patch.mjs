@@ -4,6 +4,7 @@
  * 1) Patches @supabase/postgrest-js to add .catch() to PostgrestBuilder.
  * 2) Applies tiny build-safety source patches for known mobile/homepage issues
  *    that are safer to patch by exact strings than by replacing very large files.
+ * 3) Enforces strict TypeScript deploy builds by replacing Next.js build masking.
  */
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { resolve, dirname } from 'path';
@@ -81,6 +82,14 @@ function patchTextFile(relativePath, patcher) {
         console.warn(`[postinstall-patch] ⚠️ Could not patch ${relativePath}:`, err.message);
     }
 }
+
+patchTextFile('next.config.ts', (src) => {
+    let out = src;
+    out = out.replace(/typescript:\s*\{\s*ignoreBuildErrors:\s*true\s*\}/g, 'typescript: { ignoreBuildErrors: false }');
+    out = out.replace('ignoreBuildErrors: Vercel build won\'t fail on TS errors.', 'ignoreBuildErrors: deploy builds must fail on TS errors.');
+    out = out.replace('This is intentional during active sprint development.', 'This is intentionally forced off by scripts/postinstall-patch.mjs.');
+    return out;
+});
 
 patchTextFile('app/(landing)/_components/HomeClient.tsx', (src) => {
     let out = src;
