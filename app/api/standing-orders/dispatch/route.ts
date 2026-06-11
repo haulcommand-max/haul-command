@@ -1,17 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
-// POST /api/standing-orders/dispatch
-// System-level endpoint: fires recurring standing orders
-export async function POST(req: NextRequest) {
-  try {
-    // Verify internal call (use auth header or internal secret)
-    const authHeader = req.headers.get('authorization');
-    const cronSecret = process.env.CRON_SECRET;
-    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+function requireCron(req: NextRequest) {
+  const cronSecret = process.env.CRON_SECRET;
+  const bearer = req.headers.get('authorization');
+  const headerSecret = req.headers.get('x-cron-secret');
 
+  if (!cronSecret) {
+    return NextResponse.json({ error: 'Cron secret not configured' }, { status: 503 });
+  }
+
+  if (bearer !== `Bearer ${cronSecret}` && headerSecret !== cronSecret) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  return null;
+}
+
+// POST /api/standing-orders/dispatch
+// System-level endpoint: fires recurring standing orders.
+// Requires CRON_SECRET via Authorization: Bearer <secret> or x-cron-secret.
+export async function POST(req: NextRequest) {
+  const authError = requireCron(req);
+  if (authError) return authError;
+
+  try {
     const supabase = createClient();
 
     // Get all standing orders due for dispatch
@@ -66,7 +79,7 @@ export async function POST(req: NextRequest) {
           await supabase.from('messages').insert({
             conversation_id: conv.id,
             sender_id: order.broker_id,
-            body: `Standing order auto-dispatch: ${order.origin} \u2192 ${order.destination} at $${order.rate_per_day}/day`,
+            body: `Standing order auto-dispatch: ${order.origin} → ${order.destination} at $${order.rate_per_day}/day`,
             message_type: 'offer',
             offer_data: {
               rate_per_day: order.rate_per_day,
@@ -79,8 +92,8 @@ export async function POST(req: NextRequest) {
           await supabase.from('notifications').insert({
             user_id: order.preferred_operator_id,
             type: 'load_offer',
-            title: `Recurring Load Offer \u2014 $${order.rate_per_day}/day`,
-            body: `${order.origin} \u2192 ${order.destination}`,
+            title: `Recurring Load Offer — $${order.rate_per_day}/day`,
+            body: `${order.origin} → ${order.destination}`,
             data: { load_id: load.id, conversation_id: conv.id },
             action_url: `/inbox/${conv.id}`,
           });
