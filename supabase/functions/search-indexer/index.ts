@@ -21,6 +21,29 @@ function getTypesenseConfig(): TypesenseConfig {
     };
 }
 
+function requireWorkerAuth(req: Request): Response | null {
+    const configured = Deno.env.get("INTERNAL_WORKER_TOKEN") || Deno.env.get("CRON_SECRET") || "";
+    if (!configured.trim()) {
+        return new Response(JSON.stringify({ error: "Search indexer auth is not configured" }), {
+            status: 503,
+            headers: { "Content-Type": "application/json" },
+        });
+    }
+
+    const bearer = req.headers.get("authorization")?.match(/^Bearer\s+(.+)$/i)?.[1]?.trim() || "";
+    const internalToken = req.headers.get("x-internal-token")?.trim() || "";
+    const cronSecret = req.headers.get("x-cron-secret")?.trim() || "";
+
+    if (bearer !== configured && internalToken !== configured && cronSecret !== configured) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+            status: 401,
+            headers: { "Content-Type": "application/json" },
+        });
+    }
+
+    return null;
+}
+
 function typesenseUrl(cfg: TypesenseConfig, path: string): string {
     return `${cfg.protocol}://${cfg.host}:${cfg.port}${path}`;
 }
@@ -31,9 +54,9 @@ const COLLECTION_MAP: Record<string, string> = {
     profiles: "profiles",
     hc_global_operators: "hc_operators",
     loads: "loads",
-    corridors: "corridors",
-    glossary_terms: "glossary_terms",   // real name (not glo_terms)
-    listings: "listings",               // real name (not directory_listings)
+    hc_loads: "loads",
+    glossary_terms: "glossary_terms",
+    listings: "listings",
 };
 
 /** Transform a raw DB row into a Typesense document.
@@ -86,26 +109,26 @@ function transformForTypesense(tableName: string, row: Record<string, any>): Rec
         doc.coverage_status = row.coverage_status || "coming_soon";
         doc.source_table = row.source_table || "";
         doc.updated_at = row.updated_at ? new Date(row.updated_at).getTime() : Date.now();
-    } else if (tableName === "loads") {
-        doc.status = row.status || "open";
+    } else if (tableName === "loads" || tableName === "hc_loads") {
+        doc.status = row.status || row.network_status || "open";
         doc.equipment_type = row.equipment_type || "";
-        doc.is_oversize = row.is_oversize ?? false;
+        doc.is_oversize = row.is_oversize ?? true;
         doc.origin_country = row.origin_country || "US";
-        doc.origin_state_province = row.origin_state || "";
+        doc.origin_state_province = row.origin_state || row.origin_state_province || "";
         doc.origin_city = row.origin_city || "";
         if (row.origin_lat && row.origin_lng) {
             doc.origin_location = [parseFloat(row.origin_lat), parseFloat(row.origin_lng)];
         }
-        doc.dest_country = row.dest_country || "US";
-        doc.dest_state_province = row.dest_state || "";
-        doc.dest_city = row.dest_city || "";
+        doc.dest_country = row.dest_country || row.destination_country || "US";
+        doc.dest_state_province = row.dest_state || row.destination_state || row.destination_state_province || "";
+        doc.dest_city = row.dest_city || row.destination_city || "";
         if (row.dest_lat && row.dest_lng) {
             doc.dest_location = [parseFloat(row.dest_lat), parseFloat(row.dest_lng)];
         }
         doc.corridor_slug = row.corridor_slug || "";
-        doc.price_total = row.price_total || 0;
+        doc.price_total = row.price_total || row.rate || 0;
         doc.rate_per_mile_est = row.rate_per_mile || 0;
-        doc.distance_miles_est = row.distance_miles || 0;
+        doc.distance_miles_est = row.distance_miles || row.estimated_miles || 0;
         doc.predicted_fill_minutes = row.predicted_fill_minutes || 0;
         doc.pickup_date_epoch = row.pickup_date ? new Date(row.pickup_date).getTime() : 0;
         doc.created_at = row.created_at ? new Date(row.created_at).getTime() : Date.now();
@@ -136,8 +159,6 @@ function transformForTypesense(tableName: string, row: Record<string, any>): Rec
             doc.location = [parseFloat(row.lat), parseFloat(row.lng)];
         }
     } else if (tableName === "glossary_terms") {
-        // S3-02: Glossary terms — powers AI-search snippet eligibility
-        // Real table: glossary_terms (not glo_terms)
         doc.slug = row.slug || "";
         doc.canonical_term = row.canonical_term || row.term || "";
         doc.definition_short = row.definition_short || row.short_definition || "";
@@ -151,7 +172,6 @@ function transformForTypesense(tableName: string, row: Record<string, any>): Rec
         doc.reviewed_at_epoch = row.reviewed_at ? new Date(row.reviewed_at).getTime() : 0;
         doc.updated_at = row.updated_at ? new Date(row.updated_at).getTime() : Date.now();
     } else if (tableName === "listings") {
-        // S3-02: Listings — real table name (not directory_listings)
         doc.slug = row.slug || "";
         doc.display_name = row.display_name || row.name || "";
         doc.entity_type = row.entity_type || "escort";
@@ -168,7 +188,6 @@ function transformForTypesense(tableName: string, row: Record<string, any>): Rec
         }
         doc.updated_at = row.updated_at ? new Date(row.updated_at).getTime() : Date.now();
     } else if (tableName === "profiles") {
-        // S3-02: Profiles — trust score propagation to Typesense within 30s
         doc.display_name = row.display_name || row.full_name || "";
         doc.role = row.role || "operator";
         doc.country = row.country_code || "US";
@@ -187,8 +206,6 @@ function transformForTypesense(tableName: string, row: Record<string, any>): Rec
 
     return doc;
 }
-
-
 
 /* ──────────────────────────────────────────────────────────
  * Typesense sync operations
@@ -229,7 +246,10 @@ async function typesenseDelete(cfg: TypesenseConfig, collection: string, docId: 
  * Main handler — drains search_jobs queue
  * ────────────────────────────────────────────────────────── */
 
-serve(async (_req) => {
+serve(async (req) => {
+    const authError = requireWorkerAuth(req);
+    if (authError) return authError;
+
     try {
         const supabase = createClient(
             Deno.env.get("SUPABASE_URL")!,
@@ -260,11 +280,14 @@ serve(async (_req) => {
             throw new Error("TYPESENSE_API_KEY not set");
         }
 
-        // 2. Fetch up to 100 pending jobs
+        // 2. Fetch up to 100 pending or retryable failed jobs
+        const retryBefore = new Date(Date.now() - 5 * 60 * 1000).toISOString();
         const { data: jobs, error: fetchError } = await supabase
             .from("search_jobs")
             .select("*")
-            .eq("status", "pending")
+            .in("status", ["pending", "failed"])
+            .lt("attempts", 3)
+            .or(`status.eq.pending,last_attempt_at.is.null,last_attempt_at.lt.${retryBefore}`)
             .order("created_at", { ascending: true })
             .limit(100);
 
@@ -279,12 +302,14 @@ serve(async (_req) => {
 
         let processed = 0;
         let errors = 0;
+        let skipped = 0;
 
         for (const job of jobs) {
             const collection = COLLECTION_MAP[job.table_name];
             if (!collection) {
                 console.warn(`search-indexer: no collection for table '${job.table_name}', skipping`);
-                await supabase.from("search_jobs").update({ status: "skipped" }).eq("id", job.id);
+                await supabase.from("search_jobs").update({ status: "skipped", last_attempt_at: new Date().toISOString() }).eq("id", job.id);
+                skipped++;
                 continue;
             }
 
@@ -308,21 +333,22 @@ serve(async (_req) => {
                     }
                 }
 
-                await supabase.from("search_jobs").update({ status: "completed" }).eq("id", job.id);
+                await supabase.from("search_jobs").update({ status: "completed", last_attempt_at: new Date().toISOString() }).eq("id", job.id);
                 processed++;
             } catch (err: any) {
+                const nextAttempts = (job.attempts ?? 0) + 1;
                 console.error(`search-indexer: job ${job.id} failed:`, err.message);
                 await supabase.from("search_jobs").update({
-                    status: job.attempts >= 3 ? "dead" : "failed",
-                    attempts: job.attempts + 1,
+                    status: nextAttempts >= 3 ? "dead" : "failed",
+                    attempts: nextAttempts,
                     last_attempt_at: new Date().toISOString(),
                 }).eq("id", job.id);
                 errors++;
             }
         }
 
-        console.log(`search-indexer: done. processed=${processed} errors=${errors}`);
-        return new Response(JSON.stringify({ success: true, processed, errors }), {
+        console.log(`search-indexer: done. processed=${processed} skipped=${skipped} errors=${errors}`);
+        return new Response(JSON.stringify({ success: true, processed, skipped, errors }), {
             headers: { "Content-Type": "application/json" },
         });
     } catch (err: any) {
