@@ -2,20 +2,33 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { runClaimSniper } from '@/lib/workflows/claimSniper';
 
+function requireCron(req: NextRequest) {
+  const cronSecret = process.env.CRON_SECRET;
+  const bearer = req.headers.get('authorization');
+  const headerSecret = req.headers.get('x-cron-secret');
+
+  if (!cronSecret) {
+    return NextResponse.json({ error: 'Cron secret not configured' }, { status: 503 });
+  }
+
+  if (bearer !== `Bearer ${cronSecret}` && headerSecret !== cronSecret) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  return null;
+}
+
 /**
  * POST /api/cron/claim-sniper
  * Runs the Claim Sniper workflow — finds high-value unclaimed listings,
  * scores candidates, and queues personalized claim packets.
  *
- * Secured with CRON_SECRET header.
+ * Secured with CRON_SECRET via Authorization: Bearer <secret> or x-cron-secret.
  * Called daily at 07:00 via Vercel cron or GitHub Actions.
  */
 export async function POST(req: NextRequest) {
-  // Auth guard
-  const secret = req.headers.get('x-cron-secret');
-  if (secret !== process.env.CRON_SECRET) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const authError = requireCron(req);
+  if (authError) return authError;
 
   const supabase = await createClient();
 
