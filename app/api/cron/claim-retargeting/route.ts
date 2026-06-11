@@ -3,14 +3,34 @@ import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 export const runtime = 'edge';
 
+function requireCron(req: Request) {
+    const cronSecret = process.env.CRON_SECRET;
+    const bearer = req.headers.get('authorization');
+    const headerSecret = req.headers.get('x-cron-secret');
+
+    if (!cronSecret) {
+        return NextResponse.json({ error: 'Cron secret not configured' }, { status: 503 });
+    }
+
+    if (bearer !== `Bearer ${cronSecret}` && headerSecret !== cronSecret) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    return null;
+}
+
 // ══════════════════════════════════════════════════════════════
 // POST /api/cron/claim-retargeting
 // Runs daily. Finds operators who initiated the claim flow or were
 // viewed heavily in the directory but failed to finalize their verification.
 // Sends high-converting Push Notification + Email via Firebase/Resend.
+// Requires CRON_SECRET via Authorization: Bearer <secret> or x-cron-secret.
 // ══════════════════════════════════════════════════════════════
 
 export async function POST(req: Request) {
+    const authError = requireCron(req);
+    if (authError) return authError;
+
     try {
         const supabase = getSupabaseAdmin();
 
@@ -57,7 +77,7 @@ export async function POST(req: Request) {
                     // E.g. we use the built in push handler
                     await supabase.rpc('trigger_fcm_notification', {
                         p_token: device.token,
-                        p_title: 'Your profile got views today \uD83D\uDC40',
+                        p_title: 'Your profile got views today 👀',
                         p_body: `Verify ${claim.business_name || 'your profile'} to see who is viewing you and start securing loads.`,
                         p_data: { deepLink: `haulcommand://claim/resume/${claim.id}` }
                     });
